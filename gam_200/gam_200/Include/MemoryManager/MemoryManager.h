@@ -26,7 +26,7 @@ namespace ManCong
 		class MemoryManager : private ManCong::Memory::ICollector
 		{
 		public:
-			static MemoryManager<T>* GetInstance(void)
+			static MemoryManager<T>* Get(void)
 			{
 				return instance ? instance : (instance = new MemoryManager<T>{});
 			}

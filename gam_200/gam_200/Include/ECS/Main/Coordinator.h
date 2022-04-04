@@ -9,8 +9,9 @@ namespace ManCong
 		class Coordinator
 		{
 		public:
-			void Init(void);
+			static Coordinator* Get(void);
 
+			void Init(void);
 			/*********************************************************************************
 											ENTITY METHODS
 			*********************************************************************************/
@@ -45,9 +46,13 @@ namespace ManCong
 			void SetSystemSignature(Signature signature);
 
 		private:
+			Coordinator(void)	= default;
+			~Coordinator(void)	= default;
+
 			std::unique_ptr<ComponentManager> mComponentManager;
 			std::unique_ptr<EntityManager> mEntityManager;
 			std::unique_ptr<SystemManager> mSystemManager;
+			static Coordinator* instance;
 		};
 	}
 }

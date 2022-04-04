@@ -69,20 +69,20 @@ namespace ManCong
         {
             if (0 > R || 0 > C)
                 throw Exception::InvalidDimension(R, C);
-            mtx = Memory::MemoryManager<value_type>::GetInstance()->New(R, C);
+            mtx = Memory::MemoryManager<value_type>::Get()->New(R, C);
             if (R == C)
                 Indentity();
         }
 
         matrix::matrix(Vector2 const& rhs) : mtx{ nullptr }, R{ 3 }, C{ 1 }
         {
-            mtx = Memory::MemoryManager<value_type>::GetInstance()->New(R, C);
+            mtx = Memory::MemoryManager<value_type>::Get()->New(R, C);
             (*this)(0, 0) = rhs.x, (*this)(1, 0) = rhs.y, (*this)(2, 0) = 1.0f;
         }
 
         matrix::matrix(Vector3 const& rhs) : mtx{ nullptr }, R{ 4 }, C{ 1 }
         {
-            mtx = Memory::MemoryManager<value_type>::GetInstance()->New(R, C);
+            mtx = Memory::MemoryManager<value_type>::Get()->New(R, C);
             (*this)(0, 0) = rhs.x, (*this)(1, 0) = rhs.y, (*this)(2, 0) = rhs.z, (*this)(3, 0) = 1.0f;
         }
 
@@ -90,13 +90,13 @@ namespace ManCong
         {
             if (mtx)
             {
-                Memory::MemoryManager<value_type>::GetInstance()->Delete(mtx);
+                Memory::MemoryManager<value_type>::Get()->Delete(mtx);
             }
         }
 
         matrix::matrix(matrix const& rhs) : mtx{ nullptr }, R{ rhs.R }, C{ rhs.C }
         {
-            mtx = Memory::MemoryManager<value_type>::GetInstance()->New(R, C);
+            mtx = Memory::MemoryManager<value_type>::Get()->New(R, C);
             for (size_type i = 0; i < R; ++i)
             {
                 for (size_type j = 0; j < C; ++j)
