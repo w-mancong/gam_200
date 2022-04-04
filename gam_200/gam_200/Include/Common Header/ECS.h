@@ -9,4 +9,6 @@
 #include "ECS/Main/SystemManager.h"
 #include "ECS/Main/Coordinator.h"
 
+using ManCong::ECS::Coordinator;
+
 #endif

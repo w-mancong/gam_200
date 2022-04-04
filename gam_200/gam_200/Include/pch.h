@@ -36,8 +36,9 @@
 
 // Self declared header file
 #include "MemoryManager/MemoryManager.h"
-#include "Common Header/MyMath.h"
 #include "Common Header/ECS.h"
+#include "Common Header/MyInput.h"
+#include "Common Header/MyMath.h"
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
 

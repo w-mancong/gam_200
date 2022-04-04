@@ -94,6 +94,7 @@
     <ClCompile Include="Source\ECS\Main\Coordinator.cpp" />
     <ClCompile Include="Source\ECS\Main\EntityManager.cpp" />
     <ClCompile Include="Source\ECS\Main\SystemManager.cpp" />
+    <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
     <ClCompile Include="Source\Math\matrix.cpp" />
@@ -115,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Common Header\ECS.h" />
+    <ClInclude Include="Include\Common Header\MyInput.h" />
     <ClInclude Include="Include\Common Header\Utility.h" />
     <ClInclude Include="Include\ECS\Main\component.h" />
     <ClInclude Include="Include\ECS\Main\ComponentArray.h" />
@@ -124,6 +126,8 @@
     <ClInclude Include="Include\ECS\Main\entity.h" />
     <ClInclude Include="Include\ECS\Main\EntityManager.h" />
     <ClInclude Include="Include\ECS\Main\SystemManager.h" />
+    <ClInclude Include="Include\Input\InputKeys.h" />
+    <ClInclude Include="Include\Input\Input.h" />
     <ClInclude Include="Include\Math\Math.h" />
     <ClInclude Include="Include\Math\matrix.h" />
     <ClInclude Include="Include\Math\Matrix3x3.h" />

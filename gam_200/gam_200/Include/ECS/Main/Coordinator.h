@@ -23,7 +23,7 @@ namespace ManCong
 			*********************************************************************************/
 			template <typename T>
 			void RegisterComponent(void);
-			
+
 			template <typename T>
 			void AddComponent(Entity entity, T component);
 
@@ -46,8 +46,8 @@ namespace ManCong
 			void SetSystemSignature(Signature signature);
 
 		private:
-			Coordinator(void)	= default;
-			~Coordinator(void)	= default;
+			Coordinator(void) = default;
+			~Coordinator(void) = default;
 
 			friend class Memory::MemoryManager<Coordinator>;
 			template <class T>
