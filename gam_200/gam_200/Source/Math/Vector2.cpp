@@ -26,7 +26,7 @@ namespace ManCong
 		}
 
 		/*********************************************************************************
-									MATH ARITHMETIC
+										MATH ARITHMETIC
 		*********************************************************************************/
 		Vector2& Vector2::operator+=(Vector2 const& rhs)
 		{
@@ -86,7 +86,7 @@ namespace ManCong
 		}
 
 		/*********************************************************************************
-											   UTILITIES
+											UTILITIES
 		*********************************************************************************/
 		bool Vector2::operator==(Vector2 const& rhs) const
 		{
@@ -108,6 +108,10 @@ namespace ManCong
 			return Utility::IsEqual(x, 0.0f) && Utility::IsEqual(y, 0.0f);
 		}
 
+
+		/*********************************************************************************
+										STATIC FUNCTIONS
+		*********************************************************************************/
 		float Vector2::Angle(Vector2 const& from, Vector2 const& to)
 		{
 			return std::acosf(Vector2::Dot(from, to) / (from.Magnitude() * to.Magnitude())) * 180.0f / static_cast<float>(M_PI);

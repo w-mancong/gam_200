@@ -106,13 +106,9 @@ namespace ManCong
         };
 
         matrix operator+(matrix const& lhs, matrix const& rhs);
-
         matrix operator-(matrix const& lhs, matrix const& rhs);
-
         matrix operator*(matrix const& lhs, matrix const& rhs);
-
         matrix operator*(matrix const& lhs, typename matrix::value_type rhs);
-
         matrix operator*(typename matrix::value_type lhs, matrix const& rhs);
 
         std::ostream& operator<<(std::ostream& os, matrix const& rhs);
