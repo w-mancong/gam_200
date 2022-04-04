@@ -49,6 +49,10 @@ namespace ManCong
 			Coordinator(void)	= default;
 			~Coordinator(void)	= default;
 
+			friend class Memory::MemoryManager<Coordinator>;
+			template <class T>
+			friend void Memory::Deallocate(T const*& ptr);
+
 			std::unique_ptr<ComponentManager> mComponentManager;
 			std::unique_ptr<EntityManager> mEntityManager;
 			std::unique_ptr<SystemManager> mSystemManager;

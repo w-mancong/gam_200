@@ -8,22 +8,19 @@
 #include "VariableType.h"
 
 extern const char* bad_allocations_buffer;
-namespace
-{
-	template <class T>
-	void Deallocate(T const*& ptr)
-	{
-		delete[] ptr;
-		ptr = nullptr;
-	}
-}
-
 namespace ManCong
 {
 	namespace Memory
 	{
 		template <class T>
-		class MemoryManager : private ManCong::Memory::ICollector
+		void Deallocate(T const*& ptr)
+		{
+			delete[] ptr;
+			ptr = nullptr;
+		}
+
+		template <class T>
+		class MemoryManager : private Memory::ICollector
 		{
 		public:
 			static MemoryManager<T>* Get(void)

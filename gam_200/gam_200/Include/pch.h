@@ -14,6 +14,8 @@
 #include <cfloat>
 #include <limits>
 #include <cassert>
+#include <random>
+#include <chrono>
 
 // Data structures
 #include <string>
@@ -37,5 +39,6 @@
 #include "Common Header/MyMath.h"
 #include "Common Header/ECS.h"
 #include "Common Header/Utility.h"
+#include "Common Header/Random.h"
 
 #endif
