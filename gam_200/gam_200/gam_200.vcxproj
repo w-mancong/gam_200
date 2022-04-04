@@ -111,6 +111,7 @@
     <ClCompile Include="Source\misc\Random.cpp" />
     <ClCompile Include="Source\Utility\comparison.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
+    <ClCompile Include="Source\Utility\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Common Header\ECS.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Include\MemoryManager\VariableType.h" />
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\Utility\console.h" />
+    <ClInclude Include="Include\Utility\Time.h" />
     <ClInclude Include="Include\Utility\Type.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
