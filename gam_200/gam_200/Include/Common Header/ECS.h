@@ -1,13 +1,13 @@
 #ifndef	ECS_H
 #define ECS_H
 
-#include "ECS/Main/entity.h"
-#include "ECS/Main/component.h"
-#include "ECS/Main/EntityManager.h"
-#include "ECS/Main/ComponentArray.h"
-#include "ECS/Main/ComponentManager.h"
-#include "ECS/Main/SystemManager.h"
-#include "ECS/Main/Coordinator.h"
+#include "ECS/Structure/entity.h"
+#include "ECS/Structure/component.h"
+#include "ECS/Structure/EntityManager.h"
+#include "ECS/Structure/ComponentArray.h"
+#include "ECS/Structure/ComponentManager.h"
+#include "ECS/Structure/SystemManager.h"
+#include "ECS/Structure/Coordinator.h"
 
 using ManCong::ECS::Coordinator;
 

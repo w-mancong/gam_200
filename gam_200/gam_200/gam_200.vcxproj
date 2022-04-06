@@ -90,10 +90,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ECS\Main\ComponentManager.cpp" />
-    <ClCompile Include="Source\ECS\Main\Coordinator.cpp" />
-    <ClCompile Include="Source\ECS\Main\EntityManager.cpp" />
-    <ClCompile Include="Source\ECS\Main\SystemManager.cpp" />
+    <ClCompile Include="Source\ECS\Structure\ComponentManager.cpp" />
+    <ClCompile Include="Source\ECS\Structure\Coordinator.cpp" />
+    <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
+    <ClCompile Include="Source\ECS\Structure\SystemManager.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
@@ -118,14 +118,14 @@
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyInput.h" />
     <ClInclude Include="Include\Common Header\Utility.h" />
-    <ClInclude Include="Include\ECS\Main\component.h" />
-    <ClInclude Include="Include\ECS\Main\ComponentArray.h" />
-    <ClInclude Include="Include\ECS\Main\ComponentManager.h" />
+    <ClInclude Include="Include\ECS\Structure\component.h" />
+    <ClInclude Include="Include\ECS\Structure\ComponentArray.h" />
+    <ClInclude Include="Include\ECS\Structure\ComponentManager.h" />
     <ClInclude Include="Include\ECS\Components\Transform.h" />
-    <ClInclude Include="Include\ECS\Main\Coordinator.h" />
-    <ClInclude Include="Include\ECS\Main\entity.h" />
-    <ClInclude Include="Include\ECS\Main\EntityManager.h" />
-    <ClInclude Include="Include\ECS\Main\SystemManager.h" />
+    <ClInclude Include="Include\ECS\Structure\Coordinator.h" />
+    <ClInclude Include="Include\ECS\Structure\entity.h" />
+    <ClInclude Include="Include\ECS\Structure\EntityManager.h" />
+    <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Input\InputKeys.h" />
     <ClInclude Include="Include\Input\Input.h" />
     <ClInclude Include="Include\Math\Math.h" />

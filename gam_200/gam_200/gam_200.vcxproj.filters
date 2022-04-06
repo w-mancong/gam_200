@@ -54,16 +54,16 @@
     <ClCompile Include="Source\Math\Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ECS\Main\EntityManager.cpp">
+    <ClCompile Include="Source\ECS\Structure\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ECS\Main\ComponentManager.cpp">
+    <ClCompile Include="Source\ECS\Structure\ComponentManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ECS\Main\SystemManager.cpp">
+    <ClCompile Include="Source\ECS\Structure\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ECS\Main\Coordinator.cpp">
+    <ClCompile Include="Source\ECS\Structure\Coordinator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp">
@@ -125,28 +125,28 @@
     <ClInclude Include="Include\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ECS\Main\entity.h">
+    <ClInclude Include="Include\ECS\Structure\entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ECS\Main\component.h">
+    <ClInclude Include="Include\ECS\Structure\component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\ECS\Components\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ECS\Main\EntityManager.h">
+    <ClInclude Include="Include\ECS\Structure\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ECS\Main\ComponentArray.h">
+    <ClInclude Include="Include\ECS\Structure\ComponentArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ECS\Main\ComponentManager.h">
+    <ClInclude Include="Include\ECS\Structure\ComponentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ECS\Main\SystemManager.h">
+    <ClInclude Include="Include\ECS\Structure\SystemManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ECS\Main\Coordinator.h">
+    <ClInclude Include="Include\ECS\Structure\Coordinator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Common Header\MyMath.h">
