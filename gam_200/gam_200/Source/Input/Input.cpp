@@ -6,7 +6,7 @@ namespace
 	bool keyState[totalKeys] = { false }, keyDownState[totalKeys] = { false }, keyReleasedState[totalKeys] = { false }, keyTriggeredState[totalKeys] = { false };
 	bool CheckInput(u64 key)
 	{
-		return GetAsyncKeyState(key);
+		return GetAsyncKeyState(static_cast<u32>(key));
 	}
 }
 
