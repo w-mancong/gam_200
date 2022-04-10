@@ -66,9 +66,9 @@ namespace ManCong
             matrix(size_type R, size_type C);
             matrix(Vector2 const& rhs);
             matrix(Vector3 const& rhs);
-            virtual ~matrix(void);
             matrix(matrix const& rhs);
             matrix(matrix&& rhs) noexcept;
+            virtual ~matrix(void);
             matrix& operator=(matrix const& rhs);
             matrix& operator=(matrix&& rhs) noexcept;
             matrix& operator=(Vector2 const& rhs);

@@ -101,9 +101,7 @@
     <ClCompile Include="Source\Math\Matrix3x3.cpp" />
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Math\Vector3.cpp" />
-    <ClCompile Include="Source\MemoryManager\bad_allocation_buffer.cpp" />
-    <ClCompile Include="Source\MemoryManager\CollectorManager.cpp" />
-    <ClCompile Include="Source\MemoryManager\ICollector.cpp" />
+    <ClCompile Include="Source\Memory\Memory.cpp" />
     <ClCompile Include="Source\misc\main.cpp" />
     <ClCompile Include="Source\misc\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -134,15 +132,10 @@
     <ClInclude Include="Include\Math\Vector3.h" />
     <ClInclude Include="Include\Common Header\MyMath.h" />
     <ClInclude Include="Include\Common Header\Random.h" />
+    <ClInclude Include="Include\Memory\Memory.h" />
     <ClInclude Include="Include\Utility\comparison.h" />
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
-    <ClInclude Include="Include\MemoryManager\CollectorManager.h" />
-    <ClInclude Include="Include\MemoryManager\Helper.h" />
-    <ClInclude Include="Include\MemoryManager\ICollector.h" />
-    <ClInclude Include="Include\MemoryManager\MemoryLeak.h" />
-    <ClInclude Include="Include\MemoryManager\MemoryManager.h" />
-    <ClInclude Include="Include\MemoryManager\VariableType.h" />
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\Time.h" />

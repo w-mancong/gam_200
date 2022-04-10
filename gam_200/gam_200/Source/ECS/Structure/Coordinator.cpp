@@ -7,7 +7,12 @@ namespace ManCong
 		Coordinator* Coordinator::instance = nullptr;
 		Coordinator* Coordinator::Get(void)
 		{
-			return instance ? instance : (instance = Memory::MemoryManager<Coordinator>::Get()->New());
+			return instance ? instance : (instance = Memory::StaticMemory::New<Coordinator>());
+		}
+
+		void Coordinator::Exit(void)
+		{
+			instance = nullptr;
 		}
 
 		void Coordinator::Init(void)

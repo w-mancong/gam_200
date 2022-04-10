@@ -35,7 +35,7 @@
 #include <Windows.h>
 
 // Self declared header file
-#include "MemoryManager/MemoryManager.h"
+#include "Memory/Memory.h"
 #include "Common Header/ECS.h"
 #include "Common Header/MyInput.h"
 #include "Common Header/MyMath.h"

@@ -68,34 +68,26 @@ namespace ManCong
         {
             if (0 > R || 0 > C)
                 throw Exception::InvalidDimension(R, C);
-            mtx = Memory::MemoryManager<value_type>::Get()->New(R, C);
+            mtx = Memory::DynamicMemory::New<value_type>(R * C);
             if (R == C)
                 Indentity();
         }
 
         matrix::matrix(Vector2 const& rhs) : mtx{ nullptr }, R{ 3 }, C{ 1 }
         {
-            mtx = Memory::MemoryManager<value_type>::Get()->New(R, C);
+            mtx = Memory::DynamicMemory::New<value_type>(R * C);
             (*this)(0, 0) = rhs.x, (*this)(1, 0) = rhs.y, (*this)(2, 0) = 1.0f;
         }
 
         matrix::matrix(Vector3 const& rhs) : mtx{ nullptr }, R{ 4 }, C{ 1 }
         {
-            mtx = Memory::MemoryManager<value_type>::Get()->New(R, C);
+            mtx = Memory::DynamicMemory::New<value_type>(R * C);
             (*this)(0, 0) = rhs.x, (*this)(1, 0) = rhs.y, (*this)(2, 0) = rhs.z, (*this)(3, 0) = 1.0f;
-        }
-
-        matrix::~matrix(void)
-        {
-            if (mtx)
-            {
-                Memory::MemoryManager<value_type>::Get()->Delete(mtx);
-            }
         }
 
         matrix::matrix(matrix const& rhs) : mtx{ nullptr }, R{ rhs.R }, C{ rhs.C }
         {
-            mtx = Memory::MemoryManager<value_type>::Get()->New(R, C);
+            mtx = Memory::DynamicMemory::New<value_type>(R * C);
             for (size_type i = 0; i < R; ++i)
             {
                 for (size_type j = 0; j < C; ++j)
@@ -106,6 +98,14 @@ namespace ManCong
         matrix::matrix(matrix&& rhs) noexcept : mtx{ nullptr }, R{ 0 }, C{ 0 }
         {
             swap(rhs);
+        }
+
+        matrix::~matrix(void)
+        {
+            if (mtx)
+            {
+                Memory::DynamicMemory::Delete(mtx);
+            }
         }
 
         matrix& matrix::operator=(matrix const& rhs)
@@ -324,6 +324,7 @@ namespace ManCong
 
         matrix operator*(matrix const& lhs, matrix const& rhs)
         {
+            using value_type = typename matrix::value_type;
             using size_type = typename matrix::size_type;
             const size_type l_rows = lhs.Rows(), l_cols = lhs.Cols(), r_rows = rhs.Rows(), r_cols = rhs.Cols();
             if (l_cols != r_rows)
@@ -331,10 +332,11 @@ namespace ManCong
             matrix tmp(l_rows, r_cols);
             for (size_type i = 0; i < l_rows; ++i)
             {
-                for (size_type j = 0; j < l_cols; ++j)
+                for (size_type j = 0; j < r_cols; ++j)
                 {
-                    for (size_type k = 0; k < r_cols; ++k)
-                        tmp(i, k) += lhs(i, j) * rhs(j, k);
+                    tmp(i, j) = static_cast<value_type>(0);
+                    for (size_type k = 0; k < r_rows; ++k)
+                        tmp(i, j) += lhs(i, k) * rhs(k, j);
                 }
             }
             return tmp;
