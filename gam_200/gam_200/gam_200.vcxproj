@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyInput.h" />
+    <ClInclude Include="Include\Common Header\MyMemory.h" />
     <ClInclude Include="Include\Common Header\Utility.h" />
     <ClInclude Include="Include\ECS\Structure\component.h" />
     <ClInclude Include="Include\ECS\Structure\ComponentArray.h" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Include\Common Header\MyMath.h" />
     <ClInclude Include="Include\Common Header\Random.h" />
     <ClInclude Include="Include\Memory\Memory.h" />
+    <ClInclude Include="Include\Memory\MemoryLeak.h" />
     <ClInclude Include="Include\Utility\comparison.h" />
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />

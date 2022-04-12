@@ -152,5 +152,11 @@
     <ClInclude Include="Include\Memory\Memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Common Header\MyMemory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Memory\MemoryLeak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

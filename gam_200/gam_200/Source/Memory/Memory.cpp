@@ -1,3 +1,12 @@
+/*!
+file:	Memory.cpp
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	Memory Arena. This class handles memory allocation and deallocation by making
+		sure that memory is always streamline
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ManCong
@@ -10,16 +19,28 @@ namespace ManCong
 		Bookmark StaticMemory::mBookmarks[]{ nullptr }; u64 StaticMemory::mIndex{ 0 }, StaticMemory::mBookmarkIndex{ 0 };
 		char* const StaticMemory::mPtr = new char[MEMORY_BUFFER];
 
+		/*!*********************************************************************************
+			\brief
+				Find the bookmark that has the same address as ptr. This is so that
+				I can calculate the total elements that was allocated for ptr
+			\param [out] bm:
+				Using this variable to store the address where the bookmark has the address
+				of ptr
+			\param [in] ptr:
+				Finding the bookmark with the address of ptr
+		***********************************************************************************/
 		void StaticMemory::FindBookmark(Bookmark*& bm, void* ptr)
 		{
-			for (u64 i = 0; i < BOOKMARK_SIZE; ++i)
+			bm = std::find_if(mBookmarks, (mBookmarks + BOOKMARK_SIZE), [=](auto const& cmp)
 			{
-				if (ptr != (mBookmarks + i)->head)
-					continue;
-				bm = (mBookmarks + i); break;
-			}
+				return cmp.head == ptr;
+			});
 		}
 
+		/*!*********************************************************************************
+			\brief
+				Reset DynamicMemory class to it's default state
+		***********************************************************************************/
 		void StaticMemory::Reset(void)
 		{
 			for (u64 i = 0; i < MEMORY_BUFFER; ++i)
@@ -29,6 +50,10 @@ namespace ManCong
 			mIndex = 0;
 		}
 
+		/*!*********************************************************************************
+			\brief
+				Deallocate the memory allocated inside the heap for mPtr
+		***********************************************************************************/
 		void StaticMemory::FreeAll(void)
 		{
 			delete[] mPtr;
@@ -68,6 +93,15 @@ namespace ManCong
 			return index;
 		}
 
+		/*!*********************************************************************************
+			\brief
+				Helper function to find the next avaliable Bookmark
+			\param [in] member:
+				Either pass in mAllocated or mFreed
+			\param [out] bm:
+				Bookmark that is storing the address of the avaliable Bookmark in either
+				mAllocated or mFreed
+		***********************************************************************************/
 		void DynamicMemory::FindBookmark(Bookmark* member, Bookmark*& bm)
 		{
 			u64 i = 0;
@@ -79,16 +113,60 @@ namespace ManCong
 			assert(i < BOOKMARK_SIZE && "Increase bookmark size");
 		}
 
-		void DynamicMemory::FindAllocatedBookmark(Bookmark*& bm, void* ptr)
+		/*!*********************************************************************************
+			\brief
+				Find the bookmark that has the same address as ptr. This is so that
+				I can calculate the total elements that was allocated for ptr
+			\param [out] bm:
+				Using this variable to store the address where the bookmark has the address
+				of ptr
+			\param [in] ptr:
+				Finding the bookmark with the address of ptr
+		***********************************************************************************/
+		void DynamicMemory::FindAllocatedBookmark(Bookmark*& bm, void* const ptr)
 		{
-			for (u64 i = 0; i < BOOKMARK_SIZE; ++i)
+			bm = std::find_if(mAllocated, (mAllocated + BOOKMARK_SIZE), [=](auto const& cmp)
 			{
-				if (ptr != (mAllocated + i)->head)
-					continue;
-				bm = (mAllocated + i); break;
-			}
+				return cmp.head == ptr;
+			});
 		}
 
+		/*!*********************************************************************************
+			\brief
+				Update mIndex so that if any deletion happens, it will always be pointing
+				to the end of the next available byte in the memory stream
+		***********************************************************************************/
+		void DynamicMemory::UpdateIndex(void)
+		{
+			// Finding the last allocated tail
+			auto max_allo = std::max_element(mAllocated, (mAllocated + BOOKMARK_SIZE), [](auto const& lhs, auto const& rhs)
+			{
+				if (!lhs.tail || !rhs.tail) return false;
+				return lhs.tail < rhs.tail;
+			});
+			// Finding the first free head
+			auto min_free = std::min_element(mFreed, (mFreed + BOOKMARK_SIZE), [](auto const& lhs, auto const& rhs)
+			{
+				if (!lhs.head || !rhs.head) return false;
+				return lhs.head < rhs.head;
+			});
+			// if freed.head > allocated.tail, update mIndex to freed.head
+			if (min_free->head > max_allo->tail)
+			{
+				mIndex = static_cast<char*>(min_free->head) - mPtr;
+				// fill mFreed with default Bookmark value
+				std::fill(mFreed, (mFreed + BOOKMARK_SIZE), Bookmark());
+			}
+			// if mIndex - allocated.tail > 1, move mIndex to 1 after allocated.tail
+			u64 const indexFromTail = static_cast<char*>(max_allo->tail) - mPtr;
+			if (1 < mIndex - indexFromTail)
+				mIndex = indexFromTail + 1;
+		}
+
+		/*!*********************************************************************************
+			\brief
+				Reset DynamicMemory class to it's default state
+		***********************************************************************************/
 		void DynamicMemory::Reset(void)
 		{
 			for (u64 i = 0; i < MEMORY_BUFFER; ++i)
@@ -98,17 +176,30 @@ namespace ManCong
 			mIndex = 0;
 		}
 
+		/*!*********************************************************************************
+			\brief
+				Deallocate the memory allocated inside the heap for mPtr
+		***********************************************************************************/
 		void DynamicMemory::FreeAll(void)
 		{
 			delete[] mPtr;
 		}
 
+		/*!*********************************************************************************
+			\brief
+				Helper function to reset both StaticMemory and DynamicMemory to it's 
+				default state
+		***********************************************************************************/
 		void Reset(void)
 		{
 			StaticMemory::Reset();
 			DynamicMemory::Reset();
 		}
 
+		/*!*********************************************************************************
+			\brief
+				Helper function to deallocate the memory for both StaticMemory and DynamicMemory
+		***********************************************************************************/
 		void FreeAll(void)
 		{
 			StaticMemory::FreeAll();

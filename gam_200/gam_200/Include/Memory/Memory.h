@@ -1,3 +1,12 @@
+/*!
+file:	Memory.h
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	Memory Arena. This class handles memory allocation and deallocation by making
+		sure that memory is always streamline
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	MEMORY_H
 #define MEMORY_H
 
@@ -18,6 +27,14 @@ namespace ManCong
 		class StaticMemory
 		{
 		public:
+			/*!*********************************************************************************
+			\brief
+				Allocate memory address from a fixed memory buffer of a specified size
+			\param [in] size:
+				Total number of elements. Similar to int arr[10]
+			\return
+				The starting address pointing to the first element
+		***********************************************************************************/
 			template <typename T>
 			static T* New(u64 size = 1)
 			{
@@ -29,7 +46,7 @@ namespace ManCong
 
 			/*!*********************************************************************************
 				\brief
-				Calls the destructor of ptr and set the ptr to nullptr
+				Calls the destructor of ptr and set ptr to nullptr
 				(Function should only be called when unloading object)
 				\param [in,out] ptr:
 				Pointer to have it's destructor be called and ptr set to null so that it's
@@ -68,23 +85,39 @@ namespace ManCong
 		class DynamicMemory
 		{
 		public:
+			/*!*********************************************************************************
+				\brief
+					Allocate memory address from a fixed memory buffer of a specified size
+				\param [in] size:
+					Total number of elements. Similar to int arr[10]
+				\return 
+					The starting address pointing to the first element
+			***********************************************************************************/
 			template <typename T>
 			static T* New(u64 size = 1)
 			{
 				Bookmark *free_bm = nullptr, *allo_bm = nullptr; u64 const SIZE = sizeof(T) * size; u64 bytesBetweenBookmark{ 0 };
-				u64 index = GetIndex(mFreed, free_bm, bytesBetweenBookmark, SIZE);
+				u64 index = GetIndex(mFreed, free_bm, bytesBetweenBookmark, SIZE);	// Get index of where mAllocated head shld be pointing to
 				assert(index < MEMORY_BUFFER && "Size of memory buffer is too small. Change the size of MEMORY_BUFFER");
 				FindBookmark(mAllocated, allo_bm);
-				if (bytesBetweenBookmark)
+				if (bytesBetweenBookmark)					// there is enough space in between the memory stream
 				{
-					free_bm->head = mPtr + index + SIZE;
+					free_bm->head = mPtr + index + SIZE;	// update the pointer where mFreed head is pointing
 					if (SIZE == bytesBetweenBookmark)
-						free_bm->head = nullptr, free_bm->tail = nullptr;
+						free_bm->head = nullptr, free_bm->tail = nullptr;	// There is enough space in between the memory stream
 				}
-				allo_bm->head = mPtr + index, allo_bm->tail = mPtr + index + SIZE - 1;
+				allo_bm->head = mPtr + index, allo_bm->tail = mPtr + index + SIZE - 1;	// update mAllocated's bookmark
 				return new (&*(mPtr + index)) T();
 			}
 
+			/*!*********************************************************************************
+				\brief
+				Calls the destructor of ptr and set ptr to nullptr
+				(Function can be called anytime during runtime when neccessary)
+				\param [in,out] ptr:
+				Pointer to have it's destructor be called and ptr set to null so that it's
+				no longer storing a memory address
+			***********************************************************************************/
 			template <typename T>
 			static void Delete(T*& ptr)
 			{
@@ -98,7 +131,7 @@ namespace ManCong
 					(ptr + i)->~T();
 				ptr = nullptr; // Set the pointer to be nullptr
 				free_bm->head = allo_bm->head, free_bm->tail = allo_bm->tail;
-				allo_bm->head = nullptr, allo_bm->tail = nullptr;
+				allo_bm->head = nullptr, allo_bm->tail = nullptr; UpdateIndex();
 			}
 
 		private:
@@ -107,7 +140,8 @@ namespace ManCong
 
 			static u64 GetIndex(Bookmark* member, Bookmark*& bm, u64& elementsBetweenBookmark, u64 size);
 			static void FindBookmark(Bookmark* member, Bookmark*& bm);
-			static void FindAllocatedBookmark(Bookmark*& bm, void* ptr);
+			static void FindAllocatedBookmark(Bookmark*& bm, void* const ptr);
+			static void UpdateIndex(void);
 
 			static void Reset(void);
 			static void FreeAll(void);
