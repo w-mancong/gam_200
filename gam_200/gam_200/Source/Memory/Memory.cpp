@@ -17,7 +17,7 @@ namespace ManCong
 										STATIC MEMORY
 		*********************************************************************************/
 		Bookmark StaticMemory::mBookmarks[]{ nullptr }; u64 StaticMemory::mIndex{ 0 }, StaticMemory::mBookmarkIndex{ 0 };
-		char* const StaticMemory::mPtr = new char[MEMORY_BUFFER];
+		char* const StaticMemory::mPtr = new char[MEMORY_BUFFER] {};
 
 		/*!*********************************************************************************
 			\brief
@@ -43,10 +43,8 @@ namespace ManCong
 		***********************************************************************************/
 		void StaticMemory::Reset(void)
 		{
-			for (u64 i = 0; i < MEMORY_BUFFER; ++i)
-				*(mPtr + i) = '\0';
-			for (u64 i = 0; i < BOOKMARK_SIZE; ++i)
-				(mBookmarks + i)->head = nullptr, (mBookmarks + i)->tail = nullptr;
+			std::fill(mPtr, (mPtr + MEMORY_BUFFER), '\0');
+			std::fill(mBookmarks, (mBookmarks + BOOKMARK_SIZE), Bookmark());
 			mIndex = 0;
 		}
 
@@ -63,7 +61,7 @@ namespace ManCong
 										DYNAMIC MEMORY
 		*********************************************************************************/
 		Bookmark DynamicMemory::mAllocated[]{ nullptr }, DynamicMemory::mFreed[]{ nullptr }; u64 DynamicMemory::mIndex = 0;
-		char* const DynamicMemory::mPtr = new char[MEMORY_BUFFER];
+		char* const DynamicMemory::mPtr = new char[MEMORY_BUFFER] {};
 
 		/*!*********************************************************************************
 			\brief
@@ -169,10 +167,9 @@ namespace ManCong
 		***********************************************************************************/
 		void DynamicMemory::Reset(void)
 		{
-			for (u64 i = 0; i < MEMORY_BUFFER; ++i)
-				*(mPtr + i) = '\0';
-			for (u64 i = 0; i < BOOKMARK_SIZE; ++i)
-				(mAllocated + i)->head = nullptr, (mAllocated + i)->tail = nullptr, (mFreed + i)->head = nullptr, (mFreed + i)->tail = nullptr;
+			std::fill(mPtr, (mPtr + MEMORY_BUFFER), '\0');
+			std::fill(mAllocated, (mAllocated + BOOKMARK_SIZE), Bookmark());
+			std::fill(mFreed, (mFreed + BOOKMARK_SIZE), Bookmark());
 			mIndex = 0;
 		}
 
