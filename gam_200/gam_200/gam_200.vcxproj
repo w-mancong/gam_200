@@ -47,11 +47,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
+    <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Extern\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
+    <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Extern\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -67,6 +71,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>GLFW\glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -87,6 +92,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>GLFW\glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -94,6 +100,12 @@
     <ClCompile Include="Source\ECS\Structure\Coordinator.cpp" />
     <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
     <ClCompile Include="Source\ECS\Structure\SystemManager.cpp" />
+    <ClCompile Include="Source\Engine\Application.cpp" />
+    <ClCompile Include="Source\Graphics\GLAD\glad.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\GraphicsWindow.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
@@ -114,6 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Common Header\ECS.h" />
+    <ClInclude Include="Include\Common Header\MyEngine.h" />
+    <ClInclude Include="Include\Common Header\MyGraphics.h" />
     <ClInclude Include="Include\Common Header\MyInput.h" />
     <ClInclude Include="Include\Common Header\MyMemory.h" />
     <ClInclude Include="Include\Common Header\Utility.h" />
@@ -125,6 +139,9 @@
     <ClInclude Include="Include\ECS\Structure\entity.h" />
     <ClInclude Include="Include\ECS\Structure\EntityManager.h" />
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
+    <ClInclude Include="Include\Engine\Application.h" />
+    <ClInclude Include="Include\Graphics\Color.h" />
+    <ClInclude Include="Include\Graphics\GraphicsWindow.h" />
     <ClInclude Include="Include\Input\InputKeys.h" />
     <ClInclude Include="Include\Input\Input.h" />
     <ClInclude Include="Include\Math\Math.h" />

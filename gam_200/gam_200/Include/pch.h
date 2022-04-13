@@ -35,9 +35,15 @@
 // Windows API
 #include <Windows.h>
 
+// Graphics
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 // Self declared header file
 #include "Common Header/MyMemory.h"
 #include "Common Header/ECS.h"
+#include "Common Header/MyGraphics.h"
+#include "Common Header/MyEngine.h"
 #include "Common Header/MyInput.h"
 #include "Common Header/MyMath.h"
 #include "Common Header/Utility.h"
