@@ -28,13 +28,13 @@ namespace ManCong
 		{
 		public:
 			/*!*********************************************************************************
-			\brief
-				Allocate memory address from a fixed memory buffer of a specified size
-			\param [in] size:
-				Total number of elements. Similar to int arr[10]
-			\return
-				The starting address pointing to the first element
-		***********************************************************************************/
+				\brief
+					Allocate memory address from a fixed memory buffer of a specified size
+				\param [in] size:
+					Total number of elements. Similar to int arr[10]
+				\return
+					The starting address pointing to the first element
+			***********************************************************************************/
 			template <typename T>
 			static T* New(u64 size = 1)
 			{
@@ -106,7 +106,8 @@ namespace ManCong
 					if (SIZE == bytesBetweenBookmark)
 						free_bm->head = nullptr, free_bm->tail = nullptr;	// There is enough space in between the memory stream
 				}
-				allo_bm->head = mPtr + index, allo_bm->tail = mPtr + index + SIZE - 1;	// update mAllocated's bookmark
+				// update mAllocated's bookmark, then sort mAllocated bookmarks
+				allo_bm->head = mPtr + index, allo_bm->tail = mPtr + index + SIZE - 1; Sort(mAllocated);
 				return new (&*(mPtr + index)) T();
 			}
 
@@ -130,7 +131,7 @@ namespace ManCong
 				for (u64 i = 0; i < TOTAL_ELEMENTS; ++i)
 					(ptr + i)->~T();
 				ptr = nullptr; // Set the pointer to be nullptr
-				free_bm->head = allo_bm->head, free_bm->tail = allo_bm->tail;
+				free_bm->head = allo_bm->head, free_bm->tail = allo_bm->tail; UpdateFreedBookmark(free_bm);
 				allo_bm->head = nullptr, allo_bm->tail = nullptr; UpdateIndex();
 			}
 
@@ -141,7 +142,9 @@ namespace ManCong
 			static u64 GetIndex(Bookmark* member, Bookmark*& bm, u64& elementsBetweenBookmark, u64 size);
 			static void FindBookmark(Bookmark* member, Bookmark*& bm);
 			static void FindAllocatedBookmark(Bookmark*& bm, void* const ptr);
+			static void UpdateFreedBookmark(Bookmark*& bm);
 			static void UpdateIndex(void);
+			static void Sort(Bookmark* member);
 
 			static void Reset(void);
 			static void FreeAll(void);

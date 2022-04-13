@@ -131,6 +131,26 @@ namespace ManCong
 
 		/*!*********************************************************************************
 			\brief
+				Update mFreed Bookmarks such that if there are two bookmarks side by side,
+				it will be combined into one bookmark instead
+		***********************************************************************************/
+		void DynamicMemory::UpdateFreedBookmark(Bookmark*& bm)
+		{
+			for (u64 i = 0; i < BOOKMARK_SIZE; ++i)
+			{
+				u64 const s1 = static_cast<char*>((mFreed + i)->head) - static_cast<char*>(bm->tail);
+				u64 const s2 = static_cast<char*>(bm->head) - static_cast<char*>((mFreed + i)->tail);
+				if (1 != s1 && 1 != s2) continue;
+				// When it's here, means that the two bookmarks are side by side
+				(mFreed + i)->head = std::min((mFreed + i)->head, bm->head);
+				(mFreed + i)->tail = std::max((mFreed + i)->tail, bm->tail); 
+				bm->head = nullptr, bm->tail = nullptr; break;
+			}
+			Sort(mFreed);
+		}
+
+		/*!*********************************************************************************
+			\brief
 				Update mIndex so that if any deletion happens, it will always be pointing
 				to the end of the next available byte in the memory stream
 		***********************************************************************************/
@@ -139,7 +159,7 @@ namespace ManCong
 			// Finding the last allocated tail
 			auto max_allo = std::max_element(mAllocated, (mAllocated + BOOKMARK_SIZE), [](auto const& lhs, auto const& rhs)
 			{
-				if (!lhs.tail || !rhs.tail) return false;
+				//if (!lhs.tail || !rhs.tail) return false;
 				return lhs.tail < rhs.tail;
 			});
 			// Finding the first free head
@@ -153,12 +173,38 @@ namespace ManCong
 			{
 				mIndex = static_cast<char*>(min_free->head) - mPtr;
 				// fill mFreed with default Bookmark value
-				std::fill(mFreed, (mFreed + BOOKMARK_SIZE), Bookmark());
+				std::fill(mFreed, (mFreed + BOOKMARK_SIZE), Bookmark()); return;
 			}
 			// if mIndex - allocated.tail > 1, move mIndex to 1 after allocated.tail
 			u64 const indexFromTail = static_cast<char*>(max_allo->tail) - mPtr;
 			if (1 < mIndex - indexFromTail)
+			{
 				mIndex = indexFromTail + 1;
+				// Set all bookmakrs after mIndex to default values
+				void* ptr = mPtr + mIndex;
+				auto it = std::find_if(mFreed, (mFreed + BOOKMARK_SIZE), [=](auto const& cmp)
+				{
+					return cmp.head == ptr;
+				});
+				std::fill(it, (mFreed + BOOKMARK_SIZE), Bookmark()); return;
+			}
+		}
+
+		/*!*********************************************************************************
+			\brief
+				Sorting mFreed or mAllocated bookmarks from ascending order
+		***********************************************************************************/
+		void DynamicMemory::Sort(Bookmark* member)
+		{
+			std::sort(member, (member + BOOKMARK_SIZE), [](auto const& lhs, auto const& rhs)
+			{
+				return lhs.head < rhs.head;
+			});
+			for (u64 i = 0, j = 0; i < BOOKMARK_SIZE; ++i)
+			{
+				if (!(member + i)->head) continue;
+				std::swap(*(member + j++), *(member + i));
+			}
 		}
 
 		/*!*********************************************************************************
