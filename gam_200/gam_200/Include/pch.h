@@ -3,6 +3,8 @@
 
 #define NOMINMAX
 #define _USE_MATH_DEFINES
+#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))	// find the number of elements in an array
+// C++ standard library
 #include <iostream>
 #include <algorithm>
 #include <functional>

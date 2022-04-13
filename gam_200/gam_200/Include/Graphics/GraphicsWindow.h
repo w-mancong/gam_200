@@ -6,16 +6,18 @@ namespace ManCong
 {
 	namespace Graphics
 	{
-		class GraphicsWindow
+		class OpenGLWindow
 		{
 		public:
 			static void InitGLFWWindow(void);
+			static void FullScreen(bool fullScreen);
 			static void ResizeWindow(GLFWwindow* window, int width, int height);
 
 			static GLFWwindow* GetWindow(void);
 
 		private:
-			static GLFWwindow* window;
+			static GLFWwindow* window; 
+			static s32 width, height;
 		};
 	}
 }

@@ -3,5 +3,6 @@
 
 #include "Graphics/GraphicsWindow.h"
 #include "Graphics/Color.h"
+#include "Graphics/Mesh.h"
 
 #endif
