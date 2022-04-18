@@ -101,11 +101,14 @@
     <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
     <ClCompile Include="Source\ECS\Structure\SystemManager.cpp" />
     <ClCompile Include="Source\Engine\Application.cpp" />
+    <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp" />
+    <ClCompile Include="Source\Exceptions\DebugLog.cpp" />
     <ClCompile Include="Source\Graphics\GLAD\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\GraphicsWindow.cpp" />
+    <ClCompile Include="Source\Graphics\OpenGLWindow.cpp" />
+    <ClCompile Include="Source\Graphics\Shader.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
@@ -127,10 +130,14 @@
   <ItemGroup>
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />
+    <ClInclude Include="Include\Common Header\MyExceptions.h" />
     <ClInclude Include="Include\Common Header\MyGraphics.h" />
     <ClInclude Include="Include\Common Header\MyInput.h" />
     <ClInclude Include="Include\Common Header\MyMemory.h" />
+    <ClInclude Include="Include\Common Header\TemplateClasses.h" />
     <ClInclude Include="Include\Common Header\Utility.h" />
+    <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
+    <ClInclude Include="Include\Exceptions\DebugLog.h" />
     <ClInclude Include="Include\ECS\Structure\component.h" />
     <ClInclude Include="Include\ECS\Structure\ComponentArray.h" />
     <ClInclude Include="Include\ECS\Structure\ComponentManager.h" />
@@ -141,8 +148,9 @@
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\Graphics\Color.h" />
-    <ClInclude Include="Include\Graphics\GraphicsWindow.h" />
+    <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
     <ClInclude Include="Include\Graphics\Mesh.h" />
+    <ClInclude Include="Include\Graphics\Shader.h" />
     <ClInclude Include="Include\Input\InputKeys.h" />
     <ClInclude Include="Include\Input\Input.h" />
     <ClInclude Include="Include\Math\Math.h" />
@@ -156,6 +164,7 @@
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
+    <ClInclude Include="Include\Templated Class\Singleton.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
     <ClInclude Include="Include\Utility\Time.h" />

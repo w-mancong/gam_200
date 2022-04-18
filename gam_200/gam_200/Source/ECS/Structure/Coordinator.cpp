@@ -4,17 +4,6 @@ namespace ManCong
 {
 	namespace ECS
 	{
-		Coordinator* Coordinator::instance = nullptr;
-		Coordinator* Coordinator::Get(void)
-		{
-			return instance ? instance : (instance = Memory::StaticMemory::New<Coordinator>());
-		}
-
-		void Coordinator::Exit(void)
-		{
-			instance = nullptr;
-		}
-
 		void Coordinator::Init(void)
 		{
 			// Create pointers to each manager

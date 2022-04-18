@@ -17,6 +17,7 @@
 #include <limits>
 #include <cassert>
 #include <random>
+#include <fstream>
 #include <chrono>
 #include <iterator>
 
@@ -43,10 +44,12 @@
 
 // Self declared header file
 #include "Common Header/MyMemory.h"
+#include "Common Header/TemplateClasses.h"
 #include "Common Header/ECS.h"
 #include "Common Header/MyGraphics.h"
 #include "Common Header/MyEngine.h"
 #include "Common Header/MyInput.h"
+#include "Common Header/MyExceptions.h"
 #include "Common Header/MyMath.h"
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"

@@ -8,8 +8,9 @@ namespace ManCong
 		void ComponentManager::RegisterComponent(void)
 		{
 			const char* typeName = typeid(T).name();
+#ifdef _DEBUG
 			assert(mComponentTypes.find(typeName) == mComponentTypes.end() && "Registering component type more than once.");
-
+#endif	
 			// Add this component type to the component type map
 			mComponentTypes.insert({ typeName, mNextComponentType });
 			// Create a ComponentArray pointer and add it to the component arrays map
@@ -22,7 +23,9 @@ namespace ManCong
 		ComponentType ComponentManager::GetComponentType(void)
 		{
 			const char* typeName = typeid(T).name();
+#ifdef _DEBUG
 			assert(mComponentTypes.find(typeName) != mComponentTypes.end() && "Component not registered before use.");
+#endif	
 			// Return this component's type - used for creating signatures
 			return mComponentTypes[typeName];
 		}
@@ -64,7 +67,9 @@ namespace ManCong
 		std::shared_ptr<ComponentArray<T>> ComponentManager::GetComponentArray(void)
 		{
 			const char* typeName = typeid(T).name();
+#ifdef _DEBUG
 			assert(mComponentTypes.find(typeName) != mComponentTypes.end() && "Component not registered before use.");
+#endif	
 			return std::static_pointer_cast<ComponentArray<T>>(mComponentArrays[typeName]);
 		}
 	}

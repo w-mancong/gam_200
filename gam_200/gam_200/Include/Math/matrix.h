@@ -13,7 +13,7 @@ class
 #include <iostream>
 namespace ManCong
 {
-    namespace Exception
+    namespace Exceptions
     {
         class InvalidDimension : public std::exception
         {

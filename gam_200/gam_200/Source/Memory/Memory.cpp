@@ -16,8 +16,8 @@ namespace ManCong
 		/*********************************************************************************
 										STATIC MEMORY
 		*********************************************************************************/
-		Bookmark StaticMemory::mBookmarks[]{ nullptr }; u64 StaticMemory::mIndex{ 0 }, StaticMemory::mBookmarkIndex{ 0 };
-		char* const StaticMemory::mPtr = new char[MEMORY_BUFFER] {};
+		Bookmark StaticMemory::m_Bookmarks[]{ nullptr }; u64 StaticMemory::m_Index{ 0 }, StaticMemory::m_BookmarkIndex{ 0 };
+		char* const StaticMemory::m_Ptr = new char[MEMORY_BUFFER] {};
 
 		/*!*********************************************************************************
 			\brief
@@ -31,7 +31,7 @@ namespace ManCong
 		***********************************************************************************/
 		void StaticMemory::FindBookmark(Bookmark*& bm, void* ptr)
 		{
-			bm = std::find_if(mBookmarks, (mBookmarks + BOOKMARK_SIZE), [=](auto const& cmp)
+			bm = std::find_if(m_Bookmarks, (m_Bookmarks + BOOKMARK_SIZE), [=](auto const& cmp)
 			{
 				return cmp.head == ptr;
 			});
@@ -43,9 +43,9 @@ namespace ManCong
 		***********************************************************************************/
 		void StaticMemory::Reset(void)
 		{
-			std::fill(mPtr, (mPtr + MEMORY_BUFFER), '\0');
-			std::fill(mBookmarks, (mBookmarks + BOOKMARK_SIZE), Bookmark());
-			mIndex = 0;
+			std::fill(m_Ptr, (m_Ptr + MEMORY_BUFFER), '\0');
+			std::fill(m_Bookmarks, (m_Bookmarks + BOOKMARK_SIZE), Bookmark());
+			m_Index = 0;
 		}
 
 		/*!*********************************************************************************
@@ -54,14 +54,14 @@ namespace ManCong
 		***********************************************************************************/
 		void StaticMemory::FreeAll(void)
 		{
-			delete[] mPtr;
+			delete[] m_Ptr;
 		}
 
 		/*********************************************************************************
 										DYNAMIC MEMORY
 		*********************************************************************************/
-		Bookmark DynamicMemory::mAllocated[]{ nullptr }, DynamicMemory::mFreed[]{ nullptr }; u64 DynamicMemory::mIndex = 0;
-		char* const DynamicMemory::mPtr = new char[MEMORY_BUFFER] {};
+		Bookmark DynamicMemory::m_Allocated[]{ nullptr }, DynamicMemory::m_Freed[]{ nullptr }; u64 DynamicMemory::m_Index = 0;
+		char* const DynamicMemory::m_Ptr = new char[MEMORY_BUFFER] {};
 
 		/*!*********************************************************************************
 			\brief
@@ -84,10 +84,10 @@ namespace ManCong
 				bm = (member + i);
 				bytesBetweenBookmark = static_cast<char*>(bm->tail) - static_cast<char*>(bm->head) + 1;
 				if (SIZE <= bytesBetweenBookmark)
-					return static_cast<char*>(bm->head) - mPtr;
+					return static_cast<char*>(bm->head) - m_Ptr;
 			}
 			// No free space in between the memory stream, allocate memory at the end instead
-			u64 const index = mIndex; mIndex += SIZE, bytesBetweenBookmark = 0;
+			u64 const index = m_Index; m_Index += SIZE, bytesBetweenBookmark = 0;
 			return index;
 		}
 
@@ -123,7 +123,7 @@ namespace ManCong
 		***********************************************************************************/
 		void DynamicMemory::FindAllocatedBookmark(Bookmark*& bm, void* const ptr)
 		{
-			bm = std::find_if(mAllocated, (mAllocated + BOOKMARK_SIZE), [=](auto const& cmp)
+			bm = std::find_if(m_Allocated, (m_Allocated + BOOKMARK_SIZE), [=](auto const& cmp)
 			{
 				return cmp.head == ptr;
 			});
@@ -138,15 +138,15 @@ namespace ManCong
 		{
 			for (u64 i = 0; i < BOOKMARK_SIZE; ++i)
 			{
-				u64 const s1 = static_cast<char*>((mFreed + i)->head) - static_cast<char*>(bm->tail);
-				u64 const s2 = static_cast<char*>(bm->head) - static_cast<char*>((mFreed + i)->tail);
+				u64 const s1 = static_cast<char*>((m_Freed + i)->head) - static_cast<char*>(bm->tail);
+				u64 const s2 = static_cast<char*>(bm->head) - static_cast<char*>((m_Freed + i)->tail);
 				if (1 != s1 && 1 != s2) continue;
 				// When it's here, means that the two bookmarks are side by side
-				(mFreed + i)->head = std::min((mFreed + i)->head, bm->head);
-				(mFreed + i)->tail = std::max((mFreed + i)->tail, bm->tail); 
+				(m_Freed + i)->head = std::min((m_Freed + i)->head, bm->head);
+				(m_Freed + i)->tail = std::max((m_Freed + i)->tail, bm->tail); 
 				bm->head = nullptr, bm->tail = nullptr; break;
 			}
-			Sort(mFreed);
+			Sort(m_Freed);
 		}
 
 		/*!*********************************************************************************
@@ -157,13 +157,13 @@ namespace ManCong
 		void DynamicMemory::UpdateIndex(void)
 		{
 			// Finding the last allocated tail
-			auto max_allo = std::max_element(mAllocated, (mAllocated + BOOKMARK_SIZE), [](auto const& lhs, auto const& rhs)
+			auto max_allo = std::max_element(m_Allocated, (m_Allocated + BOOKMARK_SIZE), [](auto const& lhs, auto const& rhs)
 			{
 				//if (!lhs.tail || !rhs.tail) return false;
 				return lhs.tail < rhs.tail;
 			});
 			// Finding the first free head
-			auto min_free = std::min_element(mFreed, (mFreed + BOOKMARK_SIZE), [](auto const& lhs, auto const& rhs)
+			auto min_free = std::min_element(m_Freed, (m_Freed + BOOKMARK_SIZE), [](auto const& lhs, auto const& rhs)
 			{
 				if (!lhs.head || !rhs.head) return false;
 				return lhs.head < rhs.head;
@@ -171,22 +171,22 @@ namespace ManCong
 			// if freed.head > allocated.tail, update mIndex to freed.head
 			if (min_free->head > max_allo->tail)
 			{
-				mIndex = static_cast<char*>(min_free->head) - mPtr;
+				m_Index = static_cast<char*>(min_free->head) - m_Ptr;
 				// fill mFreed with default Bookmark value
-				std::fill(mFreed, (mFreed + BOOKMARK_SIZE), Bookmark()); return;
+				std::fill(m_Freed, (m_Freed + BOOKMARK_SIZE), Bookmark()); return;
 			}
 			// if mIndex - allocated.tail > 1, move mIndex to 1 after allocated.tail
-			u64 const indexFromTail = static_cast<char*>(max_allo->tail) - mPtr;
-			if (1 < mIndex - indexFromTail)
+			u64 const indexFromTail = static_cast<char*>(max_allo->tail) - m_Ptr;
+			if (1 < m_Index - indexFromTail)
 			{
-				mIndex = indexFromTail + 1;
+				m_Index = indexFromTail + 1;
 				// Set all bookmakrs after mIndex to default values
-				void* ptr = mPtr + mIndex;
-				auto it = std::find_if(mFreed, (mFreed + BOOKMARK_SIZE), [=](auto const& cmp)
+				void* ptr = m_Ptr + m_Index;
+				auto it = std::find_if(m_Freed, (m_Freed + BOOKMARK_SIZE), [=](auto const& cmp)
 				{
 					return cmp.head == ptr;
 				});
-				std::fill(it, (mFreed + BOOKMARK_SIZE), Bookmark()); return;
+				std::fill(it, (m_Freed + BOOKMARK_SIZE), Bookmark()); return;
 			}
 		}
 
@@ -213,10 +213,10 @@ namespace ManCong
 		***********************************************************************************/
 		void DynamicMemory::Reset(void)
 		{
-			std::fill(mPtr, (mPtr + MEMORY_BUFFER), '\0');
-			std::fill(mAllocated, (mAllocated + BOOKMARK_SIZE), Bookmark());
-			std::fill(mFreed, (mFreed + BOOKMARK_SIZE), Bookmark());
-			mIndex = 0;
+			std::fill(m_Ptr, (m_Ptr + MEMORY_BUFFER), '\0');
+			std::fill(m_Allocated, (m_Allocated + BOOKMARK_SIZE), Bookmark());
+			std::fill(m_Freed, (m_Freed + BOOKMARK_SIZE), Bookmark());
+			m_Index = 0;
 		}
 
 		/*!*********************************************************************************
@@ -225,7 +225,22 @@ namespace ManCong
 		***********************************************************************************/
 		void DynamicMemory::FreeAll(void)
 		{
-			delete[] mPtr;
+			delete[] m_Ptr;
+		}
+
+		/*********************************************************************************
+										INSTANCE MEMORY
+		*********************************************************************************/
+		u64 InstanceMemory::m_Index = 0;
+		char* const InstanceMemory::m_Ptr = new char[INSTANCE_MEMORY_BUFFER] {};
+
+		/*!*********************************************************************************
+			\brief
+				Deallocate the memory allocated inside the heap for mPtr
+		***********************************************************************************/
+		void InstanceMemory::FreeAll(void)
+		{
+			delete[] m_Ptr;
 		}
 
 		/*!*********************************************************************************
@@ -241,12 +256,13 @@ namespace ManCong
 
 		/*!*********************************************************************************
 			\brief
-				Helper function to deallocate the memory for both StaticMemory and DynamicMemory
+				Helper function to deallocate the memory for StaticMemory, DynamicMemory and InstanceMemory
 		***********************************************************************************/
 		void FreeAll(void)
 		{
 			StaticMemory::FreeAll();
 			DynamicMemory::FreeAll();
+			InstanceMemory::FreeAll();
 		}
 	}
 }

@@ -8,7 +8,9 @@ namespace ManCong
 		std::shared_ptr<T> SystemManager::RegisterSystem(void)
 		{
 			const char* typeName = typeid(T).name();
+#ifdef _DEBUG
 			assert(mSystems.find(typeName) == mSystems.end() && "Registering system more than once.");
+#endif	
 			// Create a pointer to the system and return it so it can be used externally
 			auto system = std::make_shared<T>();
 			mSystems.insert({ typeName, system });
@@ -19,7 +21,9 @@ namespace ManCong
 		void SystemManager::SetSignature(Signature signature)
 		{
 			const char* typeName = typeid(T).name();
+#ifdef _DEBUG
 			assert(mSystems.find(typeName) != mSystems.end() && "System used before registered.");
+#endif	
 			// Set the signature for this system
 			mSignatures.insert({ typeName, signature });
 		}

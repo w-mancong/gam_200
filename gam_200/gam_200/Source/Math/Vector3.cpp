@@ -4,14 +4,14 @@ namespace ManCong
 {
 	namespace Math
 	{
-		Vector3 const Vector3::right = Vector3(1.0f, 0.0f, 0.0f);
-		Vector3 const Vector3::left = Vector3(-1.0f, 0.0f, 0.0f);
-		Vector3 const Vector3::up = Vector3(0.0f, 1.0f, 0.0f);
-		Vector3 const Vector3::down = Vector3(0.0f, -1.0f, 0.0f);
-		Vector3 const Vector3::forward = Vector3(0.0f, 0.0f, 1.0f);
-		Vector3 const Vector3::back = Vector3(0.0f, 0.0f, -1.0f);
-		Vector3 const Vector3::one = Vector3(1.0f, 1.0f, 1.0f);
-		Vector3 const Vector3::zero = Vector3(0.0f, 0.0f, 0.0f);
+		Vector3 const Vector3::right			= Vector3(1.0f, 0.0f, 0.0f);
+		Vector3 const Vector3::left				= Vector3(-1.0f, 0.0f, 0.0f);
+		Vector3 const Vector3::up				= Vector3(0.0f, 1.0f, 0.0f);
+		Vector3 const Vector3::down				= Vector3(0.0f, -1.0f, 0.0f);
+		Vector3 const Vector3::forward			= Vector3(0.0f, 0.0f, 1.0f);
+		Vector3 const Vector3::back				= Vector3(0.0f, 0.0f, -1.0f);
+		Vector3 const Vector3::one				= Vector3(1.0f, 1.0f, 1.0f);
+		Vector3 const Vector3::zero				= Vector3(0.0f, 0.0f, 0.0f);
 		Vector3 const Vector3::positiveInfinity = Vector3(std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
 		Vector3 const Vector3::negativeInfinity = Vector3(-std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
 

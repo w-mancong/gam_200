@@ -15,7 +15,7 @@ namespace ManCong
 {
 	namespace Memory
 	{
-		u64 const MEMORY_BUFFER = 2'097'152;
+		u64 constexpr MEMORY_BUFFER = 2'097'152, INSTANCE_MEMORY_BUFFER = 1'048'576;
 		struct Bookmark
 		{
 			void *head{ nullptr }, *tail{ nullptr };
@@ -38,10 +38,12 @@ namespace ManCong
 			template <typename T>
 			static T* New(u64 size = 1)
 			{
-				Bookmark* bm = (mBookmarks + mBookmarkIndex++); u64 const index = mIndex; mIndex += sizeof(T) * size;
+				Bookmark* bm = (m_Bookmarks + m_BookmarkIndex++); u64 const index = m_Index; m_Index += sizeof(T) * size;
+#ifdef _DEBUG
 				assert(index < MEMORY_BUFFER && "Size of memory buffer is too small. Change the size of MEMORY_BUFFER");
-				bm->head = mPtr + index, bm->tail = mPtr + mIndex - 1;
-				return new (&*(mPtr + index)) T();
+#endif
+				bm->head = m_Ptr + index, bm->tail = m_Ptr + m_Index - 1;
+				return new (&*(m_Ptr + index)) T();
 			}
 
 			/*!*********************************************************************************
@@ -74,9 +76,9 @@ namespace ManCong
 			friend void Reset(void);
 			friend void FreeAll(void);
 
-			static char* const mPtr;
-			static u64 const BOOKMARK_SIZE = 100; static u64 mIndex, mBookmarkIndex;	// Storing the index of the last element
-			static Bookmark mBookmarks[BOOKMARK_SIZE];
+			static char* const m_Ptr;
+			static u64 constexpr BOOKMARK_SIZE = 100; static u64 m_Index, m_BookmarkIndex;	// Storing the index of the last element
+			static Bookmark m_Bookmarks[BOOKMARK_SIZE];
 		};
 
 		/*********************************************************************************
@@ -97,18 +99,20 @@ namespace ManCong
 			static T* New(u64 size = 1)
 			{
 				Bookmark *free_bm = nullptr, *allo_bm = nullptr; u64 const SIZE = sizeof(T) * size; u64 bytesBetweenBookmark{ 0 };
-				u64 index = GetIndex(mFreed, free_bm, bytesBetweenBookmark, SIZE);	// Get index of where mAllocated head shld be pointing to
+				u64 index = GetIndex(m_Freed, free_bm, bytesBetweenBookmark, SIZE);	// Get index of where mAllocated head shld be pointing to
+#ifdef _DEBUG
 				assert(index < MEMORY_BUFFER && "Size of memory buffer is too small. Change the size of MEMORY_BUFFER");
-				FindBookmark(mAllocated, allo_bm);
+#endif
+				FindBookmark(m_Allocated, allo_bm);
 				if (bytesBetweenBookmark)					// there is enough space in between the memory stream
 				{
-					free_bm->head = mPtr + index + SIZE;	// update the pointer where mFreed head is pointing
+					free_bm->head = m_Ptr + index + SIZE;	// update the pointer where mFreed head is pointing
 					if (SIZE == bytesBetweenBookmark)
 						free_bm->head = nullptr, free_bm->tail = nullptr;	// There is enough space in between the memory stream
 				}
 				// update mAllocated's bookmark, then sort mAllocated bookmarks
-				allo_bm->head = mPtr + index, allo_bm->tail = mPtr + index + SIZE - 1; Sort(mAllocated);
-				return new (&*(mPtr + index)) T();
+				allo_bm->head = m_Ptr + index, allo_bm->tail = m_Ptr + index + SIZE - 1; Sort(m_Allocated);
+				return new (&*(m_Ptr + index)) T();
 			}
 
 			/*!*********************************************************************************
@@ -123,7 +127,7 @@ namespace ManCong
 			static void Delete(T*& ptr)
 			{
 				Bookmark *free_bm = nullptr, *allo_bm = nullptr;
-				FindBookmark(mFreed, free_bm);		 // Find a bookmark in freed that is not used
+				FindBookmark(m_Freed, free_bm);		 // Find a bookmark in freed that is not used
 				FindAllocatedBookmark(allo_bm, ptr); // Find the bookmark containing ptr
 				// Calculate the total elements allocated for ptr
 				u64 const TOTAL_ELEMENTS = (static_cast<char*>(allo_bm->tail) - static_cast<char*>(allo_bm->head) + 1) / sizeof(T);
@@ -152,9 +156,40 @@ namespace ManCong
 			friend void Reset(void);
 			friend void FreeAll(void);
 
-			static char* const mPtr;
-			static u64 const BOOKMARK_SIZE = 100; static u64 mIndex;
-			static Bookmark mAllocated[BOOKMARK_SIZE], mFreed[BOOKMARK_SIZE];
+			static char* const m_Ptr;
+			static u64 constexpr BOOKMARK_SIZE = 100; static u64 m_Index;
+			static Bookmark m_Allocated[BOOKMARK_SIZE], m_Freed[BOOKMARK_SIZE];
+		};
+
+		/*********************************************************************************
+										INSTANCE MEMORY
+		*********************************************************************************/
+		/*!*********************************************************************************
+		\brief
+			InstanceMemory class use to instantiate memory for Singleton class
+		***********************************************************************************/
+		class InstanceMemory
+		{
+		public:
+			template <typename T>
+			static T* New(void)
+			{
+				u64 const index = m_Index; m_Index = m_Index += sizeof(T);
+#ifdef _DEBUG
+				assert(index < MEMORY_BUFFER && "Size of memory buffer is too small. Change the size of MEMORY_BUFFER");
+#endif
+				return new (&*(m_Ptr + index)) T();
+			}
+
+		private:
+			InstanceMemory(void) = default;
+			~InstanceMemory(void) = default;
+
+			static void FreeAll(void);
+
+			friend void FreeAll(void);
+
+			static char* const m_Ptr; static u64 m_Index;
 		};
 
 		void Reset(void);

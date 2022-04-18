@@ -6,10 +6,10 @@ namespace ManCong
 {
 	namespace ECS
 	{
-		class Coordinator
+		class Coordinator : private Templates::Singleton<Coordinator>
 		{
 		public:
-			static Coordinator* Get(void);
+			using Singleton<Coordinator>::GetInstance;
 
 			void Init(void);
 			/*********************************************************************************
@@ -49,8 +49,8 @@ namespace ManCong
 			Coordinator(void) = default;
 			~Coordinator(void) = default;
 
-			static void Exit(void);
-			friend class Memory::StaticMemory;
+			friend class Templates::Singleton<Coordinator>;
+			friend class Memory::InstanceMemory;
 
 			std::unique_ptr<ComponentManager> mComponentManager;
 			std::unique_ptr<EntityManager> mEntityManager;

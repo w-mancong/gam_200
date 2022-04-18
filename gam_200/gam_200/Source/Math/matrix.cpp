@@ -2,7 +2,7 @@
 
 namespace ManCong
 {
-    namespace Exception
+    namespace Exceptions
     {
         /******************************************************************************************************************
                                            Invalid Deimensions
@@ -67,7 +67,7 @@ namespace ManCong
         matrix::matrix(size_type R, size_type C) : mtx{ nullptr }, R{ R }, C{ C }
         {
             if (0 > R || 0 > C)
-                throw Exception::InvalidDimension(R, C);
+                throw Exceptions::InvalidDimension(R, C);
             mtx = Memory::DynamicMemory::New<value_type>(R * C);
             if (R == C)
                 Indentity();
@@ -167,7 +167,7 @@ namespace ManCong
         matrix& matrix::operator+=(matrix const& rhs)
         {
             if (R != rhs.R || C != rhs.C)
-                throw Exception::IncompatibleMatrices("Addition", R, C, rhs.R, rhs.C);
+                throw Exceptions::IncompatibleMatrices("Addition", R, C, rhs.R, rhs.C);
             for (size_type i = 0; i < R; ++i)
             {
                 for (size_type j = 0; j < C; ++j)
@@ -179,7 +179,7 @@ namespace ManCong
         matrix& matrix::operator-=(matrix const& rhs)
         {
             if (R != rhs.R || C != rhs.C)
-                throw Exception::IncompatibleMatrices("Subtraction", R, C, rhs.R, rhs.C);
+                throw Exceptions::IncompatibleMatrices("Subtraction", R, C, rhs.R, rhs.C);
             for (size_type i = 0; i < R; ++i)
             {
                 for (size_type j = 0; j < C; ++j)
@@ -228,7 +228,7 @@ namespace ManCong
         matrix& matrix::Inverse(void)
         {
             if (R != C)
-                throw Exception::InvalidDimension(R, C, "an inverse matrix. Must be a square matrix!");
+                throw Exceptions::InvalidDimension(R, C, "an inverse matrix. Must be a square matrix!");
             value_type det = Determinant(*this, R), flag = static_cast<value_type>(1);
             if (!det)
                 return *this;
@@ -250,7 +250,7 @@ namespace ManCong
         void matrix::Indentity(void)
         {
             if (R != C)
-                throw Exception::InvalidDimension(R, C, "an indentity matrix. Must be a square matrix!");
+                throw Exceptions::InvalidDimension(R, C, "an indentity matrix. Must be a square matrix!");
             for (size_type i = 0; i < R; ++i)
                 (*this)(i, i) = static_cast<value_type>(1);
         }
@@ -258,7 +258,7 @@ namespace ManCong
         typename matrix::value_type matrix::Determinant(void) const
         {
             if (R != C)
-                throw Exception::InvalidDimension(R, C, "finding determinant. Must be a square matrix!");
+                throw Exceptions::InvalidDimension(R, C, "finding determinant. Must be a square matrix!");
             return Determinant(*this, R);
         }
 
@@ -297,7 +297,7 @@ namespace ManCong
         matrix::const_reference matrix::cget(size_type row, size_type col) const
         {
             if (0 > row || R <= row || 0 > col || C <= col)
-                throw Exception::IndexOutOfBounds(row, R, col, C);
+                throw Exceptions::IndexOutOfBounds(row, R, col, C);
             return *(mtx + row * C + col);
         }
 
@@ -328,7 +328,7 @@ namespace ManCong
             using size_type = typename matrix::size_type;
             const size_type l_rows = lhs.Rows(), l_cols = lhs.Cols(), r_rows = rhs.Rows(), r_cols = rhs.Cols();
             if (l_cols != r_rows)
-                throw Exception::IncompatibleMatrices("Multiplication", l_rows, l_cols, r_rows, r_cols);
+                throw Exceptions::IncompatibleMatrices("Multiplication", l_rows, l_cols, r_rows, r_cols);
             matrix tmp(l_rows, r_cols);
             for (size_type i = 0; i < l_rows; ++i)
             {
