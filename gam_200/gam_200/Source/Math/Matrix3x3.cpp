@@ -4,16 +4,12 @@ namespace ManCong
 {
 	namespace Math
 	{
-		Matrix3x3::Matrix3x3(void) : matrix{ R, C } {}
-
-		Matrix3x3::Matrix3x3(Vector3 f, Vector3 s, Vector3 t) : matrix{ R, C }
+		Matrix3x3::Matrix3x3(Vector3 r1, Vector3 r2, Vector3 r3) : matrix{ R, C }
 		{
-			(*this)(0, 0) = f.x; (*this)(0, 1) = f.y; (*this)(0, 2) = f.z;
-			(*this)(1, 0) = s.x; (*this)(1, 1) = s.y; (*this)(1, 2) = s.z;
-			(*this)(2, 0) = t.x; (*this)(2, 1) = t.y; (*this)(2, 2) = t.z;
+			(*this)(0, 0) = r1.x; (*this)(0, 1) = r1.y; (*this)(0, 2) = r1.z;
+			(*this)(1, 0) = r2.x; (*this)(1, 1) = r2.y; (*this)(1, 2) = r2.z;
+			(*this)(2, 0) = r3.x; (*this)(2, 1) = r3.y; (*this)(2, 2) = r3.z;
 		}
-
-		Matrix3x3::~Matrix3x3(void) {}
 
 		Matrix3x3& Matrix3x3::operator+=(Matrix3x3 const& rhs)
 		{
@@ -39,71 +35,38 @@ namespace ManCong
 			return *this;
 		}
 
-		Matrix3x3& Matrix3x3::Translate(float x, float y)
+		Matrix3x3 Matrix3x3::Translate(f32 x, f32 y)
 		{
-			return *this = std::move(Mtx3x3Translate(x, y));
+			Matrix3x3 res(Vector3(0.0f, 0.0f, x), Vector3(0.0f, 0.0f, y));
+			return res;
 		}
 
-		Matrix3x3& Matrix3x3::Translate(Vector2 const& rhs)
+		Matrix3x3 Matrix3x3::Translate(Vector2 const& rhs)
 		{
-			return *this = std::move(Mtx3x3Translate(rhs.x, rhs.y));
+			return Translate(rhs.x, rhs.y);
 		}
 
-		Matrix3x3& Matrix3x3::Scale(float x, float y)
+		Matrix3x3 Matrix3x3::Scale(f32 x, f32 y)
 		{
-			return *this = std::move(Mtx3x3Scale(x, y));
+			Matrix3x3 res(Vector3(x, 0.0f, 0.0f), Vector3(0.0f, y, 0.0f));
+			return res;
 		}
 
-		Matrix3x3& Matrix3x3::Scale(Vector2 const& rhs)
+		Matrix3x3 Matrix3x3::Scale(Vector2 const& rhs)
 		{
-			return *this = std::move(Mtx3x3Scale(rhs.x, rhs.y));
+			return Scale(rhs.x, rhs.y);
 		}
 
-		Matrix3x3& Matrix3x3::RotationRad(float rad)
-		{
-			return *this = std::move(Mtx3x3RotRad(rad));
-		}
-
-		Matrix3x3& Matrix3x3::RotationDeg(float deg)
-		{
-			return *this = std::move(Mtx3x3RotDeg(deg));
-		}
-
-		Matrix3x3 Mtx3x3Translate(float x, float y)
-		{
-			Matrix3x3 mtx(Vector3(0.0f, 0.0f, x), Vector3(0.0f, 0.0f, y));
-			return mtx;
-		}
-
-		Matrix3x3 Mtx3x3Translate(Vector2 const& rhs)
-		{
-			return Mtx3x3Translate(rhs.x, rhs.y);
-		}
-
-		Matrix3x3 Mtx3x3Scale(float x, float y)
-		{
-			Matrix3x3 mtx(Vector3(x, 0.0f, 0.0f), Vector3(0.0f, y, 0.0f));
-			return mtx;
-		}
-
-		Matrix3x3 Mtx3x3Scale(Vector2 const& rhs)
-		{
-			return Mtx3x3Scale(rhs.x, rhs.y);
-		}
-
-		Matrix3x3 Mtx3x3RotRad(float rad)
+		Matrix3x3 Matrix3x3::Rotation(f32 deg)
 		{
 			using value_type = typename Matrix3x3::value_type;
+			// converting degree to rad
+			value_type const rad = static_cast<value_type>(DegreeToRadian(deg));
+			// calculation cos and sin
 			value_type const cos = static_cast<value_type>(std::cosf(rad)), sin = static_cast<value_type>(std::sinf(rad));
-			Matrix3x3 mtx(Vector3(cos, -sin, 0.0f), Vector3(sin, cos, 0.0f));
-			return mtx;
-		}
-
-		Matrix3x3 Mtx3x3RotDeg(float deg)
-		{
-			using value_type = typename Matrix3x3::value_type;
-			value_type const rad = static_cast<value_type>(deg) * static_cast<value_type>(M_PI) / static_cast<value_type>(180.0);
-			return Mtx3x3RotRad(rad);
+			// setting matrix accordingly
+			Matrix3x3 res(Vector3(cos, -sin, 0.0f), Vector3(sin, cos, 0.0f));
+			return res;
 		}
 
 		Matrix3x3 operator+(Matrix3x3 const& lhs, Matrix3x3 const& rhs)
@@ -138,7 +101,16 @@ namespace ManCong
 
 		Vector2 operator*(Matrix3x3 const& lhs, Vector2 const& rhs)
 		{
-			matrix tmp{ lhs }; tmp *= rhs;
+			matrix tmp{ lhs }; 			
+			try
+			{
+				tmp *= rhs;
+			}
+			catch (std::exception const& e)
+			{
+				std::cerr << e.what() << std::endl;
+				return Vector2();
+			}
 			return Vector2(tmp(0, 0), tmp(1, 0));
 		}
 	}

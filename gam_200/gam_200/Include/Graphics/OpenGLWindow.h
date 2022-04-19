@@ -11,7 +11,7 @@ namespace ManCong
 		public:
 			static void InitGLFWWindow(void);
 			static void FullScreen(bool fullScreen);
-			static void ResizeWindow(GLFWwindow* window, int width, int height);
+			static void ResizeWindow(GLFWwindow* _window, int width, int height);
 
 			static GLFWwindow* GetWindow(void);
 

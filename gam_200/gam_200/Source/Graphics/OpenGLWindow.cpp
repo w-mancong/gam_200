@@ -51,9 +51,9 @@ namespace ManCong
 			glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : NULL, 0, 0, w, h, GLFW_DONT_CARE);
 		}
 
-		void OpenGLWindow::ResizeWindow(GLFWwindow* window, int width, int height)
+		void OpenGLWindow::ResizeWindow(GLFWwindow* _window, int _width, int _height)
 		{
-			glViewport(0, 0, width, height);
+			glViewport(0, 0, _width, _height);
 		}
 
 		GLFWwindow* OpenGLWindow::GetWindow(void)

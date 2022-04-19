@@ -4,5 +4,6 @@
 #include "Graphics/OpenGLWindow.h"
 #include "Graphics/Color.h"
 #include "Graphics/Mesh.h"
+#include "Graphics/Image.h"
 
 #endif

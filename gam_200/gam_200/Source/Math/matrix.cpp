@@ -136,7 +136,7 @@ namespace ManCong
             return *this;
         }
 
-        matrix::reference matrix::operator()(size_type row, size_type col)
+        typename matrix::reference matrix::operator()(size_type row, size_type col)
         {
             return const_cast<reference>(cget(row, col));
         }
@@ -262,6 +262,11 @@ namespace ManCong
             return Determinant(*this, R);
         }
 
+        typename matrix::const_pointer matrix::value_ptr(void) const
+        {
+            return mtx;
+        }
+
         typename matrix::value_type matrix::Determinant(matrix const& m, size_type n) const
         {
             if (n == 1)
@@ -294,7 +299,7 @@ namespace ManCong
             }
         }
 
-        matrix::const_reference matrix::cget(size_type row, size_type col) const
+        typename matrix::const_reference matrix::cget(size_type row, size_type col) const
         {
             if (0 > row || R <= row || 0 > col || C <= col)
                 throw Exceptions::IndexOutOfBounds(row, R, col, C);

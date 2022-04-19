@@ -15,7 +15,7 @@ namespace ManCong
 {
 	namespace Memory
 	{
-		u64 constexpr MEMORY_BUFFER = 2'097'152, INSTANCE_MEMORY_BUFFER = 1'048'576;
+		u64 constexpr MEMORY_BUFFER = 2'097'152, INSTANCE_MEMORY_BUFFER = 524'228;
 		struct Bookmark
 		{
 			void *head{ nullptr }, *tail{ nullptr };
@@ -166,11 +166,18 @@ namespace ManCong
 		*********************************************************************************/
 		/*!*********************************************************************************
 		\brief
-			InstanceMemory class use to instantiate memory for Singleton class
+			InstanceMemory class use to instantiate memory for Singleton and derieved classes
 		***********************************************************************************/
 		class InstanceMemory
 		{
 		public:
+		/*!*********************************************************************************
+			\brief
+				Allocate memory address from a fixed memory buffer of a specified size
+				Use this class to instantiate any memory for any Singleton classes
+			\return
+				The starting address pointing to the first element
+		***********************************************************************************/
 			template <typename T>
 			static T* New(void)
 			{

@@ -3,11 +3,35 @@
 
 namespace
 {
+	f32 mixValue = 0.2f, flip = 1.0f;
+	f32 constexpr speed = 0.5f;
+
 	void ProcessInput()
 	{
 		GLFWwindow* window = ManCong::Graphics::OpenGLWindow::GetWindow();
 		if (Input::KeyTriggered(KeyCode::Escape))
 			glfwSetWindowShouldClose(window, true);
+
+		if (Input::KeyDown(KeyCode::Up))
+		{
+			mixValue += speed * Time::dt; // change this value accordingly (might be too slow or too fast based on system hardware)
+			if (mixValue >= 1.0f)
+				mixValue = 1.0f;
+		}
+		if (Input::KeyDown(KeyCode::Down))
+		{
+			mixValue -= speed * Time::dt; // change this value accordingly (might be too slow or too fast based on system hardware)
+			if (mixValue <= 0.0f)
+				mixValue = 0.0f;
+		}
+		if (Input::KeyDown(KeyCode::Left))
+		{
+			flip = -1.0f;
+		}
+		if (Input::KeyDown(KeyCode::Right))
+		{
+			flip = 1.0f;
+		}
 	}
 }
 
@@ -16,6 +40,7 @@ namespace ManCong
 	namespace Engine
 	{		
 		Graphics::Mesh m1, m2;
+		Graphics::Image img;
 
 		u32 triIndex = 0;
 		void ChangeTriangle()
@@ -57,16 +82,19 @@ namespace ManCong
 		void Application::Init(void)
 		{
 			OpenGLWindow::InitGLFWWindow();
+			img = MeshBuilder::GetInstance()->MakeImage("Assets/Images/container.jpg");
+			Time::Init();
 		}
 
 		void Application::Update(void)
 		{
-			s32 const mode[] = { GL_LINE, GL_FILL }; u64 index{ 0 };
+			s32 const mode[] = { GL_FILL, GL_LINE }; u64 index{ 0 };
 			bool fullScreen = false;
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::GetWindow()))
 			{
 				// Input
+				Time::Update();
 				ProcessInput();
 				ChangeTriangle();
 
@@ -85,15 +113,23 @@ namespace ManCong
 				glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 
-				m1.shader->use();
-				glBindVertexArray(m1.vao);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m1.ebo);
-				glDrawElements(GL_TRIANGLES, m1.indicesSize, GL_UNSIGNED_INT, 0);
+				for (u32 i = 0; i < 2; ++i)
+				{
+					glActiveTexture(GL_TEXTURE0 + i);
+					glBindTexture(GL_TEXTURE_2D, img.texture[i]);
+				}
+				img.shader->Set("mixValue", mixValue);
+				img.shader->Set("flip", flip);
 
-				m2.shader->use();
-				glBindVertexArray(m2.vao);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m2.ebo);
-				glDrawElements(GL_TRIANGLES, m2.indicesSize, GL_UNSIGNED_INT, 0);
+				img.shader->use();
+				glBindVertexArray(img.vao);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, img.ebo);
+				glDrawElements(GL_TRIANGLES, img.indicesSize, GL_UNSIGNED_INT, 0);
+
+				//m2.shader->use();
+				//glBindVertexArray(m2.vao);
+				//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m2.ebo);
+				//glDrawElements(GL_TRIANGLES, m2.indicesSize, GL_UNSIGNED_INT, 0);
 
 				// check and call events and swap the buffers
 				glfwPollEvents();

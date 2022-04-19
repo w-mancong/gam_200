@@ -87,6 +87,12 @@
     <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Math\Vector4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Matrix4x4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -210,6 +216,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Common Header\TemplateClasses.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Graphics\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Graphics\Image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Math\Vector4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Math\Matrix4x4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

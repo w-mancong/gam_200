@@ -10,18 +10,25 @@ namespace ManCong
 		Vector2 const Vector2::down				= Vector2(0.0f, -1.0f);
 		Vector2 const Vector2::one				= Vector2(1.0f, 1.0f);
 		Vector2 const Vector2::zero				= Vector2(0.0f, 0.0f);
-		Vector2 const Vector2::positiveInfinity = Vector2(std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
-		Vector2 const Vector2::negativeInfinity = Vector2(-std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
+		Vector2 const Vector2::positiveInfinity = Vector2(std::numeric_limits<f32>::infinity(), std::numeric_limits<f32>::infinity());
+		Vector2 const Vector2::negativeInfinity = Vector2(-std::numeric_limits<f32>::infinity(), -std::numeric_limits<f32>::infinity());
 
 		Vector2::Vector2(void) : x{ 0.0f }, y{ 0.0f } {}
-		Vector2::Vector2(float x, float y) : x{ x }, y{ y } {}
+		Vector2::Vector2(f32 x, f32 y) : x{ x }, y{ y } {}
 		Vector2::Vector2(Vector3 const& rhs) : x{ rhs.x }, y{ rhs.y } {}
-		Vector2::~Vector2(void) {}
+		Vector2::Vector2(Vector4 const& rhs) : x{ rhs.x }, y{ rhs.y } {}
 		
 		Vector2& Vector2::operator=(Vector3 const& rhs)
 		{
 			Vector2 tmp{ rhs };
-			std::swap(*this, tmp);
+			swap(tmp);
+			return *this;
+		}
+
+		Vector2& Vector2::operator=(Vector4 const& rhs)
+		{
+			Vector2 tmp{ rhs };
+			swap(tmp);
 			return *this;
 		}
 
@@ -40,13 +47,13 @@ namespace ManCong
 			return *this;
 		}
 
-		Vector2& Vector2::operator*=(float rhs)
+		Vector2& Vector2::operator*=(f32 rhs)
 		{
 			x *= rhs, y *= rhs;
 			return *this;
 		}
 
-		Vector2& Vector2::operator/=(float rhs)
+		Vector2& Vector2::operator/=(f32 rhs)
 		{
 			x /= rhs, y /= rhs;
 			return *this;
@@ -57,24 +64,24 @@ namespace ManCong
 			return Vector2(-x, -y);
 		}
 
-		float Vector2::Dot(Vector2 const& rhs) const
+		f32 Vector2::Dot(Vector2 const& rhs) const
 		{
 			return x * rhs.x + y * rhs.y;
 		}
 
-		float Vector2::Magnitude(void) const
+		f32 Vector2::Magnitude(void) const
 		{
 			return sqrtf(MagnitudeSq());
 		}
 
-		float Vector2::MagnitudeSq(void) const
+		f32 Vector2::MagnitudeSq(void) const
 		{
 			return x * x + y * y;
 		}
 
 		void Vector2::Normalized(void)
 		{
-			float const inv_len = Q_rsqrt(MagnitudeSq());
+			f32 const inv_len = Q_rsqrt(MagnitudeSq());
 			x *= inv_len; y *= inv_len;
 		}
 
@@ -108,34 +115,39 @@ namespace ManCong
 			return Utility::IsEqual(x, 0.0f) && Utility::IsEqual(y, 0.0f);
 		}
 
+		void Vector2::swap(Vector2& rhs)
+		{
+			std::swap(x, rhs.x);
+			std::swap(y, rhs.y);
+		}
 
 		/*********************************************************************************
 										STATIC FUNCTIONS
 		*********************************************************************************/
-		float Vector2::Angle(Vector2 const& from, Vector2 const& to)
+		f32 Vector2::Angle(Vector2 const& from, Vector2 const& to)
 		{
-			return std::acosf(Vector2::Dot(from, to) / (from.Magnitude() * to.Magnitude())) * 180.0f / static_cast<float>(M_PI);
+			return std::acosf(Vector2::Dot(from, to) / (from.Magnitude() * to.Magnitude())) * 180.0f / static_cast<f32>(M_PI);
 		}
 
-		Vector2 Vector2::ClampMagnitude(Vector2 const& lhs, float maxLength)
+		Vector2 Vector2::ClampMagnitude(Vector2 const& lhs, f32 maxLength)
 		{
 			Vector2 tmp{ lhs };
 			return tmp.Normalize() * maxLength;
 		}
 
-		float Vector2::Distance(Vector2 const& lhs, Vector2 const& rhs)
+		f32 Vector2::Distance(Vector2 const& lhs, Vector2 const& rhs)
 		{
 			Vector2 tmp{ lhs - rhs };
 			return tmp.Magnitude();
 		}
 
-		float Vector2::DistanceSq(Vector2 const& lhs, Vector2 const& rhs)
+		f32 Vector2::DistanceSq(Vector2 const& lhs, Vector2 const& rhs)
 		{
 			Vector2 tmp{ lhs - rhs };
 			return tmp.MagnitudeSq();
 		}
 
-		float Vector2::Dot(Vector2 const& lhs, Vector2 const& rhs)
+		f32 Vector2::Dot(Vector2 const& lhs, Vector2 const& rhs)
 		{
 			return lhs.x * rhs.x + lhs.y * rhs.y;
 		}
@@ -177,19 +189,19 @@ namespace ManCong
 			return res;
 		}
 
-		Vector2 operator*(Vector2 const& lhs, float rhs)
+		Vector2 operator*(Vector2 const& lhs, f32 rhs)
 		{
 			Vector2 res{ lhs }; res *= rhs;
 			return res;
 		}
 
-		Vector2 operator*(float lhs, Vector2 const& rhs)
+		Vector2 operator*(f32 lhs, Vector2 const& rhs)
 		{
 			Vector2 res{ rhs }; res *= lhs;
 			return res;
 		}
 
-		Vector2 operator/(Vector2 const& lhs, float rhs)
+		Vector2 operator/(Vector2 const& lhs, f32 rhs)
 		{
 			Vector2 res{ lhs }; res /= rhs;
 			return res;

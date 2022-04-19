@@ -13,6 +13,8 @@ namespace ManCong
 		public:
 			using Singleton<MeshBuilder>::GetInstance;
 
+			Image MakeImage(std::string const& filePath);
+
 		private:
 			MeshBuilder(void);
 			~MeshBuilder(void) = default;

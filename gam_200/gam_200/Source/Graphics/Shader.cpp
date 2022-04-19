@@ -85,19 +85,78 @@ namespace ManCong
 		}
 
 		// Utility uniform functions
-		void Shader::Set(const char* name, bool value) const
+		/*********************************************************************************
+										BOOLEAN
+		*********************************************************************************/
+		void Shader::Set(const char* name, bool v1) const
 		{
-			glUniform1i(glGetUniformLocation(id, name), static_cast<int>(value));
+			glUniform1i(glGetUniformLocation(id, name), static_cast<int>(v1));
 		}
 
-		void Shader::Set(const char* name, int value) const
+		void Shader::Set(const char* name, bool v1, bool v2) const
 		{
-			glUniform1i(glGetUniformLocation(id, name), value);
+			glUniform2i(glGetUniformLocation(id, name), static_cast<int>(v1), static_cast<int>(v2));
 		}
 
-		void Shader::Set(const char* name, float value) const
+		void Shader::Set(const char* name, bool v1, bool v2, bool v3) const
 		{
-			glUniform1f(glGetUniformLocation(id, name), value);
+			glUniform3i(glGetUniformLocation(id, name), static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3));
+		}
+
+		void Shader::Set(const char* name, bool v1, bool v2, bool v3, bool v4) const
+		{
+			glUniform4i(glGetUniformLocation(id, name), static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3), static_cast<int>(v4));
+		}
+
+		/*********************************************************************************
+											INTEGER
+		*********************************************************************************/
+		void Shader::Set(const char* name, int v1) const
+		{
+			glUniform1i(glGetUniformLocation(id, name), v1);
+		}
+
+		void Shader::Set(const char* name, int v1, int v2) const
+		{
+			glUniform2i(glGetUniformLocation(id, name), v1, v2);
+		}
+
+		void Shader::Set(const char* name, int v1, int v2, int v3) const
+		{
+			glUniform3i(glGetUniformLocation(id, name), v1, v2, v3);
+		}
+
+		void Shader::Set(const char* name, int v1, int v2, int v3, int v4) const
+		{
+			glUniform4i(glGetUniformLocation(id, name), v1, v2, v3, v4);
+		}
+
+		/*********************************************************************************
+											FLOAT
+		*********************************************************************************/
+		void Shader::Set(const char* name, float v1) const
+		{
+			glUniform1f(glGetUniformLocation(id, name), v1);
+		}
+
+		void Shader::Set(const char* name, float v1, float v2) const
+		{
+			glUniform2f(glGetUniformLocation(id, name), v1, v2);
+		}
+
+		void Shader::Set(const char* name, float v1, float v2, float v3) const
+		{
+			glUniform3f(glGetUniformLocation(id, name), v1, v2, v3);
+		}
+
+		void Shader::Set(const char* name, float v1, float v2, float v3, float v4) const
+		{
+			glUniform4f(glGetUniformLocation(id, name), v1, v2, v3, v4);
+		}
+
+		void Shader::Set(const char* name, Math::Matrix4x4 const& mtx) const
+		{
+			glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, mtx.value_ptr());
 		}
 	}
 }

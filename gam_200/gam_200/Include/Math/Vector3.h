@@ -2,35 +2,41 @@
 #define VECTOR3_H
 
 #include <iostream>
+#include "Utility/Type.h"
 namespace ManCong
 {
 	namespace Math
 	{
-		class Vector2;
+		class Vector2; class Vector4;
 		class Vector3
 		{
 		public:
+			f32 x, y, z;
+		public:
 			Vector3(void);
-			Vector3(float x, float y, float z);
+			Vector3(f32 x, f32 y, f32 z);
 			Vector3(Vector2 const& rhs);
-			~Vector3(void);
+			Vector3(Vector4 const& rhs);
+			~Vector3(void) = default;
 
 			Vector3& operator=(Vector2 const& rhs);
+			Vector3& operator=(Vector4 const& rhs);
 
 			/*********************************************************************************
 												MATH ARITHMETIC
 			*********************************************************************************/
 			Vector3& operator+=(Vector3 const& rhs);
 			Vector3& operator-=(Vector3 const& rhs);
-			Vector3& operator*=(float rhs);
-			Vector3& operator/=(float rhs);
+			Vector3& operator*=(f32 rhs);
+			Vector3& operator/=(f32 rhs);
 			Vector3 operator-(void) const;
 
-			float Dot(Vector3 const& rhs) const;
-			float Length(void) const;
-			float LengthSq(void) const;
+			f32 Dot(Vector3 const& rhs) const;
+			f32 Length(void) const;
+			f32 LengthSq(void) const;
 			void Normalized(void);
 			Vector3 Normalize(void) const;
+			// Cross product function here
 
 			/*********************************************************************************
 												  UTILITIES
@@ -55,17 +61,19 @@ namespace ManCong
 			static Vector3 const positiveInfinity;
 			static Vector3 const negativeInfinity;
 
-			float x, y, z;
+			// cross product
+		private:
+			void swap(Vector3& rhs);
 		};
 
 		Vector3 operator+(Vector3 const& lhs, Vector3 const& rhs);
 		Vector3 operator-(Vector3 const& lhs, Vector3 const& rhs);
-		Vector3 operator*(Vector3 const& lhs, float rhs);
-		Vector3 operator*(float lhs, Vector3 const& rhs);
-		Vector3 operator/(Vector3 const& lhs, float rhs);
+		Vector3 operator*(Vector3 const& lhs, f32 rhs);
+		Vector3 operator*(f32 lhs, Vector3 const& rhs);
+		Vector3 operator/(Vector3 const& lhs, f32 rhs);
 
-		float Vector3Distance(Vector3 const& lhs, Vector3 const& rhs);
-		float Vector3SquareDistance(Vector3 const& lhs, Vector3 const& rhs);
+		f32 Vector3Distance(Vector3 const& lhs, Vector3 const& rhs);
+		f32 Vector3SquareDistance(Vector3 const& lhs, Vector3 const& rhs);
 
 		std::ostream& operator<<(std::ostream& os, Vector3 const& rhs);
 	}

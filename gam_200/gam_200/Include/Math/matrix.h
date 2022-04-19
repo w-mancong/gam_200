@@ -58,10 +58,12 @@ namespace ManCong
         class matrix
         {
         public:
-            using value_type = float;
-            using reference = value_type&;
-            using const_reference = value_type const&;
-            using size_type = long long;
+            using value_type        = f32;
+            using reference         = value_type&;
+            using const_reference   = value_type const&;
+            using pointer           = value_type*;
+            using const_pointer     = value_type const*;
+            using size_type         = s64;
         public:
             matrix(size_type R, size_type C);
             matrix(Vector2 const& rhs);
@@ -94,6 +96,8 @@ namespace ManCong
             matrix&         Inverse(void);
             void            Indentity(void);
             value_type      Determinant(void) const;
+
+            const_pointer   value_ptr(void) const;
 
         private:
             value_type      Determinant(matrix const& m, size_type n) const;
