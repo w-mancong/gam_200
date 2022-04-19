@@ -1,6 +1,9 @@
 #include "pch.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "Graphics/stb_image.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace
 {
@@ -95,14 +98,28 @@ namespace ManCong
 
 			img.shader->use();
 			img.shader->Set("texture2", 1);
-			using namespace Math;
-			Matrix4x4 transform = Matrix4x4::Translate(Vector3(1.0f, 0.0f, 0.0f)) * Matrix4x4::Rotation(90.0f, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Scale(Vector3(0.5f, 0.5f, 0.5f));
 
-			std::cout << Matrix4x4::Translate(2.0f, 3.0f, 4.0f) << std::endl << std::endl;
+			//glm::mat4 trans = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+			//glm::mat4 trans = glm::mat4(1.0f);
+			//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//std::cout << trans[0].x << ' ' << trans[0].y << ' ' << trans[0].z << ' ' << trans[0].w << std::endl;
+			//std::cout << trans[1].x << ' ' << trans[1].y << ' ' << trans[1].z << ' ' << trans[1].w << std::endl;
+			//std::cout << trans[2].x << ' ' << trans[2].y << ' ' << trans[2].z << ' ' << trans[2].w << std::endl;
+			//std::cout << trans[3].x << ' ' << trans[3].y << ' ' << trans[3].z << ' ' << trans[3].w << std::endl << std::endl;
+
+			//using namespace Math;
+			//Matrix4x4 transform = Matrix4x4::Scale(0.5f, 0.5f, 0.5f) * Matrix4x4::Rotation(90.0f, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(-0.75f, 0.0f, 0.0f);
+			//std::cout << transform << std::endl << std::endl;
+
+			//std::cout << Matrix4x4::Translate(1.0f, 1.0f, 0.0f) << std::endl << std::endl;
 			//std::cout << rot << std::endl << std::endl;
 			//std::cout << scale << std::endl << std::endl;
+			//img.shader->Set("transform", transform);
 
-			img.shader->Set("transform", transform);
+			//u32 transformLoc = glGetUniformLocation(img.shader->id, "transform");
+			//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 			return img;
 		}

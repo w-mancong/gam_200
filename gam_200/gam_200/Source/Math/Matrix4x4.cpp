@@ -39,6 +39,7 @@ namespace ManCong
 		Matrix4x4 Matrix4x4::Translate(f32 x, f32 y, f32 z)
 		{
 			Matrix4x4 res(Vector4(1.0f, 0.0f, 0.0f, x), Vector4(0.0f, 1.0f, 0.0f, y), Vector4(0.0f, 0.0f, 1.0f, z));
+			res.Transpose();
 			return res;
 		}
 
@@ -70,7 +71,7 @@ namespace ManCong
 
 			res(1, 0) = axis.x * axis.y * omc - axis.z * sin;
 			res(1, 1) = axis.y * axis.y * omc + cos;
-			res(1, 2) = axis.y * axis.z * omc + axis.x + sin;
+			res(1, 2) = axis.y * axis.z * omc + axis.x * sin;
 
 			res(2, 0) = axis.x * axis.z * omc + axis.y * sin;
 			res(2, 1) = axis.y * axis.z * omc - axis.x * sin;
