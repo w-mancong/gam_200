@@ -4,6 +4,12 @@ namespace ManCong
 {
 	namespace Math
 	{
+		Matrix3x3::Matrix3x3(value_type value) : matrix{ R, C }
+		{
+			for (u64 i = 0; i < R; ++i)
+				(*this)(i, i) = value;
+		}
+
 		Matrix3x3::Matrix3x3(Vector3 r1, Vector3 r2, Vector3 r3) : matrix{ R, C }
 		{
 			(*this)(0, 0) = r1.x; (*this)(0, 1) = r1.y; (*this)(0, 2) = r1.z;

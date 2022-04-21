@@ -117,7 +117,7 @@ namespace ManCong
 
         matrix& matrix::operator=(matrix&& rhs) noexcept
         {
-            mtx = nullptr, R = 0, C = 0;
+            R = 0, C = 0;
             swap(rhs);
             return *this;
         }
@@ -363,10 +363,11 @@ namespace ManCong
         {
             using size_type = typename matrix::size_type;
             const size_type R = rhs.Rows(), C = rhs.Cols();
+            os << std::fixed << std::setprecision(5);
             for (size_type i = 0; i < R; ++i)
             {
                 for (size_type j = 0; j < C; ++j)
-                    os << rhs(i, j) << (j + 1 == C ? '\0' : ' ');
+                    os << std::left << std::setw(10) << rhs(i, j) << (j + 1 == C ? '\0' : ' ');
                 os << std::endl;
             }
             return os;

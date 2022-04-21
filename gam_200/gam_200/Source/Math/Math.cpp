@@ -23,5 +23,10 @@ namespace ManCong
 		{
 			return angle * static_cast<f32>(M_PI) / 180.0f;
 		}
+
+		f32 RadianToDegree(f32 angle)
+		{
+			return angle * 180.0f / static_cast<f32>(M_PI);
+		}
 	}
 }

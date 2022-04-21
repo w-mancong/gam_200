@@ -70,7 +70,7 @@ namespace ManCong
 			static Vector2 const negativeInfinity;
 		private:
 			void swap(Vector2& rhs);
-		};
+		}; using Vec2 = Vector2; using Vec2D = Vector2;
 
 		Vector2 operator+(Vector2 const& lhs, Vector2 const& rhs);
 		Vector2 operator-(Vector2 const& lhs, Vector2 const& rhs);

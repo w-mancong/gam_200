@@ -32,11 +32,11 @@ namespace ManCong
 			Vector3 operator-(void) const;
 
 			f32 Dot(Vector3 const& rhs) const;
-			f32 Length(void) const;
-			f32 LengthSq(void) const;
+			f32 Magnitude(void) const;
+			f32 MagnitudeSq(void) const;
 			void Normalized(void);
 			Vector3 Normalize(void) const;
-			// Cross product function here
+			Vector3 Cross(Vector3 const& rhs) const;
 
 			/*********************************************************************************
 												  UTILITIES
@@ -50,6 +50,16 @@ namespace ManCong
 			/*********************************************************************************
 											  STATIC FUNCTIONS
 			*********************************************************************************/
+			static f32 Angle(Vector3 const& from, Vector3 const& to);
+			static Vector3 ClampMagnitude(Vector3 const& lhs, f32 maxLength);
+			static f32 Distance(Vector3 const& lhs, Vector3 const& rhs);
+			static f32 DistanceSq(Vector3 const& lhs, Vector3 const& rhs);
+			static f32 Dot(Vector3 const& lhs, Vector3 const& rhs);
+			static Vector3 Max(Vector3 const& lhs, Vector3 const& rhs);
+			static Vector3 Min(Vector3 const& lhs, Vector3 const& rhs);
+			static Vector3 Normalize(Vector3 const& rhs);
+			static Vector3 Cross(Vector3 const& lhs, Vector3 const& rhs);
+
 			static Vector3 const right;
 			static Vector3 const left;
 			static Vector3 const up;
@@ -60,11 +70,9 @@ namespace ManCong
 			static Vector3 const zero;
 			static Vector3 const positiveInfinity;
 			static Vector3 const negativeInfinity;
-
-			// cross product
 		private:
 			void swap(Vector3& rhs);
-		};
+		}; using Vec3 = Vector3; using Vec3D = Vector3;
 
 		Vector3 operator+(Vector3 const& lhs, Vector3 const& rhs);
 		Vector3 operator-(Vector3 const& lhs, Vector3 const& rhs);

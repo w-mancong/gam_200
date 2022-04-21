@@ -98,11 +98,11 @@ namespace ManCong
 				ProcessInput();
 				ChangeTriangle();
 
-				if (Input::Input::KeyTriggered(KeyCode::Key_3))
-				{
-					fullScreen = !fullScreen;
-					OpenGLWindow::FullScreen(fullScreen);
-				}
+				//if (Input::Input::KeyTriggered(KeyCode::Key_3))
+				//{
+				//	fullScreen = !fullScreen;
+				//	OpenGLWindow::FullScreen(fullScreen);
+				//}
 
 				if (Input::Input::KeyTriggered(KeyCode::Key_1))
 					(++index) %= ARRAY_SIZE(mode);
@@ -144,10 +144,14 @@ namespace ManCong
 
 		void Run(void)
 		{
-			Application app;
-			app.Init();
-			app.Update();
-			app.Exit();
+			using namespace Math;
+			Vector3 v{ 1.0f, 2.0f, 3.0f }, w{ 7.0f, 5.0f, 4.0f };
+			std::cout << v.Cross(w) << std::endl;
+
+			//Application app;
+			//app.Init();
+			//app.Update();
+			//app.Exit();
 		}
 	}
 }

@@ -4,6 +4,12 @@ namespace ManCong
 {
 	namespace Math
 	{
+		Matrix4x4::Matrix4x4(value_type value) : matrix{ R, C }
+		{
+			for (u64 i = 0; i < R; ++i)
+				(*this)(i, i) = value;
+		}
+
 		Matrix4x4::Matrix4x4(Vector4 r1, Vector4 r2, Vector4 r3, Vector4 r4) : matrix{ R, C }
 		{
 			(*this)(0, 0) = r1.x; (*this)(0, 1) = r1.y; (*this)(0, 2) = r1.z; (*this)(0, 3) = r1.w;
@@ -38,8 +44,7 @@ namespace ManCong
 
 		Matrix4x4 Matrix4x4::Translate(f32 x, f32 y, f32 z)
 		{
-			Matrix4x4 res(Vector4(1.0f, 0.0f, 0.0f, x), Vector4(0.0f, 1.0f, 0.0f, y), Vector4(0.0f, 0.0f, 1.0f, z));
-			res.Transpose();
+			Matrix4x4 res; res(3, 0) = x, res(3, 1) = y, res(3, 2) = z;
 			return res;
 		}
 
@@ -50,7 +55,7 @@ namespace ManCong
 
 		Matrix4x4 Matrix4x4::Scale(f32 x, f32 y, f32 z)
 		{
-			Matrix4x4 res(Vector4(x, 0.0f, 0.0f, 0.0f), Vector4(0.0f, y, 0.0f, 0.0f), Vector4(0.0f, 0.0f, z, 0.0f));
+			Matrix4x4 res; res(0, 0) = x, res(1, 1) = y, res(2, 2) = z;
 			return res;
 		}
 
@@ -77,6 +82,30 @@ namespace ManCong
 			res(2, 1) = axis.y * axis.z * omc - axis.x * sin;
 			res(2, 2) = axis.z * axis.z * omc + cos;
 
+			return res;
+		}
+
+		Matrix4x4 Matrix4x4::Ortho(f32 left, f32 right, f32 bottom, f32 top, f32 zNear, f32 zFar)
+		{
+			Matrix4x4 res{	Vector4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),
+							Vector4(0.0f, 2.0f / (top - bottom), 0.0f, 0.0f),
+							Vector4(0.0f, 0.0f, -2.0f / (zFar - zNear), 0.0f),
+							Vector4(-(right + left) / (right - left), -(top + bottom) / (top - bottom), -( zFar + zNear) / (zFar - zNear), 1.0f) };
+			return res;
+		}
+
+		Matrix4x4 Matrix4x4::Perspective(f32 fov, f32 aspect, f32 zNear, f32 zFar)
+		{
+#if _DEBUG
+			assert(abs(aspect - std::numeric_limits<f32>::epsilon()) > 0.0f);
+#endif
+			f32 const halfTan = std::tanf(DegreeToRadian(fov) / 2.0f);
+			Matrix4x4 res{ 0.0f };
+			res(0, 0) = 1.0f / (aspect * halfTan);
+			res(1, 1) = 1.0f / halfTan;
+			res(2, 2) = -(zFar + zNear) / (zFar - zNear);
+			res(2, 3) = -1.0f;
+			res(3, 2) = -(2.0f * zFar * zNear) / (zFar - zNear);
 			return res;
 		}
 

@@ -76,7 +76,7 @@ namespace ManCong
 
 		f32 Vector2::MagnitudeSq(void) const
 		{
-			return x * x + y * y;
+			return Dot(*this);
 		}
 
 		void Vector2::Normalized(void)
@@ -126,7 +126,7 @@ namespace ManCong
 		*********************************************************************************/
 		f32 Vector2::Angle(Vector2 const& from, Vector2 const& to)
 		{
-			return std::acosf(Vector2::Dot(from, to) / (from.Magnitude() * to.Magnitude())) * 180.0f / static_cast<f32>(M_PI);
+			return RadianToDegree( std::acosf( Vector2::Dot(from, to) / ( from.Magnitude() * to.Magnitude() ) ) );
 		}
 
 		Vector2 Vector2::ClampMagnitude(Vector2 const& lhs, f32 maxLength)
@@ -149,7 +149,7 @@ namespace ManCong
 
 		f32 Vector2::Dot(Vector2 const& lhs, Vector2 const& rhs)
 		{
-			return lhs.x * rhs.x + lhs.y * rhs.y;
+			return lhs.Dot(rhs);
 		}
 
 		Vector2 Vector2::Max(Vector2 const& lhs, Vector2 const& rhs)
@@ -209,7 +209,7 @@ namespace ManCong
 
 		std::ostream& operator<<(std::ostream& os, Vector2 const& rhs)
 		{
-			return os << "x: " << rhs.x << " y: " << rhs.y;
+			return os << std::fixed << std::setprecision(5) << std::left << std::setw(10) << "x: " << rhs.x << " y: " << rhs.y;
 		}
 	}
 }

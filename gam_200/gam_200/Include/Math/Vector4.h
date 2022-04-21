@@ -48,7 +48,7 @@ namespace ManCong
 
 		private:
 			void swap(Vector4& rhs);
-		};
+		}; using Vec4 = Vector4; using Vec4D = Vector4;
 
 		Vector4 operator+(Vector4 const& lhs, Vector4 const& rhs);
 		Vector4 operator-(Vector4 const& lhs, Vector4 const& rhs);

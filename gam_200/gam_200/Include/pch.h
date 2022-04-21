@@ -6,6 +6,7 @@
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))	// find the number of elements in an array
 // C++ standard library
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 #include <functional>
 #include <memory>

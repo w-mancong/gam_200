@@ -162,7 +162,7 @@ namespace ManCong
 
 		std::ostream& operator<<(std::ostream& os, Vector4 const& rhs)
 		{
-			return os << "x: " << rhs.x << " y: " << rhs.y << " z: " << rhs.z << " w: " << rhs.w;
+			return os << std::fixed << std::setprecision(5) << std::left << std::setw(10) << "x: " << rhs.x << " y: " << rhs.y << " z: " << rhs.z << " w: " << rhs.w;
 		}
 	}
 }

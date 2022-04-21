@@ -129,11 +129,14 @@ namespace ManCong
 				Bookmark *free_bm = nullptr, *allo_bm = nullptr;
 				FindBookmark(m_Freed, free_bm);		 // Find a bookmark in freed that is not used
 				FindAllocatedBookmark(allo_bm, ptr); // Find the bookmark containing ptr
+				u64 const TOTAL_BYTES = static_cast<char*>(allo_bm->tail) - static_cast<char*>(allo_bm->head) + 1;
 				// Calculate the total elements allocated for ptr
-				u64 const TOTAL_ELEMENTS = (static_cast<char*>(allo_bm->tail) - static_cast<char*>(allo_bm->head) + 1) / sizeof(T);
+				u64 const TOTAL_ELEMENTS = TOTAL_BYTES / sizeof(T);
 				// Call the destructor of the class
 				for (u64 i = 0; i < TOTAL_ELEMENTS; ++i)
 					(ptr + i)->~T();
+				for (u64 i = static_cast<char*>(allo_bm->head) - m_Ptr; i < TOTAL_BYTES; ++i)
+					*(m_Ptr + i) = '\0';
 				ptr = nullptr; // Set the pointer to be nullptr
 				free_bm->head = allo_bm->head, free_bm->tail = allo_bm->tail; UpdateFreedBookmark(free_bm);
 				allo_bm->head = nullptr, allo_bm->tail = nullptr; UpdateIndex();
