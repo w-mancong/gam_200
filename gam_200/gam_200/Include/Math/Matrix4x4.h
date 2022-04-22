@@ -25,6 +25,7 @@ namespace ManCong
 			static Matrix4x4 Rotation(f32 angle, Vector3 const& axis);
 			static Matrix4x4 Ortho(f32 left, f32 right, f32 bottom, f32 top, f32 zNear, f32 zFar);
 			static Matrix4x4 Perspective(f32 fov, f32 aspect, f32 zNear, f32 zFar);
+			static Matrix4x4 LookAt(Vector3 eye, Vector3 center, Vector3 up);
 
 		private:
 			static size_type constexpr R = 4, C = 4;

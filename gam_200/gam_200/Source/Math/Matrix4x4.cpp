@@ -109,6 +109,18 @@ namespace ManCong
 			return res;
 		}
 
+		Matrix4x4 Matrix4x4::LookAt(Vector3 eye, Vector3 center, Vector3 up)
+		{
+			// direction										// right									   // up
+			Vector3 const d = Vector3::Normalize(center - eye), r = Vector3::Cross(d, up).Normalize(), u = Vector3::Cross(r, d);
+			Matrix4x4 res;
+			res(0, 0) = r.x;				   res(0, 1) = u.x;					  res(0, 2) = -d.x;
+			res(1, 0) = r.y;				   res(1, 1) = u.y;					  res(1, 2) = -d.y;
+			res(2, 0) = r.z;				   res(2, 1) = u.z;					  res(2, 2) = -d.z;			
+			res(3, 0) = -Vector3::Dot(r, eye); res(3, 1) = -Vector3::Dot(u, eye); res(3, 2) = Vector3::Dot(d, eye);		
+			return res;
+		}
+
 		Matrix4x4 operator+(Matrix4x4 const& lhs, Matrix4x4 const& rhs)
 		{
 			Matrix4x4 res{ lhs }; res += rhs;

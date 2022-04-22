@@ -15,6 +15,8 @@ namespace ManCong
 
 			static GLFWwindow* GetWindow(void);
 
+			static s32 *WindowWidth, *WindowHeight;
+
 		private:
 			static GLFWwindow* window; 
 			static s32 width, height;

@@ -11,7 +11,7 @@ namespace ManCong
 		{
 			Vector2 position;
 			Vector2 scale;
-			float	rotation;
+			f32	rotation;
 		};
 	}
 }
