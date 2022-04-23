@@ -7,22 +7,44 @@ namespace ManCong
 {
 	namespace Engine
 	{
-		using namespace Graphics;
-		class MeshBuilder : private Templates::Singleton<MeshBuilder>
+		class MeshBuilder : public Templates::Singleton<MeshBuilder>
 		{
 		public:
-			using Singleton<MeshBuilder>::GetInstance;
+			Mesh MakeRectangle(void);
+			Mesh MakeCircle(void);
+			Mesh MakeTriangle(void);
+			Sprite MakeSprite(std::string const& filePath);
 
-			Image MakeImage(std::string const& filePath);
+			Graphics::Shader& Shade()
+			{
+				return s2;
+			}
+
+			void Reset(void);
 
 		private:
 			MeshBuilder(void);
-			~MeshBuilder(void) = default;
+			virtual ~MeshBuilder(void);
+
+			void CreateRectangle(void);
+			void CreateCircle(void);
+			void CreateTriangle(void);
+			Sprite* CreateSprite(std::string const& filePath);
+
+			enum class Shapes
+			{
+				Rectangle,
+				Circle,
+				Triangle,
+				Total
+			};
 
 			friend class Templates::Singleton<MeshBuilder>;
 			friend class Memory::InstanceMemory;
 
-			Shader s1, s2;
+			Graphics::Shader s1, s2;
+			std::vector<std::pair<std::string, Sprite*>> m_Sprites;
+			Mesh* m_Meshes[static_cast<u64>(Shapes::Total)];
 		};
 	}
 }

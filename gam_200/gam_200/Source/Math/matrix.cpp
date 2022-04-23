@@ -70,7 +70,7 @@ namespace ManCong
                 throw Exceptions::InvalidDimension(R, C);
             mtx = Memory::DynamicMemory::New<value_type>(R * C);
             if (R == C)
-                Indentity();
+                Identity();
         }
 
         matrix::matrix(Vector2 const& rhs) : mtx{ nullptr }, R{ 3 }, C{ 1 }
@@ -247,7 +247,7 @@ namespace ManCong
             return *this;
         }
 
-        void matrix::Indentity(void)
+        void matrix::Identity(void)
         {
             if (R != C)
                 throw Exceptions::InvalidDimension(R, C, "an indentity matrix. Must be a square matrix!");

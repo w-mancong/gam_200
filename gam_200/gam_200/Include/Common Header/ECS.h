@@ -9,6 +9,13 @@
 #include "ECS/Structure/SystemManager.h"
 #include "ECS/Structure/Coordinator.h"
 
+// -------------- Components --------------------
+#include "ECS/Components/Color.h"
+#include "ECS/Components/Sprite.h"
+#include "ECS/Components/Mesh.h"
+#include "ECS/Components/Transform.h"
+
 using ManCong::ECS::Coordinator;
+using namespace ManCong::ECS::Components;
 
 #endif

@@ -6,13 +6,16 @@ namespace ManCong
 {
 	namespace ECS
 	{
-		using namespace Math;
-		struct Transform
+		namespace Components
 		{
-			Vector2 position;
-			Vector2 scale;
-			f32	rotation;
-		};
+			using namespace Math;
+			struct Transform
+			{
+				Vector2 position;
+				Vector2 scale;
+				f32	rotation;
+			};
+		}
 	}
 }
 

@@ -94,7 +94,7 @@ namespace ManCong
 
             matrix&         Transpose(void);
             matrix&         Inverse(void);
-            void            Indentity(void);
+            void            Identity(void);
             value_type      Determinant(void) const;
 
             const_pointer   value_ptr(void) const;

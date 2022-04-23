@@ -13,6 +13,7 @@ namespace ManCong
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			glfwWindowHint(GLFW_SAMPLES, 4);
 			//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 			//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); used for initializing MacOS
 
@@ -35,6 +36,9 @@ namespace ManCong
 			glViewport(0, 0, width, height);
 			// tell glfw to call this function whenever window resizes
 			glfwSetFramebufferSizeCallback(window, ResizeWindow);
+			glEnable(GL_MULTISAMPLE);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 
 		void OpenGLWindow::FullScreen(bool fullScreen)

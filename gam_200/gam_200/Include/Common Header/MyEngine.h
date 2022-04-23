@@ -4,4 +4,6 @@
 #include "Engine/Application.h"
 #include "Engine/Manager/MeshBuilder.h"
 
+using ManCong::Engine::MeshBuilder;
+
 #endif

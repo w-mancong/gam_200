@@ -174,13 +174,13 @@ namespace ManCong
 		class InstanceMemory
 		{
 		public:
-		/*!*********************************************************************************
-			\brief
-				Allocate memory address from a fixed memory buffer of a specified size
-				Use this class to instantiate any memory for any Singleton classes
-			\return
-				The starting address pointing to the first element
-		***********************************************************************************/
+			/*!*********************************************************************************
+				\brief
+					Allocate memory address from a fixed memory buffer of a specified size
+					Use this class to instantiate any memory for any Singleton classes
+				\return
+					The starting address pointing to the first element
+			***********************************************************************************/
 			template <typename T>
 			static T* New(void)
 			{
@@ -189,6 +189,14 @@ namespace ManCong
 				assert(index < MEMORY_BUFFER && "Size of memory buffer is too small. Change the size of MEMORY_BUFFER");
 #endif
 				return new (&*(m_Ptr + index)) T();
+			}
+
+			template <typename T>
+			static void Delete(T*& ptr)
+			{
+				if(ptr)
+					ptr->~T();
+				ptr = nullptr;
 			}
 
 		private:

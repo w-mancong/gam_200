@@ -151,10 +151,10 @@
     <ClInclude Include="Include\ECS\Structure\EntityManager.h" />
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
-    <ClInclude Include="Include\Graphics\Color.h" />
-    <ClInclude Include="Include\Graphics\Image.h" />
+    <ClInclude Include="Include\ECS\Components\Color.h" />
+    <ClInclude Include="Include\ECS\Components\Sprite.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
-    <ClInclude Include="Include\Graphics\Mesh.h" />
+    <ClInclude Include="Include\ECS\Components\Mesh.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
     <ClInclude Include="Include\Graphics\stb_image.h" />
     <ClInclude Include="Include\Input\InputKeys.h" />

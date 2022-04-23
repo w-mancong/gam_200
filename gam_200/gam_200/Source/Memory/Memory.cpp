@@ -236,10 +236,21 @@ namespace ManCong
 
 		/*!*********************************************************************************
 			\brief
+				Call the destructor of all the singleton classes
+		***********************************************************************************/
+		void FreeInstance(void)
+		{
+			Coordinator::Free();
+			MeshBuilder::Free();
+		}
+
+		/*!*********************************************************************************
+			\brief
 				Deallocate the memory allocated inside the heap for mPtr
 		***********************************************************************************/
 		void InstanceMemory::FreeAll(void)
 		{
+			FreeInstance();
 			delete[] m_Ptr;
 		}
 

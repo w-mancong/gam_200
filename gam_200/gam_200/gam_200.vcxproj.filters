@@ -194,13 +194,13 @@
     <ClInclude Include="Include\Common Header\MyEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Graphics\Color.h">
+    <ClInclude Include="Include\ECS\Components\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Utility\HelperFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Graphics\Mesh.h">
+    <ClInclude Include="Include\ECS\Components\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Graphics\Shader.h">
@@ -224,7 +224,7 @@
     <ClInclude Include="Include\Graphics\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Graphics\Image.h">
+    <ClInclude Include="Include\ECS\Components\Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Math\Vector4.h">

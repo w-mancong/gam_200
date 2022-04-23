@@ -47,6 +47,7 @@ namespace ManCong
 
 		Matrix4x4 Camera::ProjectionMatrix(void) const
 		{
+			using namespace Graphics;
 			switch (m_Projection)
 			{
 				case Projection::Perspective:

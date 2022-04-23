@@ -6,11 +6,9 @@ namespace ManCong
 {
 	namespace ECS
 	{
-		class Coordinator : private Templates::Singleton<Coordinator>
+		class Coordinator : public Templates::Singleton<Coordinator>
 		{
 		public:
-			using Singleton<Coordinator>::GetInstance;
-
 			void Init(void);
 			/*********************************************************************************
 											ENTITY METHODS

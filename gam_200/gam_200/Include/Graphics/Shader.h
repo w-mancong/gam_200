@@ -2,6 +2,7 @@
 #define SHADER_H
 
 #include "Utility/Type.h"
+#include "Math/Matrix4x4.h"
 namespace ManCong
 {
 	namespace Graphics
