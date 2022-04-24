@@ -89,7 +89,7 @@ namespace ManCong
 
 		void Render(void)
 		{
-			std::vector<Entity> entities; entities.resize(rs->mEntities.size());
+			std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
 			// copy into temp vector
 			std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
 			// sort order
