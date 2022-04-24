@@ -1,7 +1,6 @@
 #ifndef	SYSTEM_MANAGER_H
 #define SYSTEM_MANAGER_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace ECS

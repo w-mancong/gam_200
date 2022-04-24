@@ -8,7 +8,6 @@ brief:	Template class for creating a Singleton
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace Templates

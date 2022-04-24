@@ -21,7 +21,12 @@ namespace ManCong
 		MeshBuilder::~MeshBuilder(void)
 		{
 			for (u64 i = 0; i < static_cast<u64>(Shapes::Total); ++i)
+			{
+				glDeleteVertexArrays(1, &(*(m_Shapes + i))->vao);
+				glDeleteBuffers(1, &(*(m_Shapes + i))->vbo);
+				glDeleteBuffers(1, &(*(m_Shapes + i))->ebo);
 				Memory::InstanceMemory::Delete(*(m_Shapes + i));
+			}
 		}
 
 		Sprite MeshBuilder::MakeRectangle(void)
@@ -95,7 +100,7 @@ namespace ManCong
 			// position attribute
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
 			glEnableVertexAttribArray(0);
-
+			// Unbind vertex array to prevent accidental modifications
 			glBindVertexArray(0);
 
 			sprite->indicesSize = ARRAY_SIZE(indices);
@@ -104,6 +109,7 @@ namespace ManCong
 
 		void MeshBuilder::CreateCircle(void)
 		{
+			using namespace Math;
 			Sprite* sprite = Memory::InstanceMemory::New<Sprite>();
 			u32 const VERTICES = 20;								// total number of vertices
 			f32 const ANGLE = 360.0f / static_cast<f32>(VERTICES);	// angle of circle / total number of vertices
@@ -261,12 +267,14 @@ namespace ManCong
 			}
 			else
 			{
-				std::cout << "Failed to load texture" << std::endl;
+				std::cerr << "Failed to load texture" << std::endl;
+				std::cerr << "File path: " << filePath << std::endl;
 			}
 			stbi_image_free(data);
 
 			sprite->indicesSize = ARRAY_SIZE(indices);
 			m_Sprites.push_back( std::pair<std::string, Sprite*>{ filePath, sprite } );
+			// Unbind vertex array and texture to prevent accidental modifications
 			glBindVertexArray(0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			return m_Sprites.back().second;

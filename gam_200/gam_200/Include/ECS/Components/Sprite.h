@@ -2,7 +2,8 @@
 #define SPRITE_H
 
 #include "Utility/Type.h"
-#include "ECS/Components/Sub/RenderData.h"
+#include "ECS/Components/RenderData.h"
+#include "ECS/Components/Color.h"
 namespace ManCong
 {
 	namespace ECS
@@ -15,8 +16,8 @@ namespace ManCong
 				u32 indicesSize{ 0 };
 				u32 texture{ 0 };
 				Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
-				Sub::RenderLayer layer{ Sub::RenderLayer::Background };
-				Sub::RenderMode mode{ Sub::RenderMode::Fill };
+				RenderLayer layer{ RenderLayer::Background };
+				RenderMode mode{ RenderMode::Fill };
 			};
 		}
 	}

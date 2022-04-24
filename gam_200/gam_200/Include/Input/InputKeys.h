@@ -1,7 +1,6 @@
 #ifndef	INPUT_KEYS_H
 #define INPUT_KEYS_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace Input

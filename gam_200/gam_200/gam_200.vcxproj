@@ -139,7 +139,7 @@
     <ClInclude Include="Include\Common Header\TemplateClasses.h" />
     <ClInclude Include="Include\Common Header\Utility.h" />
     <ClInclude Include="Include\ECS\Components\Sprite.h" />
-    <ClInclude Include="Include\ECS\Components\Sub\RenderData.h" />
+    <ClInclude Include="Include\ECS\Components\RenderData.h" />
     <ClInclude Include="Include\ECS\Structure\EcsSystem.h" />
     <ClInclude Include="Include\ECS\Systems\RenderSystem.h" />
     <ClInclude Include="Include\Engine\Camera.h" />

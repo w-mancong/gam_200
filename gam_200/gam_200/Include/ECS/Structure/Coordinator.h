@@ -1,7 +1,6 @@
 #ifndef	COORDINATOR_H
 #define COORDINATOR_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace ECS

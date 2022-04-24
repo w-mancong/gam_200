@@ -1,19 +1,17 @@
 #ifndef	TRANSFORM_H
 #define TRANSFORM_H
 
-#include "Math/Vector2.h"
 namespace ManCong
 {
 	namespace ECS
 	{
 		namespace Component
 		{
-			using namespace Math;
 			struct Transform
 			{
-				Vector2 position;
-				Vector2 scale;
-				f32	rotation;
+				Math::Vector2 position{ 0.0f, 0.0f };
+				Math::Vector2 scale{ 1.0f, 1.0f };
+				f32	rotation{ 0.0f };
 			};
 		}
 	}

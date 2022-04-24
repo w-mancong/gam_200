@@ -61,7 +61,7 @@ namespace ManCong
 			glViewport(0, 0, _width, _height);
 		}
 
-		GLFWwindow* OpenGLWindow::GetWindow(void)
+		GLFWwindow* OpenGLWindow::Window(void)
 		{
 			return window;
 		}

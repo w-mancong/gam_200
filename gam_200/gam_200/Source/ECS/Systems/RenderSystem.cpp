@@ -6,6 +6,7 @@ namespace ManCong
 {
 	namespace ECS
 	{
+		using namespace Math; using namespace Engine; using namespace Graphics;
 		void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
 
 		class RenderSystem : public System
@@ -17,8 +18,9 @@ namespace ManCong
 		namespace
 		{
 			std::shared_ptr<RenderSystem> rs;
-			Graphics::Shader s1, s2;
-			Engine::Camera camera{ Vector3(0.0f, 0.0f, 5.0f) };
+			Shader spriteShader, meshShader;
+			Camera camera{ Vector3(0.0f, 0.0f, 75.0f) };
+			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		}
 
 		void RenderSystem::Render(Entity const& entity)
@@ -30,11 +32,11 @@ namespace ManCong
 			Vector2 const& position{ trans.position }, scale{ trans.scale };
 
 			// Getting the appropriate shader
-			Graphics::Shader* shader{ nullptr };
+			Shader* shader{ nullptr };
 			if (sprite.texture)
-				shader = &s1;
+				shader = &spriteShader;
 			else
-				shader = &s2;
+				shader = &meshShader;
 
 			// TRS model multiplication
 			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
@@ -52,18 +54,18 @@ namespace ManCong
 
 		void UpdateViewMatrix(void)
 		{
-			s1.use();
-			s1.Set("view", camera.ViewMatrix());
-			s2.use();
-			s2.Set("view", camera.ViewMatrix());
+			spriteShader.use();
+			spriteShader.Set("view", camera.ViewMatrix());
+			meshShader.use();
+			meshShader.Set("view", camera.ViewMatrix());
 		}
 
 		void UpdateProjectionMatrix(void)
 		{
-			s1.use();
-			s1.Set("proj", camera.ProjectionMatrix());
-			s2.use();
-			s2.Set("proj", camera.ProjectionMatrix());
+			spriteShader.use();
+			spriteShader.Set("proj", camera.ProjectionMatrix());
+			meshShader.use();
+			meshShader.Set("proj", camera.ProjectionMatrix());
 		}
 
 		void RegisterRenderSystem(void)
@@ -74,31 +76,41 @@ namespace ManCong
 			signature.set( Coordinator::Instance()->GetComponentType<Sprite>() );
 			Coordinator::Instance()->SetSystemSignature<RenderSystem>(signature);
 			// Initialising shader
-			s1 = Graphics::Shader{ "Assets/Shaders/sprite.vert", "Assets/Shaders/sprite.frag" };
-			s1.use();
-			s1.Set("view", camera.ViewMatrix());
-			s1.Set("proj", camera.ProjectionMatrix());
+			spriteShader = Shader{ "Assets/Shaders/sprite.vert", "Assets/Shaders/sprite.frag" };
+			spriteShader.use();
+			spriteShader.Set("view", camera.ViewMatrix());
+			spriteShader.Set("proj", camera.ProjectionMatrix());
 
-			s2 = Graphics::Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
-			s2.use();
-			s2.Set("view", camera.ViewMatrix());
-			s2.Set("proj", camera.ProjectionMatrix());
+			meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
+			meshShader.use();
+			meshShader.Set("view", camera.ViewMatrix());
+			meshShader.Set("proj", camera.ProjectionMatrix());
 		}
 
 		void Render(void)
 		{
-			std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
+			std::vector<Entity> entities; entities.resize(rs->mEntities.size());
 			// copy into temp vector
 			std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
 			// sort order
 			std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
 			{
-				Sprite const& s1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-				Sprite const& s2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-				return s1.layer < s2.layer;
+				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+				return sp1.layer < sp2.layer;
 			});
+
+			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+			glClear(GL_COLOR_BUFFER_BIT);
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 				rs->Render(*it);
+			glfwPollEvents();
+			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
+		}
+
+		void SetBackgroundColor(Color const& color)
+		{
+			bgColor = color;
 		}
 
 		void CameraPosition(f32 x, f32 y)
@@ -115,6 +127,58 @@ namespace ManCong
 		{
 			camera.Position(pos);
 			UpdateViewMatrix();
+		}
+
+		Vector3 const& CameraPosition(void)
+		{
+			return camera.Position();
+		}
+
+		void CreateSprite(Entity const& entity, Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)
+		{
+			Sprite sprite;
+			switch (shape)
+			{
+				case Shape::Rectangle:
+				{
+					sprite = MeshBuilder::Instance()->MakeRectangle();
+					break;
+				}
+				case Shape::Circle:
+				{
+					sprite = MeshBuilder::Instance()->MakeCircle();
+					break;
+				}
+				case Shape::Triangle:
+				{
+					sprite = MeshBuilder::Instance()->MakeTriangle();
+					break;
+				}
+			}
+			Coordinator::Instance()->AddComponent(entity, sprite);
+			Coordinator::Instance()->AddComponent(entity, transform);
+		}
+
+		void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
+		{
+			Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+			sprite.layer = layer, sprite.mode = mode;
+			Coordinator::Instance()->AddComponent(entity, sprite);
+			Coordinator::Instance()->AddComponent(entity, transform);
+		}
+
+		Entity CreateSprite(Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)
+		{
+			Entity entity = Coordinator::Instance()->CreateEntity();
+			CreateSprite(entity, transform, shape, layer, mode);
+			return entity;
+		}
+
+		Entity CreateSprite(Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
+		{
+			Entity entity = Coordinator::Instance()->CreateEntity();
+			CreateSprite(entity, transform, filePath, layer, mode);
+			return entity;
 		}
 	}
 }

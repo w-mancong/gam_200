@@ -1,7 +1,6 @@
 #ifndef	COMPONENT_MANAGER_H
 #define COMPONENT_MANAGER_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace ECS

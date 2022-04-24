@@ -139,8 +139,8 @@ namespace ManCong
 			for (u64 i = 0; i < BOOKMARK_SIZE; ++i)
 			{
 				u64 const s1 = static_cast<char*>((m_Freed + i)->head) - static_cast<char*>(bm->tail);
-				u64 const s2 = static_cast<char*>(bm->head) - static_cast<char*>((m_Freed + i)->tail);
-				if (1 != s1 && 1 != s2) continue;
+				u64 const meshShader = static_cast<char*>(bm->head) - static_cast<char*>((m_Freed + i)->tail);
+				if (1 != s1 && 1 != meshShader) continue;
 				// When it's here, means that the two bookmarks are side by side
 				(m_Freed + i)->head = std::min((m_Freed + i)->head, bm->head);
 				(m_Freed + i)->tail = std::max((m_Freed + i)->tail, bm->tail); 

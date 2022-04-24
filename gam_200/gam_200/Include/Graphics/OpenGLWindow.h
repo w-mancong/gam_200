@@ -1,7 +1,6 @@
 #ifndef	GRAPHICS_WINDOW_H
 #define GRAPHICS_WINDOW_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace Graphics
@@ -13,7 +12,7 @@ namespace ManCong
 			static void FullScreen(bool fullScreen);
 			static void ResizeWindow(GLFWwindow* _window, int width, int height);
 
-			static GLFWwindow* GetWindow(void);
+			static GLFWwindow* Window(void);
 
 			static s32 *WindowWidth, *WindowHeight;
 

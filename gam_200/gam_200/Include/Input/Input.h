@@ -1,7 +1,6 @@
 #ifndef	INPUT_SYSTEM_H
 #define INPUT_SYSTEM_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace Input

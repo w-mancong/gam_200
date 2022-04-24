@@ -1,7 +1,6 @@
 #ifndef	TIME_H
 #define TIME_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace Utility

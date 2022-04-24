@@ -230,7 +230,7 @@
     <ClInclude Include="Include\ECS\Structure\EcsSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ECS\Components\Sub\RenderData.h">
+    <ClInclude Include="Include\ECS\Components\RenderData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\ECS\Systems\RenderSystem.h">

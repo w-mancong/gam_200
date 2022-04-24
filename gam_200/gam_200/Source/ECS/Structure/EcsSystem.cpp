@@ -6,7 +6,6 @@ namespace ManCong
 	{
 		void RegisterComponents(void)
 		{
-			Coordinator::Instance()->RegisterComponent<Color>();
 			Coordinator::Instance()->RegisterComponent<Sprite>();
 			Coordinator::Instance()->RegisterComponent<Transform>();
 		}
@@ -19,6 +18,7 @@ namespace ManCong
 		void InitSystem(void)
 		{
 			RegisterComponents();
+			RegisterSystem();
 		}
 	}
 }

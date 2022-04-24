@@ -11,7 +11,6 @@
 #include "ECS/Structure/EcsSystem.h"
 
 // -------------- Components --------------------
-#include "ECS/Components/Color.h"
 #include "ECS/Components/Sprite.h"
 #include "ECS/Components/Transform.h"
 

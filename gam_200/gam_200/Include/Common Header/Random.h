@@ -1,13 +1,12 @@
 #ifndef	RANDOM_H
 #define RANDOM_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace Random
 	{
-		int Range(int min, int max);
-		float Range(float min, float max);
+		s32 Range(s32 min, s32 max);
+		f32 Range(f32 min, f32 max);
 	}
 }
 

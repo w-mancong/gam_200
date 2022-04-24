@@ -1,7 +1,6 @@
 #ifndef	COMPONENT_ARRAY_H
 #define COMPONENT_ARRAY_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace ECS
