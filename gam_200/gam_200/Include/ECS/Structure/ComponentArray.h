@@ -55,7 +55,6 @@ namespace ManCong
 #ifdef _DEBUG
 				assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Retrieving non-existent component.");
 #endif	
-
 				// Return a reference to the entity's component
 				return mComponentArray[mEntityToIndexMap[entity]];
 			}

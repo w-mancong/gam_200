@@ -40,6 +40,11 @@ namespace ManCong
 			return m_Front;
 		}
 
+		Vector3 Camera::Position(void) const
+		{
+			return m_Position;
+		}
+
 		Matrix4x4 Camera::ViewMatrix(void) const
 		{
 			return Matrix4x4::LookAt(m_Position, m_Position + m_Front, m_Up);
@@ -55,6 +60,7 @@ namespace ManCong
 				case Projection::Orthographic:
 					return Matrix4x4::Ortho(0.0f, static_cast<f32>(*OpenGLWindow::WindowWidth), 0.0f, static_cast<f32>(*OpenGLWindow::WindowHeight), m_Near, m_Far);
 			}
+			return Matrix4x4{ 1.0f };
 		}
 
 		void Camera::Position(f32 x, f32 y)

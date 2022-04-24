@@ -5,7 +5,7 @@ namespace ManCong
 {
 	namespace ECS
 	{
-		namespace Components
+		namespace Component
 		{
 			struct Color
 			{

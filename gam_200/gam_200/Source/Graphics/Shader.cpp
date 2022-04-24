@@ -7,8 +7,10 @@ namespace ManCong
 	{
 		using namespace Exceptions;
 		// Constructor reads and builds the shader
-		Shader::Shader(const char* vertexPath, const char* fragmentPath)
+		Shader::Shader(const char* vertexPath, const char* fragmentPath) : id{ 0 }
 		{
+			if (!vertexPath || !fragmentPath)
+				return;
 			// 1. retrieve the vertex/fragment source code from filePath
 			std::string vertexCode, fragmentCode;
 			std::ifstream vShaderFile, fShaderFile;

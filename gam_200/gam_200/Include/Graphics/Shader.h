@@ -12,7 +12,8 @@ namespace ManCong
 		{
 		public:
 			// Constructor reads and builds the shader
-			Shader(const char* vertexPath, const char* fragmentPath);
+			Shader(const char* vertexPath = nullptr, const char* fragmentPath = nullptr);
+			~Shader(void) = default;
 			// Use/active program
 			void use(void);
 			// Utility uniform functions
@@ -33,6 +34,7 @@ namespace ManCong
 
 			void Set(const char* name, Math::Matrix4x4 const& mtx) const;
 
+		private:
 			u32 id;	// Program's id
 		};
 	}

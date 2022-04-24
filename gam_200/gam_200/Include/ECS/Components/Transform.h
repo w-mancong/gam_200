@@ -6,7 +6,7 @@ namespace ManCong
 {
 	namespace ECS
 	{
-		namespace Components
+		namespace Component
 		{
 			using namespace Math;
 			struct Transform

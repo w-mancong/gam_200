@@ -111,7 +111,7 @@ namespace ManCong
 
 		Matrix4x4 Matrix4x4::LookAt(Vector3 eye, Vector3 center, Vector3 up)
 		{
-			// direction										// right									   // up
+			// direction										// right							   // up
 			Vector3 const d = Vector3::Normalize(center - eye), r = Vector3::Cross(d, up).Normalize(), u = Vector3::Cross(r, d);
 			Matrix4x4 res;
 			res(0, 0) = r.x;				   res(0, 1) = u.x;					  res(0, 2) = -d.x;

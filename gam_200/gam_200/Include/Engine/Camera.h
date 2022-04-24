@@ -26,6 +26,7 @@ namespace ManCong
 			Vector3 Up(void) const;
 			Vector3 Right(void) const;
 			Vector3 Front(void) const;
+			Vector3 Position(void) const;
 			Matrix4x4 ViewMatrix(void) const;
 			Matrix4x4 ProjectionMatrix(void) const;
 

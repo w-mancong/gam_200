@@ -96,10 +96,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ECS\Structure\ComponentManager.cpp" />
-    <ClCompile Include="Source\ECS\Structure\Coordinator.cpp" />
+    <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
-    <ClCompile Include="Source\ECS\Structure\SystemManager.cpp" />
+    <ClCompile Include="Source\ECS\Systems\RenderSystem.cpp" />
     <ClCompile Include="Source\Engine\Application.cpp" />
     <ClCompile Include="Source\Engine\Camera.cpp" />
     <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp" />
@@ -139,6 +138,10 @@
     <ClInclude Include="Include\Common Header\MyMemory.h" />
     <ClInclude Include="Include\Common Header\TemplateClasses.h" />
     <ClInclude Include="Include\Common Header\Utility.h" />
+    <ClInclude Include="Include\ECS\Components\Sprite.h" />
+    <ClInclude Include="Include\ECS\Components\Sub\RenderData.h" />
+    <ClInclude Include="Include\ECS\Structure\EcsSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\RenderSystem.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
     <ClInclude Include="Include\Exceptions\DebugLog.h" />
@@ -152,9 +155,7 @@
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\ECS\Components\Color.h" />
-    <ClInclude Include="Include\ECS\Components\Sprite.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
-    <ClInclude Include="Include\ECS\Components\Mesh.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
     <ClInclude Include="Include\Graphics\stb_image.h" />
     <ClInclude Include="Include\Input\InputKeys.h" />
