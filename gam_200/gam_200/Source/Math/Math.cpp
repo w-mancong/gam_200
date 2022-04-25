@@ -9,12 +9,12 @@ namespace ManCong
 			return std::max(min, std::min(value, max));
 		}
 
-		float Clamp(f32 value, f32 min, f32 max)
+		f32 Clamp(f32 value, f32 min, f32 max)
 		{
 			return std::max(min, std::min(value, max));
 		}
 
-		double Clamp(f64 value, f64 min, f64 max)
+		f64 Clamp(f64 value, f64 min, f64 max)
 		{
 			return std::max(min, std::min(value, max));
 		}

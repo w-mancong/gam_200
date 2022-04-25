@@ -19,7 +19,7 @@ namespace ManCong
 		{
 			std::shared_ptr<RenderSystem> rs;
 			Shader spriteShader, meshShader;
-			Camera camera{ Vector3(0.0f, 0.0f, 75.0f) };
+			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		}
 
@@ -129,7 +129,7 @@ namespace ManCong
 			UpdateViewMatrix();
 		}
 
-		Vector3 const& CameraPosition(void)
+		Vector3 CameraPosition(void)
 		{
 			return camera.Position();
 		}
@@ -155,8 +155,34 @@ namespace ManCong
 					break;
 				}
 			}
+			sprite.layer = layer, sprite.mode = mode;
 			Coordinator::Instance()->AddComponent(entity, sprite);
 			Coordinator::Instance()->AddComponent(entity, transform);
+		}
+
+		void CreateSprite(Entity const& entity, Shape shape, RenderLayer layer, RenderMode mode)
+		{
+			Sprite sprite;
+			switch (shape)
+			{
+				case Shape::Rectangle:
+				{
+					sprite = MeshBuilder::Instance()->MakeRectangle();
+					break;
+				}
+				case Shape::Circle:
+				{
+					sprite = MeshBuilder::Instance()->MakeCircle();
+					break;
+				}
+				case Shape::Triangle:
+				{
+					sprite = MeshBuilder::Instance()->MakeTriangle();
+					break;
+				}
+			}
+			sprite.layer = layer, sprite.mode = mode;
+			Coordinator::Instance()->AddComponent(entity, sprite);
 		}
 
 		void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
@@ -165,6 +191,13 @@ namespace ManCong
 			sprite.layer = layer, sprite.mode = mode;
 			Coordinator::Instance()->AddComponent(entity, sprite);
 			Coordinator::Instance()->AddComponent(entity, transform);
+		}
+
+		void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer, RenderMode mode)
+		{
+			Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+			sprite.layer = layer, sprite.mode = mode;
+			Coordinator::Instance()->AddComponent(entity, sprite);
 		}
 
 		Entity CreateSprite(Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)

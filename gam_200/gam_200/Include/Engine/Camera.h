@@ -18,7 +18,7 @@ namespace ManCong
 				Orthographic
 			};
 		public:
-			Camera(Vector3 pos = Vector3(0.0f, 0.0f, 0.0f), Vector3 up = Vector3(0.0f, 1.0f, 0.0f), f32 yaw = -90.0f, f32 pitch = 0.0f, f32 zNear = 0.1f, f32 zFar = 100.0f, f32 fov = 45.0f);
+			Camera(Vector3 pos = Vector3(0.0f, 0.0f, 0.0f), Vector3 up = Vector3(0.0f, 1.0f, 0.0f), f32 yaw = -90.0f, f32 pitch = 0.0f, f32 zNear = 0.1f, f32 zFar = 1000.0f, f32 fov = 45.0f);
 			Camera(f32 x_pos = 0.0f, f32 y_pos = 0.0f, f32 z_pos = 0.0f, f32 x_up = 0.0f, f32 y_up = 1.0f, f32 z_up = 0.0f, f32 yaw = -90.0f, f32 pitch = 0.0f, f32 zNear = 0.1f, f32 zFar = 100.0f, f32 fov = 45.0f);
 
 			f32 Yaw(void) const;

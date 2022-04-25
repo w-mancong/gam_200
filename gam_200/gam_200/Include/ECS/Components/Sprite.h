@@ -1,3 +1,11 @@
+/*!
+file:	Sprite.h
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	This file contains the sprite component
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	SPRITE_H
 #define SPRITE_H
 
@@ -10,6 +18,10 @@ namespace ManCong
 	{
 		namespace Component
 		{
+			/*!*********************************************************************************
+				\brief
+					Sprite component will be used to render entities in the game world
+			***********************************************************************************/
 			struct Sprite
 			{
 				u32 vao{ 0 }, vbo{ 0 }, ebo{ 0 };

@@ -65,12 +65,12 @@ namespace ManCong
 
 		void Camera::Position(f32 x, f32 y)
 		{
-			m_Position.x = x, m_Position.y = y;
+			Position(Vector3(x, y, m_Position.z));
 		}
 
 		void Camera::Position(f32 x, f32 y, f32 z)
 		{
-			m_Position.x = x, m_Position.y = y, m_Position.z = z;
+			Position(Vector3(x, y, z));
 		}
 
 		void Camera::Position(Vector3 pos)
@@ -95,20 +95,20 @@ namespace ManCong
 
 		void Camera::Rotation(f32 yaw, f32 pitch)
 		{
-			Rotation(Vector2(yaw, pitch));
+			Rotation(Vector2(pitch, yaw));
 		}
 
 		void Camera::Rotation(Vector2 rotation)
 		{
-			m_Yaw = rotation.x, m_Pitch = rotation.y;
+			m_Pitch = rotation.x, m_Yaw = rotation.y;
 			m_Pitch = Math::Clamp(m_Pitch, -89.0f, 89.0f);
 			UpdateVectors();
 		}
 
 		void Camera::UpdateVectors(void)
 		{
-			f32 const yaw_sin = std::sinf(DegreeToRadian(m_Yaw)), yaw_cos = std::cosf(DegreeToRadian(m_Yaw));
-			f32 const pitch_sin = std::sinf(DegreeToRadian(m_Pitch)), pitch_cos = std::cosf(DegreeToRadian(m_Pitch));
+			f32 const yaw_sin	= std::sin(DegreeToRadian(m_Yaw)),	 yaw_cos	= std::cos(DegreeToRadian(m_Yaw));
+			f32 const pitch_sin = std::sin(DegreeToRadian(m_Pitch)), pitch_cos	= std::cos(DegreeToRadian(m_Pitch));
 			m_Front = Vector3(yaw_cos * pitch_cos, pitch_sin, yaw_sin * pitch_cos).Normalize();
 			m_Right = Vector3::Cross(m_Front, m_WorldUp).Normalize();
 			m_Up	= Vector3::Cross(m_Right, m_Front).Normalize();
