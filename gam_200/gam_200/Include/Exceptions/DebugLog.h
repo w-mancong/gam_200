@@ -1,3 +1,11 @@
+/*!
+file:	DebugLog.h
+author:	
+email:	
+brief:	This file contains static class to log debugging messages
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	DEBUG_LOG_H
 #define DEBUG_LOG_H
 

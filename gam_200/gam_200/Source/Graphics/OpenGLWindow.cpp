@@ -4,6 +4,14 @@ namespace ManCong
 {
 	namespace Graphics
 	{
+		namespace
+		{
+			void ResizeWindow(GLFWwindow* _window, int width, int height)
+			{
+				glViewport(0, 0, width, height);
+			}
+		}
+
 		GLFWwindow* OpenGLWindow::window = nullptr;
 		s32 OpenGLWindow::width = 800, OpenGLWindow::height = 600;
 		s32* OpenGLWindow::WindowWidth = &width, *OpenGLWindow::WindowHeight = &height;
@@ -54,11 +62,6 @@ namespace ManCong
 			else
 				w = width, h = height;
 			glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : NULL, 0, 0, w, h, GLFW_DONT_CARE);
-		}
-
-		void OpenGLWindow::ResizeWindow(GLFWwindow* _window, int _width, int _height)
-		{
-			glViewport(0, 0, _width, _height);
 		}
 
 		GLFWwindow* OpenGLWindow::Window(void)
