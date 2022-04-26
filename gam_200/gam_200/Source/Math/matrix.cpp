@@ -7,7 +7,7 @@ namespace ManCong
         /******************************************************************************************************************
                                            Invalid Deimensions
         ******************************************************************************************************************/
-        InvalidDimension::InvalidDimension(long long rows, long long cols, const char* s) : msg{ "" }
+        InvalidDimension::InvalidDimension(s64 rows, s64 cols, const char* s) : msg{ "" }
         {
             const char* ex = "Invalid Dimension Exception: ", * err = "is an invalid dimension for ";
             std::ostringstream oss;
@@ -30,7 +30,7 @@ namespace ManCong
         /******************************************************************************************************************
                                                     Index Out of Bound
         ******************************************************************************************************************/
-        IndexOutOfBounds::IndexOutOfBounds(long long row, long long R, long long col, long long C) : msg{ "" }
+        IndexOutOfBounds::IndexOutOfBounds(s64 row, s64 R, s64 col, s64 C) : msg{ "" }
         {
             std::ostringstream oss;
             if ((0 > row || R <= row) && (0 > col || C <= col))
@@ -49,7 +49,7 @@ namespace ManCong
         /******************************************************************************************************************
                                                    Incompatible Matrices
         ******************************************************************************************************************/
-        IncompatibleMatrices::IncompatibleMatrices(const char* operation, long long l_rows, long long l_cols, long long r_rows, long long r_cols) : msg{ "" }
+        IncompatibleMatrices::IncompatibleMatrices(const char* operation, s64 l_rows, s64 l_cols, s64 r_rows, s64 r_cols) : msg{ "" }
         {
             std::ostringstream oss;
             oss << "Incompatible Matrices Exception: " << operation << "of LHS matrix with dimensions" << l_rows << " X " << l_cols << " and RHS matrix with dimensions " << r_rows << " X " << r_cols << " is undefined";
