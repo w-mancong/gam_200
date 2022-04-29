@@ -217,17 +217,6 @@ namespace ManCong
 			return res;
 		}
 
-		f32 Vector3Distance(Vector3 const& lhs, Vector3 const& rhs)
-		{
-			return sqrtf(Vector3SquareDistance(lhs, rhs));
-		}
-
-		f32 Vector3SquareDistance(Vector3 const& lhs, Vector3 const& rhs)
-		{
-			Vector3 res{ lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z };
-			return res.MagnitudeSq();
-		}
-
 		std::ostream& operator<<(std::ostream& os, Vector3 const& rhs)
 		{
 			return os << std::fixed << std::setprecision(5) << std::left 

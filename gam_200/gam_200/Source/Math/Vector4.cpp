@@ -149,17 +149,6 @@ namespace ManCong
 			return res;
 		}
 
-		f32 Vector4Distance(Vector4 const& lhs, Vector4 const& rhs)
-		{
-			return sqrtf(Vector4SquareDistance(lhs, rhs));
-		}
-
-		f32 Vector4SquareDistance(Vector4 const& lhs, Vector4 const& rhs)
-		{
-			Vector4 res{ lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w };
-			return res.LengthSq();
-		}
-
 		std::ostream& operator<<(std::ostream& os, Vector4 const& rhs)
 		{
 			return os << std::fixed << std::setprecision(5) << std::left << std::setw(10) << "x: " << rhs.x << " y: " << rhs.y << " z: " << rhs.z << " w: " << rhs.w;

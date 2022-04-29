@@ -448,7 +448,7 @@ namespace ManCong
 
         /*!*********************************************************************************
             \brief
-            To output data of matrix to ostream
+            To output data of matrix to the output stream
 
             \param [in] os:
             Reference to the output stream to stream the matrix data to
