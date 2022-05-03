@@ -2,12 +2,12 @@
 
 namespace ManCong
 {
-    namespace Exception
+    namespace Exceptions
     {
         /******************************************************************************************************************
                                            Invalid Deimensions
         ******************************************************************************************************************/
-        InvalidDimension::InvalidDimension(long long rows, long long cols, const char* s) : msg{ "" }
+        InvalidDimension::InvalidDimension(s64 rows, s64 cols, const char* s) : msg{ "" }
         {
             const char* ex = "Invalid Dimension Exception: ", * err = "is an invalid dimension for ";
             std::ostringstream oss;
@@ -30,7 +30,7 @@ namespace ManCong
         /******************************************************************************************************************
                                                     Index Out of Bound
         ******************************************************************************************************************/
-        IndexOutOfBounds::IndexOutOfBounds(long long row, long long R, long long col, long long C) : msg{ "" }
+        IndexOutOfBounds::IndexOutOfBounds(s64 row, s64 R, s64 col, s64 C) : msg{ "" }
         {
             std::ostringstream oss;
             if ((0 > row || R <= row) && (0 > col || C <= col))
@@ -49,7 +49,7 @@ namespace ManCong
         /******************************************************************************************************************
                                                    Incompatible Matrices
         ******************************************************************************************************************/
-        IncompatibleMatrices::IncompatibleMatrices(const char* operation, long long l_rows, long long l_cols, long long r_rows, long long r_cols) : msg{ "" }
+        IncompatibleMatrices::IncompatibleMatrices(const char* operation, s64 l_rows, s64 l_cols, s64 r_rows, s64 r_cols) : msg{ "" }
         {
             std::ostringstream oss;
             oss << "Incompatible Matrices Exception: " << operation << "of LHS matrix with dimensions" << l_rows << " X " << l_cols << " and RHS matrix with dimensions " << r_rows << " X " << r_cols << " is undefined";
@@ -67,10 +67,10 @@ namespace ManCong
         matrix::matrix(size_type R, size_type C) : mtx{ nullptr }, R{ R }, C{ C }
         {
             if (0 > R || 0 > C)
-                throw Exception::InvalidDimension(R, C);
+                throw Exceptions::InvalidDimension(R, C);
             mtx = Memory::DynamicMemory::New<value_type>(R * C);
             if (R == C)
-                Indentity();
+                Identity();
         }
 
         matrix::matrix(Vector2 const& rhs) : mtx{ nullptr }, R{ 3 }, C{ 1 }
@@ -117,7 +117,7 @@ namespace ManCong
 
         matrix& matrix::operator=(matrix&& rhs) noexcept
         {
-            mtx = nullptr, R = 0, C = 0;
+            R = 0, C = 0;
             swap(rhs);
             return *this;
         }
@@ -136,7 +136,7 @@ namespace ManCong
             return *this;
         }
 
-        matrix::reference matrix::operator()(size_type row, size_type col)
+        typename matrix::reference matrix::operator()(size_type row, size_type col)
         {
             return const_cast<reference>(cget(row, col));
         }
@@ -167,7 +167,7 @@ namespace ManCong
         matrix& matrix::operator+=(matrix const& rhs)
         {
             if (R != rhs.R || C != rhs.C)
-                throw Exception::IncompatibleMatrices("Addition", R, C, rhs.R, rhs.C);
+                throw Exceptions::IncompatibleMatrices("Addition", R, C, rhs.R, rhs.C);
             for (size_type i = 0; i < R; ++i)
             {
                 for (size_type j = 0; j < C; ++j)
@@ -179,7 +179,7 @@ namespace ManCong
         matrix& matrix::operator-=(matrix const& rhs)
         {
             if (R != rhs.R || C != rhs.C)
-                throw Exception::IncompatibleMatrices("Subtraction", R, C, rhs.R, rhs.C);
+                throw Exceptions::IncompatibleMatrices("Subtraction", R, C, rhs.R, rhs.C);
             for (size_type i = 0; i < R; ++i)
             {
                 for (size_type j = 0; j < C; ++j)
@@ -228,7 +228,7 @@ namespace ManCong
         matrix& matrix::Inverse(void)
         {
             if (R != C)
-                throw Exception::InvalidDimension(R, C, "an inverse matrix. Must be a square matrix!");
+                throw Exceptions::InvalidDimension(R, C, "an inverse matrix. Must be a square matrix!");
             value_type det = Determinant(*this, R), flag = static_cast<value_type>(1);
             if (!det)
                 return *this;
@@ -247,10 +247,10 @@ namespace ManCong
             return *this;
         }
 
-        void matrix::Indentity(void)
+        void matrix::Identity(void)
         {
             if (R != C)
-                throw Exception::InvalidDimension(R, C, "an indentity matrix. Must be a square matrix!");
+                throw Exceptions::InvalidDimension(R, C, "an indentity matrix. Must be a square matrix!");
             for (size_type i = 0; i < R; ++i)
                 (*this)(i, i) = static_cast<value_type>(1);
         }
@@ -258,8 +258,13 @@ namespace ManCong
         typename matrix::value_type matrix::Determinant(void) const
         {
             if (R != C)
-                throw Exception::InvalidDimension(R, C, "finding determinant. Must be a square matrix!");
+                throw Exceptions::InvalidDimension(R, C, "finding determinant. Must be a square matrix!");
             return Determinant(*this, R);
+        }
+
+        typename matrix::const_pointer matrix::value_ptr(void) const
+        {
+            return mtx;
         }
 
         typename matrix::value_type matrix::Determinant(matrix const& m, size_type n) const
@@ -294,10 +299,10 @@ namespace ManCong
             }
         }
 
-        matrix::const_reference matrix::cget(size_type row, size_type col) const
+        typename matrix::const_reference matrix::cget(size_type row, size_type col) const
         {
             if (0 > row || R <= row || 0 > col || C <= col)
-                throw Exception::IndexOutOfBounds(row, R, col, C);
+                throw Exceptions::IndexOutOfBounds(row, R, col, C);
             return *(mtx + row * C + col);
         }
 
@@ -328,7 +333,7 @@ namespace ManCong
             using size_type = typename matrix::size_type;
             const size_type l_rows = lhs.Rows(), l_cols = lhs.Cols(), r_rows = rhs.Rows(), r_cols = rhs.Cols();
             if (l_cols != r_rows)
-                throw Exception::IncompatibleMatrices("Multiplication", l_rows, l_cols, r_rows, r_cols);
+                throw Exceptions::IncompatibleMatrices("Multiplication", l_rows, l_cols, r_rows, r_cols);
             matrix tmp(l_rows, r_cols);
             for (size_type i = 0; i < l_rows; ++i)
             {
@@ -358,10 +363,11 @@ namespace ManCong
         {
             using size_type = typename matrix::size_type;
             const size_type R = rhs.Rows(), C = rhs.Cols();
+            os << std::fixed << std::setprecision(5);
             for (size_type i = 0; i < R; ++i)
             {
                 for (size_type j = 0; j < C; ++j)
-                    os << rhs(i, j) << (j + 1 == C ? '\0' : ' ');
+                    os << std::left << std::setw(10) << rhs(i, j) << (j + 1 == C ? '\0' : ' ');
                 os << std::endl;
             }
             return os;

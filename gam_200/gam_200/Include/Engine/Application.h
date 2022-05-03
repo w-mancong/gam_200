@@ -1,3 +1,11 @@
+/*!
+file:	Application.h
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	This file contains function declaration that controls the flow of the program
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	APPLICATION_H
 #define APPLICATION_H
 
@@ -5,14 +13,10 @@ namespace ManCong
 {
 	namespace Engine
 	{
-		class Application
-		{
-		public:
-			void Init(void);
-			void Update(void);
-			void Exit(void);
-		};
-
+		/*!*********************************************************************************
+			\brief
+			Starts running the game loop
+		***********************************************************************************/
 		void Run(void);
 	}
 }

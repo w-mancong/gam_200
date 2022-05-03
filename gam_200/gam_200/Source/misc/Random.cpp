@@ -4,11 +4,11 @@ namespace ManCong
 {
 	namespace Random
 	{
-		int Range(int min, int max)
+		s32 Range(s32 min, s32 max)
 		{
 			return (std::rand() % (max - min + 1)) + min;
 		}
-		float Range(float min, float max)
+		f32 Range(f32 min, f32 max)
 		{
 			return ((max - min) * ((float)std::rand() / RAND_MAX)) + min;
 		}

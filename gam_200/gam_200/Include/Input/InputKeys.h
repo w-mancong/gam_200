@@ -1,7 +1,15 @@
+/*!
+file:	InputKeys.h
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	This file contain an enum class that has that contains all the accepted keys
+		for input
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	INPUT_KEYS_H
 #define INPUT_KEYS_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace Input
