@@ -8,6 +8,7 @@ brief:	Memory Arena. This class handles memory allocation and deallocation by ma
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
+#include "Engine/Manager/MeshBuilder.h"
 
 namespace ManCong
 {
@@ -241,7 +242,7 @@ namespace ManCong
 		void FreeInstance(void)
 		{
 			Coordinator::Free();
-			MeshBuilder::Free();
+			Engine::MeshBuilder::Free();
 		}
 
 		/*!*********************************************************************************

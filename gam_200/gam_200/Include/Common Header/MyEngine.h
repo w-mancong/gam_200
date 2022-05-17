@@ -10,8 +10,5 @@ brief:	This file contains all the relevant Engine header files to be included in
 #define MY_ENGINE_H
 
 #include "Engine/Application.h"
-#include "Engine/Manager/MeshBuilder.h"
-
-using ManCong::Engine::MeshBuilder;
 
 #endif

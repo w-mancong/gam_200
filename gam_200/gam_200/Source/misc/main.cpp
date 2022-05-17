@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Engine/Camera.h"
 
 int main(void)
 {
