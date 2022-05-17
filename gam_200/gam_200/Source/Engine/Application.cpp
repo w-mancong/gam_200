@@ -1,40 +1,39 @@
 #include "pch.h"
 
-namespace
-{
-	void ProcessInput()
-	{
-		GLFWwindow* window = ManCong::Graphics::GraphicsWindow::GetWindow();
-		if (Input::KeyTriggered(KeyCode::Escape))
-			glfwSetWindowShouldClose(window, true);
-	}
-}
-
 namespace ManCong
 {
 	namespace Engine
 	{
-		using namespace Graphics;
+		using namespace Math; using namespace Graphics; using namespace ECS;
+		class Application
+		{
+		public:
+			void Init(void);
+			void Update(void);
+			void Exit(void);
+		};
+
 		void Application::Init(void)
 		{
-			GraphicsWindow::InitGLFWWindow();
+			OpenGLWindow::InitGLFWWindow();
+			ECS::InitSystem();
+			Transform transform{ Vector2(200.0f, 0.0f), Vector2(10.5f, 10.5f), 0.0f };
+
+			Entity entity = CreateSprite(transform);
+			auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(entity);
+			sprite.color.g = 0.0f; sprite.color.b = 0.0f; sprite.color.a = 0.35f;
+			sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Lines;
+
+			transform.scale = Vector2(200.0f, 200.0f);
+			CreateSprite(Coordinator::Instance()->CreateEntity(), transform, Shape::Circle, RenderLayer::Background);
 		}
 
 		void Application::Update(void)
 		{
 			// should do the game loop here
-			while (!glfwWindowShouldClose(GraphicsWindow::GetWindow()))
+			while (!glfwWindowShouldClose(OpenGLWindow::Window()))
 			{
-				// Input
-				ProcessInput();
-
-				// rendering commands here
-				glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-				glClear(GL_COLOR_BUFFER_BIT);
-
-				// check and call events and swap the buffers
-				glfwPollEvents();
-				glfwSwapBuffers(GraphicsWindow::GetWindow());
+				Render();
 			}
 		}
 

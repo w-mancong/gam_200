@@ -1,7 +1,6 @@
 #ifndef	ENTITY_MANAGER_H
 #define ENTITY_MANAGER_H
 
-#include "pch.h"
 namespace ManCong
 {
 	namespace ECS
