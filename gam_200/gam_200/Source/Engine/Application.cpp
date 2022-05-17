@@ -13,19 +13,38 @@ namespace ManCong
 			void Exit(void);
 		};
 
+		typedef ManCong::Input::Input Input;
+		typedef ManCong::Input::KeyCode KeyCode;
+
+		Entity Entity_Chika, Entity_Michan;
+
 		void Application::Init(void)
 		{
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
-			Transform transform{ Vector2(200.0f, 0.0f), Vector2(10.5f, 10.5f), 0.0f };
 
-			Entity entity = CreateSprite(transform);
-			auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(entity);
-			sprite.color.g = 0.0f; sprite.color.b = 0.0f; sprite.color.a = 0.35f;
-			sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Lines;
+			//Chika
+			{
+				Transform transform{ Vector2(0, 0), Vector2(30, 30), 0.0f };
 
-			transform.scale = Vector2(200.0f, 200.0f);
-			CreateSprite(Coordinator::Instance()->CreateEntity(), transform, Shape::Circle, RenderLayer::Background);
+				Entity_Chika = CreateSprite(transform);
+				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(Entity_Chika);
+				sprite.color.r = 1.0f, sprite.color.g = 1.0f; sprite.color.b = 1.0f; sprite.color.a = 1.0f;
+				sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Fill;
+			}
+
+			//Michan
+			{
+				Transform transform{ Vector2(100, 100), Vector2(30, 30), 0.0f };
+
+				Entity_Michan = CreateSprite(transform);
+				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(Entity_Michan);
+				sprite.color.r = 0.0f, sprite.color.g = 1.0f; sprite.color.b = 0.0f; sprite.color.a = 1.0f;
+				sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Fill;
+			}
+
+			//Create Circle
+			//CreateSprite(Coordinator::Instance()->CreateEntity(), transform, Shape::Circle, RenderLayer::Background);
 		}
 
 		void Application::Update(void)
@@ -34,6 +53,26 @@ namespace ManCong
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()))
 			{
 				Render();
+
+				auto& entity_transform = Coordinator::Instance()->GetComponent<Transform>(Entity_Chika);
+
+				//x -= ManCong::Utility::Time::dt;
+
+				if (Input::KeyDown(KeyCode::A)) {
+					entity_transform.position.x--;
+				}
+				if (Input::KeyDown(KeyCode::D)) {
+					entity_transform.position.x++;
+				}
+				if (Input::KeyDown(KeyCode::S)) {
+					entity_transform.position.y--;
+				}
+				if (Input::KeyDown(KeyCode::W)) {
+					entity_transform.position.y++;
+				}
+
+				//std::cout << ManCong::Utility::Time::dt << "\n";
+				//std::cout << entity_transform.position.x << " : " << entity_transform.position.y << "\n";
 			}
 		}
 
