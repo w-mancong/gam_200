@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Graphics/Shader.h"
 #include "Engine/Camera.h"
+#include "Engine/Manager/MeshBuilder.h"
 
 namespace ManCong
 {
@@ -92,7 +93,7 @@ namespace ManCong
 			std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
 			// copy into temp vector
 			std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
-			// sort order
+			// sort entities by layer
 			std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
 			{
 				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
@@ -100,8 +101,9 @@ namespace ManCong
 				return sp1.layer < sp2.layer;
 			});
 
-			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			// Do frustum culling here
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 				rs->Render(*it);
 			glfwPollEvents();
@@ -111,6 +113,17 @@ namespace ManCong
 		void SetBackgroundColor(Color const& color)
 		{
 			bgColor = color;
+		}
+
+		void SetBackgroundColor(f32 r, f32 g, f32 b, f32 a)
+		{
+			r = Clamp(r, 0.0f, 1.0f), g = Clamp(g, 0.0f, 1.0f), b = Clamp(b, 0.0f, 1.0f), a = Clamp(a, 0.0f, 1.0f);
+			SetBackgroundColor( { r, g, b, a } );
+		}
+
+		void SetBackgroundColor(s32 r, s32 g, s32 b, s32 a)
+		{
+			SetBackgroundColor(static_cast<f32>(r) / 255.0f, static_cast<f32>(g) / 255.0f, static_cast<f32>(b) / 255.0f, static_cast<f32>(a) / 255.0f);
 		}
 
 		void CameraPosition(f32 x, f32 y)

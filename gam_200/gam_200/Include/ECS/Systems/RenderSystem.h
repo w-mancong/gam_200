@@ -48,6 +48,36 @@ namespace ManCong
 
 		/*!*********************************************************************************
 			\brief
+			Set the color of background
+
+			\param [in] r:
+			Red value
+			\param [in] g:
+			Green value
+			\param [in] b:
+			Blue value
+			\param [in] a:
+			Alpha value
+		***********************************************************************************/
+		void SetBackgroundColor(f32 r, f32 g, f32 b, f32 a);
+
+		/*!*********************************************************************************
+			\brief
+			Set the color of background
+
+			\param [in] r:
+			Red value
+			\param [in] g:
+			Green value
+			\param [in] b:
+			Blue value
+			\param [in] a:
+			Alpha value
+		***********************************************************************************/
+		void SetBackgroundColor(s32 r, s32 g, s32 b, s32 a);
+
+		/*!*********************************************************************************
+			\brief
 			Set the position of camera
 			\param [in] x:
 			New x position of camera
