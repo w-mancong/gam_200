@@ -5,14 +5,13 @@ namespace ManCong
 {
 	namespace ECS
 	{
-		class CollisionSystem
-		{
-			/*!*********************************************************************************
-			\brief
-			Create a sprite with basic shapes, no images will be loaded
-			***********************************************************************************/
-			void CreateCollider(Entity const& entity);
-		};
+		Collider* CreateCollider(Entity const& entity) {
+			Collider new_Collider;
+
+			Coordinator::Instance()->AddComponent(entity, new_Collider);
+			
+			return &(Coordinator::Instance()->GetComponent<Collider>(entity));
+		}
 	}
 }
 

@@ -22,6 +22,7 @@ namespace ManCong
 			***********************************************************************************/
 			struct Collider
 			{
+				Entity m_Entity;
 				Math::Vector2 position{ 0.0f, 0.0f };	//Collider position that is relative to it's entity
 				bool isActive{ true };					//Is active
 				bool isCollided{ false };				//Is Colliding

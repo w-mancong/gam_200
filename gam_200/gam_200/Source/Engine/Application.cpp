@@ -23,6 +23,8 @@ namespace ManCong
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 
+			//Coordinator::Instance()->GetComponent<Collider>(Entity_Chika);
+
 			//Chika
 			{
 				Transform transform{ Vector2(0, 0), Vector2(30, 30), 0.0f };
@@ -31,6 +33,8 @@ namespace ManCong
 				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(Entity_Chika);
 				sprite.color.r = 1.0f, sprite.color.g = 1.0f; sprite.color.b = 1.0f; sprite.color.a = 1.0f;
 				sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Fill;
+
+				CreateCollider(Entity_Chika);
 			}
 
 			//Michan
@@ -41,6 +45,8 @@ namespace ManCong
 				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(Entity_Michan);
 				sprite.color.r = 0.0f, sprite.color.g = 1.0f; sprite.color.b = 0.0f; sprite.color.a = 1.0f;
 				sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Fill;
+
+				CreateCollider(Entity_Michan);
 			}
 
 			//Create Circle
@@ -73,6 +79,8 @@ namespace ManCong
 
 				//std::cout << ManCong::Utility::Time::dt << "\n";
 				//std::cout << entity_transform.position.x << " : " << entity_transform.position.y << "\n";
+
+				//std::cout << Coordinator::Instance()->GetComponent<Collider>(Entity_Chika).isActive << "\n";
 			}
 		}
 
