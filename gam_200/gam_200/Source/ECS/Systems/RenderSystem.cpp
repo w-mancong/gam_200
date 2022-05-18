@@ -16,6 +16,28 @@ namespace ManCong
 			void Render(Entity const& entity);
 		};
 
+		struct Plane
+		{
+			Vector3 position{ 0.0f, 0.0f, 0.0f };
+			Vector3 normal{ 0.0f, 1.0f, 0.0f };
+		};
+
+		enum class Faces
+		{
+			Near,
+			Far,
+			Left,
+			Right,
+			Top,
+			Bottom,
+			Total,
+		};
+
+		struct Frustum
+		{
+			Plane planes[static_cast<u64>(Faces::Total)];
+		};
+
 		namespace
 		{
 			std::shared_ptr<RenderSystem> rs;
@@ -88,6 +110,28 @@ namespace ManCong
 			meshShader.Set("proj", camera.ProjectionMatrix());
 		}
 
+		void CreateFrustum(Frustum& fstm)
+		{
+			f32 const zFar = camera.FarPlane();
+			f32 const halfVSide = zFar * std::tanf(camera.Fov() * 0.5f);
+			f32 const halfHSide = halfVSide * ( static_cast<f32>(OpenGLWindow::width / OpenGLWindow::height) );
+			Vector3 const position = camera.Position(), right = camera.Right(), up = camera.Up(), front = camera.Front(), frontMultFar = zFar * front;
+
+			u64 planeIndex = static_cast<u64>(Faces::Near);
+			// Near Plane
+			fstm.planes[planeIndex++] = { position + camera.NearPlane() * front, front };
+			// Far Plane
+			fstm.planes[planeIndex++] = { position + frontMultFar, -front };
+			// Left Plane
+			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar - right * halfHSide, up) ) };
+			// Right Plane
+			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(up, frontMultFar + right * halfHSide) ) };
+			// Top Plane
+			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar + up * halfVSide, right) ) };
+			// Bottom Plane
+			fstm.planes[planeIndex]   = { position, Vector3::Normalize( Vector3::Cross(right, frontMultFar - up * halfVSide) ) };
+		}
+
 		void Render(void)
 		{
 			std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
@@ -103,7 +147,10 @@ namespace ManCong
 
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			// Create frustum here
+			Frustum fstm; CreateFrustum(fstm);
 			// Do frustum culling here
+
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 				rs->Render(*it);
 			glfwPollEvents();
@@ -145,6 +192,17 @@ namespace ManCong
 		Vector3 CameraPosition(void)
 		{
 			return camera.Position();
+		}
+
+		void CameraFov(f32 fov)
+		{
+			camera.Fov(fov);
+			UpdateProjectionMatrix();
+		}
+
+		void ViewportResizeCameraUpdate(void)
+		{
+			UpdateProjectionMatrix();
 		}
 
 		void CreateSprite(Entity const& entity, Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)

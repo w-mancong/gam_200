@@ -25,6 +25,21 @@ namespace ManCong
 			return m_Pitch;
 		}
 
+		f32 Camera::NearPlane(void) const
+		{
+			return m_Near;
+		}
+
+		f32 Camera::FarPlane(void) const
+		{
+			return m_Far;
+		}
+
+		f32 Camera::Fov(void) const
+		{
+			return m_Fov;
+		}
+
 		Vector3 Camera::Up(void) const
 		{
 			return m_Up;
@@ -56,9 +71,9 @@ namespace ManCong
 			switch (m_Projection)
 			{
 				case Projection::Perspective:
-					return Matrix4x4::Perspective(m_Fov, static_cast<f32>(*OpenGLWindow::WindowWidth) / static_cast<f32>(*OpenGLWindow::WindowHeight), m_Near, m_Far);
+					return Matrix4x4::Perspective(m_Fov, static_cast<f32>(OpenGLWindow::width) / static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
 				case Projection::Orthographic:
-					return Matrix4x4::Ortho(0.0f, static_cast<f32>(*OpenGLWindow::WindowWidth), 0.0f, static_cast<f32>(*OpenGLWindow::WindowHeight), m_Near, m_Far);
+					return Matrix4x4::Ortho(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
 			}
 			return Matrix4x4{ 1.0f };
 		}
@@ -91,6 +106,11 @@ namespace ManCong
 		void Camera::FarPlane(f32 zFar)
 		{
 			m_Far = zFar;
+		}
+
+		void Camera::Fov(f32 fov)
+		{
+			m_Fov = fov;
 		}
 
 		void Camera::Rotation(f32 yaw, f32 pitch)
