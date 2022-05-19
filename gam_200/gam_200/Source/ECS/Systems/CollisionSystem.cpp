@@ -47,17 +47,34 @@ namespace ManCong
 				Transform* transform = &Coordinator::Instance()->GetComponent<Transform>(entities[i]);
 
 				allColliders[i]->m_data.UpdateCollider(transform);
+				allColliders[i]->m_data.isCollided = false;
 			}
 
 			//Do Static Check for each box first
-			// Do frustum culling here
 			for (int i = 0; i < allColliders.size(); ++i) {
 				for (int j = 0; j < allColliders.size(); ++j) {
-					if (i == j) {
+					if ((i == j)) {
 						continue;
 					}
 
-					allColliders[i]->CheckCollision(allColliders[j]);
+					bool collisionOutcome = allColliders[i]->CheckCollision(allColliders[j]);
+					allColliders[i]->m_data.isCollided = collisionOutcome;
+					allColliders[j]->m_data.isCollided = collisionOutcome;
+
+					//std::cout << allColliders[i]->CheckCollision(allColliders[j]) << std::endl;
+				}
+			}
+
+			//Change color
+			for (int i = 0; i < entities.size(); i++) {
+				//allColliders.push_back(&Coordinator::Instance()->GetComponent<Collider>(entities[i]));
+				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
+
+				if (allColliders[i]->m_data.isCollided) {
+					sprite.color.r = 1.0f, sprite.color.g = 0.0f; sprite.color.b = 0.0f; sprite.color.a = 1.0f;
+				}
+				else {
+					sprite.color.r = 1.0f, sprite.color.g = 1.0f; sprite.color.b = 1.0f; sprite.color.a = 1.0f;
 				}
 			}
 		}
@@ -71,7 +88,7 @@ namespace ManCong
 
 				//BoxCollider2D box = m_data;
 
-				CollisionCheck_AABB(*this, *otherCollider);
+				return CollisionCheck_AABB(*this, *otherCollider);
 
 				//std::cout << m_data.position.x << "," << m_data.position.y << "\n";
 				//std::cout << otherCollider->m_data.position.x << "," << otherCollider->m_data.position.y << "\n";
@@ -112,7 +129,7 @@ namespace ManCong
 		}
 	}
 
-	bool  ManCong::ECS::CollisionCheck_AABB(Collider box_one, Collider box_two) {
+	bool ManCong::ECS::CollisionCheck_AABB(Collider box_one, Collider box_two) {
 		////static check
 		//if ((box_one.position.x + box_one.width() * 0.5f > box_two.position.x - box_two.width() * 0.5f && box_one.position.y + box_one.height() * 0.5f > box_two.position.y - box_two.height() * 0.5f)		//one max > two min
 		//	&& (box_one.position.x - box_one.width() * 0.5f < box_two.position.x + box_two.width() * 0.5f && box_one.position.y - box_one.height() * 0.5f < box_two.position.y + box_two.height() * 0.5f))	//one min < two max
@@ -124,7 +141,6 @@ namespace ManCong
 		if ((box_one.m_data.position.x + box_one.m_data.m_size_data[0] * 0.5f > box_two.m_data.position.x - box_two.m_data.m_size_data[0] * 0.5f && box_one.m_data.position.y + box_one.m_data.m_size_data[1] * 0.5f > box_two.m_data.position.y - box_two.m_data.m_size_data[1] * 0.5f)		//one max > two min
 			&& (box_one.m_data.position.x - box_one.m_data.m_size_data[0] * 0.5f < box_two.m_data.position.x + box_two.m_data.m_size_data[0] * 0.5f && box_one.m_data.position.y - box_one.m_data.m_size_data[1] * 0.5f < box_two.m_data.position.y + box_two.m_data.m_size_data[1] * 0.5f))	//one min < two max
 		{
-			std::cout << "COLLIDE";
 			return true;
 		}
 
