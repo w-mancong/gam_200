@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Time.h"
 
 namespace ManCong
 {
@@ -30,10 +31,15 @@ namespace ManCong
 
 		void Application::Update(void)
 		{
+			Time timer;
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()))
 			{
+				timer.ClockTimeNow();
 				Render();
+				timer.WaitUntil();
+
+				std::cout << timer.m_FPS << std::endl;
 			}
 		}
 
