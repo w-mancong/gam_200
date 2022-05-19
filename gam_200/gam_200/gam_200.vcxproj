@@ -96,7 +96,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Engine\Manager\CollisionSystem.cpp" />
+    <ClCompile Include="Include\ECS\Components\Collider.cpp" />
+    <ClCompile Include="Source\ECS\Systems\CollisionSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\RenderSystem.cpp" />

@@ -14,6 +14,7 @@ namespace ManCong
 		void RegisterSystem(void)
 		{
 			RegisterRenderSystem();
+			RegiserCollisionSystem();
 		}
 
 		void InitSystem(void)

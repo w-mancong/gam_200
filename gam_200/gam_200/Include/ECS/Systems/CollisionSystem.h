@@ -13,11 +13,28 @@ namespace ManCong
 	{
 		/*!*********************************************************************************
 			\brief
+			Update Collision Check 
+		***********************************************************************************/
+		void CheckCollision();
+
+
+		/*!*********************************************************************************
+			\brief
+			Register RenderSystem for ECS to work
+		***********************************************************************************/
+		void RegiserCollisionSystem(void);
+
+		/*!*********************************************************************************
+			\brief
 			Adds collider component to entity
 
 			\param [in] entity:
 			Entity to add the collider component
 		***********************************************************************************/
-		ManCong::ECS::Collider* CreateCollider(Entity const& entity);
+		ManCong::ECS::Collider* CreateBoxCollider2D(Entity const& entity);
+
+
+		bool CollisionCheck_AABB(Collider box_one, Collider box_two);
+		//bool CollisionCheck_AABB(BoxCollider2D box_one, BoxCollider2D box_two);
 	}
 }
