@@ -83,7 +83,9 @@ namespace ManCong
 					collidersprite.color.r = 1.0f, collidersprite.color.g = 1.0f; collidersprite.color.b = 1.0f; collidersprite.color.a = 1.0f;
 				}
 
-				if (!allColliders[i]->m_data.isShowCollider) {
+				//Is is not showing collider or collider is not active
+				if (!allColliders[i]->m_data.isShowCollider || !allColliders[i]->m_data.isActive) {
+					//alpha 0
 					collidersprite.color.r = 1.0f, collidersprite.color.g = 0.0f; collidersprite.color.b = 0.0f; collidersprite.color.a = 0.0f;
 				}
 			}
