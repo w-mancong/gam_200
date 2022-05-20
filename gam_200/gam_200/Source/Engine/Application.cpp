@@ -57,7 +57,7 @@ namespace ManCong
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()))
 			{
 				Render();
-				CheckCollision();
+				CollisionSystemUpdate();
 
 				auto& entity_transform = Coordinator::Instance()->GetComponent<Transform>(Entity_Chika);
 
@@ -74,6 +74,37 @@ namespace ManCong
 				}
 				if (Input::KeyDown(KeyCode::W)) {
 					entity_transform.position.y++;
+				}
+
+				auto& chikaCollider = Coordinator::Instance()->GetComponent<Collider>(Entity_Chika);
+				auto& michanCollider = Coordinator::Instance()->GetComponent<Collider>(Entity_Michan);
+
+				//Change position of collider size
+				if (Input::KeyDown(KeyCode::Left)) {
+					chikaCollider.m_data.localPosition.x--;
+				}
+				if (Input::KeyDown(KeyCode::Right)) {
+					chikaCollider.m_data.localPosition.x++;
+				}
+				if (Input::KeyDown(KeyCode::Down)) {
+					chikaCollider.m_data.localPosition.y--;
+				}
+				if (Input::KeyDown(KeyCode::Up)) {
+					chikaCollider.m_data.localPosition.y++;
+				}
+
+				if (Input::KeyDown(KeyCode::Pad_Add)) {
+					chikaCollider.m_data.m_size_data[0]++;
+					chikaCollider.m_data.m_size_data[1]++;
+				}
+				if (Input::KeyDown(KeyCode::Pad_Subtract)) {
+					chikaCollider.m_data.m_size_data[0]--;
+					chikaCollider.m_data.m_size_data[1]--;
+				}
+
+				if (Input::KeyTriggered(KeyCode::Enter)) {
+					michanCollider.m_data.isShowCollider = !michanCollider.m_data.isShowCollider;
+					chikaCollider.m_data.isShowCollider = !chikaCollider.m_data.isShowCollider;
 				}
 
 				//std::cout << ManCong::Utility::Time::dt << "\n";

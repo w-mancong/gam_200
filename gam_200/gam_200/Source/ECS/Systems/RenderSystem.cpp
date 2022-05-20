@@ -76,6 +76,7 @@ namespace ManCong
 			signature.set( Coordinator::Instance()->GetComponentType<Transform>() );
 			signature.set( Coordinator::Instance()->GetComponentType<Sprite>() );
 			Coordinator::Instance()->SetSystemSignature<RenderSystem>(signature);
+
 			// Initialising shader
 			spriteShader = Shader{ "Assets/Shaders/sprite.vert", "Assets/Shaders/sprite.frag" };
 			spriteShader.use();
