@@ -35,8 +35,8 @@ namespace ManCong
 			enum class RenderMode
 			{
 				Fill	= GL_FILL,
-				Lines	= GL_LINE,
-				Points	= GL_POINTS
+				Line	= GL_LINE,
+				Point	= GL_POINTS
 			};
 		}
 	}
