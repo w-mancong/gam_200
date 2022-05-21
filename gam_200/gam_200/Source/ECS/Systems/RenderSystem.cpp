@@ -8,9 +8,6 @@ namespace ManCong
 	namespace ECS
 	{
 		using namespace Math; using namespace Engine; using namespace Graphics;
-		void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
-		void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2]);
-
 		class RenderSystem : public System
 		{
 		public:
@@ -38,6 +35,10 @@ namespace ManCong
 		{
 			Plane planes[static_cast<u64>(Faces::Total)];
 		};
+
+		void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
+		void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2]);
+		void InitializeFrustum(Frustum& fstm);
 
 		namespace
 		{
@@ -107,6 +108,8 @@ namespace ManCong
 			meshShader.use();
 			meshShader.Set("view", camera.ViewMatrix());
 			meshShader.Set("proj", camera.ProjectionMatrix());
+
+			InitializeFrustum(fstm);
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -133,7 +136,7 @@ namespace ManCong
 
 		bool IntersectsPlane(Vector2 boxVec[2], Vector2 const& position, Plane const& plane)
 		{
-			return std::abs(boxVec[0].Dot(plane.normal)) + std::abs(boxVec[1].Dot(plane.normal)) >= std::abs((Vector3(position) - plane.position).Dot(plane.normal));
+			return std::abs( boxVec[0].Dot(plane.normal) ) + std::abs( boxVec[1].Dot(plane.normal) ) >= std::abs( (Vector3(position) - plane.position).Dot(plane.normal) );
 		}
 
 		bool ShouldRender(Transform const& trans)
@@ -155,8 +158,8 @@ namespace ManCong
 
 		void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2])
 		{
-			boxVec[0] = Matrix3x3::Rotation(trans.rotation) * boxVec[0] * trans.scale.x;
-			boxVec[1] = Vector2::ClampMagnitude(Vector2::Perpendicular(boxVec[0]), trans.scale.y);
+			boxVec[0] = Matrix3x3::Rotation(trans.rotation) * boxVec[0] * (trans.scale.x * 0.5f);
+			boxVec[1] = Vector2::ClampMagnitude(Vector2::Perpendicular(boxVec[0]), trans.scale.y * 0.5f);
 		}
 
 		void Render(void)
@@ -174,8 +177,6 @@ namespace ManCong
 
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			// Initialize frustum here
-			InitializeFrustum(fstm);
 			u32 displayed = 0;
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 			{
@@ -219,10 +220,11 @@ namespace ManCong
 			CameraPosition(Vector3(x, y, z));
 		}
 
-		void CameraPosition(Math::Vector3 pos)
+		void CameraPosition(Vector3 pos)
 		{
 			camera.Position(pos);
 			UpdateViewMatrix();
+			InitializeFrustum(fstm);
 		}
 
 		Vector3 CameraPosition(void)
@@ -234,11 +236,13 @@ namespace ManCong
 		{
 			camera.Fov(fov);
 			UpdateProjectionMatrix();
+			InitializeFrustum(fstm);
 		}
 
 		void ViewportResizeCameraUpdate(void)
 		{
 			UpdateProjectionMatrix();
+			InitializeFrustum(fstm);
 		}
 
 		void CreateSprite(Entity const& entity, Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)

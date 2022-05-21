@@ -24,13 +24,14 @@ namespace ManCong
 			//sprite.color.g = 0.0f; sprite.color.b = 0.0f; sprite.color.a = 0.35f;
 			//sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Line;
 
-			transform.position = Vector2(0.0f, 443.0f);
+			transform.position = Vector2(0.0f, 0.0f);
 			transform.rotation = 30.0f;
 			//transform.position = Vector2(600.0f, 0.0f);
 			transform.scale = Vector2(200.0f, 50.0f);
-			Entity entity2 = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
-			auto& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(entity2);
+			Entity entity2 = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(entity2);
 			sprite2.mode = RenderMode::Line;
+			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 		}
 
 		void Application::Update(void)
