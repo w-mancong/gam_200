@@ -13,9 +13,15 @@ namespace ManCong
 	{
 		/*!*********************************************************************************
 			\brief
-			Update Collision Check 
+			Update Collision Check
 		***********************************************************************************/
 		void CollisionSystemUpdate();
+
+		/*!*********************************************************************************
+			\brief
+			Update Collision Check 
+		***********************************************************************************/
+		void CollisionSystemLateUpdate();
 
 
 		bool InitiateCollisionCheck(Collider* collider_one, Collider* collider_two);
@@ -36,6 +42,7 @@ namespace ManCong
 		ManCong::ECS::Collider* CreateBoxCollider2D(Entity const& entity);
 
 		bool CollisionCheck_AABB(Collider box_one, Collider box_two);
-		//bool CollisionCheck_AABB(BoxCollider2D box_one, BoxCollider2D box_two);
+
+		Collision2D_Data CollisionResponse2D_AABB(Collider movingCollider, Collider otherCollider);
 	}
 }

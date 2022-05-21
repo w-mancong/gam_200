@@ -22,6 +22,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Components/Sprite.h"
 #include "ECS/Components/Transform.h"
 #include "ECS/Components/Collider.h"
+#include "ECS/Components/Rigidbody2D.h"
 
 // ----------------- System ---------------------
 #include "ECS/Systems/RenderSystem.h"
@@ -29,5 +30,4 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 
 using ManCong::ECS::Coordinator;
 using namespace ManCong::ECS::Component;
-
 #endif

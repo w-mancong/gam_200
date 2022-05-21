@@ -111,6 +111,9 @@ namespace ManCong
 				//std::cout << entity_transform.position.x << " : " << entity_transform.position.y << "\n";
 
 				//std::cout << Coordinator::Instance()->GetComponent<Collider>(Entity_Chika).isActive << "\n";
+
+
+				CollisionSystemLateUpdate();
 			}
 		}
 

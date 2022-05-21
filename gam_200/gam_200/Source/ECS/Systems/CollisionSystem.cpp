@@ -15,10 +15,10 @@ namespace ManCong
 
 		};
 
-
 		namespace
 		{
 			std::shared_ptr<CollisionSystem> colliderSystem;
+			Collision2D_Data collisionData_Default;
 		}
 
 		void RegiserCollisionSystem(void) {
@@ -29,11 +29,6 @@ namespace ManCong
 			signature.set(Coordinator::Instance()->GetComponentType<Collider>());
 			Coordinator::Instance()->SetSystemSignature<CollisionSystem>(signature);
 		}
-
-		//bool CollisionSystem::CheckCollision(Collider const& collider_One, Collider const& collider_Two)
-		//{
-		//	std::vector<Entity> entities; entities.reserve(colliderSystem->mEntities.size());
-		//}
 
 		void ManCong::ECS::CollisionSystemUpdate() {
 			std::vector<Entity> entities; entities.reserve(colliderSystem->mEntities.size());
@@ -66,6 +61,8 @@ namespace ManCong
 					bool collisionOutcome = InitiateCollisionCheck(allColliders[i], allColliders[j]);
 					allColliders[i]->m_data.isCollided = collisionOutcome;
 					allColliders[j]->m_data.isCollided = collisionOutcome;
+
+					allColliders[i]->m_data.collisionData = collisionData_Default;
 				}
 			}
 
@@ -89,6 +86,11 @@ namespace ManCong
 					collidersprite.color.r = 1.0f, collidersprite.color.g = 0.0f; collidersprite.color.b = 0.0f; collidersprite.color.a = 0.0f;
 				}
 			}
+		}
+
+
+		void ManCong::ECS::CollisionSystemLateUpdate() {
+
 		}
 
 		bool ManCong::ECS::InitiateCollisionCheck(Collider* collider_one, Collider* collider_two)
@@ -132,6 +134,7 @@ namespace ManCong
 		if ((box_one.m_data.globalPosition().x + box_one.m_data.globalScale().x * 0.5f > box_two.m_data.globalPosition().x - box_two.m_data.globalScale().x * 0.5f && box_one.m_data.globalPosition().y + box_one.m_data.globalScale().y * 0.5f > box_two.m_data.globalPosition().y - box_two.m_data.globalScale().y * 0.5f)		//one max > two min
 			&& (box_one.m_data.globalPosition().x - box_one.m_data.globalScale().x * 0.5f < box_two.m_data.globalPosition().x + box_two.m_data.globalScale().x * 0.5f && box_one.m_data.globalPosition().y - box_one.m_data.globalScale().y * 0.5f < box_two.m_data.globalPosition().y + box_two.m_data.globalScale().y * 0.5f))	//one min < two max
 		{
+			CollisionResponse2D_AABB(box_one, box_two);
 			return true;
 		}
 
@@ -140,6 +143,15 @@ namespace ManCong
 		return false;
 	}				
 	
+	Collision2D_Data ManCong::ECS::CollisionResponse2D_AABB(Collider movingCollider, Collider otherCollider) {
+		Collision2D_Data collisionData;
+
+
+		
+		return collisionData;
+	}
+
+
 	void ManCong::ECS::Component::ColliderShape::InitializeCollider(Transform* transform) {
 		m_entity_collision_sprite = ManCong::ECS::CreateSprite(*transform);
 		auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(m_entity_collision_sprite);

@@ -21,6 +21,14 @@ namespace ManCong
 				CIRCLE_2D
 			};
 
+			struct Collision2D_Data {
+				Math::Vector2 normal{ 0,0 };
+				Math::Vector2 moving_position{ 0,0 };
+				Math::Vector2 moving_velocity{ 0,0 };
+				f32 time{ 0 };
+				bool isCollided{ false };
+			};
+
 			/*!*********************************************************************************
 				\brief
 					2D Box Collider component will be used to handle collision
@@ -35,6 +43,7 @@ namespace ManCong
 				Entity m_entity_attached;
 				Entity m_entity_collision_sprite;
 				SHAPE m_Shape;
+				Collision2D_Data collisionData;
 
 				Math::Vector2 globalPosition() const {
 					Transform& entity_transform = Coordinator::Instance()->GetComponent<Transform>(m_entity_attached);
