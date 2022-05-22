@@ -23,10 +23,12 @@ namespace ManCong
 
 			struct Collision2D_Data {
 				Math::Vector2 normal{ 0,0 };
-				Math::Vector2 moving_position{ 0,0 };
-				Math::Vector2 moving_velocity{ 0,0 };
+				Math::Vector2 position_current{ 0,0 };
+				Math::Vector2 position_moved{ 0,0 };
 				f32 time{ 0 };
-				bool isCollided{ false };
+				bool isCollided{ false };					//Is Colliding
+
+				Math::Vector2 position_collided() { return position_current + position_moved * time; };
 			};
 
 			/*!*********************************************************************************
@@ -38,7 +40,6 @@ namespace ManCong
 				f32	rotation{ 0.0f };						//Rotation of the collider relative to it's entity
 				bool isActive{ true };						//Is active
 				bool isShowCollider{ false };				//Render Collider
-				bool isCollided{ false };					//Is Colliding
 				std::vector<f32> m_size_data;
 				Entity m_entity_attached;
 				Entity m_entity_collision_sprite;

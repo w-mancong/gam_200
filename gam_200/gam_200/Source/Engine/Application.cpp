@@ -56,9 +56,9 @@ namespace ManCong
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()))
 			{
-				Render();
 				CollisionSystemUpdate();
 
+				//input
 				auto& entity_transform = Coordinator::Instance()->GetComponent<Transform>(Entity_Chika);
 
 				//x -= ManCong::Utility::Time::dt;
@@ -76,9 +76,9 @@ namespace ManCong
 					entity_transform.position.y++;
 				}
 
+
 				auto& chikaCollider = Coordinator::Instance()->GetComponent<Collider>(Entity_Chika);
 				auto& michanCollider = Coordinator::Instance()->GetComponent<Collider>(Entity_Michan);
-
 				//Change position of collider size
 				if (Input::KeyDown(KeyCode::Left)) {
 					chikaCollider.m_data.localPosition.x--;
@@ -106,6 +106,9 @@ namespace ManCong
 					michanCollider.m_data.isShowCollider = !michanCollider.m_data.isShowCollider;
 					chikaCollider.m_data.isShowCollider = !chikaCollider.m_data.isShowCollider;
 				}
+
+				Render();
+
 
 				//std::cout << ManCong::Utility::Time::dt << "\n";
 				//std::cout << entity_transform.position.x << " : " << entity_transform.position.y << "\n";
