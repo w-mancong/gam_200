@@ -155,6 +155,7 @@
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\ECS\Components\Color.h" />
+    <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
     <ClInclude Include="Include\Graphics\stb_image.h" />

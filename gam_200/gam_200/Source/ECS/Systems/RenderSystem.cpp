@@ -13,12 +13,12 @@ namespace ManCong
 		{
 		public:
 			void Render(Sprite const& sprite, Transform const& trans);
-			void RenderText(Shader& shader, std::string text, float x, float y, float scale, Vector3 color);
+			void RenderText(std::string text, float x, float y, float scale, Vector3 color);
 		};
 
 		struct Plane
 		{
-			Vector3 position{ 0.0f, 0.0f, 0.0f };
+			Vector3 position{ 0.0f, 0.0f, 0.0f };  
 			Vector3 normal{ 0.0f, 1.0f, 0.0f };
 		};
 
@@ -45,7 +45,7 @@ namespace ManCong
 		namespace
 		{
 			std::shared_ptr<RenderSystem> rs;
-			Shader spriteShader, meshShader;
+			Shader spriteShader, meshShader, fontshader;
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
@@ -97,6 +97,100 @@ namespace ManCong
 			meshShader.Set("proj", camera.ProjectionMatrix());
 		}
 
+		void Fontinit(void)
+		{
+			// compile and setup the shader
+			fontshader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
+			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(1200), 0.0f, static_cast<float>(600), 0.0f, 0.0f);
+			fontshader.use();
+			fontshader.Set("projection", projection.value_ptr());
+
+			// FreeType
+			// --------
+			FT_Library ft;
+			// All functions return a value different than 0 whenever an error occurred
+			if (FT_Init_FreeType(&ft))
+			{
+				std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+			}
+
+			// find path to font
+			std::string font_name = "Assets/fonts/Arial Italic.ttf";
+			if (font_name.empty())
+			{
+				std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
+			}
+
+			// load font as face
+			FT_Face face;
+			if (FT_New_Face(ft, font_name.c_str(), 0, &face)) {
+				std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+			}
+			else {
+				// set size to load glyphs as
+				FT_Set_Pixel_Sizes(face, 0, 48);
+
+				// disable byte-alignment restriction
+				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+				// load first 128 characters of ASCII set
+				for (unsigned char c = 0; c < 128; c++)
+				{
+					// Load character glyph 
+					if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+					{
+						std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+						continue;
+					}
+					// generate texture
+					unsigned int texture;
+					glGenTextures(1, &texture);
+					glBindTexture(GL_TEXTURE_2D, texture);
+					glTexImage2D(
+						GL_TEXTURE_2D,
+						0,
+						GL_RED,
+						face->glyph->bitmap.width,
+						face->glyph->bitmap.rows,
+						0,
+						GL_RED,
+						GL_UNSIGNED_BYTE,
+						face->glyph->bitmap.buffer
+					);
+					// set texture options
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+					// now store character for later use
+					Character character = {
+						texture,
+						Vector2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+						Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+						static_cast<unsigned int>(face->glyph->advance.x)
+					};
+					Characters.insert(std::pair<char, Character>(c, character));
+				}
+				glBindTexture(GL_TEXTURE_2D, 0);
+			}
+			// destroy FreeType once we're finished
+			FT_Done_Face(face);
+			FT_Done_FreeType(ft);
+
+
+			// configure VAO/VBO for texture quads
+			// -----------------------------------
+			glGenVertexArrays(1, &fonts_VAO);
+			glGenBuffers(1, &fonts_VBO);
+			glBindVertexArray(fonts_VAO);
+			glBindBuffer(GL_ARRAY_BUFFER, fonts_VBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindVertexArray(0);
+		}
+
 		void RegisterRenderSystem(void)
 		{
 			rs = Coordinator::Instance()->RegisterSystem<RenderSystem>();
@@ -116,6 +210,7 @@ namespace ManCong
 			meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
+			Fontinit();
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -196,15 +291,19 @@ namespace ManCong
 			}
 			std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			std::cout << "Total entities displayed: " << displayed << std::endl;
+
+			rs->RenderText("This is sample text", 25.0f, 25.0f, 1.0f, Vector3(0.5, 0.8f, 0.2f));
+			rs->RenderText("(C) LearnOpenGL.com", 0.0f, 0.0f, 0.5f, Vector3(0.3, 0.7f, 0.9f));
+
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
 		}
 
-		void RenderSystem::RenderText(Shader& shader, std::string text, float x, float y, float scale, Vector3 color)
+		void RenderSystem::RenderText(std::string text, float x, float y, float scale, Vector3 color)
 		{
 			// activate corresponding render state	
-			shader.use();
-			shader.Set("textColor", color.x, color.y, color.z);
+			fontshader.use();
+			fontshader.Set("textColor", color.x, color.y, color.z);
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(fonts_VAO);
 
