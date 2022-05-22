@@ -47,9 +47,6 @@ namespace ManCong
 				//allColliders[i]->m_data.collisionData.position_moved = transform->position;
 
 				allColliders[i]->m_data.collisionData.position_current = allColliders[i]->m_data.globalPosition();
-
-				//if(i == 0)
-				//std::cout << "BEFORE : " << allColliders[i]->m_data.collisionData.position_moved << std::endl;
 			}
 		}
 
@@ -110,9 +107,6 @@ namespace ManCong
 				//allColliders[i]->m_data.collisionData.position_previous = allColliders[i]->m_data.globalPosition();
 				allColliders[i]->m_data.collisionData.position_moved = allColliders[i]->m_data.globalPosition();
 				allColliders[i]->m_data.collisionData.isCollided = false;
-
-				//if (i == 0)
-				//	std::cout << "AFTER : " << allColliders[i]->m_data.collisionData.position_moved << std::endl;
 			}
 		}
 
@@ -166,7 +160,7 @@ namespace ManCong
 		return false;
 	}				
 	
-	Collision2D_Data ManCong::ECS::CollisionResponse2D_AABB(Collider movingCollider, Collider otherCollider) {
+	Collision2D_Data ManCong::ECS::CollisionResponse2D_AABB(Collider &movingCollider, Collider &otherCollider) {
 		Transform &entityTransform { Coordinator::Instance()->GetComponent<Transform>(movingCollider.m_Entity) };
 
 		//Basically the Ti
@@ -187,16 +181,14 @@ namespace ManCong
 		//Keep track of which side has collided
 		bool hasXcollide = false, hasYCollide = false;
 
-		std::cout << movingOriginalPosition.x << " : " << movingOriginalPosition.y << std::endl;
-
 		//If X velocity is moving
 		if (movingVelocity.x != 0) {
 			//Move right
 			if (movingVelocity.x > 0) {
-				if (((movingOriginalPosition.x + movingVelocity.x) + movingBoxScale.x * 0.5f) > (otherOriginalPosition.x - otherBoxScale.x * 0.5f) &&
-					(movingOriginalPosition.x - movingBoxScale.x * 0.5f) < (otherOriginalPosition.x + otherBoxScale.x * 0.5f) &&
-					(movingOriginalPosition.y + movingBoxScale.y * 0.5f) > (otherOriginalPosition.y - otherBoxScale.y * 0.5f) &&
-					(movingOriginalPosition.y - movingBoxScale.y * 0.5f) < (otherOriginalPosition.y + otherBoxScale.y * 0.5f)) {
+				if (((movingOriginalPosition.x + movingVelocity.x) + movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x) &&
+					(movingOriginalPosition.x - movingBoxScale.x) < (otherOriginalPosition.x + otherBoxScale.x) &&
+					(movingOriginalPosition.y + movingBoxScale.y) > (otherOriginalPosition.y - otherBoxScale.y) &&
+					(movingOriginalPosition.y - movingBoxScale.y) < (otherOriginalPosition.y + otherBoxScale.y)) {
 					//if the top of moving is top of the bottom of idle collider
 					afterVelX = movingOriginalPosition.x - movingVelocity.x;
 
@@ -207,10 +199,10 @@ namespace ManCong
 			}
 			//Move left
 			else if (movingVelocity.x < 0) {
-				if (((movingOriginalPosition.x + movingVelocity.x) - movingBoxScale.x * 0.5f) < (otherOriginalPosition.x + otherBoxScale.x * 0.5f) &&
-					(movingOriginalPosition.x - movingBoxScale.x * 0.5f) > (otherOriginalPosition.x - otherBoxScale.x * 0.5f) &&
-					(movingOriginalPosition.y + movingBoxScale.y * 0.5f) > (otherOriginalPosition.y - otherBoxScale.y * 0.5f) &&
-					(movingOriginalPosition.y - movingBoxScale.y * 0.5f) < (otherOriginalPosition.y + otherBoxScale.y * 0.5f)) {
+				if (((movingOriginalPosition.x + movingVelocity.x) - movingBoxScale.x) < (otherOriginalPosition.x + otherBoxScale.x) &&
+					(movingOriginalPosition.x - movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x) &&
+					(movingOriginalPosition.y + movingBoxScale.y) > (otherOriginalPosition.y - otherBoxScale.y) &&
+					(movingOriginalPosition.y - movingBoxScale.y) < (otherOriginalPosition.y + otherBoxScale.y)) {
 
 					afterVelX = movingOriginalPosition.x - movingVelocity.x;
 
@@ -229,7 +221,7 @@ namespace ManCong
 				//entityTransform.position = movingOriginalPosition + movingVelocity * (1 - fabsf(boundaryDistanceX / afterVelX));
 
 				//std::cout << afterVelX << "\n";
-				entityTransform.position.x = afterVelX;
+				entityTransform.position.x = entityTransform.position.x + (afterVelX - movingOriginalPosition.x);
 				//if (movingCollider.m_data.collisionData.time > (1 - fabsf(boundaryDistanceX / afterVelX))) {
 				//	movingCollider.m_data.collisionData.time = 1 - fabsf(boundaryDistanceX / afterVelX);
 				//	entityTransform.position = movingOriginalPosition + movingVelocity * movingCollider.m_data.collisionData.time;
@@ -241,10 +233,10 @@ namespace ManCong
 		if (movingVelocity.y != 0) {
 			//If Moving up
 			if (movingVelocity.y > 0) {
-				if (((movingOriginalPosition.y + movingVelocity.y) + movingBoxScale.y * 0.5f) > (otherOriginalPosition.y - otherBoxScale.y * 0.5f) &&
-					(movingOriginalPosition.y - movingBoxScale.y * 0.5f) < (otherOriginalPosition.y + otherBoxScale.y * 0.5f) &&
-					(movingOriginalPosition.x + movingBoxScale.x * 0.5f) > (otherOriginalPosition.x - otherBoxScale.x * 0.5f) &&
-					(movingOriginalPosition.x - movingBoxScale.x * 0.5f) < (otherOriginalPosition.x + otherBoxScale.x * 0.5f)) {
+				if (((movingOriginalPosition.y + movingVelocity.y) + movingBoxScale.y) > (otherOriginalPosition.y - otherBoxScale.y) &&
+					(movingOriginalPosition.y - movingBoxScale.y) < (otherOriginalPosition.y + otherBoxScale.y) &&
+					(movingOriginalPosition.x + movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x) &&
+					(movingOriginalPosition.x - movingBoxScale.x) < (otherOriginalPosition.x + otherBoxScale.x)) {
 					//if the top of moving is top of the bottom of idle collider
 					afterVelY = movingOriginalPosition.y - movingVelocity.y;
 
@@ -255,10 +247,10 @@ namespace ManCong
 			}
 			//If moving down
 			else if (movingVelocity.y < 0) {
-				if (((movingOriginalPosition.y + movingVelocity.y) - movingBoxScale.y * 0.5f) < (otherOriginalPosition.y + otherBoxScale.y * 0.5f) &&
-					(movingOriginalPosition.y - movingBoxScale.y * 0.5f) > (otherOriginalPosition.y - otherBoxScale.y * 0.5f) &&
-					(movingOriginalPosition.x + movingBoxScale.x * 0.5f) > (otherOriginalPosition.x - otherBoxScale.x * 0.5f) &&
-					(movingOriginalPosition.x - movingBoxScale.x * 0.5f) < (otherOriginalPosition.x + otherBoxScale.x * 0.5f)) {
+				if (((movingOriginalPosition.y + movingVelocity.y) - movingBoxScale.y) < (otherOriginalPosition.y + otherBoxScale.y) &&
+					(movingOriginalPosition.y - movingBoxScale.y) > (otherOriginalPosition.y - otherBoxScale.y) &&
+					(movingOriginalPosition.x + movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x) &&
+					(movingOriginalPosition.x - movingBoxScale.x) < (otherOriginalPosition.x + otherBoxScale.x)) {
 					afterVelY = movingOriginalPosition.y - movingVelocity.y;
 
 					//Find the position where moving collider touches the idle collider (from the right)
@@ -273,7 +265,8 @@ namespace ManCong
 				//The min will most right will remain minimum while the most left will become the most right.
 				//Push the range forward so the origin, most left value is positive (dont deal with negative number in range, easier to find percentage)
 
-				entityTransform.position.y = afterVelY;
+				//entityTransform.position.y = afterVelY;
+				entityTransform.position.y = entityTransform.position.y + (afterVelY - movingOriginalPosition.y);
 
 				//if (movingCollider.m_data.collisionData.time > (1 - fabsf(boundaryDistanceY / afterVelY))) {
 				//	movingCollider.m_data.collisionData.time = 1 - fabsf(boundaryDistanceY / afterVelY);

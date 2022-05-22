@@ -43,6 +43,6 @@ namespace ManCong
 
 		bool CollisionCheck_AABB(Collider box_one, Collider box_two);
 
-		Collision2D_Data CollisionResponse2D_AABB(Collider movingCollider, Collider otherCollider);
+		Collision2D_Data CollisionResponse2D_AABB(Collider &movingCollider, Collider &otherCollider);
 	}
 }
