@@ -52,7 +52,7 @@ namespace ManCong
 
 			//fonts variables
 			std::map<GLchar, Character> Characters;
-			unsigned int fonts_VAO, fonts_VBO;
+			u32 fonts_VAO, fonts_VBO;
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
