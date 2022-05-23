@@ -100,8 +100,8 @@ namespace ManCong
 		void Fontinit(void)
 		{
 			// compile and setup the shader
-			fontshader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
-			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(1200), 0.0f, static_cast<float>(600), 0.0f, 0.0f);
+			Shader fontshader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
+			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(800), 0.0f, static_cast<float>(600), 0.0f, 0.0f);
 			fontshader.use();
 			fontshader.Set("projection", projection.value_ptr());
 
@@ -134,7 +134,7 @@ namespace ManCong
 				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 				// load first 128 characters of ASCII set
-				for (unsigned char c = 0; c < 128; c++)
+				for (u8 c = 0; c < 128; c++)
 				{
 					// Load character glyph 
 					if (FT_Load_Char(face, c, FT_LOAD_RENDER))
@@ -143,9 +143,9 @@ namespace ManCong
 						continue;
 					}
 					// generate texture
-					unsigned int texture;
-					glGenTextures(1, &texture);
-					glBindTexture(GL_TEXTURE_2D, texture);
+					u32 shadertexture;
+					glGenTextures(1, &shadertexture);
+					glBindTexture(GL_TEXTURE_2D, shadertexture);
 					glTexImage2D(
 						GL_TEXTURE_2D,
 						0,
@@ -164,10 +164,10 @@ namespace ManCong
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 					// now store character for later use
 					Character character = {
-						texture,
+						shadertexture,
 						Vector2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 						Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-						static_cast<unsigned int>(face->glyph->advance.x)
+						static_cast<u32>(face->glyph->advance.x)
 					};
 					Characters.insert(std::pair<char, Character>(c, character));
 				}
