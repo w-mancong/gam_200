@@ -30,14 +30,14 @@ namespace ManCong
 			Coordinator::Instance()->SetSystemSignature<CollisionSystem>(signature);
 		}
 
-		void ManCong::ECS::CollisionSystemUpdate() {
+		void CollisionSystemUpdate() {
 			std::vector<Entity> entities; entities.reserve(colliderSystem->mEntities.size());
 			// copy into temp vector
 			std::copy(colliderSystem->mEntities.begin(), colliderSystem->mEntities.end(), std::back_inserter(entities));
 
 			std::vector<Collider*> allColliders;
 
-			for (int i = 0; i < entities.size(); i++) {
+			for (int i = 0; i < entities.size(); ++i) {
 				allColliders.push_back(&Coordinator::Instance()->GetComponent<Collider>(entities[i]));
 
 				Transform* transform = &Coordinator::Instance()->GetComponent<Transform>(entities[i]);
@@ -51,14 +51,14 @@ namespace ManCong
 		}
 
 
-		void ManCong::ECS::CollisionSystemLateUpdate() {
+		void CollisionSystemLateUpdate() {
 			std::vector<Entity> entities; entities.reserve(colliderSystem->mEntities.size());
 			// copy into temp vector
 			std::copy(colliderSystem->mEntities.begin(), colliderSystem->mEntities.end(), std::back_inserter(entities));
 
 			std::vector<Collider*> allColliders;
 
-			for (int i = 0; i < entities.size(); i++) {
+			for (int i = 0; i < entities.size(); ++i) {
 				Transform* transform = &Coordinator::Instance()->GetComponent<Transform>(entities[i]);
 
 				allColliders.push_back(&Coordinator::Instance()->GetComponent<Collider>(entities[i]));
@@ -83,7 +83,7 @@ namespace ManCong
 				}
 			}
 			//Change color
-			for (int i = 0; i < entities.size(); i++) {
+			for (int i = 0; i < entities.size(); ++i) {
 				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
 				auto& collidersprite = Coordinator::Instance()->GetComponent<Sprite>(allColliders[i]->m_data.m_entity_collision_sprite);
 
@@ -103,14 +103,14 @@ namespace ManCong
 				}
 			}
 
-			for (int i = 0; i < entities.size(); i++) {
+			for (int i = 0; i < entities.size(); ++i) {
 				//allColliders[i]->m_data.collisionData.position_previous = allColliders[i]->m_data.globalPosition();
 				allColliders[i]->m_data.collisionData.position_moved = allColliders[i]->m_data.globalPosition();
 				allColliders[i]->m_data.collisionData.isCollided = false;
 			}
 		}
 
-		bool ManCong::ECS::InitiateCollisionCheck(Collider* collider_one, Collider* collider_two)
+		bool InitiateCollisionCheck(Collider* collider_one, Collider* collider_two)
 		{
 			switch (collider_one->m_data.m_Shape)
 			{
