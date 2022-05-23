@@ -13,9 +13,12 @@ namespace ManCong
 			void Exit(void);
 		};
 
+		Entity rect;
+
 		void Application::Init(void)
 		{
 			OpenGLWindow::InitGLFWWindow();
+			Time::Init();
 			ECS::InitSystem();
 			Transform transform{ Vector2(200.0f, 0.0f), Vector2(10.5f, 10.5f), 0.0f };
 
@@ -28,8 +31,8 @@ namespace ManCong
 			transform.rotation = 30.0f;
 			//transform.position = Vector2(600.0f, 0.0f);
 			transform.scale = Vector2(200.0f, 50.0f);
-			Entity entity2 = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
-			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(entity2);
+			rect = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(rect);
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 		}
@@ -39,7 +42,35 @@ namespace ManCong
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
+				f32 constexpr speed = 150.0f;
+				f32 constexpr rot = 1.0f;
+				if(Input::Input::KeyDown(KeyCode::W))
+				{
+					trans.position.y += speed * Time::dt;
+				}
+				if (Input::Input::KeyDown(KeyCode::S))
+				{
+					trans.position.y -= speed * Time::dt;
+				}
+				if (Input::Input::KeyDown(KeyCode::D))
+				{
+					trans.position.x += speed * Time::dt;
+				}
+				if (Input::Input::KeyDown(KeyCode::A))
+				{
+					trans.position.x -= speed * Time::dt;
+				}
+				if (Input::Input::KeyDown(KeyCode::Q))
+				{
+					trans.rotation += rot;
+				}
+				if (Input::Input::KeyDown(KeyCode::E))
+				{
+					trans.rotation -= rot;
+				}
 				Render();
+				Time::Update();
 			}
 		}
 
