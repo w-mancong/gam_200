@@ -52,7 +52,7 @@ namespace ManCong
 
 			//fonts variables
 			std::map<GLchar, Character> Characters;
-			u32 fonts_VAO, fonts_VBO;
+			u32 fontsVAO, fontsVBO;
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -71,7 +71,7 @@ namespace ManCong
 			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
 			shader->use();
 			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
-			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
+			//glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, sprite.texture);
 			glBindVertexArray(sprite.vao);
@@ -100,10 +100,10 @@ namespace ManCong
 		void Fontinit(void)
 		{
 			// compile and setup the shader
-			Shader fontshader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
-			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(800), 0.0f, static_cast<float>(600), 0.0f, 0.0f);
+			fontshader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
+			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(OpenGLWindow::width), 0.0f, static_cast<float>(OpenGLWindow::height), -0.1f, 100.0f);
 			fontshader.use();
-			fontshader.Set("projection", projection.value_ptr());
+			fontshader.Set("projection", projection);
 
 			// FreeType
 			// --------
@@ -115,7 +115,7 @@ namespace ManCong
 			}
 
 			// find path to font
-			std::string font_name = "Assets/fonts/Arial Italic.ttf";
+			std::string font_name = "Assets/fonts/Roboto-Regular.ttf";
 			if (font_name.empty())
 			{
 				std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
@@ -126,52 +126,51 @@ namespace ManCong
 			if (FT_New_Face(ft, font_name.c_str(), 0, &face)) {
 				std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 			}
-			else {
-				// set size to load glyphs as
-				FT_Set_Pixel_Sizes(face, 0, 48);
+			// set size to load glyphs as
+			FT_Set_Pixel_Sizes(face, 0, 48);
 
-				// disable byte-alignment restriction
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			// disable byte-alignment restriction
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-				// load first 128 characters of ASCII set
-				for (u8 c = 0; c < 128; c++)
+			// load first 128 characters of ASCII set
+			for (u8 c = 0; c < 128; c++)
+			{
+				// Load character glyph 
+				if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 				{
-					// Load character glyph 
-					if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-					{
-						std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-						continue;
-					}
-					// generate texture
-					u32 shadertexture;
-					glGenTextures(1, &shadertexture);
-					glBindTexture(GL_TEXTURE_2D, shadertexture);
-					glTexImage2D(
-						GL_TEXTURE_2D,
-						0,
-						GL_RED,
-						face->glyph->bitmap.width,
-						face->glyph->bitmap.rows,
-						0,
-						GL_RED,
-						GL_UNSIGNED_BYTE,
-						face->glyph->bitmap.buffer
-					);
-					// set texture options
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-					// now store character for later use
-					Character character = {
-						shadertexture,
-						Vector2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-						Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-						static_cast<u32>(face->glyph->advance.x)
-					};
-					Characters.insert(std::pair<char, Character>(c, character));
+					std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+					continue;
 				}
-				glBindTexture(GL_TEXTURE_2D, 0);
+				// generate texture
+				u32 shadertexture;
+				glGenTextures(1, &shadertexture);
+				glBindTexture(GL_TEXTURE_2D, shadertexture);
+				glTexImage2D(
+					GL_TEXTURE_2D,
+					0,
+					GL_RED,
+					face->glyph->bitmap.width,
+					face->glyph->bitmap.rows,
+					0,
+					GL_RED,
+					GL_UNSIGNED_BYTE,
+					face->glyph->bitmap.buffer
+				);
+				// set texture options
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				// now store character for later use
+				Character character = {
+					shadertexture,
+					Vector2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+					Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+					static_cast<u32>(face->glyph->advance.x)
+				};
+				Characters.insert(std::pair<char, Character>(c, character));
+				
+			glBindTexture(GL_TEXTURE_2D, 0);
 			}
 			// destroy FreeType once we're finished
 			FT_Done_Face(face);
@@ -180,10 +179,10 @@ namespace ManCong
 
 			// configure VAO/VBO for texture quads
 			// -----------------------------------
-			glGenVertexArrays(1, &fonts_VAO);
-			glGenBuffers(1, &fonts_VBO);
-			glBindVertexArray(fonts_VAO);
-			glBindBuffer(GL_ARRAY_BUFFER, fonts_VBO);
+			glGenVertexArrays(1, &fontsVAO);
+			glGenBuffers(1, &fontsVBO);
+			glBindVertexArray(fontsVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, fontsVBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
@@ -292,8 +291,8 @@ namespace ManCong
 			std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			std::cout << "Total entities displayed: " << displayed << std::endl;
 
-			rs->RenderText("This is sample text", 25.0f, 25.0f, 1.0f, Vector3(0.5, 0.8f, 0.2f));
-			rs->RenderText("(C) LearnOpenGL.com", 0.0f, 0.0f, 0.5f, Vector3(0.3, 0.7f, 0.9f));
+			rs->RenderText("Lorem ipsum dolor sit", 25.0f, 25.0f, 1.0f, Vector3(1.f, 1.f, 1.f));
+			rs->RenderText("Hello everyone", 0.0f, 0.0f, 0.5f, Vector3(0.3, 0.7f, 0.9f));
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
@@ -305,7 +304,7 @@ namespace ManCong
 			fontshader.use();
 			fontshader.Set("textColor", color.x, color.y, color.z);
 			glActiveTexture(GL_TEXTURE0);
-			glBindVertexArray(fonts_VAO);
+			glBindVertexArray(fontsVAO);
 
 			// iterate through all characters
 			std::string::const_iterator c;
@@ -320,7 +319,7 @@ namespace ManCong
 				float h = ch.Size.y * scale;
 				// update VBO for each character
 				float vertices[6][4] = {
-					{ xpos,     ypos + h,   0.0f, 0.0f },
+					{ xpos,     ypos + h,   0.0f, 0.0f,},
 					{ xpos,     ypos,       0.0f, 1.0f },
 					{ xpos + w, ypos,       1.0f, 1.0f },
 
@@ -331,7 +330,7 @@ namespace ManCong
 				// render glyph texture over quad
 				glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 				// update content of VBO memory
-				glBindBuffer(GL_ARRAY_BUFFER, fonts_VBO);
+				glBindBuffer(GL_ARRAY_BUFFER, fontsVBO);
 				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
 
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
