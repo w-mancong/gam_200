@@ -23,7 +23,9 @@ namespace ManCong
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 			glfwWindowHint(GLFW_SAMPLES, 4);
 			//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-			//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); used for initializing MacOS
+#ifdef __APPLE__
+			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 			window = glfwCreateWindow(width, height, "LearnOpenGL", nullptr, nullptr);
 			if (!window)
