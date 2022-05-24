@@ -39,14 +39,13 @@ namespace ManCong
 		}
 
 		/*!*********************************************************************************
-			\brief
-				Reset DynamicMemory class to it's default state
+		\brief
+				Call the destructor of all the singleton classes
 		***********************************************************************************/
-		void StaticMemory::Reset(void)
+		void FreeInstance(void)
 		{
-			std::fill(m_Ptr, (m_Ptr + MEMORY_BUFFER), '\0');
-			std::fill(m_Bookmarks, (m_Bookmarks + BOOKMARK_SIZE), Bookmark());
-			m_Index = 0;
+			Coordinator::Free();
+			Engine::MeshBuilder::Free();
 		}
 
 		/*!*********************************************************************************
@@ -55,6 +54,7 @@ namespace ManCong
 		***********************************************************************************/
 		void StaticMemory::FreeAll(void)
 		{
+			FreeInstance();
 			delete[] m_Ptr;
 		}
 
@@ -229,32 +229,6 @@ namespace ManCong
 			delete[] m_Ptr;
 		}
 
-		/*********************************************************************************
-										INSTANCE MEMORY
-		*********************************************************************************/
-		u64 InstanceMemory::m_Index = 0;
-		char* const InstanceMemory::m_Ptr = new char[INSTANCE_MEMORY_BUFFER] {};
-
-		/*!*********************************************************************************
-			\brief
-				Call the destructor of all the singleton classes
-		***********************************************************************************/
-		void FreeInstance(void)
-		{
-			Coordinator::Free();
-			Engine::MeshBuilder::Free();
-		}
-
-		/*!*********************************************************************************
-			\brief
-				Deallocate the memory allocated inside the heap for mPtr
-		***********************************************************************************/
-		void InstanceMemory::FreeAll(void)
-		{
-			FreeInstance();
-			delete[] m_Ptr;
-		}
-
 		/*!*********************************************************************************
 			\brief
 				Helper function to reset both StaticMemory and DynamicMemory to it's 
@@ -262,7 +236,6 @@ namespace ManCong
 		***********************************************************************************/
 		void Reset(void)
 		{
-			StaticMemory::Reset();
 			DynamicMemory::Reset();
 		}
 
@@ -274,7 +247,6 @@ namespace ManCong
 		{
 			StaticMemory::FreeAll();
 			DynamicMemory::FreeAll();
-			InstanceMemory::FreeAll();
 		}
 	}
 }

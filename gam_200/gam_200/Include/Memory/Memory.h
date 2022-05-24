@@ -15,7 +15,7 @@ namespace ManCong
 {
 	namespace Memory
 	{
-		u64 constexpr MEMORY_BUFFER = 2'097'152, INSTANCE_MEMORY_BUFFER = 524'228;
+		u64 constexpr MEMORY_BUFFER = 2'097'152;
 		struct Bookmark
 		{
 			void *head{ nullptr }, *tail{ nullptr };
@@ -70,10 +70,7 @@ namespace ManCong
 
 			static void FindBookmark(Bookmark*& bm, void* ptr);
 
-			static void Reset(void);
 			static void FreeAll(void);
-
-			friend void Reset(void);
 			friend void FreeAll(void);
 
 			static char* const m_Ptr;
@@ -164,50 +161,35 @@ namespace ManCong
 			static Bookmark m_Allocated[BOOKMARK_SIZE], m_Freed[BOOKMARK_SIZE];
 		};
 
-		/*********************************************************************************
-										INSTANCE MEMORY
-		*********************************************************************************/
-		/*!*********************************************************************************
-		\brief
-			InstanceMemory class use to instantiate memory for Singleton and derieved classes
-		***********************************************************************************/
-		class InstanceMemory
+		template <class T>
+		class Allocator
 		{
 		public:
-			/*!*********************************************************************************
-				\brief
-					Allocate memory address from a fixed memory buffer of a specified size
-					Use this class to instantiate any memory for any Singleton classes
-				\return
-					The starting address pointing to the first element
-			***********************************************************************************/
-			template <typename T>
-			static T* New(void)
+			using value_type	= T;
+			using pointer		= T*;
+			using const_pointer = const T*;
+			using size_type		= u64;
+
+			template <class U>
+			struct rebind
 			{
-				u64 const index = m_Index; m_Index = m_Index += sizeof(T);
-#ifdef _DEBUG
-				assert(index < MEMORY_BUFFER && "Size of memory buffer is too small. Change the size of MEMORY_BUFFER");
-#endif
-				return new (&*(m_Ptr + index)) T();
+				using other = Allocator<U>;
+			};
+
+			Allocator(void) = default;
+			template <class U>
+			Allocator(Allocator<U> const& other) {  };
+			~Allocator(void) = default;
+
+			pointer allocate(size_type size)
+			{
+				return DynamicMemory::template New<T>(size);
 			}
 
-			template <typename T>
-			static void Delete(T*& ptr)
+			void deallocate(pointer ptr, size_type size)
 			{
-				if(ptr)
-					ptr->~T();
-				ptr = nullptr;
+				DynamicMemory::template Delete<T>(ptr);
 			}
-
-		private:
-			InstanceMemory(void) = default;
-			~InstanceMemory(void) = default;
-
-			static void FreeAll(void);
-
-			friend void FreeAll(void);
-
-			static char* const m_Ptr; static u64 m_Index;
 		};
 
 		void Reset(void);

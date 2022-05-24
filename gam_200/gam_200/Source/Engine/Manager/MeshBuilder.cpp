@@ -17,6 +17,7 @@ namespace ManCong
 		{
 			memset(m_Shapes, 0, sizeof(m_Shapes));
 			CreateRectangle(); CreateCircle(); CreateTriangle();
+			//m_Sprites.reserve(100);
 		}
 
 		MeshBuilder::~MeshBuilder(void)
@@ -26,7 +27,7 @@ namespace ManCong
 				glDeleteVertexArrays(1, &(*(m_Shapes + i))->vao);
 				glDeleteBuffers(1, &(*(m_Shapes + i))->vbo);
 				glDeleteBuffers(1, &(*(m_Shapes + i))->ebo);
-				Memory::InstanceMemory::Delete(*(m_Shapes + i));
+				Memory::StaticMemory::Delete(*(m_Shapes + i));
 			}
 		}
 
@@ -75,7 +76,7 @@ namespace ManCong
 
 		void MeshBuilder::CreateRectangle(void)
 		{
-			Sprite* sprite = Memory::InstanceMemory::New<Sprite>();
+			Sprite* sprite = Memory::StaticMemory::New<Sprite>();
 			f32 position[] = {
 				 0.5f,  0.5f, // top right
 				 0.5f, -0.5f, // bottom right
@@ -111,7 +112,7 @@ namespace ManCong
 		void MeshBuilder::CreateCircle(void)
 		{
 			using namespace Math;
-			Sprite* sprite = Memory::InstanceMemory::New<Sprite>();
+			Sprite* sprite = Memory::StaticMemory::New<Sprite>();
 			u32 const VERTICES = 20;								// total number of vertices
 			f32 const ANGLE = 360.0f / static_cast<f32>(VERTICES);	// angle of circle / total number of vertices
 			u64 const TOTAL_POSITIONS = (VERTICES + 1) << 1, TOTAL_INDICES = VERTICES * 3;
@@ -159,7 +160,7 @@ namespace ManCong
 
 		void MeshBuilder::CreateTriangle(void)
 		{
-			Sprite* sprite = Memory::InstanceMemory::New<Sprite>();
+			Sprite* sprite = Memory::StaticMemory::New<Sprite>();
 			f32 position[] = {
 				 0.0f,  0.5f,	// top
 				-0.5f, -0.5f,	// left
