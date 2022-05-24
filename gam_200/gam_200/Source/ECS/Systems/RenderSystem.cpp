@@ -71,7 +71,7 @@ namespace ManCong
 			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
 			shader->use();
 			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
-			//glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
+			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, sprite.texture);
 			glBindVertexArray(sprite.vao);
@@ -300,6 +300,7 @@ namespace ManCong
 
 		void RenderSystem::RenderText(std::string text, float x, float y, float scale, Vector3 color)
 		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			// activate corresponding render state	
 			fontShader.use();
 			fontShader.Set("textColor", color.x, color.y, color.z);
