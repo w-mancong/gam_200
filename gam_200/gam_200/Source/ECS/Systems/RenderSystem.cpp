@@ -45,13 +45,13 @@ namespace ManCong
 		namespace
 		{
 			std::shared_ptr<RenderSystem> rs;
-			Shader spriteShader, meshShader, fontshader;
+			Shader spriteShader, meshShader, fontShader;
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
 
 			//fonts variables
-			std::map<GLchar, Character> Characters;
+			std::map<GLchar, Character> characterCollection;
 			u32 fontsVAO, fontsVBO;
 		}
 
@@ -84,8 +84,8 @@ namespace ManCong
 		void RenderSystem::RenderText(std::string text, float x, float y, float scale, Vector3 color)
 		{
 			// activate corresponding render state
-			fontshader.use();
-			fontshader.Set("textColor", color.x, color.y, color.z);
+			fontShader.use();
+			fontShader.Set("textColor", color.x, color.y, color.z);
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(fontsVAO);
 
@@ -93,13 +93,13 @@ namespace ManCong
 			std::string::const_iterator c;
 			for (c = text.begin(); c != text.end(); c++)
 			{
-				Character ch = Characters[*c];
+				Character ch = characterCollection[*c];
 
-				float xpos = x + ch.Bearing.x * scale;
-				float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+				float xpos = x + ch.bearing.x * scale;
+				float ypos = y - (ch.size.y - ch.bearing.y) * scale;
 
-				float w = ch.Size.x * scale;
-				float h = ch.Size.y * scale;
+				float w = ch.size.x * scale;
+				float h = ch.size.y * scale;
 				// update VBO for each character
 				float vertices[6][4] = {
 					{ xpos,     ypos + h,   0.0f, 0.0f,},
@@ -111,7 +111,7 @@ namespace ManCong
 					{ xpos + w, ypos + h,   1.0f, 0.0f }
 				};
 				// render glyph texture over quad
-				glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+				glBindTexture(GL_TEXTURE_2D, ch.textureID);
 				// update content of VBO memory
 				glBindBuffer(GL_ARRAY_BUFFER, fontsVBO);
 				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
@@ -120,7 +120,7 @@ namespace ManCong
 				// render quad
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 				// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-				x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+				x += (ch.advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
 			}
 			glBindVertexArray(0);
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -142,13 +142,13 @@ namespace ManCong
 			meshShader.Set("proj", camera.ProjectionMatrix());
 		}
 
-		void Fontinit(void)
+		void FontInit(void)
 		{
 			// compile and setup the shader
-			fontshader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
+			fontShader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
 			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(OpenGLWindow::width), 0.0f, static_cast<float>(OpenGLWindow::height));
-			fontshader.use();
-			fontshader.Set("projection", projection);
+			fontShader.use();
+			fontShader.Set("projection", projection);
 
 			// FreeType
 			// --------
@@ -160,15 +160,15 @@ namespace ManCong
 			}
 
 			// find path to font
-			std::string font_name = "Assets/fonts/Roboto-Regular.ttf";
-			if (font_name.empty())
+			std::string fontName = "Assets/fonts/Roboto-Regular.ttf";
+			if (fontName.empty())
 			{
 				std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
 			}
 
 			// load font as face
 			FT_Face face;
-			if (FT_New_Face(ft, font_name.c_str(), 0, &face)) {
+			if (FT_New_Face(ft, fontName.c_str(), 0, &face)) {
 				std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 			}
 			// set size to load glyphs as
@@ -187,9 +187,9 @@ namespace ManCong
 					continue;
 				}
 				// generate texture
-				u32 shadertexture;
-				glGenTextures(1, &shadertexture);
-				glBindTexture(GL_TEXTURE_2D, shadertexture);
+				u32 shaderTexture;
+				glGenTextures(1, &shaderTexture);
+				glBindTexture(GL_TEXTURE_2D, shaderTexture);
 				glTexImage2D(
 					GL_TEXTURE_2D,
 					0,
@@ -208,12 +208,12 @@ namespace ManCong
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 				// now store character for later use
 				Character character = {
-					shadertexture,
+					shaderTexture,
 					Vector2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 					Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 					static_cast<u32>(face->glyph->advance.x)
 				};
-				Characters.insert(std::pair<char, Character>(c, character));
+				characterCollection.insert(std::pair<char, Character>(c, character));
 				
 			glBindTexture(GL_TEXTURE_2D, 0);
 			}
@@ -254,7 +254,7 @@ namespace ManCong
 			meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
-			Fontinit();
+			FontInit();
 		}
 
 		void InitializeFrustum(Frustum& fstm)
