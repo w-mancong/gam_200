@@ -49,19 +49,19 @@ namespace ManCong
         
 				if(Input::Input::KeyDown(KeyCode::W))
 				{
-					trans.position.y += speed * Time::dt;
+					trans.position.y += speed * Time::m_DeltaTime;
 				}
 				if (Input::Input::KeyDown(KeyCode::S))
 				{
-					trans.position.y -= speed * Time::dt;
+					trans.position.y -= speed * Time::m_DeltaTime;
 				}
 				if (Input::Input::KeyDown(KeyCode::D))
 				{
-					trans.position.x += speed * Time::dt;
+					trans.position.x += speed * Time::m_DeltaTime;
 				}
 				if (Input::Input::KeyDown(KeyCode::A))
 				{
-					trans.position.x -= speed * Time::dt;
+					trans.position.x -= speed * Time::m_DeltaTime;
 				}
 				if (Input::Input::KeyDown(KeyCode::Q))
 				{
