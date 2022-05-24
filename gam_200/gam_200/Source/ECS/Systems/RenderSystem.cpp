@@ -71,7 +71,7 @@ namespace ManCong
 			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
 			shader->use();
 			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
-			//glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
+			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, sprite.texture);
 			glBindVertexArray(sprite.vao);
@@ -79,6 +79,51 @@ namespace ManCong
 			glDrawElements(GL_TRIANGLES, sprite.indicesSize, GL_UNSIGNED_INT, 0);
 			// Unbind to prevent any unintended behaviour to vao
 			glBindVertexArray(0);
+		}
+
+		void RenderSystem::RenderText(std::string text, float x, float y, float scale, Vector3 color)
+		{
+			// activate corresponding render state
+			fontshader.use();
+			fontshader.Set("textColor", color.x, color.y, color.z);
+			glActiveTexture(GL_TEXTURE0);
+			glBindVertexArray(fontsVAO);
+
+			// iterate through all characters
+			std::string::const_iterator c;
+			for (c = text.begin(); c != text.end(); c++)
+			{
+				Character ch = Characters[*c];
+
+				float xpos = x + ch.Bearing.x * scale;
+				float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+
+				float w = ch.Size.x * scale;
+				float h = ch.Size.y * scale;
+				// update VBO for each character
+				float vertices[6][4] = {
+					{ xpos,     ypos + h,   0.0f, 0.0f,},
+					{ xpos,     ypos,       0.0f, 1.0f },
+					{ xpos + w, ypos,       1.0f, 1.0f },
+
+					{ xpos,     ypos + h,   0.0f, 0.0f },
+					{ xpos + w, ypos,       1.0f, 1.0f },
+					{ xpos + w, ypos + h,   1.0f, 0.0f }
+				};
+				// render glyph texture over quad
+				glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+				// update content of VBO memory
+				glBindBuffer(GL_ARRAY_BUFFER, fontsVBO);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
+
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				// render quad
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+				// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+				x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+			}
+			glBindVertexArray(0);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
 		void UpdateViewMatrix(void)
@@ -101,7 +146,7 @@ namespace ManCong
 		{
 			// compile and setup the shader
 			fontshader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
-			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(OpenGLWindow::width), 0.0f, static_cast<float>(OpenGLWindow::height), -0.1f, 100.0f);
+			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(OpenGLWindow::width), 0.0f, static_cast<float>(OpenGLWindow::height));
 			fontshader.use();
 			fontshader.Set("projection", projection);
 
@@ -291,56 +336,12 @@ namespace ManCong
 			std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			std::cout << "Total entities displayed: " << displayed << std::endl;
 
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			rs->RenderText("Lorem ipsum dolor sit", 25.0f, 25.0f, 1.0f, Vector3(1.f, 1.f, 1.f));
 			rs->RenderText("Hello everyone", 0.0f, 0.0f, 0.5f, Vector3(0.3, 0.7f, 0.9f));
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
-		}
-
-		void RenderSystem::RenderText(std::string text, float x, float y, float scale, Vector3 color)
-		{
-			// activate corresponding render state	
-			fontshader.use();
-			fontshader.Set("textColor", color.x, color.y, color.z);
-			glActiveTexture(GL_TEXTURE0);
-			glBindVertexArray(fontsVAO);
-
-			// iterate through all characters
-			std::string::const_iterator c;
-			for (c = text.begin(); c != text.end(); c++)
-			{
-				Character ch = Characters[*c];
-
-				float xpos = x + ch.Bearing.x * scale;
-				float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
-
-				float w = ch.Size.x * scale;
-				float h = ch.Size.y * scale;
-				// update VBO for each character
-				float vertices[6][4] = {
-					{ xpos,     ypos + h,   0.0f, 0.0f,},
-					{ xpos,     ypos,       0.0f, 1.0f },
-					{ xpos + w, ypos,       1.0f, 1.0f },
-
-					{ xpos,     ypos + h,   0.0f, 0.0f },
-					{ xpos + w, ypos,       1.0f, 1.0f },
-					{ xpos + w, ypos + h,   1.0f, 0.0f }
-				};
-				// render glyph texture over quad
-				glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-				// update content of VBO memory
-				glBindBuffer(GL_ARRAY_BUFFER, fontsVBO);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
-
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				// render quad
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-				// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-				x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-			}
-			glBindVertexArray(0);
-			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
 		void SetBackgroundColor(Color const& color)
