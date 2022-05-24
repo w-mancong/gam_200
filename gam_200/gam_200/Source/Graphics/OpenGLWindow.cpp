@@ -9,12 +9,12 @@ namespace ManCong
 			void ResizeWindow(GLFWwindow* _window, int width, int height)
 			{
 				glViewport(0, 0, width, height);
+				ECS::ViewportResizeCameraUpdate();
 			}
 		}
 
 		GLFWwindow* OpenGLWindow::window = nullptr;
-		s32 OpenGLWindow::width = 800, OpenGLWindow::height = 600;
-		s32* OpenGLWindow::WindowWidth = &width, *OpenGLWindow::WindowHeight = &height;
+		s32 OpenGLWindow::width = 1200, OpenGLWindow::height = 600;
 		void OpenGLWindow::InitGLFWWindow(void)
 		{
 			glfwInit();
@@ -23,7 +23,9 @@ namespace ManCong
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 			glfwWindowHint(GLFW_SAMPLES, 4);
 			//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-			//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); used for initializing MacOS
+#ifdef __APPLE__
+			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 			window = glfwCreateWindow(width, height, "LearnOpenGL", nullptr, nullptr);
 			if (!window)

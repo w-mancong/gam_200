@@ -116,6 +116,21 @@ namespace ManCong
 
 		/*!*********************************************************************************
 			\brief
+			Set the fov angle of the camera
+
+			\param [in] fov:
+			New fov angle of camera
+		***********************************************************************************/
+		void CameraFov(f32 fov);
+
+		/*!*********************************************************************************
+			\brief
+			Updates the camera when the viewport changes
+		***********************************************************************************/
+		void ViewportResizeCameraUpdate(void);
+
+		/*!*********************************************************************************
+			\brief
 			Create a sprite with basic shapes, no images will be loaded
 
 			\param [in] entity:
