@@ -53,7 +53,7 @@ namespace ManCong
 
 				virtual Math::Vector2 globalScale() {
 					Transform& entity_transform = Coordinator::Instance()->GetComponent<Transform>(m_entity_attached);
-					return { m_size_data[0] + entity_transform.scale.x * 0.5f, m_size_data[1] + entity_transform.scale.y * 0.5f };
+					return { m_size_data[0] + entity_transform.scale.x, m_size_data[1] + entity_transform.scale.y };
 				};
 
 				virtual void InitializeCollider(Transform* transform);
@@ -61,7 +61,7 @@ namespace ManCong
 				virtual void UpdateCollider(Transform* transform) {
 					Transform& entity_transform = Coordinator::Instance()->GetComponent<Transform>(m_entity_collision_sprite);
 					entity_transform.position = globalPosition();
-					entity_transform.scale = globalScale();
+					entity_transform.scale = globalScale() * 0.5f;
 				};
 			};
 
@@ -73,14 +73,14 @@ namespace ManCong
 				void InitializeCollider(Transform* transform) {
 					ColliderShape::InitializeCollider(transform);
 					m_Shape = SHAPE::BOX_2D;
-					m_size_data.push_back(transform->scale.x * 0.5f);
-					m_size_data.push_back(transform->scale.y * 0.5f);
+					m_size_data.push_back(transform->scale.x);
+					m_size_data.push_back(transform->scale.y);
 				}; 
 
 				void UpdateCollider(Transform* transform) {
 					ColliderShape::UpdateCollider(transform);
-					m_size_data[0] = transform->scale.x * 0.5f;
-					m_size_data[1] = transform->scale.y * 0.5f;
+					m_size_data[0] = transform->scale.x;
+					m_size_data[1] = transform->scale.y;
 				}
 
 				Math::Vector2 globalScale() {

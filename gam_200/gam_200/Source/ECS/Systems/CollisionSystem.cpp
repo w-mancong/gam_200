@@ -71,16 +71,20 @@ namespace ManCong
 						continue;
 					}
 
-					if (allColliders[i]->m_data.collisionData.isCollided || allColliders[j]->m_data.collisionData.isCollided
-						|| !allColliders[i]->m_data.isActive || !allColliders[j]->m_data.isActive) {
-						continue;
-					}
+					//if (allColliders[i]->m_data.collisionData.isCollided || allColliders[j]->m_data.collisionData.isCollided
+					//	|| !allColliders[i]->m_data.isActive || !allColliders[j]->m_data.isActive) {
+					//	continue;
+					//}
 
 					bool collisionOutcome = InitiateCollisionCheck(allColliders[i], allColliders[j]);
+
+					if (!allColliders[i]->m_data.collisionData.isCollided)
 					allColliders[i]->m_data.collisionData.isCollided = collisionOutcome;
+					if (!allColliders[j]->m_data.collisionData.isCollided)
 					allColliders[j]->m_data.collisionData.isCollided = collisionOutcome;
 				}
 			}
+
 			//Change color
 			for (int i = 0; i < entities.size(); ++i) {
 				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
@@ -147,8 +151,8 @@ namespace ManCong
 
 	bool ManCong::ECS::CollisionCheck_AABB(Collider box_one, Collider box_two) {
 		//static check
-		if ((box_one.m_data.globalPosition().x + box_one.m_data.globalScale().x * 0.5f > box_two.m_data.globalPosition().x - box_two.m_data.globalScale().x * 0.5f && box_one.m_data.globalPosition().y + box_one.m_data.globalScale().y * 0.5f > box_two.m_data.globalPosition().y - box_two.m_data.globalScale().y * 0.5f)		//one max > two min
-			&& (box_one.m_data.globalPosition().x - box_one.m_data.globalScale().x * 0.5f < box_two.m_data.globalPosition().x + box_two.m_data.globalScale().x * 0.5f && box_one.m_data.globalPosition().y - box_one.m_data.globalScale().y * 0.5f < box_two.m_data.globalPosition().y + box_two.m_data.globalScale().y * 0.5f))	//one min < two max
+		if ((box_one.m_data.globalPosition().x + box_one.m_data.globalScale().x * 0.25f > box_two.m_data.globalPosition().x - box_two.m_data.globalScale().x * 0.25f && box_one.m_data.globalPosition().y + box_one.m_data.globalScale().y * 0.25f > box_two.m_data.globalPosition().y - box_two.m_data.globalScale().y * 0.25f)		//one max > two min
+			&& (box_one.m_data.globalPosition().x - box_one.m_data.globalScale().x * 0.25f < box_two.m_data.globalPosition().x + box_two.m_data.globalScale().x * 0.25f && box_one.m_data.globalPosition().y - box_one.m_data.globalScale().y * 0.25f < box_two.m_data.globalPosition().y + box_two.m_data.globalScale().y * 0.25f))	//one min < two max
 		{
 			CollisionResponse2D_AABB(box_one, box_two);
 			return true;
@@ -167,11 +171,11 @@ namespace ManCong
 
 		Vector2 movingOriginalPosition = movingCollider.m_data.collisionData.position_current;
 		Vector2 movingVelocity = movingCollider.m_data.collisionData.position_moved - movingCollider.m_data.collisionData.position_current;
-		Vector2 movingBoxScale = { movingCollider.m_data.m_size_data[0], movingCollider.m_data.m_size_data[1] };
+		Vector2 movingBoxScale = { movingCollider.m_data.m_size_data[0] * 0.5f, movingCollider.m_data.m_size_data[1] * 0.5f };
 
 		Vector2 otherOriginalPosition = otherCollider.m_data.collisionData.position_current;
 		Vector2 otherVelocity = otherCollider.m_data.collisionData.position_moved - otherCollider.m_data.collisionData.position_current;
-		Vector2 otherBoxScale = { otherCollider.m_data.m_size_data[0], otherCollider.m_data.m_size_data[1] };
+		Vector2 otherBoxScale = { otherCollider.m_data.m_size_data[0] * 0.5f, otherCollider.m_data.m_size_data[1] * 0.5f };
 
 		//Keep track of the range of values
 		//origin being most left - 0, afterVel being most right - 1, boundaryDistanceX being the collision Hit position
@@ -179,15 +183,26 @@ namespace ManCong
 
 		//Keep track of which side has collided
 		bool hasXcollide = false, hasYCollide = false;
+		float offset_x_CollisionSize = 0;
+		float offset_y_CollisionSize = 0;
+
+		//For when the scale of moving is lower than the standing collider
+		if (movingBoxScale.x < otherBoxScale.x) {
+			offset_x_CollisionSize = fabsf(otherBoxScale.x - movingBoxScale.x);
+		}
+
+		if (movingBoxScale.y < otherBoxScale.y) {
+			offset_y_CollisionSize = fabsf(otherBoxScale.y - movingBoxScale.y);
+		}
 
 		//If X velocity is moving
 		if (movingVelocity.x != 0) {
 			//Move right
 			if (movingVelocity.x > 0) {
-				if (((movingOriginalPosition.x + movingVelocity.x) + movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x) &&
-					(movingOriginalPosition.x - movingBoxScale.x) < (otherOriginalPosition.x + otherBoxScale.x) &&
-					(movingOriginalPosition.y + movingBoxScale.y) > (otherOriginalPosition.y - otherBoxScale.y) &&
-					(movingOriginalPosition.y - movingBoxScale.y) < (otherOriginalPosition.y + otherBoxScale.y)) {
+				if (((movingOriginalPosition.x + movingVelocity.x) + movingBoxScale.x + offset_x_CollisionSize) > (otherOriginalPosition.x - otherBoxScale.x) &&
+					(movingOriginalPosition.x - movingBoxScale.x + offset_x_CollisionSize) < (otherOriginalPosition.x + otherBoxScale.x) &&
+					(movingOriginalPosition.y + movingBoxScale.y + offset_y_CollisionSize) > (otherOriginalPosition.y - otherBoxScale.y) &&
+					(movingOriginalPosition.y - movingBoxScale.y - offset_y_CollisionSize) < (otherOriginalPosition.y + otherBoxScale.y)) {
 					//if the top of moving is top of the bottom of idle collider
 					afterVelX = movingOriginalPosition.x - movingVelocity.x;
 
@@ -198,10 +213,10 @@ namespace ManCong
 			}
 			//Move left
 			else if (movingVelocity.x < 0) {
-				if (((movingOriginalPosition.x + movingVelocity.x) - movingBoxScale.x) < (otherOriginalPosition.x + otherBoxScale.x) &&
-					(movingOriginalPosition.x - movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x) &&
-					(movingOriginalPosition.y + movingBoxScale.y) > (otherOriginalPosition.y - otherBoxScale.y) &&
-					(movingOriginalPosition.y - movingBoxScale.y) < (otherOriginalPosition.y + otherBoxScale.y)) {
+				if (((movingOriginalPosition.x + movingVelocity.x) - movingBoxScale.x - offset_x_CollisionSize) < (otherOriginalPosition.x + otherBoxScale.x) &&
+					(movingOriginalPosition.x + movingBoxScale.x + offset_x_CollisionSize) > (otherOriginalPosition.x - otherBoxScale.x) &&
+					(movingOriginalPosition.y + movingBoxScale.y + offset_y_CollisionSize) > (otherOriginalPosition.y - otherBoxScale.y) &&
+					(movingOriginalPosition.y - movingBoxScale.y - offset_y_CollisionSize) < (otherOriginalPosition.y + otherBoxScale.y)) {
 
 					afterVelX = movingOriginalPosition.x - movingVelocity.x;
 
@@ -213,18 +228,7 @@ namespace ManCong
 
 			//If X collided
 			if (hasXcollide) {
-				//Since going left, the min range starts from right, need to reverse the range so the range starts min from left instead of right.
-				//The min will most right will remain minimum while the most left will become the most right.
-				//Push the range forward so the origin, most left value is positive (dont deal with negative number in range, easier to find percentage)
-
-				//entityTransform.position = movingOriginalPosition + movingVelocity * (1 - fabsf(boundaryDistanceX / afterVelX));
-
-				//std::cout << afterVelX << "\n";
 				entityTransform.position.x = entityTransform.position.x + (afterVelX - movingOriginalPosition.x);
-				//if (movingCollider.m_data.collisionData.time > (1 - fabsf(boundaryDistanceX / afterVelX))) {
-				//	movingCollider.m_data.collisionData.time = 1 - fabsf(boundaryDistanceX / afterVelX);
-				//	entityTransform.position = movingOriginalPosition + movingVelocity * movingCollider.m_data.collisionData.time;
-				//}
 			}
 		}
 
@@ -232,10 +236,10 @@ namespace ManCong
 		if (movingVelocity.y != 0) {
 			//If Moving up
 			if (movingVelocity.y > 0) {
-				if (((movingOriginalPosition.y + movingVelocity.y) + movingBoxScale.y) > (otherOriginalPosition.y - otherBoxScale.y) &&
-					(movingOriginalPosition.y - movingBoxScale.y) < (otherOriginalPosition.y + otherBoxScale.y) &&
-					(movingOriginalPosition.x + movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x) &&
-					(movingOriginalPosition.x - movingBoxScale.x) < (otherOriginalPosition.x + otherBoxScale.x)) {
+				if (((movingOriginalPosition.y + movingVelocity.y) + movingBoxScale.y + offset_y_CollisionSize) > (otherOriginalPosition.y - otherBoxScale.y) &&
+					(movingOriginalPosition.y - movingBoxScale.y + offset_y_CollisionSize) < (otherOriginalPosition.y + otherBoxScale.y) &&
+					(movingOriginalPosition.x + movingBoxScale.x + offset_x_CollisionSize) > (otherOriginalPosition.x - otherBoxScale.x) &&
+					(movingOriginalPosition.x - movingBoxScale.x - offset_x_CollisionSize) < (otherOriginalPosition.x + otherBoxScale.x)) {
 					//if the top of moving is top of the bottom of idle collider
 					afterVelY = movingOriginalPosition.y - movingVelocity.y;
 
@@ -246,10 +250,10 @@ namespace ManCong
 			}
 			//If moving down
 			else if (movingVelocity.y < 0) {
-				if (((movingOriginalPosition.y + movingVelocity.y) - movingBoxScale.y) < (otherOriginalPosition.y + otherBoxScale.y) &&
-					(movingOriginalPosition.y - movingBoxScale.y) > (otherOriginalPosition.y - otherBoxScale.y) &&
-					(movingOriginalPosition.x + movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x) &&
-					(movingOriginalPosition.x - movingBoxScale.x) < (otherOriginalPosition.x + otherBoxScale.x)) {
+				if (((movingOriginalPosition.y + movingVelocity.y) - movingBoxScale.y - offset_y_CollisionSize) < (otherOriginalPosition.y + otherBoxScale.y) &&
+					(movingOriginalPosition.y + movingBoxScale.y + offset_y_CollisionSize) > (otherOriginalPosition.y - otherBoxScale.y) &&
+					(movingOriginalPosition.x + movingBoxScale.x + offset_x_CollisionSize) > (otherOriginalPosition.x - otherBoxScale.x) &&
+					(movingOriginalPosition.x - movingBoxScale.x - offset_x_CollisionSize) < (otherOriginalPosition.x + otherBoxScale.x)) {
 					afterVelY = movingOriginalPosition.y - movingVelocity.y;
 
 					//Find the position where moving collider touches the idle collider (from the right)
@@ -260,17 +264,7 @@ namespace ManCong
 
 			//If Y has collided
 			if (hasYCollide) {
-				//Since going left, the min range starts from right, need to reverse the range so the range starts min from left instead of right.
-				//The min will most right will remain minimum while the most left will become the most right.
-				//Push the range forward so the origin, most left value is positive (dont deal with negative number in range, easier to find percentage)
-
-				//entityTransform.position.y = afterVelY;
 				entityTransform.position.y = entityTransform.position.y + (afterVelY - movingOriginalPosition.y);
-
-				//if (movingCollider.m_data.collisionData.time > (1 - fabsf(boundaryDistanceY / afterVelY))) {
-				//	movingCollider.m_data.collisionData.time = 1 - fabsf(boundaryDistanceY / afterVelY);
-				//	entityTransform.position = movingOriginalPosition + movingVelocity * movingCollider.m_data.collisionData.time;
-				//}
 			}
 		}
 
@@ -286,11 +280,10 @@ namespace ManCong
 	};
 }
 
-////static check
-//if ((box_one.position.x + box_one.width() * 0.5f > box_two.position.x - box_two.width() * 0.5f && box_one.position.y + box_one.height() * 0.5f > box_two.position.y - box_two.height() * 0.5f)		//one max > two min
-//	&& (box_one.position.x - box_one.width() * 0.5f < box_two.position.x + box_two.width() * 0.5f && box_one.position.y - box_one.height() * 0.5f < box_two.position.y + box_two.height() * 0.5f))	//one min < two max
-//{		
 
 
-
-
+//My stuff
+//bool bruh = ((movingOriginalPosition.x + movingVelocity.x) + movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x);
+//bool bruh = (movingOriginalPosition.x - movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x
+//std::cout << "moving right " << movingBoxScale.x << " : " << "idle left " << otherOriginalPosition.x - otherBoxScale.x << " = " << bruh << std::endl;
+//std::cout << "moving right " << movingBoxScale.x << " : " << "idle left " << otherBoxScale.x - movingBoxScale.x << " = " << bruh << std::endl;
