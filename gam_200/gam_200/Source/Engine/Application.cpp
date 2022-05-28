@@ -18,14 +18,20 @@ namespace ManCong
 
 		Entity Entity_Chika, Entity_Michan;
 
+		Entity Wall_Up, Wall_Down, Wall_Left, Wall_Right;
+
+		bool isDebug = false;
+
 		void Application::Init(void)
 		{
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 
+			Transform transform{ Vector2(0, 0), Vector2(30, 30), 0.0f };
+
 			//Chika
 			{
-				Transform transform{ Vector2(0, 0), Vector2(30, 30), 0.0f };
+				transform = { Vector2(0, 0), Vector2(30, 30), 0.0f };
 
 				Entity_Chika = CreateSprite(transform);
 				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(Entity_Chika);
@@ -37,7 +43,7 @@ namespace ManCong
 
 			//Michan
 			{
-				Transform transform{ Vector2(100, 100), Vector2(30, 30), 0.0f };
+				transform = { Vector2(100, 100), Vector2(30, 30), 0.0f };
 
 				Entity_Michan = CreateSprite(transform);
 				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(Entity_Michan);
@@ -45,6 +51,29 @@ namespace ManCong
 				sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Fill;
 
 				CreateBoxCollider2D(Entity_Michan);
+			}
+
+			//Wall
+			{
+				transform = { Vector2(-350, 0), Vector2(30, 550), 0.0f };
+				Wall_Left = CreateSprite(transform);
+				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(Wall_Left);
+				CreateBoxCollider2D(Wall_Left);
+
+				transform = { Vector2(350, 0), Vector2(30, 550), 0.0f };
+				Wall_Right = CreateSprite(transform);
+				sprite = Coordinator::Instance()->GetComponent<Sprite>(Wall_Right);
+				CreateBoxCollider2D(Wall_Right);
+
+				transform = { Vector2(0, 250), Vector2(650, 30), 0.0f };
+				Wall_Up = CreateSprite(transform);
+				sprite = Coordinator::Instance()->GetComponent<Sprite>(Wall_Up);
+				CreateBoxCollider2D(Wall_Up);
+
+				transform = { Vector2(0, -250), Vector2(650, 30), 0.0f };
+				Wall_Down = CreateSprite(transform);
+				sprite = Coordinator::Instance()->GetComponent<Sprite>(Wall_Down);
+				CreateBoxCollider2D(Wall_Down);
 			}
 
 			//Create Circle
@@ -79,6 +108,11 @@ namespace ManCong
 
 				auto& chikaCollider = Coordinator::Instance()->GetComponent<Collider>(Entity_Chika);
 				auto& michanCollider = Coordinator::Instance()->GetComponent<Collider>(Entity_Michan);
+				auto& upCollider = Coordinator::Instance()->GetComponent<Collider>(Wall_Up);
+				auto& downCollider = Coordinator::Instance()->GetComponent<Collider>(Wall_Down);
+				auto& leftCollider = Coordinator::Instance()->GetComponent<Collider>(Wall_Left);
+				auto& rightCollider = Coordinator::Instance()->GetComponent<Collider>(Wall_Right);
+
 				//Change position of collider size
 				if (Input::KeyDown(KeyCode::Left)) {
 					chikaCollider.m_data.localPosition.x--;
@@ -103,8 +137,14 @@ namespace ManCong
 				}
 
 				if (Input::KeyTriggered(KeyCode::Enter)) {
-					michanCollider.m_data.isShowCollider = !michanCollider.m_data.isShowCollider;
-					chikaCollider.m_data.isShowCollider = !chikaCollider.m_data.isShowCollider;
+					isDebug = !isDebug;
+					michanCollider.m_data.isShowCollider = isDebug;
+					chikaCollider.m_data.isShowCollider = isDebug;
+
+					upCollider.m_data.isShowCollider = isDebug;
+					downCollider.m_data.isShowCollider = isDebug;
+					leftCollider.m_data.isShowCollider = isDebug;
+					rightCollider.m_data.isShowCollider = isDebug;
 				}
 
 				Render();

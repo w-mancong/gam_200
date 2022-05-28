@@ -50,7 +50,6 @@ namespace ManCong
 			}
 		}
 
-
 		void CollisionSystemLateUpdate() {
 			std::vector<Entity> entities; entities.reserve(colliderSystem->mEntities.size());
 			// copy into temp vector
@@ -93,7 +92,7 @@ namespace ManCong
 				}
 				else {
 					sprite.color.r = 1.0f, sprite.color.g = 1.0f; sprite.color.b = 1.0f; sprite.color.a = 1.0f;
-					collidersprite.color.r = 1.0f, collidersprite.color.g = 1.0f; collidersprite.color.b = 1.0f; collidersprite.color.a = 1.0f;
+					collidersprite.color.r = 0.0f, collidersprite.color.g = 1.0f; collidersprite.color.b = 0.0f; collidersprite.color.a = 1.0f;
 				}
 
 				//Is is not showing collider or collider is not active
