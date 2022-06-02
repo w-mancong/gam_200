@@ -6,11 +6,13 @@ namespace ManCong
 	{
 		s32 Range(s32 min, s32 max)
 		{
-			return (std::rand() % (max - min + 1)) + min;
+			std::random_device rd; std::mt19937 gen(rd()); std::uniform_int_distribution<s32> dis(min, max);
+			return dis(gen);
 		}
 		f32 Range(f32 min, f32 max)
 		{
-			return ((max - min) * ((float)std::rand() / RAND_MAX)) + min;
+			std::random_device rd; std::mt19937 gen(rd()); std::uniform_real_distribution<f32> dist(min, max);
+			return dist(gen);
 		}
 	}
 }

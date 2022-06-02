@@ -122,7 +122,7 @@ namespace ManCong
 			friend class Templates::Singleton<MeshBuilder>;
 			friend class Memory::StaticMemory;
 
-			std::vector<std::pair<std::string, Sprite*>, Memory::Allocator<std::pair<std::string, Sprite*>>> m_Sprites;
+			std::vector<std::pair<std::string, Sprite*>, Memory::DynamicAllocator<std::pair<std::string, Sprite*>>> m_Sprites;
 			Sprite* m_Shapes[static_cast<u64>(Shapes::Total)];
 		};
 	}

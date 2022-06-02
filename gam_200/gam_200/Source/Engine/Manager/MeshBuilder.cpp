@@ -17,7 +17,7 @@ namespace ManCong
 		{
 			memset(m_Shapes, 0, sizeof(m_Shapes));
 			CreateRectangle(); CreateCircle(); CreateTriangle();
-			//m_Sprites.reserve(100);
+			m_Sprites.reserve(100);
 		}
 
 		MeshBuilder::~MeshBuilder(void)

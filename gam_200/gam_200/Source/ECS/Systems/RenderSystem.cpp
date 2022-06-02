@@ -185,7 +185,7 @@ namespace ManCong
 				if (ShouldRender(trans))
 				{
 					rs->Render(sprite, trans);
-					++displayed;
+					//++displayed;
 				}
 			}
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;

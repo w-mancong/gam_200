@@ -72,7 +72,6 @@ namespace ManCong
 					trans.rotation -= rot;
 				}
         
-				Render();
 				timer.ClockTimeNow();
 				Render();
 				timer.WaitUntil();
