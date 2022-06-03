@@ -39,6 +39,14 @@ namespace ManCong
 
 		void Application::Update(void)
 		{
+			//IMGUI_CHECKVERSION();
+			//ImGui::CreateContext();
+			//ImGuiIO& io = ImGui::GetIO(); (void)io;
+			//ImGui::StyleColorsDark();
+			//ImGui_ImplGlfw_InitForOpenGL(OpenGLWindow::Window(), true);
+			//ImGui_ImplOpenGL3_Init("#version 330");
+
+
 			Time timer;
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
