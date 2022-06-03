@@ -8,12 +8,18 @@ namespace ManCong
 {
 	namespace ECS
 	{
+		struct Font
+		{
+			std::map<GLchar, Graphics::Character> characterCollection;
+			u32 fontsVAO{}, fontsVBO{};
+		};
+
 		using namespace Math; using namespace Engine; using namespace Graphics;
 		class RenderSystem : public System
 		{
 		public:
 			void Render(Sprite const& sprite, Transform const& trans);
-			void RenderText(std::string text, float x, float y, float scale, Vector3 color);
+			void RenderText(std::string text, float x, float y, float scale, Vector3 color, Font& font);
 		};
 
 		struct Plane
@@ -49,10 +55,6 @@ namespace ManCong
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
-
-			//fonts variables
-			std::map<GLchar, Character> characterCollection;
-			u32 fontsVAO, fontsVBO;
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -81,19 +83,19 @@ namespace ManCong
 			glBindVertexArray(0);
 		}
 
-		void RenderSystem::RenderText(std::string text, float x, float y, float scale, Vector3 color)
+		void RenderSystem::RenderText(std::string text, float x, float y, float scale, Vector3 color, Font& font)
 		{
 			// activate corresponding render state
 			fontShader.use();
 			fontShader.Set("textColor", color.x, color.y, color.z);
 			glActiveTexture(GL_TEXTURE0);
-			glBindVertexArray(fontsVAO);
+			glBindVertexArray(font.fontsVAO);
 
 			// iterate through all characters
 			std::string::const_iterator c;
 			for (c = text.begin(); c != text.end(); c++)
 			{
-				Character ch = characterCollection[*c];
+				Character ch = font.characterCollection[*c];
 
 				float xpos = x + ch.bearing.x * scale;
 				float ypos = y - (ch.size.y - ch.bearing.y) * scale;
@@ -113,7 +115,7 @@ namespace ManCong
 				// render glyph texture over quad
 				glBindTexture(GL_TEXTURE_2D, ch.textureID);
 				// update content of VBO memory
-				glBindBuffer(GL_ARRAY_BUFFER, fontsVBO);
+				glBindBuffer(GL_ARRAY_BUFFER, font.fontsVBO);
 				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
 
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -142,8 +144,9 @@ namespace ManCong
 			meshShader.Set("proj", camera.ProjectionMatrix());
 		}
 
-		void FontInit(void)
+		Font FontInit(std::string fontAddress)
 		{
+			Font newFont;
 			// compile and setup the shader
 			fontShader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
 			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(OpenGLWindow::width), 0.0f, static_cast<float>(OpenGLWindow::height));
@@ -160,15 +163,14 @@ namespace ManCong
 			}
 
 			// find path to font
-			std::string fontName = "Assets/fonts/Roboto-Regular.ttf";
-			if (fontName.empty())
+			if (fontAddress.empty())
 			{
 				std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
 			}
 
 			// load font as face
 			FT_Face face;
-			if (FT_New_Face(ft, fontName.c_str(), 0, &face)) {
+			if (FT_New_Face(ft, fontAddress.c_str(), 0, &face)) {
 				std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 			}
 			// set size to load glyphs as
@@ -213,7 +215,7 @@ namespace ManCong
 					Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 					static_cast<u32>(face->glyph->advance.x)
 				};
-				characterCollection.insert(std::pair<char, Character>(c, character));
+				newFont.characterCollection.insert(std::pair<char, Character>(c, character));
 				
 			glBindTexture(GL_TEXTURE_2D, 0);
 			}
@@ -224,15 +226,16 @@ namespace ManCong
 
 			// configure VAO/VBO for texture quads
 			// -----------------------------------
-			glGenVertexArrays(1, &fontsVAO);
-			glGenBuffers(1, &fontsVBO);
-			glBindVertexArray(fontsVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, fontsVBO);
+			glGenVertexArrays(1, &newFont.fontsVAO);
+			glGenBuffers(1, &newFont.fontsVBO);
+			glBindVertexArray(newFont.fontsVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, newFont.fontsVBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
+			return newFont;
 		}
 
 		void RegisterRenderSystem(void)
@@ -254,7 +257,6 @@ namespace ManCong
 			meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
-			FontInit();
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -336,9 +338,17 @@ namespace ManCong
 			std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			std::cout << "Total entities displayed: " << displayed << std::endl;
 
+
+			Font roboto = FontInit("Assets/fonts/Roboto-Regular.ttf");
+			Font arial = FontInit("Assets/fonts/Arial Italic.ttf");
+			Font pacifico = FontInit("Assets/fonts/Pacifico-Regular.ttf");
+			Font pressStart = FontInit("Assets/fonts/PressStart2P-Regular.ttf");
+
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			rs->RenderText("Lorem ipsum dolor sit", 25.0f, 25.0f, 1.0f, Vector3(1.f, 1.f, 1.f));
-			rs->RenderText("Hello everyone", 0.0f, 0.0f, 0.5f, Vector3(0.3, 0.7f, 0.9f));
+			rs->RenderText("This is Roboto-Regular", 50.0f, 50.0f, 1.0f, Vector3(1.f, 1.f, 1.f), roboto);
+			rs->RenderText("This is Arial Italic", 50.0f, 100.0f, 0.8f, Vector3(0.1, 0.8f, 0.3f), arial);
+			rs->RenderText("This is Pacifico", 50.0f, 150.0f, 1.0f, Vector3(0.3, 0.7f, 0.9f), pacifico);
+			rs->RenderText("This is PressStart", 50.0f, 200.0f, 0.7f, Vector3(1.0, 0.2f, 0.2f), pressStart);
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
