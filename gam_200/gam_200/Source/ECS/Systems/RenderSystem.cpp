@@ -19,7 +19,7 @@ namespace ManCong
 		{
 		public:
 			void Render(Sprite const& sprite, Transform const& trans);
-			void RenderText(std::string text, float x, float y, float scale, Vector3 color, Font& font);
+			void RenderText(std::string text, f32 x, f32 y, f32 scale, Vector3 color, Font& font);
 		};
 
 		struct Plane
@@ -83,7 +83,7 @@ namespace ManCong
 			glBindVertexArray(0);
 		}
 
-		void RenderSystem::RenderText(std::string text, float x, float y, float scale, Vector3 color, Font& font)
+		void RenderSystem::RenderText(std::string text, f32 x, f32 y, f32 scale, Vector3 color, Font& font)
 		{
 			// activate corresponding render state
 			fontShader.use();
@@ -97,13 +97,13 @@ namespace ManCong
 			{
 				Character ch = font.characterCollection[*c];
 
-				float xpos = x + ch.bearing.x * scale;
-				float ypos = y - (ch.size.y - ch.bearing.y) * scale;
+				f32 xpos = x + ch.bearing.x * scale;
+				f32 ypos = y - (ch.size.y - ch.bearing.y) * scale;
 
-				float w = ch.size.x * scale;
-				float h = ch.size.y * scale;
+				f32 w = ch.size.x * scale;
+				f32 h = ch.size.y * scale;
 				// update VBO for each character
-				float vertices[6][4] = {
+				f32 vertices[6][4] = {
 					{ xpos,     ypos + h,   0.0f, 0.0f,},
 					{ xpos,     ypos,       0.0f, 1.0f },
 					{ xpos + w, ypos,       1.0f, 1.0f },
@@ -149,15 +149,15 @@ namespace ManCong
 			Font newFont;
 			// compile and setup the shader
 			fontShader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
-			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<float>(OpenGLWindow::width), 0.0f, static_cast<float>(OpenGLWindow::height));
+			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height));
 			fontShader.use();
 			fontShader.Set("projection", projection);
 
 			// FreeType
 			// --------
-			FT_Library ft;
+			FT_Library freeType;
 			// All functions return a value different than 0 whenever an error occurred
-			if (FT_Init_FreeType(&ft))
+			if (FT_Init_FreeType(&freeType))
 			{
 				std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
 			}
@@ -170,7 +170,7 @@ namespace ManCong
 
 			// load font as face
 			FT_Face face;
-			if (FT_New_Face(ft, fontAddress.c_str(), 0, &face)) {
+			if (FT_New_Face(freeType, fontAddress.c_str(), 0, &face)) {
 				std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 			}
 			// set size to load glyphs as
@@ -211,8 +211,8 @@ namespace ManCong
 				// now store character for later use
 				Character character = {
 					shaderTexture,
-					Vector2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-					Vector2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+					Vector2(static_cast<f32>(face->glyph->bitmap.width), static_cast<f32>(face->glyph->bitmap.rows)),
+					Vector2(static_cast<f32>(face->glyph->bitmap_left), static_cast<f32>(face->glyph->bitmap_top)),
 					static_cast<u32>(face->glyph->advance.x)
 				};
 				newFont.characterCollection.insert(std::pair<char, Character>(c, character));
@@ -221,7 +221,7 @@ namespace ManCong
 			}
 			// destroy FreeType once we're finished
 			FT_Done_Face(face);
-			FT_Done_FreeType(ft);
+			FT_Done_FreeType(freeType);
 
 
 			// configure VAO/VBO for texture quads
@@ -230,9 +230,9 @@ namespace ManCong
 			glGenBuffers(1, &newFont.fontsVBO);
 			glBindVertexArray(newFont.fontsVAO);
 			glBindBuffer(GL_ARRAY_BUFFER, newFont.fontsVBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(f32) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(f32), 0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 			return newFont;
@@ -346,9 +346,9 @@ namespace ManCong
 
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			rs->RenderText("This is Roboto-Regular", 50.0f, 50.0f, 1.0f, Vector3(1.f, 1.f, 1.f), roboto);
-			rs->RenderText("This is Arial Italic", 50.0f, 100.0f, 0.8f, Vector3(0.1, 0.8f, 0.3f), arial);
-			rs->RenderText("This is Pacifico", 50.0f, 150.0f, 1.0f, Vector3(0.3, 0.7f, 0.9f), pacifico);
-			rs->RenderText("This is PressStart", 50.0f, 200.0f, 0.7f, Vector3(1.0, 0.2f, 0.2f), pressStart);
+			rs->RenderText("This is Arial Italic", 50.0f, 100.0f, 0.8f, Vector3(0.1f, 0.8f, 0.3f), arial);
+			rs->RenderText("This is Pacifico", 50.0f, 150.0f, 1.0f, Vector3(0.3f, 0.7f, 0.9f), pacifico);
+			rs->RenderText("This is PressStart", 50.0f, 200.0f, 0.7f, Vector3(1.0f, 0.2f, 0.2f), pressStart);
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
