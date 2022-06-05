@@ -22,7 +22,7 @@ namespace ManCong
 			};
 
 			struct Collision2D_Data {
-				Collision2D_Data *otherCollider;
+				Collision2D_Data *otherCollider = nullptr;
 				Math::Vector2 normal{ 0,0 };
 				Math::Vector2 position_current{ 0,0 };
 				Math::Vector2 position_moved{ 0,0 };
