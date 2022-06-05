@@ -41,8 +41,8 @@ namespace ManCong
 		***********************************************************************************/
 		ManCong::ECS::Collider* CreateBoxCollider2D(Entity const& entity);
 
-		bool CollisionCheck_AABB(Collider box_one, Collider box_two);
+		bool CollisionCheck_AABB(Collider *box_one, Collider *box_two);
 
-		Collision2D_Data CollisionResponse2D_AABB(Collider &movingCollider, Collider &otherCollider);
+		bool CollisionResponse2D_AABB(Collider *movingCollider, Collider *otherCollider);
 	}
 }

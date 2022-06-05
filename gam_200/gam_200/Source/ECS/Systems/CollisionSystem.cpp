@@ -66,6 +66,10 @@ namespace ManCong
 
 			//Do Static Check for each box first
 			for (int i = 0; i < allColliders.size(); ++i) {
+				allColliders[i]->m_data.collisionData.velocity_Collision_Time = { 1.0f, 1.0f };
+
+				//Collision2D_Data* otherCollisionData = nullptr;
+
 				for (int j = 0; j < allColliders.size(); ++j) {
 					if ((i == j)) {
 						continue;
@@ -75,13 +79,30 @@ namespace ManCong
 					//	|| !allColliders[i]->m_data.isActive || !allColliders[j]->m_data.isActive) {
 					//	continue;
 					//}
-
 					bool collisionOutcome = InitiateCollisionCheck(allColliders[i], allColliders[j]);
 
-					if (!allColliders[i]->m_data.collisionData.isCollided)
-					allColliders[i]->m_data.collisionData.isCollided = collisionOutcome;
-					if (!allColliders[j]->m_data.collisionData.isCollided)
-					allColliders[j]->m_data.collisionData.isCollided = collisionOutcome;
+					if (collisionOutcome) {
+							allColliders[i]->m_data.collisionData.isCollided = collisionOutcome;
+
+							//if (otherCollisionData != nullptr) {
+							//	otherCollisionData->isCollided = false;
+							//}
+
+							allColliders[j]->m_data.collisionData.isCollided = collisionOutcome;
+					}
+
+					//if (!allColliders[i]->m_data.collisionData.isCollided)
+					//	allColliders[i]->m_data.collisionData.isCollided = collisionOutcome;
+
+					//if (!allColliders[j]->m_data.collisionData.isCollided)
+					//{
+					//	if (collisiondata != nullptr) {
+					//		collisiondata->isCollided = false;
+					//	}
+
+					//	collisiondata = &(allColliders[j]->m_data.collisionData);
+					//	collisiondata->isCollided = collisionOutcome;
+					//}
 				}
 			}
 
@@ -94,21 +115,21 @@ namespace ManCong
 					sprite.color.r = 1.0f, sprite.color.g = 0.0f; sprite.color.b = 0.0f; sprite.color.a = 1.0f;
 					collidersprite.color.r = 1.0f, collidersprite.color.g = 0.0f; collidersprite.color.b = 0.0f; collidersprite.color.a = 1.0f;
 				}
-				else {
-					sprite.color.r = 1.0f, sprite.color.g = 1.0f; sprite.color.b = 1.0f; sprite.color.a = 1.0f;
-					collidersprite.color.r = 0.0f, collidersprite.color.g = 1.0f; collidersprite.color.b = 0.0f; collidersprite.color.a = 1.0f;
-				}
+				//else {
+				//	sprite.color.r = 1.0f, sprite.color.g = 1.0f; sprite.color.b = 1.0f; sprite.color.a = 1.0f;
+				//	collidersprite.color.r = 0.0f, collidersprite.color.g = 1.0f; collidersprite.color.b = 0.0f; collidersprite.color.a = 1.0f;
+				//}
 
-				//Is is not showing collider or collider is not active
-				if (!allColliders[i]->m_data.isShowCollider || !allColliders[i]->m_data.isActive) {
-					//alpha 0
-					collidersprite.color.r = 1.0f, collidersprite.color.g = 0.0f; collidersprite.color.b = 0.0f; collidersprite.color.a = 0.0f;
-				}
+				////Is is not showing collider or collider is not active
+				//if (!allColliders[i]->m_data.isShowCollider || !allColliders[i]->m_data.isActive) {
+				//	//alpha 0
+				//	collidersprite.color.r = 1.0f, collidersprite.color.g = 0.0f; collidersprite.color.b = 0.0f; collidersprite.color.a = 0.0f;
+				//}
 			}
 
 			for (int i = 0; i < entities.size(); ++i) {
 				//allColliders[i]->m_data.collisionData.position_previous = allColliders[i]->m_data.globalPosition();
-				allColliders[i]->m_data.collisionData.position_moved = allColliders[i]->m_data.globalPosition();
+				//allColliders[i]->m_data.collisionData.position_moved = allColliders[i]->m_data.globalPosition();
 				allColliders[i]->m_data.collisionData.isCollided = false;
 			}
 		}
@@ -119,7 +140,8 @@ namespace ManCong
 			{
 			case SHAPE::BOX_2D:
 				if (collider_two->m_data.m_Shape == SHAPE::BOX_2D) {
-					return CollisionCheck_AABB(*collider_one, *collider_two);
+					return CollisionResponse2D_AABB(collider_one, collider_two);
+					//return CollisionCheck_AABB(collider_one, collider_two);
 				}
 				else if (collider_two->m_data.m_Shape == SHAPE::CIRCLE_2D) {
 					//to do
@@ -133,9 +155,9 @@ namespace ManCong
 
 			return false;
 		}
-		
+
 		Collider* CreateBoxCollider2D(Entity const& entity) {
-			Transform entityTransform { Coordinator::Instance()->GetComponent<Transform>(entity) };
+			Transform entityTransform{ Coordinator::Instance()->GetComponent<Transform>(entity) };
 			BoxCollider2D boxCollider;
 			boxCollider.InitializeCollider(&entityTransform);
 			boxCollider.m_entity_attached = entity;
@@ -149,86 +171,86 @@ namespace ManCong
 		}
 	}
 
-	bool ManCong::ECS::CollisionCheck_AABB(Collider box_one, Collider box_two) {
-		//static check
-		if ((box_one.m_data.globalPosition().x + box_one.m_data.globalScale().x * 0.25f > box_two.m_data.globalPosition().x - box_two.m_data.globalScale().x * 0.25f && box_one.m_data.globalPosition().y + box_one.m_data.globalScale().y * 0.25f > box_two.m_data.globalPosition().y - box_two.m_data.globalScale().y * 0.25f)		//one max > two min
-			&& (box_one.m_data.globalPosition().x - box_one.m_data.globalScale().x * 0.25f < box_two.m_data.globalPosition().x + box_two.m_data.globalScale().x * 0.25f && box_one.m_data.globalPosition().y - box_one.m_data.globalScale().y * 0.25f < box_two.m_data.globalPosition().y + box_two.m_data.globalScale().y * 0.25f))	//one min < two max
-		{
-			CollisionResponse2D_AABB(box_one, box_two);
-			return true;
-		}
-
+	bool ManCong::ECS::CollisionCheck_AABB(Collider* box_one, Collider* box_two) {
 		//Dynamic Check
+		//Include velocity
+		return CollisionResponse2D_AABB(box_one, box_two);
+
 		//To do
 		return false;
-	}				
+	}
+
+	bool ManCong::ECS::CollisionResponse2D_AABB(Collider* movingCollider, Collider* otherCollider) {
+		Transform& entityTransform{ Coordinator::Instance()->GetComponent<Transform>(movingCollider->m_Entity) };
+		//Basically the 
+		//float originalXStrength = movingCollider->m_data.collisionData.velocity_time.x, originalYStrength = movingCollider->m_data.collisionData.velocity_time.x;
+		Vector2 *collisionTime = &movingCollider->m_data.collisionData.velocity_Collision_Time;
 	
-	Collision2D_Data ManCong::ECS::CollisionResponse2D_AABB(Collider &movingCollider, Collider &otherCollider) {
-		Transform &entityTransform { Coordinator::Instance()->GetComponent<Transform>(movingCollider.m_Entity) };
-
-		//Basically the Ti
-		float originalXStrength = movingCollider.m_data.collisionData.time, originalYStrength = movingCollider.m_data.collisionData.time;
-
-		Vector2 movingOriginalPosition = movingCollider.m_data.collisionData.position_current;
-		Vector2 movingVelocity = movingCollider.m_data.collisionData.position_moved - movingCollider.m_data.collisionData.position_current;
-		Vector2 movingBoxScale = { movingCollider.m_data.m_size_data[0] * 0.5f, movingCollider.m_data.m_size_data[1] * 0.5f };
-
-		Vector2 otherOriginalPosition = otherCollider.m_data.collisionData.position_current;
-		Vector2 otherVelocity = otherCollider.m_data.collisionData.position_moved - otherCollider.m_data.collisionData.position_current;
-		Vector2 otherBoxScale = { otherCollider.m_data.m_size_data[0] * 0.5f, otherCollider.m_data.m_size_data[1] * 0.5f };
-
 		//Keep track of the range of values
 		//origin being most left - 0, afterVel being most right - 1, boundaryDistanceX being the collision Hit position
-		float afterVelX = 1, afterVelY = 1;
+		Vector2 origin_pos = movingCollider->m_data.collisionData.position_current;
+		Vector2 after_velocity = movingCollider->m_data.collisionData.position_current;
+		Vector2 movingVelocity = movingCollider->m_data.collisionData.position_moved - movingCollider->m_data.collisionData.position_current;
+
+		//Boundary distance
+		f32 boundaryDistanceX = 0, boundaryDistanceY = 0;
 
 		//Keep track of which side has collided
-		bool hasXcollide = false, hasYCollide = false;
-		float offset_x_CollisionSize = 0;
-		float offset_y_CollisionSize = 0;
+		bool hasXcollide = false, hasYcollide = false;
 
-		//For when the scale of moving is lower than the standing collider
-		if (movingBoxScale.x < otherBoxScale.x) {
-			offset_x_CollisionSize = fabsf(otherBoxScale.x - movingBoxScale.x);
-		}
+		Vector2 movingCenter = movingCollider->m_data.collisionData.position_current;
+		Vector2 movingSize = movingCollider->m_data.globalScale();
+		f32 moving_Right = { movingCollider->m_data.collisionData.position_current.x + movingCollider->m_data.globalScale().x * 0.25f };
+		f32 moving_Left = { movingCollider->m_data.collisionData.position_current.x - movingCollider->m_data.globalScale().x * 0.25f };
+		f32 moving_Up = { movingCollider->m_data.collisionData.position_current.y + movingCollider->m_data.globalScale().y * 0.25f };
+		f32 moving_Down = { movingCollider->m_data.collisionData.position_current.y - movingCollider->m_data.globalScale().y * 0.25f };
 
-		if (movingBoxScale.y < otherBoxScale.y) {
-			offset_y_CollisionSize = fabsf(otherBoxScale.y - movingBoxScale.y);
-		}
+		Vector2 otherCenter = otherCollider->m_data.collisionData.position_current;
+		Vector2 otherSize = otherCollider->m_data.globalScale();
+		f32 other_Right = { otherCollider->m_data.collisionData.position_current.x + otherCollider->m_data.globalScale().x * 0.25f };
+		f32 other_Left = { otherCollider->m_data.collisionData.position_current.x - otherCollider->m_data.globalScale().x * 0.25f };
+		f32 other_Up = { otherCollider->m_data.collisionData.position_current.y + otherCollider->m_data.globalScale().y * 0.25f };
+		f32 other_Down = { otherCollider->m_data.collisionData.position_current.y - otherCollider->m_data.globalScale().y * 0.25f };
 
 		//If X velocity is moving
 		if (movingVelocity.x != 0) {
 			//Move right
 			if (movingVelocity.x > 0) {
-				if (((movingOriginalPosition.x + movingVelocity.x) + movingBoxScale.x + offset_x_CollisionSize) > (otherOriginalPosition.x - otherBoxScale.x) &&
-					(movingOriginalPosition.x - movingBoxScale.x + offset_x_CollisionSize) < (otherOriginalPosition.x + otherBoxScale.x) &&
-					(movingOriginalPosition.y + movingBoxScale.y + offset_y_CollisionSize) > (otherOriginalPosition.y - otherBoxScale.y) &&
-					(movingOriginalPosition.y - movingBoxScale.y - offset_y_CollisionSize) < (otherOriginalPosition.y + otherBoxScale.y)) {
+				if (moving_Right + movingVelocity.x > other_Left &&
+					moving_Left < other_Right &&
+					moving_Up   > other_Down &&
+					moving_Down < other_Up) {
 					//if the top of moving is top of the bottom of idle collider
-					afterVelX = movingOriginalPosition.x - movingVelocity.x;
+					after_velocity.x = other_Left - movingSize.x * 0.25f;
 
-					//Find the position where moving collider touches the idle collider (from the left)
-					//other leftmost - moving size
-					hasXcollide = true;
+					f32 tempTime = (after_velocity.x - movingCenter.x) / movingVelocity.x;
+					if (tempTime < collisionTime->x) {
+						collisionTime->x = tempTime;
+						hasXcollide = true;
+					}
+					//boundaryDistanceX = 0;
 				}
 			}
 			//Move left
 			else if (movingVelocity.x < 0) {
-				if (((movingOriginalPosition.x + movingVelocity.x) - movingBoxScale.x - offset_x_CollisionSize) < (otherOriginalPosition.x + otherBoxScale.x) &&
-					(movingOriginalPosition.x + movingBoxScale.x + offset_x_CollisionSize) > (otherOriginalPosition.x - otherBoxScale.x) &&
-					(movingOriginalPosition.y + movingBoxScale.y + offset_y_CollisionSize) > (otherOriginalPosition.y - otherBoxScale.y) &&
-					(movingOriginalPosition.y - movingBoxScale.y - offset_y_CollisionSize) < (otherOriginalPosition.y + otherBoxScale.y)) {
+				if (moving_Left + movingVelocity.x < other_Right &&
+					moving_Left > other_Left &&
+					moving_Up > other_Down &&
+					moving_Down < other_Up) {
+					after_velocity.x = other_Right + movingSize.x * 0.25f;
 
-					afterVelX = movingOriginalPosition.x - movingVelocity.x;
-
-					//Find the position where moving collider touches the idle collider (from the right)
-					//other rightmost + moving size
-					hasXcollide = true;
+					f32 tempTime = (after_velocity.x - movingCenter.x) / movingVelocity.x;
+					if (tempTime <= collisionTime->x) {
+						collisionTime->x = tempTime;
+						hasXcollide = true;
+					}
 				}
 			}
 
 			//If X collided
 			if (hasXcollide) {
-				entityTransform.position.x = entityTransform.position.x + (afterVelX - movingOriginalPosition.x);
+				entityTransform.position.x = movingCenter.x + movingVelocity.x * collisionTime->x;
+				//movingCollider->m_data.collisionData.isCollided = true;
 			}
 		}
 
@@ -236,39 +258,46 @@ namespace ManCong
 		if (movingVelocity.y != 0) {
 			//If Moving up
 			if (movingVelocity.y > 0) {
-				if (((movingOriginalPosition.y + movingVelocity.y) + movingBoxScale.y + offset_y_CollisionSize) > (otherOriginalPosition.y - otherBoxScale.y) &&
-					(movingOriginalPosition.y - movingBoxScale.y + offset_y_CollisionSize) < (otherOriginalPosition.y + otherBoxScale.y) &&
-					(movingOriginalPosition.x + movingBoxScale.x + offset_x_CollisionSize) > (otherOriginalPosition.x - otherBoxScale.x) &&
-					(movingOriginalPosition.x - movingBoxScale.x - offset_x_CollisionSize) < (otherOriginalPosition.x + otherBoxScale.x)) {
+				if (moving_Up + movingVelocity.y > other_Down &&
+					moving_Down    < other_Up &&
+					moving_Right > other_Left &&
+					moving_Left  < other_Right) {
 					//if the top of moving is top of the bottom of idle collider
-					afterVelY = movingOriginalPosition.y - movingVelocity.y;
+					after_velocity.y = other_Down - movingSize.y * 0.25f;
 
-					//Find the position where moving collider touches the idle collider (from the left)
-					//other leftmost - moving size
-					hasYCollide = true;
+					f32 tempTime = (after_velocity.y - movingCenter.y) / movingVelocity.y;
+					if (tempTime < collisionTime->y) {
+						collisionTime->y = tempTime;
+						hasYcollide = true;
+					}
 				}
 			}
 			//If moving down
 			else if (movingVelocity.y < 0) {
-				if (((movingOriginalPosition.y + movingVelocity.y) - movingBoxScale.y - offset_y_CollisionSize) < (otherOriginalPosition.y + otherBoxScale.y) &&
-					(movingOriginalPosition.y + movingBoxScale.y + offset_y_CollisionSize) > (otherOriginalPosition.y - otherBoxScale.y) &&
-					(movingOriginalPosition.x + movingBoxScale.x + offset_x_CollisionSize) > (otherOriginalPosition.x - otherBoxScale.x) &&
-					(movingOriginalPosition.x - movingBoxScale.x - offset_x_CollisionSize) < (otherOriginalPosition.x + otherBoxScale.x)) {
-					afterVelY = movingOriginalPosition.y - movingVelocity.y;
+				if (moving_Down + movingVelocity.y < other_Up &&
+					moving_Down  > other_Down &&
+					moving_Right > other_Left &&
+					moving_Left  < other_Right) {
+					//if the top of moving is top of the bottom of idle collider
+					after_velocity.y = other_Up + movingSize.y * 0.25f;
 
-					//Find the position where moving collider touches the idle collider (from the right)
-					//other rightmost + moving size
-					hasYCollide = true;
+					f32 tempTime = (after_velocity.y - movingCenter.y) / movingVelocity.y;
+					if (tempTime < collisionTime->y) {
+						collisionTime->y = tempTime;
+						hasYcollide = true;
+					}
 				}
 			}
 
-			//If Y has collided
-			if (hasYCollide) {
-				entityTransform.position.y = entityTransform.position.y + (afterVelY - movingOriginalPosition.y);
+			//If Y collided
+			if (hasYcollide) {
+				entityTransform.position.y = movingCenter.y + movingVelocity.y * collisionTime->y;
+				//movingCollider->m_data.collisionData.isCollided = true;
 			}
 		}
 
-		return movingCollider.m_data.collisionData;
+		//return movingCollider->m_data.collisionData;
+		return (hasYcollide || hasXcollide);
 	}
 
 
@@ -287,3 +316,23 @@ namespace ManCong
 //bool bruh = (movingOriginalPosition.x - movingBoxScale.x) > (otherOriginalPosition.x - otherBoxScale.x
 //std::cout << "moving right " << movingBoxScale.x << " : " << "idle left " << otherOriginalPosition.x - otherBoxScale.x << " = " << bruh << std::endl;
 //std::cout << "moving right " << movingBoxScale.x << " : " << "idle left " << otherBoxScale.x - movingBoxScale.x << " = " << bruh << std::endl;
+
+//Response
+//for (int i = 0; i < entities.size(); ++i) {
+//	Transform* transform = &Coordinator::Instance()->GetComponent<Transform>(entities[i]);
+//	//transform->position = allColliders[i]->m_data.collisionData.position_moved;
+
+//	Vec2 velocity = allColliders[i]->m_data.collisionData.position_moved - allColliders[i]->m_data.collisionData.position_current;
+//	velocity.x *= allColliders[i]->m_data.collisionData.velocity_Collision_Time.x;
+//	velocity.y *= allColliders[i]->m_data.collisionData.velocity_Collision_Time.y;
+//	transform->position += velocity;
+//}
+
+//static check
+//if ((box_one->m_data.globalPosition().x + box_one->m_data.globalScale().x * 0.25f > box_two->m_data.globalPosition().x - box_two->m_data.globalScale().x * 0.25f && box_one->m_data.globalPosition().y + box_one->m_data.globalScale().y * 0.25f > box_two->m_data.globalPosition().y - box_two->m_data.globalScale().y * 0.25f)		//one max > two min
+//	&& (box_one->m_data.globalPosition().x - box_one->m_data.globalScale().x * 0.25f < box_two->m_data.globalPosition().x + box_two->m_data.globalScale().x * 0.25f && box_one->m_data.globalPosition().y - box_one->m_data.globalScale().y * 0.25f < box_two->m_data.globalPosition().y + box_two->m_data.globalScale().y * 0.25f))	//one min < two max
+//{
+//	Transform& entityTransform{ Coordinator::Instance()->GetComponent<Transform>(box_one->m_Entity) };
+//	entityTransform.position = box_one->m_data.collisionData.position_current;
+//	return true;
+//}

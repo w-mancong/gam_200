@@ -22,13 +22,12 @@ namespace ManCong
 			};
 
 			struct Collision2D_Data {
+				Collision2D_Data *otherCollider;
 				Math::Vector2 normal{ 0,0 };
 				Math::Vector2 position_current{ 0,0 };
 				Math::Vector2 position_moved{ 0,0 };
-				f32 time{ 0 };
+				Math::Vector2 velocity_Collision_Time{ 1, 1 };
 				bool isCollided{ false };					//Is Colliding
-
-				Math::Vector2 position_collided() { return position_current + position_moved * time; };
 			};
 
 			/*!*********************************************************************************

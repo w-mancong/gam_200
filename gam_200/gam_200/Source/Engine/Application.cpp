@@ -23,7 +23,7 @@ namespace ManCong
 
 		bool isDebug = false;
 
-		float speed = 15;
+		float speed = 250;
 
 		void Application::Init(void)
 		{
@@ -47,7 +47,7 @@ namespace ManCong
 
 			//Michan
 			{
-				transform = { Vector2(100, 100), Vector2(30, 30), 0.0f };
+				transform = { Vector2(100, 150), Vector2(15, 30), 0.0f };
 
 				Entity_Michan = CreateSprite(transform);
 				auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(Entity_Michan);
@@ -84,7 +84,7 @@ namespace ManCong
 				sprite = Coordinator::Instance()->GetComponent<Sprite>(inner_Wall_Up);
 				CreateBoxCollider2D(inner_Wall_Up);
 
-				transform = { Vector2(-250, 0), Vector2(2, 200), 0.0f };
+				transform = { Vector2(-250, 0), Vector2(5, 200), 0.0f };
 				inner_Wall_Left = CreateSprite(transform);
 				sprite = Coordinator::Instance()->GetComponent<Sprite>(inner_Wall_Left);
 				CreateBoxCollider2D(inner_Wall_Left);
@@ -106,16 +106,16 @@ namespace ManCong
 
 				//x -= ManCong::Utility::Time::dt;
 
-				if (Input::KeyDown(KeyCode::A)) {
+				if (Input::KeyTriggered(KeyCode::A)) {
 					entity_transform.position.x -= speed;
 				}
-				if (Input::KeyDown(KeyCode::D)) {
+				if (Input::KeyTriggered(KeyCode::D)) {
 					entity_transform.position.x += speed;
 				}
-				if (Input::KeyDown(KeyCode::S)) {
+				if (Input::KeyTriggered(KeyCode::S)) {
 					entity_transform.position.y -= speed;
 				}
-				if (Input::KeyDown(KeyCode::W)) {
+				if (Input::KeyTriggered(KeyCode::W)) {
 					entity_transform.position.y += speed;
 				}
 
