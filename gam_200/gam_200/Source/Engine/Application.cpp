@@ -35,22 +35,35 @@ namespace ManCong
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(rect);
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
+
+			IMGUI_CHECKVERSION();
+			ImGui::CreateContext();
+			ImGuiIO& io = ImGui::GetIO(); (void)io;
+			
+			ImGui_ImplGlfw_InitForOpenGL(OpenGLWindow::Window(), true);
+			ImGui_ImplOpenGL3_Init("#version 330"); //need change to "#version 450" once switch to opengl 4.5
+			ImGui::StyleColorsDark();
+
 		}
 
 		void Application::Update(void)
 		{
-			//IMGUI_CHECKVERSION();
-			//ImGui::CreateContext();
-			//ImGuiIO& io = ImGui::GetIO(); (void)io;
-			//ImGui::StyleColorsDark();
-			//ImGui_ImplGlfw_InitForOpenGL(OpenGLWindow::Window(), true);
-			//ImGui_ImplOpenGL3_Init("#version 330");
-
-
 			Time timer;
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 			{
+				ImGui_ImplOpenGL3_NewFrame();
+				ImGui_ImplGlfw_NewFrame();
+				ImGui::NewFrame();
+
+				ImGui::Begin("Test ImGUI window");
+				ImGui::Text("Hello world");
+				ImGui::End();
+
+				ImGui::Render();
+				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+				glfwSwapBuffers(OpenGLWindow::Window());
+
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
 				f32 constexpr speed = 150.0f;
 				f32 constexpr rot = 1.0f;
@@ -87,10 +100,15 @@ namespace ManCong
 
 				std::cout << timer.m_FPS << std::endl;
 			}
+		
+
 		}
 
 		void Application::Exit(void)
 		{
+			ImGui_ImplOpenGL3_Shutdown();
+			ImGui_ImplGlfw_Shutdown();
+			ImGui::DestroyContext();
 			glfwTerminate();	// clean/delete all GLFW resources
 		}
 
