@@ -23,11 +23,20 @@ namespace ManCong
 				static std::map<std::string, Font> fontCollection;
 				static std::string currentFont;
 				static Shader fontShader;
+				static Math::Vector2 position;
+				static Math::Vector3 colour;
+				static f32 scale;
+				static std::string text;
 
-				static void RenderText(std::string text, f32 x, f32 y, f32 scale, Math::Vector3 color);
-				static void setShader(Shader shader) { fontShader = shader; }
-				static void setFont(std::string fontName) { currentFont = fontName; }
-
+				static void RenderText();
+				static void SetShader(Shader shader) { fontShader = shader; }
+				static void SetFont(std::string fontName) { currentFont = fontName; }
+				static void SetPos(Math::Vector2 pos) { position = pos; }
+				static void SetPos(f32 x, f32 y) { position = Math::Vector2(x, y); }
+				static void SetCol(Math::Vector3 col) { colour = col; }
+				static void SetCol(f32 r, f32 g, f32 b) { colour = Math::Vector3(r, g, b); }
+				static void SetScale(f32 size) { scale = size; }
+				static void SetText(std::string texts) { text = texts; }
 			};
 		}
 }

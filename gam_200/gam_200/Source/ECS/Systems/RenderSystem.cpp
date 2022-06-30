@@ -8,26 +8,31 @@ namespace ManCong
 {
 	namespace Graphics
 	{
+		// static member variables for fonts
 		std::map<std::string, Font> Font::fontCollection;
 		std::string Font::currentFont;
 		Shader Font::fontShader;
+		Math::Vector2 Font::position;
+		Math::Vector3 Font::colour;
+		f32 Font::scale;
+		std::string Font::text;
 
-		void Font::RenderText(std::string text, f32 x, f32 y, f32 scale, Math::Vector3 color)
+		void Font::RenderText()
 		{
 			// activate corresponding render state
 			fontShader.use();
-			fontShader.Set("textColor", color.x, color.y, color.z);
+			fontShader.Set("textColor", colour.x, colour.y, colour.z);
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(fontCollection.find(currentFont)->second.fontsVAO);
 
 			// iterate through all characters
 			std::string::const_iterator c;
-			for (c = text.begin(); c != text.end(); c++)
+			for (c = Font::text.begin(); c != Font::text.end(); c++)
 			{
 				Character ch = fontCollection.find(currentFont)->second.characterCollection[*c];
 
-				f32 xpos = x + ch.bearing.x * scale;
-				f32 ypos = y - (ch.size.y - ch.bearing.y) * scale;
+				f32 xpos = position.x + ch.bearing.x * scale;
+				f32 ypos = position.y - (ch.size.y - ch.bearing.y) * scale;
 
 				f32 w = ch.size.x * scale;
 				f32 h = ch.size.y * scale;
@@ -51,7 +56,7 @@ namespace ManCong
 				// render quad
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 				// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-				x += (ch.advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+				position.x += (ch.advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
 			}
 			glBindVertexArray(0);
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -345,14 +350,18 @@ namespace ManCong
 			FontInit("Assets/fonts/PressStart2P-Regular.ttf", "pressStart");
 
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			Font::setFont("roboto");
-			Font::RenderText("This is Roboto-Regular", 50.0f, 50.0f, 1.0f, Vector3(1.f, 1.f, 1.f));
-			Font::setFont("arial");
-			Font::RenderText("This is Arial Italic", 50.0f, 100.0f, 0.8f, Vector3(0.1f, 0.8f, 0.3f));
-			Font::setFont("pacifico");
-			Font::RenderText("This is Pacifico", 50.0f, 150.0f, 1.0f, Vector3(0.3f, 0.7f, 0.9f));
-			Font::setFont("pressStart");
-			Font::RenderText("This is PressStart", 50.0f, 200.0f, 0.7f, Vector3(1.0f, 0.2f, 0.2f));
+			Font::SetFont("roboto");
+			Font::SetScale(1.0f);
+			Font::SetPos(Vector2(50.0f, 50.0f));
+			Font::SetCol(Vector3(1.f, 1.f, 1.f));
+			Font::SetText("This is Roboto-Regular");
+			Font::RenderText();
+
+			Font::SetFont("pacifico");
+			Font::SetPos(Vector2(50.0f, 150.0f));
+			Font::SetCol(Vector3(0.3f, 0.7f, 0.9f));
+			Font::SetText("This is Pacifico");
+			Font::RenderText();
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
