@@ -52,17 +52,33 @@ namespace ManCong
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 			{
+
+				//feed inputs to dear imgui, start new frame
 				ImGui_ImplOpenGL3_NewFrame();
 				ImGui_ImplGlfw_NewFrame();
+
+				//------------------imgui first window
 				ImGui::NewFrame();
 
+				//IMGUI stuff for changing or adding stuff to this window
 				ImGui::Begin("Test ImGUI window");
-				ImGui::Text("Hello world");
-				ImGui::End();
 
-				ImGui::Render();
-				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-				glfwSwapBuffers(OpenGLWindow::Window());
+				//IMGUI stuff here
+				ImGui::Text("Hello world!");
+
+				ImGui::End();
+				//------------------
+
+
+			
+				//---------------------imgui second window
+				ImGui::Begin("Test02 ImGUI window");
+
+				//IMGUI stuff for changing or adding stuff to this window
+				ImGui::Text("It finally works");
+
+				ImGui::End();
+			    //---------------------
 
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
 				f32 constexpr speed = 150.0f;
@@ -99,6 +115,8 @@ namespace ManCong
 				timer.WaitUntil();
 
 				std::cout << timer.m_FPS << std::endl;
+
+		
 			}
 		
 
@@ -106,9 +124,11 @@ namespace ManCong
 
 		void Application::Exit(void)
 		{
+			//Imgui clean up stuff
 			ImGui_ImplOpenGL3_Shutdown();
 			ImGui_ImplGlfw_Shutdown();
 			ImGui::DestroyContext();
+
 			glfwTerminate();	// clean/delete all GLFW resources
 		}
 
