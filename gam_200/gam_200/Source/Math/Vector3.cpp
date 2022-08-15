@@ -85,6 +85,9 @@ namespace ManCong
 		{
 			f32 const inv_len = Q_rsqrt(MagnitudeSq());
 			x *= inv_len; y *= inv_len, z *= inv_len;
+
+			//f32 const length = Magnitude();
+			//x /= length, y /= length, z /= length;
 		}
 
 		Vector3 Vector3::Normalize(void) const

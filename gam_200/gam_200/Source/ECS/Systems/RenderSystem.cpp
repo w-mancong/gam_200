@@ -8,13 +8,37 @@ namespace ManCong
 	namespace ECS
 	{
 		using namespace Math; using namespace Engine; using namespace Graphics;
-		void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
-
 		class RenderSystem : public System
 		{
 		public:
-			void Render(Entity const& entity);
+			void Render(Sprite const& sprite, Transform const& trans);
 		};
+
+		struct Plane
+		{
+			Vector3 position{ 0.0f, 0.0f, 0.0f };
+			Vector3 normal{ 0.0f, 1.0f, 0.0f };
+		};
+
+		enum class Faces
+		{
+			Near,
+			Far,
+			Left,
+			Right,
+			Top,
+			Bottom,
+			Total,
+		};
+
+		struct Frustum
+		{
+			Plane planes[static_cast<u64>(Faces::Total)];
+		};
+
+		void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
+		void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2]);
+		void InitializeFrustum(Frustum& fstm);
 
 		namespace
 		{
@@ -22,13 +46,11 @@ namespace ManCong
 			Shader spriteShader, meshShader;
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
+			Frustum fstm;
 		}
 
-		void RenderSystem::Render(Entity const& entity)
+		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
 		{
-			auto const& sprite = Coordinator::Instance()->GetComponent<Sprite>(entity);
-			auto const& trans = Coordinator::Instance()->GetComponent<Transform>(entity);
-
 			Color const& color = sprite.color;
 			Vector2 const& position{ trans.position }, scale{ trans.scale };
 
@@ -87,6 +109,58 @@ namespace ManCong
 			meshShader.use();
 			meshShader.Set("view", camera.ViewMatrix());
 			meshShader.Set("proj", camera.ProjectionMatrix());
+
+			InitializeFrustum(fstm);
+		}
+
+		void InitializeFrustum(Frustum& fstm)
+		{
+			f32 const zFar = camera.FarPlane();
+			f32 const halfVSide = zFar * std::tanf(DegreeToRadian(camera.Fov()) * 0.5f);
+			f32 const halfHSide = halfVSide * ( static_cast<f32>(OpenGLWindow::width / OpenGLWindow::height) );
+			Vector3 const position = camera.Position(), right = camera.Right(), up = camera.Up(), front = camera.Front(), frontMultFar = zFar * front;
+
+			u64 planeIndex = static_cast<u64>(Faces::Near);
+			// Near Plane
+			fstm.planes[planeIndex++] = { position + camera.NearPlane() * front, front };
+			// Far Plane
+			fstm.planes[planeIndex++] = { position + frontMultFar, -front };
+			// Left Plane
+			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar - right * halfHSide, up) ) };
+			// Right Plane
+			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(up, frontMultFar + right * halfHSide) ) };
+			// Top Plane
+			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar + up * halfVSide, right) ) };
+			// Bottom Plane
+			fstm.planes[planeIndex]   = { position, Vector3::Normalize( Vector3::Cross(right, frontMultFar - up * halfVSide) ) };
+		}
+
+		bool IntersectsPlane(Vector2 boxVec[2], Vector2 const& position, Plane const& plane)
+		{
+			return std::abs( boxVec[0].Dot(plane.normal) ) + std::abs( boxVec[1].Dot(plane.normal) ) >= std::abs( (Vector3(position) - plane.position).Dot(plane.normal) );
+		}
+
+		bool ShouldRender(Transform const& trans)
+		{
+			// Do frustum culling here
+			u64 constexpr TOTAL_FACES = static_cast<u64>(Faces::Total);
+			// Vector will be use to calculate the distance of the oriented box to the plane
+			Vector2 boxVec[2]{ Vector2(1.0f, 0.0f), Vector2(0.0f, 1.0f) }; InitializeBoxVector(trans, boxVec);
+			for (u64 i = 0; i < TOTAL_FACES; ++i)
+			{
+				Vector3 v = Vector3(trans.position) - fstm.planes[i].position; // vector to be dotted to check if the object is inside the frustum
+				if (0.0f < v.Dot(fstm.planes[i].normal))
+					continue;
+				// When it reaches this point, means that the object is outside of the frustum
+				return IntersectsPlane(boxVec, trans.position, fstm.planes[i]);	// Checks if it is intersecting with the plane
+			}
+			return true; // Object is within the frustum
+		}
+
+		void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2])
+		{
+			boxVec[0] = Matrix3x3::Rotation(trans.rotation) * boxVec[0] * (trans.scale.x * 0.5f);
+			boxVec[1] = Vector2::ClampMagnitude(Vector2::Perpendicular(boxVec[0]), trans.scale.y * 0.5f);
 		}
 
 		void Render(void)
@@ -104,9 +178,19 @@ namespace ManCong
 
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			// Do frustum culling here
+			u32 displayed = 0;
 			for (auto it = entities.begin(); it != entities.end(); ++it)
-				rs->Render(*it);
+			{
+				Sprite	  const& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);
+				Transform const& trans  = Coordinator::Instance()->GetComponent<Transform>(*it);
+				if (ShouldRender(trans))
+				{
+					rs->Render(sprite, trans);
+					++displayed;
+				}
+			}
+			std::cout << "Total entities in scene: " << entities.size() << std::endl;
+			std::cout << "Total entities displayed: " << displayed << std::endl;
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
 		}
@@ -137,15 +221,29 @@ namespace ManCong
 			CameraPosition(Vector3(x, y, z));
 		}
 
-		void CameraPosition(Math::Vector3 pos)
+		void CameraPosition(Vector3 pos)
 		{
 			camera.Position(pos);
 			UpdateViewMatrix();
+			InitializeFrustum(fstm);
 		}
 
 		Vector3 CameraPosition(void)
 		{
 			return camera.Position();
+		}
+
+		void CameraFov(f32 fov)
+		{
+			camera.Fov(fov);
+			UpdateProjectionMatrix();
+			InitializeFrustum(fstm);
+		}
+
+		void ViewportResizeCameraUpdate(void)
+		{
+			UpdateProjectionMatrix();
+			InitializeFrustum(fstm);
 		}
 
 		void CreateSprite(Entity const& entity, Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)

@@ -34,11 +34,10 @@ namespace ManCong
 			***********************************************************************************/
 			static GLFWwindow* Window(void);
 
-			static s32 *WindowWidth, *WindowHeight;
+			static s32 width, height;
 
 		private:
 			static GLFWwindow* window; 
-			static s32 width, height;
 		};
 	}
 }
