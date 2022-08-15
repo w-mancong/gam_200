@@ -96,7 +96,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ECS\Systems\CollisionSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\RenderSystem.cpp" />
@@ -131,8 +130,6 @@
     <ClCompile Include="Source\Utility\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\ECS\Components\Rigidbody2D.h" />
-    <ClInclude Include="Include\ECS\Systems\CollisionSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />
     <ClInclude Include="Include\Common Header\MyExceptions.h" />
@@ -141,7 +138,6 @@
     <ClInclude Include="Include\Common Header\MyMemory.h" />
     <ClInclude Include="Include\Common Header\TemplateClasses.h" />
     <ClInclude Include="Include\Common Header\Utility.h" />
-    <ClInclude Include="Include\ECS\Components\Collider.h" />
     <ClInclude Include="Include\ECS\Components\Sprite.h" />
     <ClInclude Include="Include\ECS\Components\RenderData.h" />
     <ClInclude Include="Include\ECS\Structure\EcsSystem.h" />
