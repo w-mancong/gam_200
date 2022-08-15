@@ -14,27 +14,34 @@ namespace ManCong
 			void Exit(void);
 		};
 
-		Entity rect;
+		Entity Noah, Hinata;
 
 		void Application::Init(void)
 		{
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 			Transform transform{ Vector2(200.0f, 0.0f), Vector2(10.5f, 10.5f), 0.0f };
+			Noah = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
-			//Entity entity = CreateSprite(transform);
-			//auto& sprite = Coordinator::Instance()->GetComponent<Sprite>(entity);
-			//sprite.color.g = 0.0f; sprite.color.b = 0.0f; sprite.color.a = 0.35f;
-			//sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Line;
-
-			transform.position = Vector2(0.0f, 0.0f);
-			transform.rotation = 30.0f;
-			//transform.position = Vector2(600.0f, 0.0f);
-			transform.scale = Vector2(200.0f, 50.0f);
-			rect = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
-			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(rect);
+			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
+
+			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
+			CreateCollider(Noah, trans_noah, ColliderType::Rectangle2D_AABB);
+			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
+			collider_Noah.scale[0] = 10, collider_Noah.scale[1] = 10;
+
+			transform = { Vector2(150.0f, 0.0f), Vector2(10.5f, 10.5f), 0.0f };
+			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+
+			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
+			sprite3.mode = RenderMode::Line;
+			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
+			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
+			CreateCollider(Hinata, trans_hinata, ColliderType::Rectangle2D_AABB);
+			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
+			collider_hinata.scale[0] = 10, collider_hinata.scale[1] = 10;
 		}
 
 		void Application::Update(void)
@@ -43,7 +50,7 @@ namespace ManCong
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
 				f32 constexpr speed = 150.0f;
 				f32 constexpr rot = 1.0f;
         
@@ -72,12 +79,12 @@ namespace ManCong
 					trans.rotation -= rot;
 				}
         
+				UpdateCollider();
 				Render();
 				timer.ClockTimeNow();
 				Render();
 				timer.WaitUntil();
-
-				std::cout << timer.m_FPS << std::endl;
+				//std::cout << timer.m_FPS << std::endl;
 			}
 		}
 

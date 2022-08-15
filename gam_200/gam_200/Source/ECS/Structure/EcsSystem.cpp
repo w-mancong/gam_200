@@ -8,11 +8,13 @@ namespace ManCong
 		{
 			Coordinator::Instance()->RegisterComponent<Sprite>();
 			Coordinator::Instance()->RegisterComponent<Transform>();
+			Coordinator::Instance()->RegisterComponent<Collider2D>();
 		}
 
 		void RegisterSystem(void)
 		{
 			RegisterRenderSystem();
+			RegisterColliderSystem();
 		}
 
 		void InitSystem(void)
