@@ -189,8 +189,8 @@ namespace ManCong
 					++displayed;
 				}
 			}
-			std::cout << "Total entities in scene: " << entities.size() << std::endl;
-			std::cout << "Total entities displayed: " << displayed << std::endl;
+			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
+			//std::cout << "Total entities displayed: " << displayed << std::endl;
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
 		}

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Time.h"
 
 namespace ManCong
 {
@@ -18,7 +19,6 @@ namespace ManCong
 		void Application::Init(void)
 		{
 			OpenGLWindow::InitGLFWWindow();
-			Time::Init();
 			ECS::InitSystem();
 			Transform transform{ Vector2(200.0f, 0.0f), Vector2(10.5f, 10.5f), 0.0f };
 
@@ -39,27 +39,29 @@ namespace ManCong
 
 		void Application::Update(void)
 		{
+			Time timer;
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 			{
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
 				f32 constexpr speed = 150.0f;
 				f32 constexpr rot = 1.0f;
+        
 				if(Input::Input::KeyDown(KeyCode::W))
 				{
-					trans.position.y += speed * Time::dt;
+					trans.position.y += speed * Time::m_DeltaTime;
 				}
 				if (Input::Input::KeyDown(KeyCode::S))
 				{
-					trans.position.y -= speed * Time::dt;
+					trans.position.y -= speed * Time::m_DeltaTime;
 				}
 				if (Input::Input::KeyDown(KeyCode::D))
 				{
-					trans.position.x += speed * Time::dt;
+					trans.position.x += speed * Time::m_DeltaTime;
 				}
 				if (Input::Input::KeyDown(KeyCode::A))
 				{
-					trans.position.x -= speed * Time::dt;
+					trans.position.x -= speed * Time::m_DeltaTime;
 				}
 				if (Input::Input::KeyDown(KeyCode::Q))
 				{
@@ -69,8 +71,13 @@ namespace ManCong
 				{
 					trans.rotation -= rot;
 				}
+        
 				Render();
-				Time::Update();
+				timer.ClockTimeNow();
+				Render();
+				timer.WaitUntil();
+
+				std::cout << timer.m_FPS << std::endl;
 			}
 		}
 
