@@ -20,7 +20,8 @@ namespace ManCong
 		{
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
-			Transform transform{ Vector2(200.0f, 0.0f), Vector2(10.5f, 10.5f), 0.0f };
+			//Obj 1
+			Transform transform{ Vector2(200.0f, 0.0f), Vector2(50.5f, 50.5f), 0.0f };
 			Noah = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
@@ -30,10 +31,12 @@ namespace ManCong
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
 			CreateCollider(Noah, trans_noah, ColliderType::Rectangle2D_AABB);
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
-			collider_Noah.scale[0] = 10, collider_Noah.scale[1] = 10;
+			collider_Noah.scale[0] = 50.0f, collider_Noah.scale[1] = 50.0f;
+			collider_Noah.colliderType = ColliderType::Rectangle2D_AABB;
 
-			transform = { Vector2(150.0f, 0.0f), Vector2(10.5f, 10.5f), 0.0f };
-			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			//Obj 2
+			transform = { Vector2(150.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
+			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
 			sprite3.mode = RenderMode::Line;
@@ -41,7 +44,8 @@ namespace ManCong
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
 			CreateCollider(Hinata, trans_hinata, ColliderType::Rectangle2D_AABB);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 10, collider_hinata.scale[1] = 10;
+			collider_hinata.scale[0] = 50.0f, collider_hinata.scale[1] = 50.0f;
+			collider_hinata.colliderType = ColliderType::Circle2D;
 		}
 
 		void Application::Update(void)

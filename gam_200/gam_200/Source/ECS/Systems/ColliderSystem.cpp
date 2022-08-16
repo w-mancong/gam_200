@@ -73,9 +73,14 @@ namespace ManCong
 		{
 			bool collision = false;
 
-			//collision = CheckCollision_AABB_To_AABB(collider_one, collider_two);
-			//collision = CheckCollision_Circle_To_AABB(collider_one, collider_two);
-			collision = CheckCollision_Circle_To_Circle(collider_one, collider_two);
+			if (collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Rectangle2D_AABB) {
+				collision = CheckCollision_AABB_To_AABB(collider_one, collider_two);
+			}else if (collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Circle2D) {
+				collision = CheckCollision_Circle_To_Circle(collider_one, collider_two);
+			}
+			else if (collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Circle2D) {
+				collision = CheckCollision_Circle_To_AABB(collider_one, collider_two);
+			}
 
 			if (collision) {
 				std::cout << "Collision Made ";
@@ -112,18 +117,22 @@ namespace ManCong
 			return false;
 		}		
 		
-		bool ColliderSystem::CheckCollision_Circle_To_AABB(Collider2D const& collider_circle, Collider2D const& collider_box_AABB) {
+		bool ColliderSystem::CheckCollision_Circle_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two) {
+			//Check which one is circle and box, assign accordingly
+			Collider2D const& collider_circle = collider_one.colliderType == ColliderType::Circle2D ? collider_one : collider_two;
+			Collider2D const& collider_box_AABB = collider_two.colliderType == ColliderType::Rectangle2D_AABB ? collider_two : collider_one;
+
 			//Get closest point
 			Math::Vec2 closestPoint; //From Box
 			Math::Vec2 circlePosition = collider_circle.parentTransform->position + collider_circle.localPosition;
 			Math::Vec2 boxPosition = collider_box_AABB.parentTransform->position + collider_box_AABB.localPosition;
 
 			float boxWidth = collider_box_AABB.scale[0], boxHeight = collider_box_AABB.scale[1];
-			closestPoint.x = std::max(boxPosition.x - boxWidth, std::min(circlePosition.x, boxPosition.x + boxWidth));
-			closestPoint.y = std::max(boxPosition.y - boxHeight, std::min(circlePosition.y, boxPosition.y + boxHeight));
+			closestPoint.x = std::max(boxPosition.x - boxWidth * 0.5f, std::min(circlePosition.x, boxPosition.x + boxWidth * 0.5f));
+			closestPoint.y = std::max(boxPosition.y - boxHeight * 0.5f, std::min(circlePosition.y, boxPosition.y + boxHeight * 0.5f));
 
 			//Check if this point is inside circle
-			Vector3 vector_closestPoint_to_circle = (collider_box_AABB.parentTransform->position + collider_circle.localPosition) - closestPoint;
+			Vector3 vector_closestPoint_to_circle = circlePosition - closestPoint;
 
 			if ((vector_closestPoint_to_circle.x * vector_closestPoint_to_circle.x + vector_closestPoint_to_circle.y * vector_closestPoint_to_circle.y) < collider_circle.scale[0] * collider_circle.scale[0])
 			{
