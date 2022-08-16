@@ -21,6 +21,14 @@ namespace ManCong
 				bool CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two);
 				bool CheckCollision_Circle_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two);
 				bool CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two);
+				bool CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two);
+				Vector2 getMinMax_OOBB_On_Axis(Collider2D box, Vector2 axis);
+				bool CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis);
+
+				void UpdateWorldAxis(Collider2D &collider);
+
+			private:
+				Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };			
 		};
 
 		namespace
@@ -40,6 +48,7 @@ namespace ManCong
 		void CreateCollider(Entity const& entity, Transform const& transform, ColliderType shape)
 		{
 			Collider2D collider;
+			collider.colliderType = shape;
 			collider.parentTransform = &transform;
 
 			switch (shape)
@@ -68,6 +77,12 @@ namespace ManCong
 			Coordinator::Instance()->AddComponent(entity, collider);
 		}
 
+		void ColliderSystem::UpdateWorldAxis(Collider2D &collider) {
+			Math::Matrix3x3 rotationTransform = Math::Matrix3x3::Rotation(collider.rotation);
+
+			collider.globalRight = rotationTransform * worldXAxis;
+			collider.globalUp = rotationTransform * worldYAxis;
+		}
 
 		bool ColliderSystem::Check_OnCollisionStay(Collider2D const& collider_one, Collider2D const& collider_two)
 		{
@@ -81,6 +96,9 @@ namespace ManCong
 			else if (collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Circle2D) {
 				collision = CheckCollision_Circle_To_AABB(collider_one, collider_two);
 			}
+			else if (collider_one.colliderType == ColliderType::Rectangle2D_OOBB && collider_two.colliderType == ColliderType::Rectangle2D_OOBB) {
+				collision = CheckCollision_OOBB_To_OOBB(collider_one, collider_two);
+			}
 
 			if (collision) {
 				std::cout << "Collision Made ";
@@ -90,6 +108,11 @@ namespace ManCong
 
 		void UpdateCollider() {
 			bool collision = false;
+			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
+			{
+				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it));
+			}
+
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
 			{
 				auto jt = ++it; //jt is next iteration
@@ -155,6 +178,69 @@ namespace ManCong
 				return true;
 			}
 			return false;
+		}
+
+		bool ColliderSystem::CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two) {
+			//Test both box on local Axis Box1.x, Box1.y Box2.x and Box2.y
+			if (!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalRight) || !CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalUp) || !CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalRight) || !CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalUp))
+			{
+				//If any is not overlapping, means box ain't touching
+				return false;
+			}
+
+			return true;
+		}    
+
+		bool ColliderSystem::CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis)
+		{
+			//x - min, y - max
+			Vector2 boxOne_MinMax = getMinMax_OOBB_On_Axis(box_one, axis);
+			Vector2 boxTwo_MinMax = getMinMax_OOBB_On_Axis(box_two, axis);
+
+			//B.min < A.Max && B.max > A.min
+			return ((boxTwo_MinMax.x <= boxOne_MinMax.y) && (boxTwo_MinMax.y >= boxOne_MinMax.x));
+		}
+
+		//Get min and max of an OOBB box on an axis
+		Vector2 ColliderSystem::getMinMax_OOBB_On_Axis(Collider2D box, Vector2 axis)
+		{
+			//x - min, y - max
+			Vector2 result_MinMax { 0,0 };
+
+			Vector2 half_right = box.globalRight * box.scale[0] * 0.5f;
+			Vector2 half_up = box.globalUp * box.scale[1] * 0.5f;
+
+			Vector2 globalPosition = box.parentTransform->position + box.localPosition;
+
+			//Four corners of the box
+			Vector2 vertices[4];
+			vertices[0] = globalPosition - half_right - half_up;
+			vertices[1] = globalPosition + half_right - half_up;
+			vertices[2] = globalPosition - half_right + half_up;
+			vertices[3] = globalPosition + half_right + half_up;
+			
+			//Get default min,max
+			result_MinMax.x = Math::Vec2::Dot(vertices[0], axis);
+			result_MinMax.y = result_MinMax.x;
+
+			for (int i = 1; i < 4; i++)
+			{
+				float distance = Math::Vec2::Dot(vertices[i], axis);
+
+				//if distance is smaller than current min
+				if (distance < result_MinMax.x)
+				{
+					result_MinMax.x = distance;
+				}
+
+				//if distance is more than current max
+				if (distance > result_MinMax.y)
+				{
+					result_MinMax.y = distance;
+				}
+			}
+
+			return result_MinMax;
 		}
 	}
 }

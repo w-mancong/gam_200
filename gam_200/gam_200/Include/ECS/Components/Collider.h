@@ -52,10 +52,12 @@ namespace ManCong
 			***********************************************************************************/
 			struct Collider2D
 			{
-				Transform const *parentTransform;
+				Transform const* parentTransform{ 0 };
 				Math::Vector2 localPosition { 0,0 };
+				Math::Vector2 globalRight{ 0,0 }, globalUp{ 0,0 };
 				ColliderType colliderType { ColliderType::Rectangle2D_AABB };
-				float scale[2];
+				float rotation = 0;
+				float scale[2]{ 1,1 };
 				bool isCollided{ false };
 			};
 		}

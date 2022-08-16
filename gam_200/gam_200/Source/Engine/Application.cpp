@@ -29,23 +29,23 @@ namespace ManCong
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			CreateCollider(Noah, trans_noah, ColliderType::Rectangle2D_AABB);
+			CreateCollider(Noah, trans_noah, ColliderType::Rectangle2D_OOBB);
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
 			collider_Noah.scale[0] = 50.0f, collider_Noah.scale[1] = 50.0f;
-			collider_Noah.colliderType = ColliderType::Rectangle2D_AABB;
+			trans_noah.rotation = 45;
+			collider_Noah.rotation = 45;
 
 			//Obj 2
 			transform = { Vector2(150.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
-			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
+			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
 			sprite3.mode = RenderMode::Line;
 			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
-			CreateCollider(Hinata, trans_hinata, ColliderType::Rectangle2D_AABB);
+			CreateCollider(Hinata, trans_hinata, ColliderType::Rectangle2D_OOBB);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
 			collider_hinata.scale[0] = 50.0f, collider_hinata.scale[1] = 50.0f;
-			collider_hinata.colliderType = ColliderType::Circle2D;
 		}
 
 		void Application::Update(void)
