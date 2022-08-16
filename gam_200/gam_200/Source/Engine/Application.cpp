@@ -21,7 +21,7 @@ namespace ManCong
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 			//Obj 1
-			Transform transform{ Vector2(200.0f, 0.0f), Vector2(50.5f, 50.5f), 0.0f };
+			Transform transform{ Vector2(200.0f, 0.0f), Vector2(100.5f, 50.5f), 0.0f };
 			Noah = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
@@ -31,9 +31,9 @@ namespace ManCong
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
 			CreateCollider(Noah, trans_noah, ColliderType::Rectangle2D_OOBB);
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
-			collider_Noah.scale[0] = 50.0f, collider_Noah.scale[1] = 50.0f;
-			trans_noah.rotation = 45;
+			collider_Noah.scale[0] = 100.0f, collider_Noah.scale[1] = 50.0f;
 			collider_Noah.rotation = 45;
+			trans_noah.rotation = 45;
 
 			//Obj 2
 			transform = { Vector2(150.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
