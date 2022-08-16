@@ -228,7 +228,7 @@ namespace ManCong
 
 			StaticAllocator(void) = default;
 			template <class U>
-			StaticAllocator(DynamicAllocator<U> const& other) {  };
+			StaticAllocator(StaticAllocator<U> const& other) {  };
 			~StaticAllocator(void) = default;
 
 			pointer allocate(size_type size)
