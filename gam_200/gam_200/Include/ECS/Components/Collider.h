@@ -58,7 +58,7 @@ namespace ManCong
 				ColliderType colliderType { ColliderType::Rectangle2D_AABB };
 				f32 rotation = 0.f;
 				f32 scale[2]{ 1.f, 1.f };
-				bool isCollided{ false };
+				bool isColliderTriggered{ false }, isCollidedStay{ false }, isColliderExit{ false };
 			};
 		}
 	}

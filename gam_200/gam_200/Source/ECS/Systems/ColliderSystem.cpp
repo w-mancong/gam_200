@@ -17,7 +17,7 @@ namespace ManCong
 		class ColliderSystem : public System
 		{
 		public:
-			bool Check_OnCollisionStay(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			bool UpdateCollider(Collider2D & collider_one, Collider2D & collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 			bool CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 			bool CheckCollision_Circle_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 			bool CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
@@ -90,7 +90,7 @@ namespace ManCong
 			collider.globalUp = rotationTransform * worldYAxis;
 		}
 
-		bool ColliderSystem::Check_OnCollisionStay(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two)
+		bool ColliderSystem::UpdateCollider(Collider2D & collider_one, Collider2D & collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two)
 		{
 			bool collision = false;
 
@@ -118,7 +118,50 @@ namespace ManCong
 			}
 
 			if (collision) {
-				std::cout << "Collision Made ";
+				//Collision Enter
+				if (!collider_one.isCollidedStay) {
+					collider_one.isColliderTriggered = true;
+					collider_one.isCollidedStay = true;
+				}
+				else {
+					collider_one.isColliderTriggered = false;
+				}
+				if (!collider_two.isCollidedStay) {
+					collider_two.isColliderTriggered = true;
+					collider_two.isCollidedStay = true;
+				}
+				else
+				{
+					collider_two.isColliderTriggered = false;
+				}
+			}
+
+			//Collision Exit
+			if (!collision) {
+				if (collider_one.isCollidedStay) {
+					collider_one.isCollidedStay = false;
+					collider_one.isColliderExit = true;
+				}
+				else {
+					collider_one.isColliderExit = false;
+				}
+				if (collider_two.isCollidedStay) {
+					collider_two.isCollidedStay = false;
+					collider_two.isColliderExit = true;
+				}
+				else {
+					collider_two.isColliderExit = false;
+				}
+			}
+
+			if (collider_one.isColliderTriggered) {
+				printf("Collision Trigger\n");
+			}
+			else if (collider_one.isCollidedStay) {
+				printf("Collision Stay\n");
+			}
+			else if (collider_one.isColliderExit) {
+				printf("Collision Exit\n");
 			}
 			return true;
 		}
@@ -135,13 +178,13 @@ namespace ManCong
 				auto jt = ++it; //jt is next iteration
 				--it;			//move it back
 
-				Collider2D const& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+				Collider2D & oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 				Transform const& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 
 				for (; jt != cs->mEntities.end(); ++jt){
-					Collider2D const& twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
+					Collider2D & twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
 					Transform const& twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
-					collision = cs->Check_OnCollisionStay(oneCollider, twoCollider, oneParentTransform, twoParentTransform);
+					collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform);
 				}
 			}
 		}
