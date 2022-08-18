@@ -21,7 +21,7 @@ namespace ManCong
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 			//Obj 1
-			Transform transform{ Vector2(200.0f, 0.0f), Vector2(100.5f, 50.5f), 0.0f };
+			Transform transform{ Vector2(0.0f, 0.0f), Vector2(100.f, 50.f), 0.0f };
 			Noah = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
@@ -32,20 +32,20 @@ namespace ManCong
 			CreateCollider(Noah, trans_noah, ColliderType::Rectangle2D_OOBB);
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
 			collider_Noah.scale[0] = 100.0f, collider_Noah.scale[1] = 50.0f;
-			collider_Noah.rotation = 45;
-			trans_noah.rotation = 45;
+			collider_Noah.rotation = 0;
+			trans_noah.rotation = 0;
 
 			//Obj 2
-			transform = { Vector2(150.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
+			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
 			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
 			sprite3.mode = RenderMode::Line;
 			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
-			CreateCollider(Hinata, trans_hinata, ColliderType::Rectangle2D_OOBB);
+			CreateCollider(Hinata, trans_hinata, ColliderType::Rectangle2D_AABB);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 50.0f, collider_hinata.scale[1] = 50.0f;
+			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 50.0f;
 		}
 
 		void Application::Update(void)

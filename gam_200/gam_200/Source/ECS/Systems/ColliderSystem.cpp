@@ -16,19 +16,21 @@ namespace ManCong
 		using namespace Math; using namespace Engine; using namespace Graphics;
 		class ColliderSystem : public System
 		{
-			public:
-				bool Check_OnCollisionStay(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
-				bool CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
-				bool CheckCollision_Circle_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
-				bool CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
-				bool CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
-				Vector2 getMinMax_OOBB_On_Axis(Collider2D box, Vector2 axis, Transform const& parentTransform);
-				bool CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis, Transform const& parent_transform_one, Transform const& parent_transform_two);
+		public:
+			bool Check_OnCollisionStay(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			bool CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			bool CheckCollision_Circle_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			bool CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			bool CheckCollision_Circle_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			bool CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			bool CheckCollision_OOBB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 
-				void UpdateWorldAxis(Collider2D &collider);
+			Vector2 getMinMax_OOBB_On_Axis(Collider2D box, Vector2 axis, Transform const& parentTransform);
+			bool CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			void UpdateWorldAxis(Collider2D& collider, Transform const& parentTransform);
 
-			private:
-				Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };			
+		private:
+			Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };
 		};
 
 		namespace
@@ -39,7 +41,7 @@ namespace ManCong
 		void RegisterColliderSystem(void)
 		{
 			cs = Coordinator::Instance()->RegisterSystem<ColliderSystem>();
-			Signature signature; 
+			Signature signature;
 			signature.set(Coordinator::Instance()->GetComponentType<Collider2D>());
 			signature.set(Coordinator::Instance()->GetComponentType<Transform>());
 			Coordinator::Instance()->SetSystemSignature<ColliderSystem>(signature);
@@ -53,32 +55,36 @@ namespace ManCong
 
 			switch (shape)
 			{
-				case ColliderType::Rectangle2D_AABB:
-				{
-					//Width & Height
-					collider.scale[0] = 1;
-					collider.scale[1] = 1;
-					break;
-				}
-				case ColliderType::Rectangle2D_OOBB:
-				{	
-					//Width & Height
-					collider.scale[0] = 1;
-					collider.scale[1] = 1;
-					break;
-				}
-				case ColliderType::Circle2D:
-				{
-					collider.scale[0] = 0.5f;	//radius
-					collider.scale[1] = 0.5f;	//radius
-					break;
-				}
+			case ColliderType::Rectangle2D_AABB:
+			{
+				//Width & Height
+				collider.scale[0] = 1;
+				collider.scale[1] = 1;
+				break;
+			}
+			case ColliderType::Rectangle2D_OOBB:
+			{
+				//Width & Height
+				collider.scale[0] = 1;
+				collider.scale[1] = 1;
+				break;
+			}
+			case ColliderType::Circle2D:
+			{
+				collider.scale[0] = 0.5f;	//radius
+				collider.scale[1] = 0.5f;	//radius
+				break;
+			}
 			}
 			Coordinator::Instance()->AddComponent(entity, collider);
 		}
 
-		void ColliderSystem::UpdateWorldAxis(Collider2D &collider) {
-			Math::Matrix3x3 rotationTransform = Math::Matrix3x3::Rotation(collider.rotation);
+		void ColliderSystem::UpdateWorldAxis(Collider2D& collider, Transform const& parentTransform) {
+			if (collider.colliderType != ColliderType::Rectangle2D_OOBB) {
+				return;
+			}
+
+			Math::Matrix3x3 rotationTransform = Math::Matrix3x3::Rotation(collider.rotation + parentTransform.rotation);
 
 			collider.globalRight = rotationTransform * worldXAxis;
 			collider.globalUp = rotationTransform * worldYAxis;
@@ -99,6 +105,17 @@ namespace ManCong
 			else if (collider_one.colliderType == ColliderType::Rectangle2D_OOBB && collider_two.colliderType == ColliderType::Rectangle2D_OOBB) {
 				collision = CheckCollision_OOBB_To_OOBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
+			else if (collider_one.colliderType == ColliderType::Rectangle2D_OOBB && collider_two.colliderType == ColliderType::Rectangle2D_OOBB) {
+				collision = CheckCollision_OOBB_To_OOBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
+			}
+			else if ((collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Rectangle2D_OOBB) || 
+				(collider_two.colliderType == ColliderType::Circle2D && collider_one.colliderType == ColliderType::Rectangle2D_OOBB)) {
+				collision = CheckCollision_Circle_To_OOBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
+			}
+			else if ((collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Rectangle2D_OOBB) ||
+				(collider_two.colliderType == ColliderType::Rectangle2D_AABB && collider_one.colliderType == ColliderType::Rectangle2D_OOBB)) {
+				collision = CheckCollision_OOBB_To_AABB(collider_one, collider_two, parent_transform_one, parent_transform_two);
+			}
 
 			if (collision) {
 				std::cout << "Collision Made ";
@@ -109,7 +126,8 @@ namespace ManCong
 		void UpdateCollider() {
 			bool collision = false;
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
-				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it));
+				Transform const& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it), ParentTransform);
 			}
 
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
@@ -198,6 +216,66 @@ namespace ManCong
 			}
 			return true;
 		}   
+
+		//Check for square OOBB
+		bool ColliderSystem::CheckCollision_Circle_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two)
+		{
+			//Check which one is circle and box, assign accordingly
+			Collider2D const& collider_circle = collider_one.colliderType == ColliderType::Circle2D ? collider_one : collider_two;
+			Collider2D const& collider_box_OOBB = collider_two.colliderType == ColliderType::Rectangle2D_AABB ? collider_two : collider_one;
+
+			Transform const& parent_transform_circle = collider_one.colliderType == ColliderType::Circle2D ? parent_transform_one : parent_transform_two;
+			Transform const& parent_transform_box_OOBB = collider_two.colliderType == ColliderType::Rectangle2D_AABB ? parent_transform_two : parent_transform_one;
+
+			Vector2 circle_world_position = parent_transform_circle.position + collider_circle.localPosition;
+			Vector2 box_world_position = parent_transform_box_OOBB.position + collider_box_OOBB.localPosition;
+			
+			//recreate the box in local space, origin at 0, similar to NDC box concept
+			Vector2 min = { -collider_box_OOBB.scale[0] * 0.5f, -collider_box_OOBB.scale[1] * 0.5f };	//BL
+			Vector2 max = { collider_box_OOBB.scale[0] * 0.5f, collider_box_OOBB.scale[1] * 0.5f };		//TR
+
+			//circle 
+			Vector2 vector_BoxToCircle = circle_world_position - box_world_position;
+
+			Matrix3x3 rotationMatrix = Matrix3x3::Rotation(-(collider_box_OOBB.rotation + parent_transform_box_OOBB.rotation));
+			Matrix3x3 translationMatrix = Matrix3x3::Translate({max.x * 0.5f, max.y * 0.5f});
+			translationMatrix(0, 0) = 1;
+			translationMatrix(1, 1) = 1;
+			translationMatrix(2, 2) = 1;
+
+			//Rotate around, Translate, rotation
+			Matrix3x3 transforMatrix = rotationMatrix * translationMatrix;
+			Vector2 localCirclePos = transforMatrix * vector_BoxToCircle;
+			localCirclePos.x -= transforMatrix(0, 2);
+			localCirclePos.y -= transforMatrix(1, 2);
+
+			//Check if this point is inside circle
+			Vector2 closestPointToCircle = localCirclePos;
+			closestPointToCircle.x = std::max(min.x, std::min(closestPointToCircle.x, max.x));
+			closestPointToCircle.y = std::max(min.y, std::min(closestPointToCircle.y, max.y));
+
+			Vector2 circleToBox = localCirclePos - closestPointToCircle;
+
+			if ((circleToBox.x * circleToBox.x + circleToBox.y * circleToBox.y) < collider_circle.scale[0] * collider_circle.scale[0])
+			{
+				return true;
+			}
+
+			return false;
+		}
+		
+		bool ColliderSystem::CheckCollision_OOBB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two) {
+			//Test both box on local Axis Box1.x, Box1.y Box2.x and Box2.y
+			if (!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalRight, parent_transform_one, parent_transform_two)	||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalUp, parent_transform_one, parent_transform_two)		||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalRight, parent_transform_one, parent_transform_two)	||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalUp, parent_transform_one, parent_transform_two))
+			{
+				//If any is not overlapping, means box ain't touching
+				return false;
+			}
+			return true;
+		}
 
 		bool ColliderSystem::CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis, Transform const& parent_transform_one, Transform const& parent_transform_two)
 		{
