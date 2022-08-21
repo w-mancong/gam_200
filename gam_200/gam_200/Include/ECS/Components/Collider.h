@@ -15,37 +15,17 @@ namespace ManCong
 	{
 		namespace Component
 		{
-			///*!*********************************************************************************
-			//	\brief
-			//		2D Box Collider for collision detection
-			//***********************************************************************************/
-			//struct BoxCollider2D_AABB
-			//{
-			//	Math::Vector2 localPosition{ 0,0 };
-			//	float width{ 1 }, height{ 1 };
-			//	bool isCollided{ false };
-			//};			
-			//
-			///*!*********************************************************************************
-			//	\brief
-			//		2D Circle Collider for collision detection
-			//***********************************************************************************/
-			//struct CircleCollider2D
-			//{
-			//	Math::Vector2 localPosition{ 0,0 };
-			//	float radius{ 0.5f };
-			//	bool isCollided{ false };
-			//};			
 			/*!*********************************************************************************
 			\brief
 			Enum used for differentiating the different type of Shape to be created
-		***********************************************************************************/
+			***********************************************************************************/
 			enum class ColliderType
 			{
 				Rectangle2D_AABB,
 				Rectangle2D_OOBB,
 				Circle2D
 			};
+
 			/*!*********************************************************************************
 				\brief
 					2D Circle Collider for collision detection

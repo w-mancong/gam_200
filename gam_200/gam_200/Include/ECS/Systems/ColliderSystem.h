@@ -15,14 +15,20 @@ namespace ManCong
 	{
 		using namespace Component;
 
+		struct Ray {
+			Math::Vector2 origin{}, end{};
+		};
+
 		/*!*********************************************************************************
 			\brief
 			Register RenderSystem for ECS to work
 		***********************************************************************************/
 		void RegisterColliderSystem(void);
+		void UpdateStartCollider(void);
 		void UpdateCollider(void);
 		
 		void CreateCollider(Entity const& entity, Transform const& transform, ColliderType shape = ColliderType::Rectangle2D_AABB);
+		void Raycast2DCollision(Math::Vector2 start, Math::Vector2 end);
 	}
 }
 
