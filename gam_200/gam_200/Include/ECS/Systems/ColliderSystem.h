@@ -15,10 +15,6 @@ namespace ManCong
 	{
 		using namespace Component;
 
-		struct Ray {
-			Math::Vector2 origin{}, end{};
-		};
-
 		/*!*********************************************************************************
 			\brief
 			Register RenderSystem for ECS to work

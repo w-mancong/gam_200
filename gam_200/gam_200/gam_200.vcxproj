@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
     <ClInclude Include="Include\Utility\Time.h" />
     <ClInclude Include="Include\Utility\Type.h" />
+    <ClInclude Include="Include\Engine\Physics2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

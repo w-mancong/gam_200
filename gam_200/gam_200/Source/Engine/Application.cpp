@@ -31,12 +31,12 @@ namespace ManCong
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
 			CreateCollider(Noah, trans_noah, ColliderType::Circle2D);
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
-			collider_Noah.scale[0] = 25.0f, collider_Noah.scale[1] = 50.0f;
-			collider_Noah.rotation = 0;
-			trans_noah.rotation = 0;
+			collider_Noah.scale[0] = 25, collider_Noah.scale[1] = 50.0f;
+			collider_Noah.rotation = 0.f;
+			trans_noah.rotation = 0.f;
 
 			//Obj 2
-			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
+			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 45.0f };
 			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
@@ -46,6 +46,7 @@ namespace ManCong
 			CreateCollider(Hinata, trans_hinata, ColliderType::Rectangle2D_OOBB);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
 			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 50.0f;
+			collider_hinata.rotation = 0.0f;
 		}
 
 		void Application::Update(void)
@@ -85,7 +86,7 @@ namespace ManCong
 					trans.rotation -= rot;
 				}
 				
-				Raycast2DCollision({ -25, 25 }, { 25, 25 });
+				//Raycast2DCollision({ -25, 25 }, { 25, 25 });
 
 				UpdateCollider();
 				Render();

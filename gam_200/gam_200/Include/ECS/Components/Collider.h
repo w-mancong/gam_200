@@ -39,6 +39,7 @@ namespace ManCong
 				f32 rotation = 0.f;
 				f32 scale[2]{ 1.f, 1.f };
 				bool isColliderTriggered{ false }, isCollidedStay{ false }, isColliderExit{ false };
+				bool isTrigger{ false };
 			};
 		}
 	}
