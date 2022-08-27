@@ -24,7 +24,16 @@ namespace ManCong
 			};
 
 			//Raycast functions
+			/*!*********************************************************************************
+				\brief
+				Raycast line to 2D Axis Aligned Bounding Box
+			***********************************************************************************/
 			RaycastHit2D Raycast_AABB(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider);
+
+			/*!*********************************************************************************
+				\brief
+				Raycast line to 2D circle
+			***********************************************************************************/
 			RaycastHit2D Raycast_Circle(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider);
 
 			//To encapsulate output of data for a collision as well as it's response

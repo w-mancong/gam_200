@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="Source\Utility\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="Include\ECS\Components\RenderData.h" />
     <ClInclude Include="Include\ECS\Structure\EcsSystem.h" />
     <ClInclude Include="Include\ECS\Systems\RenderSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\RigidbodySystem.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
     <ClInclude Include="Include\Exceptions\DebugLog.h" />

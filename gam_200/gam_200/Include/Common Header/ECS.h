@@ -22,10 +22,12 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Components/Sprite.h"
 #include "ECS/Components/Transform.h"
 #include "ECS/Components/Collider.h"
+#include "ECS/Components/Rigidbody.h"
 
 // ----------------- System ---------------------
 #include "ECS/Systems/RenderSystem.h"
 #include "ECS/Systems/ColliderSystem.h"
+#include "ECS/Systems/RigidbodySystem.h"
 
 using ManCong::ECS::Coordinator;
 using namespace ManCong::ECS::Component;

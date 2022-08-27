@@ -20,10 +20,29 @@ namespace ManCong
 			Register RenderSystem for ECS to work
 		***********************************************************************************/
 		void RegisterColliderSystem(void);
-		void UpdateStartCollider(void);
-		void UpdateCollider(void);
-		
-		void CreateCollider(Entity const& entity, Transform const& transform, ColliderType shape = ColliderType::Rectangle2D_AABB);
+
+		/*!*********************************************************************************
+			\brief
+			Used on start of update, runs through each rigidbody and prepares them for beginning of collision cycle
+		***********************************************************************************/
+		void UpdateStartColliderSystem(void);
+
+		/*!*********************************************************************************
+			\brief
+			Used at end of update, runs through each collider and conduct collision checks
+		***********************************************************************************/
+		void UpdateColliderSystem(void);
+
+		/*!*********************************************************************************
+			\brief
+			Adds Collider component to the entity
+		***********************************************************************************/
+		void CreateCollider(Entity const& entity, ColliderType shape = ColliderType::Rectangle2D_AABB);
+
+		/*!*********************************************************************************
+			\brief
+			Adds a raycast to the overall collision check, will check through every collider with the ray
+		***********************************************************************************/
 		void Raycast2DCollision(Math::Vector2 start, Math::Vector2 end);
 	}
 }
