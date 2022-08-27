@@ -32,7 +32,8 @@ namespace ManCong
 			***********************************************************************************/
 			struct Collider2D
 			{
-				//Transform const* parentTransform{ 0 };
+			public:
+				Math::Vector2 frameStartGlobalPosition, frameEndGlobalPosition;
 				Math::Vector2 localPosition { 0.f, 0.f };
 				Math::Vector2 globalRight{ 1.f, 0.f }, globalUp{ 0.f, 1.f };
 				ColliderType colliderType { ColliderType::Rectangle2D_AABB };
@@ -40,6 +41,10 @@ namespace ManCong
 				f32 scale[2]{ 1.f, 1.f };
 				bool isColliderTriggered{ false }, isCollidedStay{ false }, isColliderExit{ false };
 				bool isTrigger{ false };
+
+				Math::Vector2 velocity() const {
+					return frameEndGlobalPosition - frameStartGlobalPosition;
+				};
 			};
 		}
 	}

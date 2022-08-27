@@ -12,7 +12,7 @@ namespace ManCong
 			RaycastHit2D Raycast_AABB(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider) {
 				RaycastHit2D hitOutput;
 				//Min,Max for x and y axis
-				float tXmin, tXmax, tYmin, tYmax;
+				float tXmin = 0, tXmax = 0, tYmin = 0, tYmax = 0;
 
 				//Direction of ray
 				Vector2 direction = ray.end - ray.origin;
@@ -22,13 +22,17 @@ namespace ManCong
 
 				Vector2 minNormalY, minNormalX;
 
+				if (direction.Magnitude() == 0) {
+					return hitOutput;
+				}
+
 				//If direction is right, then min would be from left, max from right
 				if (direction.x >= 0) {
 					tXmin = (BottomLeft.x - ray.origin.x) / direction.x;
 					tXmax = (TopRight.x - ray.origin.x) / direction.x;
 					minNormalX = {-1, 0};
 				}
-				else
+				else if (direction.x < 0)
 				{
 					//otherwise, min would be right, max is left
 					tXmin = (TopRight.x - ray.origin.x) / direction.x;
@@ -43,7 +47,7 @@ namespace ManCong
 					tYmax = (TopRight.y - ray.origin.y) / direction.y;
 					minNormalY = { 0, -1 };
 				}
-				else
+				else if (direction.y < 0)
 				{
 					//otherwise, min would be top, max is bottom
 					tYmin = (TopRight.y - ray.origin.y) / direction.y;
@@ -56,18 +60,39 @@ namespace ManCong
 					return hitOutput;
 				}
 
-				float tmin = std::max(tXmin, tYmin);
 				float tmax = std::min(tYmax, tXmax);
+				float tmin = std::max(tXmin, tYmin);
 
+				Vector2 intersectionOne = ray.origin + tmin * direction;
 				Vector2 intersectionTwo = ray.origin + tmax * direction;
+				
+				//check intersectionOne
+				float distanceOfIntersectOne = Vector2::Dot(intersectionOne, directionNormalized);
+				float distanceOfIntersectTwo = Vector2::Dot(intersectionTwo, directionNormalized);
+				float distanceOfOrigin = Vector2::Dot(ray.origin, directionNormalized);
+				float distanceOfEnd = Vector2::Dot(ray.end, directionNormalized);
 
-				//if either of the t are within 0 and 1, then either points are in ray range.
-				if ((tmin <= 1 && tmin >= 0) || (tmax <= 1 && tmax >= 0)) {
+				if (0 <= tmin && tmin <= 1) {
 					hitOutput.isCollided = true;
 					hitOutput.normal = tXmin < tYmin ? minNormalY : minNormalX;
-					hitOutput.point = intersectionTwo;
+					hitOutput.point = intersectionOne;
+
 					return hitOutput;
 				}
+				else {
+					hitOutput.point = ray.origin + direction;
+				}
+
+				//If both intersect points are in between the ray
+				/*if ((distanceOfIntersectOne >= distanceOfOrigin && distanceOfIntersectOne <= distanceOfEnd) || (distanceOfIntersectTwo >= distanceOfOrigin && distanceOfIntersectTwo <= distanceOfEnd))
+				{
+					std::cout << "bruh" << std::endl;
+					hitOutput.isCollided = true;
+					hitOutput.normal = tXmin < tYmin ? minNormalY : minNormalX;
+					hitOutput.point = intersectionOne;
+
+					return hitOutput;
+				}*/
 
 				return hitOutput;
 			}
