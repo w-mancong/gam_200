@@ -71,6 +71,12 @@ namespace ManCong
 					hitOutput.normal = tXmin < tYmin ? minNormalY : minNormalX;
 					hitOutput.point = intersectionOne;
 
+					if (hitOutput.normal.y != 0) {
+						hitOutput.point.x += direction.x;
+					}
+					else if (hitOutput.normal.x != 0) {
+						hitOutput.point.y += direction.y;
+					}
 					return hitOutput;
 				}
 				else {
