@@ -20,15 +20,14 @@ namespace ManCong
 			std::map<GLchar, Graphics::Character> characterCollection;
 			u32 fontsVAO{}, fontsVBO{};
 
-			//static std::map<std::string, Font> font2;
 			static std::map<std::string, std::map<std::string, Font>> fontCollection;
-			static std::string currentFont;
-			static std::string currentType;
+			static std::string currentFont; // current selected font
+			static std::string currentType; // current selected font type
 			static Shader fontShader;
-			static Math::Vector2 position;
-			static Math::Vector3 colour;
-			static f32 scale;
-			static std::string text;
+			static Math::Vector2 position; // position of text
+			static Math::Vector3 colour; // color of text
+			static f32 scale; // scale of text
+			static std::string text; // text string
 
 			static void RenderText();
 			static void SetShader(Shader shader) { fontShader = shader; }

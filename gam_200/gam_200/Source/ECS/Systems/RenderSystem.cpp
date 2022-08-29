@@ -380,9 +380,6 @@ namespace ManCong
 			FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", "regular");
 			FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", "italic");
 			FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", "bold");
-			//FontInit("Assets/fonts/Arial Italic.ttf", "arial");
-			//FontInit("Assets/fonts/Pacifico-Regular.ttf", "pacifico");
-			//FontInit("Assets/fonts/PressStart2P-Regular.ttf", "pressStart");
 
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			Font::SetFont("roboto");
@@ -402,12 +399,6 @@ namespace ManCong
 			Font::SetText("This is Roboto-bold");
 			Font::SetPos(Vector2(50.0f, 150.0f));
 			Font::RenderText();
-
-			//Font::SetFont("pacifico");
-			//Font::SetPos(Vector2(50.0f, 150.0f));
-			//Font::SetCol(Vector3(0.3f, 0.7f, 0.9f));
-			//Font::SetText("This is Pacifico");
-			//Font::RenderText();
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
