@@ -105,14 +105,26 @@ namespace ManCong
 
 				float radius = collider.scale[0] * 2.0f;
 
-				//if either end are inside the circle, then there is collision
-				if ((originToCircle.x * originToCircle.x + originToCircle.y * originToCircle.y < radius * radius) ||
-					(endToCircle.x * endToCircle.x + endToCircle.y * endToCircle.y < radius * radius))
-				{
-					hitOutput.isCollided = true;
-					hitOutput.point = circleGlobalPosition;
-					return hitOutput;
-				}
+				////if either end are inside the circle, then there is collision
+				//if ((originToCircle.x * originToCircle.x + originToCircle.y * originToCircle.y < radius * radius) ||
+				//	(endToCircle.x * endToCircle.x + endToCircle.y * endToCircle.y < radius * radius))
+				//{
+				//	hitOutput.isCollided = true;
+				//	hitOutput.normal = (ray.origin - circleGlobalPosition).Normalize();
+				//	hitOutput.point = ray.origin;
+
+				//	Vector2 horizontalDirection = { direction.x,0 };
+				//	Vector2 verticalDirection = { 0, direction.y };
+
+				//	if (Vector2::Dot(hitOutput.normal, horizontalDirection) > 0) {
+				//		hitOutput.point.x += direction.x;
+				//	}
+				//	else if (Vector2::Dot(hitOutput.normal, verticalDirection) > 0) {
+				//		hitOutput.point.y += direction.y;
+				//	}
+
+				//	return hitOutput;
+				//}
 
 				if (distance == radius)
 				{
@@ -123,6 +135,7 @@ namespace ManCong
 					float distanceOfOrigin = Vector2::Dot(ray.origin, directionNormalized);
 					float distanceOfEnd = Vector2::Dot(ray.end, directionNormalized);
 
+					printf("bruh");
 					//If intersect point is in between the ray
 					if ((distanceOfIntersectOne >= distanceOfOrigin && distanceOfIntersectOne <= distanceOfEnd))
 					{
@@ -143,14 +156,16 @@ namespace ManCong
 					float distanceOfOrigin = Vector2::Dot(ray.origin, directionNormalized);
 					float distanceOfEnd = Vector2::Dot(ray.end, directionNormalized);
 
+					std::cout << ClosestPoint << std::endl;
 					//If both intersect points are in between the ray
-					if ((distanceOfIntersectOne >= distanceOfOrigin && distanceOfIntersectOne <= distanceOfEnd))
-					{
-						hitOutput.isCollided = true;
-						hitOutput.normal = -directionNormalized;
-						hitOutput.point = IntersectNear;
+					/*if ((distanceOfIntersectOne >= distanceOfOrigin && distanceOfIntersectOne <= distanceOfEnd))
+					{*/
+
+					hitOutput.isCollided = true;
+					hitOutput.normal = -directionNormalized;
+					hitOutput.point = -ClosestPoint;
 						return hitOutput;
-					}
+					//}
 				}
 				return hitOutput;
 			}

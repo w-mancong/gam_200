@@ -28,6 +28,7 @@ namespace ManCong
 				bool CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				
 				bool SweptCollision_AABB_ABBB(Collider2D& collider_one, Collider2D const& collider_two, Transform & parent_transform_one, Transform const& parent_transform_two);
+				bool SweptCollision_Circle_Circle(Collider2D& collider_one, Collider2D const& collider_two, Transform& parent_transform_one, Transform const& parent_transform_two);
 
 				Vector2 getMinMax_OOBB_On_Axis(Collider2D box, Vector2 axis, Transform const& parentTransform);
 				bool CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis, Transform const& parent_transform_one, Transform const& parent_transform_two);
@@ -105,7 +106,8 @@ namespace ManCong
 				//collision = CheckCollision_AABB_To_AABB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
 			else if (collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Circle2D) {
-				collision = CheckCollision_Circle_To_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two);
+				//collision = CheckCollision_Circle_To_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two);
+				collision = cs->SweptCollision_Circle_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
 			else if ((collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Circle2D) ||
 				(collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Rectangle2D_AABB)) {
@@ -193,12 +195,12 @@ namespace ManCong
 		void UpdateColliderSystem() {
 			bool collision = false;
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
-				Transform const& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 
-				Collider.frameEndGlobalPosition = Collider.localPosition + ParentTransform.position;
+				Collider.frameEndGlobalPosition = Collider.localPosition + trans.position;
 
-				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it), ParentTransform);
+				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it), trans);
 			}
 
 			//***************************** Put here for now ************************//
@@ -467,9 +469,29 @@ namespace ManCong
 			
 			if (rayHit.isCollided)
 			{
-				Vector2 direction = { rayHit.normal.x * collider_moving.scale[0] * 0.5f, rayHit.normal.y * collider_moving.scale[1] * 0.5f };
-				Vector2 box_Near = rayHit.point + direction;
+				collider_moving.frameEndGlobalPosition = rayHit.point;
+				return true;
+			}
 
+			return false;
+		}
+
+		bool ColliderSystem::SweptCollision_Circle_Circle(Collider2D& collider_moving, Collider2D const& collider_other, Transform& parent_transform_moving, Transform const& parent_transform_other) {
+			if (collider_moving.velocity().Magnitude() == 0) {
+				return CheckCollision_Circle_To_Circle(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
+			}
+
+			Vector2 movingGlobalPosition = collider_moving.frameStartGlobalPosition;
+			Vector2 otherGlobalPosition = collider_other.localPosition + parent_transform_other.position;
+
+			Collider2D tempCircle = collider_other;
+			tempCircle.scale[0] += collider_moving.scale[0];
+
+			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + collider_moving.velocity() };
+			RaycastHit2D rayHit = Physics::Raycast_Circle(ray, tempCircle, parent_transform_other);
+
+			if (rayHit.isCollided)
+			{
 				collider_moving.frameEndGlobalPosition = rayHit.point;
 				return true;
 			}

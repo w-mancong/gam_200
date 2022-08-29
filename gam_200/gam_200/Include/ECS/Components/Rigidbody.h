@@ -22,7 +22,7 @@ namespace ManCong
 			struct Rigidbody2D
 			{
 			public:
-				Math::Vector2 velocity{ 0,0 };
+				Math::Vector2 velocity{ 0.f, 0.f };
 				bool hasGravity = true;
 			};
 		}

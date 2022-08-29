@@ -21,32 +21,32 @@ namespace ManCong
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 			//Obj 1
-			Transform transform{ Vector2(0.0f, 100.0f), Vector2(75.f, 75.f), 0.0f };
-			Noah = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			Transform transform{ Vector2(0.0f, 150.0f), Vector2(50.f, 50.f), 0.0f };
+			Noah = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			CreateCollider(Noah, ColliderType::Rectangle2D_AABB);
+			CreateCollider(Noah, ColliderType::Circle2D);
 			CreateRigidbody(Noah);
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
-			collider_Noah.scale[0] = 75.f, collider_Noah.scale[1] = 75.f;
+			collider_Noah.scale[0] = 25.f, collider_Noah.scale[1] = 25.f;
 			collider_Noah.rotation = 0.f;
 			trans_noah.rotation = 0.f;
 
 			//Obj 2
-			transform = { Vector2(0.0f, 0.0f), Vector2(1000.0f, 50.0f), 0.0f };
-			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
+			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
 			sprite3.mode = RenderMode::Line;
 			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
-			CreateCollider(Hinata, ColliderType::Rectangle2D_AABB);
+			CreateCollider(Hinata, ColliderType::Circle2D);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 1000.f, collider_hinata.scale[1] = 50.0f;
+			collider_hinata.scale[0] = 25.f, collider_hinata.scale[1] = 25.f;
 			collider_hinata.rotation = 0.0f;
 		}
 
@@ -60,7 +60,7 @@ namespace ManCong
 
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
-				f32 constexpr speed = 150.0f;
+				f32 constexpr speed = 150.f;
 				f32 constexpr rot = 1.0f;
 		
 				if (Input::Input::KeyTriggered(KeyCode::Space)) {
@@ -71,7 +71,7 @@ namespace ManCong
 				rigid.velocity.x = 0;
 				if (Input::Input::KeyDown(KeyCode::Down))
 				{
-					rigid.velocity.y = speed;
+					rigid.velocity.y = -speed;
 				}
 				if (Input::Input::KeyDown(KeyCode::Up))
 				{
@@ -87,6 +87,23 @@ namespace ManCong
 				}
 
 				//Manual Position
+				//if (Input::Input::KeyTriggered(KeyCode::W))
+				//{
+				//	trans.position.y += speed;
+				//}
+				//if (Input::Input::KeyTriggered(KeyCode::S))
+				//{
+				//	trans.position.y -= speed * Time::m_DeltaTime;
+				//}
+				//if (Input::Input::KeyTriggered(KeyCode::D))
+				//{
+				//	trans.position.x += speed;
+				//}
+				//if (Input::Input::KeyTriggered(KeyCode::A))
+				//{
+				//	trans.position.x -= speed;
+				//}
+				
 				if(Input::Input::KeyDown(KeyCode::W))
 				{
 					trans.position.y += speed * Time::m_DeltaTime;

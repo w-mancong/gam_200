@@ -9,15 +9,13 @@ namespace ManCong
 		namespace Physics
 		{
 			//Representation of ray or a line
-			class Ray2D {
-			public:
+			struct Ray2D {
 				Math::Vector2 origin{};
 				Math::Vector2 end{};
 			};
 
 			//To encapsulate output of data for raycasting
-			class RaycastHit2D {
-			public:
+			struct RaycastHit2D {
 				Math::Vector2 point{};
 				Math::Vector2 normal{};
 				bool isCollided{false};
@@ -37,8 +35,7 @@ namespace ManCong
 			RaycastHit2D Raycast_Circle(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider);
 
 			//To encapsulate output of data for a collision as well as it's response
-			class Collision2D {
-			public:
+			struct Collision2D {
 				bool isCollided;
 				bool isCollisionResponseEnabled = false;
 			};
