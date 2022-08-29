@@ -35,11 +35,13 @@ namespace ManCong
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(rect);
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
+
+			// Initialize Time (Framerate Controller)
+			Time::Init();
 		}
 
 		void Application::Update(void)
 		{
-			Time timer;
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 			{
@@ -72,11 +74,11 @@ namespace ManCong
 					trans.rotation -= rot;
 				}
         
-				timer.ClockTimeNow();
+				Time::ClockTimeNow();
 				Render();
-				timer.WaitUntil();
+				Time::WaitUntil();
 
-				std::cout << timer.m_FPS << std::endl;
+				std::cout << Time::m_FPS << std::endl;
 			}
 		}
 

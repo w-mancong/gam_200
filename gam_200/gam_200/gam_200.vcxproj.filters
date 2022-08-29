@@ -69,7 +69,7 @@
     <ClCompile Include="Source\Graphics\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Exceptions\DebugLog.cpp">
+    <ClCompile Include="Source\Exceptions\GLDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp">
@@ -200,7 +200,7 @@
     <ClInclude Include="Include\Graphics\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Exceptions\DebugLog.h">
+    <ClInclude Include="Include\Exceptions\GLDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Common Header\MyExceptions.h">
@@ -237,6 +237,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Graphics\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Exceptions\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

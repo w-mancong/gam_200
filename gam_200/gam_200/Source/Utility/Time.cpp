@@ -38,28 +38,29 @@ namespace ManCong
 {
 	namespace Utility
 	{
+		using namespace std::chrono;
 		static constexpr long NUM_NANO_IN_SEC = 1000000000;
 
 		// Static member variables definition
 		f32 Time::m_DeltaTime = 0.0f, Time::m_FPS = 0.0f;
 
-		int Time::m_TargetFPS = 0;	// 0 means unlimited
+		s32 Time::m_TargetFPS = 0;	// 0 means unlimited
 		bool Time::m_HasFPSLimit = false;
 
 		nanoseconds Time::m_Ticks[MAX_SAMPLES];
 		nanoseconds Time::m_TickSum = nanoseconds::zero();
-		int Time::m_TickIndex = 0;
+		s32 Time::m_TickIndex = 0;
 
 		hd_clock::time_point Time::m_StartTime = hd_clock::now();	// Set Application start time
-		std::chrono::steady_clock::time_point Time::m_ClockedTime{};
+		steady_clock::time_point Time::m_ClockedTime{};
 
 		/*!*********************************************************************************
 			\brief
-			Constructor for Time class.
+			Initializes the timer to calculate the delta time every frame
 		***********************************************************************************/
-		Time::Time()
+		void Time::Init()
 		{
-			for (int i = 0; i < MAX_SAMPLES; ++i)
+			for (s32 i = 0; i < MAX_SAMPLES; ++i)
 				m_Ticks[i] = nanoseconds::zero();
 
 			m_TickSum = nanoseconds::zero();
@@ -69,19 +70,6 @@ namespace ManCong
 			m_TargetFPS = 60;	// 60 FPS
 			m_HasFPSLimit = true;
 		}
-		/*
-		void Time::Init(void)
-		{
-			m_ClockedTime = std::chrono::high_resolution_clock::now();
-		}
-
-		void Time::Update(void)
-		{
-			auto newTime = std::chrono::high_resolution_clock::now();
-			m_DeltaTime = static_cast<f32>((newTime - m_ClockedTime).count()) / static_cast<f32>(NANO_TO_SECONDS);
-			m_FPS = CalcAverageTick(1.0f / m_DeltaTime);
-			m_ClockedTime = newTime;
-		}*/
 
 		/*!*********************************************************************************
 			\brief
@@ -114,7 +102,7 @@ namespace ManCong
 			}
 
 			// Calculate Delta Time
-			m_DeltaTime = static_cast<float>(static_cast<double>(time_diff.count()) / static_cast<double>(NUM_NANO_IN_SEC));
+			m_DeltaTime = static_cast<float>(static_cast<f64>(time_diff.count()) / static_cast<f64>(NUM_NANO_IN_SEC));
 
 			// Calculate the number of ticks in the last 100 frames
 			m_TickSum -= m_Ticks[m_TickIndex];	// Subtract tick value falling off
@@ -125,16 +113,16 @@ namespace ManCong
 
 			// Calculate current FPS
 			if (m_Ticks[MAX_SAMPLES - 1] != nanoseconds::zero())
-				m_FPS = static_cast<float>(1.0 / ((m_TickSum / MAX_SAMPLES).count() / static_cast<double>(NUM_NANO_IN_SEC)));
+				m_FPS = static_cast<f32>(1.0 / ((m_TickSum / MAX_SAMPLES).count() / static_cast<f64>(NUM_NANO_IN_SEC)));
 			else
-				m_FPS = static_cast<float>(1.0 / ((m_TickSum / m_TickIndex).count() / static_cast<double>(NUM_NANO_IN_SEC)));
+				m_FPS = static_cast<f32>(1.0 / ((m_TickSum / m_TickIndex).count() / static_cast<f64>(NUM_NANO_IN_SEC)));
 		}
 
 		/*!*********************************************************************************
 			\brief
 			Set the Target FPS.
 		***********************************************************************************/
-		void Time::SetTargetFPS(int _target)
+		void Time::SetTargetFPS(s32 _target)
 		{
 			m_TargetFPS = _target;
 			m_HasFPSLimit = _target ? true : false;

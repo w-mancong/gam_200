@@ -63,10 +63,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\gam_200\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\gam_200\Include;$(SolutionDir)\Extern\include\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,10 +83,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\gam_200\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\gam_200\Include;$(SolutionDir)\Extern\include\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -102,7 +104,7 @@
     <ClCompile Include="Source\Engine\Application.cpp" />
     <ClCompile Include="Source\Engine\Camera.cpp" />
     <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp" />
-    <ClCompile Include="Source\Exceptions\DebugLog.cpp" />
+    <ClCompile Include="Source\Exceptions\GLDebug.cpp" />
     <ClCompile Include="Source\Graphics\GLAD\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -144,7 +146,7 @@
     <ClInclude Include="Include\ECS\Systems\RenderSystem.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
-    <ClInclude Include="Include\Exceptions\DebugLog.h" />
+    <ClInclude Include="Include\Exceptions\GLDebug.h" />
     <ClInclude Include="Include\ECS\Structure\component.h" />
     <ClInclude Include="Include\ECS\Structure\ComponentArray.h" />
     <ClInclude Include="Include\ECS\Structure\ComponentManager.h" />
@@ -155,6 +157,7 @@
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\ECS\Components\Color.h" />
+    <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
     <ClInclude Include="Include\Graphics\stb_image.h">
