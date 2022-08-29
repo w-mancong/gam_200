@@ -36,6 +36,18 @@ namespace ManCong
 				A randomized floating point number between lower and upper bound
 		***********************************************************************************/
 		f32 Range(f32 min, f32 max);
+
+		/*!*********************************************************************************
+			\brief
+				Randomize and return a double floating point number between two double
+			\param [in] min:
+				Lower bound of the number
+			\param [in] max:
+				Upper bound of the number
+			\return
+				A randomized double floating point number between lower and upper bound
+		***********************************************************************************/
+		f64 Range(f64 min, f64 max);
 	}
 }
 

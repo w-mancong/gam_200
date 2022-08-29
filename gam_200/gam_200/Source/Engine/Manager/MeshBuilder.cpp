@@ -6,7 +6,8 @@
 namespace
 {
 	// layout location inside vertex shader
-	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 };
+	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, SPRITE_RESERVE_SIZE{ 100 };
+	u64 RECTANGLE_POSITION_SIZE_OFFSET{ 0 };
 }
 
 namespace ManCong
@@ -17,6 +18,7 @@ namespace ManCong
 		{
 			memset(m_Shapes, 0, sizeof(m_Shapes));
 			CreateRectangle(); CreateCircle(); CreateTriangle();
+			m_Sprites.reserve(SPRITE_RESERVE_SIZE);
 		}
 
 		MeshBuilder::~MeshBuilder(void)
@@ -26,7 +28,7 @@ namespace ManCong
 				glDeleteVertexArrays(1, &(*(m_Shapes + i))->vao);
 				glDeleteBuffers(1, &(*(m_Shapes + i))->vbo);
 				glDeleteBuffers(1, &(*(m_Shapes + i))->ebo);
-				Memory::InstanceMemory::Delete(*(m_Shapes + i));
+				Memory::StaticMemory::Delete(*(m_Shapes + i));
 			}
 		}
 
@@ -64,8 +66,8 @@ namespace ManCong
 			{
 				// Release resources in the gpu
 				glDeleteVertexArrays(1, &(*it).second->vao);
-				glDeleteBuffers(1, &(*it).second->vbo);
-				glDeleteBuffers(1, &(*it).second->ebo);
+				//glDeleteBuffers(1, &(*it).second->vbo);
+				//glDeleteBuffers(1, &(*it).second->ebo);
 				glDeleteTextures(1, &(*it).second->texture);
 				// Delete ptr and free up dynamic memory
 				Memory::DynamicMemory::Delete((*it).second);
@@ -75,25 +77,34 @@ namespace ManCong
 
 		void MeshBuilder::CreateRectangle(void)
 		{
-			Sprite* sprite = Memory::InstanceMemory::New<Sprite>();
+			Sprite* sprite = Memory::StaticMemory::New<Sprite>();
 			f32 position[] = {
 				 0.5f,  0.5f, // top right
 				 0.5f, -0.5f, // bottom right
 				-0.5f, -0.5f, // bottom left
 				-0.5f,  0.5f, // top left 
 			};
-			u32 indices[] = {
-				1, 0, 2,
-				2, 0, 3
+			f32 texCoords[] = {
+				1.0f, 1.0f, // top right
+				1.0f, 0.0f, // bottom right
+				0.0f, 0.0f, // bottom left
+				0.0f, 1.0f  // top left 
 			};
+			u32 indices[] = {
+				3, 2, 0, 1
+			};
+
+			u64 const TOTAL_BYTES = sizeof(position) + sizeof(texCoords);
+			RECTANGLE_POSITION_SIZE_OFFSET = sizeof(position);
 
 			// -------------------------- Vertex Array Buffer -----------------------------------
 			glGenVertexArrays(1, &sprite->vao); glBindVertexArray(sprite->vao);
 			// -------------------------- Vertex Buffer Object ---------------------------------
 			glGenBuffers(1, &sprite->vbo); glGenBuffers(1, &sprite->ebo);
 			glBindBuffer(GL_ARRAY_BUFFER, sprite->vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(position), nullptr, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, TOTAL_BYTES, nullptr, GL_STATIC_DRAW);
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(position), position);
+			glBufferSubData(GL_ARRAY_BUFFER, sizeof(position), sizeof(texCoords), texCoords);
 			// -------------------------- Element Buffer Object ---------------------------------
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite->ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -105,13 +116,14 @@ namespace ManCong
 			glBindVertexArray(0);
 
 			sprite->indicesSize = ARRAY_SIZE(indices);
+			sprite->primitive = GL_TRIANGLE_STRIP;
 			m_Shapes[static_cast<u64>(Shapes::Rectangle)] = sprite;
 		}
 
 		void MeshBuilder::CreateCircle(void)
 		{
 			using namespace Math;
-			Sprite* sprite = Memory::InstanceMemory::New<Sprite>();
+			Sprite* sprite = Memory::StaticMemory::New<Sprite>();
 			u32 const VERTICES = 20;								// total number of vertices
 			f32 const ANGLE = 360.0f / static_cast<f32>(VERTICES);	// angle of circle / total number of vertices
 			u64 const TOTAL_POSITIONS = (VERTICES + 1) << 1, TOTAL_INDICES = VERTICES * 3;
@@ -159,7 +171,7 @@ namespace ManCong
 
 		void MeshBuilder::CreateTriangle(void)
 		{
-			Sprite* sprite = Memory::InstanceMemory::New<Sprite>();
+			Sprite* sprite = Memory::StaticMemory::New<Sprite>();
 			f32 position[] = {
 				 0.0f,  0.5f,	// top
 				-0.5f, -0.5f,	// left
@@ -187,6 +199,7 @@ namespace ManCong
 			glBindVertexArray(0);
 
 			sprite->indicesSize = ARRAY_SIZE(indices);
+			sprite->primitive = GL_TRIANGLES;
 			m_Shapes[static_cast<u64>(Shapes::Triangle)] = sprite;
 		}
 
@@ -196,43 +209,19 @@ namespace ManCong
 			// -------------------------------------------------------------------------------
 			//								Create an Image
 			// -------------------------------------------------------------------------------
-			f32 position[] = {
-				 0.5f,  0.5f, // top right
-				 0.5f, -0.5f, // bottom right
-				-0.5f, -0.5f, // bottom left
-				-0.5f,  0.5f, // top left 
-			};
-			f32 texCoords[] = {
-				1.0f, 1.0f, // top right
-				1.0f, 0.0f, // bottom right
-				0.0f, 0.0f, // bottom left
-				0.0f, 1.0f  // top left 
-			};
-			u32 indices[] = {
-				1, 0, 2,
-				2, 0, 3
-			};
-
-			u64 const TOTAL_BYTES = sizeof(position) + sizeof(texCoords);
-
 			// Generate vertex array
 			glGenVertexArrays(1, &sprite->vao); glBindVertexArray(sprite->vao);
-			// Generate buffers
-			glGenBuffers(1, &sprite->vbo); glGenBuffers(1, &sprite->ebo);
-			glBindBuffer(GL_ARRAY_BUFFER, sprite->vbo);
-			glBufferData(GL_ARRAY_BUFFER, TOTAL_BYTES, nullptr, GL_STATIC_DRAW);
-			// Filling buffer with data
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(position), position);
-			glBufferSubData(GL_ARRAY_BUFFER, sizeof(position), sizeof(texCoords), texCoords);
-			// Element buffer object
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite->ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+			// Take buffer memory from rectangle
+			Sprite const* rect = m_Shapes[static_cast<u64>(Shapes::Rectangle)];
+
+			glBindBuffer(GL_ARRAY_BUFFER, rect->vbo);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rect->ebo);
 
 			// position attribute
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
 			glEnableVertexAttribArray(0);
 			// texture coord attribute
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(sizeof(position)));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(RECTANGLE_POSITION_SIZE_OFFSET));
 			glEnableVertexAttribArray(1);
 
 			// load and create a texture 
@@ -250,8 +239,8 @@ namespace ManCong
 			}
 			else
 			{
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);	// set texture wrapping to GL_REPEAT (default wrapping method)
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			}
 			// set texture filtering parameters
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -273,7 +262,8 @@ namespace ManCong
 			}
 			stbi_image_free(data);
 
-			sprite->indicesSize = ARRAY_SIZE(indices);
+			sprite->indicesSize = rect->indicesSize;
+			sprite->primitive = rect->primitive;
 			m_Sprites.push_back( std::pair<std::string, Sprite*>{ filePath, sprite } );
 			// Unbind vertex array and texture to prevent accidental modifications
 			glBindVertexArray(0);

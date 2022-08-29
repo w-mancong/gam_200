@@ -27,6 +27,7 @@ namespace ManCong
 				u32 vao{ 0 }, vbo{ 0 }, ebo{ 0 };
 				u32 indicesSize{ 0 };
 				u32 texture{ 0 };
+				u32 primitive{ GL_TRIANGLES };
 				Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
 				RenderLayer layer{ RenderLayer::Background };
 				RenderMode mode{ RenderMode::Fill };

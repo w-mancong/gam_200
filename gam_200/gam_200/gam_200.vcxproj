@@ -160,7 +160,10 @@
     <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
-    <ClInclude Include="Include\Graphics\stb_image.h" />
+    <ClInclude Include="Include\Graphics\stb_image.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Include\Input\InputKeys.h" />
     <ClInclude Include="Include\Input\Input.h" />
     <ClInclude Include="Include\Math\Math.h" />

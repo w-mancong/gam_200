@@ -74,7 +74,6 @@ namespace ManCong
 					trans.rotation -= rot;
 				}
         
-				Render();
 				Time::ClockTimeNow();
 				Render();
 				Time::WaitUntil();
