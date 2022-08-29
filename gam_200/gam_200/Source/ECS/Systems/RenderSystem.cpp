@@ -69,8 +69,7 @@ namespace ManCong
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, sprite.texture);
 			glBindVertexArray(sprite.vao);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite.ebo);
-			glDrawElements(GL_TRIANGLES, sprite.indicesSize, GL_UNSIGNED_INT, 0);
+			glDrawElements(sprite.primitive, sprite.indicesSize, GL_UNSIGNED_INT, 0);
 			// Unbind to prevent any unintended behaviour to vao
 			glBindVertexArray(0);
 		}
