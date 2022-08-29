@@ -31,7 +31,7 @@ namespace ManCong
 			transform.rotation = 30.0f;
 			//transform.position = Vector2(600.0f, 0.0f);
 			transform.scale = Vector2(200.0f, 50.0f);
-			rect = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			rect = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(rect);
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
