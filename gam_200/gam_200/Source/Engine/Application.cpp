@@ -103,7 +103,7 @@ namespace ManCong
 				//{
 				//	trans.position.x -= speed;
 				//}
-				
+
 				if(Input::Input::KeyDown(KeyCode::W))
 				{
 					trans.position.y += speed * Time::m_DeltaTime;

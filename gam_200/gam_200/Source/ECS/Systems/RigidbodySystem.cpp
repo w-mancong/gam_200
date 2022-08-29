@@ -56,7 +56,7 @@ namespace ManCong
 
 				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 
-				rigid.velocity.y -= earthGravity;
+				//rigid.velocity.y -= earthGravity;
 
 				rigidS->UpdateRigidbody(transform, rigid);
 			}

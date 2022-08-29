@@ -487,12 +487,15 @@ namespace ManCong
 			Collider2D tempCircle = collider_other;
 			tempCircle.scale[0] += collider_moving.scale[0];
 
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + collider_moving.velocity() };
+			Vector2 dir = { 0,-10.f };
+			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + dir };
+			//Ray2D ray = { movingGlobalPosition, movingGlobalPosition + collider_moving.velocity() };
 			RaycastHit2D rayHit = Physics::Raycast_Circle(ray, tempCircle, parent_transform_other);
 
 			if (rayHit.isCollided)
 			{
-				collider_moving.frameEndGlobalPosition = rayHit.point;
+				//std::cout << rayHit.point << std::endl;
+				collider_moving.frameEndGlobalPosition = rayHit.point + (collider_moving.scale[0] + collider_other.scale[0]) * rayHit.normal;
 				return true;
 			}
 
