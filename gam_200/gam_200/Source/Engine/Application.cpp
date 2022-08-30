@@ -32,12 +32,12 @@ namespace ManCong
 			CreateCollider(Noah, ColliderType::Circle2D);
 			CreateRigidbody(Noah);
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
-			collider_Noah.scale[0] = 25.f, collider_Noah.scale[1] = 25.f;
+			collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 25.f;
 			collider_Noah.rotation = 0.f;
 			trans_noah.rotation = 0.f;
 
 			//Obj 2
-			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
+			transform = { Vector2(0.0f, 0.0f), Vector2(100.0f, 100.0f), 0.0f };
 			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
@@ -46,7 +46,7 @@ namespace ManCong
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
 			CreateCollider(Hinata, ColliderType::Circle2D);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 25.f, collider_hinata.scale[1] = 25.f;
+			collider_hinata.scale[0] = 100.f, collider_hinata.scale[1] = 25.f;
 			collider_hinata.rotation = 0.0f;
 		}
 

@@ -90,77 +90,46 @@ namespace ManCong
 				RaycastHit2D hitOutput;
 				Vector2 circleGlobalPosition = collider.localPosition + parent_transform_collider.position;
 
-				Vector2 originToCircle = circleGlobalPosition - ray.origin;
-				Vector2 endToCircle = circleGlobalPosition - ray.end;
 				Vector2 direction = ray.end - ray.origin;
 				Vector2 directionNormalized = direction.Normalize();
 
-				//Closest Point to circle
-				Vector2 ClosestPoint = Vector2::Dot(originToCircle, directionNormalized) * directionNormalized;
+				//U is vector from origin to circle center
+				Vector2 U = circleGlobalPosition - ray.origin;
 
-				//Vector from P to circle
-				Vector2 ClosestPointToCircle = originToCircle - ClosestPoint;
-				float distance = ClosestPointToCircle.Magnitude();
-				Vector2 IntersectNear;
+				//P is the point closest from the line to the circle
+				Vector2 P = ray.origin + Vector2::Dot(U, directionNormalized) * directionNormalized;
+				
+				//PC - Vector from Point P to Circle center
+				Vector2 PC = circleGlobalPosition - P;
 
+				float distance = PC.Magnitude();
 				float radius = collider.scale[0];
 
-				//if either end are inside the circle, then there is collision
-				if ((originToCircle.x * originToCircle.x + originToCircle.y * originToCircle.y < radius * radius) ||
-					(endToCircle.x * endToCircle.x + endToCircle.y * endToCircle.y < radius * radius))
-				{
-					printf("A");
-					hitOutput.isCollided = true;
-					hitOutput.normal = (ray.origin - circleGlobalPosition).Normalize();
-					hitOutput.point = circleGlobalPosition + radius * hitOutput.normal;
-					std::cout << hitOutput.normal << std::endl;
+				if (distance > radius) {
+					//No intersection
 					return hitOutput;
 				}
-
-				if (distance == radius)
-				{
-					//If distance is same as radius, is tangent
-					IntersectNear = ray.origin + ClosestPoint;
-
-					float distanceOfIntersectOne = Vector2::Dot(IntersectNear, directionNormalized);
-					float distanceOfOrigin = Vector2::Dot(ray.origin, directionNormalized);
-					float distanceOfEnd = Vector2::Dot(ray.end, directionNormalized);
-
-					//If intersect point is in between the ray
-					if ((distanceOfIntersectOne >= distanceOfOrigin && distanceOfIntersectOne <= distanceOfEnd))
-					{
-						hitOutput.isCollided = true;
-						hitOutput.normal = -directionNormalized;
-						hitOutput.point = IntersectNear;
-						return hitOutput;
-					}
+				else if (distance == radius) {
+					//One intersection
+					return hitOutput;
 				}
-				else if (distance < radius)
-				{
+				else if(distance < radius) {
 					float m = sqrtf(radius * radius - distance * distance);
-					IntersectNear = ClosestPoint - m * directionNormalized;
+					Vector2 intersectionNear = P - m * directionNormalized;
 
-					IntersectNear += ray.origin;
+					float distanceToNear = (ray.origin - intersectionNear).Magnitude();
+					float distanceOfRay = direction.Magnitude();
 
-					float distanceOfIntersectOne = Vector2::Dot(IntersectNear, directionNormalized);
-					float distanceOfOrigin = Vector2::Dot(ray.origin, directionNormalized);
-					float distanceOfEnd = Vector2::Dot(ray.end, directionNormalized);
-
-					std::cout << distanceOfOrigin << " : " << distanceOfIntersectOne << " : " << distanceOfEnd << std::endl;
-
-					//std::cout << IntersectNear << std::endl;
-					//If both intersect points are in between the ray
-					if ((distanceOfIntersectOne >= distanceOfOrigin && distanceOfIntersectOne <= distanceOfEnd))
-					{
-						//std::cout << ClosestPoint << std::endl;
-						
-						printf("D");
+					if (distanceToNear <= distanceOfRay){
 						hitOutput.isCollided = true;
-						hitOutput.normal = (IntersectNear - circleGlobalPosition).Normalize();
-						hitOutput.point = IntersectNear;
+						hitOutput.point = intersectionNear;
+						hitOutput.normal = (hitOutput.point - circleGlobalPosition).Normalize();
+						
 						return hitOutput;
+
 					}
 				}
+
 				return hitOutput;
 			}
 		}
