@@ -111,6 +111,16 @@ namespace ManCong
 				}
 				else if (distance == radius) {
 					//One intersection
+					float distanceToNear = (ray.origin - P).Magnitude();
+					float distanceOfRay = direction.Magnitude();
+
+					if (distanceToNear <= distanceOfRay) {
+						hitOutput.isCollided = true;
+						hitOutput.point = P;
+						hitOutput.normal = (hitOutput.point - circleGlobalPosition).Normalize();
+
+						return hitOutput;
+					}
 					return hitOutput;
 				}
 				else if(distance < radius) {
@@ -126,7 +136,6 @@ namespace ManCong
 						hitOutput.normal = (hitOutput.point - circleGlobalPosition).Normalize();
 						
 						return hitOutput;
-
 					}
 				}
 

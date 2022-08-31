@@ -21,7 +21,7 @@ namespace ManCong
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 			//Obj 1
-			Transform transform{ Vector2(0.0f, 150.0f), Vector2(50.f, 50.f), 0.0f };
+			Transform transform{ Vector2(-100.0f, 150.0f), Vector2(50.f, 50.f), 0.0f };
 			Noah = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
@@ -37,7 +37,7 @@ namespace ManCong
 			trans_noah.rotation = 0.f;
 
 			//Obj 2
-			transform = { Vector2(0.0f, 0.0f), Vector2(100.0f, 100.0f), 0.0f };
+			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
 			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
@@ -46,7 +46,7 @@ namespace ManCong
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
 			CreateCollider(Hinata, ColliderType::Circle2D);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 100.f, collider_hinata.scale[1] = 25.f;
+			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 25.f;
 			collider_hinata.rotation = 0.0f;
 		}
 
@@ -56,7 +56,7 @@ namespace ManCong
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 			{
-				UpdateStartColliderSystem();
+				//UpdateStartColliderSystem();
 
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
