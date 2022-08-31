@@ -12,28 +12,6 @@ brief:		This file contains a class "Time" that acts as the framerate controller.
 #include "Utility/Time.h"
 #include "pch.h"
 
-//namespace
-//{
-//	f64 const NANO_TO_SECONDS = 1'000'000'000.0;
-//	u64 const MAX_SAMPLES = 100;
-//
-//	u64 tickIndex = 0;
-//	float tickSum = 0;
-//	float tickList[MAX_SAMPLES];
-//	/* need to zero out the ticklist array before starting */
-//	/* average will ramp up until the buffer is full */
-//	/* returns average ticks per frame over the MAXSAMPLES last frames */
-//	float CalcAverageTick(float newTick)
-//	{
-//		tickSum -= tickList[tickIndex];  /* subtract value falling off */
-//		tickSum += newTick;              /* add new value */
-//		tickList[tickIndex] = newTick;   /* save new value so it can be subtracted later */
-//		(++tickIndex) %= MAX_SAMPLES;
-//		/* return average */
-//		return(tickSum / MAX_SAMPLES);
-//	}
-//}
-
 namespace ManCong
 {
 	namespace Utility
@@ -42,7 +20,9 @@ namespace ManCong
 		static constexpr long NUM_NANO_IN_SEC = 1000000000;
 
 		// Static member variables definition
-		f32 Time::m_DeltaTime = 0.0f, Time::m_FPS = 0.0f;
+		f32 Time::m_DeltaTime = 0.0f, 
+			Time::m_FPS = 0.0f;
+		const f32 Time::m_FixedDeltaTime = 0.0f;
 
 		s32 Time::m_TargetFPS = 0;	// 0 means unlimited
 		bool Time::m_HasFPSLimit = false;
@@ -52,7 +32,7 @@ namespace ManCong
 		s32 Time::m_TickIndex = 0;
 
 		hd_clock::time_point Time::m_StartTime = hd_clock::now();	// Set Application start time
-		steady_clock::time_point Time::m_ClockedTime{};
+		steady_clock::time_point Time::m_ClockedTime{}, Time::m_PrevClockedTime{};
 
 		/*!*********************************************************************************
 			\brief
@@ -78,6 +58,7 @@ namespace ManCong
 		***********************************************************************************/
 		void Time::ClockTimeNow()
 		{
+			m_PrevClockedTime = m_ClockedTime;
 			m_ClockedTime = hd_clock::now();
 		}
 

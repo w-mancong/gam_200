@@ -42,6 +42,9 @@ namespace ManCong
 
 		void Application::Update(void)
 		{
+			// Accumulator for fixed delta time
+			f32 accumulator{ 0.f };
+
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 			{
@@ -73,9 +76,24 @@ namespace ManCong
 				{
 					trans.rotation -= rot;
 				}
-        
+				
+				// Get Current Time
 				Time::ClockTimeNow();
+
+				// Normal Update
+				Update();
+				// Fixed Update (Physics)
+				accumulator += Time::m_DeltaTime;
+				while (accumulator >= Time::m_FixedDeltaTime)
+				{
+					FixedUpdate();
+					accumulator -= Time::m_FixedDeltaTime;
+				}
+
+				// Render
 				Render();
+
+				// Wait for next frame
 				Time::WaitUntil();
 
 				std::cout << Time::m_FPS << std::endl;
@@ -93,6 +111,14 @@ namespace ManCong
 			app.Init();
 			app.Update();
 			app.Exit();
+		}
+		
+		void Update(void)
+		{
+		}
+		
+		void FixedUpdate(void)
+		{
 		}
 	}
 }

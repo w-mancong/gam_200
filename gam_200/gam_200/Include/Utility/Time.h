@@ -54,8 +54,9 @@ namespace ManCong
 			static void SetTargetFPS(s32 _target);
 
 		public:
-			static f32 m_DeltaTime;		// Delta Time
-			static f32 m_FPS;			// Current FPS
+			static f32 m_DeltaTime;			// Delta Time
+			static const f32 m_FixedDeltaTime;	// Fixed Delta Time
+			static f32 m_FPS;				// Current FPS
 
 		private:
 			/*!*********************************************************************************
@@ -79,6 +80,7 @@ namespace ManCong
 
 			static hd_clock::time_point m_StartTime;	// Start time of the application
 			static hd_clock::time_point m_ClockedTime;	// Time that was last clocked
+			static hd_clock::time_point m_PrevClockedTime;	// Previous time clocked
 		};
 	}
 }
