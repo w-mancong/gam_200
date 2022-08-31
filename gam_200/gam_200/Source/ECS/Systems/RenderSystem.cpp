@@ -2,7 +2,8 @@
 #include "Graphics/Shader.h"
 #include "Engine/Camera.h"
 #include "Engine/Manager/MeshBuilder.h"
-#include "Graphics/fonts.h"
+#include "Graphics/Fonts.h"
+#include "Graphics/Gizmo.h"
 
 namespace ManCong
 {
@@ -29,7 +30,7 @@ namespace ManCong
 			it = fontCollection.find(currentFont);
 			if (it == fontCollection.end())
 			{
-				std::cout << "Font Family Name " << currentFont << "not found\n";
+				std::cout << "FONT ERROR: Font Family Name " << currentFont << "not found\n";
 				return;
 			}
 
@@ -37,11 +38,9 @@ namespace ManCong
 			it2 = fontCollection.find(currentFont)->second.find(currentType);
 			if (it2 == fontCollection.find(currentFont)->second.end())
 			{
-				std::cout << "Font Type " << currentType << "not found\n";
+				std::cout << "FONT ERROR: Font Type " << currentType << "not found\n";
 				return;
 			}
-
-
 
 			glBindVertexArray(fontCollection.find(currentFont)->second.find(currentType)->second.fontsVAO);
 
@@ -295,6 +294,11 @@ namespace ManCong
 			meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
+
+			// Load and initialise fonts
+			FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", "regular");
+			FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", "italic");
+			FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", "bold");
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -362,6 +366,11 @@ namespace ManCong
 
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			Gizmo::setLineWidth(3.f);
+			Gizmo::RenderLine(Math::Vector2{ -3.f,-5.f }, Math::Vector2{ -2.f, -2.f });
+			Gizmo::DrawLineBox(Math::Vector2{ 0.f,0.f }, Math::Vector2{ 0.f, 5.f }, Math::Vector2{ 2.f, 5.f }, Math::Vector2{ 2.f, 0.f });
+
 			u32 displayed = 0;
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 			{
@@ -375,11 +384,6 @@ namespace ManCong
 			}
 			/*std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			std::cout << "Total entities displayed: " << displayed << std::endl;*/
-
-
-			FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", "regular");
-			FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", "italic");
-			FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", "bold");
 
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			Font::SetFont("roboto");
@@ -533,6 +537,49 @@ namespace ManCong
 			Entity entity = Coordinator::Instance()->CreateEntity();
 			CreateSprite(entity, transform, filePath, layer, mode);
 			return entity;
+		}
+
+		// Gizmo static member declarations
+		f32 Gizmo::lineWidith;
+
+		void Gizmo::RenderLine(Math::Vector2 pt0, Math::Vector2 pt1)
+		{
+			std::array<Math::Vector2, 2> pos_vtx;
+			pos_vtx[0] = pt0;
+			pos_vtx[1] = pt1;
+
+			GLuint VAO, VBO;
+
+			glGenVertexArrays(1, &VAO);
+			glGenBuffers(1, &VBO);
+			glBindVertexArray(VAO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(pos_vtx) * pos_vtx.size(), &pos_vtx, GL_STATIC_DRAW);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
+			glEnableVertexAttribArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindVertexArray(0);
+
+			meshShader.use();
+			glLineWidth(lineWidith);
+
+			glBindVertexArray(VAO);
+			glDrawArrays(GL_LINES, 0, 2); // render line
+
+			// cleanup
+			glDeleteBuffers(1, &VAO);
+			glDeleteVertexArrays(1, &VBO);
+
+			// reset line width
+			glLineWidth(1.f);
+		}
+
+		void Gizmo::DrawLineBox(Math::Vector2 pt0, Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector2 pt3)
+		{
+			Gizmo::RenderLine(pt0, pt1);
+			Gizmo::RenderLine(pt1, pt2);
+			Gizmo::RenderLine(pt2, pt3);
+			Gizmo::RenderLine(pt3, pt0);
 		}
 	}
 }

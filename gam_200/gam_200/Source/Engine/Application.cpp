@@ -25,7 +25,7 @@ namespace ManCong
 			//sprite.layer = RenderLayer::Player; sprite.mode = RenderMode::Line;
 
 			transform.position = Vector2(0.0f, 0.0f);
-			transform.rotation = 30.0f;
+			transform.rotation = 0.0f;
 			//transform.position = Vector2(600.0f, 0.0f);
 			transform.scale = Vector2(200.0f, 50.0f);
 			Entity entity2 = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
