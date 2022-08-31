@@ -22,7 +22,7 @@ namespace ManCong
 		// Static member variables definition
 		f32 Time::m_DeltaTime = 0.0f, 
 			Time::m_FPS = 0.0f;
-		const f32 Time::m_FixedDeltaTime = 0.0f;
+		const f32 Time::m_FixedDeltaTime = 1.f / 60.f;	// Fixed delta time is 60 fps
 
 		s32 Time::m_TargetFPS = 0;	// 0 means unlimited
 		bool Time::m_HasFPSLimit = false;

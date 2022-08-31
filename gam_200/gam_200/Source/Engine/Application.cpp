@@ -47,36 +47,7 @@ namespace ManCong
 
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
-			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
-				f32 constexpr speed = 150.0f;
-				f32 constexpr rot = 1.0f;
-        
-				if(Input::Input::KeyDown(KeyCode::W))
-				{
-					trans.position.y += speed * Time::m_DeltaTime;
-				}
-				if (Input::Input::KeyDown(KeyCode::S))
-				{
-					trans.position.y -= speed * Time::m_DeltaTime;
-				}
-				if (Input::Input::KeyDown(KeyCode::D))
-				{
-					trans.position.x += speed * Time::m_DeltaTime;
-				}
-				if (Input::Input::KeyDown(KeyCode::A))
-				{
-					trans.position.x -= speed * Time::m_DeltaTime;
-				}
-				if (Input::Input::KeyDown(KeyCode::Q))
-				{
-					trans.rotation += rot;
-				}
-				if (Input::Input::KeyDown(KeyCode::E))
-				{
-					trans.rotation -= rot;
-				}
-				
+			{				
 				// Get Current Time
 				Time::ClockTimeNow();
 
@@ -115,6 +86,34 @@ namespace ManCong
 		
 		void Update(void)
 		{
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
+			f32 constexpr speed = 150.0f;
+			f32 constexpr rot = 1.0f;
+
+			if (Input::Input::KeyDown(KeyCode::W))
+			{
+				trans.position.y += speed * Time::m_DeltaTime;
+			}
+			if (Input::Input::KeyDown(KeyCode::S))
+			{
+				trans.position.y -= speed * Time::m_DeltaTime;
+			}
+			if (Input::Input::KeyDown(KeyCode::D))
+			{
+				trans.position.x += speed * Time::m_DeltaTime;
+			}
+			if (Input::Input::KeyDown(KeyCode::A))
+			{
+				trans.position.x -= speed * Time::m_DeltaTime;
+			}
+			if (Input::Input::KeyDown(KeyCode::Q))
+			{
+				trans.rotation += rot;
+			}
+			if (Input::Input::KeyDown(KeyCode::E))
+			{
+				trans.rotation -= rot;
+			}
 		}
 		
 		void FixedUpdate(void)
