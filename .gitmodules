@@ -1,3 +1,7 @@
 [submodule "gam_200/Extern/include/spdlog"]
 	path = gam_200/Extern/include/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "gam_200/Extern/include/imgui"]
+	path = gam_200/Extern/include/imgui
+	url = https://github.com/ocornut/imgui
+	branch = docking
