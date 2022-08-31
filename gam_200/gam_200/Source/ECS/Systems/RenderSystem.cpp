@@ -367,7 +367,7 @@ namespace ManCong
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			Gizmo::setLineWidth(3.f);
+			Gizmo::SetLineWidth(3.f);
 			Gizmo::RenderLine(Math::Vector2{ -3.f,-5.f }, Math::Vector2{ -2.f, -2.f });
 			Gizmo::DrawLineBox(Math::Vector2{ 0.f,0.f }, Math::Vector2{ 0.f, 5.f }, Math::Vector2{ 2.f, 5.f }, Math::Vector2{ 2.f, 0.f });
 
