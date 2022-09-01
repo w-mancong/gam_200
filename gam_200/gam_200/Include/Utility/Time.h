@@ -80,7 +80,6 @@ namespace ManCong
 
 			static hd_clock::time_point m_StartTime;	// Start time of the application
 			static hd_clock::time_point m_ClockedTime;	// Time that was last clocked
-			static hd_clock::time_point m_PrevClockedTime;	// Previous time clocked
 		};
 	}
 }

@@ -52,12 +52,12 @@ namespace ManCong
 				Time::ClockTimeNow();
 
 				// Normal Update
-				Update();
+				Engine::Update();
 				// Fixed Update (Physics)
 				accumulator += Time::m_DeltaTime;
 				while (accumulator >= Time::m_FixedDeltaTime)
 				{
-					FixedUpdate();
+					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
 				}
 
@@ -84,7 +84,7 @@ namespace ManCong
 			app.Exit();
 		}
 		
-		void Update(void)
+		void Engine::Update(void)
 		{
 			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
 			f32 constexpr speed = 150.0f;
@@ -116,7 +116,7 @@ namespace ManCong
 			}
 		}
 		
-		void FixedUpdate(void)
+		void Engine::FixedUpdate(void)
 		{
 		}
 	}

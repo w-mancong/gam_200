@@ -32,7 +32,7 @@ namespace ManCong
 		s32 Time::m_TickIndex = 0;
 
 		hd_clock::time_point Time::m_StartTime = hd_clock::now();	// Set Application start time
-		steady_clock::time_point Time::m_ClockedTime{}, Time::m_PrevClockedTime{};
+		steady_clock::time_point Time::m_ClockedTime{};
 
 		/*!*********************************************************************************
 			\brief
@@ -58,7 +58,6 @@ namespace ManCong
 		***********************************************************************************/
 		void Time::ClockTimeNow()
 		{
-			m_PrevClockedTime = m_ClockedTime;
 			m_ClockedTime = hd_clock::now();
 		}
 
