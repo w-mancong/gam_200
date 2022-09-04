@@ -39,6 +39,12 @@
 // Windows API
 #include <Windows.h>
 
+// ImGui
+#include "Editor/imgui/imgui.h"
+#include "Editor/imgui/imgui_impl_glfw.h"
+#include "Editor/imgui/imgui_impl_opengl3.h"
+#include "Editor/ALEditor.h"
+
 // Graphics
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
