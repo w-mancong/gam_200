@@ -43,7 +43,6 @@
 #include "Editor/imgui/imgui.h"
 #include "Editor/imgui/imgui_impl_glfw.h"
 #include "Editor/imgui/imgui_impl_opengl3.h"
-#include "Editor/ALEditor.h"
 
 // Graphics
 #include <glad/glad.h>
@@ -60,5 +59,6 @@
 #include "Common Header/MyExceptions.h"
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
+#include "Editor/ALEditor.h"
 
 #endif

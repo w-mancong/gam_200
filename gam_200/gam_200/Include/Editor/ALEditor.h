@@ -13,14 +13,23 @@ namespace ManCong
 {
 	namespace Engine
 	{
-		class ALEditor
+		class ALEditor : public Templates::Singleton<ALEditor>
 		{
 		public:
-			static void Init();
-			static void Update();
+			void Init();
+			void Update();
 
-			static void Begin();
-			static void End();
+			void Begin();
+			void End();
+
+		private:
+			// Constructor
+			ALEditor(void) {}
+			virtual ~ALEditor(void) = default;
+			void Docking();
+
+			friend class Templates::Singleton<ALEditor>;
+			friend class Memory::StaticMemory;
 		};
 	}
 }

@@ -40,7 +40,7 @@ namespace ManCong
 			Time::Init();
 
 			// Init ImGui
-			ALEditor::Init();
+			ALEditor::Instance()->Init();
 		}
 
 		void Application::Update(void)
@@ -54,8 +54,8 @@ namespace ManCong
 				// Get Current Time
 				Time::ClockTimeNow();
 
-				// Start new ImGui frame
-				ALEditor::Begin();
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
 
 				// Normal Update
 				Engine::Update();
@@ -66,8 +66,6 @@ namespace ManCong
 					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
 				}
-
-				ALEditor::Update();
 
 				// Render
 				Render();
