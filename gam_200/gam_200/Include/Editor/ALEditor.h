@@ -2,7 +2,7 @@
 file:	ALEditor.h
 author:	Lucas Nguyen
 email:	l.nguyen@digipen.edu
-brief:	This file contains the function declarations for the Editor class
+brief:	This file contains the function declarations for the ALEditor class
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -16,9 +16,11 @@ namespace ManCong
 		class ALEditor
 		{
 		public:
-			static void Init(GLFWwindow* win);
+			static void Init();
 			static void Update();
-			static void Render();
+
+			static void Begin();
+			static void End();
 		};
 	}
 }

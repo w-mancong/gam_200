@@ -40,7 +40,7 @@ namespace ManCong
 			Time::Init();
 
 			// Init ImGui
-			ALEditor::Init(OpenGLWindow::Window());
+			ALEditor::Init();
 		}
 
 		void Application::Update(void)
@@ -53,6 +53,9 @@ namespace ManCong
 			{				
 				// Get Current Time
 				Time::ClockTimeNow();
+
+				// Start new ImGui frame
+				ALEditor::Begin();
 
 				// Normal Update
 				Engine::Update();
