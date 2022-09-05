@@ -147,7 +147,28 @@ namespace ManCong
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, sprite.texture);
 			glBindVertexArray(sprite.vao);
-			glDrawElements(sprite.primitive, sprite.indicesSize, GL_UNSIGNED_INT, 0);
+			// render based on the primitive type
+			switch (sprite.primitive)
+			{
+				case GL_TRIANGLE_FAN:
+				{
+					glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
+					break;
+				}
+				case GL_TRIANGLE_STRIP:
+				{
+					glEnable(GL_PRIMITIVE_RESTART);
+					glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
+					glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+					glDisable(GL_PRIMITIVE_RESTART);
+					break;
+				}
+				case GL_TRIANGLES:
+				{
+					glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+					break;
+				}
+			}	
 			// Unbind to prevent any unintended behaviour to vao
 			glBindVertexArray(0);
 		}
