@@ -12,7 +12,7 @@
 
 *******************************************************************************/
 
-namespace stanley {
+
 
 	//change this later for projects
 	static const std::filesystem::path assetpath = "assets";
@@ -65,4 +65,4 @@ namespace stanley {
 		//ImGui::End();
 	}
 
-}
+

@@ -15,7 +15,7 @@
 #ifndef	CONTENT_BROWSER_PANEL_H
 #define CONTENT_BROWSER_PANEL_H
 
-namespace stanley {
+
 
 	class ContentBrowserPanel
 	{
@@ -29,7 +29,7 @@ namespace stanley {
 
 
 
-}
+
 
 
 #endif
