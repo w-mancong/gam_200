@@ -10,5 +10,6 @@ brief:	This file contains all the relevant Graphics header files to be included 
 #define MY_GRAPHICS_H
 
 #include "Graphics/OpenGLWindow.h"
+#include "Graphics/Shader.h"
 
 #endif

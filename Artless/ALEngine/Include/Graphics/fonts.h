@@ -31,8 +31,7 @@ namespace ALEngine
 			static std::map<std::string, std::map<Font::FontType, Font>> fontCollection;
 			static Shader fontShader;
 			
-			static void SetShader(Shader shader) { fontShader = shader; }
-			
+			static void SetShader(Shader shader) { fontShader = shader; }			
 		};
 
 		struct Text

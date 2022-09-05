@@ -9,8 +9,6 @@ brief:	This file contain class declaration for loading and changing uniform valu
 #ifndef	SHADER_H
 #define SHADER_H
 
-#include "Utility/Type.h"
-#include "Math/Matrix4x4.h"
 namespace ALEngine
 {
 	namespace Graphics
