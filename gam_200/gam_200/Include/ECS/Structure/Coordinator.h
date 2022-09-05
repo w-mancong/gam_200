@@ -91,7 +91,7 @@ namespace ManCong
 			}
 
 			friend class Templates::Singleton<Coordinator>;
-			friend class Memory::InstanceMemory;
+			friend class Memory::StaticMemory;
 
 			std::unique_ptr<ComponentManager> mComponentManager;
 			std::unique_ptr<EntityManager> mEntityManager;

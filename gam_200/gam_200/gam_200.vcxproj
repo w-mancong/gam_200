@@ -48,25 +48,29 @@
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\Extern\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\gam_200\Include;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(SolutionDir)\Extern\include\spdlog\include;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\Extern\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\gam_200\Include;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(SolutionDir)\Extern\include\spdlog\include;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\gam_200\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\gam_200\Include\Editor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -76,16 +80,18 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\gam_200\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -96,13 +102,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Editor\ALEditor.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_impl_glfw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_impl_opengl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Exceptions\Logger.cpp" />
     <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\RenderSystem.cpp" />
     <ClCompile Include="Source\Engine\Application.cpp" />
     <ClCompile Include="Source\Engine\Camera.cpp" />
     <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp" />
-    <ClCompile Include="Source\Exceptions\DebugLog.cpp" />
+    <ClCompile Include="Source\Exceptions\GLDebug.cpp" />
     <ClCompile Include="Source\Graphics\GLAD\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -143,9 +172,27 @@
     <ClInclude Include="Include\ECS\Components\Text.h" />
     <ClInclude Include="Include\ECS\Structure\EcsSystem.h" />
     <ClInclude Include="Include\ECS\Systems\RenderSystem.h" />
+    <ClInclude Include="Include\Editor\ALEditor.h" />
+    <ClInclude Include="Include\Editor\imconfig.h" />
+    <ClInclude Include="Include\Editor\imgui.h" />
+    <ClInclude Include="Include\Editor\imgui\imconfig.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_internal.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_textedit.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_truetype.h" />
+    <ClInclude Include="Include\Editor\imgui_impl_glfw.h" />
+    <ClInclude Include="Include\Editor\imgui_impl_opengl3.h" />
+    <ClInclude Include="Include\Editor\imgui_internal.h" />
+    <ClInclude Include="Include\Editor\imstb_rectpack.h" />
+    <ClInclude Include="Include\Editor\imstb_textedit.h" />
+    <ClInclude Include="Include\Editor\imstb_truetype.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
-    <ClInclude Include="Include\Exceptions\DebugLog.h" />
+    <ClInclude Include="Include\Exceptions\GLDebug.h" />
     <ClInclude Include="Include\ECS\Structure\component.h" />
     <ClInclude Include="Include\ECS\Structure\ComponentArray.h" />
     <ClInclude Include="Include\ECS\Structure\ComponentManager.h" />
@@ -157,9 +204,13 @@
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\ECS\Components\Color.h" />
     <ClInclude Include="Include\Graphics\fonts.h" />
+    <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
-    <ClInclude Include="Include\Graphics\stb_image.h" />
+    <ClInclude Include="Include\Graphics\stb_image.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Include\Input\InputKeys.h" />
     <ClInclude Include="Include\Input\Input.h" />
     <ClInclude Include="Include\Math\Math.h" />

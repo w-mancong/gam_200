@@ -147,8 +147,7 @@ namespace ManCong
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, sprite.texture);
 			glBindVertexArray(sprite.vao);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite.ebo);
-			glDrawElements(GL_TRIANGLES, sprite.indicesSize, GL_UNSIGNED_INT, 0);
+			glDrawElements(sprite.primitive, sprite.indicesSize, GL_UNSIGNED_INT, 0);
 			// Unbind to prevent any unintended behaviour to vao
 			glBindVertexArray(0);
 		}
@@ -380,31 +379,15 @@ namespace ManCong
 				if (ShouldRender(trans))
 				{
 					rs->Render(sprite, trans);
-					++displayed;
+					//++displayed;
 				}
 			}
-			/*std::cout << "Total entities in scene: " << entities.size() << std::endl;
-			std::cout << "Total entities displayed: " << displayed << std::endl;*/
 
-			
-			Text text;
-			text.SetFont("roboto");
-			text.SetFontType(Font::FontType::Regular);
-			text.SetScale(1.0f);
-			text.SetPos(Vector2(0.0f, 0.0f));
-			text.SetCol(Vector3(1.f, 1.f, 1.f));
-			text.SetText("This is Roboto-Regular");
-			text.RenderText();
+			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
+			//std::cout << "Total entities displayed: " << displayed << std::endl;
 
-			//Font::SetFontType(Font::FontType::Italic);
-			//Font::SetText("This is Roboto-Italic");
-			//Font::SetPos(Vector2(50.0f, 100.0f));
-			//Font::RenderText();
-
-			//Font::SetFontType(Font::FontType::Bold);
-			//Font::SetText("This is Roboto-bold");
-			//Font::SetPos(Vector2(50.0f, 150.0f));
-			//Font::RenderText();
+			// End of ImGui frame, render ImGui!
+			ALEditor::Instance()->End();
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
