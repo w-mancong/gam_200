@@ -11,7 +11,7 @@ brief:	This file contain static class declaration for basic key inputs from user
 
 namespace ManCong
 {
-	namespace Input
+	namespace UserInput
 	{
 		class Input
 		{

@@ -43,33 +43,33 @@ namespace ManCong
 		void Application::Update(void)
 		{
 			// should do the game loop here
-			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
+			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !UserInput::Input::KeyTriggered(KeyCode::Escape))
 			{
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(rect);
 				f32 constexpr speed = 150.0f;
 				f32 constexpr rot = 1.0f;
         
-				if(Input::Input::KeyDown(KeyCode::W))
+				if(UserInput::Input::KeyDown(KeyCode::W))
 				{
 					trans.position.y += speed * Time::m_DeltaTime;
 				}
-				if (Input::Input::KeyDown(KeyCode::S))
+				if (UserInput::Input::KeyDown(KeyCode::S))
 				{
 					trans.position.y -= speed * Time::m_DeltaTime;
 				}
-				if (Input::Input::KeyDown(KeyCode::D))
+				if (UserInput::Input::KeyDown(KeyCode::D))
 				{
 					trans.position.x += speed * Time::m_DeltaTime;
 				}
-				if (Input::Input::KeyDown(KeyCode::A))
+				if (UserInput::Input::KeyDown(KeyCode::A))
 				{
 					trans.position.x -= speed * Time::m_DeltaTime;
 				}
-				if (Input::Input::KeyDown(KeyCode::Q))
+				if (UserInput::Input::KeyDown(KeyCode::Q))
 				{
 					trans.rotation += rot;
 				}
-				if (Input::Input::KeyDown(KeyCode::E))
+				if (UserInput::Input::KeyDown(KeyCode::E))
 				{
 					trans.rotation -= rot;
 				}

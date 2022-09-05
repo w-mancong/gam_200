@@ -12,7 +12,7 @@ brief:	This file contain an enum class that has that contains all the accepted k
 
 namespace ManCong
 {
-	namespace Input
+	namespace UserInput
 	{
 		enum class KeyCode : u64
 		{

@@ -15,6 +15,7 @@ namespace ManCong
 			Signature GetSignature(Entity entity);
 
 		private:
+			//std::queue<Entity, std::deque<Entity, Memory::DynamicAllocator<Entity>>> mAvailableEntities{};
 			// Queue of unused entity IDs
 			std::queue<Entity> mAvailableEntities{};
 			// Array of signatures where the index corresponds to the entity ID

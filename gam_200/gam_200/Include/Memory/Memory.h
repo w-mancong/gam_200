@@ -15,7 +15,7 @@ namespace ManCong
 {
 	namespace Memory
 	{
-		u64 constexpr MEMORY_BUFFER = 2'097'152; u64 constexpr BOOKMARK_SIZE = 100;
+		u64 constexpr MEMORY_BUFFER = 2'097'152; u64 constexpr BOOKMARK_SIZE = 7'500;
 		struct Bookmark
 		{
 			void *head{ nullptr }, *tail{ nullptr };
