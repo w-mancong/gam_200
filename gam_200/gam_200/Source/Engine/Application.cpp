@@ -22,6 +22,7 @@ namespace ManCong
 		{
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
+
 			//Obj 1
 			Transform transform{ Vector2(0, 150.0f), Vector2(50.f, 50.f), 0.0f };
 			Noah = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
@@ -30,7 +31,7 @@ namespace ManCong
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 
-			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
+			//Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
 			CreatePhysics2D(Noah, ColliderType::Circle2D);
 			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).isEnabled = true;
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
@@ -50,14 +51,65 @@ namespace ManCong
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
 			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 25.f;
 			collider_hinata.rotation = 0.0f;
+
+			// Initialize Time (Framerate Controller)
+			Time::Init();
+
+			// Init ImGui
+			ALEditor::Instance()->Init();
 		}
 
 		void Application::Update(void)
 		{
-			Time timer;
+			// Accumulator for fixed delta time
+			f32 accumulator{ 0.f };
+
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
-			{	
+			{				
+				// Get Current Time
+				Time::ClockTimeNow();
+
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
+
+				// Normal Update
+				Engine::Update();
+				// Fixed Update (Physics)
+				accumulator += Time::m_DeltaTime;
+				while (accumulator >= Time::m_FixedDeltaTime)
+				{
+					Engine::FixedUpdate();
+					accumulator -= Time::m_FixedDeltaTime;
+				}
+
+				// Render
+				Render();
+
+				// Wait for next frame
+				Time::WaitUntil();
+			}
+		}
+
+		void Application::Exit(void)
+		{
+			// Shutdown imgui
+			ImGui_ImplGlfw_Shutdown();
+			// Destroy imgui context
+			ImGui::DestroyContext();
+			glfwTerminate();	// clean/delete all GLFW resources
+		}
+
+		void Run(void)
+		{
+			Application app;
+			app.Init();
+			app.Update();
+			app.Exit();
+		}
+		
+		void Engine::Update(void)
+		{
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
 				f32 constexpr speed = 150.f;
@@ -128,31 +180,14 @@ namespace ManCong
 				//if (Input::Input::KeyDown(KeyCode::E))
 				//{
 				//	trans.rotation -= rot;
-				//}
-				//
-				//Raycast2DCollision({ -25, 25 }, { 25, 25 });
-
-				UpdateRigidbodySystem();
+				//}		
+		}
+		
+		void Engine::FixedUpdate(void)
+		{
+        //Raycast2DCollision({ -25, 25 }, { 25, 25 });
+        UpdateRigidbodySystem();
 				UpdateColliderSystem();
-				Render();
-				timer.ClockTimeNow();
-				Render();
-				timer.WaitUntil();
-				//std::cout << timer.m_FPS << std::endl;
-			}
-		}
-
-		void Application::Exit(void)
-		{
-			glfwTerminate();	// clean/delete all GLFW resources
-		}
-
-		void Run(void)
-		{
-			Application app;
-			app.Init();
-			app.Update();
-			app.Exit();
 		}
 	}
 }

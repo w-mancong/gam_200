@@ -16,41 +16,22 @@ brief:		This file contain a static class declaration to calculating the dt, fps
 #include <chrono>	// Time library
 #include "Type.h"
 
-static constexpr int MAX_SAMPLES = 100;
+static constexpr s32 MAX_SAMPLES = 100;
 
 namespace ManCong
 {
 	namespace Utility
 	{
-		using namespace std::chrono;
-		using hd_clock = high_resolution_clock;
+		using hd_clock = std::chrono::high_resolution_clock;
 
 		class Time
 		{
 		public:
 			/*!*********************************************************************************
 				\brief
-				Constructor for Time class.
-			***********************************************************************************/
-			Time(void);
-
-			/*!*********************************************************************************
-				\brief
-				Destructor for Time class.
-			***********************************************************************************/
-			~Time(void) = default;
-
-			/*!*********************************************************************************
-				\brief
 				Initializes the timer to calculate the delta time every frame
 			***********************************************************************************/
-			// static void Init(void);
-
-			/*!*********************************************************************************
-				\brief
-				To update the delta time every frame
-			***********************************************************************************/
-			// static void Update(void);
+			static void Init(void);
 
 			/*!*********************************************************************************
 				\brief
@@ -70,19 +51,32 @@ namespace ManCong
 				\brief
 				Set the Target FPS.
 			***********************************************************************************/
-			static void SetTargetFPS(int _target);
+			static void SetTargetFPS(s32 _target);
 
 		public:
-			static f32 m_DeltaTime;		// Delta Time
-			static f32 m_FPS;			// Current FPS
+			static f32 m_DeltaTime;			// Delta Time
+			static const f32 m_FixedDeltaTime;	// Fixed Delta Time
+			static f32 m_FPS;				// Current FPS
 
 		private:
-			static int m_TargetFPS;		// Target FPS
+			/*!*********************************************************************************
+				\brief
+				Constructor for Time class.
+			***********************************************************************************/
+			Time(void);
+
+			/*!*********************************************************************************
+				\brief
+				Destructor for Time class.
+			***********************************************************************************/
+			~Time(void) = default;
+
+			static s32 m_TargetFPS;		// Target FPS
 			static bool m_HasFPSLimit;	// Whether there is an FPS limit
 
-			static nanoseconds m_Ticks[MAX_SAMPLES];		// Stores the number of ticks in the past 100 frames
-			static nanoseconds m_TickSum;				// Number of ticks
-			static int m_TickIndex;						// Index for Ticks
+			static std::chrono::nanoseconds m_Ticks[MAX_SAMPLES];		// Stores the number of ticks in the past 100 frames
+			static std::chrono::nanoseconds m_TickSum;				// Number of ticks
+			static s32 m_TickIndex;						// Index for Ticks
 
 			static hd_clock::time_point m_StartTime;	// Start time of the application
 			static hd_clock::time_point m_ClockedTime;	// Time that was last clocked

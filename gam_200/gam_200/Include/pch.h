@@ -39,9 +39,16 @@
 // Windows API
 #include <Windows.h>
 
+// ImGui
+#include "Editor/imgui/imgui.h"
+#include "Editor/imgui/imgui_impl_glfw.h"
+#include "Editor/imgui/imgui_impl_opengl3.h"
+
 // Graphics
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 // Self declared header file
 #include "Common Header/MyMemory.h"
@@ -54,4 +61,6 @@
 #include "Common Header/MyExceptions.h"
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
+#include "Editor/ALEditor.h"
+
 #endif

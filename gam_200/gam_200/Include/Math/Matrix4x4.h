@@ -177,6 +177,24 @@ namespace ManCong
 				Minimum y value of the projection matrix
 				\param [in] top:
 				Minimum y value of the projection matrix
+
+				\return
+				A Orthographic projection matrix
+			***********************************************************************************/
+			static Matrix4x4 Ortho(f32 left, f32 right, f32 bottom, f32 top);
+
+			/*!*********************************************************************************
+				\brief
+				Construct a Orthographics projection matrix
+
+				\param [in] left:
+				Minimum x value of the projection matrix
+				\param [in] right:
+				Maximum x value of the projection matrix
+				\param [in] bottom:
+				Minimum y value of the projection matrix
+				\param [in] top:
+				Minimum y value of the projection matrix
 				\param [in] zNear:
 				Distance of how near the camera can see
 				\param [in] zFar:

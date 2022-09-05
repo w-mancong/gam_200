@@ -25,7 +25,7 @@ namespace ManCong
 			static T* Instance()
 			{
 				if (!Singleton<T>::instance)
-					Singleton<T>::instance = Memory::InstanceMemory::template New<T>();
+					Singleton<T>::instance = Memory::StaticMemory::template New<T>();
 				return Singleton<T>::instance;
 			}
 
@@ -35,7 +35,7 @@ namespace ManCong
 			***********************************************************************************/
 			static void Free(void)
 			{
-				Memory::InstanceMemory::Delete(instance);
+				Memory::StaticMemory::Delete(instance);
 			}
 
 		protected:
