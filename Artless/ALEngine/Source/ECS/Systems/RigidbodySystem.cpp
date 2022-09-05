@@ -20,7 +20,7 @@ namespace ALEngine
 		class RigidbodySystem : public System
 		{
 		public:
-			void UpdateRigidbody(Transform& t, Rigidbody2D& rigid);
+			void UpdateRigidbody(Transform& transform, Collider2D& collider, Rigidbody2D& rigid);
 
 
 		private:
@@ -58,14 +58,14 @@ namespace ALEngine
 					continue;
 				}
 
-				//rigid.velocity.y -= earthGravity;
-
-				rigidS->UpdateRigidbody(transform, rigid);
+				rigid.velocity.y -= earthGravity;
+				rigidS->UpdateRigidbody(transform, collider, rigid);
 			}
 		}
 
-		void RigidbodySystem::UpdateRigidbody(Transform& t, Rigidbody2D& rigid) {
-			t.position += rigid.velocity * Time::m_DeltaTime;
+		void RigidbodySystem::UpdateRigidbody(Transform& t, Collider2D& collider, Rigidbody2D& rigid) {
+			rigid.frameVelocity = rigid.velocity * Time::m_FixedDeltaTime;
+			rigid.nextPosition = t.position + collider.localPosition + rigid.frameVelocity;
 		}
 	}
 }

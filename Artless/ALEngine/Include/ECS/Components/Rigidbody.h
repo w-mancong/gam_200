@@ -22,7 +22,8 @@ namespace ALEngine
 			struct Rigidbody2D
 			{
 			public:
-				Math::Vector2 velocity{ 0.f, 0.f };
+				Math::Vector2 nextPosition{ 0.f, 0.f };
+				Math::Vector2 velocity{ 0.f, 0.f }, frameVelocity{ 0.f,0.f };
 				bool hasGravity{ true };
 				bool isEnabled{ false };
 			};

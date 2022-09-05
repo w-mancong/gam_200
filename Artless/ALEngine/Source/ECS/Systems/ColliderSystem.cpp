@@ -107,7 +107,7 @@ namespace ALEngine
 
 			if ((collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Rectangle2D_AABB)) {
 				if (rigidbody_one.isEnabled) {
-					collision = SweptCollision_Circle_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two, rigidbody_one, rigidbody_two);
+					collision = SweptCollision_AABB_ABBB(collider_one, collider_two, parent_transform_one, parent_transform_two, rigidbody_one, rigidbody_two);
 				}
 				else{
 					collision = CheckCollision_AABB_To_AABB(collider_one, collider_two, parent_transform_one, parent_transform_two);
@@ -154,8 +154,6 @@ namespace ALEngine
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
 				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-
-				Collider.frameEndGlobalPosition = Collider.localPosition + trans.position;
 
 				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it), trans);
 			}
@@ -227,12 +225,15 @@ namespace ALEngine
 					//Collision Exit
 					//No Collision
 					else {
+						oneCollider.isColliderTriggered = false;
+						twoCollider.isColliderTriggered = false;
 						if (oneCollider.isCollidedStay) {
 							oneCollider.isCollidedStay = false;
 							oneCollider.isColliderExit = true;
 						}
 						else {
 							oneCollider.isColliderExit = false;
+							oneCollider.isColliderTriggered = false;
 						}
 						if (twoCollider.isCollidedStay) {
 							twoCollider.isCollidedStay = false;
@@ -242,7 +243,7 @@ namespace ALEngine
 							twoCollider.isColliderExit = false;
 						}
 					}
-					
+
 					//Collision output updates
 					if (oneCollider.isColliderTriggered) {
 						printf("Collision Trigger\n");
@@ -288,8 +289,9 @@ namespace ALEngine
 			{
 				Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 
-				oneParentTransform.position = oneCollider.frameEndGlobalPosition;
+				oneParentTransform.position = oneRigidbody.nextPosition;
 			}
 		}
 
@@ -476,12 +478,23 @@ namespace ALEngine
 			tempBox.scale[0] += collider_moving.scale[0];
 			tempBox.scale[1] += collider_moving.scale[1];
 
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.velocity };
+			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.frameVelocity };
 			RaycastHit2D rayHit = Physics::Raycast_AABB(ray, tempBox, parent_transform_other);
 			
 			if (rayHit.isCollided)
 			{
-				collider_moving.frameEndGlobalPosition = rayHit.point;
+				rigidbody_moving.nextPosition = rayHit.point;					
+
+				Vector2 direction{ 0,0 };
+
+				if (rayHit.normal.y != 0) {
+					direction.x += rigidbody_moving.frameVelocity.x;
+				}
+				else if (rayHit.normal.x != 0) {
+					direction.y += rigidbody_moving.frameVelocity.y;
+				}
+				rigidbody_moving.nextPosition += direction;
+				rigidbody_moving.velocity = direction;
 				return true;
 			}
 
@@ -499,13 +512,13 @@ namespace ALEngine
 			Collider2D tempCircle = collider_other;
 			tempCircle.scale[0] += collider_moving.scale[0];
 
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.velocity };
+			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.frameVelocity };
 			RaycastHit2D rayHit = Physics::Raycast_Circle(ray, tempCircle, parent_transform_other);
 
 			if (rayHit.isCollided)
 			{
-				Vector2 x_direction = { rigidbody_moving.velocity.x, 0 };
-				Vector2 y_direction = { 0, rigidbody_moving.velocity.y };
+				Vector2 x_direction = { rigidbody_moving.frameVelocity.x, 0 };
+				Vector2 y_direction = { 0, rigidbody_moving.frameVelocity.y };
 
 				Vector2 direction{ 0,0 };
 
@@ -516,7 +529,8 @@ namespace ALEngine
 					direction += y_direction;
 				}
 
-				collider_moving.frameEndGlobalPosition = rayHit.point + direction;
+				rigidbody_moving.velocity = direction;
+				rigidbody_moving.nextPosition = rayHit.point + direction;
 				return true;
 			}
 			return false;

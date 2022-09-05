@@ -25,31 +25,31 @@ namespace ALEngine
 
 			//Obj 1
 			Transform transform{ Vector2(0, 150.0f), Vector2(50.f, 50.f), 0.0f };
-			Noah = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
+			Noah = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			CreatePhysics2D(Noah, ColliderType::Circle2D);
+			CreatePhysics2D(Noah, ColliderType::Rectangle2D_AABB);
 			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).isEnabled = true;
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
-			collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 25.f;
+			collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 50.f;
 			collider_Noah.rotation = 0.f;
 			trans_noah.rotation = 0.f;
 
 			//Obj 2
 			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
-			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
+			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
 			sprite3.mode = RenderMode::Line;
 			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
-			CreatePhysics2D(Hinata, ColliderType::Circle2D);
+			CreatePhysics2D(Hinata, ColliderType::Rectangle2D_AABB);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 25.f;
+			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 50.f;
 			collider_hinata.rotation = 0.0f;
 
 			// Initialize Time (Framerate Controller)
@@ -116,26 +116,26 @@ namespace ALEngine
 			f32 constexpr speed = 150.f;
 			f32 constexpr rot = 1.0f;
 
-			/*
+			
 			if (Input::Input::KeyTriggered(KeyCode::Space)) {
 				rigid.velocity.y = 250;
-			}*/
+			}
 
 			//Use Velocity
-			rigid.velocity.x = 0, rigid.velocity.y = 0;
-			if (Input::Input::KeyDown(KeyCode::Down))
+			rigid.velocity.x = 0;
+			if (Input::Input::KeyDown(KeyCode::S))
 			{
 				rigid.velocity.y = -speed;
 			}
-			if (Input::Input::KeyDown(KeyCode::Up))
+			if (Input::Input::KeyDown(KeyCode::W))
 			{
 				rigid.velocity.y = speed;
 			}
-			if (Input::Input::KeyDown(KeyCode::Left))
+			if (Input::Input::KeyDown(KeyCode::A))
 			{
 				rigid.velocity.x = -speed;
 			}
-			if (Input::Input::KeyDown(KeyCode::Right))
+			if (Input::Input::KeyDown(KeyCode::D))
 			{
 				rigid.velocity.x = speed;
 			}
