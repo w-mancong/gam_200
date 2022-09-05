@@ -144,19 +144,3 @@ namespace ManCong
 		}
 	}
 }
-
-//***** Check for whether near or end intersection is in between origin and end of ray *******//	
-//float distanceOfIntersectOne = Vector2::Dot(intersectionOne, directionNormalized);
-//float distanceOfIntersectTwo = Vector2::Dot(intersectionTwo, directionNormalized);
-//float distanceOfOrigin = Vector2::Dot(ray.origin, directionNormalized);
-//float distanceOfEnd = Vector2::Dot(ray.end, directionNormalized);
-////If both intersect points are in between the ray
-/*if ((distanceOfIntersectOne >= distanceOfOrigin && distanceOfIntersectOne <= distanceOfEnd) || (distanceOfIntersectTwo >= distanceOfOrigin && distanceOfIntersectTwo <= distanceOfEnd))
-{
-	std::cout << "bruh" << std::endl;
-	hitOutput.isCollided = true;
-	hitOutput.normal = tXmin < tYmin ? minNormalY : minNormalX;
-	hitOutput.point = intersectionOne;
-
-	return hitOutput;
-}*/

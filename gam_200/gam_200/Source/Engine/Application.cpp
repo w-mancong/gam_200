@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Time.h"
 
+#include <iostream>
+
 namespace ManCong
 {
 	namespace Engine
@@ -21,7 +23,7 @@ namespace ManCong
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 			//Obj 1
-			Transform transform{ Vector2(-100.0f, 150.0f), Vector2(50.f, 50.f), 0.0f };
+			Transform transform{ Vector2(0, 150.0f), Vector2(50.f, 50.f), 0.0f };
 			Noah = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
@@ -29,8 +31,8 @@ namespace ManCong
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			CreateCollider(Noah, ColliderType::Circle2D);
-			CreateRigidbody(Noah);
+			CreatePhysics2D(Noah, ColliderType::Circle2D);
+			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).isEnabled = true;
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
 			collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 25.f;
 			collider_Noah.rotation = 0.f;
@@ -44,7 +46,7 @@ namespace ManCong
 			sprite3.mode = RenderMode::Line;
 			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
-			CreateCollider(Hinata, ColliderType::Circle2D);
+			CreatePhysics2D(Hinata, ColliderType::Circle2D);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
 			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 25.f;
 			collider_hinata.rotation = 0.0f;
@@ -55,20 +57,19 @@ namespace ManCong
 			Time timer;
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
-			{
-				//UpdateStartColliderSystem();
-
+			{	
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
 				f32 constexpr speed = 150.f;
 				f32 constexpr rot = 1.0f;
-		
+
+				/*
 				if (Input::Input::KeyTriggered(KeyCode::Space)) {
 					rigid.velocity.y = 250;
-				}
+				}*/
 
 				//Use Velocity
-				rigid.velocity.x = 0;
+				rigid.velocity.x = 0, rigid.velocity.y = 0;
 				if (Input::Input::KeyDown(KeyCode::Down))
 				{
 					rigid.velocity.y = -speed;
@@ -104,31 +105,31 @@ namespace ManCong
 				//	trans.position.x -= speed;
 				//}
 
-				if(Input::Input::KeyDown(KeyCode::W))
-				{
-					trans.position.y += speed * Time::m_DeltaTime;
-				}
-				if (Input::Input::KeyDown(KeyCode::S))
-				{
-					trans.position.y -= speed * Time::m_DeltaTime;
-				}
-				if (Input::Input::KeyDown(KeyCode::D))
-				{
-					trans.position.x += speed * Time::m_DeltaTime;
-				}
-				if (Input::Input::KeyDown(KeyCode::A))
-				{
-					trans.position.x -= speed * Time::m_DeltaTime;
-				}
-				if (Input::Input::KeyDown(KeyCode::Q))
-				{
-					trans.rotation += rot;
-				}
-				if (Input::Input::KeyDown(KeyCode::E))
-				{
-					trans.rotation -= rot;
-				}
-				
+				//if(Input::Input::KeyDown(KeyCode::W))
+				//{
+				//	trans.position.y += speed * Time::m_DeltaTime;
+				//}
+				//if (Input::Input::KeyDown(KeyCode::S))
+				//{
+				//	trans.position.y -= speed * Time::m_DeltaTime;
+				//}
+				//if (Input::Input::KeyDown(KeyCode::D))
+				//{
+				//	trans.position.x += speed * Time::m_DeltaTime;
+				//}
+				//if (Input::Input::KeyDown(KeyCode::A))
+				//{
+				//	trans.position.x -= speed * Time::m_DeltaTime;
+				//}
+				//if (Input::Input::KeyDown(KeyCode::Q))
+				//{
+				//	trans.rotation += rot;
+				//}
+				//if (Input::Input::KeyDown(KeyCode::E))
+				//{
+				//	trans.rotation -= rot;
+				//}
+				//
 				//Raycast2DCollision({ -25, 25 }, { 25, 25 });
 
 				UpdateRigidbodySystem();

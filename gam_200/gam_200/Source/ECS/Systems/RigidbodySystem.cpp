@@ -45,7 +45,6 @@ namespace ManCong
 
 		void CreateRigidbody(Entity const& entity) {
 			Rigidbody2D rigidbody;
-
 			Coordinator::Instance()->AddComponent(entity, rigidbody);
 		}
 
@@ -53,10 +52,13 @@ namespace ManCong
 			for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-
 				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+				
+				if (!rigid.isEnabled) {
+					continue;
+				}
 
-				rigid.velocity.y -= earthGravity;
+				//rigid.velocity.y -= earthGravity;
 
 				rigidS->UpdateRigidbody(transform, rigid);
 			}

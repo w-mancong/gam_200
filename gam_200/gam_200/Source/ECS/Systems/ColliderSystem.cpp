@@ -20,15 +20,15 @@ namespace ManCong
 		class ColliderSystem : public System
 		{
 			public:
-				bool UpdateCollider(Collider2D & collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two);
+				bool UpdateCollider(Collider2D & collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
 				bool CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				bool CheckCollision_Circle_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				bool CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				bool CheckCollision_Circle_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				bool CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				
-				bool SweptCollision_AABB_ABBB(Collider2D& collider_one, Collider2D const& collider_two, Transform & parent_transform_one, Transform const& parent_transform_two);
-				bool SweptCollision_Circle_Circle(Collider2D& collider_one, Collider2D const& collider_two, Transform& parent_transform_one, Transform const& parent_transform_two);
+				bool SweptCollision_AABB_ABBB(Collider2D& collider_one, Collider2D const& collider_two, Transform & parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
+				bool SweptCollision_Circle_Circle(Collider2D& collider_one, Collider2D const& collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
 
 				Vector2 getMinMax_OOBB_On_Axis(Collider2D box, Vector2 axis, Transform const& parentTransform);
 				bool CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis, Transform const& parent_transform_one, Transform const& parent_transform_two);
@@ -52,6 +52,11 @@ namespace ManCong
 			signature.set(Coordinator::Instance()->GetComponentType<Collider2D>());
 			signature.set(Coordinator::Instance()->GetComponentType<Transform>());
 			Coordinator::Instance()->SetSystemSignature<ColliderSystem>(signature);
+		}
+
+		void CreatePhysics2D(Entity const& entity, ColliderType shape) {
+			CreateCollider(entity, shape);
+			CreateRigidbody(entity);
 		}
 
 		void CreateCollider(Entity const& entity, ColliderType shape)
@@ -96,18 +101,25 @@ namespace ManCong
 			collider.globalUp = rotationTransform * worldYAxis;
 		}
 
-		bool ColliderSystem::UpdateCollider(Collider2D& collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two)
+		bool ColliderSystem::UpdateCollider(Collider2D& collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two)
 		{
 			bool collision = false;
 
 			if ((collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Rectangle2D_AABB)) {
-				collision = cs->SweptCollision_AABB_ABBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
-
-				//collision = CheckCollision_AABB_To_AABB(collider_one, collider_two, parent_transform_one, parent_transform_two);
+				if (rigidbody_one.isEnabled) {
+					collision = SweptCollision_Circle_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two, rigidbody_one, rigidbody_two);
+				}
+				else{
+					collision = CheckCollision_AABB_To_AABB(collider_one, collider_two, parent_transform_one, parent_transform_two);
+				}
 			}
 			else if (collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Circle2D) {
-				//collision = CheckCollision_Circle_To_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two);
-				collision = cs->SweptCollision_Circle_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two);
+				if (rigidbody_one.isEnabled) {
+					collision = SweptCollision_Circle_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two, rigidbody_one, rigidbody_two);
+				}
+				else {
+					collision = CheckCollision_Circle_To_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two);
+				}
 			}
 			else if ((collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Circle2D) ||
 				(collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Rectangle2D_AABB)) {
@@ -128,68 +140,13 @@ namespace ManCong
 				collision = CheckCollision_OOBB_To_OOBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
 
-			if (collision) {
-				//Collision Enter
-				if (!collider_one.isCollidedStay) {
-					collider_one.isColliderTriggered = true;
-					collider_one.isCollidedStay = true;
-				}
-				else if (collider_one.isColliderTriggered){
-					//Collision Stay
-					collider_one.isColliderTriggered = false;
-				}
-				if (!collider_two.isCollidedStay) {
-					collider_two.isColliderTriggered = true;
-					collider_two.isCollidedStay = true;
-				}
-				else if (collider_one.isColliderTriggered)
-				{
-					//Collision Stay
-					collider_two.isColliderTriggered = false;
-				}
-			}
-			//Collision Exit
-			//No Collision
-			else {
-				if (collider_one.isCollidedStay) {
-					collider_one.isCollidedStay = false;
-					collider_one.isColliderExit = true;
-				}
-				else {
-					collider_one.isColliderExit = false;
-				}
-				if (collider_two.isCollidedStay) {
-					collider_two.isCollidedStay = false;
-					collider_two.isColliderExit = true;
-				}
-				else {
-					collider_two.isColliderExit = false;
-				}
-			}
-
-			//if (collider_one.isColliderTriggered) {
-			//	printf("Collision Trigger\n");
-			//}
-			//else if (collider_one.isCollidedStay) {
-			//	printf("Collision Stay\n");
-			//}
-			//else if (collider_one.isColliderExit) {
-			//	printf("Collision Exit\n");
-			//}
-			return true;
+			return collision;
 		}
 
 
 
 		void UpdateStartColliderSystem() {
 			cs->rayList.clear();			
-			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-			{
-				Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-				Transform const& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-
-				Collider.frameStartGlobalPosition = Collider.localPosition + ParentTransform.position;
-			}
 		}
 
 		void UpdateColliderSystem() {
@@ -230,6 +187,8 @@ namespace ManCong
 			{
 				Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+
 
 				for (auto jt = cs->mEntities.begin(); jt != cs->mEntities.end(); ++jt) {
 					if (jt == it) {
@@ -238,35 +197,89 @@ namespace ManCong
 
 					Collider2D& twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
 					Transform const& twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
+					Rigidbody2D& twoRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt);
 
-					collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform);
+					collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform, oneRigidbody, twoRigidbody);
+
+					/// <summary>
+					///	Collision Condition Check
+					/// </summary>
+					if (collision) {
+						//Collision Enter
+						if (!oneCollider.isCollidedStay) {
+							oneCollider.isColliderTriggered = true;
+							oneCollider.isCollidedStay = true;
+						}
+						else if (oneCollider.isColliderTriggered) {
+							//Collision Stay
+							oneCollider.isColliderTriggered = false;
+						}
+						if (!twoCollider.isCollidedStay) {
+							twoCollider.isColliderTriggered = true;
+							twoCollider.isCollidedStay = true;
+						}
+						else if (oneCollider.isColliderTriggered)
+						{
+							//Collision Stay
+							twoCollider.isColliderTriggered = false;
+						}
+					}
+					//Collision Exit
+					//No Collision
+					else {
+						if (oneCollider.isCollidedStay) {
+							oneCollider.isCollidedStay = false;
+							oneCollider.isColliderExit = true;
+						}
+						else {
+							oneCollider.isColliderExit = false;
+						}
+						if (twoCollider.isCollidedStay) {
+							twoCollider.isCollidedStay = false;
+							twoCollider.isColliderExit = true;
+						}
+						else {
+							twoCollider.isColliderExit = false;
+						}
+					}
+					
+					//Collision output updates
+					if (oneCollider.isColliderTriggered) {
+						printf("Collision Trigger\n");
+					}
+					else if (oneCollider.isCollidedStay) {
+						printf("Collision Stay\n");
+					}
+					else if (oneCollider.isColliderExit) {
+						printf("Collision Exit\n");
+					}
 				}
 			}
 			//***************************** Alternative ************************//
 
-			//**************** Raycast for any collider ************//
-			bool raycastHit = false;
-			//Run through raycasts
-			for (int i = 0; i < cs->rayList.size(); i++){
-				for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-				{
-					auto jt = ++it; //jt is next iteration
-					--it;			//move it back
+			////**************** Raycast for any collider ************//
+			//bool raycastHit = false;
+			////Run through raycasts
+			//for (int i = 0; i < cs->rayList.size(); i++){
+			//	for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
+			//	{
+			//		auto jt = ++it; //jt is next iteration
+			//		--it;			//move it back
 
-					Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-					Transform const& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+			//		Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+			//		Transform const& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 
-					if (oneCollider.colliderType == ColliderType::Rectangle2D_AABB) {
-						raycastHit = Physics::Raycast_AABB(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
-					}
-					else if (oneCollider.colliderType == ColliderType::Circle2D) {
-						raycastHit = Physics::Raycast_Circle(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
-					}
-				}
-				//if (raycastHit) {
-				//	printf("raycast hit ");
-				//}
-			}
+			//		if (oneCollider.colliderType == ColliderType::Rectangle2D_AABB) {
+			//			raycastHit = Physics::Raycast_AABB(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
+			//		}
+			//		else if (oneCollider.colliderType == ColliderType::Circle2D) {
+			//			raycastHit = Physics::Raycast_Circle(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
+			//		}
+			//	}
+			//	//if (raycastHit) {
+			//	//	printf("raycast hit ");
+			//	//}
+			//}
 			//**************** Raycast for any collider ************//
 
 			//**************** Run through all colliders again ************//
@@ -334,7 +347,6 @@ namespace ManCong
 			{
 				return true;
 			}
-
 			return false;
 		}
 
@@ -453,18 +465,18 @@ namespace ManCong
 		
 
 		using Physics::RaycastHit2D;
-		bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other) {
-			if (collider_moving.velocity().Magnitude() == 0) {
+		bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
+			if (rigidbody_moving.velocity.Magnitude() == 0) {
 				return CheckCollision_AABB_To_AABB(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
 			}
-			Vector2 movingGlobalPosition = collider_moving.frameStartGlobalPosition;
+			Vector2 movingGlobalPosition = collider_moving.localPosition + parent_transform_moving.position;
 			Vector2 otherGlobalPosition = collider_other.localPosition + parent_transform_other.position;
 
 			Collider2D tempBox = collider_other;			
 			tempBox.scale[0] += collider_moving.scale[0];
 			tempBox.scale[1] += collider_moving.scale[1];
 
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + collider_moving.velocity() };
+			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.velocity };
 			RaycastHit2D rayHit = Physics::Raycast_AABB(ray, tempBox, parent_transform_other);
 			
 			if (rayHit.isCollided)
@@ -476,26 +488,24 @@ namespace ManCong
 			return false;
 		}
 
-		bool ColliderSystem::SweptCollision_Circle_Circle(Collider2D& collider_moving, Collider2D const& collider_other, Transform& parent_transform_moving, Transform const& parent_transform_other) {
-			if (collider_moving.velocity().Magnitude() == 0) {
-				return CheckCollision_Circle_To_Circle(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
+		bool ColliderSystem::SweptCollision_Circle_Circle(Collider2D& collider_moving, Collider2D const& collider_other, Transform& parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbodyother) {
+			if (rigidbody_moving.velocity.Magnitude() == 0) {
+				return CheckCollision_Circle_To_Circle(collider_moving, collider_other, parent_transform_moving, parent_transform_other);
 			}
 
-			Vector2 movingGlobalPosition = collider_moving.frameStartGlobalPosition;
+			Vector2 movingGlobalPosition = collider_moving.localPosition + parent_transform_moving.position;
 			Vector2 otherGlobalPosition = collider_other.localPosition + parent_transform_other.position;
 
 			Collider2D tempCircle = collider_other;
 			tempCircle.scale[0] += collider_moving.scale[0];
 
-			Vector2 dir = { 0,-1000.f };
-			//Ray2D ray = { movingGlobalPosition, movingGlobalPosition + dir };
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + collider_moving.velocity() };
+			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.velocity };
 			RaycastHit2D rayHit = Physics::Raycast_Circle(ray, tempCircle, parent_transform_other);
 
 			if (rayHit.isCollided)
 			{
-				Vector2 x_direction = { collider_moving.velocity().x, 0 };
-				Vector2 y_direction = { 0, collider_moving.velocity().y };
+				Vector2 x_direction = { rigidbody_moving.velocity.x, 0 };
+				Vector2 y_direction = { 0, rigidbody_moving.velocity.y };
 
 				Vector2 direction{ 0,0 };
 
@@ -509,7 +519,6 @@ namespace ManCong
 				collider_moving.frameEndGlobalPosition = rayHit.point + direction;
 				return true;
 			}
-
 			return false;
 		}
 

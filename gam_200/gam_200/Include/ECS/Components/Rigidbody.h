@@ -23,7 +23,8 @@ namespace ManCong
 			{
 			public:
 				Math::Vector2 velocity{ 0.f, 0.f };
-				bool hasGravity = true;
+				bool hasGravity{ true };
+				bool isEnabled{ false };
 			};
 		}
 	}

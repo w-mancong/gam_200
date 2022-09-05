@@ -37,6 +37,12 @@ namespace ManCong
 			\brief
 			Adds Collider component to the entity
 		***********************************************************************************/
+		void CreatePhysics2D(Entity const& entity, ColliderType shape = ColliderType::Rectangle2D_AABB);
+
+		/*!*********************************************************************************
+			\brief
+			Adds Collider component to the entity
+		***********************************************************************************/
 		void CreateCollider(Entity const& entity, ColliderType shape = ColliderType::Rectangle2D_AABB);
 
 		/*!*********************************************************************************
