@@ -85,12 +85,26 @@ namespace ManCong
 			return res;
 		}
 
+		Matrix4x4 Matrix4x4::Ortho(f32 left, f32 right, f32 bottom, f32 top)
+		{
+			Matrix4x4 res{ 1.0f };
+			res(0, 0) =  2.0f / (right - left);
+			res(1, 1) =  2.0f / (top - bottom);
+			res(2, 2) = -1.0f;
+			res(3, 0) = -(right + left) / (right - left);
+			res(3, 1) = -(top + bottom) / (top - bottom);
+			return res;
+		}
+
 		Matrix4x4 Matrix4x4::Ortho(f32 left, f32 right, f32 bottom, f32 top, f32 zNear, f32 zFar)
 		{
-			Matrix4x4 res{	Vector4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),
-							Vector4(0.0f, 2.0f / (top - bottom), 0.0f, 0.0f),
-							Vector4(0.0f, 0.0f, -2.0f / (zFar - zNear), 0.0f),
-							Vector4(-(right + left) / (right - left), -(top + bottom) / (top - bottom), -( zFar + zNear) / (zFar - zNear), 1.0f) };
+			Matrix4x4 res{ 1.0f };
+			res(0, 0) =  2.0f / (right - left);
+			res(1, 1) =  2.0f / (top - bottom);
+			res(2, 2) = -2.0f / (zFar - zNear);
+			res(3, 0) = -(right + left) / (right - left);
+			res(3, 1) = -(top + bottom) / (top - bottom);
+			res(3, 2) = -(zFar + zNear) / (zFar - zNear);
 			return res;
 		}
 
