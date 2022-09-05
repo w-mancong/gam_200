@@ -21,6 +21,7 @@
 #include <fstream>
 #include <chrono>
 #include <iterator>
+#include <scoped_allocator>
 
 // Data structures
 #include <string>
