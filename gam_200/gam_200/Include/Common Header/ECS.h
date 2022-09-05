@@ -21,6 +21,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 // -------------- Components --------------------
 #include "ECS/Components/Sprite.h"
 #include "ECS/Components/Transform.h"
+#include "ECS/Components/Text.h"
 
 // ----------------- System ---------------------
 #include "ECS/Systems/RenderSystem.h"
