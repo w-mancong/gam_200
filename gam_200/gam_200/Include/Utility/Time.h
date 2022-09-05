@@ -54,8 +54,9 @@ namespace ManCong
 			static void SetTargetFPS(s32 _target);
 
 		public:
-			static f32 m_DeltaTime;		// Delta Time
-			static f32 m_FPS;			// Current FPS
+			static f32 m_DeltaTime;			// Delta Time
+			static const f32 m_FixedDeltaTime;	// Fixed Delta Time
+			static f32 m_FPS;				// Current FPS
 
 		private:
 			/*!*********************************************************************************

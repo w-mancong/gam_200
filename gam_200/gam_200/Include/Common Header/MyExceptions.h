@@ -10,5 +10,6 @@ brief:	This file contains all the relevant Exceptions header files to be include
 #define MY_EXCEPTIONS_H
 
 #include "Exceptions/GLDebug.h"
+#include "Exceptions/Logger.h"
 
 #endif
