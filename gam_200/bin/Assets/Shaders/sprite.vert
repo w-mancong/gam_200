@@ -5,7 +5,6 @@ layout (location = 1) in vec2 aTexCoord;
 layout (location = 0) out vec2 vTexCoord;
 
 uniform mat4 model, view, proj;
-uniform vec2 *offsets;
 
 void main()
 {

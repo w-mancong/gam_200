@@ -1,7 +1,7 @@
 #ifndef	ECS_SYSTEM_H
 #define ECS_SYSTEM_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

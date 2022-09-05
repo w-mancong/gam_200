@@ -1,7 +1,7 @@
 #ifndef	ENTITY_MANAGER_H
 #define ENTITY_MANAGER_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

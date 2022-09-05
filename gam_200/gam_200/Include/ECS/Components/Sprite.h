@@ -12,7 +12,7 @@ brief:	This file contains the sprite component
 #include "Utility/Type.h"
 #include "ECS/Components/RenderData.h"
 #include "ECS/Components/Color.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

@@ -10,7 +10,7 @@ namespace
 	u64 RECTANGLE_POSITION_SIZE_OFFSET{ 0 };
 }
 
-namespace ManCong
+namespace ALEngine
 {
 	using namespace Math; using namespace Memory;
 	namespace Engine

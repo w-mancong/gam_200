@@ -9,7 +9,7 @@ brief:	This file contains function that returns a randomized number between two 
 #ifndef	RANDOM_H
 #define RANDOM_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Random
 	{

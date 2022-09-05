@@ -9,7 +9,7 @@ brief:	This file contain function declaration for controlling the console applic
 #ifndef	CONSOLE_H
 #define CONSOLE_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Console
 	{

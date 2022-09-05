@@ -9,7 +9,7 @@ brief:	This file contains the color component
 #ifndef	COLOR_H
 #define COLOR_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

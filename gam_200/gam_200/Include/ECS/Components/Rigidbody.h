@@ -9,7 +9,7 @@ brief:	This file contains the function declarations for Rigidbody.h
 
 #ifndef	RIGIDBODY_H
 #define RIGIDBODY_H
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

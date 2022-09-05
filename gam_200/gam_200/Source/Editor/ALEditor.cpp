@@ -1,6 +1,6 @@
 #include "pch.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Engine
 	{
@@ -50,7 +50,7 @@ namespace ManCong
 			ImGui::NewFrame();
 
 			// Enable DockSpace
-			Docking();
+			//Docking();
 
 			Update();
 		}

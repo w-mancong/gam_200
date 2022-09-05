@@ -18,7 +18,7 @@ brief:		This file contain a static class declaration to calculating the dt, fps
 
 static constexpr s32 MAX_SAMPLES = 100;
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Utility
 	{

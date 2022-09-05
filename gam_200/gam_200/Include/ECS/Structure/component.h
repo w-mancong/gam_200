@@ -11,7 +11,7 @@ brief:	This file contains the declarations for a component
 
 #include <bitset>
 #include "Utility/Type.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

@@ -3,7 +3,7 @@
 #ifndef	FONTS_H
 #define FONTS_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Graphics
 	{

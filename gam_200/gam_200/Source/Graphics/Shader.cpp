@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Graphics/Shader.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Graphics
 	{

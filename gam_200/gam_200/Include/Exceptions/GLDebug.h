@@ -9,7 +9,7 @@ brief:	This file contains static class to log debugging messages
 #ifndef	GLDEBUG_H
 #define GLDEBUG_H
 
-namespace ManCong::Exceptions
+namespace ALEngine::Exceptions
 {
 	class DebugLog
 	{

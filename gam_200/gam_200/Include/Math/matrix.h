@@ -10,7 +10,7 @@ brief:	This file contain function declarations & definition for a templated matr
 #define MATRIX_H
 
 #include <iostream>
-namespace ManCong
+namespace ALEngine
 {
     namespace Exceptions
     {

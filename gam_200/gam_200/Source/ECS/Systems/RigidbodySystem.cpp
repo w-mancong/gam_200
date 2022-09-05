@@ -10,7 +10,7 @@ brief:	This file contains the function definition for RigidbodySystem.h
 #include "pch.h"
 #include "Engine/Physics2D.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

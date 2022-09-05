@@ -11,7 +11,7 @@ brief:	This file contain class definition for representing a 2D vector
 
 #include <iostream>
 #include "Utility/Type.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace Math
 	{

@@ -9,7 +9,7 @@ brief:	This file contains function declaration that controls the flow of the pro
 #ifndef	APPLICATION_H
 #define APPLICATION_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Engine
 	{

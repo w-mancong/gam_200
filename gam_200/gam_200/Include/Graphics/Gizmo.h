@@ -3,7 +3,7 @@
 #ifndef	GIZMO_H
 #define GIZMO_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

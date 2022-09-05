@@ -14,6 +14,6 @@ brief:	This file contains all the relevant Utility header files to be included i
 #include "Utility/Type.h"
 #include "Utility/Time.h"
 
-using ManCong::Utility::Time;
+using ALEngine::Utility::Time;
 
 #endif

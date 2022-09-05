@@ -11,7 +11,7 @@ brief:	Memory Arena. This class handles memory allocation and deallocation by ma
 #define MEMORY_H
 
 #include "Utility/Type.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace Memory
 	{

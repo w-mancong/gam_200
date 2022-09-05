@@ -9,7 +9,7 @@ brief:	This file contains the transform component
 #ifndef	TRANSFORM_H
 #define TRANSFORM_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

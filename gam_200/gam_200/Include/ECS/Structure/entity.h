@@ -2,7 +2,7 @@
 #define ENTITIY_H
 
 #include "Utility/Type.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

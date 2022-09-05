@@ -9,7 +9,7 @@ brief:	This file contains function definitions for ComponentArray
 #ifndef	COMPONENT_ARRAY_H
 #define COMPONENT_ARRAY_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

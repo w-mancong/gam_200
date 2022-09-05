@@ -9,7 +9,7 @@ brief:	This file contain function declaration for Q_rsqrt
 #ifndef	INVERSE_SQRT_H
 #define INVERSE_SQRT_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Math
 	{

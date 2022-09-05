@@ -13,7 +13,7 @@ brief:		Contains a logger for the project with the use of spdlog.
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
-namespace ManCong::Exceptions
+namespace ALEngine::Exceptions
 {
 	class Logger
 	{

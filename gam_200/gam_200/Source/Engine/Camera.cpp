@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Engine/Camera.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Engine
 	{

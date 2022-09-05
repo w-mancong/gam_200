@@ -1,6 +1,6 @@
 #include "pch.h"
 
-void ManCong::Exceptions::Logger::Init()
+void ALEngine::Exceptions::Logger::Init()
 {
 	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 	// Set the patter for printing to console
@@ -16,7 +16,7 @@ void ManCong::Exceptions::Logger::Init()
 	spdlog::register_logger(logger);
 }
 
-void ManCong::Exceptions::Logger::Exit()
+void ALEngine::Exceptions::Logger::Exit()
 {
 	// Shutdown spdlog
 	spdlog::shutdown();

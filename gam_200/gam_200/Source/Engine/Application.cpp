@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Engine
 	{
@@ -31,7 +31,7 @@ namespace ManCong
 			sprite2.mode = RenderMode::Line;
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 
-			//Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
+			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
 			CreatePhysics2D(Noah, ColliderType::Circle2D);
 			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).isEnabled = true;
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
@@ -95,6 +95,7 @@ namespace ManCong
 		{
 			// Shutdown imgui
 			ImGui_ImplGlfw_Shutdown();
+			ImGui_ImplOpenGL3_Shutdown();
 			// Destroy imgui context
 			ImGui::DestroyContext();
 			glfwTerminate();	// clean/delete all GLFW resources
@@ -110,84 +111,84 @@ namespace ManCong
 		
 		void Engine::Update(void)
 		{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
-				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
-				f32 constexpr speed = 150.f;
-				f32 constexpr rot = 1.0f;
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
+			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
+			f32 constexpr speed = 150.f;
+			f32 constexpr rot = 1.0f;
 
-				/*
-				if (Input::Input::KeyTriggered(KeyCode::Space)) {
-					rigid.velocity.y = 250;
-				}*/
+			/*
+			if (Input::Input::KeyTriggered(KeyCode::Space)) {
+				rigid.velocity.y = 250;
+			}*/
 
-				//Use Velocity
-				rigid.velocity.x = 0, rigid.velocity.y = 0;
-				if (Input::Input::KeyDown(KeyCode::Down))
-				{
-					rigid.velocity.y = -speed;
-				}
-				if (Input::Input::KeyDown(KeyCode::Up))
-				{
-					rigid.velocity.y = speed;
-				}
-				if (Input::Input::KeyDown(KeyCode::Left))
-				{
-					rigid.velocity.x = -speed;
-				}
-				if (Input::Input::KeyDown(KeyCode::Right))
-				{
-					rigid.velocity.x = speed;
-				}
+			//Use Velocity
+			rigid.velocity.x = 0, rigid.velocity.y = 0;
+			if (Input::Input::KeyDown(KeyCode::Down))
+			{
+				rigid.velocity.y = -speed;
+			}
+			if (Input::Input::KeyDown(KeyCode::Up))
+			{
+				rigid.velocity.y = speed;
+			}
+			if (Input::Input::KeyDown(KeyCode::Left))
+			{
+				rigid.velocity.x = -speed;
+			}
+			if (Input::Input::KeyDown(KeyCode::Right))
+			{
+				rigid.velocity.x = speed;
+			}
 
-				//Manual Position
-				//if (Input::Input::KeyTriggered(KeyCode::W))
-				//{
-				//	trans.position.y += speed;
-				//}
-				//if (Input::Input::KeyTriggered(KeyCode::S))
-				//{
-				//	trans.position.y -= speed * Time::m_DeltaTime;
-				//}
-				//if (Input::Input::KeyTriggered(KeyCode::D))
-				//{
-				//	trans.position.x += speed;
-				//}
-				//if (Input::Input::KeyTriggered(KeyCode::A))
-				//{
-				//	trans.position.x -= speed;
-				//}
+			//Manual Position
+			//if (Input::Input::KeyTriggered(KeyCode::W))
+			//{
+			//	trans.position.y += speed;
+			//}
+			//if (Input::Input::KeyTriggered(KeyCode::S))
+			//{
+			//	trans.position.y -= speed * Time::m_DeltaTime;
+			//}
+			//if (Input::Input::KeyTriggered(KeyCode::D))
+			//{
+			//	trans.position.x += speed;
+			//}
+			//if (Input::Input::KeyTriggered(KeyCode::A))
+			//{
+			//	trans.position.x -= speed;
+			//}
 
-				//if(Input::Input::KeyDown(KeyCode::W))
-				//{
-				//	trans.position.y += speed * Time::m_DeltaTime;
-				//}
-				//if (Input::Input::KeyDown(KeyCode::S))
-				//{
-				//	trans.position.y -= speed * Time::m_DeltaTime;
-				//}
-				//if (Input::Input::KeyDown(KeyCode::D))
-				//{
-				//	trans.position.x += speed * Time::m_DeltaTime;
-				//}
-				//if (Input::Input::KeyDown(KeyCode::A))
-				//{
-				//	trans.position.x -= speed * Time::m_DeltaTime;
-				//}
-				//if (Input::Input::KeyDown(KeyCode::Q))
-				//{
-				//	trans.rotation += rot;
-				//}
-				//if (Input::Input::KeyDown(KeyCode::E))
-				//{
-				//	trans.rotation -= rot;
-				//}		
+			//if(Input::Input::KeyDown(KeyCode::W))
+			//{
+			//	trans.position.y += speed * Time::m_DeltaTime;
+			//}
+			//if (Input::Input::KeyDown(KeyCode::S))
+			//{
+			//	trans.position.y -= speed * Time::m_DeltaTime;
+			//}
+			//if (Input::Input::KeyDown(KeyCode::D))
+			//{
+			//	trans.position.x += speed * Time::m_DeltaTime;
+			//}
+			//if (Input::Input::KeyDown(KeyCode::A))
+			//{
+			//	trans.position.x -= speed * Time::m_DeltaTime;
+			//}
+			//if (Input::Input::KeyDown(KeyCode::Q))
+			//{
+			//	trans.rotation += rot;
+			//}
+			//if (Input::Input::KeyDown(KeyCode::E))
+			//{
+			//	trans.rotation -= rot;
+			//}		
 		}
 		
 		void Engine::FixedUpdate(void)
 		{
-        //Raycast2DCollision({ -25, 25 }, { 25, 25 });
-        UpdateRigidbodySystem();
-				UpdateColliderSystem();
+			//Raycast2DCollision({ -25, 25 }, { 25, 25 });
+			UpdateRigidbodySystem();
+			UpdateColliderSystem();
 		}
 	}
 }

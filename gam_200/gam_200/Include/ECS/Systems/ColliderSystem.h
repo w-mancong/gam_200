@@ -9,7 +9,7 @@ brief:	This file contains the function declarations for ColliderSystem.h
 #ifndef	COLLIDER_SYSTEM_H
 #define COLLIDER_SYSTEM_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

@@ -1,7 +1,7 @@
 #ifndef TEXT_Hf
 #define TEXT_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

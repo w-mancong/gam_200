@@ -9,7 +9,7 @@ brief:	This file contains the function declarations for RenderSystem
 #ifndef	RENDER_SYSTEM_H
 #define RENDER_SYSTEM_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

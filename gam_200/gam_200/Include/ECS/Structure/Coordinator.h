@@ -1,7 +1,7 @@
 #ifndef	COORDINATOR_H
 #define COORDINATOR_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

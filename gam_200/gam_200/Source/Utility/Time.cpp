@@ -12,7 +12,7 @@ brief:		This file contains a class "Time" that acts as the framerate controller.
 #include "Utility/Time.h"
 #include "pch.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Utility
 	{

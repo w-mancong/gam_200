@@ -8,7 +8,7 @@ brief:	Template class for creating a Singleton
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Templates
 	{

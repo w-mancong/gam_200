@@ -9,7 +9,7 @@ brief:	This file contain static class declaration for basic key inputs from user
 #ifndef	INPUT_SYSTEM_H
 #define INPUT_SYSTEM_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace UserInput
 	{

@@ -2,7 +2,7 @@
 
 namespace
 {
-	u64 const totalKeys = static_cast<u64>(ManCong::UserInput::KeyCode::TotalKeys);
+	u64 const totalKeys = static_cast<u64>(ALEngine::UserInput::KeyCode::TotalKeys);
 	bool keyState[totalKeys] = { false }, keyDownState[totalKeys] = { false }, keyReleasedState[totalKeys] = { false }, keyTriggeredState[totalKeys] = { false };
 	bool CheckInput(u64 key)
 	{
@@ -10,7 +10,7 @@ namespace
 	}
 }
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace UserInput
 	{

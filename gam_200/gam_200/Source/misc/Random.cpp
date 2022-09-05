@@ -1,6 +1,6 @@
 #include "pch.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Random
 	{

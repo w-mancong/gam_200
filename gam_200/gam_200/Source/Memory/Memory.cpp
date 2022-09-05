@@ -10,7 +10,7 @@ brief:	Memory Arena. This class handles memory allocation and deallocation by ma
 #include "pch.h"
 #include "Engine/Manager/MeshBuilder.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Memory
 	{

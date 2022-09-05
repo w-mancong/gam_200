@@ -17,7 +17,7 @@ brief:	This file contain all the common math header files and function declarati
 #include "Math/Matrix3x3.h"
 #include "Math/Matrix4x4.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Math
 	{

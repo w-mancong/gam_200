@@ -10,7 +10,7 @@ brief:	This file contain useful functions declarations to help ease with the pro
 #define HELPER_FUNCTIONS_H
 
 #include "Utility/Type.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace Utility
 	{

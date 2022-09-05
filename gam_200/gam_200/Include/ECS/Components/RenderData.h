@@ -9,7 +9,7 @@ brief:	This file contains the different type of rendering available
 #ifndef	RENDER_DATA_H
 #define RENDER_DATA_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace ECS
 	{

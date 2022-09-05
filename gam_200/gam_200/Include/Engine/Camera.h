@@ -12,7 +12,7 @@ brief:	This file contains class declaration for camera
 #include "Utility/Type.h"
 #include "Math/Vector3.h"
 #include "Math/Matrix4x4.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace Engine
 	{

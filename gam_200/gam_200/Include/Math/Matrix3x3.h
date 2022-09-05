@@ -11,7 +11,7 @@ brief:	This file contain a 3x3 Matrix that is inherited from a base matrix class
 #define MATRIX_3X3_H
 
 #include "matrix.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace Math
 	{

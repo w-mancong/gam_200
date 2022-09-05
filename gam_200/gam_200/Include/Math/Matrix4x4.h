@@ -11,7 +11,7 @@ brief:	This file contain a 4x4 Matrix that is inherited from a base matrix class
 #define MATRIX_4X4_H
 
 #include "matrix.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace Math
 	{

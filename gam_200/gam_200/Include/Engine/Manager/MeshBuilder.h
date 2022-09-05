@@ -11,7 +11,7 @@ brief:	This file contains the function declaration for MeshBuilder.
 #ifndef	MESH_BUILDER_H
 #define MESH_BUILDER_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Engine
 	{

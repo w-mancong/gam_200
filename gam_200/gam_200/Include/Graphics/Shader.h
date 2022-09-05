@@ -11,7 +11,7 @@ brief:	This file contain class declaration for loading and changing uniform valu
 
 #include "Utility/Type.h"
 #include "Math/Matrix4x4.h"
-namespace ManCong
+namespace ALEngine
 {
 	namespace Graphics
 	{

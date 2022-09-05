@@ -10,7 +10,7 @@ brief:	This file contain an enum class that has that contains all the accepted k
 #ifndef	INPUT_KEYS_H
 #define INPUT_KEYS_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace UserInput
 	{

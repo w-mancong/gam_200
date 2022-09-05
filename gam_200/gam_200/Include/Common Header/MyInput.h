@@ -12,6 +12,6 @@ brief:	This file contains all the relevant Input header files to be included in 
 #include "Input/InputKeys.h"
 #include "Input/Input.h"
 
-using namespace ManCong::UserInput;
+using namespace ALEngine::UserInput;
 
 #endif

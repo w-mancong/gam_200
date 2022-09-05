@@ -9,7 +9,7 @@ brief:	This file contain static class OpenGLWindow that controls the GLFW window
 #ifndef	GRAPHICS_WINDOW_H
 #define GRAPHICS_WINDOW_H
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Graphics
 	{

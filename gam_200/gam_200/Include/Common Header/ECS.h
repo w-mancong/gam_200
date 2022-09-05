@@ -30,6 +30,6 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Systems/ColliderSystem.h"
 #include "ECS/Systems/RigidbodySystem.h"
 
-using ManCong::ECS::Coordinator;
-using namespace ManCong::ECS::Component;
+using ALEngine::ECS::Coordinator;
+using namespace ALEngine::ECS::Component;
 #endif

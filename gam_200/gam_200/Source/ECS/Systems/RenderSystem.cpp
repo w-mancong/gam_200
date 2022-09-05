@@ -5,7 +5,7 @@
 #include "Graphics/Fonts.h"
 #include "Graphics/Gizmo.h"
 
-namespace ManCong
+namespace ALEngine
 {
 	namespace Graphics
 	{
