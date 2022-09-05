@@ -1,3 +1,3 @@
-[submodule "gam_200/Extern/include/spdlog"]
-	path = gam_200/Extern/include/spdlog
+[submodule "ALEngine/Extern/include/spdlog"]
+	path = ALEngine/Extern/include/spdlog
 	url = https://github.com/gabime/spdlog
