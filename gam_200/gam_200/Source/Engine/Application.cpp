@@ -38,6 +38,9 @@ namespace ManCong
 
 			// Initialize Time (Framerate Controller)
 			Time::Init();
+
+			// Init ImGui
+			ALEditor::Instance()->Init();
 		}
 
 		void Application::Update(void)
@@ -50,6 +53,9 @@ namespace ManCong
 			{				
 				// Get Current Time
 				Time::ClockTimeNow();
+
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
 
 				// Normal Update
 				Engine::Update();
@@ -66,13 +72,15 @@ namespace ManCong
 
 				// Wait for next frame
 				Time::WaitUntil();
-
-				std::cout << Time::m_FPS << std::endl;
 			}
 		}
 
 		void Application::Exit(void)
 		{
+			// Shutdown imgui
+			ImGui_ImplGlfw_Shutdown();
+			// Destroy imgui context
+			ImGui::DestroyContext();
 			glfwTerminate();	// clean/delete all GLFW resources
 		}
 

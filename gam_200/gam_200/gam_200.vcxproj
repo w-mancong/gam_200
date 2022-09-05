@@ -65,7 +65,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\gam_200\Include\Editor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -102,6 +102,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Editor\ALEditor.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_impl_glfw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_impl_opengl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\imgui\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Source\Exceptions\Logger.cpp" />
     <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp" />
     <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
@@ -149,6 +171,24 @@
     <ClInclude Include="Include\ECS\Components\RenderData.h" />
     <ClInclude Include="Include\ECS\Structure\EcsSystem.h" />
     <ClInclude Include="Include\ECS\Systems\RenderSystem.h" />
+    <ClInclude Include="Include\Editor\ALEditor.h" />
+    <ClInclude Include="Include\Editor\imconfig.h" />
+    <ClInclude Include="Include\Editor\imgui.h" />
+    <ClInclude Include="Include\Editor\imgui\imconfig.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_internal.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_textedit.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_truetype.h" />
+    <ClInclude Include="Include\Editor\imgui_impl_glfw.h" />
+    <ClInclude Include="Include\Editor\imgui_impl_opengl3.h" />
+    <ClInclude Include="Include\Editor\imgui_internal.h" />
+    <ClInclude Include="Include\Editor\imstb_rectpack.h" />
+    <ClInclude Include="Include\Editor\imstb_textedit.h" />
+    <ClInclude Include="Include\Editor\imstb_truetype.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
     <ClInclude Include="Include\Exceptions\GLDebug.h" />
