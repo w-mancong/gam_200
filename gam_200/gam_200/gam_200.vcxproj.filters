@@ -96,6 +96,9 @@
     <ClCompile Include="Source\Exceptions\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -243,6 +246,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Exceptions\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

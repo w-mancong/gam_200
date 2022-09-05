@@ -21,6 +21,7 @@
 #include <fstream>
 #include <chrono>
 #include <iterator>
+#include <filesystem>
 
 // Data structures
 #include <string>
@@ -54,5 +55,9 @@
 #include "Common Header/MyExceptions.h"
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
+
+
+// Asset Manager
+#include "Asset Manager/ContentBrowserPanel.h"
 
 #endif
