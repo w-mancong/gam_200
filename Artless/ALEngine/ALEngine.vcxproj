@@ -162,6 +162,7 @@
     <ClCompile Include="Source\Utility\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Common Header\MyEditor.h" />
     <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />

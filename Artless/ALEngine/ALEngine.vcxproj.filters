@@ -356,5 +356,8 @@
     <ClInclude Include="Include\Graphics\Gizmo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Common Header\MyEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
