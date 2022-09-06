@@ -26,6 +26,7 @@ namespace ALEngine
 			// Constructor
 			ALEditor(void) {}
 			virtual ~ALEditor(void) = default;
+
 			void Docking();
 
 			friend class Templates::Singleton<ALEditor>;
