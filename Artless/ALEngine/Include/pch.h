@@ -62,6 +62,6 @@
 #include "Common Header/MyExceptions.h"
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
-#include "Editor/ALEditor.h"
+#include "Common Header/MyEditor.h"
 
 #endif
