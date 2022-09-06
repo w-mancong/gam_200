@@ -50,7 +50,7 @@ namespace ALEngine
 			ImGui::NewFrame();
 
 			// Enable DockSpace
-			//Docking();
+			Docking();
 
 			Update();
 		}
