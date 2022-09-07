@@ -51,6 +51,21 @@ namespace ALEngine
 				linesContainer.push_back(std::pair<Math::Vector2, Math::Vector2>(pt1, pt2));
 		}
 
+		void Gizmo::RenderCircle(Math::Vector2 center, f32 radius)
+		{
+			f32 step = 2.f * 3.141592f / 36.f; 
+			Math::Vector2 first, second;
+			for (f32 theta{}; theta < 6.f; theta += step)
+			{
+				first.x = center.x + radius * cos(theta);
+				first.y = center.y + radius * sin(theta);
+				theta += step;
+				second.x = center.x + radius * cos(theta);
+				second.y = center.y + radius * sin(theta);
+				RenderLine(first, second);
+			}
+		}
+
 		void Gizmo::RenderAllLines()
 		{
 			for (std::pair<Math::Vector2, Math::Vector2>& pair : linesContainer)
