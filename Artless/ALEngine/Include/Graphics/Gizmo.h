@@ -12,13 +12,14 @@ namespace ALEngine
 
 		public:
 			static std::vector<std::pair<Math::Vector2, Math::Vector2>> linesContainer;
-			static f32 GizmoLineWidith; // thickness of line
-			static Graphics::Shader GizmolineShader;
+			static f32 gizmoLineWidith; // thickness of line
+			static Graphics::Shader gizmolineShader;
+			static bool gizmoToggle;
 
 			static void GizmoInit();
 			static void RenderLine(Math::Vector2 pt1, Math::Vector2 pt2);
 			static void RenderAllLines();
-			static void SetGizmoLineWidth(f32 width) { GizmoLineWidith = width; }
+			static void SetGizmoLineWidth(f32 width) { gizmoLineWidith = width; }
 		};
 	}
 }

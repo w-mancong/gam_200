@@ -9,9 +9,10 @@ namespace ALEngine
 	{
 		// declare static class member variables
 		u32 Gizmo::GizmoVaoId, Gizmo::GizmoVboId;
-		Graphics::Shader Gizmo::GizmolineShader;
-		f32 Gizmo::GizmoLineWidith;
+		Graphics::Shader Gizmo::gizmolineShader;
+		f32 Gizmo::gizmoLineWidith;
 		std::vector<std::pair<Math::Vector2, Math::Vector2>> Gizmo::linesContainer;
+		bool Gizmo::gizmoToggle;
 
 		// this function makes the sample line
 		void Gizmo::GizmoInit()
@@ -23,14 +24,15 @@ namespace ALEngine
 			};
 
 			// initialize line shader
-			GizmolineShader = Graphics::Shader{ "Assets/Shaders/gizmo.vert", "Assets/Shaders/gizmo.frag" };
+			gizmolineShader = Graphics::Shader{ "Assets/Shaders/gizmo.vert", "Assets/Shaders/gizmo.frag" };
 			Engine::Camera camera{ Math::Vector3(0.0f, 0.0f, 725.0f) };
-			GizmolineShader.use();
-			GizmolineShader.Set("view", camera.ViewMatrix());
-			GizmolineShader.Set("proj", camera.ProjectionMatrix());
+			gizmolineShader.use();
+			gizmolineShader.Set("view", camera.ViewMatrix());
+			gizmolineShader.Set("proj", camera.ProjectionMatrix());
 			Math::Matrix4x4 model = Math::Matrix4x4::Scale(0.0f, 1.0f, 1.0f) * Math::Matrix4x4::Rotation(0.f, Math::Vector3(0.0f, 0.0f, 1.0f)) * Math::Matrix4x4::Translate(0.f, 0.f, 0.0f);
-			GizmolineShader.Set("model", model);
-			GizmoLineWidith = 1.f;
+			gizmolineShader.Set("model", model);
+			gizmoLineWidith = 1.f;
+			gizmoToggle = true;
 
 			glGenVertexArrays(1, &GizmoVaoId);
 			glGenBuffers(1, &GizmoVboId);
@@ -45,7 +47,8 @@ namespace ALEngine
 
 		void Gizmo::RenderLine(Math::Vector2 pt1, Math::Vector2 pt2)
 		{
-			linesContainer.push_back(std::pair<Math::Vector2, Math::Vector2>(pt1, pt2));
+			if(gizmoToggle)
+				linesContainer.push_back(std::pair<Math::Vector2, Math::Vector2>(pt1, pt2));
 		}
 
 		void Gizmo::RenderAllLines()
@@ -56,12 +59,12 @@ namespace ALEngine
 				Math::Vector2 midPoint = (pt1 + pt2) / 2.f;
 				f32 lineLength = sqrt((pt1.x - pt2.x) * (pt1.x - pt2.x) + (pt1.y - pt2.y) * (pt1.y - pt2.y));
 				f32 angle = atan2(pt2.y - pt1.y, pt2.x - pt1.x) * 180 / 3.141592f;
-				GizmolineShader.use();
+				gizmolineShader.use();
 				Math::Matrix4x4 model = Math::Matrix4x4::Scale(lineLength, 1.0f, 1.0f) *
 					Math::Matrix4x4::Rotation(angle, Math::Vector3(0.0f, 0.0f, 1.0f)) *
 					Math::Matrix4x4::Translate(midPoint.x, midPoint.y, 0.0f);
-				GizmolineShader.Set("model", model);
-				glLineWidth(GizmoLineWidith);
+				gizmolineShader.Set("model", model);
+				glLineWidth(gizmoLineWidith);
 
 				glBindVertexArray(GizmoVaoId);
 				glBindBuffer(GL_ARRAY_BUFFER, GizmoVboId);
