@@ -137,6 +137,8 @@ namespace ALEngine
 			Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
 			Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
 			Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
+
+			Gizmos::Gizmo::GizmoInit();
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -205,10 +207,6 @@ namespace ALEngine
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			Gizmo::SetLineWidth(3.f);
-			Gizmo::RenderLine(Math::Vector2{ -3.f,-5.f }, Math::Vector2{ -2.f, -2.f });
-			Gizmo::DrawLineBox(Math::Vector2{ 0.f,0.f }, Math::Vector2{ 0.f, 5.f }, Math::Vector2{ 2.f, 5.f }, Math::Vector2{ 2.f, 0.f });
-
 			u32 displayed = 0;
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 			{
@@ -224,14 +222,16 @@ namespace ALEngine
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
 
-			Text test;
-			SetFont(test, "roboto");
-			SetTextString(test, "test");
-			SetTextSize(test, 1.f);
-			SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-			SetFontType(test, Font::FontType::Regular);
-			SetTextPos(test, Vector2(50.f, 50.f));
-			RenderText(test);
+			//Text test;
+			//SetFont(test, "roboto");
+			//SetTextString(test, "test");
+			//SetTextSize(test, 1.f);
+			//SetTextColor(test, Vector3(1.f, 0.f, 1.f));
+			//SetFontType(test, Font::FontType::Regular);
+			//SetTextPos(test, Vector2(50.f, 50.f));
+			//RenderText(test);
+
+			Gizmos::Gizmo::RenderLine();
 
 			// End of ImGui frame, render ImGui!
 			ALEditor::Instance()->End();

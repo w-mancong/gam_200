@@ -3,16 +3,23 @@
 
 namespace ALEngine
 {
-	namespace  Gizmo
+	namespace Gizmos
 	{
 		class Gizmo
 		{
 		public:
-			static f32 lineWidith;
+		
+			f32 lineWidith;
+			f32 lineScale;
+			Math::Vector2 lineMidPoint;
+			f32 lineRotate;
+			static Graphics::Shader lineShader;
+			static u32 vaoID, vboID;
 
-			static void RenderLine(Math::Vector2 pt0, Math::Vector2 pt1);
-			static void DrawLineBox(Math::Vector2 pt0, Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector2 pt3);
-			static void SetLineWidth(f32 width) { lineWidith = width; }
+			static void GizmoInit();
+			static void RenderLine();
+			//static void DrawLineBox(Math::Vector2 pt0, Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector2 pt3);
+			//static SetLineWidth(f32 width) { lineWidith = width; }
 		};
 	}
 }
