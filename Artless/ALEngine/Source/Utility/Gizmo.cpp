@@ -13,6 +13,7 @@ namespace ALEngine
 		f32 Gizmo::gizmoLineWidith;
 		std::vector<std::pair<Math::Vector2, Math::Vector2>> Gizmo::linesContainer;
 		bool Gizmo::gizmoToggle;
+		Math::Vector3 Gizmo::gizmoColor;
 
 		// this function makes the sample line
 		void Gizmo::GizmoInit()
@@ -33,6 +34,7 @@ namespace ALEngine
 			gizmolineShader.Set("model", model);
 			gizmoLineWidith = 1.f;
 			gizmoToggle = true;
+			gizmoColor = Math::Vector3(0.f, 1.f, 0.f); // default color is green
 
 			glGenVertexArrays(1, &GizmoVaoId);
 			glGenBuffers(1, &GizmoVboId);
@@ -53,7 +55,7 @@ namespace ALEngine
 
 		void Gizmo::RenderCircle(Math::Vector2 center, f32 radius)
 		{
-			f32 step = 2.f * 3.141592f / 36.f; 
+			f32 step = 2.f * 3.141592f / 26.f; 
 			Math::Vector2 first, second;
 			for (f32 theta{}; theta < 6.f; theta += step)
 			{
@@ -79,6 +81,7 @@ namespace ALEngine
 					Math::Matrix4x4::Rotation(angle, Math::Vector3(0.0f, 0.0f, 1.0f)) *
 					Math::Matrix4x4::Translate(midPoint.x, midPoint.y, 0.0f);
 				gizmolineShader.Set("model", model);
+				gizmolineShader.Set("color", gizmoColor.x, gizmoColor.y, gizmoColor.z, 1.f);
 				glLineWidth(gizmoLineWidith);
 
 				glBindVertexArray(GizmoVaoId);
