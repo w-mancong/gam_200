@@ -1,6 +1,7 @@
 #ifndef	TYPES_H
 #define TYPES_H
 
+using b8	= bool;
 using s8	= char;
 using u8	= unsigned char;
 using s16	= signed short;

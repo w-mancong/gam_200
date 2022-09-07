@@ -22,6 +22,8 @@ namespace ALEngine
 			void Begin();
 			void End();
 
+			void SetDockingEnabled(b8 isEnabled) { m_DockingEnabled = isEnabled; }
+
 		private:
 			// Constructor
 			ALEditor(void) {}
@@ -31,6 +33,9 @@ namespace ALEngine
 
 			friend class Templates::Singleton<ALEditor>;
 			friend class Memory::StaticMemory;
+
+			// Variables
+			b8 m_DockingEnabled;
 		};
 	}
 }

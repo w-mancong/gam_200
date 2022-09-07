@@ -57,6 +57,7 @@ namespace ALEngine
 
 			// Init ImGui
 			ALEditor::Instance()->Init();
+			ALEditor::Instance()->SetDockingEnabled(true);
 		}
 
 		void Application::Update(void)

@@ -198,6 +198,7 @@
     <ClInclude Include="Include\Editor\imstb_rectpack.h" />
     <ClInclude Include="Include\Editor\imstb_textedit.h" />
     <ClInclude Include="Include\Editor\imstb_truetype.h" />
+    <ClInclude Include="Include\Editor\Panels\Panel.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
     <ClInclude Include="Include\Exceptions\GLDebug.h" />

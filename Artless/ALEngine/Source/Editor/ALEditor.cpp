@@ -34,6 +34,9 @@ namespace ALEngine
 			ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window() , true);
 			// Set GLSL version
 			ImGui_ImplOpenGL3_Init("#version 450");
+
+			// Set docking enabled or disabled
+			m_DockingEnabled = true;
 		}
 
 		void ALEditor::Update()
@@ -49,8 +52,9 @@ namespace ALEngine
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			// Enable DockSpace
-			Docking();
+			// Enable DockSpace if it is to be enabled!
+			if(m_DockingEnabled)
+				Docking();
 
 			Update();
 		}
