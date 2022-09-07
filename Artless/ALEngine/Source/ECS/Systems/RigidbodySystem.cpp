@@ -59,6 +59,8 @@ namespace ALEngine
 				}
 
 				rigid.velocity.y -= earthGravity;
+				//rigid.velocity.y = -350;
+				//rigid.velocity.x = -350;
 				rigidS->UpdateRigidbody(transform, collider, rigid);
 			}
 		}

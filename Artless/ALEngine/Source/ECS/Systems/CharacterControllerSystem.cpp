@@ -62,7 +62,7 @@ namespace ALEngine
 		void CharacterControllerSystem::UpdateCharacterController(CharacterController & characControl, Rigidbody2D & rigid) {
 			rigid.velocity.x = 0;
 
-			if (Input::Input::KeyTriggered(static_cast<KeyCode>(characControl.jumpKey))) {
+			if (Input::Input::KeyDown(static_cast<KeyCode>(characControl.jumpKey))) {
 				rigid.velocity.y = characControl.jumpStrength;
 			}
 

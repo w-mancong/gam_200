@@ -41,6 +41,7 @@ namespace ALEngine
 				bool isColliderTriggered{ false }, isCollidedStay{ false }, isColliderExit{ false };
 				bool isTrigger{ false };
 
+				bool isDebug = false;
 			};
 		}
 	}

@@ -18,7 +18,7 @@ namespace ALEngine
 
 		Entity Noah, Hinata;
 
-		Entity LeftWall;
+		Entity LeftWall, RightWall;
 
 		void Application::Init(void)
 		{
@@ -43,6 +43,7 @@ namespace ALEngine
 			collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 50.f;
 			collider_Noah.rotation = 0.f;
 			trans_noah.rotation = 0.f;
+			collider_Noah.isDebug = true;
 
 			//Obj 2
 			transform = { Vector2(0.0f, 0.0f), Vector2(5000.0f, 50.0f), 0.0f };
@@ -65,14 +66,14 @@ namespace ALEngine
 			Collider2D& collider_left = Coordinator::Instance()->GetComponent<Collider2D>(LeftWall);
 			collider_left.scale[0] = 50.f, collider_left.scale[1] = 500.f;
 
-			//transform = { Vector2(500.0f, 0.0f), Vector2(50.0f, 500.0f), 0.0f };
-			//RightWall = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
-			//Sprite& sprite5 = Coordinator::Instance()->GetComponent<Sprite>(RightWall);
-			//sprite5.mode = RenderMode::Line;
-			//sprite5.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
-			//CreatePhysics2D(RightWall, ColliderType::Rectangle2D_AABB);
-			//Collider2D& collider_right = Coordinator::Instance()->GetComponent<Collider2D>(RightWall);
-			//collider_right.scale[0] = 50.f, collider_right.scale[1] = 500.f;
+			transform = { Vector2(200, 0.0f), Vector2(200.0f, 300), 0.0f };
+			RightWall = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			Sprite& sprite5 = Coordinator::Instance()->GetComponent<Sprite>(RightWall);
+			sprite5.mode = RenderMode::Line;
+			sprite5.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
+			CreatePhysics2D(RightWall, ColliderType::Rectangle2D_AABB);
+			Collider2D& collider_right = Coordinator::Instance()->GetComponent<Collider2D>(RightWall);
+			collider_right.scale[0] = 200.f, collider_right.scale[1] = 300.f;
 
 			// Initialize Time (Framerate Controller)
 			Time::Init();

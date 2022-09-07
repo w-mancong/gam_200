@@ -35,9 +35,13 @@ namespace ALEngine
 				void UpdateWorldAxis(Collider2D& collider, Transform const& parentTransform);
 				
 				std::vector<Ray2D> rayList;
+				bool isDebug = false;
+				int debugIndex = 0;
+
 
 			private:
 				Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };
+		
 		};
 
 		namespace
@@ -150,7 +154,20 @@ namespace ALEngine
 		}
 
 		void UpdateColliderSystem() {
+			if (Input::Input::KeyTriggered(static_cast<KeyCode>(KeyCode::C)))
+			{
+				cs->isDebug = !cs->isDebug;
+			}
+
+			if (cs->isDebug) {
+				if (!Input::Input::KeyTriggered(static_cast<KeyCode>(KeyCode::V)))
+				{
+					return;
+				}
+			}
+
 			bool collision = false;
+
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
 				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
@@ -187,7 +204,8 @@ namespace ALEngine
 				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 
-
+				cs->debugIndex = 0;
+				//std::cout << std::endl;
 				for (auto jt = cs->mEntities.begin(); jt != cs->mEntities.end(); ++jt) {
 					if (jt == it) {
 						continue;
@@ -198,6 +216,14 @@ namespace ALEngine
 					Rigidbody2D& twoRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt);
 
 					collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform, oneRigidbody, twoRigidbody);
+
+					//if (oneCollider.isDebug) {
+					//	//std::cout << "other " << i << " has " << oneRigidbody.velocity << " : ";
+					//	//if (collision) {
+					//	//	std::cout << "other " << i << " has Collision ";
+					//	//}
+					//	++cs->debugIndex;
+					//}
 
 					/// <summary>
 					///	Collision Condition Check
@@ -482,26 +508,41 @@ namespace ALEngine
 			tempBox.scale[0] += collider_moving.scale[0];
 			tempBox.scale[1] += collider_moving.scale[1];
 
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.frameVelocity };
+			Ray2D ray = { movingGlobalPosition, rigidbody_moving.nextPosition };
 			RaycastHit2D rayHit = Physics::Raycast_AABB(ray, tempBox, parent_transform_other);
-			
+
+			//if (collider_moving.isDebug) {
+			//	std::cout << cs->debugIndex << " BEFORE ACTUAL POSITION " << cs->debugIndex << "  : " << movingGlobalPosition << " \n";
+			//	std::cout << cs->debugIndex << " BEFORE NEXT POSITION " << cs->debugIndex << "  : " << rigidbody_moving.nextPosition << " \n";
+			//	std::cout << cs->debugIndex << " BEFORE VELOCITY " << cs->debugIndex << "  : " << rigidbody_moving.velocity << " \n";
+			//	//	std::cout << "other " << i << " has Collision ";
+			//}
+
 			if (rayHit.isCollided)
 			{
-				rigidbody_moving.nextPosition = rayHit.point;					
-
-				Vector2 direction{ 0,0 };
+				Vector2 vec{ 0,0 };
 
 				if (rayHit.normal.y != 0) {
-					direction.x += rigidbody_moving.frameVelocity.x;
+					vec.x += rigidbody_moving.velocity.x;
 				}
 				else if (rayHit.normal.x != 0) {
-					direction.y += rigidbody_moving.frameVelocity.y;
+					vec.y += rigidbody_moving.velocity.y;
 				}
-				rigidbody_moving.nextPosition += direction;
-				rigidbody_moving.velocity = direction;
+				rigidbody_moving.velocity = vec;
+				rigidbody_moving.frameVelocity = rigidbody_moving.velocity * Time::m_FixedDeltaTime;
+				rigidbody_moving.nextPosition = rayHit.point + rigidbody_moving.frameVelocity;
+
+				//if (collider_moving.isDebug) {
+				//	std::cout << cs->debugIndex << " AFTER VELOCITY " << cs->debugIndex << "  : " << rigidbody_moving.velocity << " \n";
+				//	std::cout << cs->debugIndex << " AFTER NEXT POSITION " << cs->debugIndex << "  : " << rigidbody_moving.nextPosition << "n";
+				//	std::cout << "\n";
+				//	//	std::cout << "other " << i << " has Collision ";
+				//}
 				return true;
 			}
 
+			//std::cout << cs->debugIndex << " AFTER " << cs->debugIndex << " has no collision\n";
+			//std::cout << cs->debugIndex << " NO COLL VELOCITY " << ray.origin <<  " : " << ray.end << " \n";
 			return false;
 		}
 
