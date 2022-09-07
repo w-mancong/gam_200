@@ -116,7 +116,7 @@ namespace ALEngine
 			f32 constexpr rot = 1.0f;
 
 			// sample gizmo
-			Gizmos::Gizmo::RenderLine(Vector2(-200.f, -200.f), Vector2(100.f, 25.f));
+			Gizmos::Gizmo::RenderLine(Vector2(-700.f, -300.f), Vector2(100.f, 300.f));
 
 			/*
 			if (Input::Input::KeyTriggered(KeyCode::Space)) {

@@ -58,7 +58,7 @@ namespace ALEngine
 				Math::Vector2 pt1 = pair.first, pt2 = pair.second;
 				Math::Vector2 midPoint = (pt1 + pt2) / 2.f;
 				f32 lineLength = sqrt((pt1.x - pt2.x) * (pt1.x - pt2.x) + (pt1.y - pt2.y) * (pt1.y - pt2.y));
-				f32 angle = atan2(pt2.y - pt1.y, pt2.x - pt1.x) * 180 / 3.141592f;
+				f32 angle = atan2(pt2.y - pt1.y, pt2.x - pt1.x) * 180.f / 3.141592f;
 				gizmolineShader.use();
 				Math::Matrix4x4 model = Math::Matrix4x4::Scale(lineLength, 1.0f, 1.0f) *
 					Math::Matrix4x4::Rotation(angle, Math::Vector3(0.0f, 0.0f, 1.0f)) *
