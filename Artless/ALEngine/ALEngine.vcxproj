@@ -159,6 +159,7 @@
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
+    <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
     <ClCompile Include="Source\Utility\Time.cpp" />
   </ItemGroup>
@@ -212,7 +213,6 @@
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\ECS\Components\Color.h" />
-    <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\Gizmo.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
