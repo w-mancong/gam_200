@@ -1,3 +1,3 @@
-[submodule "ALEngine/Extern/include/spdlog"]
-	path = ALEngine/Extern/include/spdlog
+[submodule "Artless/Extern/include/spdlog"]
+	path = Artless/Extern/include/spdlog
 	url = https://github.com/gabime/spdlog

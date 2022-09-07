@@ -50,7 +50,7 @@ namespace ALEngine
 			ImGui::NewFrame();
 
 			// Enable DockSpace
-			//Docking();
+			Docking();
 
 			Update();
 		}
@@ -64,8 +64,8 @@ namespace ALEngine
 			io.DeltaTime = Time::m_DeltaTime;
 
 			// Set IO display size
-			io.DisplaySize = ImVec2(static_cast<float>(Graphics::OpenGLWindow::width),
-				static_cast<float>(Graphics::OpenGLWindow::height));
+			io.DisplaySize = ImVec2(static_cast<f32>(Graphics::OpenGLWindow::width),
+				static_cast<f32>(Graphics::OpenGLWindow::height));
 
 			// Render ImGui
 			ImGui::Render();
@@ -111,7 +111,7 @@ namespace ALEngine
 			ImGui::PopStyleVar(3);
 
 			// Enable dockspace
-			ImGui::DockSpace(ImGui::GetID("Dockspace"));
+			ImGui::DockSpace(ImGui::GetID("DockSpace"));
 
 			// Make Dockspace inactive
 			ImGui::End();
