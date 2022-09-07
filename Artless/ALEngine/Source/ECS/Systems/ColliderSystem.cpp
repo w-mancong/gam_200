@@ -202,58 +202,58 @@ namespace ALEngine
 					/// <summary>
 					///	Collision Condition Check
 					/// </summary>
-					if (collision) {
-						//Collision Enter
-						if (!oneCollider.isCollidedStay) {
-							oneCollider.isColliderTriggered = true;
-							oneCollider.isCollidedStay = true;
-						}
-						else if (oneCollider.isColliderTriggered) {
-							//Collision Stay
-							oneCollider.isColliderTriggered = false;
-						}
-						if (!twoCollider.isCollidedStay) {
-							twoCollider.isColliderTriggered = true;
-							twoCollider.isCollidedStay = true;
-						}
-						else if (oneCollider.isColliderTriggered)
-						{
-							//Collision Stay
-							twoCollider.isColliderTriggered = false;
-						}
-					}
-					//Collision Exit
-					//No Collision
-					else {
-						oneCollider.isColliderTriggered = false;
-						twoCollider.isColliderTriggered = false;
-						if (oneCollider.isCollidedStay) {
-							oneCollider.isCollidedStay = false;
-							oneCollider.isColliderExit = true;
-						}
-						else {
-							oneCollider.isColliderExit = false;
-							oneCollider.isColliderTriggered = false;
-						}
-						if (twoCollider.isCollidedStay) {
-							twoCollider.isCollidedStay = false;
-							twoCollider.isColliderExit = true;
-						}
-						else {
-							twoCollider.isColliderExit = false;
-						}
-					}
+					//if (collision) {
+					//	//Collision Enter
+					//	if (!oneCollider.isCollidedStay) {
+					//		oneCollider.isColliderTriggered = true;
+					//		oneCollider.isCollidedStay = true;
+					//	}
+					//	else if (oneCollider.isColliderTriggered) {
+					//		//Collision Stay
+					//		oneCollider.isColliderTriggered = false;
+					//	}
+					//	if (!twoCollider.isCollidedStay) {
+					//		twoCollider.isColliderTriggered = true;
+					//		twoCollider.isCollidedStay = true;
+					//	}
+					//	else if (oneCollider.isColliderTriggered)
+					//	{
+					//		//Collision Stay
+					//		twoCollider.isColliderTriggered = false;
+					//	}
+					//}
+					////Collision Exit
+					////No Collision
+					//else {
+					//	oneCollider.isColliderTriggered = false;
+					//	twoCollider.isColliderTriggered = false;
+					//	if (oneCollider.isCollidedStay) {
+					//		oneCollider.isCollidedStay = false;
+					//		oneCollider.isColliderExit = true;
+					//	}
+					//	else {
+					//		oneCollider.isColliderExit = false;
+					//		oneCollider.isColliderTriggered = false;
+					//	}
+					//	if (twoCollider.isCollidedStay) {
+					//		twoCollider.isCollidedStay = false;
+					//		twoCollider.isColliderExit = true;
+					//	}
+					//	else {
+					//		twoCollider.isColliderExit = false;
+					//	}
+					//}
 
-					//Collision output updates
-					if (oneCollider.isColliderTriggered) {
-						printf("Collision Trigger\n");
-					}
-					else if (oneCollider.isCollidedStay) {
-						printf("Collision Stay\n");
-					}
-					else if (oneCollider.isColliderExit) {
-						printf("Collision Exit\n");
-					}
+					////Collision output updates
+					//if (oneCollider.isColliderTriggered) {
+					//	printf("Collision Trigger\n");
+					//}
+					//else if (oneCollider.isCollidedStay) {
+					//	printf("Collision Stay\n");
+					//}
+					//else if (oneCollider.isColliderExit) {
+					//	printf("Collision Exit\n");
+					//}
 				}
 			}
 			//***************************** Alternative ************************//
@@ -290,6 +290,10 @@ namespace ALEngine
 				Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+				
+				if (!oneRigidbody.isEnabled) {
+					continue;
+				}
 
 				oneParentTransform.position = oneRigidbody.nextPosition;
 			}

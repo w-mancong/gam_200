@@ -102,6 +102,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
@@ -163,7 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Common Header\MyEditor.h" />
+    <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
+    <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />

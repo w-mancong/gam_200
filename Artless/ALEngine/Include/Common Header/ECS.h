@@ -24,11 +24,13 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Components/Collider.h"
 #include "ECS/Components/Rigidbody.h"
 #include "ECS/Components/Text.h"
+#include "ECS/Components/CharacterController.h"
 
 // ----------------- System ---------------------
 #include "ECS/Systems/RenderSystem.h"
 #include "ECS/Systems/ColliderSystem.h"
 #include "ECS/Systems/RigidbodySystem.h"
+#include "ECS/Systems/CharacterControllerSystem.h"
 
 using ALEngine::ECS::Coordinator;
 using namespace ALEngine::ECS::Component;

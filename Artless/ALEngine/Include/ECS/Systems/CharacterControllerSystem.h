@@ -1,13 +1,13 @@
 /*!
-file:	RigidbodySystem.h
+file:	CharacterControllerSystem.h
 author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
-brief:	This file contains the function declarations for RigidbodySystem.h
+brief:	This file contains the function declarations for CharacterControllerSystem.h
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#ifndef	RIGIDBODY_SYSTEM_H
-#define RIGIDBODY_SYSTEM_H
+#ifndef	CHARACTERCONTROLLER_SYSTEM_H
+#define CHARACTERCONTROLLER_SYSTEM_H
 
 namespace ALEngine
 {
@@ -19,19 +19,20 @@ namespace ALEngine
 			\brief
 			Register RenderSystem for ECS to work
 		***********************************************************************************/
-		void RegisterCharacterControllerSystem(void);
+		void RegisterRigidbodySystem(void);
 
 		/*!*********************************************************************************
 			\brief
 			Used at end of update, runs through each rigidbody, makes use of collider component to give the updated position of the entity
 		***********************************************************************************/
-		void UpdateCharaterControllerSystem(void); 
+		void UpdateRigidbodySystem(void);
 
 		/*!*********************************************************************************
 			\brief
 			Adds rigidbody component to the entity
 		***********************************************************************************/
-		void CreateRigidbody(Entity const& entity);
+		void CreateCharacterController(Entity const& entity);
 	}
 }
+
 #endif

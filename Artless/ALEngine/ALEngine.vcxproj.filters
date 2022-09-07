@@ -129,6 +129,9 @@
     <ClCompile Include="Source\Editor\ALEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -357,6 +360,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Common Header\MyEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\Components\CharacterController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

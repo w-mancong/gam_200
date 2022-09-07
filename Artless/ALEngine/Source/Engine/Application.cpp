@@ -18,6 +18,8 @@ namespace ALEngine
 
 		Entity Noah, Hinata;
 
+		Entity LeftWall;
+
 		void Application::Init(void)
 		{
 			OpenGLWindow::InitGLFWWindow();
@@ -32,7 +34,10 @@ namespace ALEngine
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			CreatePhysics2D(Noah, ColliderType::Rectangle2D_AABB);
+			CreateCharacterController(Noah);			
+			//Character controller needs these
+			CreateCollider(Noah, ColliderType::Rectangle2D_AABB);
+			CreateRigidbody(Noah);
 			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).isEnabled = true;
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
 			collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 50.f;
@@ -40,7 +45,7 @@ namespace ALEngine
 			trans_noah.rotation = 0.f;
 
 			//Obj 2
-			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
+			transform = { Vector2(0.0f, 0.0f), Vector2(5000.0f, 50.0f), 0.0f };
 			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
@@ -49,8 +54,25 @@ namespace ALEngine
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
 			CreatePhysics2D(Hinata, ColliderType::Rectangle2D_AABB);
 			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 50.f;
-			collider_hinata.rotation = 0.0f;
+			collider_hinata.scale[0] = 5000.f, collider_hinata.scale[1] = 50.f;
+
+			transform = { Vector2(-200.0f, 0.0f), Vector2(50.0f, 500.0f), 0.0f };
+			LeftWall = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			Sprite& sprite4 = Coordinator::Instance()->GetComponent<Sprite>(LeftWall);
+			sprite4.mode = RenderMode::Line;
+			sprite4.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
+			CreatePhysics2D(LeftWall, ColliderType::Rectangle2D_AABB);
+			Collider2D& collider_left = Coordinator::Instance()->GetComponent<Collider2D>(LeftWall);
+			collider_left.scale[0] = 50.f, collider_left.scale[1] = 500.f;
+
+			//transform = { Vector2(500.0f, 0.0f), Vector2(50.0f, 500.0f), 0.0f };
+			//RightWall = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
+			//Sprite& sprite5 = Coordinator::Instance()->GetComponent<Sprite>(RightWall);
+			//sprite5.mode = RenderMode::Line;
+			//sprite5.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
+			//CreatePhysics2D(RightWall, ColliderType::Rectangle2D_AABB);
+			//Collider2D& collider_right = Coordinator::Instance()->GetComponent<Collider2D>(RightWall);
+			//collider_right.scale[0] = 50.f, collider_right.scale[1] = 500.f;
 
 			// Initialize Time (Framerate Controller)
 			Time::Init();
@@ -81,6 +103,7 @@ namespace ALEngine
 				{
 					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
+					//std::cout << Time::m_FPS << std::endl;
 				}
 
 				// Render
@@ -111,77 +134,7 @@ namespace ALEngine
 		
 		void Engine::Update(void)
 		{
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
-			f32 constexpr speed = 150.f;
-			f32 constexpr rot = 1.0f;
-
-			
-			if (Input::Input::KeyTriggered(KeyCode::Space)) {
-				rigid.velocity.y = 250;
-			}
-
-			//Use Velocity
-			rigid.velocity.x = 0;
-			if (Input::Input::KeyDown(KeyCode::S))
-			{
-				rigid.velocity.y = -speed;
-			}
-			if (Input::Input::KeyDown(KeyCode::W))
-			{
-				rigid.velocity.y = speed;
-			}
-			if (Input::Input::KeyDown(KeyCode::A))
-			{
-				rigid.velocity.x = -speed;
-			}
-			if (Input::Input::KeyDown(KeyCode::D))
-			{
-				rigid.velocity.x = speed;
-			}
-
-			//Manual Position
-			//if (Input::Input::KeyTriggered(KeyCode::W))
-			//{
-			//	trans.position.y += speed;
-			//}
-			//if (Input::Input::KeyTriggered(KeyCode::S))
-			//{
-			//	trans.position.y -= speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyTriggered(KeyCode::D))
-			//{
-			//	trans.position.x += speed;
-			//}
-			//if (Input::Input::KeyTriggered(KeyCode::A))
-			//{
-			//	trans.position.x -= speed;
-			//}
-
-			//if(Input::Input::KeyDown(KeyCode::W))
-			//{
-			//	trans.position.y += speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::S))
-			//{
-			//	trans.position.y -= speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::D))
-			//{
-			//	trans.position.x += speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::A))
-			//{
-			//	trans.position.x -= speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::Q))
-			//{
-			//	trans.rotation += rot;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::E))
-			//{
-			//	trans.rotation -= rot;
-			//}		
+			UpdateCharaterControllerSystem();
 		}
 		
 		void Engine::FixedUpdate(void)

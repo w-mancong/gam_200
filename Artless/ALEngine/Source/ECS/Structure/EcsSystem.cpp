@@ -10,6 +10,7 @@ namespace ALEngine
 			Coordinator::Instance()->RegisterComponent<Transform>();
 			Coordinator::Instance()->RegisterComponent<Collider2D>();
 			Coordinator::Instance()->RegisterComponent<Rigidbody2D>();
+			Coordinator::Instance()->RegisterComponent<CharacterController>();
 		}
 
 		void RegisterSystem(void)
@@ -17,6 +18,7 @@ namespace ALEngine
 			RegisterRenderSystem();
 			RegisterColliderSystem();
 			RegisterRigidbodySystem();
+			RegisterCharacterControllerSystem();
 		}
 
 		void InitSystem(void)
