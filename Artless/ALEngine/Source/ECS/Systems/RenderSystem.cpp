@@ -1,8 +1,7 @@
 #include "pch.h"
-#include "Graphics/Shader.h"
 #include "Engine/Camera.h"
 #include "Engine/Manager/MeshBuilder.h"
-#include "Graphics/Gizmo.h"
+
 
 namespace ALEngine
 {
@@ -138,6 +137,7 @@ namespace ALEngine
 			Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
 			Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
 
+			// Init Gizmo
 			Gizmos::Gizmo::GizmoInit();
 		}
 
@@ -222,19 +222,20 @@ namespace ALEngine
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
 
-			//Text test;
-			//SetFont(test, "roboto");
-			//SetTextString(test, "test");
-			//SetTextSize(test, 1.f);
-			//SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-			//SetFontType(test, Font::FontType::Regular);
-			//SetTextPos(test, Vector2(50.f, 50.f));
-			//RenderText(test);
-
-			Gizmos::Gizmo::RenderLine();
+			Text test;
+			SetFont(test, "roboto");
+			SetTextString(test, "test");
+			SetTextSize(test, 1.f);
+			SetTextColor(test, Vector3(1.f, 0.f, 1.f));
+			SetFontType(test, Font::FontType::Regular);
+			SetTextPos(test, Vector2(50.f, 50.f));
+			RenderText(test);
 
 			// End of ImGui frame, render ImGui!
 			ALEditor::Instance()->End();
+
+			// This needs to be at the end
+			Gizmos::Gizmo::RenderAllLines();
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());

@@ -7,19 +7,18 @@ namespace ALEngine
 	{
 		class Gizmo
 		{
+		private:
+			static u32 GizmoVaoId, GizmoVboId;
+
 		public:
-		
-			f32 lineWidith;
-			f32 lineScale;
-			Math::Vector2 lineMidPoint;
-			f32 lineRotate;
-			static Graphics::Shader lineShader;
-			static u32 vaoID, vboID;
+			static std::vector<std::pair<Math::Vector2, Math::Vector2>> linesContainer;
+			static f32 GizmoLineWidith; // thickness of line
+			static Graphics::Shader GizmolineShader;
 
 			static void GizmoInit();
-			static void RenderLine();
-			//static void DrawLineBox(Math::Vector2 pt0, Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector2 pt3);
-			//static SetLineWidth(f32 width) { lineWidith = width; }
+			static void RenderLine(Math::Vector2 pt1, Math::Vector2 pt2);
+			static void RenderAllLines();
+			static void SetGizmoLineWidth(f32 width) { GizmoLineWidith = width; }
 		};
 	}
 }
