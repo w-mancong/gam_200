@@ -106,6 +106,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp">
+	</ClCompile>
     <ClCompile Include="Source\Editor\imgui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -301,6 +302,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h">
+	</ClInclude>
     <ClInclude Include="Include\Editor\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>

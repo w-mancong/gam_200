@@ -24,45 +24,43 @@
 	void ContentBrowserPanel::OnImGuiRender()
 	{
 		//imgui window
-		//ImGui::Begin("Content Browser");
+		ImGui::Begin("Content Browser");
 
 		if (currentdirectory != std::filesystem::path(assetpath))
 		{
-			//if (ImGui::Button("<-"))
-			//{
+			if (ImGui::Button("<-"))
+			{
 			     currentdirectory = currentdirectory.parent_path();
-			//}
-
+			}
 		}
 
 		for (auto& directoryentry : std::filesystem::directory_iterator(currentdirectory))
 		{
 			const auto& path = directoryentry.path();
-
+			
+			//file relative path
 			auto relativepath = std::filesystem::relative(directoryentry.path(), assetpath);
 
+			//file name 
 			std::string filenamestring = relativepath.filename().string();
 
 			if (directoryentry.is_directory())
 			{
-				//if (ImGui::Button(filenamestring.c_str()))
-				//{
+				if(ImGui::Button(filenamestring.c_str()))
+				{
 				     currentdirectory /= directoryentry.path().filename();
-				//}
+				}
 			}
 			else
 			{
-				//if (ImGui::Button(filenamestring.c_str()))
-				//{
+				if(ImGui::Button(filenamestring.c_str()))
+				{
 			         
-				//}
-
+				}
 			}
-
-			
 		}
 
-		//ImGui::End();
+		ImGui::End();
 	}
 
 
