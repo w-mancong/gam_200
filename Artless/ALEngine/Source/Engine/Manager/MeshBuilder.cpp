@@ -5,9 +5,10 @@
 
 namespace
 {
+	u64 const MATRIX4X4_SIZE{ ALEngine::Math::Matrix4x4::size * ALEngine::ECS::MAX_ENTITIES }, TEX_INDEX_SIZE{ sizeof(f32) * ALEngine::ECS::MAX_ENTITIES };
 	// layout location inside vertex shader
 	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, SPRITE_RESERVE_SIZE{ 100 };
-	u64 RECTANGLE_POSITION_SIZE_OFFSET{ 0 };
+	u32 instanceBuffer{ 0 };
 }
 
 namespace ALEngine
@@ -18,7 +19,7 @@ namespace ALEngine
 		MeshBuilder::MeshBuilder(void)
 		{
 			memset(m_Shapes, 0, sizeof(m_Shapes));
-			CreateRectangle(); CreateCircle(); CreateTriangle();
+			CreateRectangle(); CreateCircle(); CreateTriangle(); CreateSpriteInstanceBuffer();
 			m_Sprites.reserve(SPRITE_RESERVE_SIZE);
 		}
 
@@ -31,6 +32,7 @@ namespace ALEngine
 				glDeleteBuffers(1, &(*(m_Shapes + i))->ebo);
 				StaticMemory::Delete(*(m_Shapes + i));
 			}
+			glDeleteBuffers(1, &instanceBuffer);
 		}
 
 		Sprite MeshBuilder::MakeRectangle(void)
@@ -48,17 +50,17 @@ namespace ALEngine
 			return *m_Shapes[static_cast<u64>(Shapes::Triangle)];
 		}
 
-		Sprite MeshBuilder::MakeSprite(std::string const& filePath)
+		u32 MeshBuilder::MakeSprite(std::string const& filePath)
 		{
-			Sprite* sprite{ nullptr };
+			u32 texture{ 0 };
 			for (auto it = m_Sprites.begin(); it != m_Sprites.end(); ++it)
 			{
 				if ((*it).first == filePath)
-					sprite = (*it).second; break;
+					texture = (*it).second; break;
 			}
-			if (!sprite)
-				sprite = CreateSprite(filePath);
-			return *sprite;
+			if (!texture)
+				texture = CreateSprite(filePath);
+			return texture;
 		}
 
 		void MeshBuilder::Reset(void)
@@ -66,12 +68,12 @@ namespace ALEngine
 			for (auto it = m_Sprites.begin(); it != m_Sprites.end(); ++it)
 			{
 				// Release resources in the gpu
-				glDeleteVertexArrays(1, &(*it).second->vao);
+				//glDeleteVertexArrays(1, &(*it).second->vao);
 				//glDeleteBuffers(1, &(*it).second->vbo);
 				//glDeleteBuffers(1, &(*it).second->ebo);
-				glDeleteTextures(1, &(*it).second->texture);
+				glDeleteTextures(1, &(*it).second);
 				// Delete ptr and free up dynamic memory
-				DynamicMemory::Delete((*it).second);
+				//DynamicMemory::Delete((*it).second);
 			}
 			m_Sprites.clear();
 		}
@@ -96,7 +98,6 @@ namespace ALEngine
 			};
 
 			u64 const TOTAL_BYTES = sizeof(position) + sizeof(texCoords);
-			RECTANGLE_POSITION_SIZE_OFFSET = sizeof(position);
 
 			// -------------------------- Vertex Array Buffer -----------------------------------
 			glGenVertexArrays(1, &sprite->vao); glBindVertexArray(sprite->vao);
@@ -113,6 +114,10 @@ namespace ALEngine
 			// position attribute
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
 			glEnableVertexAttribArray(0);
+			// texture attribute
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(sizeof(f32) * 8));
+			glEnableVertexAttribArray(1);
+
 			// Unbind vertex array to prevent accidental modifications
 			glBindVertexArray(0);
 
@@ -192,34 +197,59 @@ namespace ALEngine
 			m_Shapes[static_cast<u64>(Shapes::Triangle)] = sprite;
 		}
 
-		Sprite* MeshBuilder::CreateSprite(std::string const& filePath)
+		void MeshBuilder::CreateSpriteInstanceBuffer(void)
 		{
-			Sprite* sprite = DynamicMemory::New<Sprite>();
-			// -------------------------------------------------------------------------------
-			//								Create an Image
-			// -------------------------------------------------------------------------------
-			// Generate vertex array
-			glGenVertexArrays(1, &sprite->vao); glBindVertexArray(sprite->vao);
-			// Take buffer memory from rectangle
-			Sprite const* rect = m_Shapes[static_cast<u64>(Shapes::Rectangle)];
+			using namespace ECS;
 
-			glBindBuffer(GL_ARRAY_BUFFER, rect->vbo);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rect->ebo);
+			glBindVertexArray(m_Shapes[static_cast<u64>(Shapes::Rectangle)]->vao);
+			glGenBuffers(1, &instanceBuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer);
+			// Buffer data will store index to texture then the Model matrix
+			glBufferData(GL_ARRAY_BUFFER, TEX_INDEX_SIZE + MATRIX4X4_SIZE, nullptr, GL_DYNAMIC_DRAW);
+			// Set instance data
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(f32), (void*)0); // texture index
+			glVertexAttribDivisor(2, 1);
 
-			// position attribute
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
+			for (size_t i = 0; i < 4; ++i)
+			{
+				glEnableVertexAttribArray(i * 3);
+				glVertexAttribPointer(i * 3, 4, GL_FLOAT, GL_FALSE, Matrix4x4::size, (void*)(MAX_ENTITIES * sizeof(f32) + i * sizeof(Vector4)));
+				glVertexAttribDivisor(i * 3, 1);
+			}
+
 			glEnableVertexAttribArray(0);
-			// texture coord attribute
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(RECTANGLE_POSITION_SIZE_OFFSET));
-			glEnableVertexAttribArray(1);
+		}
+
+		u32 MeshBuilder::CreateSprite(std::string const& filePath)
+		{
+			//Sprite* sprite = DynamicMemory::New<Sprite>();
+			//// -------------------------------------------------------------------------------
+			////								Create an Image
+			//// -------------------------------------------------------------------------------
+			//// Generate vertex array
+			//glGenVertexArrays(1, &sprite->vao); glBindVertexArray(sprite->vao);
+			//// Take buffer memory from rectangle
+			//Sprite const* rect = m_Shapes[static_cast<u64>(Shapes::Rectangle)];
+
+			//glBindBuffer(GL_ARRAY_BUFFER, rect->vbo);
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rect->ebo);
+
+			//// position attribute
+			//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
+			//glEnableVertexAttribArray(0);
+			//// texture coord attribute
+			//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(8 * sizeof(f32)));
+			//glEnableVertexAttribArray(1);
 
 			// load and create a texture 
 			// -------------------------
 			bool isJpeg = filePath[filePath.find_first_of('.') + 1] == 'j';
 			u32 const FORMAT = isJpeg ? GL_RGB : GL_RGBA;
 
-			glGenTextures(1, &sprite->texture);
-			glBindTexture(GL_TEXTURE_2D, sprite->texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+			u32 texture{ 0 };
+			glGenTextures(1, &texture);
+			glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
 			// set the texture wrapping parameters
 			if (isJpeg)
 			{
@@ -251,13 +281,21 @@ namespace ALEngine
 			}
 			stbi_image_free(data);
 
-			sprite->drawCount = rect->drawCount;
-			sprite->primitive = rect->primitive;
-			m_Sprites.push_back( std::pair<std::string, Sprite*>{ filePath, sprite } );
+			//sprite->drawCount = rect->drawCount;
+			//sprite->primitive = rect->primitive;
+			m_Sprites.push_back( pair_sprites{ filePath, texture } );
 			// Unbind vertex array and texture to prevent accidental modifications
 			glBindVertexArray(0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			return m_Sprites.back().second;
+		}
+
+		void SubInstanceBufferData(f32 texIndex[ECS::MAX_ENTITIES], Matrix4x4 matrices[ECS::MAX_ENTITIES])
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(f32) * ECS::MAX_ENTITIES, texIndex);
+			glBufferSubData(GL_ARRAY_BUFFER, sizeof(f32) * ECS::MAX_ENTITIES, Matrix4x4::size * ECS::MAX_ENTITIES, matrices);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 	}
 }

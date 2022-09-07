@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <functional>
+#include <cstdint>
 #include <memory>
 #include <thread>
 #include <utility>

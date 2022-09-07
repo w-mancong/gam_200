@@ -55,7 +55,7 @@ namespace ALEngine
 				\return
 				Sprite containing the relevant data to rendering the image
 			***********************************************************************************/
-			Sprite MakeSprite(std::string const& filePath);
+			u32 MakeSprite(std::string const& filePath);
 
 			/*!*********************************************************************************
 				\brief
@@ -97,6 +97,8 @@ namespace ALEngine
 			***********************************************************************************/
 			void CreateTriangle(void);
 
+			void CreateSpriteInstanceBuffer(void);
+
 			/*!*********************************************************************************
 				\brief
 				Helper function to load and create an image. Images (with the same filePath) will
@@ -109,7 +111,7 @@ namespace ALEngine
 				\return
 				Pointer to the sprite that was created
 			***********************************************************************************/
-			Sprite* CreateSprite(std::string const& filePath);
+			u32 CreateSprite(std::string const& filePath);
 
 			enum class Shapes
 			{
@@ -122,9 +124,21 @@ namespace ALEngine
 			friend class Templates::Singleton<MeshBuilder>;
 			friend class Memory::StaticMemory;
 
-			std::vector<std::pair<std::string, Sprite*>, Memory::DynamicAllocator<std::pair<std::string, Sprite*>>> m_Sprites;
+			using pair_sprites = std::pair<std::string, u32>;
+			std::vector<pair_sprites, Memory::DynamicAllocator<pair_sprites>> m_Sprites;
 			Sprite* m_Shapes[static_cast<u64>(Shapes::Total)];
+
+			// friend is not that good, if need friend means it's an engine design problem, we generally don't use it
+			//friend class Templates::Singleton<MeshBuilder>; // -> upgrade this to instance MeshBuilder meshbuilder // .cpp -> meshbuilder->instance.Build();
+			//friend class Memory::StaticMemory;
+
+			//using pair_test = std::pair<std::string, Sprite*>;
+			//std::vector<pair_test, Memory::DynamicAllocator<pair_test>> m_Sprites;
+			//Sprite* m_Shapes[static_cast<u64>(Shapes::Total)]; // wrap your pointers to custom memory handler // why static_cast... so long
+
 		};
+
+		void SubInstanceBufferData(f32 texIndex[ECS::MAX_ENTITIES], Math::Matrix4x4 matrices[ECS::MAX_ENTITIES]);
 	}
 }
 

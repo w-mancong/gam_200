@@ -159,6 +159,8 @@ namespace ALEngine
 			***********************************************************************************/
 			static Matrix3x3 Rotation(f32 deg);
 
+			static u64 constexpr size{ 36 };
+
 		private:
 			static size_type constexpr R = 3, C = 3;
 		}; using Mat3 = Matrix3x3; using Mtx3 = Matrix3x3;

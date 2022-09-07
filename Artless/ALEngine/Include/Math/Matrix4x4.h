@@ -236,6 +236,8 @@ namespace ALEngine
 			***********************************************************************************/
 			static Matrix4x4 LookAt(Vector3 eye, Vector3 center, Vector3 up);
 
+			static u64 constexpr size{ 64 };
+
 		private:
 			static size_type constexpr R = 4, C = 4;
 		}; using Mat4 = Matrix4x4; using Mtx4 = Matrix4x4;

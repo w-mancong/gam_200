@@ -1,14 +1,16 @@
 #ifndef	TYPES_H
 #define TYPES_H
 
-using s8	= char;
-using u8	= unsigned char;
-using s16	= signed short;
-using u16	= unsigned short;
-using s32	= signed int;
-using u32	= unsigned int;
-using s64	= long long;
-using u64	= unsigned long long;
+using uch	= unsigned char;
+using sch	= char;
+using s8	= int8_t;
+using u8	= uint8_t;
+using s16	= int16_t;
+using u16	= uint16_t;
+using s32	= int32_t;
+using u32	= uint32_t;
+using s64	= int64_t;
+using u64	= uint64_t;
 using f32	= float;
 using f64	= double;
 

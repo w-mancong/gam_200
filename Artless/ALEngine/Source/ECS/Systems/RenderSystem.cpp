@@ -7,82 +7,6 @@
 
 namespace ALEngine
 {
-	namespace Graphics
-	{
-		// static member variables for fonts
-		std::map<std::string, std::map<Font::FontType, Font>> Font::fontCollection;
-		//std::string Font::currentFont;
-		//Font::FontType Font::currentType;
-		Shader Font::fontShader;
-		//Math::Vector2 Font::position;
-		//Math::Vector3 Font::colour;
-		//f32 Font::scale;
-		//std::string Font::text;
-
-		void Text::RenderText()
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			// activate corresponding render state
-			Font::fontShader.use();
-			Font::fontShader.Set("textColor", colour.x, colour.y, colour.z);
-			glActiveTexture(GL_TEXTURE0);
-
-			std::map<std::string, std::map<Font::FontType, Font>>::iterator it;
-			it = Font::fontCollection.find(currentFont);
-			if (it == Font::fontCollection.end())
-			{
-				std::cout << "FONT ERROR: Font Family Name " << currentFont << "not found\n";
-				return;
-			}
-
-			std::map<Font::FontType, Font>::iterator it2;
-			it2 = Font::fontCollection.find(currentFont)->second.find(currentType);
-			if (it2 == Font::fontCollection.find(currentFont)->second.end())
-			{
-				std::cout << "FONT ERROR: Font Type not found\n";
-				return;
-			}
-
-			glBindVertexArray(Font::fontCollection.find(currentFont)->second.find(currentType)->second.fontsVAO);
-
-			// iterate through all characters
-			std::string::const_iterator c;
-			for (c = text.begin(); c != text.end(); c++)
-			{
-				Character ch = Font::fontCollection.find(currentFont)->second.find(currentType)->second.characterCollection[*c];
-
-				f32 xpos = position.x + ch.bearing.x * scale;
-				f32 ypos = position.y - (ch.size.y - ch.bearing.y) * scale;
-
-				f32 w = ch.size.x * scale;
-				f32 h = ch.size.y * scale;
-				// update VBO for each character
-				f32 vertices[6][4] = {
-					{ xpos,     ypos + h,   0.0f, 0.0f,},
-					{ xpos,     ypos,       0.0f, 1.0f },
-					{ xpos + w, ypos,       1.0f, 1.0f },
-
-					{ xpos,     ypos + h,   0.0f, 0.0f },
-					{ xpos + w, ypos,       1.0f, 1.0f },
-					{ xpos + w, ypos + h,   1.0f, 0.0f }
-				};
-				// render glyph texture over quad
-				glBindTexture(GL_TEXTURE_2D, ch.textureID);
-				// update content of VBO memory
-				glBindBuffer(GL_ARRAY_BUFFER, Font::fontCollection.find(currentFont)->second.find(currentType)->second.fontsVBO);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
-
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				// render quad
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-				// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-				position.x += (ch.advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-			}
-			glBindVertexArray(0);
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
-	}
-
 	namespace ECS
 	{
 		using namespace Math; using namespace Engine; using namespace Graphics;
@@ -90,6 +14,7 @@ namespace ALEngine
 		{
 		public:
 			void Render(Sprite const& sprite, Transform const& trans);
+			void RenderSprites(void);
 		};
 
 		struct Plane
@@ -121,7 +46,7 @@ namespace ALEngine
 		namespace
 		{
 			std::shared_ptr<RenderSystem> rs;
-			Shader spriteShader, meshShader;
+			Shader spriteShader/*, meshShader*/;
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
@@ -129,171 +54,73 @@ namespace ALEngine
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
 		{
-			Color const& color = sprite.color;
-			Vector2 const& position{ trans.position }, scale{ trans.scale };
 
-			// Getting the appropriate shader
-			Shader* shader{ nullptr };
-			if (sprite.texture)
-				shader = &spriteShader;
-			else
-				shader = &meshShader;
 
-			// TRS model multiplication
-			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
-			shader->use();
-			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
-			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, sprite.texture);
-			glBindVertexArray(sprite.vao);
-			// render based on the primitive type
-			switch (sprite.primitive)
-			{
-				case GL_TRIANGLE_FAN:
-				{
-					glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
-					break;
-				}
-				case GL_TRIANGLE_STRIP:
-				{
-					glEnable(GL_PRIMITIVE_RESTART);
-					glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
-					glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-					glDisable(GL_PRIMITIVE_RESTART);
-					break;
-				}
-				case GL_TRIANGLES:
-				{
-					glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-					break;
-				}
-			}	
-			// Unbind to prevent any unintended behaviour to vao
-			glBindVertexArray(0);
+
+			//Color const& color = sprite.color;
+			//Vector2 const& position{ trans.position }, scale{ trans.scale };
+
+			//// Getting the appropriate shader
+			//Shader* shader{ nullptr };
+			//if (sprite.texture)
+			//	shader = &spriteShader;
+			//else
+			//	shader = &meshShader;
+
+			//// TRS model multiplication
+			//Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
+			//shader->use();
+			//shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
+			//glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
+			//glActiveTexture(GL_TEXTURE0);
+			////glBindTexture(GL_TEXTURE_2D, sprite.texture);
+			//glBindVertexArray(sprite.vao);
+			//// render based on the primitive type
+			//switch (sprite.primitive)
+			//{
+			//	case GL_TRIANGLE_FAN:
+			//	{
+			//		glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
+			//		break;
+			//	}
+			//	case GL_TRIANGLE_STRIP:
+			//	{
+			//		glEnable(GL_PRIMITIVE_RESTART);
+			//		glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
+			//		glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+			//		glDisable(GL_PRIMITIVE_RESTART);
+			//		break;
+			//	}
+			//	case GL_TRIANGLES:
+			//	{
+			//		glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+			//		break;
+			//	}
+			//}	
+			//// Unbind to prevent any unintended behaviour to vao
+			//glBindVertexArray(0);
+		}
+
+		void RenderSystem::RenderSprites()
+		{
+			spriteShader.use();
+
 		}
 
 		void UpdateViewMatrix(void)
 		{
 			spriteShader.use();
 			spriteShader.Set("view", camera.ViewMatrix());
-			meshShader.use();
-			meshShader.Set("view", camera.ViewMatrix());
+			//meshShader.use();
+			//meshShader.Set("view", camera.ViewMatrix());
 		}
 
 		void UpdateProjectionMatrix(void)
 		{
 			spriteShader.use();
 			spriteShader.Set("proj", camera.ProjectionMatrix());
-			meshShader.use();
-			meshShader.Set("proj", camera.ProjectionMatrix());
-		}
-
-		void FontInit(std::string fontAddress, std::string fontName, Font::FontType fontType)
-		{
-			Font newFont;
-			// compile and setup the shader
-			newFont.fontShader = Shader{ "Assets/Shaders/font.vert", "Assets/Shaders/font.frag" };
-			Matrix4x4 projection = Matrix4x4::Ortho(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height));
-			newFont.fontShader.use();
-			newFont.fontShader.Set("projection", projection);
-
-			// FreeType
-			// --------
-			FT_Library freeType;
-			// All functions return a value different than 0 whenever an error occurred
-			if (FT_Init_FreeType(&freeType))
-			{
-				std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-			}
-
-			// find path to font
-			if (fontAddress.empty())
-			{
-				std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
-			}
-
-			// load font as face
-			FT_Face face;
-			if (FT_New_Face(freeType, fontAddress.c_str(), 0, &face)) {
-				std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-			}
-			// set size to load glyphs as
-			FT_Set_Pixel_Sizes(face, 0, 48);
-
-			// disable byte-alignment restriction
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-			// load first 128 characters of ASCII set
-			for (u8 c = 0; c < 128; c++)
-			{
-				// Load character glyph 
-				if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-				{
-					std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-					continue;
-				}
-				// generate texture
-				u32 shaderTexture;
-				glGenTextures(1, &shaderTexture);
-				glBindTexture(GL_TEXTURE_2D, shaderTexture);
-				glTexImage2D(
-					GL_TEXTURE_2D,
-					0,
-					GL_RED,
-					face->glyph->bitmap.width,
-					face->glyph->bitmap.rows,
-					0,
-					GL_RED,
-					GL_UNSIGNED_BYTE,
-					face->glyph->bitmap.buffer
-				);
-				// set texture options
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				// now store character for later use
-				Character character = {
-					shaderTexture,
-					Vector2(static_cast<f32>(face->glyph->bitmap.width), static_cast<f32>(face->glyph->bitmap.rows)),
-					Vector2(static_cast<f32>(face->glyph->bitmap_left), static_cast<f32>(face->glyph->bitmap_top)),
-					static_cast<u32>(face->glyph->advance.x)
-				};
-				newFont.characterCollection.insert(std::pair<char, Character>(c, character));
-				
-			glBindTexture(GL_TEXTURE_2D, 0);
-			}
-			// destroy FreeType once we're finished
-			FT_Done_Face(face);
-			FT_Done_FreeType(freeType);
-
-
-			// configure VAO/VBO for texture quads
-			// -----------------------------------
-			glGenVertexArrays(1, &newFont.fontsVAO);
-			glGenBuffers(1, &newFont.fontsVBO);
-			glBindVertexArray(newFont.fontsVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, newFont.fontsVBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(f32) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(f32), 0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
-
-			std::map<std::string, std::map<Font::FontType, Font>>::iterator it;
-			it = Font::fontCollection.find(fontName);
-			if (it != Font::fontCollection.end()) // if font family exists
-			{
-				// insert into existing font family
-				Font::fontCollection.find(fontName)->second.insert(std::pair<Font::FontType, Font>(fontType, newFont));
-				return;
-			}
-
-			// create new font family
-			std::map<Font::FontType, Font> map;
-			map.insert(std::pair<Font::FontType, Font>(fontType, newFont));
-			Font::fontCollection.insert(std::pair<std::string, std::map<Font::FontType, Font>>(fontName, map));
+			//meshShader.use();
+			//meshShader.Set("proj", camera.ProjectionMatrix());
 		}
 
 		void RegisterRenderSystem(void)
@@ -310,17 +137,12 @@ namespace ALEngine
 			spriteShader.Set("view", camera.ViewMatrix());
 			spriteShader.Set("proj", camera.ProjectionMatrix());
 
-			meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
-			meshShader.use();
-			meshShader.Set("view", camera.ViewMatrix());
-			meshShader.Set("proj", camera.ProjectionMatrix());
+			//meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
+			//meshShader.use();
+			//meshShader.Set("view", camera.ViewMatrix());
+			//meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
-
-			// Load and initialise fonts
-			FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
-			FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
-			FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -389,21 +211,21 @@ namespace ALEngine
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			Gizmo::SetLineWidth(3.f);
-			Gizmo::RenderLine(Math::Vector2{ -3.f,-5.f }, Math::Vector2{ -2.f, -2.f });
-			Gizmo::DrawLineBox(Math::Vector2{ 0.f,0.f }, Math::Vector2{ 0.f, 5.f }, Math::Vector2{ 2.f, 5.f }, Math::Vector2{ 2.f, 0.f });
-
 			u32 displayed = 0;
+			f32 texIndex[MAX_ENTITIES]; Matrix4x4 matrices[MAX_ENTITIES];
+
+			// FOR NOW
+			std::fill_n(texIndex, MAX_ENTITIES, 0.0f);
+			u64 counter{ 0 };
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 			{
-				Sprite	  const& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);
-				Transform const& trans  = Coordinator::Instance()->GetComponent<Transform>(*it);
-				if (ShouldRender(trans))
-				{
-					rs->Render(sprite, trans);
-					//++displayed;
-				}
+				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
+				// SRT
+				matrices[counter] = Matrix4x4::Scale(trans.scale) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(trans.position);
 			}
+
+			SubInstanceBufferData(texIndex, matrices);
+			rs->RenderSprites();
 
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
@@ -519,7 +341,7 @@ namespace ALEngine
 
 		void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
 		{
-			Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+			Sprite sprite{}; sprite.texture = MeshBuilder::Instance()->MakeSprite(filePath);
 			sprite.layer = layer, sprite.mode = mode;
 			Coordinator::Instance()->AddComponent(entity, sprite);
 			Coordinator::Instance()->AddComponent(entity, transform);
@@ -527,7 +349,7 @@ namespace ALEngine
 
 		void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer, RenderMode mode)
 		{
-			Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+			Sprite sprite{ 0 }; sprite.texture = MeshBuilder::Instance()->MakeSprite(filePath);
 			sprite.layer = layer, sprite.mode = mode;
 			Coordinator::Instance()->AddComponent(entity, sprite);
 		}
@@ -567,7 +389,7 @@ namespace ALEngine
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 
-			meshShader.use();
+			//meshShader.use();
 			glLineWidth(lineWidith);
 
 			glBindVertexArray(VAO);
