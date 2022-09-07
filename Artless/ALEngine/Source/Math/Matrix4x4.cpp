@@ -4,13 +4,13 @@ namespace ALEngine
 {
 	namespace Math
 	{
-		Matrix4x4::Matrix4x4(value_type value) : matrix{ R, C }
+		Matrix4x4::Matrix4x4(value_type value)
 		{
-			for (u64 i = 0; i < R; ++i)
+			for (u64 i = 0; i < 4; ++i)
 				(*this)(i, i) = value;
 		}
 
-		Matrix4x4::Matrix4x4(Vector4 r1, Vector4 r2, Vector4 r3, Vector4 r4) : matrix{ R, C }
+		Matrix4x4::Matrix4x4(Vector4 r1, Vector4 r2, Vector4 r3, Vector4 r4)
 		{
 			(*this)(0, 0) = r1.x; (*this)(0, 1) = r1.y; (*this)(0, 2) = r1.z; (*this)(0, 3) = r1.w;
 			(*this)(1, 0) = r2.x; (*this)(1, 1) = r2.y; (*this)(1, 2) = r2.z; (*this)(1, 3) = r2.w;
@@ -18,10 +18,29 @@ namespace ALEngine
 			(*this)(3, 0) = r4.x; (*this)(3, 1) = r4.y; (*this)(3, 2) = r4.z; (*this)(3, 3) = r4.w;
 		}
 
+		Matrix4x4::reference Matrix4x4::operator()(size_type row, size_type col)
+		{
+			if (row >= 4 || row < 0 || col >= 4 || col < 0)
+			{
+				std::cerr << "Either row or column index is larger than 4 or smaller than 0" << std::endl;
+			}
+
+			switch (row)
+			{
+				case 0:
+					return mat[col].x;
+				case 1:
+					return mat[col].y;
+				case 2:
+					return mat[col].z;
+				case 3:
+					return mat[col].w;
+			}
+		}
+
 		Matrix4x4& Matrix4x4::operator+=(Matrix4x4 const& rhs)
 		{
-			matrix::operator+=(rhs);
-			return *this;
+			
 		}
 
 		Matrix4x4& Matrix4x4::operator-=(Matrix4x4 const& rhs)

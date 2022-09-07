@@ -14,7 +14,7 @@ namespace ALEngine
 		{
 		public:
 			void Render(Sprite const& sprite, Transform const& trans);
-			void RenderSprites(void);
+			void RenderSprites(u64 counts);
 		};
 
 		struct Plane
@@ -50,6 +50,10 @@ namespace ALEngine
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
+			Sprite rect;
+			Matrix4x4* modelMatrices{ nullptr }; 
+			f32* texIndex{ nullptr };
+			
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -101,10 +105,16 @@ namespace ALEngine
 			//glBindVertexArray(0);
 		}
 
-		void RenderSystem::RenderSprites()
+		void RenderSystem::RenderSprites(u64 counts)
 		{
 			spriteShader.use();
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glBindVertexArray(rect.vao);
 
+			glDrawElementsInstanced(GL_TRIANGLE_STRIP, rect.drawCount, GL_UNSIGNED_INT, nullptr, counts);
+
+			glBindVertexArray(0);
 		}
 
 		void UpdateViewMatrix(void)
@@ -143,6 +153,10 @@ namespace ALEngine
 			//meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
+
+			rect = MeshBuilder::Instance()->MakeRectangle();
+			modelMatrices = Memory::StaticMemory::New<Matrix4x4>(MAX_ENTITIES);
+			texIndex = Memory::StaticMemory::New<f32>(MAX_ENTITIES);
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -212,20 +226,18 @@ namespace ALEngine
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			u32 displayed = 0;
-			f32 texIndex[MAX_ENTITIES]; Matrix4x4 matrices[MAX_ENTITIES];
-
 			// FOR NOW
 			std::fill_n(texIndex, MAX_ENTITIES, 0.0f);
-			u64 counter{ 0 };
+			u64 index{ 0 };
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 			{
 				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
 				// SRT
-				matrices[counter] = Matrix4x4::Scale(trans.scale) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(trans.position);
+				*(modelMatrices + index++) = Matrix4x4::Scale(trans.scale) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(trans.position);
 			}
 
-			SubInstanceBufferData(texIndex, matrices);
-			rs->RenderSprites();
+			SubInstanceBufferData(texIndex, modelMatrices);
+			rs->RenderSprites(entities.size());
 
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
@@ -366,49 +378,6 @@ namespace ALEngine
 			Entity entity = Coordinator::Instance()->CreateEntity();
 			CreateSprite(entity, transform, filePath, layer, mode);
 			return entity;
-		}
-
-		// Gizmo static member declarations
-		f32 Gizmo::lineWidith;
-
-		void Gizmo::RenderLine(Math::Vector2 pt0, Math::Vector2 pt1)
-		{
-			std::array<Math::Vector2, 2> pos_vtx;
-			pos_vtx[0] = pt0;
-			pos_vtx[1] = pt1;
-
-			GLuint VAO, VBO;
-
-			glGenVertexArrays(1, &VAO);
-			glGenBuffers(1, &VBO);
-			glBindVertexArray(VAO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(pos_vtx) * pos_vtx.size(), &pos_vtx, GL_DYNAMIC_DRAW);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
-			glEnableVertexAttribArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
-
-			//meshShader.use();
-			glLineWidth(lineWidith);
-
-			glBindVertexArray(VAO);
-			glDrawArrays(GL_LINES, 0, 2); // render line
-
-			// cleanup
-			glDeleteBuffers(1, &VAO);
-			glDeleteVertexArrays(1, &VBO);
-
-			// reset line width
-			glLineWidth(1.f);
-		}
-
-		void Gizmo::DrawLineBox(Math::Vector2 pt0, Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector2 pt3)
-		{
-			Gizmo::RenderLine(pt0, pt1);
-			Gizmo::RenderLine(pt1, pt2);
-			Gizmo::RenderLine(pt2, pt3);
-			Gizmo::RenderLine(pt3, pt0);
 		}
 	}
 }

@@ -15,9 +15,15 @@ namespace ALEngine
 {
 	namespace Math
 	{
-		class Matrix4x4 : public matrix
+		class Matrix4x4
 		{
 		public:
+			using value_type = f32;
+			using reference = value_type&;
+			using const_reference = value_type const&;
+			using pointer = value_type*;
+			using const_pointer = value_type const*;
+			using size_type = s64;
 			/*!*********************************************************************************
 				\brief
 				Constructor that takes in a single value_type variable that initializes the
@@ -48,6 +54,9 @@ namespace ALEngine
 				Destructor
 			***********************************************************************************/
 			virtual ~Matrix4x4(void) = default;
+
+
+			reference operator()(size_type row, size_type col);
 
 			/*!*********************************************************************************
 				\brief
@@ -236,10 +245,8 @@ namespace ALEngine
 			***********************************************************************************/
 			static Matrix4x4 LookAt(Vector3 eye, Vector3 center, Vector3 up);
 
-			static u64 constexpr size{ 64 };
-
 		private:
-			static size_type constexpr R = 4, C = 4;
+			Vector4 mat[4];
 		}; using Mat4 = Matrix4x4; using Mtx4 = Matrix4x4;
 
 		/*!*********************************************************************************
