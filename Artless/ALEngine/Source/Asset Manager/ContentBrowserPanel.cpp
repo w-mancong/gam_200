@@ -12,55 +12,82 @@
 
 *******************************************************************************/
 
+namespace ALEngine
+{
 
 
-	//change this later for projects
-	static const std::filesystem::path assetpath = "assets";
-
-	ContentBrowserPanel::ContentBrowserPanel()
-		:currentdirectory(assetpath)
-	{}
-
-	void ContentBrowserPanel::OnImGuiRender()
+	namespace CBP
 	{
-		//imgui window
-		ImGui::Begin("Content Browser");
+		//change this later for projects
+		extern const std::filesystem::path assetpath = "assets";//base file path
 
-		if (currentdirectory != std::filesystem::path(assetpath))
-		{
-			if (ImGui::Button("<-"))
-			{
-			     currentdirectory = currentdirectory.parent_path();
-			}
-		}
+		ContentBrowserPanel::ContentBrowserPanel()
+			:currentdirectory(assetpath)
+		{}
 
-		for (auto& directoryentry : std::filesystem::directory_iterator(currentdirectory))
+		ContentBrowserPanel::~ContentBrowserPanel()
 		{
-			const auto& path = directoryentry.path();
 			
-			//file relative path
-			auto relativepath = std::filesystem::relative(directoryentry.path(), assetpath);
-
-			//file name 
-			std::string filenamestring = relativepath.filename().string();
-
-			if (directoryentry.is_directory())
-			{
-				if(ImGui::Button(filenamestring.c_str()))
-				{
-				     currentdirectory /= directoryentry.path().filename();
-				}
-			}
-			else
-			{
-				if(ImGui::Button(filenamestring.c_str()))
-				{
-			         
-				}
-			}
 		}
 
-		ImGui::End();
+		void ContentBrowserPanel::OnImGuiRender()
+		{
+			//imgui window-------------------------------------------------------------------------
+			ImGui::Begin("Assets Content Browser");
+
+			if (currentdirectory != std::filesystem::path(assetpath))
+			{
+				//render makeshift back button
+				if (ImGui::Button("<-"))
+				{
+					currentdirectory = currentdirectory.parent_path();
+				}
+			}
+
+			//loop through directory and create buttons for each file
+			for (auto& directoryentry : std::filesystem::directory_iterator(currentdirectory))
+			{
+				//file default path
+				const auto& path = directoryentry.path();
+
+				//file relative path
+				auto relativepath = std::filesystem::relative(directoryentry.path(), assetpath);
+
+				//file name from relative path 
+				std::string filenamestring = relativepath.filename().string();
+
+				//ImTextureID icon = directoryentry.is_directory()?  ;
+
+			   // ImGui::ImageButton(ImTextureID)
+
+				if (directoryentry.is_directory())
+				{
+					//buttons that show the files
+					if (ImGui::Button(filenamestring.c_str()))
+					{
+						currentdirectory /= directoryentry.path().filename();
+					}
+				}
+				else
+				{
+					if (ImGui::Button(filenamestring.c_str()))
+					{
+
+					}
+				}
+
+				ImGui::TextWrapped(filenamestring.c_str());
+
+				ImGui::NextColumn();
+
+			}
+
+			ImGui::End();
+			//------------------------------------------------------------------------------------
+		}
 	}
+	
+}
 
 
+	
