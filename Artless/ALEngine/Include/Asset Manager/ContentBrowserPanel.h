@@ -11,19 +11,17 @@
  \brief
 
 *******************************************************************************/
-
 #ifndef	CONTENT_BROWSER_PANEL_H
 #define CONTENT_BROWSER_PANEL_H
 
 namespace ALEngine
 {
-	namespace CBP
+	namespace Editor
 	{
 		class ContentBrowserPanel
 		{
 		public:
 			ContentBrowserPanel();
-
 			~ContentBrowserPanel();
 
 			void OnImGuiRender();
@@ -31,8 +29,6 @@ namespace ALEngine
 			std::filesystem::path currentdirectory;// for keeping track of current file directory or path
 		};
 	}
-
-
 }
 
 

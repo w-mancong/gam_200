@@ -1,8 +1,16 @@
+/*!
+file:	ALEditor.cpp
+author:	Lucas Nguyen
+email:	l.nguyen@digipen.edu
+brief:	This file contains the function declarations for the ALEditor class
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine
 {
-	namespace Engine
+	namespace Editor
 	{
 		void ALEditor::Init()
 		{
@@ -39,10 +47,20 @@ namespace ALEngine
 			m_DockingEnabled = true;
 		}
 
+		void ALEditor::Exit()
+		{
+			// Shutdown imgui
+			ImGui_ImplGlfw_Shutdown();
+			ImGui_ImplOpenGL3_Shutdown();
+			// Destroy imgui context
+			ImGui::DestroyContext();
+		}
+
 		void ALEditor::Update()
 		{
 			static bool show{ true };
 			ImGui::ShowDemoWindow(&show);
+			cbp.OnImGuiRender();
 		}
 
 		void ALEditor::Begin()

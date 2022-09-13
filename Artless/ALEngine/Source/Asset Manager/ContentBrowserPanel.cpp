@@ -1,6 +1,4 @@
 #include "pch.h"
-
-
 /*!*****************************************************************************
  \file ContentBrowserPanel.cpp
  \author Chan Jie Ming Stanley
@@ -14,9 +12,7 @@
 
 namespace ALEngine
 {
-
-
-	namespace CBP
+	namespace Editor
 	{
 		//change this later for projects
 		extern const std::filesystem::path assetpath = "assets";//base file path

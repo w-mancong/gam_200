@@ -7,7 +7,7 @@ namespace ALEngine
 {
 	namespace Engine
 	{
-		using namespace Math; using namespace Graphics; using namespace ECS;
+		using namespace Math; using namespace Graphics; using namespace ECS; using namespace Editor;
 		class Application
 		{
 		public:
@@ -56,7 +56,6 @@ namespace ALEngine
 			Time::Init();
 
 			// Init ImGui
-			ALEditor::Instance()->Init();
 			ALEditor::Instance()->SetDockingEnabled(true);
 		}
 
@@ -94,11 +93,7 @@ namespace ALEngine
 
 		void Application::Exit(void)
 		{
-			// Shutdown imgui
-			ImGui_ImplGlfw_Shutdown();
-			ImGui_ImplOpenGL3_Shutdown();
-			// Destroy imgui context
-			ImGui::DestroyContext();
+			ALEditor::Instance()->Exit();	// Exit ImGui
 			glfwTerminate();	// clean/delete all GLFW resources
 		}
 

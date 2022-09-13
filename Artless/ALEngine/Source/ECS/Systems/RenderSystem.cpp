@@ -409,7 +409,7 @@ namespace ALEngine
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
 
 			// End of ImGui frame, render ImGui!
-			ALEditor::Instance()->End();
+			Editor::ALEditor::Instance()->End();
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
