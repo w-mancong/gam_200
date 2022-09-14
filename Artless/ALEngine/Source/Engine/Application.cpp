@@ -56,6 +56,7 @@ namespace ALEngine
 			Time::Init();
 
 			// Init ImGui
+			ALEditor::Instance()->SetImGuiEnabled(false);
 			ALEditor::Instance()->SetDockingEnabled(true);
 		}
 

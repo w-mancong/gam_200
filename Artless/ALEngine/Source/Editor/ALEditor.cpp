@@ -58,6 +58,10 @@ namespace ALEngine
 
 		void ALEditor::Update()
 		{
+			// Check ImGui active
+			if (!m_ImGuiEnabled)
+				return;
+
 			static bool show{ true };
 			ImGui::ShowDemoWindow(&show);
 			cbp.OnImGuiRender();
@@ -65,6 +69,16 @@ namespace ALEngine
 
 		void ALEditor::Begin()
 		{
+			// Change ImGui Enabled or Disabled
+			if (Input::KeyTriggered(KeyCode::Backspace))
+			{
+				m_ImGuiEnabled = !m_ImGuiEnabled;
+			}
+
+			// Check ImGui active
+			if (!m_ImGuiEnabled)
+				return;
+
 			// New ImGui Frame
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
@@ -79,6 +93,10 @@ namespace ALEngine
 
 		void ALEditor::End()
 		{
+			// Check ImGui active
+			if (!m_ImGuiEnabled)
+				return;
+
 			// Get the ImGui IO
 			ImGuiIO& io = ImGui::GetIO();
 

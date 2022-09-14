@@ -363,5 +363,8 @@
     <ClInclude Include="Include\Common Header\MyEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Editor\Panels\LoggerPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
