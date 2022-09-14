@@ -34,7 +34,7 @@ namespace ALEngine
 			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 
 			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			CreateCharacterController(Noah);			
+			CreateCharacterController(Noah);
 			//Character controller needs these
 			CreateCollider(Noah, ColliderType::Rectangle2D_AABB);
 			CreateRigidbody(Noah);
@@ -54,7 +54,7 @@ namespace ALEngine
 			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
 			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
 			CreatePhysics2D(Hinata, ColliderType::Rectangle2D_AABB);
-			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
+			Collider2D& collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
 			collider_hinata.scale[0] = 5000.f, collider_hinata.scale[1] = 50.f;
 
 			transform = { Vector2(-200.0f, 0.0f), Vector2(50.0f, 500.0f), 0.0f };
@@ -89,7 +89,7 @@ namespace ALEngine
 
 			// should do the game loop here
 			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
-			{				
+			{
 				// Get Current Time
 				Time::ClockTimeNow();
 
@@ -128,12 +128,12 @@ namespace ALEngine
 			app.Update();
 			app.Exit();
 		}
-		
+
 		void Engine::Update(void)
 		{
 			UpdateCharaterControllerSystem();
 		}
-		
+
 		void Engine::FixedUpdate(void)
 		{
 			//Raycast2DCollision({ -25, 25 }, { 25, 25 });
