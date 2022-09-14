@@ -87,34 +87,3 @@ namespace ALEngine
 		}
 	}
 }
-
-//
-//if (Input::Input::KeyTriggered(KeyCode::Space)) {
-//	rigid.velocity.y = 250;
-//}
-
-////Use Velocity
-//rigid.velocity.x = 0;
-//if (Input::Input::KeyDown(KeyCode::S))
-//{
-//	rigid.velocity.y = -speed;
-//}
-//if (Input::Input::KeyDown(KeyCode::W))
-//{
-//	rigid.velocity.y = speed;
-//}
-//if (Input::Input::KeyDown(KeyCode::A))
-//{
-//	rigid.velocity.x = -speed;
-//}
-//if (Input::Input::KeyDown(KeyCode::D))
-//{
-//	rigid.velocity.x = speed;
-//}
-		
-
-
-//Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
-//Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
-//f32 constexpr speed = 150.f;
-//f32 constexpr rot = 1.0f;

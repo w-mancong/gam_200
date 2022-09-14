@@ -22,6 +22,8 @@ namespace ALEngine
 		public:
 			void UpdateRigidbody(Transform& transform, Collider2D& collider, Rigidbody2D& rigid);
 
+			void DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid);
+			bool isDebugStep = false, isDebugDraw = false;
 		private:
 			Vector2 worldXAxis{ 1.f, 0.f }, worldYAxis{ 0.f, 1.f };
 		};
@@ -32,6 +34,9 @@ namespace ALEngine
 			
 			f32 earthGravity = 9.807f;
 			f32 globalDrag = 1.0f;
+
+
+			u64 debugDrawKey = (u64)KeyCode::Y, debugStepKeyToggle = (u64)KeyCode::U, debugStepKey = (u64)KeyCode::I;
 		}
 
 		void RegisterRigidbodySystem(void)
@@ -49,6 +54,36 @@ namespace ALEngine
 		}
 
 		void UpdateRigidbodySystem() {
+			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKeyToggle)))
+			{
+				rigidS->isDebugStep = !rigidS->isDebugStep;
+			}
+
+			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugDrawKey)))
+			{
+				rigidS->isDebugDraw = !rigidS->isDebugDraw;
+			}
+
+			if (rigidS->isDebugDraw) {
+				for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+					Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
+					Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+
+					if (!rigid.isEnabled) {
+						continue;
+					}
+
+					rigidS->DrawRigidbodyForces(transform, rigid);
+				}
+			}
+
+			if (rigidS->isDebugStep) {
+				if (!Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKey)))
+				{
+					return;
+				}
+			}
+
 			for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
@@ -66,7 +101,6 @@ namespace ALEngine
 				AddForce(rigid, friction, FORCEMODE::FORCE);
 
 				rigidS->UpdateRigidbody(transform, collider, rigid);
-				Gizmos::Gizmo::RenderLine(transform.position, rigid.nextPosition);
 			}
 		}
 
@@ -99,6 +133,11 @@ namespace ALEngine
 				rigidbody.velocity += forceVelocity;
 				break;
 			}
+		}
+
+		void RigidbodySystem::DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid) {
+			Gizmos::Gizmo::RenderLine(transform.position, transform.position + rigid.frameVelocity);
+			Gizmos::Gizmo::RenderLine(transform.position, transform.position + rigid.acceleration * Time::m_FixedDeltaTime);
 		}
 	}
 }

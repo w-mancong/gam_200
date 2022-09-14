@@ -34,19 +34,22 @@ namespace ALEngine
 				bool CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				void UpdateWorldAxis(Collider2D& collider, Transform const& parentTransform);
 				
+				//Debug
+				void DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Color& color);
+
 				std::vector<Ray2D> rayList;
-				bool isDebug = false;
-				int debugIndex = 0;
+				bool isDebugStep = false, isDebugDraw = false;
 
 
 			private:
 				Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };
-		
+				
 		};
 
 		namespace
 		{
 			std::shared_ptr<ColliderSystem> cs;
+			u64 debugDrawKey = (u64)KeyCode::Y, debugStepKeyToggle = (u64)KeyCode::U, debugStepKey = (u64)KeyCode::I;
 		}
 
 		void RegisterColliderSystem(void)
@@ -146,21 +149,33 @@ namespace ALEngine
 
 			return collision;
 		}
-
-
-
+		
 		void UpdateStartColliderSystem() {
 			cs->rayList.clear();			
 		}
 
 		void UpdateColliderSystem() {
-			if (Input::Input::KeyTriggered(static_cast<KeyCode>(KeyCode::C)))
+			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKeyToggle)))
 			{
-				cs->isDebug = !cs->isDebug;
+				cs->isDebugStep = !cs->isDebugStep;
 			}
 
-			if (cs->isDebug) {
-				if (!Input::Input::KeyTriggered(static_cast<KeyCode>(KeyCode::V)))
+			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugDrawKey)))
+			{
+				cs->isDebugDraw = !cs->isDebugDraw;
+			}
+
+			if (cs->isDebugDraw) {
+				for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
+					Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
+					Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+
+					cs->DrawCollider(trans, Collider, { 255,0,0 });
+				}
+			}
+
+			if (cs->isDebugStep) {
+				if (!Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKey)))
 				{
 					return;
 				}
@@ -204,7 +219,6 @@ namespace ALEngine
 				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 
-				cs->debugIndex = 0;
 				//std::cout << std::endl;
 				for (auto jt = cs->mEntities.begin(); jt != cs->mEntities.end(); ++jt) {
 					if (jt == it) {
@@ -216,70 +230,6 @@ namespace ALEngine
 					Rigidbody2D& twoRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt);
 
 					collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform, oneRigidbody, twoRigidbody);
-
-					//if (oneCollider.isDebug) {
-					//	//std::cout << "other " << i << " has " << oneRigidbody.velocity << " : ";
-					//	//if (collision) {
-					//	//	std::cout << "other " << i << " has Collision ";
-					//	//}
-					//	++cs->debugIndex;
-					//}
-
-					/// <summary>
-					///	Collision Condition Check
-					/// </summary>
-					//if (collision) {
-					//	//Collision Enter
-					//	if (!oneCollider.isCollidedStay) {
-					//		oneCollider.isColliderTriggered = true;
-					//		oneCollider.isCollidedStay = true;
-					//	}
-					//	else if (oneCollider.isColliderTriggered) {
-					//		//Collision Stay
-					//		oneCollider.isColliderTriggered = false;
-					//	}
-					//	if (!twoCollider.isCollidedStay) {
-					//		twoCollider.isColliderTriggered = true;
-					//		twoCollider.isCollidedStay = true;
-					//	}
-					//	else if (oneCollider.isColliderTriggered)
-					//	{
-					//		//Collision Stay
-					//		twoCollider.isColliderTriggered = false;
-					//	}
-					//}
-					////Collision Exit
-					////No Collision
-					//else {
-					//	oneCollider.isColliderTriggered = false;
-					//	twoCollider.isColliderTriggered = false;
-					//	if (oneCollider.isCollidedStay) {
-					//		oneCollider.isCollidedStay = false;
-					//		oneCollider.isColliderExit = true;
-					//	}
-					//	else {
-					//		oneCollider.isColliderExit = false;
-					//		oneCollider.isColliderTriggered = false;
-					//	}
-					//	if (twoCollider.isCollidedStay) {
-					//		twoCollider.isCollidedStay = false;
-					//		twoCollider.isColliderExit = true;
-					//	}
-					//	else {
-					//		twoCollider.isColliderExit = false;
-					//	}
-					//}
-
-					////Collision output updates
-					//if (oneCollider.isColliderTriggered) {
-					//	printf("Collision Trigger\n");
-					//}
-					//else if (oneCollider.isCollidedStay) {
-					//	printf("Collision Stay\n");
-					//}
-					//else if (oneCollider.isColliderExit) {
-					//	printf("Collision Exit\n");
-					//}
 				}
 			}
 			//***************************** Alternative ************************//
@@ -583,5 +533,94 @@ namespace ALEngine
 		void Raycast2DCollision(Vector2 start, Vector2 end) {
 			cs->rayList.push_back({ start,end });
 		}
+
+
+		void ColliderSystem::DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Color& color) {
+			switch (collider.colliderType) {
+			case ColliderType::Rectangle2D_AABB:
+				{
+					Vector2 globalPosition = parentTransform.position + collider.localPosition();
+					Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
+					Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
+
+					Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });//Bottom
+					Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);	//top
+					Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });//left
+					Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);//right
+				}
+				break;			
+			
+			case ColliderType::Circle2D:
+				Gizmos::Gizmo::RenderCircle(parentTransform.position + collider.localPosition(), collider.scale[0]);
+				break;
+			}
+		}
 	}
 }
+
+
+
+
+//if (oneCollider.isDebug) {
+//	//std::cout << "other " << i << " has " << oneRigidbody.velocity << " : ";
+//	//if (collision) {
+//	//	std::cout << "other " << i << " has Collision ";
+//	//}
+//	++cs->debugIndex;
+//}
+
+/// <summary>
+///	Collision Condition Check
+/// </summary>
+//if (collision) {
+//	//Collision Enter
+//	if (!oneCollider.isCollidedStay) {
+//		oneCollider.isColliderTriggered = true;
+//		oneCollider.isCollidedStay = true;
+//	}
+//	else if (oneCollider.isColliderTriggered) {
+//		//Collision Stay
+//		oneCollider.isColliderTriggered = false;
+//	}
+//	if (!twoCollider.isCollidedStay) {
+//		twoCollider.isColliderTriggered = true;
+//		twoCollider.isCollidedStay = true;
+//	}
+//	else if (oneCollider.isColliderTriggered)
+//	{
+//		//Collision Stay
+//		twoCollider.isColliderTriggered = false;
+//	}
+//}
+////Collision Exit
+////No Collision
+//else {
+//	oneCollider.isColliderTriggered = false;
+//	twoCollider.isColliderTriggered = false;
+//	if (oneCollider.isCollidedStay) {
+//		oneCollider.isCollidedStay = false;
+//		oneCollider.isColliderExit = true;
+//	}
+//	else {
+//		oneCollider.isColliderExit = false;
+//		oneCollider.isColliderTriggered = false;
+//	}
+//	if (twoCollider.isCollidedStay) {
+//		twoCollider.isCollidedStay = false;
+//		twoCollider.isColliderExit = true;
+//	}
+//	else {
+//		twoCollider.isColliderExit = false;
+//	}
+//}
+
+////Collision output updates
+//if (oneCollider.isColliderTriggered) {
+//	printf("Collision Trigger\n");
+//}
+//else if (oneCollider.isCollidedStay) {
+//	printf("Collision Stay\n");
+//}
+//else if (oneCollider.isColliderExit) {
+//	printf("Collision Exit\n");
+//}
