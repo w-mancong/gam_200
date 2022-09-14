@@ -33,3 +33,6 @@
 *.pdb
 .tmp/
 .vs/
+
+# ImGui
+imgui.ini

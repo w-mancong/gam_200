@@ -232,7 +232,7 @@ namespace ALEngine
 			RenderText(test);
 
 			// End of ImGui frame, render ImGui!
-			ALEditor::Instance()->End();
+			Editor::ALEditor::Instance()->End();
 
 			// This needs to be at the end
 			Gizmos::Gizmo::RenderAllLines();

@@ -21,6 +21,7 @@
 #include <fstream>
 #include <chrono>
 #include <iterator>
+#include <filesystem>
 #include <scoped_allocator>
 
 // Data structures
@@ -63,5 +64,9 @@
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
 #include "Common Header/MyEditor.h"
+
+
+// Asset Manager
+#include "Asset Manager/ContentBrowserPanel.h"
 
 #endif

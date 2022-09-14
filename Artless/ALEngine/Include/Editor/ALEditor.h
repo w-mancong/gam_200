@@ -9,28 +9,38 @@ brief:	This file contains the function declarations for the ALEditor class
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
+#include "Asset Manager/ContentBrowserPanel.h"
+
 namespace ALEngine
 {
-	namespace Engine
+	namespace Editor
 	{
 		class ALEditor : public Templates::Singleton<ALEditor>
 		{
 		public:
-			void Init();
 			void Update();
+			void Exit();
 
 			void Begin();
 			void End();
 
+			void SetDockingEnabled(b8 isEnabled) { m_DockingEnabled = isEnabled; }
+
 		private:
 			// Constructor
-			ALEditor(void) {}
-			virtual ~ALEditor(void) = default;
+			ALEditor(void) { Init(); }
+			~ALEditor(void) = default;
+			void Init();
 
 			void Docking();
 
 			friend class Templates::Singleton<ALEditor>;
 			friend class Memory::StaticMemory;
+
+			// Variables
+			b8 m_DockingEnabled{ false };
+
+			ContentBrowserPanel cbp;
 		};
 	}
 }
