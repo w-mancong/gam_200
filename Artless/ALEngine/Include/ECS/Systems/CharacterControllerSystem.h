@@ -19,13 +19,13 @@ namespace ALEngine
 			\brief
 			Register RenderSystem for ECS to work
 		***********************************************************************************/
-		void RegisterRigidbodySystem(void);
+		void RegisterCharacterControllerSystem(void);
 
 		/*!*********************************************************************************
 			\brief
 			Used at end of update, runs through each rigidbody, makes use of collider component to give the updated position of the entity
 		***********************************************************************************/
-		void UpdateRigidbodySystem(void);
+		void UpdateCharacterControllerSystem(void);
 
 		/*!*********************************************************************************
 			\brief

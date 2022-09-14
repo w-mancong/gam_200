@@ -19,19 +19,22 @@ namespace ALEngine
 			\brief
 			Register RenderSystem for ECS to work
 		***********************************************************************************/
-		void RegisterCharacterControllerSystem(void);
+		void RegisterRigidbodySystem(void);
 
 		/*!*********************************************************************************
 			\brief
 			Used at end of update, runs through each rigidbody, makes use of collider component to give the updated position of the entity
 		***********************************************************************************/
-		void UpdateCharaterControllerSystem(void); 
+		void UpdateRigidbodySystem(void);
 
 		/*!*********************************************************************************
 			\brief
 			Adds rigidbody component to the entity
 		***********************************************************************************/
 		void CreateRigidbody(Entity const& entity);
+
+		enum class FORCEMODE { FORCE, ACCELERATION, VELOCITY_CHANGE };
+		void AddForce(Rigidbody2D& rigidbody, Math::Vec2 forceVelocity, FORCEMODE mode = FORCEMODE::FORCE);
 	}
 }
 #endif

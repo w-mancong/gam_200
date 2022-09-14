@@ -22,7 +22,6 @@ namespace ALEngine
 		public:
 			void UpdateRigidbody(Transform& transform, Collider2D& collider, Rigidbody2D& rigid);
 
-
 		private:
 			Vector2 worldXAxis{ 1.f, 0.f }, worldYAxis{ 0.f, 1.f };
 		};
@@ -31,7 +30,8 @@ namespace ALEngine
 		{
 			std::shared_ptr<RigidbodySystem> rigidS;
 			
-			float earthGravity = 9.807f;
+			f32 earthGravity = 9.807f;
+			f32 globalDrag = 1.0f;
 		}
 
 		void RegisterRigidbodySystem(void)
@@ -58,16 +58,47 @@ namespace ALEngine
 					continue;
 				}
 
-				rigid.velocity.y -= earthGravity;
-				//rigid.velocity.y = -350;
-				//rigid.velocity.x = -350;
+				//Gravity
+				AddForce(rigid, Vector2(0,-earthGravity * rigid.mass), FORCEMODE::FORCE);
+				
+				//Friction
+				Vector2 friction = { -rigid.velocity.x * globalDrag * rigid.drag.x, 0 };
+				AddForce(rigid, friction, FORCEMODE::FORCE);
+
 				rigidS->UpdateRigidbody(transform, collider, rigid);
+				Gizmos::Gizmo::RenderLine(transform.position, rigid.nextPosition);
 			}
 		}
 
 		void RigidbodySystem::UpdateRigidbody(Transform& t, Collider2D& collider, Rigidbody2D& rigid) {
+			//Update velocity
+			rigid.velocity += rigid.acceleration;
+
+			//Update frame's velocity
 			rigid.frameVelocity = rigid.velocity * Time::m_FixedDeltaTime;
+
+			//Calculate next position
 			rigid.nextPosition = t.position + collider.localPosition + rigid.frameVelocity;
+
+			//Refresh acceleration
+			rigid.acceleration *= 0;
+
+		}
+	
+		void AddForce(Rigidbody2D& rigidbody, Math::Vec2 forceVelocity, FORCEMODE mode) {
+			switch (mode) {
+			case FORCEMODE::FORCE:
+				rigidbody.acceleration += forceVelocity / rigidbody.mass;
+				break;
+
+			case FORCEMODE::ACCELERATION:
+				rigidbody.acceleration += forceVelocity;
+				break;
+
+			case FORCEMODE::VELOCITY_CHANGE:
+				rigidbody.velocity += forceVelocity;
+				break;
+			}
 		}
 	}
 }

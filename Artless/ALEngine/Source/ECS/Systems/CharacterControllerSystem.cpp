@@ -50,7 +50,7 @@ namespace ALEngine
 			Coordinator::Instance()->AddComponent(entity, charControl);
 		}
 
-		void UpdateCharaterControllerSystem() {
+		void UpdateCharacterControllerSystem() {
 			for (auto it = characterControlS->mEntities.begin(); it != characterControlS->mEntities.end(); ++it) {
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 				CharacterController& cc = Coordinator::Instance()->GetComponent<CharacterController>(*it);
@@ -60,19 +60,19 @@ namespace ALEngine
 		}
 
 		void CharacterControllerSystem::UpdateCharacterController(CharacterController & characControl, Rigidbody2D & rigid) {
-			rigid.velocity.x = 0;
+			//rigid.velocity.x = 0;
 
-			if (Input::Input::KeyDown(static_cast<KeyCode>(characControl.jumpKey))) {
-				rigid.velocity.y = characControl.jumpStrength;
+			if (Input::Input::KeyTriggered(static_cast<KeyCode>(characControl.jumpKey))) {
+				AddForce(rigid, Vector2(0, characControl.jumpStrength), FORCEMODE::FORCE);
 			}
 
 			if (Input::Input::KeyDown(static_cast<KeyCode>(characControl.leftKey)))
 			{
-				rigid.velocity.x -= characControl.speed;	
+				AddForce(rigid, Vector2(-characControl.speed, 0), FORCEMODE::FORCE);
 			}
 			if (Input::Input::KeyDown(static_cast<KeyCode>(characControl.rightKey)))
 			{
-				rigid.velocity.x += characControl.speed;
+				AddForce(rigid, Vector2(characControl.speed, 0), FORCEMODE::FORCE);
 			}
 
 			//Rotation
