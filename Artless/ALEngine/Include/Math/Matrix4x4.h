@@ -10,7 +10,6 @@ brief:	This file contain a 4x4 Matrix that is inherited from a base matrix class
 #ifndef	MATRIX_4X4_H
 #define MATRIX_4X4_H
 
-#include "matrix.h"
 namespace ALEngine
 {
 	namespace Math
@@ -23,7 +22,7 @@ namespace ALEngine
 			using const_reference = value_type const&;
 			using pointer = value_type*;
 			using const_pointer = value_type const*;
-			using size_type = s64;
+			using size_type = u64;
 			/*!*********************************************************************************
 				\brief
 				Constructor that takes in a single value_type variable that initializes the
@@ -55,8 +54,27 @@ namespace ALEngine
 			***********************************************************************************/
 			virtual ~Matrix4x4(void) = default;
 
+			/*!*********************************************************************************
+				\brief
+				Overloaded () operator to access and modify the matrix
 
+				\param [in] row:
+				Row of the matrix to retrieve data from
+				\param [in] col:
+				Column of the matrix to retrieve data from
+			***********************************************************************************/
 			reference operator()(size_type row, size_type col);
+
+			/*!*********************************************************************************
+				\brief
+				Overloaded () operator to access the matrix
+
+				\param [in] row:
+				Row of the matrix to retrieve the data from
+				\param [in] col:
+				Column of the matrix to retrieve the data from
+			***********************************************************************************/
+			const_reference operator()(size_type row, size_type col) const;
 
 			/*!*********************************************************************************
 				\brief
@@ -105,6 +123,12 @@ namespace ALEngine
 				A reference to this class's matrix after doing scalar multiplication
 			***********************************************************************************/
 			Matrix4x4& operator*=(value_type rhs);
+
+			/*!*********************************************************************************
+				\brief
+				Returns a const pointer to the data for matrix
+			***********************************************************************************/
+			const_pointer value_ptr(void) const;
 
 			/*!*********************************************************************************
 				\brief
@@ -245,6 +269,8 @@ namespace ALEngine
 			***********************************************************************************/
 			static Matrix4x4 LookAt(Vector3 eye, Vector3 center, Vector3 up);
 
+			static Matrix4x4 Model(Vector3 const& pos, Vector3 const& scale, f32 rot);
+
 		private:
 			Vector4 mat[4];
 		}; using Mat4 = Matrix4x4; using Mtx4 = Matrix4x4;
@@ -321,7 +347,7 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Matrix multiplication with Vector2
+			Matrix multiplication with Vector3
 
 			\param [in] lhs:
 			Matrix on the left hand side of the * operator to multiply with
@@ -329,6 +355,28 @@ namespace ALEngine
 			Vector3 on the left hand side of the * operator to multiply with
 		***********************************************************************************/
 		Vector3 operator*(Matrix4x4 const& lhs, Vector3 const& rhs);
+
+		/*!*********************************************************************************
+			\brief
+			Matrix multiplication with Vector4
+
+			\param [in] lhs:
+			Matrix on the left hand side of the * operator to multiply with
+			\param [in] rhs:
+			Vector4 on the left hand side of the * operator to multiply with
+		***********************************************************************************/
+		Vector4 operator*(Matrix4x4 const& lhs, Vector4 const& rhs);
+
+		/*!*********************************************************************************
+			\brief
+			To output data of matrix to the output stream
+
+			\param [in] os:
+			Reference to the output stream to stream the matrix data to
+			\param [in] rhs:
+			Matrix data to be streamed to the output stream os
+		***********************************************************************************/
+		std::ostream& operator<<(std::ostream& os, Matrix4x4 const& rhs);
 	}
 }
 

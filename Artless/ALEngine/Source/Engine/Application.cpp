@@ -21,19 +21,21 @@ namespace ALEngine
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 
-			for (size_t i = 0; i < 2500; ++i)
-			{
-				Transform transform{ Vector2(Random::Range(-600.0f, 600.0f), Random::Range(-300.0f, 300.0f)), 
-									 Vector2(Random::Range(20.0f, 50.0f), Random::Range(20.0f, 50.0f)), 
-									 0.0f };
-				CreateSprite(transform);
-			}
+			//for (size_t i = 0; i < 2500; ++i)
+			//{
+			//	Transform transform{ Vector2(Random::Range(-600.0f, 600.0f), Random::Range(-300.0f, 300.0f)), 
+			//						 Vector2(Random::Range(20.0f, 50.0f), Random::Range(20.0f, 50.0f)), 
+			//						 0.0f };
+			//	CreateSprite(transform);
+			//}
+
+			CreateSprite(Transform{ { 300.0f, 300.0f, 20.0f }, { 20.0f, 20.0f }, 30.0f });
 
 			// Initialize Time (Framerate Controller)
 			Time::Init();
 
 			// Init ImGui
-			ALEditor::Instance()->Init();
+			//ALEditor::Instance()->Init();
 		}
 
 		void Application::Update(void)
@@ -48,7 +50,7 @@ namespace ALEngine
 				Time::ClockTimeNow();
 
 				// Begin new ImGui frame
-				ALEditor::Instance()->Begin();
+				//ALEditor::Instance()->Begin();
 
 				// Normal Update
 				Engine::Update();
@@ -63,6 +65,8 @@ namespace ALEngine
 				// Render
 				Render();
 
+				std::cout << Time::m_FPS << std::endl;
+
 				// Wait for next frame
 				Time::WaitUntil();
 			}
@@ -70,11 +74,11 @@ namespace ALEngine
 
 		void Application::Exit(void)
 		{
-			// Shutdown imgui
-			ImGui_ImplGlfw_Shutdown();
-			ImGui_ImplOpenGL3_Shutdown();
-			// Destroy imgui context
-			ImGui::DestroyContext();
+			//// Shutdown imgui
+			//ImGui_ImplGlfw_Shutdown();
+			//ImGui_ImplOpenGL3_Shutdown();
+			//// Destroy imgui context
+			//ImGui::DestroyContext();
 			glfwTerminate();	// clean/delete all GLFW resources
 		}
 

@@ -46,7 +46,7 @@ namespace ALEngine
 		namespace
 		{
 			std::shared_ptr<RenderSystem> rs;
-			Shader spriteShader/*, meshShader*/;
+			Shader spriteShader, meshShader;
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
@@ -58,51 +58,74 @@ namespace ALEngine
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
 		{
+			Color const& color = sprite.color;
+			Vector3 const& position{ trans.position }, scale{ trans.scale };
 
+			// Getting the appropriate shader
+			Shader* shader{ nullptr };
+			if (sprite.texture)
+				shader = &spriteShader;
+			else
+				shader = &meshShader;
 
+			// TRS model multiplication
+			Matrix4x4 model = Matrix4x4::Model(trans.position, trans.scale, trans.rotation);
 
-			//Color const& color = sprite.color;
-			//Vector2 const& position{ trans.position }, scale{ trans.scale };
+			//std::cout << model << std::endl;
 
-			//// Getting the appropriate shader
-			//Shader* shader{ nullptr };
-			//if (sprite.texture)
-			//	shader = &spriteShader;
-			//else
-			//	shader = &meshShader;
+			matrix s(4, 4), t(4, 4), r(4, 4); f32 const rad = DegreeToRadian(trans.rotation), cos = std::cosf(rad), sin = std::sinf(rad);
+			s(0, 0) = trans.scale.x, s(1, 1) = trans.scale.y, s(2, 2) = 1.0f;
+			t(3, 0) = position.x, t(3, 1) = position.y, t(3, 2) = position.z;
+			r(0, 0) = cos, r(0, 1) = -sin, r(1, 0) = sin, r(1, 1) = cos;
 
-			//// TRS model multiplication
-			//Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
-			//shader->use();
-			//shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
-			//glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
-			//glActiveTexture(GL_TEXTURE0);
-			////glBindTexture(GL_TEXTURE_2D, sprite.texture);
-			//glBindVertexArray(sprite.vao);
-			//// render based on the primitive type
-			//switch (sprite.primitive)
-			//{
-			//	case GL_TRIANGLE_FAN:
-			//	{
-			//		glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
-			//		break;
-			//	}
-			//	case GL_TRIANGLE_STRIP:
-			//	{
-			//		glEnable(GL_PRIMITIVE_RESTART);
-			//		glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
-			//		glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-			//		glDisable(GL_PRIMITIVE_RESTART);
-			//		break;
-			//	}
-			//	case GL_TRIANGLES:
-			//	{
-			//		glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-			//		break;
-			//	}
-			//}	
-			//// Unbind to prevent any unintended behaviour to vao
-			//glBindVertexArray(0);
+			matrix a = s * r * t;
+			for (size_t i = 0; i < 4; ++i)
+			{
+				for (size_t j = 0; j < 4; ++j)
+					std::cout << *(a.value_ptr() + i * 4 + j) << ' ';
+				std::cout << std::endl;
+			}
+
+			std::cout << std::endl;
+
+			for (size_t i = 0; i < 4; ++i)
+			{
+				for (size_t j = 0; j < 4; ++j)
+					std::cout << *(model.value_ptr() + i * 4 + j) << ' ';
+				std::cout << std::endl;
+			}
+			
+
+			shader->use();
+			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
+			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
+			glActiveTexture(GL_TEXTURE0);
+			//glBindTexture(GL_TEXTURE_2D, sprite.texture);
+			glBindVertexArray(sprite.vao);
+			// render based on the primitive type
+			switch (sprite.primitive)
+			{
+				case GL_TRIANGLE_FAN:
+				{
+					glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
+					break;
+				}
+				case GL_TRIANGLE_STRIP:
+				{
+					glEnable(GL_PRIMITIVE_RESTART);
+					glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
+					glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+					glDisable(GL_PRIMITIVE_RESTART);
+					break;
+				}
+				case GL_TRIANGLES:
+				{
+					glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+					break;
+				}
+			}	
+			// Unbind to prevent any unintended behaviour to vao
+			glBindVertexArray(0);
 		}
 
 		void RenderSystem::RenderSprites(u64 counts)
@@ -121,16 +144,16 @@ namespace ALEngine
 		{
 			spriteShader.use();
 			spriteShader.Set("view", camera.ViewMatrix());
-			//meshShader.use();
-			//meshShader.Set("view", camera.ViewMatrix());
+			meshShader.use();
+			meshShader.Set("view", camera.ViewMatrix());
 		}
 
 		void UpdateProjectionMatrix(void)
 		{
 			spriteShader.use();
 			spriteShader.Set("proj", camera.ProjectionMatrix());
-			//meshShader.use();
-			//meshShader.Set("proj", camera.ProjectionMatrix());
+			meshShader.use();
+			meshShader.Set("proj", camera.ProjectionMatrix());
 		}
 
 		void RegisterRenderSystem(void)
@@ -147,10 +170,10 @@ namespace ALEngine
 			spriteShader.Set("view", camera.ViewMatrix());
 			spriteShader.Set("proj", camera.ProjectionMatrix());
 
-			//meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
-			//meshShader.use();
-			//meshShader.Set("view", camera.ViewMatrix());
-			//meshShader.Set("proj", camera.ProjectionMatrix());
+			meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
+			meshShader.use();
+			meshShader.Set("view", camera.ViewMatrix());
+			meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
 
@@ -232,18 +255,23 @@ namespace ALEngine
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 			{
 				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
-				// SRT
-				*(modelMatrices + index++) = Matrix4x4::Scale(trans.scale) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(trans.position);
+				Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);
+				rs->Render(sprite, trans);
+
+				//// SRT
+				//*(modelMatrices + index++) = Matrix4x4::Scale(trans.scale.x, trans.scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(trans.position.x, trans.position.y, trans.position.z);
+
+				//std::cout << *modelMatrices << std::endl;
 			}
 
-			SubInstanceBufferData(texIndex, modelMatrices);
-			rs->RenderSprites(entities.size());
+			//SubInstanceBufferData(texIndex, modelMatrices);
+			//rs->RenderSprites(entities.size());
 
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
 
 			// End of ImGui frame, render ImGui!
-			ALEditor::Instance()->End();
+			//ALEditor::Instance()->End();
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());

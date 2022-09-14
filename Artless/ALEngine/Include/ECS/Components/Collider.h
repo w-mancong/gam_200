@@ -34,7 +34,7 @@ namespace ALEngine
 			{
 			public:
 				Math::Vector2 frameEndGlobalPosition;
-				Math::Vector2 localPosition { 0.f, 0.f };
+				Math::Vector3 localPosition { 0.f, 0.f, 0.f };
 				Math::Vector2 globalRight{ 1.f, 0.f }, globalUp{ 0.f, 1.f };
 				ColliderType colliderType { ColliderType::Rectangle2D_AABB };
 				f32 rotation = 0.f;

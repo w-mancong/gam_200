@@ -5,7 +5,7 @@
 
 namespace
 {
-	u64 const MATRIX4X4_SIZE{ ALEngine::Math::Matrix4x4::size * ALEngine::ECS::MAX_ENTITIES }, TEX_INDEX_SIZE{ sizeof(f32) * ALEngine::ECS::MAX_ENTITIES };
+	u64 const MATRIX4X4_SIZE{ sizeof(ALEngine::Math::Matrix4x4) * ALEngine::ECS::MAX_ENTITIES }, TEX_INDEX_SIZE{ sizeof(f32) * ALEngine::ECS::MAX_ENTITIES };
 	// layout location inside vertex shader
 	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, SPRITE_RESERVE_SIZE{ 100 };
 	u32 instanceBuffer{ 0 };
@@ -214,7 +214,7 @@ namespace ALEngine
 			for (size_t i = 0; i < 4; ++i)
 			{
 				glEnableVertexAttribArray(i * 3);
-				glVertexAttribPointer(i * 3, 4, GL_FLOAT, GL_FALSE, Matrix4x4::size, (void*)(MAX_ENTITIES * sizeof(f32) + i * sizeof(Vector4)));
+				glVertexAttribPointer(i * 3, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4x4), (void*)(MAX_ENTITIES * sizeof(f32) + i * sizeof(Vector4)));
 				glVertexAttribDivisor(i * 3, 1);
 			}
 
@@ -294,7 +294,7 @@ namespace ALEngine
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer);
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(f32) * ECS::MAX_ENTITIES, texIndex);
-			glBufferSubData(GL_ARRAY_BUFFER, sizeof(f32) * ECS::MAX_ENTITIES, Matrix4x4::size * ECS::MAX_ENTITIES, matrices);
+			glBufferSubData(GL_ARRAY_BUFFER, sizeof(f32) * ECS::MAX_ENTITIES, sizeof(Matrix4x4) * ECS::MAX_ENTITIES, matrices);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 	}
