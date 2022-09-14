@@ -53,7 +53,7 @@ namespace ALEngine
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
 		{
 			Color const& color = sprite.color;
-			Vector2 const& position{ trans.position }, scale{ trans.scale };
+			Vector3 const& position{ trans.position }, scale{ trans.scale };
 
 			// Getting the appropriate shader
 			Shader* shader{ nullptr };
@@ -64,6 +64,9 @@ namespace ALEngine
 
 			// TRS model multiplication
 			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
+			//Matrix4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
+			std::cout << model << std::endl;
+
 			shader->use();
 			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
 			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
@@ -132,11 +135,6 @@ namespace ALEngine
 			meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
-
-			// Load and initialise fonts
-			Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
-			Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
-			Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -205,10 +203,6 @@ namespace ALEngine
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			Gizmo::SetLineWidth(3.f);
-			Gizmo::RenderLine(Math::Vector2{ -3.f,-5.f }, Math::Vector2{ -2.f, -2.f });
-			Gizmo::DrawLineBox(Math::Vector2{ 0.f,0.f }, Math::Vector2{ 0.f, 5.f }, Math::Vector2{ 2.f, 5.f }, Math::Vector2{ 2.f, 0.f });
-
 			u32 displayed = 0;
 			for (auto it = entities.begin(); it != entities.end(); ++it)
 			{
@@ -223,15 +217,6 @@ namespace ALEngine
 
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
-
-			Text test;
-			SetFont(test, "roboto");
-			SetTextString(test, "test");
-			SetTextSize(test, 1.f);
-			SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-			SetFontType(test, Font::FontType::Regular);
-			SetTextPos(test, Vector2(50.f, 50.f));
-			RenderText(test);
 
 			// End of ImGui frame, render ImGui!
 			ALEditor::Instance()->End();
@@ -369,49 +354,6 @@ namespace ALEngine
 			Entity entity = Coordinator::Instance()->CreateEntity();
 			CreateSprite(entity, transform, filePath, layer, mode);
 			return entity;
-		}
-
-		// Gizmo static member declarations
-		f32 Gizmo::lineWidith;
-
-		void Gizmo::RenderLine(Math::Vector2 pt0, Math::Vector2 pt1)
-		{
-			std::array<Math::Vector2, 2> pos_vtx;
-			pos_vtx[0] = pt0;
-			pos_vtx[1] = pt1;
-
-			GLuint VAO, VBO;
-
-			glGenVertexArrays(1, &VAO);
-			glGenBuffers(1, &VBO);
-			glBindVertexArray(VAO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(pos_vtx) * pos_vtx.size(), &pos_vtx, GL_DYNAMIC_DRAW);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
-			glEnableVertexAttribArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
-
-			meshShader.use();
-			glLineWidth(lineWidith);
-
-			glBindVertexArray(VAO);
-			glDrawArrays(GL_LINES, 0, 2); // render line
-
-			// cleanup
-			glDeleteBuffers(1, &VAO);
-			glDeleteVertexArrays(1, &VBO);
-
-			// reset line width
-			glLineWidth(1.f);
-		}
-
-		void Gizmo::DrawLineBox(Math::Vector2 pt0, Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector2 pt3)
-		{
-			Gizmo::RenderLine(pt0, pt1);
-			Gizmo::RenderLine(pt1, pt2);
-			Gizmo::RenderLine(pt2, pt3);
-			Gizmo::RenderLine(pt3, pt0);
 		}
 	}
 }
