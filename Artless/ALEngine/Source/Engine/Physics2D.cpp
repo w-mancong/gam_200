@@ -88,7 +88,7 @@ namespace ALEngine
 
 			RaycastHit2D Raycast_Circle(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider) {
 				RaycastHit2D hitOutput;
-				Vector2 circleGlobalPosition = collider.localPosition + parent_transform_collider.position;
+				Vector2 circleGlobalPosition = collider.localPosition() + parent_transform_collider.position;
 
 				Vector2 direction = ray.end - ray.origin;
 				Vector2 directionNormalized = direction.Normalize();

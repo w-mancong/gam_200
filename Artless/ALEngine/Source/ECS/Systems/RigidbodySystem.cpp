@@ -78,7 +78,7 @@ namespace ALEngine
 			rigid.frameVelocity = rigid.velocity * Time::m_FixedDeltaTime;
 
 			//Calculate next position
-			rigid.nextPosition = t.position + collider.localPosition + rigid.frameVelocity;
+			rigid.nextPosition = t.position + collider.localPosition() + rigid.frameVelocity;
 
 			//Refresh acceleration
 			rigid.acceleration *= 0;

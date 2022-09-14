@@ -101,8 +101,8 @@ namespace ALEngine
 
 			Math::Matrix3x3 rotationTransform = Math::Matrix3x3::Rotation(collider.rotation + parentTransform.rotation);
 
-			collider.globalRight = rotationTransform * worldXAxis;
-			collider.globalUp = rotationTransform * worldYAxis;
+			collider.globalRight(rotationTransform * worldXAxis);
+			collider.globalUp(rotationTransform * worldYAxis);
 		}
 
 		bool ColliderSystem::UpdateCollider(Collider2D& collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two)
@@ -349,8 +349,8 @@ namespace ALEngine
 
 			//Get closest point
 			Vector2 closestPoint; //From Box
-			Vector2 circlePosition = parent_transform_circle.position + collider_circle.localPosition;
-			Vector2 boxPosition = parent_transform_box_AABB.position + collider_box_AABB.localPosition;
+			Vector2 circlePosition = parent_transform_circle.position + collider_circle.localPosition();
+			Vector2 boxPosition = parent_transform_box_AABB.position + collider_box_AABB.localPosition();
 
 			f32 boxWidth = collider_box_AABB.scale[0], boxHeight = collider_box_AABB.scale[1];
 			closestPoint.x = std::max(boxPosition.x - boxWidth * 0.5f, std::min(circlePosition.x, boxPosition.x + boxWidth * 0.5f));
@@ -368,8 +368,8 @@ namespace ALEngine
 		}
 
 		bool ColliderSystem::CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two) {
-			Vector2 oneCirclePosition = parent_transform_one.position + collider_one.localPosition;
-			Vector2 twoCirclePosition = parent_transform_two.position + collider_two.localPosition;
+			Vector2 oneCirclePosition = parent_transform_one.position + collider_one.localPosition();
+			Vector2 twoCirclePosition = parent_transform_two.position + collider_two.localPosition();
 			
 			Vector2 vector_distance = oneCirclePosition - twoCirclePosition;
 
@@ -384,10 +384,10 @@ namespace ALEngine
 
 		bool ColliderSystem::CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two) {
 			//Test both box on local Axis Box1.x, Box1.y Box2.x and Box2.y
-			if (!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalRight, parent_transform_one, parent_transform_two)	||
-				!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalUp, parent_transform_one, parent_transform_two)		||
-				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalRight, parent_transform_one, parent_transform_two)	||
-				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalUp, parent_transform_one, parent_transform_two))
+			if (!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalRight(), parent_transform_one, parent_transform_two)	||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalUp(), parent_transform_one, parent_transform_two)		||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalRight(), parent_transform_one, parent_transform_two)	||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalUp(), parent_transform_one, parent_transform_two))
 			{
 				//If any is not overlapping, means box ain't touching
 				return false;
@@ -405,8 +405,8 @@ namespace ALEngine
 			Transform const& parent_transform_circle = collider_one.colliderType == ColliderType::Circle2D ? parent_transform_one : parent_transform_two;
 			Transform const& parent_transform_box_OOBB = collider_two.colliderType == ColliderType::Rectangle2D_OOBB ? parent_transform_two : parent_transform_one;
 			
-			Vector2 circle_world_position = parent_transform_circle.position + collider_circle.localPosition;
-			Vector2 box_world_position = parent_transform_box_OOBB.position + collider_box_OOBB.localPosition;
+			Vector2 circle_world_position = parent_transform_circle.position + collider_circle.localPosition();
+			Vector2 box_world_position = parent_transform_box_OOBB.position + collider_box_OOBB.localPosition();
 			
 			//recreate the box in local space, origin at 0, similar to NDC box concept
 			Vector2 min = { -collider_box_OOBB.scale[0] * 0.5f, -collider_box_OOBB.scale[1] * 0.5f };	//BL
@@ -459,10 +459,10 @@ namespace ALEngine
 			//x - min, y - max
 			Vector2 result_MinMax { 0,0 };
 
-			Vector2 half_right = box.globalRight * box.scale[0] * 0.5f;
-			Vector2 half_up = box.globalUp * box.scale[1] * 0.5f;
+			Vector2 half_right = box.globalRight() * box.scale[0] * 0.5f;
+			Vector2 half_up = box.globalUp() * box.scale[1] * 0.5f;
 
-			Vector2 globalPosition = parentTransform.position + box.localPosition;
+			Vector2 globalPosition = parentTransform.position + box.localPosition();
 
 			//Four corners of the box
 			Vector2 vertices[4];
@@ -495,14 +495,13 @@ namespace ALEngine
 			return result_MinMax;
 		}
 		
-
 		using Physics::RaycastHit2D;
 		bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
 			if (rigidbody_moving.velocity.Magnitude() == 0) {
 				return CheckCollision_AABB_To_AABB(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
 			}
-			Vector2 movingGlobalPosition = collider_moving.localPosition + parent_transform_moving.position;
-			Vector2 otherGlobalPosition = collider_other.localPosition + parent_transform_other.position;
+			Vector2 movingGlobalPosition = collider_moving.localPosition() + parent_transform_moving.position;
+			Vector2 otherGlobalPosition = collider_other.localPosition() + parent_transform_other.position;
 
 			Collider2D tempBox = collider_other;			
 			tempBox.scale[0] += collider_moving.scale[0];
@@ -551,8 +550,8 @@ namespace ALEngine
 				return CheckCollision_Circle_To_Circle(collider_moving, collider_other, parent_transform_moving, parent_transform_other);
 			}
 
-			Vector2 movingGlobalPosition = collider_moving.localPosition + parent_transform_moving.position;
-			Vector2 otherGlobalPosition = collider_other.localPosition + parent_transform_other.position;
+			Vector2 movingGlobalPosition = collider_moving.localPosition() + parent_transform_moving.position;
+			Vector2 otherGlobalPosition = collider_other.localPosition() + parent_transform_other.position;
 
 			Collider2D tempCircle = collider_other;
 			tempCircle.scale[0] += collider_moving.scale[0];

@@ -39,7 +39,7 @@ namespace ALEngine
 			CreateCollider(Noah, ColliderType::Rectangle2D_AABB);
 			CreateRigidbody(Noah);
 			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).isEnabled = true;
-			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).drag.x = 0.5f;
+			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).drag.x = 0.25f;
 			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).mass = 1.f;
 			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
 			collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 50.f;
