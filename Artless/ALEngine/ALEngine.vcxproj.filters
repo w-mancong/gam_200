@@ -372,10 +372,14 @@
     <ClInclude Include="Include\Common Header\MyEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\ECS\Components\CharacterController.h">
+=======
+    <ClInclude Include="Include\Editor\Panels\LoggerPanel.h">
+>>>>>>> origin/lucas
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

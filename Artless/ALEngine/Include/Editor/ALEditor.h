@@ -24,6 +24,8 @@ namespace ALEngine
 			void Begin();
 			void End();
 
+			void SetImGuiEnabled(b8 isEnabled) { m_ImGuiEnabled = isEnabled; }
+
 			void SetDockingEnabled(b8 isEnabled) { m_DockingEnabled = isEnabled; }
 
 		private:
@@ -38,7 +40,8 @@ namespace ALEngine
 			friend class Memory::StaticMemory;
 
 			// Variables
-			b8 m_DockingEnabled{ false };
+			b8 m_ImGuiEnabled{ false };
+			b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
 
 			ContentBrowserPanel cbp;
 		};
