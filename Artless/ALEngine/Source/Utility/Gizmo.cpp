@@ -14,6 +14,7 @@ namespace ALEngine
 		std::vector<std::pair<Math::Vector2, Math::Vector2>> Gizmo::linesContainer;
 		bool Gizmo::gizmoToggle;
 		Math::Vector3 Gizmo::gizmoColor;
+		u32 Gizmo::gizmoCircleSegments;
 
 		// this function makes the sample line
 		void Gizmo::GizmoInit()
@@ -35,6 +36,7 @@ namespace ALEngine
 			gizmoLineWidith = 1.f;
 			gizmoToggle = true;
 			gizmoColor = Math::Vector3(0.f, 1.f, 0.f); // default color is green
+			gizmoCircleSegments = 32; // default circle will have 32 line segments
 
 			glGenVertexArrays(1, &GizmoVaoId);
 			glGenBuffers(1, &GizmoVboId);
@@ -55,16 +57,15 @@ namespace ALEngine
 
 		void Gizmo::RenderCircle(Math::Vector2 center, f32 radius)
 		{
-			f32 step = 2.f * 3.141592f / 26.f; 
+			const float degreeIncrement{ 2.f * 3.141592f / (float)gizmoCircleSegments };
 			Math::Vector2 first, second;
-			for (f32 theta{}; theta < 6.f; theta += step)
+			
+			first = center + radius * Math::Vector2(cosf(0.f), sinf(0.f));
+			for (unsigned i{ 0 }; i <= gizmoCircleSegments; ++i)
 			{
-				first.x = center.x + radius * cos(theta);
-				first.y = center.y + radius * sin(theta);
-				theta += step;
-				second.x = center.x + radius * cos(theta);
-				second.y = center.y + radius * sin(theta);
+				second = center + radius * Math::Vector2(cosf(degreeIncrement * i), sinf(degreeIncrement * i));
 				RenderLine(first, second);
+				first = second;
 			}
 		}
 
