@@ -35,20 +35,52 @@ namespace ALEngine
 
 		Matrix4x4& Matrix4x4::operator+=(Matrix4x4 const& rhs)
 		{
-			mat[0].x += rhs.mat[0].x; mat[0].y += rhs.mat[0].y; mat[0].z += rhs.mat[0].z; mat[0].w += rhs.mat[0].w;
-			mat[1].x += rhs.mat[1].x; mat[1].y += rhs.mat[1].y; mat[1].z += rhs.mat[1].z; mat[1].w += rhs.mat[1].w;
-			mat[2].x += rhs.mat[2].x; mat[2].y += rhs.mat[2].y; mat[2].z += rhs.mat[2].z; mat[2].w += rhs.mat[2].w;
-			mat[3].x += rhs.mat[3].x; mat[3].y += rhs.mat[3].y; mat[3].z += rhs.mat[3].z; mat[3].w += rhs.mat[3].w;
-			return *this;
+			Matrix4x4 res(1.0f);  Matrix4 const& lhs = *this;
+			res(0, 0) = lhs(0, 0) + rhs(0, 0);
+			res(0, 1) = lhs(0, 1) + rhs(0, 1);
+			res(0, 2) = lhs(0, 2) + rhs(0, 2);
+			res(0, 3) = lhs(0, 3) + rhs(0, 3);
+
+			res(1, 0) = lhs(1, 0) + rhs(1, 0);
+			res(1, 1) = lhs(1, 1) + rhs(1, 1);
+			res(1, 2) = lhs(1, 2) + rhs(1, 2);
+			res(1, 3) = lhs(1, 3) + rhs(1, 3);
+
+			res(2, 0) = lhs(2, 0) + rhs(2, 0);
+			res(2, 1) = lhs(2, 1) + rhs(2, 1);
+			res(2, 2) = lhs(2, 2) + rhs(2, 2);
+			res(2, 3) = lhs(2, 3) + rhs(2, 3);
+
+			res(3, 0) = lhs(3, 0) + rhs(3, 0);
+			res(3, 1) = lhs(3, 1) + rhs(3, 1);
+			res(3, 2) = lhs(3, 2) + rhs(3, 2);
+			res(3, 3) = lhs(3, 3) + rhs(3, 3);
+			return (*this = res);
 		}
 
 		Matrix4x4& Matrix4x4::operator-=(Matrix4x4 const& rhs)
 		{
-			mat[0].x -= rhs.mat[0].x; mat[0].y -= rhs.mat[0].y; mat[0].z -= rhs.mat[0].z; mat[0].w -= rhs.mat[0].w;
-			mat[1].x -= rhs.mat[1].x; mat[1].y -= rhs.mat[1].y; mat[1].z -= rhs.mat[1].z; mat[1].w -= rhs.mat[1].w;
-			mat[2].x -= rhs.mat[2].x; mat[2].y -= rhs.mat[2].y; mat[2].z -= rhs.mat[2].z; mat[2].w -= rhs.mat[2].w;
-			mat[3].x -= rhs.mat[3].x; mat[3].y -= rhs.mat[3].y; mat[3].z -= rhs.mat[3].z; mat[3].w -= rhs.mat[3].w;
-			return *this;
+			Matrix4x4 res(1.0f);  Matrix4 const& lhs = *this;
+			res(0, 0) = lhs(0, 0) - rhs(0, 0);
+			res(0, 1) = lhs(0, 1) - rhs(0, 1);
+			res(0, 2) = lhs(0, 2) - rhs(0, 2);
+			res(0, 3) = lhs(0, 3) - rhs(0, 3);
+
+			res(1, 0) = lhs(1, 0) - rhs(1, 0);
+			res(1, 1) = lhs(1, 1) - rhs(1, 1);
+			res(1, 2) = lhs(1, 2) - rhs(1, 2);
+			res(1, 3) = lhs(1, 3) - rhs(1, 3);
+
+			res(2, 0) = lhs(2, 0) - rhs(2, 0);
+			res(2, 1) = lhs(2, 1) - rhs(2, 1);
+			res(2, 2) = lhs(2, 2) - rhs(2, 2);
+			res(2, 3) = lhs(2, 3) - rhs(2, 3);
+
+			res(3, 0) = lhs(3, 0) - rhs(3, 0);
+			res(3, 1) = lhs(3, 1) - rhs(3, 1);
+			res(3, 2) = lhs(3, 2) - rhs(3, 2);
+			res(3, 3) = lhs(3, 3) - rhs(3, 3);
+			return (*this = res);
 		}
 
 		Matrix4x4& Matrix4x4::operator*=(Matrix4x4 const& rhs)

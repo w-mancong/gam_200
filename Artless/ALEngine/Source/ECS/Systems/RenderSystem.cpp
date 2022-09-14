@@ -13,6 +13,7 @@ namespace ALEngine
 		{
 		public:
 			void Render(Sprite const& sprite, Transform const& trans);
+			void RenderInstance(s32 count);
 		};
 
 		struct Plane
@@ -48,6 +49,8 @@ namespace ALEngine
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
+			Matrix4* modelMatrices{ nullptr };
+			Sprite rect;
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -63,9 +66,7 @@ namespace ALEngine
 				shader = &meshShader;
 
 			// TRS model multiplication
-			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
-			//Matrix4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
-			std::cout << model << std::endl;
+			Matrix4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
 
 			shader->use();
 			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
@@ -96,6 +97,17 @@ namespace ALEngine
 				}
 			}	
 			// Unbind to prevent any unintended behaviour to vao
+			glBindVertexArray(0);
+		}
+
+		void RenderSystem::RenderInstance(s32 count)
+		{
+			meshShader.use();
+			glBindVertexArray(rect.vao);
+			//glEnable(GL_PRIMITIVE_RESTART);
+			//glPrimitiveRestartIndex(static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX));
+			glDrawElementsInstanced(GL_TRIANGLES, rect.drawCount, GL_UNSIGNED_INT, nullptr, count);
+			//glDisable(GL_PRIMITIVE_RESTART);
 			glBindVertexArray(0);
 		}
 
@@ -135,6 +147,9 @@ namespace ALEngine
 			meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
+
+			modelMatrices = Memory::StaticMemory::New<Matrix4>(ECS::MAX_ENTITIES);
+			rect = MeshBuilder::Instance()->MakeRectangle();
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -217,6 +232,18 @@ namespace ALEngine
 
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
+			//u64 index{ 0 };
+			//for (auto it = entities.begin(); it != entities.end(); ++it)
+			//{
+			//	Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
+			//	*(modelMatrices + index++) = Matrix4::Model(trans.position, trans.scale, trans.rotation);
+			//}
+
+			//meshShader.use();
+			//meshShader.Set("view", camera.ViewMatrix());
+			//meshShader.Set("proj", camera.ProjectionMatrix());
+			////SubMeshInstanceBuffer(modelMatrices);
+			//rs->RenderInstance(entities.size());
 
 			// End of ImGui frame, render ImGui!
 			ALEditor::Instance()->End();

@@ -7,18 +7,20 @@ namespace
 {
 	// layout location inside vertex shader
 	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, SPRITE_RESERVE_SIZE{ 100 };
+	u32 instanceVBO{ 0 };
 	u64 RECTANGLE_POSITION_SIZE_OFFSET{ 0 };
 }
 
 namespace ALEngine
 {
-	using namespace Math; using namespace Memory;
+	using namespace Math; using namespace Memory; using namespace ECS;
 	namespace Engine
 	{
 		MeshBuilder::MeshBuilder(void)
 		{
 			memset(m_Shapes, 0, sizeof(m_Shapes));
 			CreateRectangle(); CreateCircle(); CreateTriangle();
+			CreateInstanceBuffer();
 			m_Sprites.reserve(SPRITE_RESERVE_SIZE);
 		}
 
@@ -76,6 +78,38 @@ namespace ALEngine
 			m_Sprites.clear();
 		}
 
+		void MeshBuilder::CreateInstanceBuffer(void)
+		{
+			glBindVertexArray(m_Shapes[static_cast<u64>(Shapes::Rectangle)]->vao);
+			glGenBuffers(1, &instanceVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+
+			Matrix4 mat[] =
+			{
+				Matrix4::Model( { 0.0f, 150.0f, 0.0f }, { 50.0f, 50.0f, 1.0f }, 0.0f),
+				Matrix4::Model( { 0.0f, 0.0f  , 0.0f }, { 50.0f, 50.0f, 1.0f }, 0.0f),
+			};
+
+			glBufferData(GL_ARRAY_BUFFER, sizeof(mat), mat, GL_STATIC_DRAW);
+
+			// instance data
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4), (void*)(	 0));
+			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4), (void*)(	 sizeof(Vector4)));
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4), (void*)(2 * sizeof(Vector4)));
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4), (void*)(3 * sizeof(Vector4)));
+			glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(2);
+			glEnableVertexAttribArray(3);
+			glEnableVertexAttribArray(4);
+
+			glVertexAttribDivisor(1, 1);
+			glVertexAttribDivisor(2, 1);
+			glVertexAttribDivisor(3, 1);
+			glVertexAttribDivisor(4, 1);
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+
 		void MeshBuilder::CreateRectangle(void)
 		{
 			Sprite* sprite = StaticMemory::New<Sprite>();
@@ -92,7 +126,8 @@ namespace ALEngine
 				0.0f, 1.0f  // top left 
 			};
 			u32 indices[] = {
-				3, 2, 0, 1
+				0, 2, 1,
+				3, 2, 0
 			};
 
 			u64 const TOTAL_BYTES = sizeof(position) + sizeof(texCoords);
@@ -113,11 +148,12 @@ namespace ALEngine
 			// position attribute
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
 			glEnableVertexAttribArray(0);
+
 			// Unbind vertex array to prevent accidental modifications
 			glBindVertexArray(0);
 
 			sprite->drawCount = ARRAY_SIZE(indices);
-			sprite->primitive = GL_TRIANGLE_STRIP;
+			sprite->primitive = GL_TRIANGLES;
 			m_Shapes[static_cast<u64>(Shapes::Rectangle)] = sprite;
 		}
 
@@ -258,6 +294,15 @@ namespace ALEngine
 			glBindVertexArray(0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			return m_Sprites.back().second;
+		}
+
+		void SubMeshInstanceBuffer(Matrix4 const* mat)
+		{
+			//glBindVertexArray(MeshBuilder::Instance()->MakeRectangle().vao);
+			glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Matrix4) * MAX_ENTITIES, mat);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			//glBindVertexArray(0);
 		}
 	}
 }

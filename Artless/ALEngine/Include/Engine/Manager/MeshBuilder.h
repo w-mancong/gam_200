@@ -76,6 +76,8 @@ namespace ALEngine
 			***********************************************************************************/
 			virtual ~MeshBuilder(void);
 
+			void CreateInstanceBuffer(void);
+
 			/*!*********************************************************************************
 				\brief
 				Helper function to create a single rectangle. The data will be used to render
@@ -125,6 +127,8 @@ namespace ALEngine
 			std::vector<std::pair<std::string, Sprite*>, Memory::DynamicAllocator<std::pair<std::string, Sprite*>>> m_Sprites;
 			Sprite* m_Shapes[static_cast<u64>(Shapes::Total)];
 		};
+
+		void SubMeshInstanceBuffer(Math::Matrix4 const* mat);
 	}
 }
 

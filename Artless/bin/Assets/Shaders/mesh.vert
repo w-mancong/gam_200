@@ -1,5 +1,6 @@
 #version 450 core
 layout (location = 0) in vec2 aPos;
+layout (location = 1) in mat4 aInstanceModel;
 
 uniform mat4 model, view, proj;
 

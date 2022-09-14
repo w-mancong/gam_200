@@ -25,7 +25,7 @@ namespace ALEngine
 
 			//Obj 1
 			Transform transform{ Vector2(0, 150.0f), Vector2(50.f, 50.f), 0.0f };
-			Noah = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
+			Noah = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
 			sprite2.mode = RenderMode::Line;
@@ -41,7 +41,7 @@ namespace ALEngine
 
 			//Obj 2
 			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
-			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
+			Hinata = CreateSprite(transform, Shape::Rectangle, RenderLayer::Background);
 
 			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
 			sprite3.mode = RenderMode::Line;
