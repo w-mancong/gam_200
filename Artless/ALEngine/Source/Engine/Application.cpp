@@ -58,6 +58,9 @@ namespace ALEngine
 			// Init ImGui
 			ALEditor::Instance()->SetImGuiEnabled(false);
 			ALEditor::Instance()->SetDockingEnabled(true);
+
+			// Init Logger
+			ALEngine::Exceptions::Logger::Init();
 		}
 
 		void Application::Update(void)
@@ -75,13 +78,14 @@ namespace ALEngine
 				ALEditor::Instance()->Begin();
 
 				// Normal Update
-				Engine::Update();
+				//Engine::Update();
 				// Fixed Update (Physics)
 				accumulator += Time::m_DeltaTime;
 				while (accumulator >= Time::m_FixedDeltaTime)
 				{
 					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
+					std::cout << Time::m_FPS << std::endl;
 				}
 
 				// Render

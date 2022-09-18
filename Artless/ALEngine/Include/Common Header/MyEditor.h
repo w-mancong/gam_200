@@ -9,6 +9,7 @@ brief:	This file contains all the relevant Editor header files to be included in
 #ifndef	MY_EDITOR_H
 #define MY_EDITOR_H
 
+#include "Editor/Panels/LoggerPanel.h"
 #include "Editor/ALEditor.h"
 
 #endif

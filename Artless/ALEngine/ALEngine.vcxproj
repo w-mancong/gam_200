@@ -104,6 +104,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
+    <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
     <ClCompile Include="Source\Editor\ALEditor.cpp" />

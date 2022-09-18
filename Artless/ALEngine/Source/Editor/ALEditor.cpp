@@ -63,8 +63,9 @@ namespace ALEngine
 				return;
 
 			static bool show{ true };
-			ImGui::ShowDemoWindow(&show);
+			ImGui::ShowDebugLogWindow(&show);
 			cbp.OnImGuiRender();
+			logger_panel.OnImGuiRender();
 		}
 
 		void ALEditor::Begin()

@@ -44,6 +44,7 @@ namespace ALEngine
 			b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
 
 			ContentBrowserPanel cbp;
+			LoggerPanel logger_panel;
 		};
 	}
 }
