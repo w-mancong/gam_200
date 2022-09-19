@@ -106,7 +106,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp">
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="Source\Editor\imgui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,6 +129,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Editor\ALEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Asset Manager\AssetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -302,7 +305,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h">
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="Include\Editor\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -361,6 +364,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Common Header\MyEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\Components\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Asset Manager\AssetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

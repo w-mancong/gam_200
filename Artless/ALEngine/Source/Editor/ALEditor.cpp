@@ -40,6 +40,9 @@ namespace ALEngine
 		{
 			static bool show{ true };
 			ImGui::ShowDemoWindow(&show);
+
+			//content panel
+			ContentBrowserPanel.OnImGuiRender();
 		}
 
 		void ALEditor::Begin()

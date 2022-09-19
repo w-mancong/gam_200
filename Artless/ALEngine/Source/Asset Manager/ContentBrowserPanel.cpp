@@ -9,6 +9,7 @@
  \par Gam200
  \date 3-9-2022
  \brief
+  This file contains
 
 *******************************************************************************/
 
@@ -33,7 +34,7 @@ namespace ALEngine
 		void ContentBrowserPanel::OnImGuiRender()
 		{
 			//imgui window-------------------------------------------------------------------------
-			ImGui::Begin("Assets Content Browser");
+			ImGui::Begin("Content Browser");
 
 			if (currentdirectory != std::filesystem::path(assetpath))
 			{
@@ -51,7 +52,7 @@ namespace ALEngine
 				const auto& path = directoryentry.path();
 
 				//file relative path
-				auto relativepath = std::filesystem::relative(directoryentry.path(), assetpath);
+				std::filesystem::path relativepath = std::filesystem::relative(directoryentry.path(), assetpath);
 
 				//file name from relative path 
 				std::string filenamestring = relativepath.filename().string();
@@ -63,22 +64,37 @@ namespace ALEngine
 				if (directoryentry.is_directory())
 				{
 					//buttons that show the files
-					if (ImGui::Button(filenamestring.c_str()))
+					//if (ImGui::Button(filenamestring.c_str()))
+					//{
+					//}
+
+					//selectable to show file
+					if (ImGui::Selectable(filenamestring.c_str()))
 					{
 						currentdirectory /= directoryentry.path().filename();
 					}
+
 				}
 				else
 				{
-					if (ImGui::Button(filenamestring.c_str()))
-					{
+					//static char buf[128] = ;
 
-					}
+
+					//ImGui::InputText("1", buf, IM_ARRAYSIZE(filenamestring.c_str()));
+					//if (ImGui::Selectable(filenamestring.c_str()))
+					//{
+
+						//ImGui::Button(filenamestring.c_str());
+						
+					
+
+						//std::filesystem::rename();
+						
+					//}
 				}
-
-				ImGui::TextWrapped(filenamestring.c_str());
-
-				ImGui::NextColumn();
+	
+				//ImGui::TextWrapped(filenamestring.c_str());
+				//ImGui::NextColumn();
 
 			}
 

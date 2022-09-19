@@ -24,6 +24,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Components/Collider.h"
 #include "ECS/Components/Rigidbody.h"
 #include "ECS/Components/Text.h"
+#include "ECS/Components/Texture.h"
 
 // ----------------- System ---------------------
 #include "ECS/Systems/RenderSystem.h"

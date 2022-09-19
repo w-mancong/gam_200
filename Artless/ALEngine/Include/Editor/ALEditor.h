@@ -9,6 +9,8 @@ brief:	This file contains the function declarations for the ALEditor class
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
+#include "Asset Manager/ContentBrowserPanel.h"
+
 namespace ALEngine
 {
 	namespace Engine
@@ -30,6 +32,10 @@ namespace ALEngine
 
 			friend class Templates::Singleton<ALEditor>;
 			friend class Memory::StaticMemory;
+
+			//content browser panel need to move to panel class 
+			ALEngine::CBP::ContentBrowserPanel ContentBrowserPanel;
+
 		};
 	}
 }

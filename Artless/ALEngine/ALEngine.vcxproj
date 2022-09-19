@@ -102,6 +102,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
@@ -163,9 +164,11 @@
     <ClCompile Include="Source\Utility\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Common Header\MyEditor.h" />
     <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
+    <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />
