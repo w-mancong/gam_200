@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Engine/Camera.h"
 #include "Engine/Manager/MeshBuilder.h"
+#include "Graphics/ParticleSys.h"
 
 
 namespace ALEngine
@@ -47,6 +48,8 @@ namespace ALEngine
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
+			ParticleSys::ParticleSystem m_ParticleSystem;
+			ParticleSys::ParticleProps m_Particle;
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -139,6 +142,16 @@ namespace ALEngine
 
 			// Init Gizmo
 			Gizmos::Gizmo::GizmoInit();
+
+			// Particle init here
+
+			m_Particle.ColorBegin = { 1.f, 1.f, 1.f, 1.0f };
+			m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+			m_Particle.SizeBegin = 50.f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 1.0f;
+			m_Particle.LifeTime = 1.0f;
+			m_Particle.Velocity = { 50.0f, 50.0f };
+			m_Particle.VelocityVariation = { 3.0f, 1.0f };
+			m_Particle.Position = { 1.f, 2.f };
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -230,6 +243,12 @@ namespace ALEngine
 			SetFontType(test, Font::FontType::Regular);
 			SetTextPos(test, Vector2(50.f, 50.f));
 			RenderText(test);
+
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			m_ParticleSystem.Emit(m_Particle);
+			m_ParticleSystem.ParticleUpdate(Time::m_DeltaTime);
+			m_ParticleSystem.ParticleRender();
 
 			// End of ImGui frame, render ImGui!
 			ALEditor::Instance()->End();
