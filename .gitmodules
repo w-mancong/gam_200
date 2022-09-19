@@ -1,3 +1,6 @@
 [submodule "Artless/Extern/include/spdlog"]
 	path = Artless/Extern/include/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Artless/Extern/include/ImGuizmo"]
+	path = Artless/Extern/include/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo
