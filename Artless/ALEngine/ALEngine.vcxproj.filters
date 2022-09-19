@@ -362,5 +362,8 @@
     <ClInclude Include="Include\Common Header\MyEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Graphics\ParticleSys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

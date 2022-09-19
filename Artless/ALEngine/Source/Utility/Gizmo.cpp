@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "Graphics/Shader.h"
-#include "Graphics/Gizmo.h"
 #include "Engine/Camera.h"
 
 namespace ALEngine
@@ -14,7 +12,7 @@ namespace ALEngine
 		std::vector<std::pair<Math::Vector2, Math::Vector2>> Gizmo::linesContainer;
 		bool Gizmo::gizmoToggle;
 		Math::Vector3 Gizmo::gizmoColor;
-		u32 Gizmo::gizmoCircleSegments;
+		//u32 Gizmo::gizmoCircleSegments;
 
 		// this function makes the sample line
 		void Gizmo::GizmoInit()
@@ -36,7 +34,7 @@ namespace ALEngine
 			gizmoLineWidith = 1.f;
 			gizmoToggle = true;
 			gizmoColor = Math::Vector3(0.f, 1.f, 0.f); // default color is green
-			gizmoCircleSegments = 32; // default circle will have 32 line segments
+			//gizmoCircleSegments = 32; // default circle will have 32 line segments
 
 			glGenVertexArrays(1, &GizmoVaoId);
 			glGenBuffers(1, &GizmoVboId);
@@ -55,19 +53,20 @@ namespace ALEngine
 				linesContainer.push_back(std::pair<Math::Vector2, Math::Vector2>(pt1, pt2));
 		}
 
-		void Gizmo::RenderCircle(Math::Vector2 center, f32 radius)
-		{
-			const float degreeIncrement{ 2.f * 3.141592f / (float)gizmoCircleSegments };
-			Math::Vector2 first, second;
-			
-			first = center + radius * Math::Vector2(cosf(0.f), sinf(0.f));
-			for (unsigned i{ 0 }; i <= gizmoCircleSegments; ++i)
-			{
-				second = center + radius * Math::Vector2(cosf(degreeIncrement * i), sinf(degreeIncrement * i));
-				RenderLine(first, second);
-				first = second;
-			}
-		}
+		// Don't use, its too laggy. Use imguizmo circle instead.
+		//void Gizmo::RenderCircle(Math::Vector2 center, f32 radius)
+		//{
+		//	const float degreeIncrement{ 2.f * 3.141592f / (float)gizmoCircleSegments };
+		//	Math::Vector2 first, second;
+		//	
+		//	first = center + radius * Math::Vector2(cosf(0.f), sinf(0.f));
+		//	for (unsigned i{ 0 }; i <= gizmoCircleSegments; ++i)
+		//	{
+		//		second = center + radius * Math::Vector2(cosf(degreeIncrement * i), sinf(degreeIncrement * i));
+		//		RenderLine(first, second);
+		//		first = second;
+		//	}
+		//}
 
 		void Gizmo::RenderAllLines()
 		{

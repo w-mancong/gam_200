@@ -117,8 +117,6 @@ namespace ALEngine
 
 			// sample gizmos
 			Gizmos::Gizmo::RenderLine(Vector2(-500.f, -200.f), Vector2(69.f, 100.f));
-			Gizmos::Gizmo::RenderCircle(Vector2(200.f, 50.f), 200.f);
-			Gizmos::Gizmo::RenderCircle(Vector2(200.f, 50.f), 50.f);
 
 			/*
 			if (Input::Input::KeyTriggered(KeyCode::Space)) {
