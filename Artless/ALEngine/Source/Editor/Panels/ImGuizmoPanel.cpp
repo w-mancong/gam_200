@@ -10,7 +10,12 @@ namespace ALEngine
 		void ImGuizmoPanel::OnImGuiRender()
 		{
 			// Begin ImGui
-			ImGui::Begin("Editor");
+			if (!ImGui::Begin("Editor"))
+			{
+				ImGui::End();
+				//AL_CORE_ERROR("Editor Panel Collapsed");
+				return;
+			}
 
 			// Select between the 3 Gizmos Operations by keypress
 			if (Input::KeyTriggered(KeyCode::T))
