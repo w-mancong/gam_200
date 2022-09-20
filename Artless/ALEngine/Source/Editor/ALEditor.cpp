@@ -66,6 +66,8 @@ namespace ALEngine
 			ImGui::ShowDebugLogWindow(&show);
 			cbp.OnImGuiRender();
 			logger_panel.OnImGuiRender();
+			if (imguizmo_panel.HasEntityTransform())
+				imguizmo_panel.OnImGuiRender();
 		}
 
 		void ALEditor::Begin()
@@ -73,7 +75,7 @@ namespace ALEngine
 			// Change ImGui Enabled or Disabled
 			if (Input::KeyTriggered(KeyCode::Backspace))
 			{
-				m_ImGuiEnabled = !m_ImGuiEnabled;
+				//m_ImGuiEnabled = !m_ImGuiEnabled;
 			}
 
 			// Check ImGui active
@@ -84,6 +86,10 @@ namespace ALEngine
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
+
+			// ImGuizmo Frame
+			ImGuizmo::SetOrthographic(true);
+			ImGuizmo::BeginFrame();
 
 			// Enable DockSpace if it is to be enabled!
 			if(m_DockingEnabled)

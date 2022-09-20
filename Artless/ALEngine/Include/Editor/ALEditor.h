@@ -28,6 +28,8 @@ namespace ALEngine
 
 			void SetDockingEnabled(b8 isEnabled) { m_DockingEnabled = isEnabled; }
 
+			void SetSelectedEntityTransform(Transform* setter) { imguizmo_panel.SetSelectedEntityTransform(setter); };
+
 		private:
 			// Constructor
 			ALEditor(void) { Init(); }
@@ -45,6 +47,7 @@ namespace ALEngine
 
 			ContentBrowserPanel cbp;
 			LoggerPanel logger_panel;
+			ImGuizmoPanel imguizmo_panel;
 		};
 	}
 }

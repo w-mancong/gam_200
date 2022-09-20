@@ -56,8 +56,9 @@ namespace ALEngine
 			Time::Init();
 
 			// Init ImGui
-			ALEditor::Instance()->SetImGuiEnabled(false);
-			ALEditor::Instance()->SetDockingEnabled(true);
+			ALEditor::Instance()->SetImGuiEnabled(true);
+			ALEditor::Instance()->SetDockingEnabled(false);
+			ALEditor::Instance()->SetSelectedEntityTransform(&trans_noah);
 
 			// Init Logger
 			ALEngine::Exceptions::Logger::Init();

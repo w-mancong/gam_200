@@ -10,6 +10,7 @@ brief:	This file contains all the relevant Editor header files to be included in
 #define MY_EDITOR_H
 
 #include "Editor/Panels/LoggerPanel.h"
+#include "Editor/Panels/ImGuizmoPanel.h"
 #include "Editor/ALEditor.h"
 
 #endif

@@ -65,7 +65,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\ALEngine\Include\Editor\imgui</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -104,6 +104,27 @@
   <ItemGroup>
     <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
+    <ClCompile Include="Source\Editor\ImGuizmo\GraphEditor.cpp">
+      <DeploymentContent>true</DeploymentContent>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\ImGuizmo\ImCurveEdit.cpp">
+      <DeploymentContent>true</DeploymentContent>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\ImGuizmo\ImGradient.cpp">
+      <DeploymentContent>true</DeploymentContent>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\ImGuizmo\ImGuizmo.cpp">
+      <DeploymentContent>true</DeploymentContent>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\ImGuizmo\ImSequencer.cpp">
+      <DeploymentContent>false</DeploymentContent>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\Panels\ImGuizmoPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
@@ -186,6 +207,12 @@
     <ClInclude Include="Include\Editor\ALEditor.h" />
     <ClInclude Include="Include\Editor\imconfig.h" />
     <ClInclude Include="Include\Editor\imgui.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\GraphEditor.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImZoomSlider.h" />
     <ClInclude Include="Include\Editor\imgui\imconfig.h" />
     <ClInclude Include="Include\Editor\imgui\imgui.h" />
     <ClInclude Include="Include\Editor\imgui\imgui_impl_glfw.h" />
@@ -201,6 +228,7 @@
     <ClInclude Include="Include\Editor\imstb_rectpack.h" />
     <ClInclude Include="Include\Editor\imstb_textedit.h" />
     <ClInclude Include="Include\Editor\imstb_truetype.h" />
+    <ClInclude Include="Include\Editor\Panels\ImGuizmoPanel.h" />
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />

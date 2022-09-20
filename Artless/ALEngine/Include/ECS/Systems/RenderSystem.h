@@ -114,6 +114,10 @@ namespace ALEngine
 		***********************************************************************************/
 		Math::Vector3 CameraPosition(void);
 
+		Math::Matrix4x4 GetProjection(void);
+
+		Math::Matrix4x4 GetView(void);
+
 		/*!*********************************************************************************
 			\brief
 			Set the fov angle of the camera
