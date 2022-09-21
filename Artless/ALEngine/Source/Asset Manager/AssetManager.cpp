@@ -33,9 +33,9 @@ namespace ALEngine
 		{
 		}
 
-		u64 AssetManager::GetTimeStamp()
+		std::vector<u16> AssetManager::GetTimeStamp()
 		{
-			u64 timestamp{ 0ULL }; //64bit for storing timestamp in 48 bit 
+			std::vector<u16> timedata;
 			//little-endian date (day, month, year), 12-09-2002
 			//yyyy Four-digit year (0000 through 9999).
 			//mm Two - digit month(01 through 12).
@@ -53,13 +53,13 @@ namespace ALEngine
 			localtime_s(&ltm ,&now);
 
 			//Day
-			u8 day = ltm.tm_mday;    //8bit
+			u8 day = static_cast<u8>(ltm.tm_mday);    //8bit
 
 			//Month
-			u8 month = ltm.tm_mday;   //8bit
+			u8 month = static_cast<u8>(ltm.tm_mon);   //8bit
 
 			//Year
-			u16 year = 1900 + ltm.tm_year;  //16bit
+			u16 year = static_cast<u16>(1900 + ltm.tm_year);  //16bit
 
 			//Time---------------------------------------
 			//use chrono for time (hour::min)
@@ -69,30 +69,54 @@ namespace ALEngine
 			localtime_s(&ltm2 ,&timenow);
 			
 			//hour in 12 hour format
-			u8 hour = (8 + ltm2.tm_hour);   //8bit
+			u8 hour = static_cast<u8>(8 + ltm2.tm_hour);   //8bit
 
 			//hour in 24 hour format
 			//u8 hour = (8 + ltm2.tm_hour)  unused code
 
 			//min
-			u8 min = ltm.tm_min;  //8bit
+			u8 min = static_cast<u8>(ltm.tm_min);  //8bit
 
-			//store to u64 48bits 
+			//store to u64 48bits through bitshifting
 
 
+			
+			//bitshift day and month into 16 bit
+			u16 ddmm = (day << 8) | month;
+
+			//bitshift hour and min into 16 bit
+			u16 HHMM = (hour << 8) | min;
+
+			timedata.push_back(ddmm);
+			timedata.push_back(year);
+			timedata.push_back(HHMM);
+			
 			//then return the timestamp
-			return timestamp;
+			return timedata;
 		}
 
-		void AssetManager::PrepareGuid(u16 counterPart)
+		void AssetManager::PrepareGuid()
 		{
 			//get timestamp to new guid
-			u64 newguid = GetTimeStamp();
+			std::vector<u16> timestamp = GetTimeStamp();
+			u64 newguid{ 0ULL };
 
 			u16 guidassetcount = GetCurrentAssetKeyCount();
 
+
+
 			//merge 48 bit timestamp and 16 bit assetcount into one single 64 bit guid
 
+			//(ddmm yyyy HHMM ANUM)
+			
+			//bitshift ddmmyyyy into 32bit
+			u32 ddmmyyyy = (timestamp[0] << 16) | timestamp[1];
+
+			//bitshift HHMM and ANUM into 32bit
+			u32 HHMMANUM = (timestamp[2] << 16) | guidassetcount;
+
+			//bitshfit ddmmyyyy and HHMMANUM into 64 bit
+			newguid = (static_cast<u64>(ddmmyyyy) << 32) | HHMMANUM; // guid format ddmm yyyy HHMM Assetnumber
 
 			//add to map container of guid
 			AddToAssetGuidContainer(newguid);
@@ -146,7 +170,7 @@ namespace ALEngine
 
 		u16 AssetManager::GetKeyForGuid(u64 guidtofind)
 		{
-			u16 keyfound;
+			u16 keyfound{ 0 };
 
 			// Traverse the guid map container
 			for (auto& it : assetguidcontainer)
