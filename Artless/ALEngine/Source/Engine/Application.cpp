@@ -63,6 +63,12 @@ namespace ALEngine
 			ALEditor::Instance()->SetDockingEnabled(false);
 			ALEditor::Instance()->SetSelectedEntityTransform(&trans_noah);
 
+			AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
+			AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
+			AL_CORE_INFO("THIS IS A INFO MESSAGE");
+			AL_CORE_WARN("THIS IS A WARNING MESSAGE");
+			AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
+			AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 		}
 
 		void Application::Update(void)
@@ -87,7 +93,7 @@ namespace ALEngine
 				{
 					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
-					AL_CORE_DEBUG(Time::m_FPS);
+					//AL_CORE_DEBUG(Time::m_FPS);
 				}
 
 				// Render

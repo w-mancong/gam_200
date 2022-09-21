@@ -63,7 +63,7 @@ namespace ALEngine
 				return;
 
 			static bool show{ true };
-			ImGui::ShowDebugLogWindow(&show);
+			ImGui::ShowDemoWindow(&show);
 			cbp.OnImGuiRender();
 			logger_panel.OnImGuiRender();
 			if (imguizmo_panel.HasEntityTransform())

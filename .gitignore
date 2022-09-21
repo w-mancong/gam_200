@@ -35,4 +35,7 @@
 .vs/
 
 # ImGui
-imgui.ini
+Artless/bin/imgui.ini
+
+# Logs
+Artless/bin/logs

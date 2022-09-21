@@ -13,7 +13,7 @@ namespace ALEngine
 			if (!ImGui::Begin("Editor"))
 			{
 				ImGui::End();
-				AL_CORE_ERROR("Editor Panel Collapsed");
+				//AL_CORE_ERROR("Editor Panel Collapsed");
 				return;
 			}
 
