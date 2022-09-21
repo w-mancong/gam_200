@@ -35,11 +35,11 @@ namespace ALEngine
 				void UpdateWorldAxis(Collider2D& collider, Transform const& parentTransform);
 				
 				//Debug
-				void DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Color& color);
+				void DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector3 color);
+				void DrawBox(const Vector3 bottomleft, const Vector3 topleft, const Vector3 color);
 
 				std::vector<Ray2D> rayList;
-				bool isDebugStep = false, isDebugDraw = false;
-
+				bool isDebugDraw = true;
 
 			private:
 				Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };
@@ -49,7 +49,7 @@ namespace ALEngine
 		namespace
 		{
 			std::shared_ptr<ColliderSystem> cs;
-			u64 debugDrawKey = (u64)KeyCode::Y, debugStepKeyToggle = (u64)KeyCode::U, debugStepKey = (u64)KeyCode::I;
+			u64 debugDrawKey = (u64)KeyCode::H;
 		}
 
 		void RegisterColliderSystem(void)
@@ -155,37 +155,19 @@ namespace ALEngine
 		}
 
 		void UpdateColliderSystem() {
-			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKeyToggle)))
-			{
-				cs->isDebugStep = !cs->isDebugStep;
-			}
-
 			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugDrawKey)))
 			{
 				cs->isDebugDraw = !cs->isDebugDraw;
 			}
-
-			if (cs->isDebugDraw) {
-				for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
-					Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
-					Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-
-					cs->DrawCollider(trans, Collider, { 255,0,0 });
-				}
-			}
-
-			if (cs->isDebugStep) {
-				if (!Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKey)))
-				{
-					return;
-				}
-			}
+			
 
 			bool collision = false;
 
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
 				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+
+				Collider.isCollided = false;
 
 				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it), trans);
 			}
@@ -230,48 +212,38 @@ namespace ALEngine
 					Rigidbody2D& twoRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt);
 
 					collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform, oneRigidbody, twoRigidbody);
+
+					if (collision) {
+						oneCollider.isCollided = collision;
+						twoCollider.isCollided = collision;
+					}
 				}
 			}
 			//***************************** Alternative ************************//
 
-			////**************** Raycast for any collider ************//
-			//bool raycastHit = false;
-			////Run through raycasts
-			//for (int i = 0; i < cs->rayList.size(); i++){
-			//	for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-			//	{
-			//		auto jt = ++it; //jt is next iteration
-			//		--it;			//move it back
-
-			//		Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-			//		Transform const& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-
-			//		if (oneCollider.colliderType == ColliderType::Rectangle2D_AABB) {
-			//			raycastHit = Physics::Raycast_AABB(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
-			//		}
-			//		else if (oneCollider.colliderType == ColliderType::Circle2D) {
-			//			raycastHit = Physics::Raycast_Circle(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
-			//		}
-			//	}
-			//	//if (raycastHit) {
-			//	//	printf("raycast hit ");
-			//	//}
-			//}
-			//**************** Raycast for any collider ************//
 
 			//**************** Run through all colliders again ************//
 			//**************** Update the position to after all the response ************//
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
 			{
-				Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-				Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-				
-				if (!oneRigidbody.isEnabled) {
+				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+				Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+
+				if (cs->isDebugDraw) {
+					if (collider.isCollided) {
+						//cs->DrawCollider(parentTransform, collider, { 255.f, 0.f, 0.f });
+					}
+					else {
+						//cs->DrawCollider(parentTransform, collider, { 0.f, 255.f, 0.f });
+					}
+				}
+
+				if (!rigidbody.isEnabled) {
 					continue;
 				}
 
-				oneParentTransform.position = oneRigidbody.nextPosition;
+				parentTransform.position = rigidbody.nextPosition;
 			}
 		}
 
@@ -447,9 +419,10 @@ namespace ALEngine
 		
 		using Physics::RaycastHit2D;
 		bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
-			if (rigidbody_moving.velocity.Magnitude() == 0) {
-				return CheckCollision_AABB_To_AABB(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
-			}
+			//if (rigidbody_moving.velocity.Magnitude() == 0) {
+			//	return CheckCollision_AABB_To_AABB(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
+			//}
+
 			Vector2 movingGlobalPosition = collider_moving.localPosition() + parent_transform_moving.position;
 			Vector2 otherGlobalPosition = collider_other.localPosition() + parent_transform_other.position;
 
@@ -457,19 +430,13 @@ namespace ALEngine
 			tempBox.scale[0] += collider_moving.scale[0];
 			tempBox.scale[1] += collider_moving.scale[1];
 
-			Ray2D ray = { movingGlobalPosition, rigidbody_moving.nextPosition };
+			//Ray2D ray = { movingGlobalPosition, rigidbody_moving.nextPosition };
+			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.acceleration * Time::m_FixedDeltaTime};
 			RaycastHit2D rayHit = Physics::Raycast_AABB(ray, tempBox, parent_transform_other);
-
-			//if (collider_moving.isDebug) {
-			//	std::cout << cs->debugIndex << " BEFORE ACTUAL POSITION " << cs->debugIndex << "  : " << movingGlobalPosition << " \n";
-			//	std::cout << cs->debugIndex << " BEFORE NEXT POSITION " << cs->debugIndex << "  : " << rigidbody_moving.nextPosition << " \n";
-			//	std::cout << cs->debugIndex << " BEFORE VELOCITY " << cs->debugIndex << "  : " << rigidbody_moving.velocity << " \n";
-			//	//	std::cout << "other " << i << " has Collision ";
-			//}
 
 			if (rayHit.isCollided)
 			{
-				Vector2 vec{ 0,0 };
+				Vector2 vec { 0,0 };
 
 				if (rayHit.normal.y != 0) {
 					vec.x += rigidbody_moving.velocity.x;
@@ -477,21 +444,18 @@ namespace ALEngine
 				else if (rayHit.normal.x != 0) {
 					vec.y += rigidbody_moving.velocity.y;
 				}
-				rigidbody_moving.velocity = vec;
-				rigidbody_moving.frameVelocity = rigidbody_moving.velocity * Time::m_FixedDeltaTime;
-				rigidbody_moving.nextPosition = rayHit.point + rigidbody_moving.frameVelocity;
 
-				//if (collider_moving.isDebug) {
-				//	std::cout << cs->debugIndex << " AFTER VELOCITY " << cs->debugIndex << "  : " << rigidbody_moving.velocity << " \n";
-				//	std::cout << cs->debugIndex << " AFTER NEXT POSITION " << cs->debugIndex << "  : " << rigidbody_moving.nextPosition << "n";
-				//	std::cout << "\n";
-				//	//	std::cout << "other " << i << " has Collision ";
-				//}
+				//rigidbody_moving.velocity = vec;
+				//rigidbody_moving.frameVelocity = rigidbody_moving.velocity * Time::m_FixedDeltaTime;
+				//rigidbody_moving.nextPosition = rayHit.point + rigidbody_moving.frameVelocity;
+
+				if (isDebugDraw) {
+					DrawBox(rayHit.point - Vector2(collider_moving.scale[0] * 0.5f, collider_moving.scale[1] * 0.5f),
+						rayHit.point + Vector2(collider_moving.scale[0] * 0.5f, collider_moving.scale[1] * 0.5f), Vector3(0.f, 255.f, 0.f));
+				}
 				return true;
 			}
 
-			//std::cout << cs->debugIndex << " AFTER " << cs->debugIndex << " has no collision\n";
-			//std::cout << cs->debugIndex << " NO COLL VELOCITY " << ray.origin <<  " : " << ray.end << " \n";
 			return false;
 		}
 
@@ -507,6 +471,7 @@ namespace ALEngine
 			tempCircle.scale[0] += collider_moving.scale[0];
 
 			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.frameVelocity };
+			
 			RaycastHit2D rayHit = Physics::Raycast_Circle(ray, tempCircle, parent_transform_other);
 
 			if (rayHit.isCollided)
@@ -534,8 +499,8 @@ namespace ALEngine
 			cs->rayList.push_back({ start,end });
 		}
 
-
-		void ColliderSystem::DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Color& color) {
+		void ColliderSystem::DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector3 color) {
+			Gizmos::Gizmo::SetGizmoColor(color);
 			switch (collider.colliderType) {
 			case ColliderType::Rectangle2D_AABB:
 				{
@@ -543,10 +508,7 @@ namespace ALEngine
 					Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
 					Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
 
-					Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });//Bottom
-					Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);	//top
-					Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });//left
-					Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);//right
+					DrawBox(bottomleft, topright, Vector3(0.f,255.f,0.f));
 				}
 				break;			
 			
@@ -555,12 +517,44 @@ namespace ALEngine
 				break;
 			}
 		}
+		void ColliderSystem::DrawBox(const Vector3 bottomleft, const Vector3 topright, const Vector3 color) {
+			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });	//Bottom
+			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);	//top
+			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });	//left
+			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);	//right
+		}
 	}
 }
 
 
 
 
+////**************** Raycast for any collider ************//
+//bool raycastHit = false;
+////Run through raycasts
+//for (int i = 0; i < cs->rayList.size(); i++){
+//	for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
+//	{
+//		auto jt = ++it; //jt is next iteration
+//		--it;			//move it back
+
+//		Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+//		Transform const& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+
+//		if (oneCollider.colliderType == ColliderType::Rectangle2D_AABB) {
+//			raycastHit = Physics::Raycast_AABB(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
+//		}
+//		else if (oneCollider.colliderType == ColliderType::Circle2D) {
+//			raycastHit = Physics::Raycast_Circle(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
+//		}
+//	}
+//	//if (raycastHit) {
+//	//	printf("raycast hit ");
+//	//}
+//}
+//**************** Raycast for any collider ************//
+// 
+// 
 //if (oneCollider.isDebug) {
 //	//std::cout << "other " << i << " has " << oneRigidbody.velocity << " : ";
 //	//if (collision) {

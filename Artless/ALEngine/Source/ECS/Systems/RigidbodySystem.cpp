@@ -23,7 +23,7 @@ namespace ALEngine
 			void UpdateRigidbody(Transform& transform, Collider2D& collider, Rigidbody2D& rigid);
 
 			void DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid);
-			bool isDebugStep = false, isDebugDraw = false;
+			bool isDebugStep = true, isDebugDraw = true;
 		private:
 			Vector2 worldXAxis{ 1.f, 0.f }, worldYAxis{ 0.f, 1.f };
 		};
@@ -82,6 +82,7 @@ namespace ALEngine
 				{
 					return;
 				}
+
 			}
 
 			for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
@@ -116,7 +117,6 @@ namespace ALEngine
 
 			//Refresh acceleration
 			rigid.acceleration *= 0;
-
 		}
 	
 		void AddForce(Rigidbody2D& rigidbody, Math::Vec2 forceVelocity, FORCEMODE mode) {
@@ -136,8 +136,10 @@ namespace ALEngine
 		}
 
 		void RigidbodySystem::DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid) {
+			Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 0.f, 0.f));
 			Gizmos::Gizmo::RenderLine(transform.position, transform.position + rigid.frameVelocity);
-			Gizmos::Gizmo::RenderLine(transform.position, transform.position + rigid.acceleration * Time::m_FixedDeltaTime);
+			Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 255.f, 0.f));
+			Gizmos::Gizmo::RenderLine(transform.position + Vector2(1.f, 0.f), transform.position + rigid.acceleration * Time::m_FixedDeltaTime);
 		}
 	}
 }

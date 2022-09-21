@@ -62,9 +62,11 @@ namespace ALEngine
 				shader = &meshShader;
 
 			// TRS model multiplication
-			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
 			shader->use();
-			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
+			shader->Set("color", color.r, color.g, color.b, color.a);
+			shader->Set("scale", Matrix4x4::Scale(scale.x, scale.y, 1.0f));
+			shader->Set("rotate", Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)));
+			shader->Set("translate", Matrix4x4::Translate(position.x, position.y, 0.0f));
 			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, sprite.texture);

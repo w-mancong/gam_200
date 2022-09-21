@@ -63,18 +63,29 @@ namespace ALEngine
 			//rigid.velocity.x = 0;
 
 			if (Input::Input::KeyTriggered(static_cast<KeyCode>(characControl.jumpKey))) {
+				AddForce(rigid, Vector2(0, characControl.jumpStrength * 10), FORCEMODE::FORCE);
+			}				
+			
+			if (Input::Input::KeyTriggered(static_cast<KeyCode>(characControl.jumpKey))) {
 				AddForce(rigid, Vector2(0, characControl.jumpStrength), FORCEMODE::FORCE);
 			}
 
 			if (Input::Input::KeyDown(static_cast<KeyCode>(characControl.leftKey)))
 			{
-				AddForce(rigid, Vector2(-characControl.speed, 0), FORCEMODE::FORCE);
+				AddForce(rigid, Vector2(-characControl.speed * 2, 0), FORCEMODE::FORCE);
 			}
 			if (Input::Input::KeyDown(static_cast<KeyCode>(characControl.rightKey)))
 			{
-				AddForce(rigid, Vector2(characControl.speed, 0), FORCEMODE::FORCE);
+				AddForce(rigid, Vector2(characControl.speed * 2, 0), FORCEMODE::FORCE);
 			}
 
+			if (Input::Input::KeyDown(KeyCode::S)) {
+				AddForce(rigid, Vector2(0, -characControl.speed * 2), FORCEMODE::FORCE);
+			}
+
+			if (Input::Input::KeyDown(KeyCode::W)) {
+				AddForce(rigid, Vector2(0, characControl.speed * 2), FORCEMODE::FORCE);
+			}
 			//Rotation
 			//if (Input::Input::KeyDown(KeyCode::Q))
 			//{
