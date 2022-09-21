@@ -1,19 +1,16 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-namespace ALEngine
+namespace ALEngine::ECS::Component
 {
-	namespace ECS 
+
+	struct Texture
 	{
-		namespace Component
-		{
-			struct Texture
-			{
-				u64 guid;
-				u32 textureID;
-			};
-		}
-	}
+		u64 guid;
+		u32 textureID;
+	};
+
+
 }
 
 #endif // TEXTURE_H
