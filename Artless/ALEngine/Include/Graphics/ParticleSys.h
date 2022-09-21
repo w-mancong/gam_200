@@ -7,11 +7,11 @@ namespace ALEngine
 	{
 		namespace ParticleSys
 		{
-			struct ParticleProps
+			struct ParticleProperties
 			{
-				Math::Vector2 Position, Velocity, VelocityVariation;
-				Math::Vector4 ColorBegin, ColorEnd;
-				f32 SizeBegin, SizeEnd, SizeVariation, LifeTime = 1.0f;
+				Math::Vector2 position, velocity, velocityVariation;
+				Math::Vector4 colorStart, colorEnd;
+				f32 sizeStart, sizeEnd, sizeVariation, lifeTime = 1.0f;
 			};
 
 			class ParticleSystem
@@ -19,25 +19,26 @@ namespace ALEngine
 			public:
 				ParticleSystem();
 
+				void ParticleSysInit();
 				void ParticleUpdate(f32 deltaTime);
 				void ParticleRender();
 
-				void Emit(const ParticleProps& particleProps);
+				void Emit(const ParticleProperties& particleProps);
 			private:
 				struct Particle
 				{
 					Math::Vector2 position, velocity;
-					Math::Vector4 ColorBegin, ColorEnd;
+					Math::Vector4 colorStart, colorEnd;
 					float sizeBegin, sizeEnd, rotation = 0.0f;
-					float LifeTime = 1.0f;
-					float LifeRemaining = 0.0f;
-					bool Active = false;
+					float lifeTime = 1.0f;
+					float lifeRemaining = 0.0f;
+					bool active = false;
 				};
-				std::vector<Particle> m_ParticlePool;
-				uint32_t m_PoolIndex = 999; // max particles
+				std::vector<Particle> particleContainer;
+				u32 particleIndex = 999; // max particles
 
-				GLuint m_QuadVA{0}, quadVB, quadIB;
-				Shader m_ParticleShader;
+				u32 particleVAO{ 0 }, particleVBO{}, particleEBO{};
+				Shader particleShader;
 			};
 		}
 	}

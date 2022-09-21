@@ -49,7 +49,7 @@ namespace ALEngine
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
 			ParticleSys::ParticleSystem m_ParticleSystem;
-			ParticleSys::ParticleProps m_Particle;
+			ParticleSys::ParticleProperties m_Particle;
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -145,13 +145,13 @@ namespace ALEngine
 
 			// Particle init here
 
-			m_Particle.ColorBegin = { 1.f, 1.f, 1.f, 1.0f };
-			m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
-			m_Particle.SizeBegin = 50.f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 1.0f;
-			m_Particle.LifeTime = 1.0f;
-			m_Particle.Velocity = { 50.0f, 50.0f };
-			m_Particle.VelocityVariation = { 3.0f, 1.0f };
-			m_Particle.Position = { 1.f, 2.f };
+			m_Particle.colorStart = { 1.f, 0.f, 0.f, 1.0f };
+			m_Particle.colorEnd = { 1.f, 0.f, 1.f, 1.0f };
+			m_Particle.sizeStart= 50.f, m_Particle.sizeVariation = 0.3f, m_Particle.sizeEnd = 10.0f;
+			m_Particle.lifeTime = 5.0f;
+			m_Particle.velocity = { 60.0f, 25.0f };
+			m_Particle.velocityVariation = { 3.0f, 1.0f };
+			m_Particle.position = { 1.f, 2.f };
 		}
 
 		void InitializeFrustum(Frustum& fstm)

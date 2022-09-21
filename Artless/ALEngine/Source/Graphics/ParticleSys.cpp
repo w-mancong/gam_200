@@ -3,7 +3,6 @@
 #include <random>
 #include "Graphics/ParticleSys.h"
 
-
 namespace ALEngine
 {
 	namespace Graphics
@@ -17,91 +16,102 @@ namespace ALEngine
 			//{
 			//	return (float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint32_t>::max();
 			//}
+			
+			template<typename T> 
+			T Lerp(T a, T b, float t)
+			{
+				return (T)(a + (b - a) * t); 
+			}
 
 			ParticleSystem::ParticleSystem()
 			{
-				m_ParticlePool.resize(1000);
+				particleContainer.resize(1000);
 			}
 
 			void ParticleSystem::ParticleUpdate(f32 deltaTime) // Time::m_DeltaTime
 			{
 
-				for (auto& particle : m_ParticlePool)
+				for (auto& particle : particleContainer)
 				{
-					if (!particle.Active)
+					if (!particle.active)
 						continue;
 
-					if (particle.LifeRemaining <= 0.0f)
+					if (particle.lifeRemaining <= 0.f)
 					{
-						particle.Active = false;
+						particle.active = false;
 						continue;
 					}
 
-					particle.LifeRemaining -= deltaTime;
+					particle.lifeRemaining -= deltaTime;
 					particle.position += particle.velocity * (float)deltaTime;
 					particle.rotation += 0.01f * deltaTime;
 				}
 			}
 
+			void ParticleSystem::ParticleSysInit()
+			{
+				// vertices to generate a quad
+				f32 vertices[] =
+				{
+					 -0.5f, -0.5f,
+					  0.5f, -0.5f,
+					  0.5f,  0.5f,
+					 -0.5f,  0.5f,
+				};
+
+				glCreateVertexArrays(1, &particleVAO);
+				glBindVertexArray(particleVAO);
+
+				glCreateBuffers(1, &particleVBO);
+				glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+				glEnableVertexArrayAttrib(particleVBO, 0);
+				glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+
+				// index buffer to render a quad
+				u32 idx[] =
+				{
+					0, 1, 2, 2, 3, 0
+				};
+
+				glCreateBuffers(1, &particleEBO);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, particleEBO);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(idx), idx, GL_STATIC_DRAW);
+
+				particleShader = Graphics::Shader{ "Assets/Shaders/particlesys.vert", "Assets/Shaders/particlesys.frag" };
+			}
+
 			void ParticleSystem::ParticleRender()
 			{
-				if (!m_QuadVA)
-				{
-					float vertices[] = 
-					{
-						 -0.5f, -0.5f,
-						  0.5f, -0.5f, 
-						  0.5f,  0.5f, 
-						 -0.5f,  0.5f,
-					};
+				if (!particleVAO)
+					ParticleSysInit();
 
-					glCreateVertexArrays(1, &m_QuadVA);
-					glBindVertexArray(m_QuadVA);
-
-					glCreateBuffers(1, &quadVB);
-					glBindBuffer(GL_ARRAY_BUFFER, quadVB);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-					glEnableVertexArrayAttrib(quadVB, 0);
-					glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
-
-					uint32_t indices[] = 
-					{
-						0, 1, 2, 2, 3, 0
-					};
-
-					glCreateBuffers(1, &quadIB);
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadIB);
-					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-					m_ParticleShader = Graphics::Shader{ "Assets/Shaders/particlesys.vert", "Assets/Shaders/particlesys.frag" };
-				}
 				ALEngine::Engine::Camera camera{ Math::Vector3(0.0f, 0.0f, 725.0f) };
-				m_ParticleShader.use();
-				m_ParticleShader.Set("view", camera.ViewMatrix());
-				m_ParticleShader.Set("proj", camera.ProjectionMatrix());
+				particleShader.use();
+				particleShader.Set("view", camera.ViewMatrix());
+				particleShader.Set("proj", camera.ProjectionMatrix());
 
-				for (auto& particle : m_ParticlePool)
+				for (auto& particle : particleContainer)
 				{
-					if (!particle.Active)
+					if (!particle.active)
 						continue;
 
 					// Fade away particles
-					float life = particle.LifeRemaining / particle.LifeTime;
+					float life = particle.lifeRemaining / particle.lifeTime;
 					//Math::Vector4 color = ImGui::(particle.ColorEnd, particle.ColorBegin, life);
-					Math::Vector4 color = particle.ColorBegin;
+					Math::Vector4 color = Lerp(particle.colorEnd, particle.colorStart, life);
 					//color.a = color.a * life;
 
-					//float size = lerp(particle.SizeEnd, particle.SizeBegin, life);
-					float size = particle.sizeBegin;
+					float size = Lerp(particle.sizeEnd, particle.sizeBegin, life);
 
 					// Render
 					Math::Matrix4x4 model = Math::Matrix4x4::Scale(size, size, 1.0f) *
 						Math::Matrix4x4::Rotation(particle.rotation, Math::Vector3(0.0f, 0.0f, 1.0f)) *
 						Math::Matrix4x4::Translate(particle.position.x, particle.position.y, 0.0f);
-					m_ParticleShader.Set("model", model);
-					m_ParticleShader.Set("color", color.x, color.y, color.z, color.w);
-					glBindVertexArray(m_QuadVA);
+					particleShader.Set("model", model);
+					particleShader.Set("color", color.x, color.y, color.z, color.w);
+					glBindVertexArray(particleVAO);
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 				}
 				// cleanup
@@ -109,28 +119,28 @@ namespace ALEngine
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 
-			void ParticleSystem::Emit(const ParticleProps& particleProps)
+			void ParticleSystem::Emit(const ParticleProperties& particleProps)
 			{
-				Particle& particle = m_ParticlePool[m_PoolIndex];
-				particle.Active = true;
-				particle.position = particleProps.Position;
+				Particle& particle = particleContainer[particleIndex];
+				particle.active = true;
+				particle.position = particleProps.position;
 				particle.rotation = 0; // Random::Float() * 2.0f * glm::pi<float>();
 
 				// Velocity
-				particle.velocity = particleProps.Velocity;
-				particle.velocity.x += particleProps.VelocityVariation.x; // *(Random::Float() - 0.5f);
-				particle.velocity.y += particleProps.VelocityVariation.y; // *(Random::Float() - 0.5f);
+				particle.velocity = particleProps.velocity;
+				particle.velocity.x += particleProps.velocityVariation.x; // *(Random::Float() - 0.5f);
+				particle.velocity.y += particleProps.velocityVariation.y; // *(Random::Float() - 0.5f);
 
 				// Color
-				particle.ColorBegin = particleProps.ColorBegin;
-				particle.ColorEnd = particleProps.ColorEnd;
+				particle.colorStart = particleProps.colorStart;
+				particle.colorEnd = particleProps.colorEnd;
 
-				particle.LifeTime = particleProps.LifeTime;
-				particle.LifeRemaining = particleProps.LifeTime;
-				particle.sizeBegin = particleProps.SizeBegin; // +particleProps.SizeVariation * (Random::Float() - 0.5f);
-				particle.sizeEnd = particleProps.SizeEnd;
+				particle.lifeTime = particleProps.lifeTime;
+				particle.lifeRemaining = particleProps.lifeTime;
+				particle.sizeBegin = particleProps.sizeStart; // +particleProps.SizeVariation * (Random::Float() - 0.5f);
+				particle.sizeEnd = particleProps.sizeEnd;
 
-				m_PoolIndex = --m_PoolIndex % m_ParticlePool.size();
+				particleIndex = --particleIndex % particleContainer.size();
 			}
 		}
 	}
