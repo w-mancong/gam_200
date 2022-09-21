@@ -14,7 +14,7 @@ namespace ALEngine
 		public:
 			//void Render(Sprite const& sprite, Transform const& trans);
 			//void RenderInstance(s32 count);
-			//void RenderBatch();
+			void RenderBatch();
 		};
 
 		struct Plane
@@ -42,11 +42,12 @@ namespace ALEngine
 		void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
 		void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2]);
 		void InitializeFrustum(Frustum& fstm);
+		bool ShouldRender(Transform const& trans);
 
 		namespace
 		{
 			std::shared_ptr<RenderSystem> rs;
-			Shader spriteShader, meshShader;
+			Shader spriteShader, meshShader, batchShader;
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
@@ -60,8 +61,7 @@ namespace ALEngine
 				{  0.5f, -0.5f }
 			};
 
-			//Matrix4* modelMatrices{ nullptr };
-			//Sprite rect;
+			u64 constexpr INDICES_SIZE{ 6 };
 		}
 
 		//void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -122,6 +122,45 @@ namespace ALEngine
 		//	glBindVertexArray(0);
 		//}
 
+		void RenderSystem::RenderBatch(void)
+		{
+			std::vector<Entity> entities; entities.reserve(mEntities.size());
+			// copy into temp vector
+			std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
+			// sort entities by layer
+			std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
+			{
+				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+				return sp1.layer < sp2.layer;
+			});
+
+
+			u64 index{ 0 }, counter{ 0 }; u64 const size = entities.size();
+			for (u64 i = 0; i < size; ++i)
+			{
+				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(entities[i]);
+				if (!ShouldRender(trans))
+					continue;
+				mat4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
+				for (u64 j = i * 4, k = 0; j < (i * 4) + 4; ++j, ++k)
+					*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
+				++counter;
+			}
+
+			u32 vao = GetBatchVao();
+
+			batchShader.use();
+			batchShader.Set("view", camera.ViewMatrix());
+			batchShader.Set("projection", camera.ProjectionMatrix());
+
+			SubVertexPosition(positions);
+
+			glBindVertexArray(vao);
+			glDrawElements(GL_TRIANGLES, INDICES_SIZE * counter, GL_UNSIGNED_INT, nullptr);
+			glBindVertexArray(0);
+		}
+
 		void UpdateViewMatrix(void)
 		{
 			spriteShader.use();
@@ -152,10 +191,15 @@ namespace ALEngine
 			spriteShader.Set("view", camera.ViewMatrix());
 			spriteShader.Set("proj", camera.ProjectionMatrix());
 
-			meshShader = Shader{ "Assets/Shaders/batch.vert", "Assets/Shaders/batch.frag" };
+			meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
 			meshShader.use();
 			meshShader.Set("view", camera.ViewMatrix());
 			meshShader.Set("proj", camera.ProjectionMatrix());
+
+			batchShader = Shader{ "Assets/Shaders/batch.vert", "Assets/Shaders/batch.frag" };
+			batchShader.use();
+			batchShader.Set("view", camera.ViewMatrix());
+			batchShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
 
@@ -216,67 +260,10 @@ namespace ALEngine
 
 		void Render(void)
 		{
-			std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
-			// copy into temp vector
-			std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
-			// sort entities by layer
-			std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-			{
-				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-				return sp1.layer < sp2.layer;
-			});
-
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//u32 displayed = 0;
-			//for (auto it = entities.begin(); it != entities.end(); ++it)
-			//{
-			//	Sprite	  const& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);
-			//	Transform const& trans  = Coordinator::Instance()->GetComponent<Transform>(*it);
-			//	if (ShouldRender(trans))
-			//	{
-			//		rs->Render(sprite, trans);
-			//		//++displayed;
-			//	}
-			//}
-
-			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
-			//std::cout << "Total entities displayed: " << displayed << std::endl;
-			u64 index{ 0 };
-			for (u64 i = 0; i < entities.size(); ++i)
-			{
-				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>( entities[i] );
-				mat4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
-				for (u64 j = i * 4, k = 0; j < (i * 4) + 4; ++j, ++k)
-				{
-					*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
-					//std::cout << *(positions + j) << ' ';
-				}
-				//std::cout << std::endl;
-			}
-
-			u32 vao = GetBatchVao();
-
-			meshShader.use();
-			meshShader.Set("view", camera.ViewMatrix());
-			meshShader.Set("projection", camera.ProjectionMatrix());
-
-			SubVertexPosition(positions);
-
-			glBindVertexArray(vao);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-			glBindVertexArray(0);
-
-			//meshShader.use();
-			//meshShader.Set("view", camera.ViewMatrix());
-			//meshShader.Set("proj", camera.ProjectionMatrix());
-			////SubMeshInstanceBuffer(modelMatrices);
-			//rs->RenderInstance(entities.size());
-
-			// End of ImGui frame, render ImGui!
-			//ALEditor::Instance()->End();
+			rs->RenderBatch();
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());

@@ -16,14 +16,18 @@ namespace ALEngine
 			void Exit(void);
 		};
 
+		Entity test;
+
 		void Application::Init(void)
 		{
 			OpenGLWindow::InitGLFWWindow();
 			ECS::InitSystem();
 
-			Transform t{ { 0.0f, 150.0f, 0.0f }, { 50.0f, 50.0f }, 0.0f };
+			Transform t1{ { 0.0f, 150.0f, 0.0f }, { 50.0f, 50.0f }, 0.0f };
+			Transform t2{ { 0.0f, 0.0f, 0.0f }, { 50.0f, 50.0f }, 0.0f };
 
-			CreateSprite(t, "Assets/Images/awesomeface.png");
+			CreateSprite(t1, "Assets/Images/awesomeface.png");
+			test = CreateSprite(t2, "Assets/Images/awesomeface.png");
 
 			// Initialize Time (Framerate Controller)
 			Time::Init();
@@ -38,7 +42,7 @@ namespace ALEngine
 			f32 accumulator{ 0.f };
 
 			// should do the game loop here
-			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
+			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::KeyTriggered(KeyCode::Escape))
 			{				
 				// Get Current Time
 				Time::ClockTimeNow();
@@ -79,7 +83,26 @@ namespace ALEngine
 		
 		void Engine::Update(void)
 		{
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(test);
 
+			f32 constexpr spd{ 150.0f };
+
+			if (Input::KeyDown(KeyCode::W))
+			{
+				trans.position.y += spd * Time::m_DeltaTime;
+			}
+			if (Input::KeyDown(KeyCode::S))
+			{
+				trans.position.y -= spd * Time::m_DeltaTime;
+			}
+			if (Input::KeyDown(KeyCode::D))
+			{
+				trans.position.x += spd * Time::m_DeltaTime;
+			}
+			if (Input::KeyDown(KeyCode::A))
+			{
+				trans.position.x -= spd * Time::m_DeltaTime;
+			}
 		}
 		
 		void Engine::FixedUpdate(void)
