@@ -1,17 +1,15 @@
 #include "pch.h"
 
 
-/*!*****************************************************************************
- \file ContentBrowserPanel.cpp
- \author Chan Jie Ming Stanley
- \par DP email: c.jiemingstanley\@digipen.edu
- \par Course: CSD2400
- \par Gam200
- \date 3-9-2022
- \brief
-  This file contains
+/*!
+file: ContentBrowserPanel.cpp
+author: Chan Jie Ming Stanley
+email: c.jiemingstanley\@digipen.edu
+brief:
+This file contains
 
-*******************************************************************************/
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 
 namespace ALEngine
 {

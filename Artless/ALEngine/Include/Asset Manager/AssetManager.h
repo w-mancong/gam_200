@@ -1,17 +1,17 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
-/*!*****************************************************************************
- \file AssetManager.h
- \author Chan Jie Ming Stanley
- \par DP email: c.jiemingstanley\@digipen.edu
- \par Course: CSD2400
- \par Gam200
- \date 14-9-2022
- \brief
- This file contains
 
-*******************************************************************************/
+
+/*!
+file: AssetManager.h
+author: Chan Jie Ming Stanley
+email: c.jiemingstanley\@digipen.edu
+brief:
+This file contains
+
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 
 
 namespace ALEngine::Engine
@@ -26,36 +26,74 @@ namespace ALEngine::Engine
 		void Begin();
 		void End();
 
-		//get timestamp in number format and save to 48bits of 64bits of timestamp/ date & time then return 64bits
+
+		/*!*********************************************************************************
+		    \brief
+		    get timestamp in 3 16 bit parts and assign to vector container before return
+			vector 
+        ***********************************************************************************/
 		std::vector<u16> GetTimeStamp();
 
-		//for adding in 48 bit timestamp and 16 bit assetcounter and arrange into single 64 bit Guid
+
+		/*!*********************************************************************************
+		\brief
+		bitshift all 16 bit parts into a single 64 bit guid
+	    ***********************************************************************************/
 		void PrepareGuid();
 
-		//need to make this into a data structure, either map<16 bit assetcount, 64 bit guid>
-		std::map<u16, u64>assetguidcontainer; //asset manager (48 bits: timestamp/ date & time ,16 bits: counter from 0 to 65,535
+		//map<16 bit assetkeycount, 64 bit guid>
+		//map container for storing 64 bit guids 
+		std::map<u16, u64>assetguidcontainer; // 64 bit guid format (48 bits: timestamp/ date & time ,16 bits: counter from 0 to 65,535
 
-		//get the current asset counter that is tracking how many asset loaded currently
+		/*!*********************************************************************************
+		\brief
+		get the current asset counter that is tracking how many asset loaded currently
+		***********************************************************************************/
 		u16 GetCurrentAssetCount();
 
-		//increment the current asset counter
+		/*!*********************************************************************************
+		\brief
+		increment the current asset counter
+		***********************************************************************************/
 		void IncrementCurrentAssetCount();
 
-		//decrement the current asset counter
+		/*!*********************************************************************************
+		\brief
+	    decrement the current asset counter
+		***********************************************************************************/
 		void DecrementCurrentAssetCount();
 
-		//add to the map container of guid
+
+		/*!*********************************************************************************
+		\brief
+		add guid to the map container of guid
+		***********************************************************************************/
 		void AddToAssetGuidContainer(u64 guidtoadd);
 
+		/*!*********************************************************************************
+	    \brief
+	    remove guid from map container of guid
+	    ***********************************************************************************/
 		void RemoveFromAssetGuidContainer(u64 guidtoremove);
 
-		//get key for current guid to delete
+
+		/*!*********************************************************************************
+	    \brief
+	    get key for current guid to find
+	    ***********************************************************************************/
 		u16 GetKeyForGuid(u64 guidtofind);
 
-		//get the current asset key counter
+
+		/*!*********************************************************************************
+	    \brief
+		get the current asset key counter
+	    ***********************************************************************************/
 		u16 GetCurrentAssetKeyCount();
 
-		//increment the current asset key counter
+		/*!*********************************************************************************
+		\brief
+		increment the current asset key counter
+		***********************************************************************************/
 		void IncrementCurrentAssetKeyCount();
 
 	private:
