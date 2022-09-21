@@ -49,7 +49,6 @@ namespace ALEngine
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
 			ParticleSys::ParticleSystem particleSys;
-			//ParticleSys::ParticleProperties particleProperty;
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -65,9 +64,12 @@ namespace ALEngine
 				shader = &meshShader;
 
 			// TRS model multiplication
-			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
 			shader->use();
-			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
+			shader->Set("scale", Matrix4x4::Scale(scale.x, scale.y, 1.0f));
+			shader->Set("rotate", Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)));
+			shader->Set("translate", Matrix4x4::Translate(position.x, position.y, 0.0f));
+			shader->Set("color", color.r, color.g, color.b, color.a);
+
 			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, sprite.texture);
@@ -145,13 +147,6 @@ namespace ALEngine
 
 			// Particle system init here
 			particleSys.ParticleSysInit();
-
-			//particleProperty.colorStart = { 1.f, 0.f, 0.f, 1.0f };
-			//particleProperty.sizeStart= 50.f, particleProperty.sizeVariation = 0.3f, particleProperty.sizeEnd = 10.0f;
-			//particleProperty.lifeTime = 5.0f;
-			//particleProperty.velocity = { 60.0f, 25.0f };
-			//particleProperty.velocityVariation = { 3.0f, 1.0f };
-			//particleProperty.position = { 0.f, 0.f };
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -234,22 +229,13 @@ namespace ALEngine
 
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
-
-			//Text test;
-			//SetFont(test, "roboto");
-			//SetTextString(test, "acs");
-			//SetTextSize(test, 1.f);
-			//SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-			//SetFontType(test, Font::FontType::Regular);
-			//SetTextPos(test, Vector2(50.f, 50.f));
-			//RenderText(test);
+			ParticleSys::ParticleProperties particleProperty;
+			ParticleSys::SetStartColor(particleProperty, Math::Vector4(1.f, 0.f, 0.f, 1.0f));
+			ParticleSys::SetStartSize(particleProperty, 100);
 
 			if (Input::KeyTriggered(KeyCode::MouseLeftButton))
 			{
-				for (int i{}; i < 2; ++i)
-				{
-					particleSys.Emit();
-				}
+				particleSys.Emit(particleProperty);
 			}
 
 			// Update and render particles
