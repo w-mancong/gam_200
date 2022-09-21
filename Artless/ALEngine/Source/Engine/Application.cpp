@@ -55,13 +55,14 @@ namespace ALEngine
 			// Initialize Time (Framerate Controller)
 			Time::Init();
 
+			// Init Logger
+			ALEngine::Exceptions::Logger::Init();
+
 			// Init ImGui
 			ALEditor::Instance()->SetImGuiEnabled(true);
 			ALEditor::Instance()->SetDockingEnabled(false);
 			ALEditor::Instance()->SetSelectedEntityTransform(&trans_noah);
 
-			// Init Logger
-			ALEngine::Exceptions::Logger::Init();
 		}
 
 		void Application::Update(void)
@@ -86,7 +87,7 @@ namespace ALEngine
 				{
 					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
-					std::cout << Time::m_FPS << std::endl;
+					AL_CORE_DEBUG(Time::m_FPS);
 				}
 
 				// Render

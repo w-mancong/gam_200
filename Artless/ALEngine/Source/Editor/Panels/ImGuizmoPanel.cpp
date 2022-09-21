@@ -13,7 +13,7 @@ namespace ALEngine
 			if (!ImGui::Begin("Editor"))
 			{
 				ImGui::End();
-				//AL_CORE_ERROR("Editor Panel Collapsed");
+				AL_CORE_ERROR("Editor Panel Collapsed");
 				return;
 			}
 
@@ -59,14 +59,14 @@ namespace ALEngine
 
 			/*
 			ImGuizmo::SetDrawlist();
-			float windowWidth = (float)ImGui::GetWindowWidth();
-			float windowHeight = (float)ImGui::GetWindowHeight();
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+			float windowWidth = (float)Graphics::OpenGLWindow::width;
+			float windowHeight = (float)Graphics::OpenGLWindow::height;
+			ImGuizmo::SetRect(0, 0, windowWidth, windowHeight);
 
 			// Manipulate
 			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), ECS::GetProjection().value_ptr(),
 				m_CurrentGizmoOperation, ImGuizmo::LOCAL, mtx);
-				*/
+			*/
 
 			ImGui::End();
 		}

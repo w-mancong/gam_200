@@ -21,7 +21,7 @@ namespace ALEngine
 
 			void OnImGuiRender();
 		private:
-
+			std::ostringstream logger_oss;
 		};
 	}
 }

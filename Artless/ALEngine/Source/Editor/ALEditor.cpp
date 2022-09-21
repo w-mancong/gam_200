@@ -6,7 +6,7 @@ brief:	This file contains the function declarations for the ALEditor class
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#include "pch.h"
+#include <pch.h>
 
 namespace ALEngine
 {
