@@ -35,7 +35,9 @@ namespace ALEngine
 
 		std::vector<u16> AssetManager::GetTimeStamp()
 		{
+			//vector to store 16bit parts of timestamp 
 			std::vector<u16> timedata;
+
 			//little-endian date (day, month, year), 12-09-2002
 			//yyyy Four-digit year (0000 through 9999).
 			//mm Two - digit month(01 through 12).
@@ -76,10 +78,6 @@ namespace ALEngine
 
 			//min
 			u8 min = static_cast<u8>(ltm.tm_min);  //8bit
-
-			//store to u64 48bits through bitshifting
-
-
 			
 			//bitshift day and month into 16 bit
 			u16 ddmm = (day << 8) | month;
@@ -101,18 +99,13 @@ namespace ALEngine
 			std::vector<u16> timestamp = GetTimeStamp();
 			u64 newguid{ 0ULL };
 
+			//get assetkeycount for use in putting assetnumber in guid
 			u16 guidassetcount = GetCurrentAssetKeyCount();
-
-
-
-			//merge 48 bit timestamp and 16 bit assetcount into one single 64 bit guid
-
-			//(ddmm yyyy HHMM ANUM)
 			
-			//bitshift ddmmyyyy into 32bit
+			//bitshift ddmmyyyy into a 32bit
 			u32 ddmmyyyy = (timestamp[0] << 16) | timestamp[1];
 
-			//bitshift HHMM and ANUM into 32bit
+			//bitshift HHMM and ANUM into a 32bit
 			u32 HHMMANUM = (timestamp[2] << 16) | guidassetcount;
 
 			//bitshfit ddmmyyyy and HHMMANUM into 64 bit
@@ -120,7 +113,6 @@ namespace ALEngine
 
 			//add to map container of guid
 			AddToAssetGuidContainer(newguid);
-			
 		}
 
 		u16 AssetManager::GetCurrentAssetCount()
@@ -153,7 +145,7 @@ namespace ALEngine
 			//insert into the map container
 			assetguidcontainer.insert({ currentassetnum, guidtoadd });
 
-			//increment the counter for current number of asset loaded
+			//increment the counter for current number of asset loaded currently in editor
 			IncrementCurrentAssetCount();
 		}
 
@@ -164,7 +156,7 @@ namespace ALEngine
 			//erase
 			assetguidcontainer.erase(keytoremove);
 
-			//decrement the counter for current number of asset loaded
+			//decrement the counter for current number of asset loaded currently in editor
 			DecrementCurrentAssetCount();
 		}
 
