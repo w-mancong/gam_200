@@ -205,16 +205,19 @@ namespace ALEngine
 			return res;
 		}
 
-		Matrix4x4 Matrix4x4::LookAt(Vector3 eye, Vector3 center, Vector3 up)
+		Matrix4x4 Matrix4x4::LookAt(Vector3 pos, Vector3 tgt, Vector3 up)
 		{
-			// direction										// right							   // up
-			Vector3 const d = Vector3::Normalize(center - eye), r = Vector3::Cross(d, up).Normalize(), u = Vector3::Cross(r, d);
-			Matrix4x4 res;
-			res(0, 0) = r.x;				   res(0, 1) = u.x;					  res(0, 2) = -d.x;
-			res(1, 0) = r.y;				   res(1, 1) = u.y;					  res(1, 2) = -d.y;
-			res(2, 0) = r.z;				   res(2, 1) = u.z;					  res(2, 2) = -d.z;
-			res(3, 0) = -Vector3::Dot(r, eye); res(3, 1) = -Vector3::Dot(u, eye); res(3, 2) = Vector3::Dot(d, eye);
-			return res;
+			vec3 const w{ vec3::Normalize(pos - tgt) };				// front
+			vec3 const u{ vec3::Normalize( vec3::Cross(up, w) ) };	// right
+			vec3 const v{ vec3::Normalize( vec3::Cross(w , u) ) };	// up
+
+			return mat4
+			{
+				vec4{ u.x, v.x, w.x, 0.0f },
+				vec4{ u.y, v.y, w.y, 0.0f },
+				vec4{ u.z, v.z, w.z, 0.0f },
+				vec4{ -vec3::Dot(u, pos), -vec3::Dot(v, pos), -vec3::Dot(w, pos), 1.0f}
+			};
 		}
 
 		Matrix4x4 Matrix4x4::Model(Vector3 const& pos, Vector3 const& scale, f32 rot)

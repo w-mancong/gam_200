@@ -26,7 +26,7 @@ namespace ALEngine
 		}
 
 		GLFWwindow* OpenGLWindow::window = nullptr;
-		s32 OpenGLWindow::width = 1200, OpenGLWindow::height = 600;
+		s32 OpenGLWindow::width = 800, OpenGLWindow::height = 600;
 		void OpenGLWindow::InitGLFWWindow(void)
 		{
 			glfwInit();
