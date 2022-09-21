@@ -111,7 +111,7 @@ namespace ALEngine
 				\return
 				Pointer to the sprite that was created
 			***********************************************************************************/
-			Sprite* CreateSprite(std::string const& filePath);
+			Sprite CreateSprite(std::string const& filePath);
 
 			enum class Shapes
 			{
@@ -124,11 +124,15 @@ namespace ALEngine
 			friend class Templates::Singleton<MeshBuilder>;
 			friend class Memory::StaticMemory;
 
-			std::vector<std::pair<std::string, Sprite*>, Memory::DynamicAllocator<std::pair<std::string, Sprite*>>> m_Sprites;
-			Sprite* m_Shapes[static_cast<u64>(Shapes::Total)];
+			using mem = Memory::DynamicAllocator<std::pair<std::string, Sprite>>;
+			std::vector<std::pair<std::string, Sprite>, mem> m_Sprites;
+			Sprite m_Shapes[static_cast<u64>(Shapes::Total)];
 		};
 
-		void SubMeshInstanceBuffer(Math::Matrix4 const* mat);
+		//void SubMeshInstanceBuffer(Math::Matrix4 const* mat);
+		u32 GetBatchVao(void);
+		u64 GetVertexPositionSize(void);
+		void SubVertexPosition(Math::vec2 const* pos);
 	}
 }
 

@@ -12,8 +12,9 @@ namespace ALEngine
 		class RenderSystem : public System
 		{
 		public:
-			void Render(Sprite const& sprite, Transform const& trans);
-			void RenderInstance(s32 count);
+			//void Render(Sprite const& sprite, Transform const& trans);
+			//void RenderInstance(s32 count);
+			//void RenderBatch();
 		};
 
 		struct Plane
@@ -49,67 +50,77 @@ namespace ALEngine
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
-			Matrix4* modelMatrices{ nullptr };
-			Sprite rect;
-		}
+			vec2* positions{ nullptr };
 
-		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
-		{
-			Color const& color = sprite.color;
-			Vector3 const& position{ trans.position }, scale{ trans.scale };
-
-			// Getting the appropriate shader
-			Shader* shader{ nullptr };
-			if (sprite.texture)
-				shader = &spriteShader;
-			else
-				shader = &meshShader;
-
-			// TRS model multiplication
-			Matrix4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
-
-			shader->use();
-			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
-			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, sprite.texture);
-			glBindVertexArray(sprite.vao);
-			// render based on the primitive type
-			switch (sprite.primitive)
+			vec2 const vertex_position[4] =
 			{
-				case GL_TRIANGLE_FAN:
-				{
-					glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
-					break;
-				}
-				case GL_TRIANGLE_STRIP:
-				{
-					glEnable(GL_PRIMITIVE_RESTART);
-					glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
-					glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-					glDisable(GL_PRIMITIVE_RESTART);
-					break;
-				}
-				case GL_TRIANGLES:
-				{
-					glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-					break;
-				}
-			}	
-			// Unbind to prevent any unintended behaviour to vao
-			glBindVertexArray(0);
+				{ -0.5f,  0.5f },
+				{ -0.5f, -0.5f },
+				{  0.5f,  0.5f },
+				{  0.5f, -0.5f }
+			};
+
+			//Matrix4* modelMatrices{ nullptr };
+			//Sprite rect;
 		}
 
-		void RenderSystem::RenderInstance(s32 count)
-		{
-			meshShader.use();
-			glBindVertexArray(rect.vao);
-			//glEnable(GL_PRIMITIVE_RESTART);
-			//glPrimitiveRestartIndex(static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX));
-			glDrawElementsInstanced(GL_TRIANGLES, rect.drawCount, GL_UNSIGNED_INT, nullptr, count);
-			//glDisable(GL_PRIMITIVE_RESTART);
-			glBindVertexArray(0);
-		}
+		//void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
+		//{
+		//	Color const& color = sprite.color;
+		//	Vector3 const& position{ trans.position }, scale{ trans.scale };
+
+		//	// Getting the appropriate shader
+		//	Shader* shader{ nullptr };
+		//	if (sprite.texture)
+		//		shader = &spriteShader;
+		//	else
+		//		shader = &meshShader;
+
+		//	// TRS model multiplication
+		//	Matrix4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
+
+		//	shader->use();
+		//	shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
+		//	glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
+		//	glActiveTexture(GL_TEXTURE0);
+		//	glBindTexture(GL_TEXTURE_2D, sprite.texture);
+		//	glBindVertexArray(sprite.vao);
+		//	// render based on the primitive type
+		//	switch (sprite.primitive)
+		//	{
+		//		case GL_TRIANGLE_FAN:
+		//		{
+		//			glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
+		//			break;
+		//		}
+		//		case GL_TRIANGLE_STRIP:
+		//		{
+		//			glEnable(GL_PRIMITIVE_RESTART);
+		//			glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
+		//			glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+		//			glDisable(GL_PRIMITIVE_RESTART);
+		//			break;
+		//		}
+		//		case GL_TRIANGLES:
+		//		{
+		//			glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+		//			break;
+		//		}
+		//	}	
+		//	// Unbind to prevent any unintended behaviour to vao
+		//	glBindVertexArray(0);
+		//}
+
+		//void RenderSystem::RenderInstance(s32 count)
+		//{
+		//	meshShader.use();
+		//	glBindVertexArray(rect.vao);
+		//	//glEnable(GL_PRIMITIVE_RESTART);
+		//	//glPrimitiveRestartIndex(static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX));
+		//	glDrawElementsInstanced(GL_TRIANGLES, rect.drawCount, GL_UNSIGNED_INT, nullptr, count);
+		//	//glDisable(GL_PRIMITIVE_RESTART);
+		//	glBindVertexArray(0);
+		//}
 
 		void UpdateViewMatrix(void)
 		{
@@ -141,15 +152,16 @@ namespace ALEngine
 			spriteShader.Set("view", camera.ViewMatrix());
 			spriteShader.Set("proj", camera.ProjectionMatrix());
 
-			meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
+			meshShader = Shader{ "Assets/Shaders/batch.vert", "Assets/Shaders/batch.frag" };
 			meshShader.use();
 			meshShader.Set("view", camera.ViewMatrix());
 			meshShader.Set("proj", camera.ProjectionMatrix());
 
 			InitializeFrustum(fstm);
 
-			modelMatrices = Memory::StaticMemory::New<Matrix4>(ECS::MAX_ENTITIES);
-			rect = MeshBuilder::Instance()->MakeRectangle();
+			positions = Memory::StaticMemory::New<vec2>( GetVertexPositionSize() );
+			//modelMatrices = Memory::StaticMemory::New<Matrix4>(ECS::MAX_ENTITIES);
+			//rect = MeshBuilder::Instance()->MakeRectangle();
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -218,26 +230,44 @@ namespace ALEngine
 			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			u32 displayed = 0;
-			for (auto it = entities.begin(); it != entities.end(); ++it)
-			{
-				Sprite	  const& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);
-				Transform const& trans  = Coordinator::Instance()->GetComponent<Transform>(*it);
-				if (ShouldRender(trans))
-				{
-					rs->Render(sprite, trans);
-					//++displayed;
-				}
-			}
+			//u32 displayed = 0;
+			//for (auto it = entities.begin(); it != entities.end(); ++it)
+			//{
+			//	Sprite	  const& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);
+			//	Transform const& trans  = Coordinator::Instance()->GetComponent<Transform>(*it);
+			//	if (ShouldRender(trans))
+			//	{
+			//		rs->Render(sprite, trans);
+			//		//++displayed;
+			//	}
+			//}
 
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
-			//u64 index{ 0 };
-			//for (auto it = entities.begin(); it != entities.end(); ++it)
-			//{
-			//	Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
-			//	*(modelMatrices + index++) = Matrix4::Model(trans.position, trans.scale, trans.rotation);
-			//}
+			u64 index{ 0 };
+			for (u64 i = 0; i < entities.size(); ++i)
+			{
+				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>( entities[i] );
+				mat4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
+				for (u64 j = i * 4, k = 0; j < (i * 4) + 4; ++j, ++k)
+				{
+					*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
+					//std::cout << *(positions + j) << ' ';
+				}
+				//std::cout << std::endl;
+			}
+
+			u32 vao = GetBatchVao();
+
+			meshShader.use();
+			meshShader.Set("view", camera.ViewMatrix());
+			meshShader.Set("projection", camera.ProjectionMatrix());
+
+			SubVertexPosition(positions);
+
+			glBindVertexArray(vao);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			glBindVertexArray(0);
 
 			//meshShader.use();
 			//meshShader.Set("view", camera.ViewMatrix());
@@ -246,7 +276,7 @@ namespace ALEngine
 			//rs->RenderInstance(entities.size());
 
 			// End of ImGui frame, render ImGui!
-			ALEditor::Instance()->End();
+			//ALEditor::Instance()->End();
 
 			glfwPollEvents();
 			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
@@ -313,18 +343,18 @@ namespace ALEngine
 					sprite = MeshBuilder::Instance()->MakeRectangle();
 					break;
 				}
-				case Shape::Circle:
-				{
-					sprite = MeshBuilder::Instance()->MakeCircle();
-					break;
-				}
-				case Shape::Triangle:
-				{
-					sprite = MeshBuilder::Instance()->MakeTriangle();
-					break;
-				}
+				//case Shape::Circle:
+				//{
+				//	sprite = MeshBuilder::Instance()->MakeCircle();
+				//	break;
+				//}
+				//case Shape::Triangle:
+				//{
+				//	sprite = MeshBuilder::Instance()->MakeTriangle();
+				//	break;
+				//}
 			}
-			sprite.layer = layer, sprite.mode = mode;
+			sprite.layer = layer/*, sprite.mode = mode*/;
 			Coordinator::Instance()->AddComponent(entity, sprite);
 			Coordinator::Instance()->AddComponent(entity, transform);
 		}
@@ -339,25 +369,25 @@ namespace ALEngine
 					sprite = MeshBuilder::Instance()->MakeRectangle();
 					break;
 				}
-				case Shape::Circle:
-				{
-					sprite = MeshBuilder::Instance()->MakeCircle();
-					break;
-				}
-				case Shape::Triangle:
-				{
-					sprite = MeshBuilder::Instance()->MakeTriangle();
-					break;
-				}
+				//case Shape::Circle:
+				//{
+				//	sprite = MeshBuilder::Instance()->MakeCircle();
+				//	break;
+				//}
+				//case Shape::Triangle:
+				//{
+				//	sprite = MeshBuilder::Instance()->MakeTriangle();
+				//	break;
+				//}
 			}
-			sprite.layer = layer, sprite.mode = mode;
+			sprite.layer = layer/*, sprite.mode = mode*/;
 			Coordinator::Instance()->AddComponent(entity, sprite);
 		}
 
 		void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
 		{
 			Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
-			sprite.layer = layer, sprite.mode = mode;
+			sprite.layer = layer/*, sprite.mode = mode*/;
 			Coordinator::Instance()->AddComponent(entity, sprite);
 			Coordinator::Instance()->AddComponent(entity, transform);
 		}
@@ -365,7 +395,7 @@ namespace ALEngine
 		void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer, RenderMode mode)
 		{
 			Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
-			sprite.layer = layer, sprite.mode = mode;
+			sprite.layer = layer/*, sprite.mode = mode*/;
 			Coordinator::Instance()->AddComponent(entity, sprite);
 		}
 
