@@ -238,6 +238,7 @@ namespace ALEngine::Math
 		static Matrix4x4 LookAt(Vector3 pos, Vector3 tgt, Vector3 up);
 
 		static Matrix4x4 Model(Vector3 const& pos, Vector3 const& scale, f32 rot);
+		static Matrix4x4 ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot);
 
 	private:
 		Vector4 mat[4];

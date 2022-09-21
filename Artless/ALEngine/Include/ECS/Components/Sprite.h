@@ -12,28 +12,18 @@ brief:	This file contains the sprite component
 #include "Utility/Type.h"
 #include "ECS/Components/RenderData.h"
 #include "ECS/Components/Color.h"
-namespace ALEngine
+namespace ALEngine::ECS::Component
 {
-	namespace ECS
+	/*!*********************************************************************************
+		\brief
+			Sprite component will be used to render entities in the game world
+	***********************************************************************************/
+	struct Sprite
 	{
-		namespace Component
-		{
-			/*!*********************************************************************************
-				\brief
-					Sprite component will be used to render entities in the game world
-			***********************************************************************************/
-			struct Sprite
-			{
-				u32 vao{ 0 }, vbo{ 0 }, ebo{ 0 };
-				u32 drawCount{ 0 };
-				u32 texture{ 0 };
-				u32 primitive{ GL_TRIANGLES };
-				Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
-				RenderLayer layer{ RenderLayer::Background };
-				RenderMode mode{ RenderMode::Fill };
-			};
-		}
-	}
+		u32 texture{ 0 };
+		Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		RenderLayer layer{ RenderLayer::Background };
+	};
 }
 
 #endif

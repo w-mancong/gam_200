@@ -227,10 +227,24 @@ namespace ALEngine
 
 			return Matrix4x4
 			(
-				Vector4{ scale.x * cos,  scale.x * sin,	0.0f,  0.0f },
+				Vector4{   scale.x * cos,  scale.x * sin,	0.0f,  pos.x },
+				Vector4{ -(scale.y * sin), scale.y * cos,	0.0f,  pos.y },
+				Vector4{   0.0f,		   0.0f,			1.0f,  pos.z },
+				Vector4{   0.0f,		   0.0f,			0.0f,  1.0f  }
+			);
+		}
+
+		Matrix4x4 Matrix4x4::ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot)
+		{
+			f32 const rad = DegreeToRadian(rot);
+			f32 const cos = std::cosf(rad), sin = std::sinf(rad);
+
+			return Matrix4x4
+			(
+				Vector4{   scale.x * cos,  scale.x * sin,	0.0f,  0.0f },
 				Vector4{ -(scale.y * sin), scale.y * cos,	0.0f,  0.0f },
-				Vector4{ 0.0f,		   0.0f,			1.0f,  0.0f },
-				Vector4{ pos.x,		   pos.y,			pos.z, 1.0f }
+				Vector4{   0.0f,		   0.0f,			1.0f,  0.0f },
+				Vector4{   pos.x,		   pos.y,			pos.z, 1.0f }
 			);
 		}
 
