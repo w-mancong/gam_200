@@ -7,14 +7,18 @@ namespace ALEngine
 	{
 		namespace ParticleSys
 		{
-			struct ParticleProperties
+			struct ParticleProperties // ParticleProperties comes with default values
 			{
 				Math::Vector2 position{0.f, 0.f}, velocity{10.f, 100.f}, velocityVariation{10.f, 10.f};
 				Math::Vector4 colorStart{1.f, 1.f, 1.f, 1.f}, colorEnd{ 1.f, 1.f, 1.f, 1.f };
 				f32 sizeStart{ 100.f }, sizeEnd{ 0.f }, sizeVariation{ 0.f }, lifeTime{1.f};
 			};
+
+			// ParticleProperty set functions
 			void SetStartColor(ParticleProperties& prop, Math::Vector4 color);
+			void SetStartColor(ParticleProperties& prop, Math::Vector3 color);
 			void SetEndColor(ParticleProperties& prop, Math::Vector4 color);
+			void SetEndColor(ParticleProperties& prop, Math::Vector3 color);
 			void SetStartSize(ParticleProperties& prop, f32 size);
 			void SetEndSize(ParticleProperties& prop, f32 size);
 			void SetVelocity(ParticleProperties& prop, Math::Vector2 vel);

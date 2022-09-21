@@ -12,7 +12,6 @@ namespace ALEngine
 		std::vector<std::pair<Math::Vector2, Math::Vector2>> Gizmo::linesContainer;
 		bool Gizmo::gizmoToggle;
 		Math::Vector3 Gizmo::gizmoColor;
-		//u32 Gizmo::gizmoCircleSegments;
 
 		// this function makes the sample line
 		void Gizmo::GizmoInit()
@@ -56,11 +55,11 @@ namespace ALEngine
 		// Don't use, its too laggy. Use imguizmo circle instead.
 		//void Gizmo::RenderCircle(Math::Vector2 center, f32 radius)
 		//{
-		//	const float degreeIncrement{ 2.f * 3.141592f / (float)gizmoCircleSegments };
+		//	const float degreeIncrement{ 2.f * 3.141592f / (float)32 };
 		//	Math::Vector2 first, second;
 		//	
 		//	first = center + radius * Math::Vector2(cosf(0.f), sinf(0.f));
-		//	for (unsigned i{ 0 }; i <= gizmoCircleSegments; ++i)
+		//	for (unsigned i{ 0 }; i <= 32; ++i)
 		//	{
 		//		second = center + radius * Math::Vector2(cosf(degreeIncrement * i), sinf(degreeIncrement * i));
 		//		RenderLine(first, second);

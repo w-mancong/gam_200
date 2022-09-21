@@ -16,7 +16,6 @@ namespace ALEngine
 			static Graphics::Shader gizmolineShader;
 			static bool gizmoToggle;
 			static Math::Vector3 gizmoColor;
-			//static u32 gizmoCircleSegments;
 
 			static void GizmoInit();
 			static void RenderLine(Math::Vector2 pt1, Math::Vector2 pt2);

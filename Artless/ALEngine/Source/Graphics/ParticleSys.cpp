@@ -148,10 +148,21 @@ namespace ALEngine
 				prop.colorStart = color;
 			}
 
+			void SetStartColor(ParticleProperties& prop, Math::Vector3 color)
+			{
+				prop.colorStart = Math::Vector4(color.x, color.y, color.z, 1.f);
+			}
+
 			void SetEndColor(ParticleProperties& prop, Math::Vector4 color)
 			{
 				prop.colorEnd = color;
 			}
+
+			void SetEndColor(ParticleProperties& prop, Math::Vector3 color)
+			{
+				prop.colorEnd = Math::Vector4(color.x, color.y, color.z, 1.f);
+			}
+
 			void SetStartSize(ParticleProperties& prop, f32 size)
 			{
 				prop.sizeStart = size;
