@@ -81,6 +81,11 @@ namespace ALEngine
 				{
 					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
+
+					// FPS
+					std::stringstream buffer;
+					buffer << Time::m_FPS;
+					glfwSetWindowTitle(OpenGLWindow::Window(), buffer.str().c_str());
 				}
 				// Render
 				Render();

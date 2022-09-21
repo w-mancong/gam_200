@@ -119,7 +119,7 @@ namespace ALEngine
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 
-			void ParticleSystem::Emit()
+			void ParticleSystem::Emit(const ParticleProperties& particleProperty)
 			{
 				Particle& particle = particleContainer[particleIndex];
 				particle.active = true;
@@ -141,6 +141,50 @@ namespace ALEngine
 				particle.sizeEnd = particleProperty.sizeEnd;
 
 				particleIndex = --particleIndex % particleContainer.size();
+			}
+
+			void SetStartColor(ParticleProperties& prop, Math::Vector4 color)
+			{
+				prop.colorStart = color;
+			}
+
+			void SetEndColor(ParticleProperties& prop, Math::Vector4 color)
+			{
+				prop.colorEnd = color;
+			}
+			void SetStartSize(ParticleProperties& prop, f32 size)
+			{
+				prop.sizeStart = size;
+			}
+
+			void SetEndSize(ParticleProperties& prop, f32 size)
+			{
+				prop.sizeEnd = size;
+			}
+
+			void SetVelocity(ParticleProperties& prop, Math::Vector2 vel)
+			{
+				prop.velocity = vel;
+			}
+
+			void SetPosition(ParticleProperties& prop, Math::Vector2 pos)
+			{
+				prop.position = pos;
+			}
+
+			void SetVelVariation(ParticleProperties& prop, Math::Vector2 variation)
+			{
+				prop.velocityVariation = variation;
+			}
+
+			void SetLifeTime(ParticleProperties& prop, f32 time)
+			{
+				prop.lifeTime = time;
+			}
+
+			void SetSizeVariation(ParticleProperties& prop, f32 variation)
+			{
+				prop.sizeVariation = variation;
 			}
 		}
 	}
