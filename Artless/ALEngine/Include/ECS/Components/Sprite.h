@@ -10,8 +10,6 @@ brief:	This file contains the sprite component
 #define SPRITE_H
 
 #include "Utility/Type.h"
-#include "ECS/Components/RenderData.h"
-#include "ECS/Components/Color.h"
 namespace ALEngine::ECS::Component
 {
 	/*!*********************************************************************************

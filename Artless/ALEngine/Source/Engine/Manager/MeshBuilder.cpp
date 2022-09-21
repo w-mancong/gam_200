@@ -8,7 +8,10 @@ namespace
 	// layout location inside vertex shader
 	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, SPRITE_RESERVE_SIZE{ 100 };
 	u32 instanceVBO{ 0 }, batchVBO{ 0 };
-	u64 const NUM_VERTICES{ 4 }, TOTAL_POS_BYTE{ sizeof(ALEngine::Math::vec2) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES };
+	u64 const NUM_VERTICES{ 4 }, 
+		TOTAL_POS_BYTE{ sizeof(ALEngine::Math::vec3) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
+		TOTAL_COLOR_BYTE{ sizeof(ALEngine::Math::vec4) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
+		TOTAL_TEXCOORD_BYTE{ sizeof(ALEngine::Math::vec2) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES };
 
 	struct Batch
 	{
@@ -21,15 +24,7 @@ namespace
 		using namespace ALEngine;
 		u32 vao{ 0 }, vbo{ 0 }, ebo{ 0 };
 
-		u64 const TOTAL_BYTES = TOTAL_POS_BYTE;
-
-		f32 positions[] =
-		{
-			-0.5f,  0.5f,	// top left
-			-0.5f, -0.5f,	// btm left
-			 0.5f,  0.5f,	// top right
-			 0.5f, -0.5f,	// btm right
-		};
+		u64 const TOTAL_BYTES = TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE;
 
 		glGenVertexArrays(1, &vao);
 		glBindVertexArray(vao);
@@ -37,16 +32,32 @@ namespace
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, TOTAL_BYTES, nullptr, GL_DYNAMIC_DRAW);
-		//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), positions);
 
 		// position attribute
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(f32), (void*)0);
+		// color attribute
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(f32), (void*)(TOTAL_POS_BYTE));
+		// tex attribute
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE));
 
+		// top right, btm right, top left, btm left
+		f32 texCoords[] =
+		{
+			0.0f, 1.0f,		// top right
+			0.0f, 0.0f,		// btm right
+			1.0f, 1.0f,		// top left
+			1.0f, 0.0f,		// btm left
+		};
+
+		/*
+			Buffering indices. Draw Primitive: GL_TRIANGLES
+		*/
 		glGenBuffers(1, &ebo);
-		u64 const TOTAL_INDICES = 6 * 2;
+		u64 const TOTAL_INDICES = 6 * ECS::MAX_ENTITIES;
 		u32* indices = Memory::DynamicMemory::New<u32>(TOTAL_INDICES);
-
 		for (u64 i = 0, j = 0; i < TOTAL_INDICES; i += 6, ++j)
 		{
 			u32 currIndex = static_cast<u32>(j) * 4;
@@ -56,13 +67,6 @@ namespace
 			*(indices + i + 3) = 1 + currIndex;
 			*(indices + i + 4) = 3 + currIndex;
 			*(indices + i + 5) = 2 + currIndex;
-		}
-
-		for (u64 i = 0; i < TOTAL_INDICES; ++i)
-		{
-			if (!(i % 6))
-				std::cout << std::endl;
-			std::cout << *(indices + i) << ' ';
 		}
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * TOTAL_INDICES, indices, GL_STATIC_DRAW);
@@ -95,6 +99,9 @@ namespace ALEngine::Engine
 		//	glDeleteBuffers(1, &(*(m_Shapes + i))->ebo);
 		//	StaticMemory::Delete(*(m_Shapes + i));
 		//}
+		glDeleteVertexArrays(1, &batch.vao);
+		glDeleteBuffers(1, &batch.vbo);
+		glDeleteBuffers(1, &batch.ebo);
 	}
 
 	Sprite MeshBuilder::MakeRectangle(void)
@@ -335,10 +342,11 @@ namespace ALEngine::Engine
 		return NUM_VERTICES * MAX_ENTITIES;
 	}
 
-	void SubVertexPosition(vec2 const* pos)
+	void SubVertexPosition(BatchData const& bd)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, batch.vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, TOTAL_POS_BYTE, pos);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, TOTAL_POS_BYTE, bd.pos);
+		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE, TOTAL_COLOR_BYTE, bd.col);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }

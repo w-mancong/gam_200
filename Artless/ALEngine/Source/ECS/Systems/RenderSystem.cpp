@@ -49,7 +49,8 @@ namespace ALEngine::ECS
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
-		vec2* positions{ nullptr };
+		vec3* positions{ nullptr };
+		vec4* colors{ nullptr };
 
 		vec2 const vertex_position[4] =
 		{
@@ -133,15 +134,18 @@ namespace ALEngine::ECS
 			return sp1.layer < sp2.layer;
 		});
 
-		u64 index{ 0 }, counter{ 0 }; u64 const size = entities.size();
+		u64 counter{ 0 }; u64 const size = entities.size();
 		for (u64 i = 0; i < size; ++i)
 		{
+			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(entities[i]);
-			if (!ShouldRender(trans))
-				continue;
 			mat4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
 			for (u64 j = i * 4, k = 0; j < (i * 4) + 4; ++j, ++k)
+			{
 				*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
+				 // assigning colors
+				(*(colors + j)).x = sprite.color.r; (*(colors + j)).y = sprite.color.g; (*(colors + j)).z = sprite.color.b; (*(colors + j)).w = sprite.color.a;
+			}
 			++counter;
 		}
 
@@ -149,11 +153,13 @@ namespace ALEngine::ECS
 
 		batchShader.use();
 		batchShader.Set("view", camera.ViewMatrix());
-		batchShader.Set("projection", camera.ProjectionMatrix());
+		batchShader.Set("proj", camera.ProjectionMatrix());
 
-		SubVertexPosition(positions);
+		BatchData bd{ positions, colors };
 
-		std::cout << counter << std::endl;
+		SubVertexPosition(bd);
+
+		//std::cout << counter << std::endl;
 
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, INDICES_SIZE * counter, GL_UNSIGNED_INT, nullptr);
@@ -198,11 +204,10 @@ namespace ALEngine::ECS
 		batchShader = Shader{ "Assets/Shaders/batch.vert", "Assets/Shaders/batch.frag" };
 		batchShader.use();
 		batchShader.Set("view", camera.ViewMatrix());
-		batchShader.Set("proj", camera.ProjectionMatrix());
+		batchShader.Set("proj", camera.ProjectionMatrix());	
 
-		InitializeFrustum(fstm);
-
-		positions = Memory::StaticMemory::New<vec2>( GetVertexPositionSize() );
+		positions = Memory::StaticMemory::New<vec3>(GetVertexPositionSize());
+		colors = Memory::StaticMemory::New<vec4>( GetVertexPositionSize() );
 		//modelMatrices = Memory::StaticMemory::New<Matrix4>(ECS::MAX_ENTITIES);
 		//rect = MeshBuilder::Instance()->MakeRectangle();
 	}
@@ -262,6 +267,7 @@ namespace ALEngine::ECS
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		InitializeFrustum(fstm);
 		rs->RenderBatch();
 
 		glfwPollEvents();
