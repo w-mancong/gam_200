@@ -22,6 +22,7 @@
 #include <chrono>
 #include <iterator>
 #include <scoped_allocator>
+#include <fstream>
 
 // Data structures
 #include <string>
@@ -50,6 +51,9 @@
 #include <GLFW/glfw3.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+// Serializations
+#include "Serialization/Serialization.h"
 
 // Self declared header file
 #include "Common Header/MyMemory.h"

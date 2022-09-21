@@ -129,6 +129,9 @@
     <ClCompile Include="Source\Editor\ALEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Serialization\Serialization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -359,5 +362,13 @@
     <ClInclude Include="Include\Common Header\MyEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Serialization\Serialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Objects Files\Bishop.json" />
+    <None Include="Resources\Objects Files\Config.json" />
+    <None Include="Resources\Objects Files\Player1.json" />
   </ItemGroup>
 </Project>
