@@ -48,8 +48,8 @@ namespace ALEngine
 			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 			Frustum fstm;
-			ParticleSys::ParticleSystem m_ParticleSystem;
-			ParticleSys::ParticleProperties m_Particle;
+			ParticleSys::ParticleSystem particleSys;
+			//ParticleSys::ParticleProperties particleProperty;
 		}
 
 		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
@@ -143,15 +143,15 @@ namespace ALEngine
 			// Init Gizmo
 			Gizmos::Gizmo::GizmoInit();
 
-			// Particle init here
+			// Particle system init here
+			particleSys.ParticleSysInit();
 
-			m_Particle.colorStart = { 1.f, 0.f, 0.f, 1.0f };
-			m_Particle.colorEnd = { 1.f, 0.f, 1.f, 1.0f };
-			m_Particle.sizeStart= 50.f, m_Particle.sizeVariation = 0.3f, m_Particle.sizeEnd = 10.0f;
-			m_Particle.lifeTime = 5.0f;
-			m_Particle.velocity = { 60.0f, 25.0f };
-			m_Particle.velocityVariation = { 3.0f, 1.0f };
-			m_Particle.position = { 1.f, 2.f };
+			//particleProperty.colorStart = { 1.f, 0.f, 0.f, 1.0f };
+			//particleProperty.sizeStart= 50.f, particleProperty.sizeVariation = 0.3f, particleProperty.sizeEnd = 10.0f;
+			//particleProperty.lifeTime = 5.0f;
+			//particleProperty.velocity = { 60.0f, 25.0f };
+			//particleProperty.velocityVariation = { 3.0f, 1.0f };
+			//particleProperty.position = { 0.f, 0.f };
 		}
 
 		void InitializeFrustum(Frustum& fstm)
@@ -235,20 +235,26 @@ namespace ALEngine
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
 
-			Text test;
-			SetFont(test, "roboto");
-			SetTextString(test, "test");
-			SetTextSize(test, 1.f);
-			SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-			SetFontType(test, Font::FontType::Regular);
-			SetTextPos(test, Vector2(50.f, 50.f));
-			RenderText(test);
+			//Text test;
+			//SetFont(test, "roboto");
+			//SetTextString(test, "acs");
+			//SetTextSize(test, 1.f);
+			//SetTextColor(test, Vector3(1.f, 0.f, 1.f));
+			//SetFontType(test, Font::FontType::Regular);
+			//SetTextPos(test, Vector2(50.f, 50.f));
+			//RenderText(test);
 
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			m_ParticleSystem.Emit(m_Particle);
-			m_ParticleSystem.ParticleUpdate(Time::m_DeltaTime);
-			m_ParticleSystem.ParticleRender();
+			if (Input::KeyTriggered(KeyCode::MouseLeftButton))
+			{
+				for (int i{}; i < 2; ++i)
+				{
+					particleSys.Emit();
+				}
+			}
+
+			// Update and render particles
+			particleSys.ParticleUpdate(Time::m_DeltaTime);
+			particleSys.ParticleRender();
 
 			// End of ImGui frame, render ImGui!
 			ALEditor::Instance()->End();

@@ -79,10 +79,9 @@ namespace ALEngine
 					f32 lineLength = sqrt((pt1.x - pt2.x) * (pt1.x - pt2.x) + (pt1.y - pt2.y) * (pt1.y - pt2.y));
 					f32 angle = atan2(pt2.y - pt1.y, pt2.x - pt1.x) * 180.f / 3.141592f;
 					gizmolineShader.use();
-					Math::Matrix4x4 model = Math::Matrix4x4::Scale(lineLength, 1.0f, 1.0f) *
-						Math::Matrix4x4::Rotation(angle, Math::Vector3(0.0f, 0.0f, 1.0f)) *
-						Math::Matrix4x4::Translate(midPoint.x, midPoint.y, 0.0f);
-					gizmolineShader.Set("model", model);
+					gizmolineShader.Set("scale", Math::Matrix4x4::Scale(lineLength, 1.0f, 1.0f));
+					gizmolineShader.Set("rotate", Math::Matrix4x4::Rotation(angle, Math::Vector3(0.0f, 0.0f, 1.0f)));
+					gizmolineShader.Set("translate", Math::Matrix4x4::Translate(midPoint.x, midPoint.y, 0.0f));
 					gizmolineShader.Set("color", gizmoColor.x, gizmoColor.y, gizmoColor.z, 1.f);
 					glLineWidth(gizmoLineWidith);
 
