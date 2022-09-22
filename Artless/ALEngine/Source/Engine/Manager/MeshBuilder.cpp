@@ -47,15 +47,6 @@ namespace
 		glEnableVertexAttribArray(3);
 		glVertexAttribLPointer(3, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE));
 
-		// top right, btm right, top left, btm left
-		f32 texCoords[] =
-		{
-			0.0f, 1.0f,		// top right
-			0.0f, 0.0f,		// btm right
-			1.0f, 1.0f,		// top left
-			1.0f, 0.0f,		// btm left
-		};
-
 		/*
 			Buffering indices. Draw Primitive: GL_TRIANGLES
 		*/
@@ -144,12 +135,8 @@ namespace ALEngine::Engine
 		for (auto it = m_Sprites.begin(); it != m_Sprites.end(); ++it)
 		{
 			// Release resources in the gpu
-			//glDeleteVertexArrays(1, &(*it).second->vao);
-			//glDeleteBuffers(1, &(*it).second->vbo);
-			//glDeleteBuffers(1, &(*it).second->ebo);
 			glDeleteTextures(1, &(*it).second.texture);
-			// Delete ptr and free up dynamic memory
-			/*DynamicMemory::Delete((*it).second);*/
+			glMakeTextureHandleNonResidentARB(it->second.handle);
 		}
 		m_Sprites.clear();
 	}
@@ -299,13 +286,6 @@ namespace ALEngine::Engine
 		u32 format{ 0 };
 		switch (nrChannels)
 		{
-			case STBI_grey:
-			case STBI_grey_alpha:
-			{
-				std::cerr << "Wrong file format: Must contain RGB/RGBA channels" << std::endl;
-				return Sprite{};
-				break;
-			}
 			case STBI_rgb:
 			{
 				format = GL_RGB;
@@ -315,6 +295,12 @@ namespace ALEngine::Engine
 			{
 				format = GL_RGBA;
 				break;
+			}
+			// I only want to accept files that have RGB/RGBA formats
+			default:
+			{
+				std::cerr << "Wrong file format: Must contain RGB/RGBA channels" << std::endl;
+				return Sprite{};
 			}
 		}
 
@@ -327,7 +313,7 @@ namespace ALEngine::Engine
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		// buffer imagge data
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		u64 handle = glGetTextureHandleARB(texture);
 		glMakeTextureHandleResidentARB(handle);
@@ -362,10 +348,10 @@ namespace ALEngine::Engine
 	void SubVertexPosition(BatchData const& bd)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, batch.vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, TOTAL_POS_BYTE, bd.positions);
-		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE, TOTAL_COLOR_BYTE, bd.colors);
-		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE, TOTAL_TEXCOORD_BYTE, bd.tex_coords);
-		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE, TOTAL_TEXTURE_HANDLE_BYTE, bd.tex_handles);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, TOTAL_POS_BYTE, bd.positions);	// positions
+		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE, TOTAL_COLOR_BYTE, bd.colors); // colors
+		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE, TOTAL_TEXCOORD_BYTE, bd.tex_coords); // tex coords
+		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE, TOTAL_TEXTURE_HANDLE_BYTE, bd.tex_handles); // tex handles
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }

@@ -223,8 +223,6 @@ namespace ALEngine::ECS
 		colors = Memory::StaticMemory::New<vec4>( GetVertexPositionSize() );
 		tex_coords = Memory::StaticMemory::New<vec2>( GetVertexPositionSize() );
 		tex_handles = Memory::StaticMemory::New<u64>( GetVertexPositionSize() );
-		//modelMatrices = Memory::StaticMemory::New<Matrix4>(ECS::MAX_ENTITIES);
-		//rect = MeshBuilder::Instance()->MakeRectangle();
 	}
 
 	void InitializeFrustum(Frustum& fstm)
@@ -340,83 +338,25 @@ namespace ALEngine::ECS
 		InitializeFrustum(fstm);
 	}
 
-	void CreateSprite(Entity const& entity, Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)
-	{
-		Sprite sprite;
-		switch (shape)
-		{
-			case Shape::Rectangle:
-			{
-				sprite = MeshBuilder::Instance()->MakeRectangle();
-				break;
-			}
-			//case Shape::Circle:
-			//{
-			//	sprite = MeshBuilder::Instance()->MakeCircle();
-			//	break;
-			//}
-			//case Shape::Triangle:
-			//{
-			//	sprite = MeshBuilder::Instance()->MakeTriangle();
-			//	break;
-			//}
-		}
-		sprite.layer = layer/*, sprite.mode = mode*/;
-		Coordinator::Instance()->AddComponent(entity, sprite);
-		Coordinator::Instance()->AddComponent(entity, transform);
-	}
-
-	void CreateSprite(Entity const& entity, Shape shape, RenderLayer layer, RenderMode mode)
-	{
-		Sprite sprite;
-		switch (shape)
-		{
-			case Shape::Rectangle:
-			{
-				sprite = MeshBuilder::Instance()->MakeRectangle();
-				break;
-			}
-			//case Shape::Circle:
-			//{
-			//	sprite = MeshBuilder::Instance()->MakeCircle();
-			//	break;
-			//}
-			//case Shape::Triangle:
-			//{
-			//	sprite = MeshBuilder::Instance()->MakeTriangle();
-			//	break;
-			//}
-		}
-		sprite.layer = layer/*, sprite.mode = mode*/;
-		Coordinator::Instance()->AddComponent(entity, sprite);
-	}
-
-	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
+	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
 	{
 		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
-		sprite.layer = layer/*, sprite.mode = mode*/;
+		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 		Coordinator::Instance()->AddComponent(entity, transform);
 	}
 
-	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer, RenderMode mode)
+	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
 	{
 		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
 		sprite.layer = layer/*, sprite.mode = mode*/;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}
 
-	Entity CreateSprite(Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)
+	Entity CreateSprite(Transform const& transform, const char* filePath, RenderLayer layer)
 	{
 		Entity entity = Coordinator::Instance()->CreateEntity();
-		CreateSprite(entity, transform, shape, layer, mode);
-		return entity;
-	}
-
-	Entity CreateSprite(Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
-	{
-		Entity entity = Coordinator::Instance()->CreateEntity();
-		CreateSprite(entity, transform, filePath, layer, mode);
+		CreateSprite(entity, transform, filePath, layer);
 		return entity;
 	}
 }

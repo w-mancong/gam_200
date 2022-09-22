@@ -14,14 +14,16 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
-	Entity en[2500];
+	u64 constexpr ENTITIES_SIZE = 2'500;
+
+	Entity en[ENTITIES_SIZE];
 
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
 		ECS::InitSystem();
 
-		for (u64 i = 0; i < 2500; ++i)
+		for (u64 i = 0; i < ENTITIES_SIZE; ++i)
 		{
 			Transform t{ { Random::Range(-600.0f, 600.0f), Random::Range(-300.0f, 300.0f), 0.0f },
 				{ Random::Range(20.0f, 75.0f), Random::Range(20.0f, 75.0f)},
@@ -69,8 +71,6 @@ namespace ALEngine::Engine
 			// Render
 			Render();
 
-			//std::cout << Time::m_FPS << std::endl;
-
 			// Wait for next frame
 			Time::WaitUntil();
 		}
@@ -92,7 +92,7 @@ namespace ALEngine::Engine
 	void Engine::Update(void)
 	{
 		f32 constexpr rot_spd{ 50.0f };
-		for (u64 i = 0; i < ARRAY_SIZE(en); ++i)
+		for (u64 i = 0; i < ENTITIES_SIZE; ++i)
 		{
 			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(*(en + i));
 			trans.rotation += rot_spd * Time::m_DeltaTime;
