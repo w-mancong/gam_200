@@ -49,15 +49,26 @@ namespace ALEngine::ECS
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
+		// Batch rendering
 		vec3* positions{ nullptr };
 		vec4* colors{ nullptr };
+		vec2* tex_coords{ nullptr };
+		u64* tex_handles{ nullptr };
 
 		vec2 const vertex_position[4] =
 		{
-			{ -0.5f,  0.5f },
-			{ -0.5f, -0.5f },
-			{  0.5f,  0.5f },
-			{  0.5f, -0.5f }
+			{ -0.5f,  0.5f },	// top left
+			{ -0.5f, -0.5f },	// btm left
+			{  0.5f,  0.5f },	// top right
+			{  0.5f, -0.5f }	// btm right
+		};
+
+		vec2 const texture_position[4] =
+		{
+			{ 1.0f, 1.0f },		// top left
+			{ 0.0f, 0.0f },		// btm left
+			{ 1.0f, 1.0f },		// top right
+			{ 1.0f, 0.0f } 		// btm right
 		};
 
 		u64 constexpr INDICES_SIZE{ 6 };
@@ -145,6 +156,8 @@ namespace ALEngine::ECS
 				*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
 				 // assigning colors
 				(*(colors + j)).x = sprite.color.r; (*(colors + j)).y = sprite.color.g; (*(colors + j)).z = sprite.color.b; (*(colors + j)).w = sprite.color.a;
+				*(tex_coords + j) = *(texture_position + k);
+				*(tex_handles + j) = sprite.handle;
 			}
 			++counter;
 		}
@@ -155,7 +168,7 @@ namespace ALEngine::ECS
 		batchShader.Set("view", camera.ViewMatrix());
 		batchShader.Set("proj", camera.ProjectionMatrix());
 
-		BatchData bd{ positions, colors };
+		BatchData bd{ positions, colors, tex_coords, tex_handles };
 
 		SubVertexPosition(bd);
 
@@ -206,8 +219,10 @@ namespace ALEngine::ECS
 		batchShader.Set("view", camera.ViewMatrix());
 		batchShader.Set("proj", camera.ProjectionMatrix());	
 
-		positions = Memory::StaticMemory::New<vec3>(GetVertexPositionSize());
+		positions = Memory::StaticMemory::New<vec3>( GetVertexPositionSize() );
 		colors = Memory::StaticMemory::New<vec4>( GetVertexPositionSize() );
+		tex_coords = Memory::StaticMemory::New<vec2>( GetVertexPositionSize() );
+		tex_handles = Memory::StaticMemory::New<u64>( GetVertexPositionSize() );
 		//modelMatrices = Memory::StaticMemory::New<Matrix4>(ECS::MAX_ENTITIES);
 		//rect = MeshBuilder::Instance()->MakeRectangle();
 	}

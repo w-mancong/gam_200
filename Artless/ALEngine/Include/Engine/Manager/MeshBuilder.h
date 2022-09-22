@@ -129,8 +129,10 @@ namespace ALEngine::Engine
 
 	struct BatchData
 	{
-		Math::vec3 const* pos{ nullptr };
-		Math::vec4 const* col{ nullptr };
+		Math::vec3 const* positions{ nullptr };
+		Math::vec4 const* colors{ nullptr };
+		Math::vec2 const* tex_coords{ nullptr };
+		u64 const* tex_handles{ nullptr };
 	};
 	
 	u32 GetBatchVao(void);

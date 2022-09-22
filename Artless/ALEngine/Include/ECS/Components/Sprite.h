@@ -19,6 +19,7 @@ namespace ALEngine::ECS::Component
 	struct Sprite
 	{
 		u32 texture{ 0 };
+		u64 handle{ 0 };
 		Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
 		RenderLayer layer{ RenderLayer::Background };
 	};

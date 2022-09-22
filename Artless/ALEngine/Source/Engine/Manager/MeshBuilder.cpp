@@ -11,7 +11,8 @@ namespace
 	u64 const NUM_VERTICES{ 4 }, 
 		TOTAL_POS_BYTE{ sizeof(ALEngine::Math::vec3) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
 		TOTAL_COLOR_BYTE{ sizeof(ALEngine::Math::vec4) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
-		TOTAL_TEXCOORD_BYTE{ sizeof(ALEngine::Math::vec2) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES };
+		TOTAL_TEXCOORD_BYTE{ sizeof(ALEngine::Math::vec2) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
+		TOTAL_TEXTURE_HANDLE_BYTE{ sizeof(u64) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES };
 
 	struct Batch
 	{
@@ -24,7 +25,7 @@ namespace
 		using namespace ALEngine;
 		u32 vao{ 0 }, vbo{ 0 }, ebo{ 0 };
 
-		u64 const TOTAL_BYTES = TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE;
+		u64 const TOTAL_BYTES = TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE + TOTAL_TEXTURE_HANDLE_BYTE;
 
 		glGenVertexArrays(1, &vao);
 		glBindVertexArray(vao);
@@ -42,6 +43,9 @@ namespace
 		// tex attribute
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE));
+		// tex_handle attribute
+		glEnableVertexAttribArray(3);
+		glVertexAttribLPointer(3, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE));
 
 		// top right, btm right, top left, btm left
 		f32 texCoords[] =
@@ -278,47 +282,57 @@ namespace ALEngine::Engine
 	{
 		// load and create a texture 
 		// -------------------------
-		bool isJpeg = filePath[filePath.find_first_of('.') + 1] == 'j';
-		u32 const FORMAT = isJpeg ? GL_RGB : GL_RGBA;
-
-		u32 texture{ 0 };
-
-		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-		// set the texture wrapping parameters
-		if (isJpeg)
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		}
-		else
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		}
-		// set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		// load image, create texture and generate mipmaps
 		s32 width, height, nrChannels;
 		// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
 		stbi_set_flip_vertically_on_load(true);
-		u8* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
-		if (data)
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, FORMAT, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
+		u8* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
+		if (!data)
 		{
 			std::cerr << "Failed to load texture" << std::endl;
 			std::cerr << "File path: " << filePath << std::endl;
+			return Sprite{};
 		}
+		u32 format{ 0 };
+		switch (nrChannels)
+		{
+			case STBI_grey:
+			case STBI_grey_alpha:
+			{
+				std::cerr << "Wrong file format: Must contain RGB/RGBA channels" << std::endl;
+				return Sprite{};
+				break;
+			}
+			case STBI_rgb:
+			{
+				format = GL_RGB;
+				break;
+			}
+			case STBI_rgb_alpha:
+			{
+				format = GL_RGBA;
+				break;
+			}
+		}
+
+		u32 texture{ 0 };
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// set texture filtering parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		// buffer imagge data
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		u64 handle = glGetTextureHandleARB(texture);
+		glMakeTextureHandleResidentARB(handle);
+
 		stbi_image_free(data);
 
-		m_Sprites.push_back(std::pair<std::string, Sprite>{ filePath, { texture } });
+		m_Sprites.push_back(std::pair<std::string, Sprite>{ filePath, { texture, handle } });
 		// Unbind vertex array and texture to prevent accidental modifications
-		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		return m_Sprites.back().second;
 	}
@@ -345,8 +359,10 @@ namespace ALEngine::Engine
 	void SubVertexPosition(BatchData const& bd)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, batch.vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, TOTAL_POS_BYTE, bd.pos);
-		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE, TOTAL_COLOR_BYTE, bd.col);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, TOTAL_POS_BYTE, bd.positions);
+		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE, TOTAL_COLOR_BYTE, bd.colors);
+		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE, TOTAL_TEXCOORD_BYTE, bd.tex_coords);
+		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE, TOTAL_TEXTURE_HANDLE_BYTE, bd.tex_handles);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }
