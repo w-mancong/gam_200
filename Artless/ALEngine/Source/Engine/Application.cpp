@@ -27,7 +27,10 @@ namespace ALEngine::Engine
 				{ Random::Range(20.0f, 75.0f), Random::Range(20.0f, 75.0f)},
 				{ Random::Range(0.0f, 360.0f) } };
 
-			*(en + i) = CreateSprite(t, "Assets/Images/awesomeface.png");
+			if(!(i % 2))
+				*(en + i) = CreateSprite(t, "Assets/Images/awesomeface.png");
+			else
+				*(en + i) = CreateSprite(t, "Assets/Images/container.jpg");
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(*(en + i));
 			sprite.color = Color{ Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f) };
 		}

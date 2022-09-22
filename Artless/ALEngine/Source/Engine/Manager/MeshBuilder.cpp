@@ -129,7 +129,10 @@ namespace ALEngine::Engine
 		for (auto it = m_Sprites.begin(); it != m_Sprites.end(); ++it)
 		{
 			if ((*it).first == filePath)
-				sprite = it->second; break;
+			{
+				sprite = it->second; 
+				break;
+			}
 		}
 		if (!sprite.texture)
 			sprite = CreateSprite(filePath);
