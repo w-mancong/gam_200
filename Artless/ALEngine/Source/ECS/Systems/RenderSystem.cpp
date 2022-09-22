@@ -65,7 +65,7 @@ namespace ALEngine::ECS
 
 		vec2 const texture_position[4] =
 		{
-			{ 1.0f, 1.0f },		// top left
+			{ 0.0f, 1.0f },		// top left
 			{ 0.0f, 0.0f },		// btm left
 			{ 1.0f, 1.0f },		// top right
 			{ 1.0f, 0.0f } 		// btm right
