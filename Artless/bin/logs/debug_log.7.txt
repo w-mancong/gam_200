@@ -1,613 +1,2226 @@
-[2022-09-21 16:34:47.655] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:47.657] [AL] [debug] 20.593718
-[2022-09-21 16:34:47.657] [AL] [debug] 20.593718
-[2022-09-21 16:34:47.878] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:47.878] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.879] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.879] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.879] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.879] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.879] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.879] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.880] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.880] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.880] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.880] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.880] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.880] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.880] [AL] [debug] 7.3578186
-[2022-09-21 16:34:47.906] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:47.907] [AL] [debug] 9.993172
-[2022-09-21 16:34:47.907] [AL] [debug] 9.993172
-[2022-09-21 16:34:47.924] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:47.924] [AL] [debug] 12.586651
-[2022-09-21 16:34:47.941] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:47.942] [AL] [debug] 14.936546
-[2022-09-21 16:34:47.959] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:47.959] [AL] [debug] 17.020397
-[2022-09-21 16:34:47.976] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:47.976] [AL] [debug] 18.953548
-[2022-09-21 16:34:47.992] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:47.993] [AL] [debug] 20.718481
-[2022-09-21 16:34:48.009] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.010] [AL] [debug] 22.327044
-[2022-09-21 16:34:48.026] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.027] [AL] [debug] 23.810629
-[2022-09-21 16:34:48.047] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.047] [AL] [debug] 24.980946
-[2022-09-21 16:34:48.066] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.067] [AL] [debug] 26.080727
-[2022-09-21 16:34:48.085] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.085] [AL] [debug] 27.165792
-[2022-09-21 16:34:48.104] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.105] [AL] [debug] 28.110441
-[2022-09-21 16:34:48.127] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.127] [AL] [debug] 28.813208
-[2022-09-21 16:34:48.128] [AL] [debug] 28.813208
-[2022-09-21 16:34:48.148] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.148] [AL] [debug] 29.545916
-[2022-09-21 16:34:48.165] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.166] [AL] [debug] 30.397257
-[2022-09-21 16:34:48.182] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.183] [AL] [debug] 31.237455
-[2022-09-21 16:34:48.202] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.202] [AL] [debug] 31.938185
-[2022-09-21 16:34:48.221] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.222] [AL] [debug] 32.513504
-[2022-09-21 16:34:48.240] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.241] [AL] [debug] 33.13519
-[2022-09-21 16:34:48.242] [AL] [debug] 33.13519
-[2022-09-21 16:34:48.264] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.264] [AL] [debug] 33.470085
-[2022-09-21 16:34:48.285] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.286] [AL] [debug] 33.87548
-[2022-09-21 16:34:48.303] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.303] [AL] [debug] 34.448948
-[2022-09-21 16:34:48.322] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.322] [AL] [debug] 34.9553
-[2022-09-21 16:34:48.347] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.348] [AL] [debug] 35.165203
-[2022-09-21 16:34:48.353] [AL] [debug] 35.165203
-[2022-09-21 16:34:48.373] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.373] [AL] [debug] 35.252167
-[2022-09-21 16:34:48.394] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.394] [AL] [debug] 35.57204
-[2022-09-21 16:34:48.395] [AL] [debug] 35.57204
-[2022-09-21 16:34:48.414] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.414] [AL] [debug] 35.93132
-[2022-09-21 16:34:48.432] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.432] [AL] [debug] 36.35043
-[2022-09-21 16:34:48.449] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.449] [AL] [debug] 36.785027
-[2022-09-21 16:34:48.466] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.466] [AL] [debug] 37.226665
-[2022-09-21 16:34:48.484] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.484] [AL] [debug] 37.615852
-[2022-09-21 16:34:48.501] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.501] [AL] [debug] 38.006824
-[2022-09-21 16:34:48.518] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.518] [AL] [debug] 38.401936
-[2022-09-21 16:34:48.535] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.535] [AL] [debug] 38.780678
-[2022-09-21 16:34:48.552] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.552] [AL] [debug] 39.127636
-[2022-09-21 16:34:48.571] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.572] [AL] [debug] 39.397137
-[2022-09-21 16:34:48.594] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.594] [AL] [debug] 39.53744
-[2022-09-21 16:34:48.594] [AL] [debug] 39.53744
-[2022-09-21 16:34:48.613] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.613] [AL] [debug] 39.7382
-[2022-09-21 16:34:48.629] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.630] [AL] [debug] 40.06822
-[2022-09-21 16:34:48.648] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.648] [AL] [debug] 40.342182
-[2022-09-21 16:34:48.665] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.665] [AL] [debug] 40.628696
-[2022-09-21 16:34:48.681] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.682] [AL] [debug] 40.92259
-[2022-09-21 16:34:48.698] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.698] [AL] [debug] 41.21379
-[2022-09-21 16:34:48.715] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.715] [AL] [debug] 41.495968
-[2022-09-21 16:34:48.731] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.732] [AL] [debug] 41.770046
-[2022-09-21 16:34:48.748] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.748] [AL] [debug] 42.036125
-[2022-09-21 16:34:48.765] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.765] [AL] [debug] 42.294548
-[2022-09-21 16:34:48.782] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.782] [AL] [debug] 42.5291
-[2022-09-21 16:34:48.799] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.799] [AL] [debug] 42.77331
-[2022-09-21 16:34:48.815] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.816] [AL] [debug] 43.010357
-[2022-09-21 16:34:48.835] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.835] [AL] [debug] 43.154366
-[2022-09-21 16:34:48.852] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.853] [AL] [debug] 43.34756
-[2022-09-21 16:34:48.869] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.870] [AL] [debug] 43.552094
-[2022-09-21 16:34:48.886] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.887] [AL] [debug] 43.754555
-[2022-09-21 16:34:48.903] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.904] [AL] [debug] 43.95086
-[2022-09-21 16:34:48.920] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.921] [AL] [debug] 44.134415
-[2022-09-21 16:34:48.937] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.938] [AL] [debug] 44.330654
-[2022-09-21 16:34:48.954] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.954] [AL] [debug] 44.51875
-[2022-09-21 16:34:48.971] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.971] [AL] [debug] 44.70785
-[2022-09-21 16:34:48.987] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:48.988] [AL] [debug] 44.89239
-[2022-09-21 16:34:49.006] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.006] [AL] [debug] 45.016705
-[2022-09-21 16:34:49.023] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.023] [AL] [debug] 45.193035
-[2022-09-21 16:34:49.040] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.040] [AL] [debug] 45.355076
-[2022-09-21 16:34:49.057] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.057] [AL] [debug] 45.512978
-[2022-09-21 16:34:49.057] [AL] [debug] 45.512978
-[2022-09-21 16:34:49.075] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.076] [AL] [debug] 45.616695
-[2022-09-21 16:34:49.093] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.093] [AL] [debug] 45.753433
-[2022-09-21 16:34:49.111] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.112] [AL] [debug] 45.857166
-[2022-09-21 16:34:49.129] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.129] [AL] [debug] 45.975327
-[2022-09-21 16:34:49.146] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.146] [AL] [debug] 46.118042
-[2022-09-21 16:34:49.164] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.164] [AL] [debug] 46.23013
-[2022-09-21 16:34:49.180] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.181] [AL] [debug] 46.371243
-[2022-09-21 16:34:49.197] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.197] [AL] [debug] 46.51402
-[2022-09-21 16:34:49.214] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.214] [AL] [debug] 46.653835
-[2022-09-21 16:34:49.230] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.231] [AL] [debug] 46.79078
-[2022-09-21 16:34:49.247] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.247] [AL] [debug] 46.924942
-[2022-09-21 16:34:49.264] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.264] [AL] [debug] 47.056408
-[2022-09-21 16:34:49.281] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.281] [AL] [debug] 47.185253
-[2022-09-21 16:34:49.297] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.298] [AL] [debug] 47.3114
-[2022-09-21 16:34:49.314] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.314] [AL] [debug] 47.42913
-[2022-09-21 16:34:49.332] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.332] [AL] [debug] 47.530262
-[2022-09-21 16:34:49.348] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.348] [AL] [debug] 47.649574
-[2022-09-21 16:34:49.365] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.366] [AL] [debug] 47.761204
-[2022-09-21 16:34:49.382] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.383] [AL] [debug] 47.867344
-[2022-09-21 16:34:49.399] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.399] [AL] [debug] 47.975113
-[2022-09-21 16:34:49.418] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.418] [AL] [debug] 48.038242
-[2022-09-21 16:34:49.434] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.434] [AL] [debug] 48.147316
-[2022-09-21 16:34:49.451] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.451] [AL] [debug] 48.254417
-[2022-09-21 16:34:49.467] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.468] [AL] [debug] 48.359604
-[2022-09-21 16:34:49.485] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.486] [AL] [debug] 48.458996
-[2022-09-21 16:34:49.503] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.504] [AL] [debug] 48.50401
-[2022-09-21 16:34:49.520] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.520] [AL] [debug] 48.60413
-[2022-09-21 16:34:49.536] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.537] [AL] [debug] 48.70253
-[2022-09-21 16:34:49.553] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.553] [AL] [debug] 48.799244
-[2022-09-21 16:34:49.570] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.570] [AL] [debug] 48.89432
-[2022-09-21 16:34:49.586] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.587] [AL] [debug] 48.9878
-[2022-09-21 16:34:49.603] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.603] [AL] [debug] 49.079716
-[2022-09-21 16:34:49.620] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.620] [AL] [debug] 49.17011
-[2022-09-21 16:34:49.636] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.637] [AL] [debug] 49.259018
-[2022-09-21 16:34:49.653] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.653] [AL] [debug] 50.045204
-[2022-09-21 16:34:49.670] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.670] [AL] [debug] 55.816063
-[2022-09-21 16:34:49.686] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.687] [AL] [debug] 56.18355
-[2022-09-21 16:34:49.704] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.704] [AL] [debug] 56.211723
-[2022-09-21 16:34:49.721] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.722] [AL] [debug] 56.174065
-[2022-09-21 16:34:49.738] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.738] [AL] [debug] 56.208862
-[2022-09-21 16:34:49.755] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.755] [AL] [debug] 56.204693
-[2022-09-21 16:34:49.773] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.773] [AL] [debug] 56.200386
-[2022-09-21 16:34:49.799] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.799] [AL] [debug] 55.900723
-[2022-09-21 16:34:49.800] [AL] [debug] 55.900723
-[2022-09-21 16:34:49.817] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.818] [AL] [debug] 55.850227
-[2022-09-21 16:34:49.835] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.835] [AL] [debug] 55.940712
-[2022-09-21 16:34:49.853] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.854] [AL] [debug] 55.96957
-[2022-09-21 16:34:49.872] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.873] [AL] [debug] 55.97251
-[2022-09-21 16:34:49.896] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.897] [AL] [debug] 55.820343
-[2022-09-21 16:34:49.897] [AL] [debug] 55.820343
-[2022-09-21 16:34:49.915] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.916] [AL] [debug] 55.923985
-[2022-09-21 16:34:49.937] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.938] [AL] [debug] 55.892105
-[2022-09-21 16:34:49.956] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.957] [AL] [debug] 55.86609
-[2022-09-21 16:34:49.980] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:49.981] [AL] [debug] 55.64446
-[2022-09-21 16:34:49.981] [AL] [debug] 55.64446
-[2022-09-21 16:34:50.000] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.000] [AL] [debug] 55.60686
-[2022-09-21 16:34:50.017] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.018] [AL] [debug] 55.690414
-[2022-09-21 16:34:50.035] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.035] [AL] [debug] 55.739388
-[2022-09-21 16:34:50.059] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.060] [AL] [debug] 55.7116
-[2022-09-21 16:34:50.060] [AL] [debug] 55.7116
-[2022-09-21 16:34:50.082] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.083] [AL] [debug] 55.667213
-[2022-09-21 16:34:50.100] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.100] [AL] [debug] 55.666386
-[2022-09-21 16:34:50.118] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.118] [AL] [debug] 55.683334
-[2022-09-21 16:34:50.136] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.137] [AL] [debug] 55.866932
-[2022-09-21 16:34:50.158] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.159] [AL] [debug] 56.026924
-[2022-09-21 16:34:50.159] [AL] [debug] 56.026924
-[2022-09-21 16:34:50.180] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.180] [AL] [debug] 56.00546
-[2022-09-21 16:34:50.200] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.200] [AL] [debug] 55.98544
-[2022-09-21 16:34:50.218] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.218] [AL] [debug] 56.01355
-[2022-09-21 16:34:50.235] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.235] [AL] [debug] 56.00274
-[2022-09-21 16:34:50.252] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.252] [AL] [debug] 56.008945
-[2022-09-21 16:34:50.268] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.269] [AL] [debug] 56.040867
-[2022-09-21 16:34:50.285] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.285] [AL] [debug] 56.060337
-[2022-09-21 16:34:50.302] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.302] [AL] [debug] 56.054386
-[2022-09-21 16:34:50.319] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.319] [AL] [debug] 56.0545
-[2022-09-21 16:34:50.335] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.336] [AL] [debug] 56.075214
-[2022-09-21 16:34:50.353] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.354] [AL] [debug] 56.108486
-[2022-09-21 16:34:50.371] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.372] [AL] [debug] 56.23949
-[2022-09-21 16:34:50.389] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.389] [AL] [debug] 56.332634
-[2022-09-21 16:34:50.407] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.408] [AL] [debug] 56.268723
-[2022-09-21 16:34:50.408] [AL] [debug] 56.268723
-[2022-09-21 16:34:50.424] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.425] [AL] [debug] 56.29588
-[2022-09-21 16:34:50.441] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.441] [AL] [debug] 56.310394
-[2022-09-21 16:34:50.458] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.458] [AL] [debug] 56.31575
-[2022-09-21 16:34:50.476] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.476] [AL] [debug] 56.273438
-[2022-09-21 16:34:50.494] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.495] [AL] [debug] 56.21988
-[2022-09-21 16:34:50.511] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.512] [AL] [debug] 56.191647
-[2022-09-21 16:34:50.529] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.529] [AL] [debug] 56.17219
-[2022-09-21 16:34:50.545] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.546] [AL] [debug] 56.172195
-[2022-09-21 16:34:50.562] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.563] [AL] [debug] 56.186623
-[2022-09-21 16:34:50.579] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.579] [AL] [debug] 56.18662
-[2022-09-21 16:34:50.596] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.596] [AL] [debug] 56.183044
-[2022-09-21 16:34:50.613] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.613] [AL] [debug] 56.237186
-[2022-09-21 16:34:50.629] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.630] [AL] [debug] 56.26658
-[2022-09-21 16:34:50.646] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.646] [AL] [debug] 56.280636
-[2022-09-21 16:34:50.663] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.663] [AL] [debug] 56.29155
-[2022-09-21 16:34:50.679] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.680] [AL] [debug] 56.303257
-[2022-09-21 16:34:50.696] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.697] [AL] [debug] 56.322205
-[2022-09-21 16:34:50.713] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.713] [AL] [debug] 56.32454
-[2022-09-21 16:34:50.729] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.730] [AL] [debug] 56.330013
-[2022-09-21 16:34:50.746] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.746] [AL] [debug] 56.330013
-[2022-09-21 16:34:50.763] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.763] [AL] [debug] 56.330013
-[2022-09-21 16:34:50.780] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.780] [AL] [debug] 56.3826
-[2022-09-21 16:34:50.796] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.797] [AL] [debug] 56.382603
-[2022-09-21 16:34:50.814] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.814] [AL] [debug] 56.360588
-[2022-09-21 16:34:50.831] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.831] [AL] [debug] 56.370373
-[2022-09-21 16:34:50.847] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.848] [AL] [debug] 56.432655
-[2022-09-21 16:34:50.864] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.864] [AL] [debug] 56.45792
-[2022-09-21 16:34:50.881] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.881] [AL] [debug] 56.514656
-[2022-09-21 16:34:50.897] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.898] [AL] [debug] 56.553555
-[2022-09-21 16:34:50.914] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.914] [AL] [debug] 56.56331
-[2022-09-21 16:34:50.931] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.931] [AL] [debug] 56.602737
-[2022-09-21 16:34:50.947] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.948] [AL] [debug] 56.607826
-[2022-09-21 16:34:50.964] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.965] [AL] [debug] 56.604855
-[2022-09-21 16:34:50.981] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.981] [AL] [debug] 56.60015
-[2022-09-21 16:34:50.998] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:50.998] [AL] [debug] 56.59679
-[2022-09-21 16:34:51.014] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.015] [AL] [debug] 56.596786
-[2022-09-21 16:34:51.031] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.032] [AL] [debug] 56.595257
-[2022-09-21 16:34:51.049] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.049] [AL] [debug] 56.595257
-[2022-09-21 16:34:51.065] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.065] [AL] [debug] 56.59544
-[2022-09-21 16:34:51.082] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.082] [AL] [debug] 56.59198
-[2022-09-21 16:34:51.098] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.099] [AL] [debug] 56.611694
-[2022-09-21 16:34:51.115] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.115] [AL] [debug] 56.611694
-[2022-09-21 16:34:51.131] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.132] [AL] [debug] 56.618084
-[2022-09-21 16:34:51.148] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.148] [AL] [debug] 56.628494
-[2022-09-21 16:34:51.165] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.165] [AL] [debug] 56.634537
-[2022-09-21 16:34:51.181] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.182] [AL] [debug] 56.692146
-[2022-09-21 16:34:51.198] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.199] [AL] [debug] 56.692146
-[2022-09-21 16:34:51.215] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.215] [AL] [debug] 56.691677
-[2022-09-21 16:34:51.232] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.233] [AL] [debug] 56.684612
-[2022-09-21 16:34:51.250] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.251] [AL] [debug] 56.630928
-[2022-09-21 16:34:51.267] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.267] [AL] [debug] 56.699547
-[2022-09-21 16:34:51.284] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.284] [AL] [debug] 56.699562
-[2022-09-21 16:34:51.301] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.301] [AL] [debug] 56.699566
-[2022-09-21 16:34:51.317] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.318] [AL] [debug] 56.699566
-[2022-09-21 16:34:51.335] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.335] [AL] [debug] 56.67094
-[2022-09-21 16:34:51.351] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.352] [AL] [debug] 56.67094
-[2022-09-21 16:34:51.368] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.369] [AL] [debug] 56.66446
-[2022-09-21 16:34:51.385] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.386] [AL] [debug] 56.656315
-[2022-09-21 16:34:51.402] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.403] [AL] [debug] 56.647484
-[2022-09-21 16:34:51.420] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.420] [AL] [debug] 56.625214
-[2022-09-21 16:34:51.437] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.437] [AL] [debug] 56.60245
-[2022-09-21 16:34:51.454] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.455] [AL] [debug] 56.581608
-[2022-09-21 16:34:51.471] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.471] [AL] [debug] 56.58267
-[2022-09-21 16:34:51.488] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.488] [AL] [debug] 56.63004
-[2022-09-21 16:34:51.504] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.504] [AL] [debug] 56.63004
-[2022-09-21 16:34:51.521] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.521] [AL] [debug] 56.63873
-[2022-09-21 16:34:51.538] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.538] [AL] [debug] 56.63381
-[2022-09-21 16:34:51.555] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.555] [AL] [debug] 56.951237
-[2022-09-21 16:34:51.574] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.574] [AL] [debug] 56.94643
-[2022-09-21 16:34:51.591] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.592] [AL] [debug] 56.95934
-[2022-09-21 16:34:51.592] [AL] [debug] 56.95934
-[2022-09-21 16:34:51.611] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.612] [AL] [debug] 56.892696
-[2022-09-21 16:34:51.629] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.629] [AL] [debug] 56.929802
-[2022-09-21 16:34:51.646] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.646] [AL] [debug] 57.169575
-[2022-09-21 16:34:51.663] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.663] [AL] [debug] 57.231567
-[2022-09-21 16:34:51.679] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.680] [AL] [debug] 57.40531
-[2022-09-21 16:34:51.697] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.697] [AL] [debug] 57.455284
-[2022-09-21 16:34:51.714] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.714] [AL] [debug] 57.683655
-[2022-09-21 16:34:51.732] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.732] [AL] [debug] 57.772327
-[2022-09-21 16:34:51.749] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.749] [AL] [debug] 57.76758
-[2022-09-21 16:34:51.765] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.765] [AL] [debug] 57.780727
-[2022-09-21 16:34:51.782] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.782] [AL] [debug] 58.04111
-[2022-09-21 16:34:51.799] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.799] [AL] [debug] 58.258133
-[2022-09-21 16:34:51.816] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.816] [AL] [debug] 58.282436
-[2022-09-21 16:34:51.833] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.833] [AL] [debug] 58.30837
-[2022-09-21 16:34:51.850] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.851] [AL] [debug] 58.345074
-[2022-09-21 16:34:51.868] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.869] [AL] [debug] 58.459324
-[2022-09-21 16:34:51.885] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.886] [AL] [debug] 58.63251
-[2022-09-21 16:34:51.903] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.903] [AL] [debug] 58.750896
-[2022-09-21 16:34:51.920] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.920] [AL] [debug] 58.737473
-[2022-09-21 16:34:51.937] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.937] [AL] [debug] 58.7684
-[2022-09-21 16:34:51.954] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.954] [AL] [debug] 58.764217
-[2022-09-21 16:34:51.970] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.971] [AL] [debug] 58.76328
-[2022-09-21 16:34:51.988] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:51.988] [AL] [debug] 58.744278
-[2022-09-21 16:34:52.004] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.005] [AL] [debug] 58.756657
-[2022-09-21 16:34:52.022] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.022] [AL] [debug] 58.731777
-[2022-09-21 16:34:52.040] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.040] [AL] [debug] 58.695133
-[2022-09-21 16:34:52.057] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.058] [AL] [debug] 58.708035
-[2022-09-21 16:34:52.058] [AL] [debug] 58.708035
-[2022-09-21 16:34:52.077] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.077] [AL] [debug] 58.658947
-[2022-09-21 16:34:52.094] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.094] [AL] [debug] 58.632607
-[2022-09-21 16:34:52.111] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.111] [AL] [debug] 58.69979
-[2022-09-21 16:34:52.127] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.128] [AL] [debug] 58.710648
-[2022-09-21 16:34:52.144] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.145] [AL] [debug] 58.705364
-[2022-09-21 16:34:52.161] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.162] [AL] [debug] 58.696125
-[2022-09-21 16:34:52.178] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.178] [AL] [debug] 58.74216
-[2022-09-21 16:34:52.195] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.195] [AL] [debug] 58.800888
-[2022-09-21 16:34:52.212] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.212] [AL] [debug] 58.816387
-[2022-09-21 16:34:52.228] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.229] [AL] [debug] 58.83772
-[2022-09-21 16:34:52.246] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.246] [AL] [debug] 58.819893
-[2022-09-21 16:34:52.263] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.263] [AL] [debug] 58.807037
-[2022-09-21 16:34:52.281] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.281] [AL] [debug] 58.76548
-[2022-09-21 16:34:52.298] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.298] [AL] [debug] 58.761047
-[2022-09-21 16:34:52.314] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.315] [AL] [debug] 58.787037
-[2022-09-21 16:34:52.332] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.332] [AL] [debug] 58.767605
-[2022-09-21 16:34:52.348] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.349] [AL] [debug] 58.767178
-[2022-09-21 16:34:52.365] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.366] [AL] [debug] 58.75164
-[2022-09-21 16:34:52.382] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.382] [AL] [debug] 58.751644
-[2022-09-21 16:34:52.399] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.400] [AL] [debug] 58.741783
-[2022-09-21 16:34:52.421] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.422] [AL] [debug] 58.55588
-[2022-09-21 16:34:52.438] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.438] [AL] [debug] 58.548203
-[2022-09-21 16:34:52.455] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.456] [AL] [debug] 58.532234
-[2022-09-21 16:34:52.474] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.474] [AL] [debug] 58.475826
-[2022-09-21 16:34:52.492] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.493] [AL] [debug] 58.413113
-[2022-09-21 16:34:52.493] [AL] [debug] 58.413113
-[2022-09-21 16:34:52.511] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.511] [AL] [debug] 58.35141
-[2022-09-21 16:34:52.528] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.529] [AL] [debug] 58.348118
-[2022-09-21 16:34:52.545] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.546] [AL] [debug] 58.332573
-[2022-09-21 16:34:52.562] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.562] [AL] [debug] 58.332573
-[2022-09-21 16:34:52.579] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.579] [AL] [debug] 58.33015
-[2022-09-21 16:34:52.597] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.597] [AL] [debug] 58.298195
-[2022-09-21 16:34:52.613] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.614] [AL] [debug] 58.287422
-[2022-09-21 16:34:52.631] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.631] [AL] [debug] 58.26479
-[2022-09-21 16:34:52.648] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.648] [AL] [debug] 58.248108
-[2022-09-21 16:34:52.665] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.666] [AL] [debug] 58.237747
-[2022-09-21 16:34:52.683] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.684] [AL] [debug] 58.191418
-[2022-09-21 16:34:52.701] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.701] [AL] [debug] 58.16006
-[2022-09-21 16:34:52.718] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.719] [AL] [debug] 58.136665
-[2022-09-21 16:34:52.735] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.735] [AL] [debug] 58.136665
-[2022-09-21 16:34:52.752] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.753] [AL] [debug] 58.11156
-[2022-09-21 16:34:52.771] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.771] [AL] [debug] 58.052715
-[2022-09-21 16:34:52.788] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.788] [AL] [debug] 58.052715
-[2022-09-21 16:34:52.805] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.805] [AL] [debug] 58.051376
-[2022-09-21 16:34:52.823] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.824] [AL] [debug] 58.010345
-[2022-09-21 16:34:52.841] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.841] [AL] [debug] 57.980064
-[2022-09-21 16:34:52.859] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.859] [AL] [debug] 57.918365
-[2022-09-21 16:34:52.860] [AL] [debug] 57.918365
-[2022-09-21 16:34:52.877] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.877] [AL] [debug] 57.876472
-[2022-09-21 16:34:52.894] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.894] [AL] [debug] 57.86149
-[2022-09-21 16:34:52.911] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.911] [AL] [debug] 57.84576
-[2022-09-21 16:34:52.929] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.929] [AL] [debug] 57.82209
-[2022-09-21 16:34:52.945] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.946] [AL] [debug] 57.808895
-[2022-09-21 16:34:52.962] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.963] [AL] [debug] 57.811253
-[2022-09-21 16:34:52.979] [AL] [error] Logger Panel Collapsed
-[2022-09-21 16:34:52.980] [AL] [debug] 57.857525
+[2022-09-21 16:44:36.494] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.495] [AL] [debug] 18.367565
+[2022-09-21 16:44:36.496] [AL] [debug] 18.367565
+[2022-09-21 16:44:36.496] [AL] [debug] 18.367565
+[2022-09-21 16:44:36.714] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.715] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.715] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.715] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.715] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.715] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.716] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.716] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.716] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.716] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.716] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.716] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.717] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.717] [AL] [debug] 7.2679067
+[2022-09-21 16:44:36.733] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.733] [AL] [debug] 10.222551
+[2022-09-21 16:44:36.749] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.749] [AL] [debug] 12.897584
+[2022-09-21 16:44:36.766] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.766] [AL] [debug] 15.299766
+[2022-09-21 16:44:36.783] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.783] [AL] [debug] 17.46882
+[2022-09-21 16:44:36.799] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.799] [AL] [debug] 19.437107
+[2022-09-21 16:44:36.816] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.816] [AL] [debug] 21.231276
+[2022-09-21 16:44:36.834] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.834] [AL] [debug] 22.795574
+[2022-09-21 16:44:36.851] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.852] [AL] [debug] 24.280071
+[2022-09-21 16:44:36.869] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.870] [AL] [debug] 25.581972
+[2022-09-21 16:44:36.889] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.889] [AL] [debug] 26.696917
+[2022-09-21 16:44:36.907] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.907] [AL] [debug] 27.796766
+[2022-09-21 16:44:36.908] [AL] [debug] 27.796766
+[2022-09-21 16:44:36.929] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.929] [AL] [debug] 28.61211
+[2022-09-21 16:44:36.948] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.948] [AL] [debug] 29.500515
+[2022-09-21 16:44:36.966] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.966] [AL] [debug] 30.373852
+[2022-09-21 16:44:36.984] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:36.984] [AL] [debug] 31.200544
+[2022-09-21 16:44:37.001] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.001] [AL] [debug] 32.05091
+[2022-09-21 16:44:37.020] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.021] [AL] [debug] 32.699783
+[2022-09-21 16:44:37.038] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.039] [AL] [debug] 33.408485
+[2022-09-21 16:44:37.057] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.057] [AL] [debug] 34.006706
+[2022-09-21 16:44:37.058] [AL] [debug] 34.006706
+[2022-09-21 16:44:37.078] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.079] [AL] [debug] 34.444885
+[2022-09-21 16:44:37.095] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.095] [AL] [debug] 35.064606
+[2022-09-21 16:44:37.115] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.115] [AL] [debug] 35.53704
+[2022-09-21 16:44:37.135] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.135] [AL] [debug] 35.93569
+[2022-09-21 16:44:37.152] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.153] [AL] [debug] 36.473526
+[2022-09-21 16:44:37.172] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.173] [AL] [debug] 36.862103
+[2022-09-21 16:44:37.195] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.196] [AL] [debug] 37.050106
+[2022-09-21 16:44:37.197] [AL] [debug] 37.050106
+[2022-09-21 16:44:37.220] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.221] [AL] [debug] 37.138477
+[2022-09-21 16:44:37.241] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.241] [AL] [debug] 37.439518
+[2022-09-21 16:44:37.242] [AL] [debug] 37.439518
+[2022-09-21 16:44:37.261] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.262] [AL] [debug] 37.72413
+[2022-09-21 16:44:37.280] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.281] [AL] [debug] 38.10425
+[2022-09-21 16:44:37.304] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.306] [AL] [debug] 38.19549
+[2022-09-21 16:44:37.331] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.332] [AL] [debug] 38.13275
+[2022-09-21 16:44:37.332] [AL] [debug] 38.13275
+[2022-09-21 16:44:37.351] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.351] [AL] [debug] 38.41072
+[2022-09-21 16:44:37.369] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.369] [AL] [debug] 38.730885
+[2022-09-21 16:44:37.386] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.386] [AL] [debug] 39.093117
+[2022-09-21 16:44:37.402] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.403] [AL] [debug] 39.44955
+[2022-09-21 16:44:37.419] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.420] [AL] [debug] 39.799072
+[2022-09-21 16:44:37.437] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.438] [AL] [debug] 40.083927
+[2022-09-21 16:44:37.455] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.456] [AL] [debug] 40.360775
+[2022-09-21 16:44:37.473] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.473] [AL] [debug] 40.64901
+[2022-09-21 16:44:37.490] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.491] [AL] [debug] 40.925854
+[2022-09-21 16:44:37.491] [AL] [debug] 40.925854
+[2022-09-21 16:44:37.508] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.508] [AL] [debug] 41.188217
+[2022-09-21 16:44:37.525] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.525] [AL] [debug] 41.47141
+[2022-09-21 16:44:37.542] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.542] [AL] [debug] 41.74486
+[2022-09-21 16:44:37.560] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.561] [AL] [debug] 41.9283
+[2022-09-21 16:44:37.579] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.580] [AL] [debug] 42.132603
+[2022-09-21 16:44:37.597] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.597] [AL] [debug] 42.31931
+[2022-09-21 16:44:37.614] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.615] [AL] [debug] 42.556915
+[2022-09-21 16:44:37.632] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.633] [AL] [debug] 42.74868
+[2022-09-21 16:44:37.650] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.651] [AL] [debug] 42.947433
+[2022-09-21 16:44:37.667] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.667] [AL] [debug] 43.169533
+[2022-09-21 16:44:37.684] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.684] [AL] [debug] 43.394943
+[2022-09-21 16:44:37.700] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.700] [AL] [debug] 43.6144
+[2022-09-21 16:44:37.717] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.717] [AL] [debug] 43.828136
+[2022-09-21 16:44:37.734] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.734] [AL] [debug] 44.03636
+[2022-09-21 16:44:37.750] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.751] [AL] [debug] 44.239296
+[2022-09-21 16:44:37.767] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.768] [AL] [debug] 44.429745
+[2022-09-21 16:44:37.785] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.786] [AL] [debug] 44.582027
+[2022-09-21 16:44:37.802] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.802] [AL] [debug] 44.770622
+[2022-09-21 16:44:37.818] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.819] [AL] [debug] 44.954662
+[2022-09-21 16:44:37.835] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.835] [AL] [debug] 45.134308
+[2022-09-21 16:44:37.852] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.852] [AL] [debug] 45.309708
+[2022-09-21 16:44:37.869] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.869] [AL] [debug] 45.48102
+[2022-09-21 16:44:37.886] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.886] [AL] [debug] 45.63104
+[2022-09-21 16:44:37.903] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.904] [AL] [debug] 45.792446
+[2022-09-21 16:44:37.920] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.921] [AL] [debug] 45.92388
+[2022-09-21 16:44:37.937] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.937] [AL] [debug] 46.080555
+[2022-09-21 16:44:37.956] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.956] [AL] [debug] 46.17024
+[2022-09-21 16:44:37.975] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.976] [AL] [debug] 46.24886
+[2022-09-21 16:44:37.977] [AL] [debug] 46.24886
+[2022-09-21 16:44:37.998] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:37.998] [AL] [debug] 46.200905
+[2022-09-21 16:44:38.019] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.019] [AL] [debug] 46.234188
+[2022-09-21 16:44:38.037] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.038] [AL] [debug] 46.320526
+[2022-09-21 16:44:38.054] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.054] [AL] [debug] 46.461765
+[2022-09-21 16:44:38.070] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.071] [AL] [debug] 46.59972
+[2022-09-21 16:44:38.087] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.087] [AL] [debug] 46.73527
+[2022-09-21 16:44:38.104] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.104] [AL] [debug] 46.86811
+[2022-09-21 16:44:38.121] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.121] [AL] [debug] 46.988323
+[2022-09-21 16:44:38.137] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.137] [AL] [debug] 47.11604
+[2022-09-21 16:44:38.154] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.154] [AL] [debug] 47.241276
+[2022-09-21 16:44:38.171] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.171] [AL] [debug] 47.3641
+[2022-09-21 16:44:38.187] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.188] [AL] [debug] 47.48458
+[2022-09-21 16:44:38.204] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.205] [AL] [debug] 47.596466
+[2022-09-21 16:44:38.223] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.223] [AL] [debug] 47.664623
+[2022-09-21 16:44:38.240] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.240] [AL] [debug] 47.763435
+[2022-09-21 16:44:38.241] [AL] [debug] 47.763435
+[2022-09-21 16:44:38.261] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.261] [AL] [debug] 47.766937
+[2022-09-21 16:44:38.277] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.278] [AL] [debug] 47.87786
+[2022-09-21 16:44:38.295] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.295] [AL] [debug] 47.970787
+[2022-09-21 16:44:38.311] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.312] [AL] [debug] 48.07788
+[2022-09-21 16:44:38.328] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.329] [AL] [debug] 48.170425
+[2022-09-21 16:44:38.345] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.346] [AL] [debug] 48.273567
+[2022-09-21 16:44:38.362] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.362] [AL] [debug] 48.375225
+[2022-09-21 16:44:38.379] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.379] [AL] [debug] 48.4661
+[2022-09-21 16:44:38.395] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.396] [AL] [debug] 48.564365
+[2022-09-21 16:44:38.413] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.414] [AL] [debug] 48.62958
+[2022-09-21 16:44:38.431] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.432] [AL] [debug] 48.69763
+[2022-09-21 16:44:38.448] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.448] [AL] [debug] 48.791416
+[2022-09-21 16:44:38.464] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.465] [AL] [debug] 48.883656
+[2022-09-21 16:44:38.481] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.482] [AL] [debug] 48.97439
+[2022-09-21 16:44:38.498] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.498] [AL] [debug] 49.897545
+[2022-09-21 16:44:38.514] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.515] [AL] [debug] 55.55448
+[2022-09-21 16:44:38.531] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.531] [AL] [debug] 55.60451
+[2022-09-21 16:44:38.548] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.548] [AL] [debug] 55.60451
+[2022-09-21 16:44:38.564] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.565] [AL] [debug] 55.60451
+[2022-09-21 16:44:38.581] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.582] [AL] [debug] 55.604507
+[2022-09-21 16:44:38.598] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.598] [AL] [debug] 55.604507
+[2022-09-21 16:44:38.615] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.615] [AL] [debug] 55.604507
+[2022-09-21 16:44:38.631] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.632] [AL] [debug] 55.646095
+[2022-09-21 16:44:38.648] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.649] [AL] [debug] 55.64855
+[2022-09-21 16:44:38.666] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.667] [AL] [debug] 55.648552
+[2022-09-21 16:44:38.684] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.685] [AL] [debug] 55.695194
+[2022-09-21 16:44:38.702] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.702] [AL] [debug] 55.72193
+[2022-09-21 16:44:38.719] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.719] [AL] [debug] 55.867027
+[2022-09-21 16:44:38.736] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.736] [AL] [debug] 55.938957
+[2022-09-21 16:44:38.753] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.754] [AL] [debug] 55.948452
+[2022-09-21 16:44:38.772] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.772] [AL] [debug] 55.94653
+[2022-09-21 16:44:38.789] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.789] [AL] [debug] 55.92849
+[2022-09-21 16:44:38.807] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.808] [AL] [debug] 55.974148
+[2022-09-21 16:44:38.808] [AL] [debug] 55.974148
+[2022-09-21 16:44:38.827] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.828] [AL] [debug] 55.894997
+[2022-09-21 16:44:38.844] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.844] [AL] [debug] 55.961124
+[2022-09-21 16:44:38.860] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.861] [AL] [debug] 56.1027
+[2022-09-21 16:44:38.877] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.878] [AL] [debug] 56.10896
+[2022-09-21 16:44:38.894] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.895] [AL] [debug] 56.192234
+[2022-09-21 16:44:38.912] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.912] [AL] [debug] 56.285336
+[2022-09-21 16:44:38.929] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.929] [AL] [debug] 56.285107
+[2022-09-21 16:44:38.947] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.947] [AL] [debug] 56.34205
+[2022-09-21 16:44:38.964] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.964] [AL] [debug] 56.544495
+[2022-09-21 16:44:38.981] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.981] [AL] [debug] 56.806225
+[2022-09-21 16:44:38.998] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:38.998] [AL] [debug] 56.913322
+[2022-09-21 16:44:39.015] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.015] [AL] [debug] 57.019585
+[2022-09-21 16:44:39.032] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.033] [AL] [debug] 57.047455
+[2022-09-21 16:44:39.050] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.051] [AL] [debug] 57.24052
+[2022-09-21 16:44:39.068] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.068] [AL] [debug] 57.58297
+[2022-09-21 16:44:39.085] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.085] [AL] [debug] 57.66626
+[2022-09-21 16:44:39.102] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.103] [AL] [debug] 57.691647
+[2022-09-21 16:44:39.119] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.119] [AL] [debug] 57.701653
+[2022-09-21 16:44:39.137] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.137] [AL] [debug] 57.670002
+[2022-09-21 16:44:39.153] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.154] [AL] [debug] 57.670002
+[2022-09-21 16:44:39.170] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.170] [AL] [debug] 57.713837
+[2022-09-21 16:44:39.188] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.189] [AL] [debug] 57.710255
+[2022-09-21 16:44:39.206] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.206] [AL] [debug] 57.72041
+[2022-09-21 16:44:39.224] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.225] [AL] [debug] 57.684277
+[2022-09-21 16:44:39.226] [AL] [debug] 57.684277
+[2022-09-21 16:44:39.244] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.244] [AL] [debug] 57.602623
+[2022-09-21 16:44:39.261] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.261] [AL] [debug] 57.59241
+[2022-09-21 16:44:39.278] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.278] [AL] [debug] 57.59264
+[2022-09-21 16:44:39.295] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.295] [AL] [debug] 57.649254
+[2022-09-21 16:44:39.312] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.313] [AL] [debug] 57.68552
+[2022-09-21 16:44:39.330] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.330] [AL] [debug] 57.709507
+[2022-09-21 16:44:39.347] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.348] [AL] [debug] 57.706825
+[2022-09-21 16:44:39.364] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.364] [AL] [debug] 57.75533
+[2022-09-21 16:44:39.381] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.381] [AL] [debug] 57.791924
+[2022-09-21 16:44:39.398] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.398] [AL] [debug] 57.78894
+[2022-09-21 16:44:39.414] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.415] [AL] [debug] 57.78894
+[2022-09-21 16:44:39.431] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.431] [AL] [debug] 57.78894
+[2022-09-21 16:44:39.448] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.448] [AL] [debug] 57.788937
+[2022-09-21 16:44:39.465] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.465] [AL] [debug] 57.76743
+[2022-09-21 16:44:39.482] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.482] [AL] [debug] 57.759865
+[2022-09-21 16:44:39.499] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.499] [AL] [debug] 57.766525
+[2022-09-21 16:44:39.517] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.517] [AL] [debug] 57.766
+[2022-09-21 16:44:39.534] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.534] [AL] [debug] 57.744305
+[2022-09-21 16:44:39.551] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.551] [AL] [debug] 57.729275
+[2022-09-21 16:44:39.568] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.568] [AL] [debug] 57.719692
+[2022-09-21 16:44:39.585] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.585] [AL] [debug] 57.69968
+[2022-09-21 16:44:39.602] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.602] [AL] [debug] 57.69968
+[2022-09-21 16:44:39.619] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.619] [AL] [debug] 57.701733
+[2022-09-21 16:44:39.636] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.636] [AL] [debug] 57.70129
+[2022-09-21 16:44:39.653] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.654] [AL] [debug] 57.715252
+[2022-09-21 16:44:39.671] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.672] [AL] [debug] 57.662144
+[2022-09-21 16:44:39.688] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.689] [AL] [debug] 57.715786
+[2022-09-21 16:44:39.706] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.706] [AL] [debug] 57.771145
+[2022-09-21 16:44:39.723] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.723] [AL] [debug] 57.97817
+[2022-09-21 16:44:39.740] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.740] [AL] [debug] 58.10755
+[2022-09-21 16:44:39.756] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.757] [AL] [debug] 58.172676
+[2022-09-21 16:44:39.774] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.775] [AL] [debug] 58.157185
+[2022-09-21 16:44:39.775] [AL] [debug] 58.157185
+[2022-09-21 16:44:39.793] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.793] [AL] [debug] 58.0719
+[2022-09-21 16:44:39.810] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.810] [AL] [debug] 58.047012
+[2022-09-21 16:44:39.827] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.827] [AL] [debug] 58.038006
+[2022-09-21 16:44:39.844] [AL] [error] Logger Panel Collapsed
+[2022-09-21 16:44:39.844] [AL] [debug] 58.043148
+[2022-09-21 16:44:39.867] [AL] [debug] 57.905014
+[2022-09-21 16:44:39.888] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:39.888] [AL] [debug] 57.752926
+[2022-09-21 16:44:39.909] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:39.909] [AL] [debug] 57.617363
+[2022-09-21 16:44:39.910] [AL] [debug] 57.617363
+[2022-09-21 16:44:39.929] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:39.929] [AL] [debug] 57.490086
+[2022-09-21 16:44:39.947] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:39.947] [AL] [debug] 57.46189
+[2022-09-21 16:44:39.965] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:39.965] [AL] [debug] 57.47403
+[2022-09-21 16:44:39.984] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:39.984] [AL] [debug] 57.4198
+[2022-09-21 16:44:40.002] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.003] [AL] [debug] 57.495464
+[2022-09-21 16:44:40.021] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.021] [AL] [debug] 57.42864
+[2022-09-21 16:44:40.039] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.039] [AL] [debug] 57.398846
+[2022-09-21 16:44:40.058] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.058] [AL] [debug] 57.351265
+[2022-09-21 16:44:40.078] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.078] [AL] [debug] 57.257057
+[2022-09-21 16:44:40.079] [AL] [debug] 57.257057
+[2022-09-21 16:44:40.098] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.098] [AL] [debug] 57.121456
+[2022-09-21 16:44:40.116] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.117] [AL] [debug] 57.067028
+[2022-09-21 16:44:40.134] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.135] [AL] [debug] 57.03622
+[2022-09-21 16:44:40.153] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.154] [AL] [debug] 56.97927
+[2022-09-21 16:44:40.172] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.172] [AL] [debug] 56.96621
+[2022-09-21 16:44:40.191] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.191] [AL] [debug] 56.909767
+[2022-09-21 16:44:40.211] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.211] [AL] [debug] 56.806618
+[2022-09-21 16:44:40.212] [AL] [debug] 56.806618
+[2022-09-21 16:44:40.231] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.231] [AL] [debug] 56.697796
+[2022-09-21 16:44:40.249] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.249] [AL] [debug] 56.654636
+[2022-09-21 16:44:40.267] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.268] [AL] [debug] 56.58996
+[2022-09-21 16:44:40.286] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.287] [AL] [debug] 56.518124
+[2022-09-21 16:44:40.305] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.305] [AL] [debug] 56.467876
+[2022-09-21 16:44:40.325] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.326] [AL] [debug] 56.35235
+[2022-09-21 16:44:40.345] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.345] [AL] [debug] 56.253487
+[2022-09-21 16:44:40.345] [AL] [debug] 56.253487
+[2022-09-21 16:44:40.364] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.364] [AL] [debug] 56.181927
+[2022-09-21 16:44:40.382] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.382] [AL] [debug] 56.136448
+[2022-09-21 16:44:40.400] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.400] [AL] [debug] 56.08886
+[2022-09-21 16:44:40.418] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.419] [AL] [debug] 56.039658
+[2022-09-21 16:44:40.437] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.437] [AL] [debug] 55.97884
+[2022-09-21 16:44:40.456] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.457] [AL] [debug] 55.955925
+[2022-09-21 16:44:40.476] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.477] [AL] [debug] 55.888397
+[2022-09-21 16:44:40.477] [AL] [debug] 55.888397
+[2022-09-21 16:44:40.496] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.497] [AL] [debug] 55.81152
+[2022-09-21 16:44:40.515] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.515] [AL] [debug] 55.738453
+[2022-09-21 16:44:40.534] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.534] [AL] [debug] 55.67914
+[2022-09-21 16:44:40.553] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.554] [AL] [debug] 55.640747
+[2022-09-21 16:44:40.574] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.575] [AL] [debug] 55.575367
+[2022-09-21 16:44:40.594] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.594] [AL] [debug] 55.489525
+[2022-09-21 16:44:40.595] [AL] [debug] 55.489525
+[2022-09-21 16:44:40.614] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.614] [AL] [debug] 55.435894
+[2022-09-21 16:44:40.632] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.632] [AL] [debug] 55.48177
+[2022-09-21 16:44:40.650] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.651] [AL] [debug] 55.435066
+[2022-09-21 16:44:40.670] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.670] [AL] [debug] 55.359016
+[2022-09-21 16:44:40.689] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.690] [AL] [debug] 55.28046
+[2022-09-21 16:44:40.708] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.708] [AL] [debug] 55.230785
+[2022-09-21 16:44:40.728] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.728] [AL] [debug] 55.152245
+[2022-09-21 16:44:40.729] [AL] [debug] 55.152245
+[2022-09-21 16:44:40.748] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.748] [AL] [debug] 55.073948
+[2022-09-21 16:44:40.767] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.767] [AL] [debug] 55.018894
+[2022-09-21 16:44:40.786] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.786] [AL] [debug] 54.956055
+[2022-09-21 16:44:40.805] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.806] [AL] [debug] 54.90022
+[2022-09-21 16:44:40.826] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.826] [AL] [debug] 54.79681
+[2022-09-21 16:44:40.845] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.846] [AL] [debug] 54.709526
+[2022-09-21 16:44:40.846] [AL] [debug] 54.709526
+[2022-09-21 16:44:40.867] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.867] [AL] [debug] 54.59605
+[2022-09-21 16:44:40.886] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.886] [AL] [debug] 54.567966
+[2022-09-21 16:44:40.905] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.906] [AL] [debug] 54.51507
+[2022-09-21 16:44:40.925] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.925] [AL] [debug] 54.432674
+[2022-09-21 16:44:40.944] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.945] [AL] [debug] 54.363758
+[2022-09-21 16:44:40.946] [AL] [debug] 54.363758
+[2022-09-21 16:44:40.965] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.965] [AL] [debug] 54.253204
+[2022-09-21 16:44:40.985] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:40.985] [AL] [debug] 54.18913
+[2022-09-21 16:44:41.004] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.004] [AL] [debug] 54.128002
+[2022-09-21 16:44:41.023] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.024] [AL] [debug] 54.050877
+[2022-09-21 16:44:41.044] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.045] [AL] [debug] 53.953037
+[2022-09-21 16:44:41.045] [AL] [debug] 53.953037
+[2022-09-21 16:44:41.065] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.065] [AL] [debug] 53.864246
+[2022-09-21 16:44:41.084] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.084] [AL] [debug] 53.84982
+[2022-09-21 16:44:41.103] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.104] [AL] [debug] 53.864788
+[2022-09-21 16:44:41.122] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.123] [AL] [debug] 53.809525
+[2022-09-21 16:44:41.143] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.143] [AL] [debug] 53.696827
+[2022-09-21 16:44:41.144] [AL] [debug] 53.696827
+[2022-09-21 16:44:41.165] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.165] [AL] [debug] 53.57644
+[2022-09-21 16:44:41.185] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.185] [AL] [debug] 53.488796
+[2022-09-21 16:44:41.205] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.205] [AL] [debug] 53.420444
+[2022-09-21 16:44:41.225] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.226] [AL] [debug] 53.3337
+[2022-09-21 16:44:41.246] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.246] [AL] [debug] 53.21622
+[2022-09-21 16:44:41.247] [AL] [debug] 53.21622
+[2022-09-21 16:44:41.267] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.267] [AL] [debug] 53.09991
+[2022-09-21 16:44:41.286] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.286] [AL] [debug] 53.038418
+[2022-09-21 16:44:41.305] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.306] [AL] [debug] 52.967808
+[2022-09-21 16:44:41.325] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.325] [AL] [debug] 52.894447
+[2022-09-21 16:44:41.344] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.344] [AL] [debug] 52.809723
+[2022-09-21 16:44:41.345] [AL] [debug] 52.809723
+[2022-09-21 16:44:41.365] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.366] [AL] [debug] 52.719383
+[2022-09-21 16:44:41.386] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.386] [AL] [debug] 52.59945
+[2022-09-21 16:44:41.406] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.406] [AL] [debug] 52.517418
+[2022-09-21 16:44:41.425] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.426] [AL] [debug] 52.47538
+[2022-09-21 16:44:41.444] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.445] [AL] [debug] 52.421207
+[2022-09-21 16:44:41.446] [AL] [debug] 52.421207
+[2022-09-21 16:44:41.465] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.465] [AL] [debug] 52.326954
+[2022-09-21 16:44:41.484] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.484] [AL] [debug] 52.26884
+[2022-09-21 16:44:41.505] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.506] [AL] [debug] 52.178776
+[2022-09-21 16:44:41.525] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.526] [AL] [debug] 52.075047
+[2022-09-21 16:44:41.545] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.545] [AL] [debug] 52.002274
+[2022-09-21 16:44:41.546] [AL] [debug] 52.002274
+[2022-09-21 16:44:41.567] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.567] [AL] [debug] 51.87977
+[2022-09-21 16:44:41.588] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.588] [AL] [debug] 51.77871
+[2022-09-21 16:44:41.609] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.609] [AL] [debug] 51.70452
+[2022-09-21 16:44:41.629] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.629] [AL] [debug] 51.618618
+[2022-09-21 16:44:41.630] [AL] [debug] 51.618618
+[2022-09-21 16:44:41.650] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.650] [AL] [debug] 51.519745
+[2022-09-21 16:44:41.670] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.670] [AL] [debug] 51.437717
+[2022-09-21 16:44:41.690] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.690] [AL] [debug] 51.36492
+[2022-09-21 16:44:41.711] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.711] [AL] [debug] 51.242073
+[2022-09-21 16:44:41.711] [AL] [debug] 51.242073
+[2022-09-21 16:44:41.732] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.732] [AL] [debug] 51.14003
+[2022-09-21 16:44:41.752] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.752] [AL] [debug] 51.123947
+[2022-09-21 16:44:41.772] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.773] [AL] [debug] 51.04022
+[2022-09-21 16:44:41.793] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.794] [AL] [debug] 50.93627
+[2022-09-21 16:44:41.794] [AL] [debug] 50.93627
+[2022-09-21 16:44:41.815] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.815] [AL] [debug] 50.825516
+[2022-09-21 16:44:41.836] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.836] [AL] [debug] 50.805393
+[2022-09-21 16:44:41.857] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.857] [AL] [debug] 50.819153
+[2022-09-21 16:44:41.878] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.878] [AL] [debug] 50.812817
+[2022-09-21 16:44:41.879] [AL] [debug] 50.812817
+[2022-09-21 16:44:41.898] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.899] [AL] [debug] 50.806786
+[2022-09-21 16:44:41.919] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.920] [AL] [debug] 50.723537
+[2022-09-21 16:44:41.940] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.941] [AL] [debug] 50.66226
+[2022-09-21 16:44:41.961] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.961] [AL] [debug] 50.60387
+[2022-09-21 16:44:41.962] [AL] [debug] 50.60387
+[2022-09-21 16:44:41.982] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:41.982] [AL] [debug] 50.538742
+[2022-09-21 16:44:42.004] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.004] [AL] [debug] 50.48173
+[2022-09-21 16:44:42.025] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.025] [AL] [debug] 50.391647
+[2022-09-21 16:44:42.044] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.045] [AL] [debug] 50.353596
+[2022-09-21 16:44:42.045] [AL] [debug] 50.353596
+[2022-09-21 16:44:42.066] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.066] [AL] [debug] 50.32536
+[2022-09-21 16:44:42.086] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.086] [AL] [debug] 50.346
+[2022-09-21 16:44:42.105] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.106] [AL] [debug] 50.321095
+[2022-09-21 16:44:42.127] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.127] [AL] [debug] 50.241993
+[2022-09-21 16:44:42.146] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.146] [AL] [debug] 50.205624
+[2022-09-21 16:44:42.147] [AL] [debug] 50.205624
+[2022-09-21 16:44:42.167] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.167] [AL] [debug] 50.141933
+[2022-09-21 16:44:42.187] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.188] [AL] [debug] 50.134853
+[2022-09-21 16:44:42.207] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.208] [AL] [debug] 50.113358
+[2022-09-21 16:44:42.228] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.228] [AL] [debug] 50.104214
+[2022-09-21 16:44:42.229] [AL] [debug] 50.104214
+[2022-09-21 16:44:42.249] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.249] [AL] [debug] 50.034145
+[2022-09-21 16:44:42.270] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.271] [AL] [debug] 49.965363
+[2022-09-21 16:44:42.291] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.292] [AL] [debug] 49.913006
+[2022-09-21 16:44:42.310] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.311] [AL] [debug] 49.88593
+[2022-09-21 16:44:42.311] [AL] [debug] 49.88593
+[2022-09-21 16:44:42.334] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.334] [AL] [debug] 49.82362
+[2022-09-21 16:44:42.353] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.354] [AL] [debug] 49.822727
+[2022-09-21 16:44:42.374] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.374] [AL] [debug] 49.775093
+[2022-09-21 16:44:42.395] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.395] [AL] [debug] 49.70893
+[2022-09-21 16:44:42.396] [AL] [debug] 49.70893
+[2022-09-21 16:44:42.415] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.415] [AL] [debug] 49.65877
+[2022-09-21 16:44:42.436] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.436] [AL] [debug] 49.598206
+[2022-09-21 16:44:42.458] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.458] [AL] [debug] 49.545624
+[2022-09-21 16:44:42.478] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.478] [AL] [debug] 49.481762
+[2022-09-21 16:44:42.479] [AL] [debug] 49.481762
+[2022-09-21 16:44:42.499] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.499] [AL] [debug] 49.47475
+[2022-09-21 16:44:42.520] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.521] [AL] [debug] 49.45544
+[2022-09-21 16:44:42.541] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.541] [AL] [debug] 49.405937
+[2022-09-21 16:44:42.560] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.560] [AL] [debug] 49.38976
+[2022-09-21 16:44:42.561] [AL] [debug] 49.38976
+[2022-09-21 16:44:42.581] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.581] [AL] [debug] 49.352314
+[2022-09-21 16:44:42.601] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.601] [AL] [debug] 49.361744
+[2022-09-21 16:44:42.620] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.621] [AL] [debug] 49.37605
+[2022-09-21 16:44:42.642] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.642] [AL] [debug] 49.343
+[2022-09-21 16:44:42.663] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.663] [AL] [debug] 49.284206
+[2022-09-21 16:44:42.663] [AL] [debug] 49.284206
+[2022-09-21 16:44:42.685] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.685] [AL] [debug] 49.19209
+[2022-09-21 16:44:42.705] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.706] [AL] [debug] 49.156685
+[2022-09-21 16:44:42.726] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.726] [AL] [debug] 49.12484
+[2022-09-21 16:44:42.746] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.747] [AL] [debug] 49.081223
+[2022-09-21 16:44:42.747] [AL] [debug] 49.081223
+[2022-09-21 16:44:42.769] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.769] [AL] [debug] 49.024174
+[2022-09-21 16:44:42.790] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.790] [AL] [debug] 48.999832
+[2022-09-21 16:44:42.811] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.812] [AL] [debug] 48.947166
+[2022-09-21 16:44:42.813] [AL] [debug] 48.947166
+[2022-09-21 16:44:42.833] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.833] [AL] [debug] 48.885544
+[2022-09-21 16:44:42.855] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.855] [AL] [debug] 48.821877
+[2022-09-21 16:44:42.876] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.876] [AL] [debug] 48.803837
+[2022-09-21 16:44:42.896] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.897] [AL] [debug] 48.78875
+[2022-09-21 16:44:42.897] [AL] [debug] 48.78875
+[2022-09-21 16:44:42.917] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.918] [AL] [debug] 48.791294
+[2022-09-21 16:44:42.938] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.938] [AL] [debug] 48.763065
+[2022-09-21 16:44:42.959] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.959] [AL] [debug] 48.710114
+[2022-09-21 16:44:42.980] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:42.980] [AL] [debug] 48.689644
+[2022-09-21 16:44:42.980] [AL] [debug] 48.689644
+[2022-09-21 16:44:43.002] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.002] [AL] [debug] 48.657104
+[2022-09-21 16:44:43.023] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.023] [AL] [debug] 48.63132
+[2022-09-21 16:44:43.043] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.043] [AL] [debug] 48.625946
+[2022-09-21 16:44:43.063] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.063] [AL] [debug] 48.59707
+[2022-09-21 16:44:43.064] [AL] [debug] 48.59707
+[2022-09-21 16:44:43.084] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.085] [AL] [debug] 48.547672
+[2022-09-21 16:44:43.105] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.105] [AL] [debug] 48.580963
+[2022-09-21 16:44:43.125] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.125] [AL] [debug] 48.563705
+[2022-09-21 16:44:43.145] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.145] [AL] [debug] 48.5422
+[2022-09-21 16:44:43.146] [AL] [debug] 48.5422
+[2022-09-21 16:44:43.166] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.166] [AL] [debug] 48.51214
+[2022-09-21 16:44:43.186] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.187] [AL] [debug] 48.49605
+[2022-09-21 16:44:43.208] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.208] [AL] [debug] 48.4624
+[2022-09-21 16:44:43.229] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.229] [AL] [debug] 48.47792
+[2022-09-21 16:44:43.229] [AL] [debug] 48.47792
+[2022-09-21 16:44:43.250] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.250] [AL] [debug] 48.459045
+[2022-09-21 16:44:43.270] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.270] [AL] [debug] 48.468796
+[2022-09-21 16:44:43.291] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.291] [AL] [debug] 48.4437
+[2022-09-21 16:44:43.311] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.311] [AL] [debug] 48.45428
+[2022-09-21 16:44:43.312] [AL] [debug] 48.45428
+[2022-09-21 16:44:43.333] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.333] [AL] [debug] 48.422165
+[2022-09-21 16:44:43.354] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.355] [AL] [debug] 48.392433
+[2022-09-21 16:44:43.375] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.375] [AL] [debug] 48.346424
+[2022-09-21 16:44:43.396] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.396] [AL] [debug] 48.306534
+[2022-09-21 16:44:43.397] [AL] [debug] 48.306534
+[2022-09-21 16:44:43.417] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.418] [AL] [debug] 48.264015
+[2022-09-21 16:44:43.439] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.439] [AL] [debug] 48.250576
+[2022-09-21 16:44:43.460] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.460] [AL] [debug] 48.25748
+[2022-09-21 16:44:43.481] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.481] [AL] [debug] 48.226917
+[2022-09-21 16:44:43.481] [AL] [debug] 48.226917
+[2022-09-21 16:44:43.502] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.502] [AL] [debug] 48.187557
+[2022-09-21 16:44:43.524] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.524] [AL] [debug] 48.124443
+[2022-09-21 16:44:43.547] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.547] [AL] [debug] 48.077065
+[2022-09-21 16:44:43.547] [AL] [debug] 48.077065
+[2022-09-21 16:44:43.568] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.568] [AL] [debug] 48.020557
+[2022-09-21 16:44:43.588] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.588] [AL] [debug] 48.03546
+[2022-09-21 16:44:43.610] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.611] [AL] [debug] 48.00979
+[2022-09-21 16:44:43.632] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.632] [AL] [debug] 47.950924
+[2022-09-21 16:44:43.633] [AL] [debug] 47.950924
+[2022-09-21 16:44:43.653] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.654] [AL] [debug] 47.949715
+[2022-09-21 16:44:43.674] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.675] [AL] [debug] 47.945145
+[2022-09-21 16:44:43.696] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.697] [AL] [debug] 47.917725
+[2022-09-21 16:44:43.698] [AL] [debug] 47.917725
+[2022-09-21 16:44:43.719] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.720] [AL] [debug] 47.8714
+[2022-09-21 16:44:43.741] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.741] [AL] [debug] 47.85712
+[2022-09-21 16:44:43.762] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.762] [AL] [debug] 47.838375
+[2022-09-21 16:44:43.763] [AL] [debug] 47.838375
+[2022-09-21 16:44:43.783] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.784] [AL] [debug] 47.79033
+[2022-09-21 16:44:43.804] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.804] [AL] [debug] 47.80973
+[2022-09-21 16:44:43.826] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.826] [AL] [debug] 47.790745
+[2022-09-21 16:44:43.846] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.846] [AL] [debug] 47.783566
+[2022-09-21 16:44:43.846] [AL] [debug] 47.783566
+[2022-09-21 16:44:43.867] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.867] [AL] [debug] 47.77212
+[2022-09-21 16:44:43.888] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.888] [AL] [debug] 47.779583
+[2022-09-21 16:44:43.909] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.909] [AL] [debug] 47.773235
+[2022-09-21 16:44:43.930] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.930] [AL] [debug] 47.794907
+[2022-09-21 16:44:43.930] [AL] [debug] 47.794907
+[2022-09-21 16:44:43.953] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.953] [AL] [debug] 47.73257
+[2022-09-21 16:44:43.975] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.975] [AL] [debug] 47.71295
+[2022-09-21 16:44:43.997] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:43.997] [AL] [debug] 47.687237
+[2022-09-21 16:44:43.998] [AL] [debug] 47.687237
+[2022-09-21 16:44:44.019] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.019] [AL] [debug] 47.66112
+[2022-09-21 16:44:44.041] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.041] [AL] [debug] 47.62929
+[2022-09-21 16:44:44.062] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.062] [AL] [debug] 47.63072
+[2022-09-21 16:44:44.063] [AL] [debug] 47.63072
+[2022-09-21 16:44:44.084] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.084] [AL] [debug] 47.614056
+[2022-09-21 16:44:44.105] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.106] [AL] [debug] 47.609497
+[2022-09-21 16:44:44.126] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.126] [AL] [debug] 47.623875
+[2022-09-21 16:44:44.147] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.147] [AL] [debug] 47.599434
+[2022-09-21 16:44:44.147] [AL] [debug] 47.599434
+[2022-09-21 16:44:44.172] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.172] [AL] [debug] 47.507046
+[2022-09-21 16:44:44.193] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.193] [AL] [debug] 47.4909
+[2022-09-21 16:44:44.214] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.214] [AL] [debug] 47.451817
+[2022-09-21 16:44:44.215] [AL] [debug] 47.451817
+[2022-09-21 16:44:44.236] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.236] [AL] [debug] 47.446106
+[2022-09-21 16:44:44.258] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.258] [AL] [debug] 47.392475
+[2022-09-21 16:44:44.279] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.280] [AL] [debug] 47.366165
+[2022-09-21 16:44:44.280] [AL] [debug] 47.366165
+[2022-09-21 16:44:44.302] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.302] [AL] [debug] 47.311993
+[2022-09-21 16:44:44.324] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.325] [AL] [debug] 47.2829
+[2022-09-21 16:44:44.346] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.346] [AL] [debug] 47.250687
+[2022-09-21 16:44:44.346] [AL] [debug] 47.250687
+[2022-09-21 16:44:44.368] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.368] [AL] [debug] 47.22685
+[2022-09-21 16:44:44.390] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.390] [AL] [debug] 47.21458
+[2022-09-21 16:44:44.411] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.412] [AL] [debug] 47.1945
+[2022-09-21 16:44:44.413] [AL] [debug] 47.1945
+[2022-09-21 16:44:44.435] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.436] [AL] [debug] 47.10723
+[2022-09-21 16:44:44.457] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.458] [AL] [debug] 47.115246
+[2022-09-21 16:44:44.479] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.479] [AL] [debug] 47.06608
+[2022-09-21 16:44:44.480] [AL] [debug] 47.06608
+[2022-09-21 16:44:44.501] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.501] [AL] [debug] 47.043957
+[2022-09-21 16:44:44.522] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.523] [AL] [debug] 47.031998
+[2022-09-21 16:44:44.544] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.544] [AL] [debug] 47.011024
+[2022-09-21 16:44:44.565] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.565] [AL] [debug] 47.002052
+[2022-09-21 16:44:44.567] [AL] [debug] 47.002052
+[2022-09-21 16:44:44.590] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.590] [AL] [debug] 46.92093
+[2022-09-21 16:44:44.610] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.611] [AL] [debug] 46.927277
+[2022-09-21 16:44:44.631] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.631] [AL] [debug] 46.92994
+[2022-09-21 16:44:44.632] [AL] [debug] 46.92994
+[2022-09-21 16:44:44.653] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.653] [AL] [debug] 46.89854
+[2022-09-21 16:44:44.674] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.674] [AL] [debug] 46.90929
+[2022-09-21 16:44:44.695] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.695] [AL] [debug] 46.875557
+[2022-09-21 16:44:44.696] [AL] [debug] 46.875557
+[2022-09-21 16:44:44.717] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.717] [AL] [debug] 46.847454
+[2022-09-21 16:44:44.738] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.738] [AL] [debug] 46.82897
+[2022-09-21 16:44:44.759] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.760] [AL] [debug] 46.788544
+[2022-09-21 16:44:44.781] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.781] [AL] [debug] 46.778847
+[2022-09-21 16:44:44.782] [AL] [debug] 46.778847
+[2022-09-21 16:44:44.804] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.804] [AL] [debug] 46.744556
+[2022-09-21 16:44:44.826] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.827] [AL] [debug] 46.73479
+[2022-09-21 16:44:44.848] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.848] [AL] [debug] 46.70582
+[2022-09-21 16:44:44.849] [AL] [debug] 46.70582
+[2022-09-21 16:44:44.871] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.872] [AL] [debug] 46.653843
+[2022-09-21 16:44:44.893] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.893] [AL] [debug] 46.615585
+[2022-09-21 16:44:44.915] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.916] [AL] [debug] 46.626377
+[2022-09-21 16:44:44.916] [AL] [debug] 46.626377
+[2022-09-21 16:44:44.937] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.937] [AL] [debug] 46.60239
+[2022-09-21 16:44:44.958] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.959] [AL] [debug] 46.601418
+[2022-09-21 16:44:44.981] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:44.981] [AL] [debug] 46.586075
+[2022-09-21 16:44:44.982] [AL] [debug] 46.586075
+[2022-09-21 16:44:45.004] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.004] [AL] [debug] 46.55462
+[2022-09-21 16:44:45.026] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.027] [AL] [debug] 46.538383
+[2022-09-21 16:44:45.048] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.048] [AL] [debug] 46.51414
+[2022-09-21 16:44:45.049] [AL] [debug] 46.51414
+[2022-09-21 16:44:45.071] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.071] [AL] [debug] 46.479916
+[2022-09-21 16:44:45.092] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.092] [AL] [debug] 46.45164
+[2022-09-21 16:44:45.113] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.114] [AL] [debug] 46.458694
+[2022-09-21 16:44:45.114] [AL] [debug] 46.458694
+[2022-09-21 16:44:45.136] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.136] [AL] [debug] 46.418064
+[2022-09-21 16:44:45.157] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.157] [AL] [debug] 46.41536
+[2022-09-21 16:44:45.178] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.178] [AL] [debug] 46.42686
+[2022-09-21 16:44:45.199] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.200] [AL] [debug] 46.39591
+[2022-09-21 16:44:45.204] [AL] [debug] 46.39591
+[2022-09-21 16:44:45.228] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.228] [AL] [debug] 46.22974
+[2022-09-21 16:44:45.250] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.250] [AL] [debug] 46.21243
+[2022-09-21 16:44:45.250] [AL] [debug] 46.21243
+[2022-09-21 16:44:45.275] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.275] [AL] [debug] 46.106728
+[2022-09-21 16:44:45.297] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.297] [AL] [debug] 46.079575
+[2022-09-21 16:44:45.298] [AL] [debug] 46.079575
+[2022-09-21 16:44:45.321] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.321] [AL] [debug] 45.99812
+[2022-09-21 16:44:45.342] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.342] [AL] [debug] 45.987118
+[2022-09-21 16:44:45.362] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.363] [AL] [debug] 45.971783
+[2022-09-21 16:44:45.363] [AL] [debug] 45.971783
+[2022-09-21 16:44:45.384] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.384] [AL] [debug] 45.98263
+[2022-09-21 16:44:45.405] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.405] [AL] [debug] 45.97704
+[2022-09-21 16:44:45.426] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.427] [AL] [debug] 45.974655
+[2022-09-21 16:44:45.448] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.448] [AL] [debug] 45.933098
+[2022-09-21 16:44:45.449] [AL] [debug] 45.933098
+[2022-09-21 16:44:45.472] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.472] [AL] [debug] 45.895878
+[2022-09-21 16:44:45.494] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.495] [AL] [debug] 45.834324
+[2022-09-21 16:44:45.515] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.516] [AL] [debug] 45.859695
+[2022-09-21 16:44:45.516] [AL] [debug] 45.859695
+[2022-09-21 16:44:45.538] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.538] [AL] [debug] 45.8165
+[2022-09-21 16:44:45.559] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.560] [AL] [debug] 45.80534
+[2022-09-21 16:44:45.580] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.581] [AL] [debug] 45.81149
+[2022-09-21 16:44:45.581] [AL] [debug] 45.81149
+[2022-09-21 16:44:45.604] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.604] [AL] [debug] 45.777016
+[2022-09-21 16:44:45.626] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.626] [AL] [debug] 45.74868
+[2022-09-21 16:44:45.647] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.648] [AL] [debug] 45.740826
+[2022-09-21 16:44:45.649] [AL] [debug] 45.740826
+[2022-09-21 16:44:45.670] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.670] [AL] [debug] 45.71235
+[2022-09-21 16:44:45.691] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.691] [AL] [debug] 45.70077
+[2022-09-21 16:44:45.713] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.713] [AL] [debug] 45.703354
+[2022-09-21 16:44:45.714] [AL] [debug] 45.703354
+[2022-09-21 16:44:45.735] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.735] [AL] [debug] 45.717953
+[2022-09-21 16:44:45.758] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.758] [AL] [debug] 45.71221
+[2022-09-21 16:44:45.780] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.780] [AL] [debug] 45.655285
+[2022-09-21 16:44:45.780] [AL] [debug] 45.655285
+[2022-09-21 16:44:45.804] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.804] [AL] [debug] 45.600327
+[2022-09-21 16:44:45.826] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.826] [AL] [debug] 45.6097
+[2022-09-21 16:44:45.847] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.848] [AL] [debug] 45.61461
+[2022-09-21 16:44:45.848] [AL] [debug] 45.61461
+[2022-09-21 16:44:45.870] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.870] [AL] [debug] 45.58252
+[2022-09-21 16:44:45.892] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.892] [AL] [debug] 45.585606
+[2022-09-21 16:44:45.915] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.915] [AL] [debug] 45.591656
+[2022-09-21 16:44:45.916] [AL] [debug] 45.591656
+[2022-09-21 16:44:45.939] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.939] [AL] [debug] 45.521515
+[2022-09-21 16:44:45.961] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.962] [AL] [debug] 45.500717
+[2022-09-21 16:44:45.984] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:45.984] [AL] [debug] 45.47948
+[2022-09-21 16:44:45.985] [AL] [debug] 45.47948
+[2022-09-21 16:44:46.007] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.008] [AL] [debug] 45.415573
+[2022-09-21 16:44:46.029] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.029] [AL] [debug] 45.4189
+[2022-09-21 16:44:46.051] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.052] [AL] [debug] 45.377922
+[2022-09-21 16:44:46.052] [AL] [debug] 45.377922
+[2022-09-21 16:44:46.075] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.075] [AL] [debug] 45.330006
+[2022-09-21 16:44:46.099] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.099] [AL] [debug] 45.258324
+[2022-09-21 16:44:46.100] [AL] [debug] 45.258324
+[2022-09-21 16:44:46.121] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.121] [AL] [debug] 45.241222
+[2022-09-21 16:44:46.142] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.142] [AL] [debug] 45.22219
+[2022-09-21 16:44:46.164] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.164] [AL] [debug] 45.26374
+[2022-09-21 16:44:46.165] [AL] [debug] 45.26374
+[2022-09-21 16:44:46.186] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.186] [AL] [debug] 45.264267
+[2022-09-21 16:44:46.207] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.208] [AL] [debug] 45.277184
+[2022-09-21 16:44:46.231] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.231] [AL] [debug] 45.250412
+[2022-09-21 16:44:46.232] [AL] [debug] 45.250412
+[2022-09-21 16:44:46.254] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.255] [AL] [debug] 45.21519
+[2022-09-21 16:44:46.277] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.277] [AL] [debug] 45.17936
+[2022-09-21 16:44:46.299] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.299] [AL] [debug] 45.172325
+[2022-09-21 16:44:46.300] [AL] [debug] 45.172325
+[2022-09-21 16:44:46.324] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.324] [AL] [debug] 45.09174
+[2022-09-21 16:44:46.346] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.346] [AL] [debug] 45.07487
+[2022-09-21 16:44:46.347] [AL] [debug] 45.07487
+[2022-09-21 16:44:46.370] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.370] [AL] [debug] 45.012085
+[2022-09-21 16:44:46.393] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.393] [AL] [debug] 45.06634
+[2022-09-21 16:44:46.416] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.417] [AL] [debug] 45.017048
+[2022-09-21 16:44:46.417] [AL] [debug] 45.017048
+[2022-09-21 16:44:46.439] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.439] [AL] [debug] 44.97541
+[2022-09-21 16:44:46.460] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.461] [AL] [debug] 44.96812
+[2022-09-21 16:44:46.483] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.484] [AL] [debug] 44.962025
+[2022-09-21 16:44:46.484] [AL] [debug] 44.962025
+[2022-09-21 16:44:46.508] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.509] [AL] [debug] 44.903194
+[2022-09-21 16:44:46.531] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.531] [AL] [debug] 44.893436
+[2022-09-21 16:44:46.532] [AL] [debug] 44.893436
+[2022-09-21 16:44:46.555] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.556] [AL] [debug] 44.84301
+[2022-09-21 16:44:46.578] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.578] [AL] [debug] 44.830643
+[2022-09-21 16:44:46.601] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.601] [AL] [debug] 44.8134
+[2022-09-21 16:44:46.602] [AL] [debug] 44.8134
+[2022-09-21 16:44:46.623] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.623] [AL] [debug] 44.79995
+[2022-09-21 16:44:46.645] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.645] [AL] [debug] 44.807507
+[2022-09-21 16:44:46.667] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.668] [AL] [debug] 44.82535
+[2022-09-21 16:44:46.669] [AL] [debug] 44.82535
+[2022-09-21 16:44:46.690] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.690] [AL] [debug] 44.814236
+[2022-09-21 16:44:46.713] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.713] [AL] [debug] 44.813072
+[2022-09-21 16:44:46.736] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.736] [AL] [debug] 44.789482
+[2022-09-21 16:44:46.736] [AL] [debug] 44.789482
+[2022-09-21 16:44:46.759] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.759] [AL] [debug] 44.74333
+[2022-09-21 16:44:46.781] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.781] [AL] [debug] 44.722355
+[2022-09-21 16:44:46.782] [AL] [debug] 44.722355
+[2022-09-21 16:44:46.805] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.805] [AL] [debug] 44.670013
+[2022-09-21 16:44:46.827] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.828] [AL] [debug] 44.718
+[2022-09-21 16:44:46.850] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.850] [AL] [debug] 44.69912
+[2022-09-21 16:44:46.851] [AL] [debug] 44.69912
+[2022-09-21 16:44:46.873] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.873] [AL] [debug] 44.637554
+[2022-09-21 16:44:46.896] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.896] [AL] [debug] 44.61922
+[2022-09-21 16:44:46.920] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.920] [AL] [debug] 44.555485
+[2022-09-21 16:44:46.921] [AL] [debug] 44.555485
+[2022-09-21 16:44:46.944] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.944] [AL] [debug] 44.49128
+[2022-09-21 16:44:46.966] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.967] [AL] [debug] 44.478195
+[2022-09-21 16:44:46.967] [AL] [debug] 44.478195
+[2022-09-21 16:44:46.991] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:46.991] [AL] [debug] 44.421913
+[2022-09-21 16:44:47.014] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.014] [AL] [debug] 44.383717
+[2022-09-21 16:44:47.014] [AL] [debug] 44.383717
+[2022-09-21 16:44:47.037] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.038] [AL] [debug] 44.344456
+[2022-09-21 16:44:47.060] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.061] [AL] [debug] 44.32859
+[2022-09-21 16:44:47.082] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.083] [AL] [debug] 44.345234
+[2022-09-21 16:44:47.084] [AL] [debug] 44.345234
+[2022-09-21 16:44:47.107] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.107] [AL] [debug] 44.29517
+[2022-09-21 16:44:47.130] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.131] [AL] [debug] 44.29378
+[2022-09-21 16:44:47.131] [AL] [debug] 44.29378
+[2022-09-21 16:44:47.154] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.154] [AL] [debug] 44.260075
+[2022-09-21 16:44:47.177] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.177] [AL] [debug] 44.239624
+[2022-09-21 16:44:47.201] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.201] [AL] [debug] 44.194138
+[2022-09-21 16:44:47.202] [AL] [debug] 44.194138
+[2022-09-21 16:44:47.224] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.224] [AL] [debug] 44.178596
+[2022-09-21 16:44:47.247] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.247] [AL] [debug] 44.170315
+[2022-09-21 16:44:47.248] [AL] [debug] 44.170315
+[2022-09-21 16:44:47.270] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.271] [AL] [debug] 44.14765
+[2022-09-21 16:44:47.294] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.294] [AL] [debug] 44.12734
+[2022-09-21 16:44:47.316] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.316] [AL] [debug] 44.12396
+[2022-09-21 16:44:47.317] [AL] [debug] 44.12396
+[2022-09-21 16:44:47.340] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.341] [AL] [debug] 44.08658
+[2022-09-21 16:44:47.363] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.364] [AL] [debug] 44.049797
+[2022-09-21 16:44:47.366] [AL] [debug] 44.049797
+[2022-09-21 16:44:47.389] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.389] [AL] [debug] 43.96792
+[2022-09-21 16:44:47.411] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.411] [AL] [debug] 43.981014
+[2022-09-21 16:44:47.434] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.435] [AL] [debug] 43.94587
+[2022-09-21 16:44:47.435] [AL] [debug] 43.94587
+[2022-09-21 16:44:47.458] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.459] [AL] [debug] 43.87904
+[2022-09-21 16:44:47.481] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.482] [AL] [debug] 43.85481
+[2022-09-21 16:44:47.482] [AL] [debug] 43.85481
+[2022-09-21 16:44:47.505] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.505] [AL] [debug] 43.92862
+[2022-09-21 16:44:47.527] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.528] [AL] [debug] 43.93217
+[2022-09-21 16:44:47.550] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.551] [AL] [debug] 43.966953
+[2022-09-21 16:44:47.551] [AL] [debug] 43.966953
+[2022-09-21 16:44:47.573] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.574] [AL] [debug] 43.947403
+[2022-09-21 16:44:47.595] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.596] [AL] [debug] 43.988174
+[2022-09-21 16:44:47.617] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.618] [AL] [debug] 43.97434
+[2022-09-21 16:44:47.618] [AL] [debug] 43.97434
+[2022-09-21 16:44:47.640] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.641] [AL] [debug] 43.924084
+[2022-09-21 16:44:47.663] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.663] [AL] [debug] 43.90971
+[2022-09-21 16:44:47.685] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.686] [AL] [debug] 43.88269
+[2022-09-21 16:44:47.686] [AL] [debug] 43.88269
+[2022-09-21 16:44:47.709] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.709] [AL] [debug] 43.840687
+[2022-09-21 16:44:47.732] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.732] [AL] [debug] 43.829254
+[2022-09-21 16:44:47.733] [AL] [debug] 43.829254
+[2022-09-21 16:44:47.756] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.757] [AL] [debug] 43.79673
+[2022-09-21 16:44:47.779] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.780] [AL] [debug] 43.803604
+[2022-09-21 16:44:47.802] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.802] [AL] [debug] 43.760536
+[2022-09-21 16:44:47.803] [AL] [debug] 43.760536
+[2022-09-21 16:44:47.826] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.826] [AL] [debug] 43.737125
+[2022-09-21 16:44:47.848] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.848] [AL] [debug] 43.72634
+[2022-09-21 16:44:47.849] [AL] [debug] 43.72634
+[2022-09-21 16:44:47.873] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.874] [AL] [debug] 43.65024
+[2022-09-21 16:44:47.897] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.897] [AL] [debug] 43.63729
+[2022-09-21 16:44:47.919] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.920] [AL] [debug] 43.63825
+[2022-09-21 16:44:47.920] [AL] [debug] 43.63825
+[2022-09-21 16:44:47.944] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.944] [AL] [debug] 43.577175
+[2022-09-21 16:44:47.969] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.969] [AL] [debug] 43.531513
+[2022-09-21 16:44:47.970] [AL] [debug] 43.531513
+[2022-09-21 16:44:47.994] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:47.994] [AL] [debug] 43.4729
+[2022-09-21 16:44:48.017] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.017] [AL] [debug] 43.429405
+[2022-09-21 16:44:48.018] [AL] [debug] 43.429405
+[2022-09-21 16:44:48.042] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.042] [AL] [debug] 43.393005
+[2022-09-21 16:44:48.065] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.066] [AL] [debug] 43.351543
+[2022-09-21 16:44:48.066] [AL] [debug] 43.351543
+[2022-09-21 16:44:48.089] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.089] [AL] [debug] 43.341145
+[2022-09-21 16:44:48.113] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.114] [AL] [debug] 43.32373
+[2022-09-21 16:44:48.136] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.137] [AL] [debug] 43.307865
+[2022-09-21 16:44:48.137] [AL] [debug] 43.307865
+[2022-09-21 16:44:48.160] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.160] [AL] [debug] 43.26474
+[2022-09-21 16:44:48.183] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.184] [AL] [debug] 43.247658
+[2022-09-21 16:44:48.184] [AL] [debug] 43.247658
+[2022-09-21 16:44:48.207] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.207] [AL] [debug] 43.219498
+[2022-09-21 16:44:48.229] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.230] [AL] [debug] 43.21692
+[2022-09-21 16:44:48.252] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.253] [AL] [debug] 43.260937
+[2022-09-21 16:44:48.253] [AL] [debug] 43.260937
+[2022-09-21 16:44:48.276] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.277] [AL] [debug] 43.212097
+[2022-09-21 16:44:48.299] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.299] [AL] [debug] 43.208466
+[2022-09-21 16:44:48.300] [AL] [debug] 43.208466
+[2022-09-21 16:44:48.322] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.323] [AL] [debug] 43.21804
+[2022-09-21 16:44:48.346] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.346] [AL] [debug] 43.18028
+[2022-09-21 16:44:48.369] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.369] [AL] [debug] 43.177097
+[2022-09-21 16:44:48.369] [AL] [debug] 43.177097
+[2022-09-21 16:44:48.394] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.394] [AL] [debug] 43.138237
+[2022-09-21 16:44:48.418] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.419] [AL] [debug] 43.144302
+[2022-09-21 16:44:48.419] [AL] [debug] 43.144302
+[2022-09-21 16:44:48.441] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.441] [AL] [debug] 43.125824
+[2022-09-21 16:44:48.465] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.466] [AL] [debug] 43.084873
+[2022-09-21 16:44:48.466] [AL] [debug] 43.084873
+[2022-09-21 16:44:48.489] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.489] [AL] [debug] 43.040237
+[2022-09-21 16:44:48.511] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.512] [AL] [debug] 43.024025
+[2022-09-21 16:44:48.534] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.535] [AL] [debug] 42.988197
+[2022-09-21 16:44:48.535] [AL] [debug] 42.988197
+[2022-09-21 16:44:48.558] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.558] [AL] [debug] 42.988564
+[2022-09-21 16:44:48.582] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.583] [AL] [debug] 42.98774
+[2022-09-21 16:44:48.583] [AL] [debug] 42.98774
+[2022-09-21 16:44:48.607] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.607] [AL] [debug] 42.9375
+[2022-09-21 16:44:48.630] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.631] [AL] [debug] 42.93494
+[2022-09-21 16:44:48.654] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.655] [AL] [debug] 42.93327
+[2022-09-21 16:44:48.655] [AL] [debug] 42.93327
+[2022-09-21 16:44:48.678] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.679] [AL] [debug] 42.90451
+[2022-09-21 16:44:48.701] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.701] [AL] [debug] 42.923336
+[2022-09-21 16:44:48.702] [AL] [debug] 42.923336
+[2022-09-21 16:44:48.725] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.726] [AL] [debug] 42.893597
+[2022-09-21 16:44:48.749] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.749] [AL] [debug] 42.884995
+[2022-09-21 16:44:48.750] [AL] [debug] 42.884995
+[2022-09-21 16:44:48.773] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.773] [AL] [debug] 42.870182
+[2022-09-21 16:44:48.796] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.797] [AL] [debug] 42.839287
+[2022-09-21 16:44:48.820] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.820] [AL] [debug] 42.8226
+[2022-09-21 16:44:48.821] [AL] [debug] 42.8226
+[2022-09-21 16:44:48.844] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.845] [AL] [debug] 42.82721
+[2022-09-21 16:44:48.869] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.870] [AL] [debug] 42.795544
+[2022-09-21 16:44:48.870] [AL] [debug] 42.795544
+[2022-09-21 16:44:48.894] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.894] [AL] [debug] 42.780777
+[2022-09-21 16:44:48.917] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.917] [AL] [debug] 42.773384
+[2022-09-21 16:44:48.918] [AL] [debug] 42.773384
+[2022-09-21 16:44:48.942] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.942] [AL] [debug] 42.75401
+[2022-09-21 16:44:48.965] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.965] [AL] [debug] 42.7243
+[2022-09-21 16:44:48.966] [AL] [debug] 42.7243
+[2022-09-21 16:44:48.989] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:48.989] [AL] [debug] 42.681118
+[2022-09-21 16:44:49.013] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.013] [AL] [debug] 42.661892
+[2022-09-21 16:44:49.036] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.037] [AL] [debug] 42.655746
+[2022-09-21 16:44:49.037] [AL] [debug] 42.655746
+[2022-09-21 16:44:49.062] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.062] [AL] [debug] 42.57983
+[2022-09-21 16:44:49.086] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.086] [AL] [debug] 42.58554
+[2022-09-21 16:44:49.086] [AL] [debug] 42.58554
+[2022-09-21 16:44:49.110] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.110] [AL] [debug] 42.563572
+[2022-09-21 16:44:49.134] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.134] [AL] [debug] 42.526447
+[2022-09-21 16:44:49.135] [AL] [debug] 42.526447
+[2022-09-21 16:44:49.158] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.159] [AL] [debug] 42.514362
+[2022-09-21 16:44:49.182] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.182] [AL] [debug] 42.489727
+[2022-09-21 16:44:49.183] [AL] [debug] 42.489727
+[2022-09-21 16:44:49.206] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.207] [AL] [debug] 42.452595
+[2022-09-21 16:44:49.230] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.230] [AL] [debug] 42.44463
+[2022-09-21 16:44:49.254] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.254] [AL] [debug] 42.427048
+[2022-09-21 16:44:49.255] [AL] [debug] 42.427048
+[2022-09-21 16:44:49.279] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.280] [AL] [debug] 42.4034
+[2022-09-21 16:44:49.304] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.304] [AL] [debug] 42.410206
+[2022-09-21 16:44:49.305] [AL] [debug] 42.410206
+[2022-09-21 16:44:49.328] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.328] [AL] [debug] 42.376534
+[2022-09-21 16:44:49.351] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.351] [AL] [debug] 42.38912
+[2022-09-21 16:44:49.351] [AL] [debug] 42.38912
+[2022-09-21 16:44:49.375] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.376] [AL] [debug] 42.369816
+[2022-09-21 16:44:49.399] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.399] [AL] [debug] 42.372467
+[2022-09-21 16:44:49.399] [AL] [debug] 42.372467
+[2022-09-21 16:44:49.423] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.423] [AL] [debug] 42.35463
+[2022-09-21 16:44:49.447] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.447] [AL] [debug] 42.31665
+[2022-09-21 16:44:49.473] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.473] [AL] [debug] 42.305855
+[2022-09-21 16:44:49.475] [AL] [debug] 42.305855
+[2022-09-21 16:44:49.499] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.499] [AL] [debug] 42.24703
+[2022-09-21 16:44:49.500] [AL] [debug] 42.24703
+[2022-09-21 16:44:49.523] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.523] [AL] [debug] 42.238796
+[2022-09-21 16:44:49.546] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.546] [AL] [debug] 42.236073
+[2022-09-21 16:44:49.569] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.569] [AL] [debug] 42.255608
+[2022-09-21 16:44:49.570] [AL] [debug] 42.255608
+[2022-09-21 16:44:49.594] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.595] [AL] [debug] 42.21543
+[2022-09-21 16:44:49.618] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.618] [AL] [debug] 42.19517
+[2022-09-21 16:44:49.619] [AL] [debug] 42.19517
+[2022-09-21 16:44:49.642] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.642] [AL] [debug] 42.185143
+[2022-09-21 16:44:49.666] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.667] [AL] [debug] 42.18433
+[2022-09-21 16:44:49.667] [AL] [debug] 42.18433
+[2022-09-21 16:44:49.690] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.691] [AL] [debug] 42.13567
+[2022-09-21 16:44:49.714] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.715] [AL] [debug] 42.147858
+[2022-09-21 16:44:49.738] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.738] [AL] [debug] 42.143757
+[2022-09-21 16:44:49.739] [AL] [debug] 42.143757
+[2022-09-21 16:44:49.762] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.763] [AL] [debug] 42.157787
+[2022-09-21 16:44:49.786] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.787] [AL] [debug] 42.11805
+[2022-09-21 16:44:49.788] [AL] [debug] 42.11805
+[2022-09-21 16:44:49.812] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.812] [AL] [debug] 42.083218
+[2022-09-21 16:44:49.835] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.836] [AL] [debug] 42.102867
+[2022-09-21 16:44:49.837] [AL] [debug] 42.102867
+[2022-09-21 16:44:49.861] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.861] [AL] [debug] 42.054264
+[2022-09-21 16:44:49.886] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.886] [AL] [debug] 42.05149
+[2022-09-21 16:44:49.887] [AL] [debug] 42.05149
+[2022-09-21 16:44:49.910] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.911] [AL] [debug] 41.98739
+[2022-09-21 16:44:49.935] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.935] [AL] [debug] 41.95968
+[2022-09-21 16:44:49.935] [AL] [debug] 41.95968
+[2022-09-21 16:44:49.960] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.960] [AL] [debug] 41.928707
+[2022-09-21 16:44:49.984] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:49.984] [AL] [debug] 41.897835
+[2022-09-21 16:44:49.984] [AL] [debug] 41.897835
+[2022-09-21 16:44:50.009] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.009] [AL] [debug] 41.84975
+[2022-09-21 16:44:50.033] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.034] [AL] [debug] 41.824776
+[2022-09-21 16:44:50.034] [AL] [debug] 41.824776
+[2022-09-21 16:44:50.060] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.060] [AL] [debug] 41.74614
+[2022-09-21 16:44:50.084] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.085] [AL] [debug] 41.715687
+[2022-09-21 16:44:50.086] [AL] [debug] 41.715687
+[2022-09-21 16:44:50.111] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.111] [AL] [debug] 41.65569
+[2022-09-21 16:44:50.136] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.136] [AL] [debug] 41.608402
+[2022-09-21 16:44:50.137] [AL] [debug] 41.608402
+[2022-09-21 16:44:50.161] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.161] [AL] [debug] 41.611473
+[2022-09-21 16:44:50.184] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.184] [AL] [debug] 41.606922
+[2022-09-21 16:44:50.185] [AL] [debug] 41.606922
+[2022-09-21 16:44:50.211] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.212] [AL] [debug] 41.528206
+[2022-09-21 16:44:50.235] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.236] [AL] [debug] 41.531807
+[2022-09-21 16:44:50.236] [AL] [debug] 41.531807
+[2022-09-21 16:44:50.260] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.261] [AL] [debug] 41.479156
+[2022-09-21 16:44:50.284] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.285] [AL] [debug] 41.493725
+[2022-09-21 16:44:50.285] [AL] [debug] 41.493725
+[2022-09-21 16:44:50.311] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.311] [AL] [debug] 41.451027
+[2022-09-21 16:44:50.335] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.336] [AL] [debug] 41.41623
+[2022-09-21 16:44:50.336] [AL] [debug] 41.41623
+[2022-09-21 16:44:50.362] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.362] [AL] [debug] 41.39294
+[2022-09-21 16:44:50.385] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.386] [AL] [debug] 41.400715
+[2022-09-21 16:44:50.387] [AL] [debug] 41.400715
+[2022-09-21 16:44:50.412] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.412] [AL] [debug] 41.36217
+[2022-09-21 16:44:50.437] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.437] [AL] [debug] 41.364223
+[2022-09-21 16:44:50.437] [AL] [debug] 41.364223
+[2022-09-21 16:44:50.463] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.464] [AL] [debug] 41.323708
+[2022-09-21 16:44:50.488] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.488] [AL] [debug] 41.299374
+[2022-09-21 16:44:50.489] [AL] [debug] 41.299374
+[2022-09-21 16:44:50.514] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.515] [AL] [debug] 41.25021
+[2022-09-21 16:44:50.538] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.539] [AL] [debug] 41.264748
+[2022-09-21 16:44:50.539] [AL] [debug] 41.264748
+[2022-09-21 16:44:50.564] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.564] [AL] [debug] 41.225014
+[2022-09-21 16:44:50.589] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.589] [AL] [debug] 41.194298
+[2022-09-21 16:44:50.590] [AL] [debug] 41.194298
+[2022-09-21 16:44:50.615] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.615] [AL] [debug] 41.161705
+[2022-09-21 16:44:50.639] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.639] [AL] [debug] 41.13626
+[2022-09-21 16:44:50.640] [AL] [debug] 41.13626
+[2022-09-21 16:44:50.664] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.664] [AL] [debug] 41.098873
+[2022-09-21 16:44:50.688] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.688] [AL] [debug] 41.074562
+[2022-09-21 16:44:50.689] [AL] [debug] 41.074562
+[2022-09-21 16:44:50.714] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.714] [AL] [debug] 41.06441
+[2022-09-21 16:44:50.739] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.739] [AL] [debug] 41.028526
+[2022-09-21 16:44:50.740] [AL] [debug] 41.028526
+[2022-09-21 16:44:50.764] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.764] [AL] [debug] 40.979057
+[2022-09-21 16:44:50.789] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.789] [AL] [debug] 40.964123
+[2022-09-21 16:44:50.790] [AL] [debug] 40.964123
+[2022-09-21 16:44:50.813] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.814] [AL] [debug] 40.92931
+[2022-09-21 16:44:50.838] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.838] [AL] [debug] 40.94674
+[2022-09-21 16:44:50.838] [AL] [debug] 40.94674
+[2022-09-21 16:44:50.862] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.863] [AL] [debug] 40.93481
+[2022-09-21 16:44:50.888] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.888] [AL] [debug] 40.884205
+[2022-09-21 16:44:50.889] [AL] [debug] 40.884205
+[2022-09-21 16:44:50.914] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.915] [AL] [debug] 40.865757
+[2022-09-21 16:44:50.939] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.939] [AL] [debug] 40.83309
+[2022-09-21 16:44:50.941] [AL] [debug] 40.83309
+[2022-09-21 16:44:50.968] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:50.969] [AL] [debug] 40.731846
+[2022-09-21 16:44:50.969] [AL] [debug] 40.731846
+[2022-09-21 16:44:51.001] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.001] [AL] [debug] 40.582394
+[2022-09-21 16:44:51.002] [AL] [debug] 40.582394
+[2022-09-21 16:44:51.028] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.029] [AL] [debug] 40.512825
+[2022-09-21 16:44:51.060] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.060] [AL] [debug] 40.465603
+[2022-09-21 16:44:51.061] [AL] [debug] 40.465603
+[2022-09-21 16:44:51.087] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.087] [AL] [debug] 40.367344
+[2022-09-21 16:44:51.087] [AL] [debug] 40.367344
+[2022-09-21 16:44:51.113] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.114] [AL] [debug] 40.294
+[2022-09-21 16:44:51.138] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.138] [AL] [debug] 40.29432
+[2022-09-21 16:44:51.139] [AL] [debug] 40.29432
+[2022-09-21 16:44:51.165] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.166] [AL] [debug] 40.244297
+[2022-09-21 16:44:51.190] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.190] [AL] [debug] 40.20724
+[2022-09-21 16:44:51.190] [AL] [debug] 40.20724
+[2022-09-21 16:44:51.215] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.215] [AL] [debug] 40.190506
+[2022-09-21 16:44:51.240] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.241] [AL] [debug] 40.17577
+[2022-09-21 16:44:51.241] [AL] [debug] 40.17577
+[2022-09-21 16:44:51.265] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.265] [AL] [debug] 40.148174
+[2022-09-21 16:44:51.289] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.290] [AL] [debug] 40.13764
+[2022-09-21 16:44:51.290] [AL] [debug] 40.13764
+[2022-09-21 16:44:51.315] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.315] [AL] [debug] 40.10122
+[2022-09-21 16:44:51.340] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.341] [AL] [debug] 40.094692
+[2022-09-21 16:44:51.341] [AL] [debug] 40.094692
+[2022-09-21 16:44:51.368] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.369] [AL] [debug] 40.061543
+[2022-09-21 16:44:51.369] [AL] [debug] 40.061543
+[2022-09-21 16:44:51.393] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.394] [AL] [debug] 40.038784
+[2022-09-21 16:44:51.419] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.419] [AL] [debug] 40.00785
+[2022-09-21 16:44:51.420] [AL] [debug] 40.00785
+[2022-09-21 16:44:51.444] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.445] [AL] [debug] 39.969193
+[2022-09-21 16:44:51.469] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.469] [AL] [debug] 39.964252
+[2022-09-21 16:44:51.469] [AL] [debug] 39.964252
+[2022-09-21 16:44:51.495] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.495] [AL] [debug] 39.92754
+[2022-09-21 16:44:51.520] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.520] [AL] [debug] 39.911278
+[2022-09-21 16:44:51.520] [AL] [debug] 39.911278
+[2022-09-21 16:44:51.548] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.549] [AL] [debug] 39.868423
+[2022-09-21 16:44:51.574] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.574] [AL] [debug] 39.83019
+[2022-09-21 16:44:51.575] [AL] [debug] 39.83019
+[2022-09-21 16:44:51.600] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.600] [AL] [debug] 39.790012
+[2022-09-21 16:44:51.601] [AL] [debug] 39.790012
+[2022-09-21 16:44:51.626] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.626] [AL] [debug] 39.770607
+[2022-09-21 16:44:51.651] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.651] [AL] [debug] 39.755276
+[2022-09-21 16:44:51.651] [AL] [debug] 39.755276
+[2022-09-21 16:44:51.677] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.677] [AL] [debug] 39.73649
+[2022-09-21 16:44:51.705] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.705] [AL] [debug] 39.671886
+[2022-09-21 16:44:51.705] [AL] [debug] 39.671886
+[2022-09-21 16:44:51.730] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.731] [AL] [debug] 39.63915
+[2022-09-21 16:44:51.756] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.756] [AL] [debug] 39.618717
+[2022-09-21 16:44:51.757] [AL] [debug] 39.618717
+[2022-09-21 16:44:51.782] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.782] [AL] [debug] 39.584896
+[2022-09-21 16:44:51.808] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.809] [AL] [debug] 39.57137
+[2022-09-21 16:44:51.809] [AL] [debug] 39.57137
+[2022-09-21 16:44:51.834] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.834] [AL] [debug] 39.540604
+[2022-09-21 16:44:51.835] [AL] [debug] 39.540604
+[2022-09-21 16:44:51.860] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.861] [AL] [debug] 39.517227
+[2022-09-21 16:44:51.885] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.885] [AL] [debug] 39.481
+[2022-09-21 16:44:51.886] [AL] [debug] 39.481
+[2022-09-21 16:44:51.911] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.912] [AL] [debug] 39.452396
+[2022-09-21 16:44:51.936] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.937] [AL] [debug] 39.425705
+[2022-09-21 16:44:51.937] [AL] [debug] 39.425705
+[2022-09-21 16:44:51.963] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.964] [AL] [debug] 39.3999
+[2022-09-21 16:44:51.988] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:51.989] [AL] [debug] 39.37668
+[2022-09-21 16:44:51.989] [AL] [debug] 39.37668
+[2022-09-21 16:44:52.015] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.015] [AL] [debug] 39.351055
+[2022-09-21 16:44:52.040] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.041] [AL] [debug] 39.363075
+[2022-09-21 16:44:52.041] [AL] [debug] 39.363075
+[2022-09-21 16:44:52.067] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.067] [AL] [debug] 39.328518
+[2022-09-21 16:44:52.068] [AL] [debug] 39.328518
+[2022-09-21 16:44:52.095] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.095] [AL] [debug] 39.26478
+[2022-09-21 16:44:52.120] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.120] [AL] [debug] 39.234158
+[2022-09-21 16:44:52.121] [AL] [debug] 39.234158
+[2022-09-21 16:44:52.147] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.148] [AL] [debug] 39.19315
+[2022-09-21 16:44:52.173] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.173] [AL] [debug] 39.16007
+[2022-09-21 16:44:52.174] [AL] [debug] 39.16007
+[2022-09-21 16:44:52.200] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.200] [AL] [debug] 39.12803
+[2022-09-21 16:44:52.201] [AL] [debug] 39.12803
+[2022-09-21 16:44:52.226] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.226] [AL] [debug] 39.083874
+[2022-09-21 16:44:52.252] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.252] [AL] [debug] 39.066418
+[2022-09-21 16:44:52.252] [AL] [debug] 39.066418
+[2022-09-21 16:44:52.278] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.279] [AL] [debug] 39.022495
+[2022-09-21 16:44:52.304] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.304] [AL] [debug] 38.990925
+[2022-09-21 16:44:52.305] [AL] [debug] 38.990925
+[2022-09-21 16:44:52.331] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.332] [AL] [debug] 38.95925
+[2022-09-21 16:44:52.357] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.357] [AL] [debug] 38.93367
+[2022-09-21 16:44:52.358] [AL] [debug] 38.93367
+[2022-09-21 16:44:52.384] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.385] [AL] [debug] 38.90116
+[2022-09-21 16:44:52.385] [AL] [debug] 38.90116
+[2022-09-21 16:44:52.414] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.414] [AL] [debug] 38.831528
+[2022-09-21 16:44:52.439] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.439] [AL] [debug] 38.8084
+[2022-09-21 16:44:52.439] [AL] [debug] 38.8084
+[2022-09-21 16:44:52.466] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.466] [AL] [debug] 38.761898
+[2022-09-21 16:44:52.492] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.492] [AL] [debug] 38.76057
+[2022-09-21 16:44:52.492] [AL] [debug] 38.76057
+[2022-09-21 16:44:52.518] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.519] [AL] [debug] 38.741898
+[2022-09-21 16:44:52.519] [AL] [debug] 38.741898
+[2022-09-21 16:44:52.544] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.545] [AL] [debug] 38.717594
+[2022-09-21 16:44:52.570] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.570] [AL] [debug] 38.682205
+[2022-09-21 16:44:52.571] [AL] [debug] 38.682205
+[2022-09-21 16:44:52.600] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.600] [AL] [debug] 38.60563
+[2022-09-21 16:44:52.601] [AL] [debug] 38.60563
+[2022-09-21 16:44:52.626] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.626] [AL] [debug] 38.59334
+[2022-09-21 16:44:52.652] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.653] [AL] [debug] 38.591305
+[2022-09-21 16:44:52.653] [AL] [debug] 38.591305
+[2022-09-21 16:44:52.678] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.679] [AL] [debug] 38.57872
+[2022-09-21 16:44:52.704] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.705] [AL] [debug] 38.58105
+[2022-09-21 16:44:52.705] [AL] [debug] 38.58105
+[2022-09-21 16:44:52.731] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.732] [AL] [debug] 38.558735
+[2022-09-21 16:44:52.757] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.758] [AL] [debug] 38.5417
+[2022-09-21 16:44:52.758] [AL] [debug] 38.5417
+[2022-09-21 16:44:52.783] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.784] [AL] [debug] 38.491367
+[2022-09-21 16:44:52.784] [AL] [debug] 38.491367
+[2022-09-21 16:44:52.810] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.810] [AL] [debug] 38.510906
+[2022-09-21 16:44:52.837] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.837] [AL] [debug] 38.46773
+[2022-09-21 16:44:52.838] [AL] [debug] 38.46773
+[2022-09-21 16:44:52.863] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.864] [AL] [debug] 38.443096
+[2022-09-21 16:44:52.889] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.889] [AL] [debug] 38.417442
+[2022-09-21 16:44:52.890] [AL] [debug] 38.417442
+[2022-09-21 16:44:52.916] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.917] [AL] [debug] 38.40157
+[2022-09-21 16:44:52.942] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.942] [AL] [debug] 38.387833
+[2022-09-21 16:44:52.943] [AL] [debug] 38.387833
+[2022-09-21 16:44:52.968] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.969] [AL] [debug] 38.37795
+[2022-09-21 16:44:52.969] [AL] [debug] 38.37795
+[2022-09-21 16:44:52.996] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:52.996] [AL] [debug] 38.33139
+[2022-09-21 16:44:53.021] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.022] [AL] [debug] 38.346977
+[2022-09-21 16:44:53.022] [AL] [debug] 38.346977
+[2022-09-21 16:44:53.050] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.051] [AL] [debug] 38.295227
+[2022-09-21 16:44:53.077] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.077] [AL] [debug] 38.283337
+[2022-09-21 16:44:53.078] [AL] [debug] 38.283337
+[2022-09-21 16:44:53.105] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.105] [AL] [debug] 38.24095
+[2022-09-21 16:44:53.106] [AL] [debug] 38.24095
+[2022-09-21 16:44:53.131] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.131] [AL] [debug] 38.233997
+[2022-09-21 16:44:53.156] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.156] [AL] [debug] 38.22478
+[2022-09-21 16:44:53.157] [AL] [debug] 38.22478
+[2022-09-21 16:44:53.183] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.183] [AL] [debug] 38.206303
+[2022-09-21 16:44:53.209] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.209] [AL] [debug] 38.191525
+[2022-09-21 16:44:53.209] [AL] [debug] 38.191525
+[2022-09-21 16:44:53.235] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.235] [AL] [debug] 38.184147
+[2022-09-21 16:44:53.236] [AL] [debug] 38.184147
+[2022-09-21 16:44:53.263] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.263] [AL] [debug] 38.14515
+[2022-09-21 16:44:53.289] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.290] [AL] [debug] 38.11994
+[2022-09-21 16:44:53.290] [AL] [debug] 38.11994
+[2022-09-21 16:44:53.316] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.316] [AL] [debug] 38.079815
+[2022-09-21 16:44:53.341] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.342] [AL] [debug] 38.077496
+[2022-09-21 16:44:53.342] [AL] [debug] 38.077496
+[2022-09-21 16:44:53.368] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.369] [AL] [debug] 38.046852
+[2022-09-21 16:44:53.369] [AL] [debug] 38.046852
+[2022-09-21 16:44:53.395] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.396] [AL] [debug] 38.02881
+[2022-09-21 16:44:53.421] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.421] [AL] [debug] 38.021286
+[2022-09-21 16:44:53.422] [AL] [debug] 38.021286
+[2022-09-21 16:44:53.448] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.448] [AL] [debug] 37.988075
+[2022-09-21 16:44:53.475] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.475] [AL] [debug] 37.95245
+[2022-09-21 16:44:53.476] [AL] [debug] 37.95245
+[2022-09-21 16:44:53.503] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.503] [AL] [debug] 37.908634
+[2022-09-21 16:44:53.504] [AL] [debug] 37.908634
+[2022-09-21 16:44:53.531] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.532] [AL] [debug] 37.8736
+[2022-09-21 16:44:53.558] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.558] [AL] [debug] 37.841377
+[2022-09-21 16:44:53.559] [AL] [debug] 37.841377
+[2022-09-21 16:44:53.592] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.592] [AL] [debug] 37.783752
+[2022-09-21 16:44:53.593] [AL] [debug] 37.783752
+[2022-09-21 16:44:53.618] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.619] [AL] [debug] 37.764492
+[2022-09-21 16:44:53.619] [AL] [debug] 37.764492
+[2022-09-21 16:44:53.646] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.646] [AL] [debug] 37.824394
+[2022-09-21 16:44:53.672] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.673] [AL] [debug] 37.843006
+[2022-09-21 16:44:53.673] [AL] [debug] 37.843006
+[2022-09-21 16:44:53.700] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.700] [AL] [debug] 37.82543
+[2022-09-21 16:44:53.728] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.729] [AL] [debug] 37.874775
+[2022-09-21 16:44:53.730] [AL] [debug] 37.874775
+[2022-09-21 16:44:53.756] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.756] [AL] [debug] 37.86125
+[2022-09-21 16:44:53.756] [AL] [debug] 37.86125
+[2022-09-21 16:44:53.782] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.783] [AL] [debug] 37.842533
+[2022-09-21 16:44:53.809] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.809] [AL] [debug] 37.851208
+[2022-09-21 16:44:53.810] [AL] [debug] 37.851208
+[2022-09-21 16:44:53.837] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.837] [AL] [debug] 37.795547
+[2022-09-21 16:44:53.838] [AL] [debug] 37.795547
+[2022-09-21 16:44:53.863] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.863] [AL] [debug] 37.78113
+[2022-09-21 16:44:53.889] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.890] [AL] [debug] 37.75861
+[2022-09-21 16:44:53.890] [AL] [debug] 37.75861
+[2022-09-21 16:44:53.916] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.916] [AL] [debug] 37.742462
+[2022-09-21 16:44:53.943] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.944] [AL] [debug] 37.70143
+[2022-09-21 16:44:53.944] [AL] [debug] 37.70143
+[2022-09-21 16:44:53.970] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.971] [AL] [debug] 37.67945
+[2022-09-21 16:44:53.971] [AL] [debug] 37.67945
+[2022-09-21 16:44:53.999] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:53.999] [AL] [debug] 37.636494
+[2022-09-21 16:44:54.024] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.024] [AL] [debug] 37.651646
+[2022-09-21 16:44:54.025] [AL] [debug] 37.651646
+[2022-09-21 16:44:54.051] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.052] [AL] [debug] 37.651333
+[2022-09-21 16:44:54.052] [AL] [debug] 37.651333
+[2022-09-21 16:44:54.081] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.082] [AL] [debug] 37.601753
+[2022-09-21 16:44:54.109] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.110] [AL] [debug] 37.545906
+[2022-09-21 16:44:54.110] [AL] [debug] 37.545906
+[2022-09-21 16:44:54.138] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.138] [AL] [debug] 37.491894
+[2022-09-21 16:44:54.138] [AL] [debug] 37.491894
+[2022-09-21 16:44:54.165] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.166] [AL] [debug] 37.480076
+[2022-09-21 16:44:54.193] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.193] [AL] [debug] 37.43971
+[2022-09-21 16:44:54.194] [AL] [debug] 37.43971
+[2022-09-21 16:44:54.220] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.220] [AL] [debug] 37.420807
+[2022-09-21 16:44:54.220] [AL] [debug] 37.420807
+[2022-09-21 16:44:54.249] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.249] [AL] [debug] 37.42673
+[2022-09-21 16:44:54.274] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.275] [AL] [debug] 37.412193
+[2022-09-21 16:44:54.275] [AL] [debug] 37.412193
+[2022-09-21 16:44:54.302] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.303] [AL] [debug] 37.38222
+[2022-09-21 16:44:54.303] [AL] [debug] 37.38222
+[2022-09-21 16:44:54.331] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.332] [AL] [debug] 37.33846
+[2022-09-21 16:44:54.358] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.358] [AL] [debug] 37.31958
+[2022-09-21 16:44:54.358] [AL] [debug] 37.31958
+[2022-09-21 16:44:54.385] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.385] [AL] [debug] 37.331936
+[2022-09-21 16:44:54.386] [AL] [debug] 37.331936
+[2022-09-21 16:44:54.412] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.413] [AL] [debug] 37.322384
+[2022-09-21 16:44:54.437] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.438] [AL] [debug] 37.311005
+[2022-09-21 16:44:54.438] [AL] [debug] 37.311005
+[2022-09-21 16:44:54.465] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.465] [AL] [debug] 37.2984
+[2022-09-21 16:44:54.491] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.491] [AL] [debug] 37.302525
+[2022-09-21 16:44:54.491] [AL] [debug] 37.302525
+[2022-09-21 16:44:54.519] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.519] [AL] [debug] 37.271458
+[2022-09-21 16:44:54.520] [AL] [debug] 37.271458
+[2022-09-21 16:44:54.546] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.546] [AL] [debug] 37.253704
+[2022-09-21 16:44:54.574] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.574] [AL] [debug] 37.21811
+[2022-09-21 16:44:54.574] [AL] [debug] 37.21811
+[2022-09-21 16:44:54.601] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.601] [AL] [debug] 37.20445
+[2022-09-21 16:44:54.602] [AL] [debug] 37.20445
+[2022-09-21 16:44:54.629] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.630] [AL] [debug] 37.16151
+[2022-09-21 16:44:54.656] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.656] [AL] [debug] 37.15641
+[2022-09-21 16:44:54.657] [AL] [debug] 37.15641
+[2022-09-21 16:44:54.682] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.682] [AL] [debug] 37.135334
+[2022-09-21 16:44:54.708] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.709] [AL] [debug] 37.14522
+[2022-09-21 16:44:54.709] [AL] [debug] 37.14522
+[2022-09-21 16:44:54.738] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.738] [AL] [debug] 37.10567
+[2022-09-21 16:44:54.738] [AL] [debug] 37.10567
+[2022-09-21 16:44:54.768] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.768] [AL] [debug] 37.081795
+[2022-09-21 16:44:54.798] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.798] [AL] [debug] 37.013645
+[2022-09-21 16:44:54.798] [AL] [debug] 37.013645
+[2022-09-21 16:44:54.825] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.826] [AL] [debug] 36.97226
+[2022-09-21 16:44:54.826] [AL] [debug] 36.97226
+[2022-09-21 16:44:54.854] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.854] [AL] [debug] 36.956142
+[2022-09-21 16:44:54.855] [AL] [debug] 36.956142
+[2022-09-21 16:44:54.881] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.882] [AL] [debug] 36.945606
+[2022-09-21 16:44:54.907] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.907] [AL] [debug] 36.955067
+[2022-09-21 16:44:54.908] [AL] [debug] 36.955067
+[2022-09-21 16:44:54.935] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.936] [AL] [debug] 36.932636
+[2022-09-21 16:44:54.936] [AL] [debug] 36.932636
+[2022-09-21 16:44:54.964] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.964] [AL] [debug] 36.895397
+[2022-09-21 16:44:54.991] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:54.991] [AL] [debug] 36.88501
+[2022-09-21 16:44:54.992] [AL] [debug] 36.88501
+[2022-09-21 16:44:55.018] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.019] [AL] [debug] 36.87614
+[2022-09-21 16:44:55.045] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.045] [AL] [debug] 36.864788
+[2022-09-21 16:44:55.047] [AL] [debug] 36.864788
+[2022-09-21 16:44:55.073] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.073] [AL] [debug] 36.83289
+[2022-09-21 16:44:55.074] [AL] [debug] 36.83289
+[2022-09-21 16:44:55.101] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.101] [AL] [debug] 36.83346
+[2022-09-21 16:44:55.127] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.127] [AL] [debug] 36.848648
+[2022-09-21 16:44:55.128] [AL] [debug] 36.848648
+[2022-09-21 16:44:55.154] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.155] [AL] [debug] 36.851032
+[2022-09-21 16:44:55.155] [AL] [debug] 36.851032
+[2022-09-21 16:44:55.182] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.182] [AL] [debug] 36.84533
+[2022-09-21 16:44:55.208] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.208] [AL] [debug] 36.842903
+[2022-09-21 16:44:55.209] [AL] [debug] 36.842903
+[2022-09-21 16:44:55.237] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.237] [AL] [debug] 36.804504
+[2022-09-21 16:44:55.237] [AL] [debug] 36.804504
+[2022-09-21 16:44:55.264] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.265] [AL] [debug] 36.792957
+[2022-09-21 16:44:55.290] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.290] [AL] [debug] 36.78834
+[2022-09-21 16:44:55.291] [AL] [debug] 36.78834
+[2022-09-21 16:44:55.317] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.318] [AL] [debug] 36.82559
+[2022-09-21 16:44:55.344] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.344] [AL] [debug] 36.811295
+[2022-09-21 16:44:55.345] [AL] [debug] 36.811295
+[2022-09-21 16:44:55.371] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.372] [AL] [debug] 36.802277
+[2022-09-21 16:44:55.372] [AL] [debug] 36.802277
+[2022-09-21 16:44:55.399] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.399] [AL] [debug] 36.770515
+[2022-09-21 16:44:55.425] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.425] [AL] [debug] 36.777466
+[2022-09-21 16:44:55.426] [AL] [debug] 36.777466
+[2022-09-21 16:44:55.452] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.452] [AL] [debug] 36.76989
+[2022-09-21 16:44:55.453] [AL] [debug] 36.76989
+[2022-09-21 16:44:55.480] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.480] [AL] [debug] 36.73514
+[2022-09-21 16:44:55.506] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.507] [AL] [debug] 36.747276
+[2022-09-21 16:44:55.507] [AL] [debug] 36.747276
+[2022-09-21 16:44:55.534] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.534] [AL] [debug] 36.727642
+[2022-09-21 16:44:55.561] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.561] [AL] [debug] 36.726128
+[2022-09-21 16:44:55.562] [AL] [debug] 36.726128
+[2022-09-21 16:44:55.588] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.589] [AL] [debug] 36.71974
+[2022-09-21 16:44:55.589] [AL] [debug] 36.71974
+[2022-09-21 16:44:55.623] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.623] [AL] [debug] 36.67971
+[2022-09-21 16:44:55.650] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.650] [AL] [debug] 36.60779
+[2022-09-21 16:44:55.651] [AL] [debug] 36.60779
+[2022-09-21 16:44:55.677] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.678] [AL] [debug] 36.579273
+[2022-09-21 16:44:55.678] [AL] [debug] 36.579273
+[2022-09-21 16:44:55.705] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.705] [AL] [debug] 36.556435
+[2022-09-21 16:44:55.706] [AL] [debug] 36.556435
+[2022-09-21 16:44:55.732] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.732] [AL] [debug] 36.566273
+[2022-09-21 16:44:55.758] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.759] [AL] [debug] 36.56102
+[2022-09-21 16:44:55.759] [AL] [debug] 36.56102
+[2022-09-21 16:44:55.787] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.787] [AL] [debug] 36.54843
+[2022-09-21 16:44:55.788] [AL] [debug] 36.54843
+[2022-09-21 16:44:55.815] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.815] [AL] [debug] 36.53827
+[2022-09-21 16:44:55.841] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.842] [AL] [debug] 36.561314
+[2022-09-21 16:44:55.842] [AL] [debug] 36.561314
+[2022-09-21 16:44:55.869] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.870] [AL] [debug] 36.539173
+[2022-09-21 16:44:55.870] [AL] [debug] 36.539173
+[2022-09-21 16:44:55.898] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.898] [AL] [debug] 36.500244
+[2022-09-21 16:44:55.924] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.924] [AL] [debug] 36.495667
+[2022-09-21 16:44:55.925] [AL] [debug] 36.495667
+[2022-09-21 16:44:55.954] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.955] [AL] [debug] 36.46036
+[2022-09-21 16:44:55.955] [AL] [debug] 36.46036
+[2022-09-21 16:44:55.983] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:55.984] [AL] [debug] 36.411366
+[2022-09-21 16:44:56.011] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.012] [AL] [debug] 36.41015
+[2022-09-21 16:44:56.012] [AL] [debug] 36.41015
+[2022-09-21 16:44:56.038] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.038] [AL] [debug] 36.387783
+[2022-09-21 16:44:56.039] [AL] [debug] 36.387783
+[2022-09-21 16:44:56.066] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.067] [AL] [debug] 36.377316
+[2022-09-21 16:44:56.094] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.094] [AL] [debug] 36.353775
+[2022-09-21 16:44:56.095] [AL] [debug] 36.353775
+[2022-09-21 16:44:56.123] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.123] [AL] [debug] 36.33772
+[2022-09-21 16:44:56.124] [AL] [debug] 36.33772
+[2022-09-21 16:44:56.150] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.150] [AL] [debug] 36.32688
+[2022-09-21 16:44:56.178] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.179] [AL] [debug] 36.301823
+[2022-09-21 16:44:56.179] [AL] [debug] 36.301823
+[2022-09-21 16:44:56.206] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.207] [AL] [debug] 36.26311
+[2022-09-21 16:44:56.207] [AL] [debug] 36.26311
+[2022-09-21 16:44:56.235] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.235] [AL] [debug] 36.2433
+[2022-09-21 16:44:56.262] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.262] [AL] [debug] 36.253395
+[2022-09-21 16:44:56.263] [AL] [debug] 36.253395
+[2022-09-21 16:44:56.289] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.289] [AL] [debug] 36.270508
+[2022-09-21 16:44:56.289] [AL] [debug] 36.270508
+[2022-09-21 16:44:56.317] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.317] [AL] [debug] 36.26127
+[2022-09-21 16:44:56.346] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.346] [AL] [debug] 36.2987
+[2022-09-21 16:44:56.346] [AL] [debug] 36.2987
+[2022-09-21 16:44:56.374] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.374] [AL] [debug] 36.30274
+[2022-09-21 16:44:56.374] [AL] [debug] 36.30274
+[2022-09-21 16:44:56.403] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.403] [AL] [debug] 36.28603
+[2022-09-21 16:44:56.404] [AL] [debug] 36.28603
+[2022-09-21 16:44:56.433] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.433] [AL] [debug] 36.251293
+[2022-09-21 16:44:56.461] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.461] [AL] [debug] 36.24315
+[2022-09-21 16:44:56.461] [AL] [debug] 36.24315
+[2022-09-21 16:44:56.490] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.490] [AL] [debug] 36.231808
+[2022-09-21 16:44:56.491] [AL] [debug] 36.231808
+[2022-09-21 16:44:56.520] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.520] [AL] [debug] 36.203102
+[2022-09-21 16:44:56.521] [AL] [debug] 36.203102
+[2022-09-21 16:44:56.549] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.550] [AL] [debug] 36.161526
+[2022-09-21 16:44:56.577] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.578] [AL] [debug] 36.13383
+[2022-09-21 16:44:56.578] [AL] [debug] 36.13383
+[2022-09-21 16:44:56.606] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.607] [AL] [debug] 36.138645
+[2022-09-21 16:44:56.607] [AL] [debug] 36.138645
+[2022-09-21 16:44:56.635] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.635] [AL] [debug] 36.103836
+[2022-09-21 16:44:56.662] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.662] [AL] [debug] 36.085167
+[2022-09-21 16:44:56.663] [AL] [debug] 36.085167
+[2022-09-21 16:44:56.691] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.691] [AL] [debug] 36.065254
+[2022-09-21 16:44:56.692] [AL] [debug] 36.065254
+[2022-09-21 16:44:56.719] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.719] [AL] [debug] 36.05371
+[2022-09-21 16:44:56.746] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.746] [AL] [debug] 36.058662
+[2022-09-21 16:44:56.747] [AL] [debug] 36.058662
+[2022-09-21 16:44:56.774] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.775] [AL] [debug] 36.053757
+[2022-09-21 16:44:56.776] [AL] [debug] 36.053757
+[2022-09-21 16:44:56.802] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.802] [AL] [debug] 36.01382
+[2022-09-21 16:44:56.803] [AL] [debug] 36.01382
+[2022-09-21 16:44:56.830] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.831] [AL] [debug] 36.003895
+[2022-09-21 16:44:56.858] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.858] [AL] [debug] 36.010372
+[2022-09-21 16:44:56.859] [AL] [debug] 36.010372
+[2022-09-21 16:44:56.887] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.887] [AL] [debug] 36.02887
+[2022-09-21 16:44:56.887] [AL] [debug] 36.02887
+[2022-09-21 16:44:56.915] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.916] [AL] [debug] 36.024292
+[2022-09-21 16:44:56.943] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.943] [AL] [debug] 36.02972
+[2022-09-21 16:44:56.943] [AL] [debug] 36.02972
+[2022-09-21 16:44:56.971] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.971] [AL] [debug] 36.010643
+[2022-09-21 16:44:56.972] [AL] [debug] 36.010643
+[2022-09-21 16:44:56.999] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:56.999] [AL] [debug] 36.002327
+[2022-09-21 16:44:57.028] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.028] [AL] [debug] 35.997036
+[2022-09-21 16:44:57.029] [AL] [debug] 35.997036
+[2022-09-21 16:44:57.056] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.056] [AL] [debug] 35.97234
+[2022-09-21 16:44:57.057] [AL] [debug] 35.97234
+[2022-09-21 16:44:57.093] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.093] [AL] [debug] 35.94238
+[2022-09-21 16:44:57.094] [AL] [debug] 35.94238
+[2022-09-21 16:44:57.120] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.120] [AL] [debug] 35.867264
+[2022-09-21 16:44:57.121] [AL] [debug] 35.867264
+[2022-09-21 16:44:57.149] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.149] [AL] [debug] 35.84741
+[2022-09-21 16:44:57.177] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.177] [AL] [debug] 35.843155
+[2022-09-21 16:44:57.177] [AL] [debug] 35.843155
+[2022-09-21 16:44:57.205] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.205] [AL] [debug] 35.822235
+[2022-09-21 16:44:57.205] [AL] [debug] 35.822235
+[2022-09-21 16:44:57.234] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.234] [AL] [debug] 35.791378
+[2022-09-21 16:44:57.263] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.263] [AL] [debug] 35.75269
+[2022-09-21 16:44:57.264] [AL] [debug] 35.75269
+[2022-09-21 16:44:57.291] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.291] [AL] [debug] 35.72888
+[2022-09-21 16:44:57.292] [AL] [debug] 35.72888
+[2022-09-21 16:44:57.320] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.320] [AL] [debug] 35.719185
+[2022-09-21 16:44:57.320] [AL] [debug] 35.719185
+[2022-09-21 16:44:57.349] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.349] [AL] [debug] 35.703613
+[2022-09-21 16:44:57.377] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.378] [AL] [debug] 35.68954
+[2022-09-21 16:44:57.378] [AL] [debug] 35.68954
+[2022-09-21 16:44:57.405] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.406] [AL] [debug] 35.6778
+[2022-09-21 16:44:57.407] [AL] [debug] 35.6778
+[2022-09-21 16:44:57.435] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.435] [AL] [debug] 35.656322
+[2022-09-21 16:44:57.463] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.464] [AL] [debug] 35.641052
+[2022-09-21 16:44:57.464] [AL] [debug] 35.641052
+[2022-09-21 16:44:57.493] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.493] [AL] [debug] 35.617126
+[2022-09-21 16:44:57.493] [AL] [debug] 35.617126
+[2022-09-21 16:44:57.521] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.521] [AL] [debug] 35.57276
+[2022-09-21 16:44:57.522] [AL] [debug] 35.57276
+[2022-09-21 16:44:57.550] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.551] [AL] [debug] 35.574497
+[2022-09-21 16:44:57.579] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.579] [AL] [debug] 35.57171
+[2022-09-21 16:44:57.579] [AL] [debug] 35.57171
+[2022-09-21 16:44:57.606] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.606] [AL] [debug] 35.626076
+[2022-09-21 16:44:57.607] [AL] [debug] 35.626076
+[2022-09-21 16:44:57.636] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.636] [AL] [debug] 35.599922
+[2022-09-21 16:44:57.637] [AL] [debug] 35.599922
+[2022-09-21 16:44:57.664] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.665] [AL] [debug] 35.6078
+[2022-09-21 16:44:57.694] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.694] [AL] [debug] 35.58165
+[2022-09-21 16:44:57.694] [AL] [debug] 35.58165
+[2022-09-21 16:44:57.723] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.724] [AL] [debug] 35.542717
+[2022-09-21 16:44:57.724] [AL] [debug] 35.542717
+[2022-09-21 16:44:57.752] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.752] [AL] [debug] 35.522873
+[2022-09-21 16:44:57.779] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.780] [AL] [debug] 35.5395
+[2022-09-21 16:44:57.780] [AL] [debug] 35.5395
+[2022-09-21 16:44:57.808] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.808] [AL] [debug] 35.51918
+[2022-09-21 16:44:57.808] [AL] [debug] 35.51918
+[2022-09-21 16:44:57.836] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.837] [AL] [debug] 35.50063
+[2022-09-21 16:44:57.837] [AL] [debug] 35.50063
+[2022-09-21 16:44:57.865] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.865] [AL] [debug] 35.48341
+[2022-09-21 16:44:57.894] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.894] [AL] [debug] 35.48535
+[2022-09-21 16:44:57.895] [AL] [debug] 35.48535
+[2022-09-21 16:44:57.923] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.924] [AL] [debug] 35.449085
+[2022-09-21 16:44:57.924] [AL] [debug] 35.449085
+[2022-09-21 16:44:57.953] [AL] [error] Editor Panel Collapsed
+[2022-09-21 16:44:57.953] [AL] [debug] 35.407803
+[2022-09-2

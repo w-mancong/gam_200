@@ -38,9 +38,14 @@ namespace ALEngine
 			ImGui::SameLine(); ImGui::CheckboxFlags("Trace", &log_flags, LOG_FLAGS::LOG_TRACE);
 			ImGui::SameLine(); ImGui::CheckboxFlags("Debug", &log_flags, LOG_FLAGS::LOG_DEBUG);
 			ImGui::SameLine(); ImGui::CheckboxFlags("Info", &log_flags, LOG_FLAGS::LOG_INFO);
+			ImGui::Text("           "); 
 			ImGui::SameLine(); ImGui::CheckboxFlags("Warn", &log_flags, LOG_FLAGS::LOG_WARN);
 			ImGui::SameLine(); ImGui::CheckboxFlags("Error", &log_flags, LOG_FLAGS::LOG_ERROR);
 			ImGui::SameLine(); ImGui::CheckboxFlags("Critical", &log_flags, LOG_FLAGS::LOG_CRITICAL);
+			ImGui::Text("           ");
+			ImGui::SameLine(); 
+			if (ImGui::SmallButton("Clear"))
+				ALEngine::Exceptions::Logger::GetCoreLogger()->flush();
 
 			// The Text Box
 			ImGui::BeginChild("LoggerTextBox", ImVec2(0.f, 0.f), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
