@@ -32,6 +32,7 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_SAMPLES, 4);
+
 		//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 #ifdef _DEBUG
@@ -70,10 +71,38 @@ namespace ALEngine::Graphics
 			//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 		}
 
+#ifdef _DEBUG
 		int major{ 0 }, minor{ 0 };
 		glGetIntegerv(GL_MAJOR_VERSION, &major);
 		glGetIntegerv(GL_MINOR_VERSION, &minor);
 		std::cout << "Version: " << major << "." << minor << std::endl;
+
+		char* vendor	= (char*)glGetString(GL_VENDOR);
+		char* device	= (char*)glGetString(GL_RENDERER);
+		char* version	= (char*)glGetString(GL_VERSION);
+
+		GLint n;
+		glGetIntegerv(GL_NUM_EXTENSIONS, &n);
+		std::vector<std::string> extensions(n);
+		if (n > 0)
+		{
+			GLint i;
+			for (i = 0; i < n; i++)
+			{
+				extensions[i] = (char*)glGetStringi(GL_EXTENSIONS, i);
+			}
+		}
+
+		std::cout << "Vendor: " << vendor << std::endl;
+		std::cout << "Device: " << device << std::endl;
+		std::cout << "Version: " << version << std::endl;
+		std::cout << "Supported extensions: " << std::endl;
+		for (s32 i = 0; i < n; ++i)
+		{
+			std::cout << extensions[i] << std::endl;
+		}
+#endif // _DEBUG
+
 		// first two params specify location of the lower left corner of window
 		glViewport(0, 0, width, height);
 		// tell glfw to call this function whenever window resizes

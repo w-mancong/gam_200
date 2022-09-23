@@ -13,5 +13,5 @@ uniform sampler2D tex;
 void main()
 {
     // fColor = vColor;
-    fColor = texture(sampler2D(vTexHandle), vTexCoord) * vColor;
+    fColor = texture(sampler2D(uvec2(vTexHandle)), vTexCoord) * vColor;
 }
