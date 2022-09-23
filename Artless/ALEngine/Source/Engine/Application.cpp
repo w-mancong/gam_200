@@ -39,19 +39,6 @@ namespace ALEngine
 			collider_Noah.rotation = 0.f;
 			trans_noah.rotation = 0.f;
 
-			//Obj 2
-			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
-			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
-
-			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
-			sprite3.mode = RenderMode::Line;
-			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
-			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
-			CreatePhysics2D(Hinata, ColliderType::Circle2D);
-			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 25.f;
-			collider_hinata.rotation = 0.0f;
-
 			// Initialize Time (Framerate Controller)
 			Time::Init();
 

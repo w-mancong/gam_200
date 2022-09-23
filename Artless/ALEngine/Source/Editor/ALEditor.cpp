@@ -68,6 +68,7 @@ namespace ALEngine
 			logger_panel.OnImGuiRender();
 			if (imguizmo_panel.HasEntityTransform())
 				imguizmo_panel.OnImGuiRender();
+			hierarchy_panel.OnImGuiRender();
 		}
 
 		void ALEditor::Begin()

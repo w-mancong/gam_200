@@ -126,6 +126,7 @@
     </ClCompile>
     <ClCompile Include="Source\Editor\Panels\ImGuizmoPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
     <ClCompile Include="Source\Editor\ALEditor.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Include\Editor\imstb_truetype.h" />
     <ClInclude Include="Include\Editor\Panels\ImGuizmoPanel.h" />
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
     <ClInclude Include="Include\Exceptions\GLDebug.h" />
