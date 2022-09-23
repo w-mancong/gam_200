@@ -17,19 +17,19 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Register RenderSystem for ECS to work
+			Register Character Controller for ECS
 		***********************************************************************************/
 		void RegisterCharacterControllerSystem(void);
 
 		/*!*********************************************************************************
 			\brief
-			Used at end of update, runs through each rigidbody, makes use of collider component to give the updated position of the entity
+			Used at end of update, runs through each Character Controller
 		***********************************************************************************/
 		void UpdateCharacterControllerSystem(void);
 
 		/*!*********************************************************************************
 			\brief
-			Adds rigidbody component to the entity
+			Adds Character Controller component to the entity
 		***********************************************************************************/
 		void CreateCharacterController(Entity const& entity);
 	}

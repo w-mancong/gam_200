@@ -15,9 +15,12 @@ namespace ALEngine
 	{
 		using namespace Component;
 
+		//Enum for how force is applied
+		enum class FORCEMODE { FORCE, ACCELERATION, VELOCITY_CHANGE };
+
 		/*!*********************************************************************************
 			\brief
-			Register RenderSystem for ECS to work
+			Register RigidbodySystem for ECS
 		***********************************************************************************/
 		void RegisterRigidbodySystem(void);
 
@@ -32,8 +35,11 @@ namespace ALEngine
 			Adds rigidbody component to the entity
 		***********************************************************************************/
 		void CreateRigidbody(Entity const& entity);
-
-		enum class FORCEMODE { FORCE, ACCELERATION, VELOCITY_CHANGE };
+		
+		/*!*********************************************************************************
+			\brief
+			Applies force calculation with input rigidbody and force settings
+		***********************************************************************************/
 		void AddForce(Rigidbody2D& rigidbody, Math::Vec2 forceVelocity, FORCEMODE mode = FORCEMODE::FORCE);
 	}
 }

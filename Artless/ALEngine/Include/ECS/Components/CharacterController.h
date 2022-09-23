@@ -18,13 +18,15 @@ namespace ALEngine
 			/*!*********************************************************************************
 				\brief
 					Data for the character controller
+					This component will act as a quick interface for implementing 2D platformer controls
 			***********************************************************************************/
 			struct CharacterController
 			{
 			public:
-				f32 speed;
-				f32 jumpStrength;
+				f32 speed;			//Acceleration of object
+				f32 jumpStrength;	//Velocity of jump
 
+				//Interface for custom keys for control
 				u64 leftKey, rightKey, jumpKey, rotateLeftKey, rotateRightKey;
 			};
 		}

@@ -14,29 +14,48 @@ namespace ALEngine
 {
 	namespace ECS
 	{
+		//Ease of use for ray
 		using Engine::Physics::Ray2D;
 
+		//Ease of use
 		using namespace Math; using namespace Engine; using namespace Graphics;
+
+		/*!*********************************************************************************
+			\brief
+				Rigidbody System, contains functions needed to run components for RigidbodySystem
+		***********************************************************************************/
 		class RigidbodySystem : public System
 		{
 		public:
+			/*!*********************************************************************************
+				\brief
+					Updates rigidbody, adds the acceleration onto velocity and resets acceleration after
+					Then sets the next positon of the using calculated velocity
+			***********************************************************************************/
 			void UpdateRigidbody(Transform& transform, Collider2D& collider, Rigidbody2D& rigid);
 
+			/*!*********************************************************************************
+				\brief
+					For Debugging, will be used as an interface to run visual feedback for rigidbody simulation
+			***********************************************************************************/
 			void DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid);
-			bool isDebugStep = true, isDebugDraw = true;
-		private:
-			Vector2 worldXAxis{ 1.f, 0.f }, worldYAxis{ 0.f, 1.f };
+
+			//Debug settings
+			bool isDebugStep = false, isDebugDraw = false;
 		};
 
 		namespace
 		{
+			//RigidbodySystem to be accessed locally
 			std::shared_ptr<RigidbodySystem> rigidS;
 			
-			f32 earthGravity = 9.807f;
-			f32 globalDrag = 1.0f;
+			//Constants
+			const f32 earthGravity = 9.807f;	//Constant force applied -y world axis
+			const f32 globalDrag = 1.0f;		//Used for drag, currently it's applied horizontal drag onto rigidbodies
+			const Vector2 worldXAxis{ 1.f, 0.f }, worldYAxis{ 0.f, 1.f };
 
-
-			u64 debugDrawKey = (u64)KeyCode::Y, debugStepKeyToggle = (u64)KeyCode::U, debugStepKey = (u64)KeyCode::I;
+			//Input Settings
+			u64 debugDrawKey = (u64)KeyCode::Key_1, debugStepKeyToggle = (u64)KeyCode::Tab, debugStepKey = (u64)KeyCode::Key_0;
 		}
 
 		void RegisterRigidbodySystem(void)
@@ -49,22 +68,28 @@ namespace ALEngine
 		}
 
 		void CreateRigidbody(Entity const& entity) {
+			//Setup rigidbody in the case of wanting custom stats
 			Rigidbody2D rigidbody;
 			Coordinator::Instance()->AddComponent(entity, rigidbody);
 		}
 
 		void UpdateRigidbodySystem() {
+			//*******Debugging*******//
+			//Toggle debug step on input
 			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKeyToggle)))
 			{
 				rigidS->isDebugStep = !rigidS->isDebugStep;
 			}
 
+			//Toggle debug draw on input
 			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugDrawKey)))
 			{
 				rigidS->isDebugDraw = !rigidS->isDebugDraw;
 			}
 
+			//If is debug draw
 			if (rigidS->isDebugDraw) {
+				//Shift through every rigidbody and draw their rigidbody debug feedback
 				for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
 					Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 					Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
@@ -73,23 +98,31 @@ namespace ALEngine
 						continue;
 					}
 
+					//Visual the debug feedback
 					rigidS->DrawRigidbodyForces(transform, rigid);
 				}
 			}
 
+			//If debug step is on
 			if (rigidS->isDebugStep) {
+				//And the step key insn't return
+				//Return the function (Skip the rigidbody system update)
 				if (!Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKey)))
 				{
 					return;
 				}
 
+				//Otherwise if input is read, continue the simulation
 			}
+			//*******End Debugging*******//
 
+			//Shift through each component
 			for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 				
+				//If rigidbody isn't enabled, skip
 				if (!rigid.isEnabled) {
 					continue;
 				}
@@ -101,6 +134,7 @@ namespace ALEngine
 				Vector2 friction = { -rigid.velocity.x * globalDrag * rigid.drag.x, 0 };
 				AddForce(rigid, friction, FORCEMODE::FORCE);
 
+				//Update rigidbody from all forces
 				rigidS->UpdateRigidbody(transform, collider, rigid);
 			}
 		}
@@ -120,15 +154,19 @@ namespace ALEngine
 		}
 	
 		void AddForce(Rigidbody2D& rigidbody, Math::Vec2 forceVelocity, FORCEMODE mode) {
+			//Force modes
 			switch (mode) {
+			//A=F/M
 			case FORCEMODE::FORCE:
 				rigidbody.acceleration += forceVelocity / rigidbody.mass;
 				break;
 
+			//Direct addition to the acceleration
 			case FORCEMODE::ACCELERATION:
 				rigidbody.acceleration += forceVelocity;
 				break;
 
+			//Direct addition to velocity
 			case FORCEMODE::VELOCITY_CHANGE:
 				rigidbody.velocity += forceVelocity;
 				break;
@@ -136,8 +174,11 @@ namespace ALEngine
 		}
 
 		void RigidbodySystem::DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid) {
+			//Draw velocity
 			Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 255.f, 0.f));
 			Gizmos::Gizmo::RenderLine(transform.position, transform.position + rigid.frameVelocity);
+
+			//Draw acceleration
 			Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 255.f, 255.f));
 			Gizmos::Gizmo::RenderLine(transform.position + Vector2(5.f, 5.f), transform.position + rigid.acceleration * Time::m_FixedDeltaTime);
 		}
