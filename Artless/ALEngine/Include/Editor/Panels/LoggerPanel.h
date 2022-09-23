@@ -25,7 +25,7 @@ namespace ALEngine
 			u32 log_flags{ 0 };
 		};
 
-		enum LOG_FLAGS
+		enum class LOG_FLAGS
 		{
 			LOG_NONE		= 0,
 			LOG_TRACE		= 1 << 0,

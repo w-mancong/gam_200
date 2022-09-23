@@ -6,14 +6,29 @@ namespace ALEngine
 	{
 		// Set default operation to be Translate
 		ImGuizmo::OPERATION ImGuizmoPanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
+
+		enum class TRANSFORM_MODE {
+			TRANSLATE = 0,
+			ROTATE,
+			SCALE
+		};
 		
 		void ImGuizmoPanel::OnImGuiRender()
 		{
+			static bool useSnap[3] = { false, false, false };
+			static float snap[3] = { 1.f, 1.f, 1.f };
+			static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+			static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+			static bool boundSizing = false;
+			static bool boundSizingSnap = false;
+
+			ImGui::SetNextWindowPos(ImVec2(10, 10));
+			ImGui::SetNextWindowSize(ImVec2(320, 340));
 			// Begin ImGui
 			if (!ImGui::Begin("Editor"))
 			{
 				ImGui::End();
-				//AL_CORE_ERROR("Editor Panel Collapsed");
+				//AL_CORE_CRITICAL("Editor Panel Collapsed");
 				return;
 			}
 
@@ -26,10 +41,17 @@ namespace ALEngine
 				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
 
 			// Select betwen the 3 Gizmos Operations by radio buttons
+			// Translate
 			if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
 				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+			ImGui::SameLine();
+
+			// Rotate
 			if (ImGui::RadioButton("Rotate", m_CurrentGizmoOperation == ImGuizmo::ROTATE))
 				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+			ImGui::SameLine();
+
+			// Scale
 			if (ImGui::RadioButton("Scale", m_CurrentGizmoOperation == ImGuizmo::SCALE))
 				m_CurrentGizmoOperation = ImGuizmo::SCALE;
 
@@ -38,13 +60,12 @@ namespace ALEngine
 				mtx_scale[3]{ m_SelectedTransform->scale.x, m_SelectedTransform->scale.y, 0.f };
 
 			// FLoat inputs
-			ImGui::InputFloat2("Tr", mtx_translate);					// Traslate
-			ImGui::InputFloat("Rt", &m_SelectedTransform->rotation);	// Rotate
-			ImGui::InputFloat2("Sc", mtx_scale);						// Scale
+			ImGui::DragFloat2("Tr", mtx_translate);					// Traslate
+			ImGui::DragFloat("Rt", &m_SelectedTransform->rotation);	// Rotate
+			ImGui::DragFloat2("Sc", mtx_scale);						// Scale
 
 			// Rotate matrix
 			float mtx_rot[3]{ 0.f, 0.f, m_SelectedTransform->rotation };
-
 
 			// Make transform matrix
 			float mtx[16];
@@ -56,8 +77,7 @@ namespace ALEngine
 
 			m_SelectedTransform->scale.x = mtx_scale[0];
 			m_SelectedTransform->scale.y = mtx_scale[1];
-
-			/*
+			
 			ImGuizmo::SetDrawlist();
 			float windowWidth = (float)Graphics::OpenGLWindow::width;
 			float windowHeight = (float)Graphics::OpenGLWindow::height;
@@ -66,7 +86,7 @@ namespace ALEngine
 			// Manipulate
 			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), ECS::GetProjection().value_ptr(),
 				m_CurrentGizmoOperation, ImGuizmo::LOCAL, mtx);
-			*/
+			
 
 			ImGui::End();
 		}

@@ -12,8 +12,10 @@ namespace ALEngine
 			ALEngine::Exceptions::Logger::GetCoreLogger()->sinks().push_back(ostream_sink);
 			AL_CORE_SET_PATTERN("%^[%n] [%l] [%D %T] %v%$");
 
+			spdlog::flush_every(std::chrono::seconds(5));
+
 			// Set logger flags to all
-			log_flags = LOG_FLAGS::LOG_ALL;
+			log_flags = (u32)LOG_FLAGS::LOG_ALL;
 		}
 
 		LoggerPanel::~LoggerPanel()
@@ -34,18 +36,20 @@ namespace ALEngine
 			// Align text baseline to the baseline of the panel
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("Log Levels:");
-			ImGui::SameLine(); ImGui::CheckboxFlags("All", &log_flags, LOG_FLAGS::LOG_ALL);
-			ImGui::SameLine(); ImGui::CheckboxFlags("Trace", &log_flags, LOG_FLAGS::LOG_TRACE);
-			ImGui::SameLine(); ImGui::CheckboxFlags("Debug", &log_flags, LOG_FLAGS::LOG_DEBUG);
-			ImGui::SameLine(); ImGui::CheckboxFlags("Info", &log_flags, LOG_FLAGS::LOG_INFO);
+			ImGui::SameLine(); ImGui::CheckboxFlags("All", &log_flags, (u32)LOG_FLAGS::LOG_ALL);
+			ImGui::SameLine(); ImGui::CheckboxFlags("Trace", &log_flags, (u32)LOG_FLAGS::LOG_TRACE);
+			ImGui::SameLine(); ImGui::CheckboxFlags("Debug", &log_flags, (u32)LOG_FLAGS::LOG_DEBUG);
+			ImGui::SameLine(); ImGui::CheckboxFlags("Info", &log_flags, (u32)LOG_FLAGS::LOG_INFO);
 			ImGui::Text("           "); 
-			ImGui::SameLine(); ImGui::CheckboxFlags("Warn", &log_flags, LOG_FLAGS::LOG_WARN);
-			ImGui::SameLine(); ImGui::CheckboxFlags("Error", &log_flags, LOG_FLAGS::LOG_ERROR);
-			ImGui::SameLine(); ImGui::CheckboxFlags("Critical", &log_flags, LOG_FLAGS::LOG_CRITICAL);
+			ImGui::SameLine(); ImGui::CheckboxFlags("Warn", &log_flags, (u32)LOG_FLAGS::LOG_WARN);
+			ImGui::SameLine(); ImGui::CheckboxFlags("Error", &log_flags, (u32)LOG_FLAGS::LOG_ERROR);
+			ImGui::SameLine(); ImGui::CheckboxFlags("Critical", &log_flags, (u32)LOG_FLAGS::LOG_CRITICAL);
 			ImGui::Text("           ");
 			ImGui::SameLine(); 
 			if (ImGui::SmallButton("Clear"))
+			{
 				ALEngine::Exceptions::Logger::GetCoreLogger()->flush();
+			}
 
 			// The Text Box
 			ImGui::BeginChild("LoggerTextBox", ImVec2(0.f, 0.f), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
@@ -70,42 +74,42 @@ namespace ALEngine
 				{
 				case 'e':	// Error
 				case 'E':
-					if (!(log_flags & LOG_FLAGS::LOG_ERROR))
+					if (!(log_flags & (u32)LOG_FLAGS::LOG_ERROR))
 						continue;
 					to_print = true;
 					text_clr = IM_COL32(255, 128, 0, 255);
 					break;
 				case 'd':	// Debug
 				case 'D':
-					if (!(log_flags & LOG_FLAGS::LOG_DEBUG))
+					if (!(log_flags & (u32)LOG_FLAGS::LOG_DEBUG))
 						continue;
 					to_print = true;
 					text_clr = IM_COL32(0, 128, 255, 255);
 					break;
 				case 't':	// Trace
 				case 'T':
-					if (!(log_flags & LOG_FLAGS::LOG_TRACE))
+					if (!(log_flags & (u32)LOG_FLAGS::LOG_TRACE))
 						continue;
 					to_print = true;
 					text_clr = IM_COL32(255, 255, 255, 255);
 					break;
 				case 'w':	// Warning
 				case 'W':
-					if (!(log_flags & LOG_FLAGS::LOG_WARN))
+					if (!(log_flags & (u32)LOG_FLAGS::LOG_WARN))
 						continue;
 					to_print = true;
 					text_clr = IM_COL32(255, 255, 0, 255);
 					break;
 				case 'i':	// Info
 				case 'I':
-					if (!(log_flags & LOG_FLAGS::LOG_INFO))
+					if (!(log_flags & (u32)LOG_FLAGS::LOG_INFO))
 						continue;
 					to_print = true;
 					text_clr = IM_COL32(0, 255, 0, 255);
 					break;
 				case 'c':	// Critical
 				case 'C':
-					if (!(log_flags & LOG_FLAGS::LOG_CRITICAL))
+					if (!(log_flags & (u32)LOG_FLAGS::LOG_CRITICAL))
 						continue;
 					to_print = true;
 					text_clr = IM_COL32(255, 0, 0, 255);
@@ -121,7 +125,7 @@ namespace ALEngine
 			}
 
 			if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
-				ImGui::SetScrollHereY(1.0f);
+				ImGui::SetScrollHereY();
 			ImGui::EndChild();
 			//End ImGui Window
 			ImGui::End();
