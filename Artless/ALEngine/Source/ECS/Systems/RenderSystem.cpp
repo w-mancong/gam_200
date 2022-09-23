@@ -4,415 +4,360 @@
 #include "Engine/Manager/MeshBuilder.h"
 #include "Graphics/Gizmo.h"
 
-namespace ALEngine
+namespace ALEngine::ECS
 {
-	namespace ECS
+	using namespace Math; using namespace Engine; using namespace Graphics;
+	class RenderSystem : public System
 	{
-		using namespace Math; using namespace Engine; using namespace Graphics;
-		class RenderSystem : public System
+	public:
+		//void Render(Sprite const& sprite, Transform const& trans);
+		//void RenderInstance(s32 count);
+		void RenderBatch();
+	};
+
+	struct Plane
+	{
+		Vector3 position{ 0.0f, 0.0f, 0.0f };  
+		Vector3 normal{ 0.0f, 1.0f, 0.0f };
+	};
+
+	enum class Faces
+	{
+		Near,
+		Far,
+		Left,
+		Right,
+		Top,
+		Bottom,
+		Total,
+	};
+
+	struct Frustum
+	{
+		Plane planes[static_cast<u64>(Faces::Total)];
+	};
+
+	void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
+	void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2]);
+	void InitializeFrustum(Frustum& fstm);
+	bool ShouldRender(Transform const& trans);
+
+	namespace
+	{
+		std::shared_ptr<RenderSystem> rs;
+		Shader spriteShader, meshShader, batchShader;
+		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
+		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
+		Frustum fstm;
+		// Batch rendering
+		vec3* positions{ nullptr };
+		vec4* colors{ nullptr };
+		vec2* tex_coords{ nullptr };
+		u64* tex_handles{ nullptr };
+
+		vec2 const vertex_position[4] =
 		{
-		public:
-			void Render(Sprite const& sprite, Transform const& trans);
+			{ -0.5f,  0.5f },	// top left
+			{ -0.5f, -0.5f },	// btm left
+			{  0.5f,  0.5f },	// top right
+			{  0.5f, -0.5f }	// btm right
 		};
 
-		struct Plane
+		vec2 const texture_position[4] =
 		{
-			Vector3 position{ 0.0f, 0.0f, 0.0f };  
-			Vector3 normal{ 0.0f, 1.0f, 0.0f };
+			{ 0.0f, 1.0f },		// top left
+			{ 0.0f, 0.0f },		// btm left
+			{ 1.0f, 1.0f },		// top right
+			{ 1.0f, 0.0f } 		// btm right
 		};
 
-		enum class Faces
+		u64 constexpr INDICES_SIZE{ 6 };
+	}
+
+	//void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
+	//{
+	//	Color const& color = sprite.color;
+	//	Vector3 const& position{ trans.position }, scale{ trans.scale };
+
+	//	// Getting the appropriate shader
+	//	Shader* shader{ nullptr };
+	//	if (sprite.texture)
+	//		shader = &spriteShader;
+	//	else
+	//		shader = &meshShader;
+
+	//	// TRS model multiplication
+	//	Matrix4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
+
+	//	shader->use();
+	//	shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
+	//	glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
+	//	glActiveTexture(GL_TEXTURE0);
+	//	glBindTexture(GL_TEXTURE_2D, sprite.texture);
+	//	glBindVertexArray(sprite.vao);
+	//	// render based on the primitive type
+	//	switch (sprite.primitive)
+	//	{
+	//		case GL_TRIANGLE_FAN:
+	//		{
+	//			glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
+	//			break;
+	//		}
+	//		case GL_TRIANGLE_STRIP:
+	//		{
+	//			glEnable(GL_PRIMITIVE_RESTART);
+	//			glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
+	//			glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+	//			glDisable(GL_PRIMITIVE_RESTART);
+	//			break;
+	//		}
+	//		case GL_TRIANGLES:
+	//		{
+	//			glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
+	//			break;
+	//		}
+	//	}	
+	//	// Unbind to prevent any unintended behaviour to vao
+	//	glBindVertexArray(0);
+	//}
+
+	//void RenderSystem::RenderInstance(s32 count)
+	//{
+	//	meshShader.use();
+	//	glBindVertexArray(rect.vao);
+	//	//glEnable(GL_PRIMITIVE_RESTART);
+	//	//glPrimitiveRestartIndex(static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX));
+	//	glDrawElementsInstanced(GL_TRIANGLES, rect.drawCount, GL_UNSIGNED_INT, nullptr, count);
+	//	//glDisable(GL_PRIMITIVE_RESTART);
+	//	glBindVertexArray(0);
+	//}
+
+	void RenderSystem::RenderBatch(void)
+	{
+		std::vector<Entity> entities; entities.reserve(mEntities.size());
+		// copy into temp vector
+		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
+		// sort entities by layer
+		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
 		{
-			Near,
-			Far,
-			Left,
-			Right,
-			Top,
-			Bottom,
-			Total,
-		};
+			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+			return sp1.layer < sp2.layer;
+		});
 
-		struct Frustum
+		u64 counter{ 0 }; u64 const size = entities.size();
+		for (u64 i = 0; i < size; ++i)
 		{
-			Plane planes[static_cast<u64>(Faces::Total)];
-		};
-
-		void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
-		void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2]);
-		void InitializeFrustum(Frustum& fstm);
-
-		namespace
-		{
-			std::shared_ptr<RenderSystem> rs;
-			Shader spriteShader, meshShader;
-			Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
-			Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
-			Frustum fstm;
-		}
-
-		void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
-		{
-			Color const& color = sprite.color;
-			Vector2 const& position{ trans.position }, scale{ trans.scale };
-
-			// Getting the appropriate shader
-			Shader* shader{ nullptr };
-			if (sprite.texture)
-				shader = &spriteShader;
-			else
-				shader = &meshShader;
-
-			// TRS model multiplication
-			Matrix4x4 model = Matrix4x4::Scale(scale.x, scale.y, 1.0f) * Matrix4x4::Rotation(trans.rotation, Vector3(0.0f, 0.0f, 1.0f)) * Matrix4x4::Translate(position.x, position.y, 0.0f);
-			shader->use();
-			shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
-			glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, sprite.texture);
-			glBindVertexArray(sprite.vao);
-			// render based on the primitive type
-			switch (sprite.primitive)
+			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
+			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(entities[i]);
+			mat4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
+			for (u64 j = i * 4, k = 0; j < (i * 4) + 4; ++j, ++k)
 			{
-				case GL_TRIANGLE_FAN:
-				{
-					glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
-					break;
-				}
-				case GL_TRIANGLE_STRIP:
-				{
-					glEnable(GL_PRIMITIVE_RESTART);
-					glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
-					glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-					glDisable(GL_PRIMITIVE_RESTART);
-					break;
-				}
-				case GL_TRIANGLES:
-				{
-					glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-					break;
-				}
-			}	
-			// Unbind to prevent any unintended behaviour to vao
-			glBindVertexArray(0);
-		}
-
-		void UpdateViewMatrix(void)
-		{
-			spriteShader.use();
-			spriteShader.Set("view", camera.ViewMatrix());
-			meshShader.use();
-			meshShader.Set("view", camera.ViewMatrix());
-		}
-
-		void UpdateProjectionMatrix(void)
-		{
-			spriteShader.use();
-			spriteShader.Set("proj", camera.ProjectionMatrix());
-			meshShader.use();
-			meshShader.Set("proj", camera.ProjectionMatrix());
-		}
-
-		void RegisterRenderSystem(void)
-		{
-			rs = Coordinator::Instance()->RegisterSystem<RenderSystem>();
-			Signature signature;
-			signature.set( Coordinator::Instance()->GetComponentType<Transform>() );
-			signature.set( Coordinator::Instance()->GetComponentType<Sprite>() );
-			Coordinator::Instance()->SetSystemSignature<RenderSystem>(signature);
-
-			// Initialising shader
-			spriteShader = Shader{ "Assets/Shaders/sprite.vert", "Assets/Shaders/sprite.frag" };
-			spriteShader.use();
-			spriteShader.Set("view", camera.ViewMatrix());
-			spriteShader.Set("proj", camera.ProjectionMatrix());
-
-			meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
-			meshShader.use();
-			meshShader.Set("view", camera.ViewMatrix());
-			meshShader.Set("proj", camera.ProjectionMatrix());
-
-			InitializeFrustum(fstm);
-
-			// Load and initialise fonts
-			Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
-			Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
-			Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
-		}
-
-		void InitializeFrustum(Frustum& fstm)
-		{
-			f32 const zFar = camera.FarPlane();
-			f32 const halfVSide = zFar * std::tanf(DegreeToRadian(camera.Fov()) * 0.5f);
-			f32 const halfHSide = halfVSide * ( static_cast<f32>(OpenGLWindow::width / OpenGLWindow::height) );
-			Vector3 const position = camera.Position(), right = camera.Right(), up = camera.Up(), front = camera.Front(), frontMultFar = zFar * front;
-
-			u64 planeIndex = static_cast<u64>(Faces::Near);
-			// Near Plane
-			fstm.planes[planeIndex++] = { position + camera.NearPlane() * front, front };
-			// Far Plane
-			fstm.planes[planeIndex++] = { position + frontMultFar, -front };
-			// Left Plane
-			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar - right * halfHSide, up) ) };
-			// Right Plane
-			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(up, frontMultFar + right * halfHSide) ) };
-			// Top Plane
-			fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar + up * halfVSide, right) ) };
-			// Bottom Plane
-			fstm.planes[planeIndex]   = { position, Vector3::Normalize( Vector3::Cross(right, frontMultFar - up * halfVSide) ) };
-		}
-
-		bool IntersectsPlane(Vector2 boxVec[2], Vector2 const& position, Plane const& plane)
-		{
-			return std::abs( boxVec[0].Dot(plane.normal) ) + std::abs( boxVec[1].Dot(plane.normal) ) >= std::abs( (Vector3(position) - plane.position).Dot(plane.normal) );
-		}
-
-		bool ShouldRender(Transform const& trans)
-		{
-			// Do frustum culling here
-			u64 constexpr TOTAL_FACES = static_cast<u64>(Faces::Total);
-			// Vector will be use to calculate the distance of the oriented box to the plane
-			Vector2 boxVec[2]{ Vector2(1.0f, 0.0f), Vector2(0.0f, 1.0f) }; InitializeBoxVector(trans, boxVec);
-			for (u64 i = 0; i < TOTAL_FACES; ++i)
-			{
-				Vector3 v = Vector3(trans.position) - fstm.planes[i].position; // vector to be dotted to check if the object is inside the frustum
-				if (0.0f < v.Dot(fstm.planes[i].normal))
-					continue;
-				// When it reaches this point, means that the object is outside of the frustum
-				return IntersectsPlane(boxVec, trans.position, fstm.planes[i]);	// Checks if it is intersecting with the plane
+				*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
+				 // assigning colors
+				(*(colors + j)).x = sprite.color.r; (*(colors + j)).y = sprite.color.g; (*(colors + j)).z = sprite.color.b; (*(colors + j)).w = sprite.color.a;
+				*(tex_coords + j) = *(texture_position + k);
+				*(tex_handles + j) = sprite.handle;
 			}
-			return true; // Object is within the frustum
+			++counter;
 		}
 
-		void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2])
+		u32 vao = GetBatchVao();
+
+		batchShader.use();
+		batchShader.Set("view", camera.ViewMatrix());
+		batchShader.Set("proj", camera.ProjectionMatrix());
+
+		BatchData bd{ positions, colors, tex_coords, tex_handles };
+
+		SubVertexPosition(bd);
+
+		//std::cout << counter << std::endl;
+
+		glBindVertexArray(vao);
+		glDrawElements(GL_TRIANGLES, INDICES_SIZE * counter, GL_UNSIGNED_INT, nullptr);
+		glBindVertexArray(0);
+	}
+
+	void UpdateViewMatrix(void)
+	{
+		spriteShader.use();
+		spriteShader.Set("view", camera.ViewMatrix());
+		meshShader.use();
+		meshShader.Set("view", camera.ViewMatrix());
+	}
+
+	void UpdateProjectionMatrix(void)
+	{
+		spriteShader.use();
+		spriteShader.Set("proj", camera.ProjectionMatrix());
+		meshShader.use();
+		meshShader.Set("proj", camera.ProjectionMatrix());
+	}
+
+	void RegisterRenderSystem(void)
+	{
+		rs = Coordinator::Instance()->RegisterSystem<RenderSystem>();
+		Signature signature;
+		signature.set( Coordinator::Instance()->GetComponentType<Transform>() );
+		signature.set( Coordinator::Instance()->GetComponentType<Sprite>() );
+		Coordinator::Instance()->SetSystemSignature<RenderSystem>(signature);
+
+		// Initialising shader
+		spriteShader = Shader{ "Assets/Shaders/sprite.vert", "Assets/Shaders/sprite.frag" };
+		spriteShader.use();
+		spriteShader.Set("view", camera.ViewMatrix());
+		spriteShader.Set("proj", camera.ProjectionMatrix());
+
+		meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
+		meshShader.use();
+		meshShader.Set("view", camera.ViewMatrix());
+		meshShader.Set("proj", camera.ProjectionMatrix());
+
+		batchShader = Shader{ "Assets/Shaders/batch.vert", "Assets/Shaders/batch.frag" };
+		batchShader.use();
+		batchShader.Set("view", camera.ViewMatrix());
+		batchShader.Set("proj", camera.ProjectionMatrix());	
+
+		positions = Memory::StaticMemory::New<vec3>( GetVertexPositionSize() );
+		colors = Memory::StaticMemory::New<vec4>( GetVertexPositionSize() );
+		tex_coords = Memory::StaticMemory::New<vec2>( GetVertexPositionSize() );
+		tex_handles = Memory::StaticMemory::New<u64>( GetVertexPositionSize() );
+	}
+
+	void InitializeFrustum(Frustum& fstm)
+	{
+		f32 const zFar = camera.FarPlane();
+		f32 const halfVSide = zFar * std::tanf(DegreeToRadian(camera.Fov()) * 0.5f);
+		f32 const halfHSide = halfVSide * ( static_cast<f32>(OpenGLWindow::width / OpenGLWindow::height) );
+		Vector3 const position = camera.Position(), right = camera.Right(), up = camera.Up(), front = camera.Front(), frontMultFar = zFar * front;
+
+		u64 planeIndex = static_cast<u64>(Faces::Near);
+		// Near Plane
+		fstm.planes[planeIndex++] = { position + camera.NearPlane() * front, front };
+		// Far Plane
+		fstm.planes[planeIndex++] = { position + frontMultFar, -front };
+		// Left Plane
+		fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar - right * halfHSide, up) ) };
+		// Right Plane
+		fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(up, frontMultFar + right * halfHSide) ) };
+		// Top Plane
+		fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar + up * halfVSide, right) ) };
+		// Bottom Plane
+		fstm.planes[planeIndex]   = { position, Vector3::Normalize( Vector3::Cross(right, frontMultFar - up * halfVSide) ) };
+	}
+
+	bool IntersectsPlane(Vector2 boxVec[2], Vector2 const& position, Plane const& plane)
+	{
+		return std::abs( boxVec[0].Dot(plane.normal) ) + std::abs( boxVec[1].Dot(plane.normal) ) >= std::abs( (Vector3(position) - plane.position).Dot(plane.normal) );
+	}
+
+	bool ShouldRender(Transform const& trans)
+	{
+		// Do frustum culling here
+		u64 constexpr TOTAL_FACES = static_cast<u64>(Faces::Total);
+		// Vector will be use to calculate the distance of the oriented box to the plane
+		Vector2 boxVec[2]{ Vector2(1.0f, 0.0f), Vector2(0.0f, 1.0f) }; InitializeBoxVector(trans, boxVec);
+		for (u64 i = 0; i < TOTAL_FACES; ++i)
 		{
-			boxVec[0] = Matrix3x3::Rotation(trans.rotation) * boxVec[0] * (trans.scale.x * 0.5f);
-			boxVec[1] = Vector2::ClampMagnitude(Vector2::Perpendicular(boxVec[0]), trans.scale.y * 0.5f);
+			Vector3 v = Vector3(trans.position) - fstm.planes[i].position; // vector to be dotted to check if the object is inside the frustum
+			if (0.0f < v.Dot(fstm.planes[i].normal))
+				continue;
+			// When it reaches this point, means that the object is outside of the frustum
+			return IntersectsPlane(boxVec, trans.position, fstm.planes[i]);	// Checks if it is intersecting with the plane
 		}
+		return true; // Object is within the frustum
+	}
 
-		void Render(void)
-		{
-			std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
-			// copy into temp vector
-			std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
-			// sort entities by layer
-			std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-			{
-				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-				return sp1.layer < sp2.layer;
-			});
+	void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2])
+	{
+		boxVec[0] = Matrix3x3::Rotation(trans.rotation) * boxVec[0] * (trans.scale.x * 0.5f);
+		boxVec[1] = Vector2::ClampMagnitude(Vector2::Perpendicular(boxVec[0]), trans.scale.y * 0.5f);
+	}
 
-			glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	void Render(void)
+	{
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			Gizmo::SetLineWidth(3.f);
-			Gizmo::RenderLine(Math::Vector2{ -3.f,-5.f }, Math::Vector2{ -2.f, -2.f });
-			Gizmo::DrawLineBox(Math::Vector2{ 0.f,0.f }, Math::Vector2{ 0.f, 5.f }, Math::Vector2{ 2.f, 5.f }, Math::Vector2{ 2.f, 0.f });
+		InitializeFrustum(fstm);
+		rs->RenderBatch();
 
-			u32 displayed = 0;
-			for (auto it = entities.begin(); it != entities.end(); ++it)
-			{
-				Sprite	  const& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);
-				Transform const& trans  = Coordinator::Instance()->GetComponent<Transform>(*it);
-				if (ShouldRender(trans))
-				{
-					rs->Render(sprite, trans);
-					//++displayed;
-				}
-			}
+		glfwPollEvents();
+		glfwSwapBuffers(Graphics::OpenGLWindow::Window());
+	}
 
-			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
-			//std::cout << "Total entities displayed: " << displayed << std::endl;
+	void SetBackgroundColor(Color const& color)
+	{
+		bgColor = color;
+	}
 
-			Text test;
-			SetFont(test, "roboto");
-			SetTextString(test, "test");
-			SetTextSize(test, 1.f);
-			SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-			SetFontType(test, Font::FontType::Regular);
-			SetTextPos(test, Vector2(50.f, 50.f));
-			RenderText(test);
+	void SetBackgroundColor(f32 r, f32 g, f32 b, f32 a)
+	{
+		r = Clamp(r, 0.0f, 1.0f), g = Clamp(g, 0.0f, 1.0f), b = Clamp(b, 0.0f, 1.0f), a = Clamp(a, 0.0f, 1.0f);
+		SetBackgroundColor( { r, g, b, a } );
+	}
 
-			// End of ImGui frame, render ImGui!
-			ALEditor::Instance()->End();
+	void SetBackgroundColor(s32 r, s32 g, s32 b, s32 a)
+	{
+		SetBackgroundColor(static_cast<f32>(r) / 255.0f, static_cast<f32>(g) / 255.0f, static_cast<f32>(b) / 255.0f, static_cast<f32>(a) / 255.0f);
+	}
 
-			glfwPollEvents();
-			glfwSwapBuffers(Graphics::OpenGLWindow::Window());
-		}
+	void CameraPosition(f32 x, f32 y)
+	{
+		CameraPosition(Vector3(x, y, camera.Position().z));
+	}
 
-		void SetBackgroundColor(Color const& color)
-		{
-			bgColor = color;
-		}
+	void CameraPosition(f32 x, f32 y, f32 z)
+	{
+		CameraPosition(Vector3(x, y, z));
+	}
 
-		void SetBackgroundColor(f32 r, f32 g, f32 b, f32 a)
-		{
-			r = Clamp(r, 0.0f, 1.0f), g = Clamp(g, 0.0f, 1.0f), b = Clamp(b, 0.0f, 1.0f), a = Clamp(a, 0.0f, 1.0f);
-			SetBackgroundColor( { r, g, b, a } );
-		}
+	void CameraPosition(Vector3 pos)
+	{
+		camera.Position(pos);
+		UpdateViewMatrix();
+		InitializeFrustum(fstm);
+	}
 
-		void SetBackgroundColor(s32 r, s32 g, s32 b, s32 a)
-		{
-			SetBackgroundColor(static_cast<f32>(r) / 255.0f, static_cast<f32>(g) / 255.0f, static_cast<f32>(b) / 255.0f, static_cast<f32>(a) / 255.0f);
-		}
+	Vector3 CameraPosition(void)
+	{
+		return camera.Position();
+	}
 
-		void CameraPosition(f32 x, f32 y)
-		{
-			CameraPosition(Vector3(x, y, camera.Position().z));
-		}
+	void CameraFov(f32 fov)
+	{
+		camera.Fov(fov);
+		UpdateProjectionMatrix();
+		InitializeFrustum(fstm);
+	}
 
-		void CameraPosition(f32 x, f32 y, f32 z)
-		{
-			CameraPosition(Vector3(x, y, z));
-		}
+	void ViewportResizeCameraUpdate(void)
+	{
+		UpdateProjectionMatrix();
+		InitializeFrustum(fstm);
+	}
 
-		void CameraPosition(Vector3 pos)
-		{
-			camera.Position(pos);
-			UpdateViewMatrix();
-			InitializeFrustum(fstm);
-		}
+	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
+	{
+		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+		sprite.layer = layer;
+		Coordinator::Instance()->AddComponent(entity, sprite);
+		Coordinator::Instance()->AddComponent(entity, transform);
+	}
 
-		Vector3 CameraPosition(void)
-		{
-			return camera.Position();
-		}
+	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
+	{
+		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+		sprite.layer = layer/*, sprite.mode = mode*/;
+		Coordinator::Instance()->AddComponent(entity, sprite);
+	}
 
-		void CameraFov(f32 fov)
-		{
-			camera.Fov(fov);
-			UpdateProjectionMatrix();
-			InitializeFrustum(fstm);
-		}
-
-		void ViewportResizeCameraUpdate(void)
-		{
-			UpdateProjectionMatrix();
-			InitializeFrustum(fstm);
-		}
-
-		void CreateSprite(Entity const& entity, Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)
-		{
-			Sprite sprite;
-			switch (shape)
-			{
-				case Shape::Rectangle:
-				{
-					sprite = MeshBuilder::Instance()->MakeRectangle();
-					break;
-				}
-				case Shape::Circle:
-				{
-					sprite = MeshBuilder::Instance()->MakeCircle();
-					break;
-				}
-				case Shape::Triangle:
-				{
-					sprite = MeshBuilder::Instance()->MakeTriangle();
-					break;
-				}
-			}
-			sprite.layer = layer, sprite.mode = mode;
-			Coordinator::Instance()->AddComponent(entity, sprite);
-			Coordinator::Instance()->AddComponent(entity, transform);
-		}
-
-		void CreateSprite(Entity const& entity, Shape shape, RenderLayer layer, RenderMode mode)
-		{
-			Sprite sprite;
-			switch (shape)
-			{
-				case Shape::Rectangle:
-				{
-					sprite = MeshBuilder::Instance()->MakeRectangle();
-					break;
-				}
-				case Shape::Circle:
-				{
-					sprite = MeshBuilder::Instance()->MakeCircle();
-					break;
-				}
-				case Shape::Triangle:
-				{
-					sprite = MeshBuilder::Instance()->MakeTriangle();
-					break;
-				}
-			}
-			sprite.layer = layer, sprite.mode = mode;
-			Coordinator::Instance()->AddComponent(entity, sprite);
-		}
-
-		void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
-		{
-			Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
-			sprite.layer = layer, sprite.mode = mode;
-			Coordinator::Instance()->AddComponent(entity, sprite);
-			Coordinator::Instance()->AddComponent(entity, transform);
-		}
-
-		void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer, RenderMode mode)
-		{
-			Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
-			sprite.layer = layer, sprite.mode = mode;
-			Coordinator::Instance()->AddComponent(entity, sprite);
-		}
-
-		Entity CreateSprite(Transform const& transform, Shape shape, RenderLayer layer, RenderMode mode)
-		{
-			Entity entity = Coordinator::Instance()->CreateEntity();
-			CreateSprite(entity, transform, shape, layer, mode);
-			return entity;
-		}
-
-		Entity CreateSprite(Transform const& transform, const char* filePath, RenderLayer layer, RenderMode mode)
-		{
-			Entity entity = Coordinator::Instance()->CreateEntity();
-			CreateSprite(entity, transform, filePath, layer, mode);
-			return entity;
-		}
-
-		// Gizmo static member declarations
-		f32 Gizmo::lineWidith;
-
-		void Gizmo::RenderLine(Math::Vector2 pt0, Math::Vector2 pt1)
-		{
-			std::array<Math::Vector2, 2> pos_vtx;
-			pos_vtx[0] = pt0;
-			pos_vtx[1] = pt1;
-
-			GLuint VAO, VBO;
-
-			glGenVertexArrays(1, &VAO);
-			glGenBuffers(1, &VBO);
-			glBindVertexArray(VAO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(pos_vtx) * pos_vtx.size(), &pos_vtx, GL_DYNAMIC_DRAW);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)0);
-			glEnableVertexAttribArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
-
-			meshShader.use();
-			glLineWidth(lineWidith);
-
-			glBindVertexArray(VAO);
-			glDrawArrays(GL_LINES, 0, 2); // render line
-
-			// cleanup
-			glDeleteBuffers(1, &VAO);
-			glDeleteVertexArrays(1, &VBO);
-
-			// reset line width
-			glLineWidth(1.f);
-		}
-
-		void Gizmo::DrawLineBox(Math::Vector2 pt0, Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector2 pt3)
-		{
-			Gizmo::RenderLine(pt0, pt1);
-			Gizmo::RenderLine(pt1, pt2);
-			Gizmo::RenderLine(pt2, pt3);
-			Gizmo::RenderLine(pt3, pt0);
-		}
+	Entity CreateSprite(Transform const& transform, const char* filePath, RenderLayer layer)
+	{
+		Entity entity = Coordinator::Instance()->CreateEntity();
+		CreateSprite(entity, transform, filePath, layer);
+		return entity;
 	}
 }
 

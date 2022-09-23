@@ -6,8 +6,8 @@ namespace ALEngine
 {
 	namespace ECS
 	{
-		using Entity				= u32;		// A simple type alias
-		Entity const MAX_ENTITIES	= 5'000;	// Used to define the size of Entity array
+		using Entity					= u32;		// A simple type alias
+		Entity constexpr MAX_ENTITIES	= 5'000;	// Used to define the size of Entity array
 	}
 }
 

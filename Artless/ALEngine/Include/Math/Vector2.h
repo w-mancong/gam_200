@@ -362,7 +362,7 @@ namespace ALEngine
 				Vector to have it's data swapped with
 			***********************************************************************************/
 			void swap(Vector2& rhs);
-		}; using Vec2 = Vector2; using Vec2D = Vector2;
+		}; using Vec2 = Vector2; using Vec2D = Vector2; using vec2 = Vector2;
 
 		/*!*********************************************************************************
 			\brief

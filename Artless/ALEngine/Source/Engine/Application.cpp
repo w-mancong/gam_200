@@ -3,192 +3,106 @@
 
 #include <iostream>
 
-namespace ALEngine
+namespace ALEngine::Engine
 {
-	namespace Engine
+	using namespace Math; using namespace Graphics; using namespace ECS;
+	class Application
 	{
-		using namespace Math; using namespace Graphics; using namespace ECS;
-		class Application
+	public:
+		void Init(void);
+		void Update(void);
+		void Exit(void);
+	};
+
+	u64 constexpr ENTITIES_SIZE = 2'500;
+
+	Entity en[ENTITIES_SIZE];
+
+	void Application::Init(void)
+	{
+		OpenGLWindow::InitGLFWWindow();
+		ECS::InitSystem();
+
+		for (u64 i = 0; i < ENTITIES_SIZE; ++i)
 		{
-		public:
-			void Init(void);
-			void Update(void);
-			void Exit(void);
-		};
+			Transform t{ { Random::Range(-600.0f, 600.0f), Random::Range(-300.0f, 300.0f), 0.0f },
+				{ Random::Range(20.0f, 75.0f), Random::Range(20.0f, 75.0f)},
+				{ Random::Range(0.0f, 360.0f) } };
 
-		Entity Noah, Hinata;
-
-		void Application::Init(void)
-		{
-			OpenGLWindow::InitGLFWWindow();
-			ECS::InitSystem();
-
-			//Obj 1
-			Transform transform{ Vector2(0, 150.0f), Vector2(50.f, 50.f), 0.0f };
-			Noah = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
-
-			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
-			sprite2.mode = RenderMode::Line;
-			sprite2.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
-
-			Transform& trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			CreatePhysics2D(Noah, ColliderType::Circle2D);
-			Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).isEnabled = true;
-			Collider2D& collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
-			collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 25.f;
-			collider_Noah.rotation = 0.f;
-			trans_noah.rotation = 0.f;
-
-			//Obj 2
-			transform = { Vector2(0.0f, 0.0f), Vector2(50.0f, 50.0f), 0.0f };
-			Hinata = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
-
-			Sprite& sprite3 = Coordinator::Instance()->GetComponent<Sprite>(Hinata);
-			sprite3.mode = RenderMode::Line;
-			sprite3.color = Color{ 1.0f, 0.0f, 0.0f, 1.0f };
-			Transform& trans_hinata = Coordinator::Instance()->GetComponent<Transform>(Hinata);
-			CreatePhysics2D(Hinata, ColliderType::Circle2D);
-			Collider2D &collider_hinata = Coordinator::Instance()->GetComponent<Collider2D>(Hinata);
-			collider_hinata.scale[0] = 50.f, collider_hinata.scale[1] = 25.f;
-			collider_hinata.rotation = 0.0f;
-
-			// Initialize Time (Framerate Controller)
-			Time::Init();
-
-			// Init ImGui
-			ALEditor::Instance()->Init();
+			if(!(i % 2))
+				*(en + i) = CreateSprite(t, "Assets/Images/awesomeface.png");
+			else
+				*(en + i) = CreateSprite(t, "Assets/Images/container.jpg");
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(*(en + i));
+			sprite.color = Color{ Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f) };
 		}
 
-		void Application::Update(void)
-		{
-			// Accumulator for fixed delta time
-			f32 accumulator{ 0.f };
+		// Initialize Time (Framerate Controller)
+		Time::Init();
 
-			// should do the game loop here
-			while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
-			{				
-				// Get Current Time
-				Time::ClockTimeNow();
+		//// Init ImGui
+		//ALEditor::Instance()->Init();
+	}
 
-				// Begin new ImGui frame
-				ALEditor::Instance()->Begin();
+	void Application::Update(void)
+	{
+		// Accumulator for fixed delta time
+		f32 accumulator{ 0.f };
 
-				// Normal Update
-				Engine::Update();
-				// Fixed Update (Physics)
-				accumulator += Time::m_DeltaTime;
-				while (accumulator >= Time::m_FixedDeltaTime)
-				{
-					Engine::FixedUpdate();
-					accumulator -= Time::m_FixedDeltaTime;
-				}
+		// should do the game loop here
+		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::KeyTriggered(KeyCode::Escape))
+		{				
+			// Get Current Time
+			Time::ClockTimeNow();
 
-				// Render
-				Render();
+			//// Begin new ImGui frame
+			//ALEditor::Instance()->Begin();
 
-				// Wait for next frame
-				Time::WaitUntil();
+			// Normal Update
+			Engine::Update();
+			// Fixed Update (Physics)
+			accumulator += Time::m_DeltaTime;
+			while (accumulator >= Time::m_FixedDeltaTime)
+			{
+				Engine::FixedUpdate();
+				accumulator -= Time::m_FixedDeltaTime;
 			}
-		}
 
-		void Application::Exit(void)
-		{
-			// Shutdown imgui
-			ImGui_ImplGlfw_Shutdown();
-			ImGui_ImplOpenGL3_Shutdown();
-			// Destroy imgui context
-			ImGui::DestroyContext();
-			glfwTerminate();	// clean/delete all GLFW resources
-		}
+			// Render
+			Render();
 
-		void Run(void)
-		{
-			Application app;
-			app.Init();
-			app.Update();
-			app.Exit();
+			// Wait for next frame
+			Time::WaitUntil();
 		}
+	}
+
+	void Application::Exit(void)
+	{
+		glfwTerminate();	// clean/delete all GLFW resources
+	}
+
+	void Run(void)
+	{
+		Application app;
+		app.Init();
+		app.Update();
+		app.Exit();
+	}
 		
-		void Engine::Update(void)
+	void Engine::Update(void)
+	{
+		f32 constexpr rot_spd{ 50.0f };
+		for (u64 i = 0; i < ENTITIES_SIZE; ++i)
 		{
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
-			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
-			f32 constexpr speed = 150.f;
-			f32 constexpr rot = 1.0f;
-
-			/*
-			if (Input::Input::KeyTriggered(KeyCode::Space)) {
-				rigid.velocity.y = 250;
-			}*/
-
-			//Use Velocity
-			rigid.velocity.x = 0, rigid.velocity.y = 0;
-			if (Input::Input::KeyDown(KeyCode::Down))
-			{
-				rigid.velocity.y = -speed;
-			}
-			if (Input::Input::KeyDown(KeyCode::Up))
-			{
-				rigid.velocity.y = speed;
-			}
-			if (Input::Input::KeyDown(KeyCode::Left))
-			{
-				rigid.velocity.x = -speed;
-			}
-			if (Input::Input::KeyDown(KeyCode::Right))
-			{
-				rigid.velocity.x = speed;
-			}
-
-			//Manual Position
-			//if (Input::Input::KeyTriggered(KeyCode::W))
-			//{
-			//	trans.position.y += speed;
-			//}
-			//if (Input::Input::KeyTriggered(KeyCode::S))
-			//{
-			//	trans.position.y -= speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyTriggered(KeyCode::D))
-			//{
-			//	trans.position.x += speed;
-			//}
-			//if (Input::Input::KeyTriggered(KeyCode::A))
-			//{
-			//	trans.position.x -= speed;
-			//}
-
-			//if(Input::Input::KeyDown(KeyCode::W))
-			//{
-			//	trans.position.y += speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::S))
-			//{
-			//	trans.position.y -= speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::D))
-			//{
-			//	trans.position.x += speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::A))
-			//{
-			//	trans.position.x -= speed * Time::m_DeltaTime;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::Q))
-			//{
-			//	trans.rotation += rot;
-			//}
-			//if (Input::Input::KeyDown(KeyCode::E))
-			//{
-			//	trans.rotation -= rot;
-			//}		
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(*(en + i));
+			trans.rotation += rot_spd * Time::m_DeltaTime;
 		}
+	}
 		
-		void Engine::FixedUpdate(void)
-		{
-			//Raycast2DCollision({ -25, 25 }, { 25, 25 });
-			UpdateRigidbodySystem();
-			UpdateColliderSystem();
-		}
+	void Engine::FixedUpdate(void)
+	{
+		//Raycast2DCollision({ -25, 25 }, { 25, 25 });
+		UpdateRigidbodySystem();
+		UpdateColliderSystem();
 	}
 }

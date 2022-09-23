@@ -37,7 +37,7 @@ namespace ALEngine
 			}
 			const char* vShaderCode = vertexCode.c_str(), *fShaderCode = fragmentCode.c_str();
 			// 2. compile shaders
-			s32 success; s8 infoLog[512];
+			s32 success; GLchar infoLog[512];
 
 			// vertex shader
 			u32 vertex = glCreateShader(GL_VERTEX_SHADER);
