@@ -9,6 +9,16 @@ namespace ALEngine
 			// declare static class variable
 			std::map<std::string, std::map<Font::FontType, Font>> Font::fontCollection;
 
+			/*!*********************************************************************************
+				\brief
+					Initializes and processes font file (.ttf)
+				\param [in] fontAddress:
+					File path of font file.
+				\param [in] fontName:
+					Name of font.
+				\param [in] fontType:
+					Type of font.
+			***********************************************************************************/
 			void Font::FontInit(std::string fontAddress, std::string fontName, Font::FontType fontType)
 			{
 				Font newFont;
@@ -108,6 +118,12 @@ namespace ALEngine
 				Font::fontCollection.insert(std::pair<std::string, std::map<Font::FontType, Font>>(fontName, map));
 			}
 
+			/*!*********************************************************************************
+				\brief
+					Renders text.
+				\param [in] text:
+					Text type.
+			***********************************************************************************/
 			void RenderText(Text& text)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

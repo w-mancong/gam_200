@@ -1,3 +1,12 @@
+/*!
+file:	Gizmo.cpp
+author:	Mohamed Zafir
+email:	m.zafir@digipen.edu
+brief:	This file contains function definitions for the engine's particle system.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #include "pch.h"
 #include "Engine/Camera.h"
 #include <random>
@@ -17,19 +26,42 @@ namespace ALEngine
 					static_cast<f32>(std::nextafter(1.0, 1.1))); // number generation interval: [-1, 1]
 				ALEngine::Engine::Camera camera{ Math::Vector3(0.0f, 0.0f, 725.0f) };
 			}
-
+			/*!*********************************************************************************
+				\brief
+					Linear interpolation helper function
+				\param [out] T:
+					Result of linear interpolation
+				\param [in] a:
+					Start point
+				\param [in] b:
+					End point
+				\param [in] t:
+					Percentage between a and b
+			***********************************************************************************/
 			template<typename T> 
 			T Lerp(T a, T b, float t)
 			{
 				return (T)(a + (b - a) * t); 
 			}
 
+			/*!*********************************************************************************
+			\brief
+				Constructor of ParticleSystem class. Instantiates the particleContainer with
+				specified number of particles.
+			***********************************************************************************/
 			ParticleSystem::ParticleSystem()
 			{
 				// Instantiate 1000 particles in the vector (Max particles)
 				particleContainer.resize(1000);
 			}
 
+			/*!*********************************************************************************
+			\brief
+				Updates all active particles in the particle container of its position,
+				rotation and remaining life time.
+			\param [in] deltaTime:
+				Delta time
+			***********************************************************************************/
 			void ParticleSystem::ParticleUpdate(f32 deltaTime) // Time::m_DeltaTime
 			{
 				for (auto& particle : particleContainer)
@@ -50,6 +82,11 @@ namespace ALEngine
 				}
 			}
 
+			/*!*********************************************************************************
+			\brief
+				Initializes the particle system, such as its shaders, random generator,
+				VAO & VBO.
+			***********************************************************************************/
 			void ParticleSystem::ParticleSysInit()
 			{
 				// vertices to generate a quad
@@ -88,6 +125,10 @@ namespace ALEngine
 				generator.seed(static_cast<unsigned int>(time(NULL))); // Use current time as seed for random generator
 			}
 
+			/*!*********************************************************************************
+			\brief
+				Renders all active particles in the particle container.
+			***********************************************************************************/
 			void ParticleSystem::ParticleRender()
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -118,6 +159,10 @@ namespace ALEngine
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 
+			/*!*********************************************************************************
+			\brief
+				Emits the passed in particle property.
+			***********************************************************************************/
 			void ParticleSystem::Emit(const ParticleProperties& particleProperty)
 			{
 				Particle& particle = particleContainer[particleIndex];

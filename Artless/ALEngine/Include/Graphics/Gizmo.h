@@ -1,3 +1,13 @@
+/*!
+file:	Gizmo.h
+author:	Mohamed Zafir
+email:	m.zafir@digipen.edu
+brief:	This file contains the Gizmo class declaration. Gizmo is a debugging feature
+		for the engine.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #ifndef	GIZMO_H
 #define GIZMO_H
 

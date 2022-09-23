@@ -1,3 +1,13 @@
+/*!
+file:	Gizmo.cpp
+author:	Mohamed Zafir
+email:	m.zafir@digipen.edu
+brief:	This file contains the Gizmo class definition. Gizmo is a debugging feature
+		for the engine.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #include "pch.h"
 #include "Engine/Camera.h"
 
@@ -13,7 +23,10 @@ namespace ALEngine
 		bool Gizmo::gizmoToggle;
 		Math::Vector3 Gizmo::gizmoColor;
 
-		// this function makes the sample line
+		/*!*********************************************************************************
+			\brief
+				Initializes Gizmo, instantiates and buffers a line etc.
+		***********************************************************************************/
 		void Gizmo::GizmoInit()
 		{
 			f32 position[] =
@@ -46,27 +59,24 @@ namespace ALEngine
 			glBindVertexArray(0);
 		}
 
+		/*!*********************************************************************************
+			\brief
+				Pushes line data into linesContainer to be rendered.
+			\param [in] pt1:
+				Start point
+			\param [in] pt2:
+				End point
+		***********************************************************************************/
 		void Gizmo::RenderLine(Math::Vector2 pt1, Math::Vector2 pt2)
 		{
 			if(gizmoToggle)
 				linesContainer.push_back(std::pair<Math::Vector2, Math::Vector2>(pt1, pt2));
 		}
 
-		// Don't use, its too laggy. Use imguizmo circle instead.
-		//void Gizmo::RenderCircle(Math::Vector2 center, f32 radius)
-		//{
-		//	const float degreeIncrement{ 2.f * 3.141592f / (float)32 };
-		//	Math::Vector2 first, second;
-		//	
-		//	first = center + radius * Math::Vector2(cosf(0.f), sinf(0.f));
-		//	for (unsigned i{ 0 }; i <= 32; ++i)
-		//	{
-		//		second = center + radius * Math::Vector2(cosf(degreeIncrement * i), sinf(degreeIncrement * i));
-		//		RenderLine(first, second);
-		//		first = second;
-		//	}
-		//}
-
+		/*!*********************************************************************************
+			\brief
+				Renders all Gizmo line draw requests.
+		***********************************************************************************/
 		void Gizmo::RenderAllLines()
 		{
 			if (gizmoToggle)
