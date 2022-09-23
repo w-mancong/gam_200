@@ -15,6 +15,11 @@ namespace ALEngine
 {
 	namespace Engine
 	{
+		AssetManager::AssetManager():
+		currentassetkeycounter(0), 
+		assetloadedcounter(0)
+		{}
+
 		void AssetManager::Init()
 		{
 
@@ -116,11 +121,8 @@ namespace ALEngine
 
 		u16 AssetManager::GetCurrentAssetCount()
 		{
-			//temp var for storing assetloadedcounter value
-			u16 result = assetloadedcounter;
-
 			//return assetloadedcounter value
-			return result;
+			return assetloadedcounter;
 		}
 
 		void AssetManager::IncrementCurrentAssetCount()

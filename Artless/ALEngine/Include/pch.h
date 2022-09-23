@@ -72,5 +72,5 @@
 // Asset Manager
 #include "Asset Manager/AssetManager.h"
 #include "Asset Manager/ContentBrowserPanel.h"
-
+#include "Asset Manager/FileWatcher.h"
 #endif
