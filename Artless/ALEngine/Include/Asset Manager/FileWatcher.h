@@ -26,7 +26,7 @@ namespace ALEngine::Engine
 	{
 	public:
 
-		std::string pathtowatch;
+		std::string pathtoWatch;
 
 		//the time interval at which to check the base folder for changes
 		std::chrono::duration<int, std::milli> delay;

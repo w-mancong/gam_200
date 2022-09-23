@@ -17,7 +17,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 namespace ALEngine::Engine
 {
 
-	class AssetManager : public Templates::Singleton<ALEditor>
+	class AssetManager : public Templates::Singleton<AssetManager>
 	{
 	public:
 		void Init();
@@ -102,10 +102,13 @@ namespace ALEngine::Engine
 		virtual ~AssetManager(void) = default;
 
 		//asset key counter for use in guid assetcount and map keys
-		u16 currentassetkeycounter{ 0 };
+		u16 currentassetKeycounter{ 0 };
 
 		//16 bits of asset counter from 0 to 65,535 for keeping track current number of asset loaded currently in editor
-		u16 assetloadedcounter{ 0 };
+		u16 assetloadedCounter{ 0 };
+
+		friend class Templates::Singleton<AssetManager>;
+		friend class Memory::StaticMemory;
 
 	};
 

@@ -16,8 +16,8 @@ namespace ALEngine
 	namespace Engine
 	{
 		AssetManager::AssetManager():
-		currentassetkeycounter(0), 
-		assetloadedcounter(0)
+		currentassetKeycounter(0), 
+		assetloadedCounter(0)
 		{}
 
 		void AssetManager::Init()
@@ -40,7 +40,7 @@ namespace ALEngine
 		std::vector<u16> AssetManager::GetTimeStamp()
 		{
 			//vector to store 16bit parts of timestamp 
-			std::vector<u16> timedata;
+			std::vector<u16> timeData;
 
 			//little-endian date (day, month, year), 12-09-2002
 			//yyyy Four-digit year (0000 through 9999).
@@ -84,55 +84,55 @@ namespace ALEngine
 			u8 min = static_cast<u8>(ltm.tm_min);  //8bit
 			
 			//bitshift day and month into 16 bit
-			u16 ddmm = (day << 8) | month;
+			u16 dayMonth = (day << 8) | month;
 
 			//bitshift hour and min into 16 bit
-			u16 HHMM = (hour << 8) | min;
+			u16 hourMin = (hour << 8) | min;
 
-			timedata.push_back(ddmm);
-			timedata.push_back(year);
-			timedata.push_back(HHMM);
+			timeData.push_back(dayMonth);
+			timeData.push_back(year);
+			timeData.push_back(hourMin);
 			
 			//then return the timestamp
-			return timedata;
+			return timeData;
 		}
 
 		void AssetManager::PrepareGuid()
 		{
 			//get timestamp to new guid
-			std::vector<u16> timestamp = GetTimeStamp();
-			u64 newguid{ 0ULL };
+			std::vector<u16> timeStamp = GetTimeStamp();
+			u64 newGuid{ 0ULL };
 
 			//get assetkeycount for use in putting assetnumber in guid
-			u16 guidassetcount = GetCurrentAssetKeyCount();
+			u16 guidassetCount = GetCurrentAssetKeyCount();
 			
 			//bitshift ddmmyyyy into a 32bit
-			u32 ddmmyyyy = (timestamp[0] << 16) | timestamp[1];
+			u32 dateStamp = (timeStamp[0] << 16) | timeStamp[1];
 
 			//bitshift HHMM and ANUM into a 32bit
-			u32 HHMMANUM = (timestamp[2] << 16) | guidassetcount;
+			u32 timeAssetnum = (timeStamp[2] << 16) | guidassetCount;
 
 			//bitshfit ddmmyyyy and HHMMANUM into 64 bit
-			newguid = (static_cast<u64>(ddmmyyyy) << 32) | HHMMANUM; // guid format ddmm yyyy HHMM Assetnumber
+			newGuid = (static_cast<u64>(dateStamp) << 32) | timeAssetnum; // guid format ddmm yyyy HHMM Assetnumber
 
 			//add to map container of guid
-			AddToAssetGuidContainer(newguid);
+			AddToAssetGuidContainer(newGuid);
 		}
 
 		u16 AssetManager::GetCurrentAssetCount()
 		{
 			//return assetloadedcounter value
-			return assetloadedcounter;
+			return assetloadedCounter;
 		}
 
 		void AssetManager::IncrementCurrentAssetCount()
 		{
-			++assetloadedcounter;
+			++assetloadedCounter;
 		}
 
 		void AssetManager::DecrementCurrentAssetCount()
 		{
-			--assetloadedcounter;
+			--assetloadedCounter;
 		}
 
 		void AssetManager::AddToAssetGuidContainer(u64 guidtoadd)
@@ -141,10 +141,10 @@ namespace ALEngine
 			IncrementCurrentAssetKeyCount();
 		
 			//get asset count for map kep
-			u16 currentassetnum = GetCurrentAssetKeyCount();
+			u16 currentAssetnum = GetCurrentAssetKeyCount();
 
 			//insert into the map container
-			assetguidcontainer.insert({ currentassetnum, guidtoadd });
+			assetguidcontainer.insert({ currentAssetnum, guidtoadd });
 
 			//increment the counter for current number of asset loaded currently in editor
 			IncrementCurrentAssetCount();
@@ -163,7 +163,7 @@ namespace ALEngine
 
 		u16 AssetManager::GetKeyForGuid(u64 guidtofind)
 		{
-			u16 keyfound{ 0 };
+			u16 keyFound{ 0 };
 
 			// Traverse the guid map container
 			for (auto& it : assetguidcontainer)
@@ -172,17 +172,17 @@ namespace ALEngine
 				if (it.second == guidtofind) 
 				{
 					//assign to temp var
-					keyfound = it.first;
+					keyFound = it.first;
 					break;
 				}
 			}
 
-			return keyfound;
+			return keyFound;
 		}
 		u16 AssetManager::GetCurrentAssetKeyCount()
 		{
 			//temp var for storing assetloadedcounter value
-			u16 result = currentassetkeycounter;
+			u16 result = currentassetKeycounter;
 
 			//return assetloadedcounter value
 			return result;
@@ -190,7 +190,7 @@ namespace ALEngine
 
 		void AssetManager::IncrementCurrentAssetKeyCount()
 		{
-			++currentassetkeycounter;
+			++currentassetKeycounter;
 		}
 	}
 }
