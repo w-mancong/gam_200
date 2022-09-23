@@ -9,6 +9,7 @@ brief:	This file contains all the relevant Engine header files to be included in
 #ifndef	MY_ENGINE_H
 #define MY_ENGINE_H
 
-#include "Engine/Application.h"
+#include <Engine/Application.h>
+#include <Engine/Camera.h>
 
 #endif

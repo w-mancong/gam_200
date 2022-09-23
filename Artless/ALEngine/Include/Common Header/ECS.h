@@ -19,6 +19,8 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Structure/EcsSystem.h"
 
 // -------------- Components --------------------
+#include "ECS/Components/RenderData.h"
+#include "ECS/Components/Color.h"
 #include "ECS/Components/Sprite.h"
 #include "ECS/Components/Transform.h"
 #include "ECS/Components/Collider.h"
