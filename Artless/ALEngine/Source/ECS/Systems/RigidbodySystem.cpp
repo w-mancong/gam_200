@@ -136,10 +136,10 @@ namespace ALEngine
 		}
 
 		void RigidbodySystem::DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid) {
-			Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 0.f, 0.f));
-			Gizmos::Gizmo::RenderLine(transform.position, transform.position + rigid.frameVelocity);
 			Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 255.f, 0.f));
-			Gizmos::Gizmo::RenderLine(transform.position + Vector2(1.f, 0.f), transform.position + rigid.acceleration * Time::m_FixedDeltaTime);
+			Gizmos::Gizmo::RenderLine(transform.position, transform.position + rigid.frameVelocity);
+			Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 255.f, 255.f));
+			Gizmos::Gizmo::RenderLine(transform.position + Vector2(5.f, 5.f), transform.position + rigid.acceleration * Time::m_FixedDeltaTime);
 		}
 	}
 }

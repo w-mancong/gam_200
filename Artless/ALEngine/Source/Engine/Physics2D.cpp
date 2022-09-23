@@ -77,6 +77,7 @@ namespace ALEngine
 					else if (hitOutput.normal.x != 0) {
 						hitOutput.point.y += direction.y;
 					}
+
 					return hitOutput;
 				}
 				else {

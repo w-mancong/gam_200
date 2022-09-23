@@ -44,7 +44,7 @@ namespace ALEngine
 			charControl.rightKey = static_cast<u64>(KeyCode::D);
 			charControl.jumpKey= static_cast<u64>(KeyCode::Space);
 
-			charControl.speed = 150.f;
+			charControl.speed = 250.f;
 			charControl.jumpStrength = 250.f;
 
 			Coordinator::Instance()->AddComponent(entity, charControl);
@@ -63,12 +63,8 @@ namespace ALEngine
 			//rigid.velocity.x = 0;
 
 			if (Input::Input::KeyTriggered(static_cast<KeyCode>(characControl.jumpKey))) {
-				AddForce(rigid, Vector2(0, characControl.jumpStrength * 10), FORCEMODE::FORCE);
-			}				
-			
-			if (Input::Input::KeyTriggered(static_cast<KeyCode>(characControl.jumpKey))) {
 				AddForce(rigid, Vector2(0, characControl.jumpStrength), FORCEMODE::FORCE);
-			}
+			}				
 
 			if (Input::Input::KeyDown(static_cast<KeyCode>(characControl.leftKey)))
 			{

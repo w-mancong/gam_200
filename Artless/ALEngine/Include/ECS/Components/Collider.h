@@ -26,6 +26,11 @@ namespace ALEngine
 				Circle2D
 			};
 
+			struct CollisionPointData {
+				Math::Vector2 point{};
+				Math::Vector2 normal{};
+			};
+
 			/*!*********************************************************************************
 				\brief
 					2D Circle Collider for collision detection
@@ -63,6 +68,7 @@ namespace ALEngine
 				bool isCollided{ false };
 				bool isTrigger{ false };
 				bool isDebug = false;
+				std::vector<CollisionPointData> collisionPoints;
 
 			private:
 				Math::Vector3 m_localPosition{ 0.f, 0.f,0.f };

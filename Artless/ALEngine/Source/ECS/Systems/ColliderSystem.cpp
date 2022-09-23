@@ -26,6 +26,9 @@ namespace ALEngine
 				bool CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				bool CheckCollision_Circle_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				bool CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+
+				bool CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius);
+				bool CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight);
 				
 				bool SweptCollision_AABB_ABBB(Collider2D& collider_one, Collider2D const& collider_two, Transform & parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
 				bool SweptCollision_Circle_Circle(Collider2D& collider_one, Collider2D const& collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
@@ -36,7 +39,7 @@ namespace ALEngine
 				
 				//Debug
 				void DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector3 color);
-				void DrawBox(const Vector3 bottomleft, const Vector3 topleft, const Vector3 color);
+				void DrawCollider(const Vector2 position, const Collider2D& collider, const Vector3 color);
 
 				std::vector<Ray2D> rayList;
 				bool isDebugDraw = true;
@@ -169,31 +172,10 @@ namespace ALEngine
 
 				Collider.isCollided = false;
 
+				Collider.collisionPoints.clear();
 				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it), trans);
 			}
 
-			//***************************** Put here for now ************************//
-			//************ Each collider test each other once, but this doesn't test the other's movement ********//
-			//for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-			//{
-			//	auto jt = ++it; //jt is next iteration
-			//	--it;			//move it back
-
-			//	Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-			//	Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-
-			//	oneCollider.frameEndGlobalPosition = oneCollider.localPosition + oneParentTransform.position;
-			//	for (; jt != cs->mEntities.end(); ++jt) {
-			//		Collider2D& twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
-			//		Transform const& twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
-
-			//		
-			//		collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform);
-			//	}
-			//}
-			//***************************** Put here for now ************************//
-
-			//***************************** Alternative ************************//
 			//***** Unoptimized, but it will go through every collider with every other, can test for velocity ******//
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
 			{
@@ -201,7 +183,6 @@ namespace ALEngine
 				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 
-				//std::cout << std::endl;
 				for (auto jt = cs->mEntities.begin(); jt != cs->mEntities.end(); ++jt) {
 					if (jt == it) {
 						continue;
@@ -229,16 +210,7 @@ namespace ALEngine
 				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 				Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-
-				if (cs->isDebugDraw) {
-					if (collider.isCollided) {
-						//cs->DrawCollider(parentTransform, collider, { 255.f, 0.f, 0.f });
-					}
-					else {
-						//cs->DrawCollider(parentTransform, collider, { 0.f, 255.f, 0.f });
-					}
-				}
-
+				
 				if (!rigidbody.isEnabled) {
 					continue;
 				}
@@ -419,9 +391,10 @@ namespace ALEngine
 		
 		using Physics::RaycastHit2D;
 		bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
-			//if (rigidbody_moving.velocity.Magnitude() == 0) {
-			//	return CheckCollision_AABB_To_AABB(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
-			//}
+
+			if (rigidbody_moving.velocity.Magnitude() == 0) {
+				return CheckCollision_AABB_To_AABB(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
+			}
 
 			Vector2 movingGlobalPosition = collider_moving.localPosition() + parent_transform_moving.position;
 			Vector2 otherGlobalPosition = collider_other.localPosition() + parent_transform_other.position;
@@ -430,34 +403,72 @@ namespace ALEngine
 			tempBox.scale[0] += collider_moving.scale[0];
 			tempBox.scale[1] += collider_moving.scale[1];
 
-			//Ray2D ray = { movingGlobalPosition, rigidbody_moving.nextPosition };
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.acceleration * Time::m_FixedDeltaTime};
+			Ray2D ray = { movingGlobalPosition, rigidbody_moving.nextPosition };
 			RaycastHit2D rayHit = Physics::Raycast_AABB(ray, tempBox, parent_transform_other);
 
 			if (rayHit.isCollided)
 			{
-				Vector2 vec { 0,0 };
-
 				if (rayHit.normal.y != 0) {
-					vec.x += rigidbody_moving.velocity.x;
+					rigidbody_moving.frameVelocity.y = 0;
+					rigidbody_moving.velocity.y = 0;
+
 				}
 				else if (rayHit.normal.x != 0) {
-					vec.y += rigidbody_moving.velocity.y;
+					rigidbody_moving.frameVelocity.x = 0;
+					rigidbody_moving.velocity.x = 0;
 				}
 
-				//rigidbody_moving.velocity = vec;
-				//rigidbody_moving.frameVelocity = rigidbody_moving.velocity * Time::m_FixedDeltaTime;
-				//rigidbody_moving.nextPosition = rayHit.point + rigidbody_moving.frameVelocity;
+				bool canMoveX = true, canMoveY = true;
 
-				if (isDebugDraw) {
-					DrawBox(rayHit.point - Vector2(collider_moving.scale[0] * 0.5f, collider_moving.scale[1] * 0.5f),
-						rayHit.point + Vector2(collider_moving.scale[0] * 0.5f, collider_moving.scale[1] * 0.5f), Vector3(0.f, 255.f, 0.f));
+				collider_moving.collisionPoints.push_back({ rigidbody_moving.nextPosition, rayHit.normal });
+				for (int i = 0; i < collider_moving.collisionPoints.size(); ++i) {
+					if (collider_moving.collisionPoints[i].normal.x != 0) {
+						canMoveY = false;
+					}
+					
+					if (collider_moving.collisionPoints[i].normal.y != 0) {
+						canMoveX = false;
+					}
 				}
+
+				if (canMoveX) {
+					rigidbody_moving.nextPosition.x = rayHit.point.x + rigidbody_moving.frameVelocity.x;
+				}
+				else {
+					rigidbody_moving.nextPosition.x = rayHit.point.x;
+				}
+
+				if (canMoveY) {
+					rigidbody_moving.nextPosition.y = rayHit.point.y + rigidbody_moving.frameVelocity.y;
+				}
+				else {
+					rigidbody_moving.nextPosition.y = rayHit.point.y;
+				}
+
+				collider_moving.collisionPoints.push_back({ rigidbody_moving.nextPosition, rayHit.normal });
+
 				return true;
 			}
 
 			return false;
 		}
+
+		bool ColliderSystem::CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius) {
+			Vector2 direction = position - circleCenter;
+			return (direction.x * direction.x + direction.y * direction.y) <= circleRadius * circleRadius;
+		}
+
+		bool ColliderSystem::CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight) {
+			Vector2 bottomLeft = boxCenter - Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
+			Vector2 topRight = boxCenter + Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
+
+			if (position.x < bottomLeft.x || position.x > topRight.x || position.y < bottomLeft.y || position.y > topRight.y) {
+				return false;
+			}
+
+			return true;
+		}
+
 
 		bool ColliderSystem::SweptCollision_Circle_Circle(Collider2D& collider_moving, Collider2D const& collider_other, Transform& parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbodyother) {
 			if (rigidbody_moving.velocity.Magnitude() == 0) {
@@ -508,7 +519,10 @@ namespace ALEngine
 					Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
 					Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
 
-					DrawBox(bottomleft, topright, Vector3(0.f,255.f,0.f));
+					Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });	//Bottom
+					Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);	//top
+					Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });	//left
+					Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);	//right
 				}
 				break;			
 			
@@ -517,104 +531,30 @@ namespace ALEngine
 				break;
 			}
 		}
-		void ColliderSystem::DrawBox(const Vector3 bottomleft, const Vector3 topright, const Vector3 color) {
-			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });	//Bottom
-			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);	//top
-			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });	//left
-			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);	//right
+
+		void ColliderSystem::DrawCollider(const Vector2 position, const Collider2D& collider, const Vector3 color) {
+			Gizmos::Gizmo::SetGizmoColor(color);
+			switch (collider.colliderType) {
+			case ColliderType::Rectangle2D_AABB:
+			{
+				Vector2 globalPosition = position + collider.localPosition();
+				Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
+				Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
+
+				Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });	//Bottom
+				Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);	//top
+				Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });	//left
+				Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);	//right
+			}
+			break;
+
+			case ColliderType::Circle2D:
+				Gizmos::Gizmo::RenderCircle(position + collider.localPosition(), collider.scale[0]);
+				break;
+			}
 		}
 	}
 }
 
 
 
-
-////**************** Raycast for any collider ************//
-//bool raycastHit = false;
-////Run through raycasts
-//for (int i = 0; i < cs->rayList.size(); i++){
-//	for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-//	{
-//		auto jt = ++it; //jt is next iteration
-//		--it;			//move it back
-
-//		Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-//		Transform const& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-
-//		if (oneCollider.colliderType == ColliderType::Rectangle2D_AABB) {
-//			raycastHit = Physics::Raycast_AABB(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
-//		}
-//		else if (oneCollider.colliderType == ColliderType::Circle2D) {
-//			raycastHit = Physics::Raycast_Circle(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
-//		}
-//	}
-//	//if (raycastHit) {
-//	//	printf("raycast hit ");
-//	//}
-//}
-//**************** Raycast for any collider ************//
-// 
-// 
-//if (oneCollider.isDebug) {
-//	//std::cout << "other " << i << " has " << oneRigidbody.velocity << " : ";
-//	//if (collision) {
-//	//	std::cout << "other " << i << " has Collision ";
-//	//}
-//	++cs->debugIndex;
-//}
-
-/// <summary>
-///	Collision Condition Check
-/// </summary>
-//if (collision) {
-//	//Collision Enter
-//	if (!oneCollider.isCollidedStay) {
-//		oneCollider.isColliderTriggered = true;
-//		oneCollider.isCollidedStay = true;
-//	}
-//	else if (oneCollider.isColliderTriggered) {
-//		//Collision Stay
-//		oneCollider.isColliderTriggered = false;
-//	}
-//	if (!twoCollider.isCollidedStay) {
-//		twoCollider.isColliderTriggered = true;
-//		twoCollider.isCollidedStay = true;
-//	}
-//	else if (oneCollider.isColliderTriggered)
-//	{
-//		//Collision Stay
-//		twoCollider.isColliderTriggered = false;
-//	}
-//}
-////Collision Exit
-////No Collision
-//else {
-//	oneCollider.isColliderTriggered = false;
-//	twoCollider.isColliderTriggered = false;
-//	if (oneCollider.isCollidedStay) {
-//		oneCollider.isCollidedStay = false;
-//		oneCollider.isColliderExit = true;
-//	}
-//	else {
-//		oneCollider.isColliderExit = false;
-//		oneCollider.isColliderTriggered = false;
-//	}
-//	if (twoCollider.isCollidedStay) {
-//		twoCollider.isCollidedStay = false;
-//		twoCollider.isColliderExit = true;
-//	}
-//	else {
-//		twoCollider.isColliderExit = false;
-//	}
-//}
-
-////Collision output updates
-//if (oneCollider.isColliderTriggered) {
-//	printf("Collision Trigger\n");
-//}
-//else if (oneCollider.isCollidedStay) {
-//	printf("Collision Stay\n");
-//}
-//else if (oneCollider.isColliderExit) {
-//	printf("Collision Exit\n");
-//}
