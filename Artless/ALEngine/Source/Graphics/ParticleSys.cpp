@@ -46,7 +46,7 @@ namespace ALEngine
 					// update particle life, position, rotation
 					particle.lifeRemaining -= deltaTime;
 					particle.position += particle.velocity * (float)deltaTime;
-					particle.rotation += 0.01f * deltaTime;
+					particle.rotation += 0.05f * deltaTime; // rotate over time
 				}
 			}
 
@@ -100,10 +100,9 @@ namespace ALEngine
 					if (!particle.active)
 						continue;
 
-					// Fade away particles
+					// Interpolate color and size between particle birth and death
 					f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
 					Math::Vector4 color = Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
-
 					f32 size = Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
 
 					// Render
@@ -122,24 +121,22 @@ namespace ALEngine
 			void ParticleSystem::Emit(const ParticleProperties& particleProperty)
 			{
 				Particle& particle = particleContainer[particleIndex];
-				particle.active = true;
+				particle.active = true; // set particle as active
 				particle.position = particleProperty.position;
 				particle.rotation = distribution(generator) * 3.141592653f;
 
-				// Velocity
+				// Set particle characterisitcs
 				particle.velocity = particleProperty.velocity;
 				particle.velocity.x += particleProperty.velocityVariation.x * distribution(generator);
 				particle.velocity.y += particleProperty.velocityVariation.y * distribution(generator);
-
-				// Color
 				particle.colorStart = particleProperty.colorStart;
 				particle.colorEnd = particleProperty.colorEnd;
-
 				particle.lifeTime = particleProperty.lifeTime;
 				particle.lifeRemaining = particleProperty.lifeTime;
 				particle.sizeBegin = particleProperty.sizeStart + particleProperty.sizeVariation * distribution(generator);
 				particle.sizeEnd = particleProperty.sizeEnd;
 
+				// cycle to next particle in the particle container
 				particleIndex = --particleIndex % particleContainer.size();
 			}
 

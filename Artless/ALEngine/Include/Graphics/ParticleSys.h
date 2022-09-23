@@ -46,7 +46,7 @@ namespace ALEngine
 					bool active{ false };
 				};
 				std::vector<Particle> particleContainer;
-				u32 particleIndex = 999; // max particles
+				u32 particleIndex = 999; // max index of particles container
 
 				u32 particleVAO{ 0 }, particleVBO{}, particleEBO{};
 				Shader particleShader;

@@ -18,25 +18,24 @@ namespace ALEngine
 				newFont.fontShader.use();
 				newFont.fontShader.Set("projection", projection);
 
-				// FreeType
-				// --------
 				FT_Library freeType;
-				// All functions return a value different than 0 whenever an error occurred
+
+				// freetype functions return 0 if error
 				if (FT_Init_FreeType(&freeType))
 				{
-					std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+					std::cout << "FONTS ERROR: Freetype Library Init failed" << std::endl;
 				}
 
-				// find path to font
-				if (fontAddress.empty())
+				if (fontAddress.empty()) // find path to font
 				{
-					std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
+					std::cout << "FONTS ERROR: Failed to load font: " << fontAddress << std::endl;
 				}
 
 				// load font as face
 				FT_Face face;
-				if (FT_New_Face(freeType, fontAddress.c_str(), 0, &face)) {
-					std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+				if (FT_New_Face(freeType, fontAddress.c_str(), 0, &face))
+				{
+					std::cout << "FONTS ERROR: Failed to load font: " << fontAddress << std::endl;
 				}
 				// set size to load glyphs as
 				FT_Set_Pixel_Sizes(face, 0, 48);
@@ -50,31 +49,26 @@ namespace ALEngine
 					// Load character glyph 
 					if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 					{
-						std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+						std::cout << "FONTS ERROR: Failed to load glyph '" << c << "' from " << fontAddress << std::endl;
 						continue;
 					}
-					// generate texture
+
+					// generate font textures
 					u32 shaderTexture;
 					glGenTextures(1, &shaderTexture);
 					glBindTexture(GL_TEXTURE_2D, shaderTexture);
-					glTexImage2D(
-						GL_TEXTURE_2D,
-						0,
-						GL_RED,
-						face->glyph->bitmap.width,
-						face->glyph->bitmap.rows,
-						0,
-						GL_RED,
-						GL_UNSIGNED_BYTE,
-						face->glyph->bitmap.buffer
-					);
-					// set texture options
+					glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED,
+						GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+
+					// set texture options (wrap & clamp to edge)
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-					// now store character for later use
-					Character character = {
+
+					// store character in characterCollection container
+					Character character =
+					{
 						shaderTexture,
 						Math::Vector2(static_cast<f32>(face->glyph->bitmap.width), static_cast<f32>(face->glyph->bitmap.rows)),
 						Math::Vector2(static_cast<f32>(face->glyph->bitmap_left), static_cast<f32>(face->glyph->bitmap_top)),
@@ -84,13 +78,11 @@ namespace ALEngine
 
 					glBindTexture(GL_TEXTURE_2D, 0);
 				}
-				// destroy FreeType once we're finished
+				// Cleanup freetype
 				FT_Done_Face(face);
 				FT_Done_FreeType(freeType);
 
-
-				// configure VAO/VBO for texture quads
-				// -----------------------------------
+				// Generate and initialize fontVAO & fontsVBO
 				glGenVertexArrays(1, &newFont.fontsVAO);
 				glGenBuffers(1, &newFont.fontsVBO);
 				glBindVertexArray(newFont.fontsVAO);
@@ -119,8 +111,8 @@ namespace ALEngine
 			void RenderText(Text& text)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				// activate corresponding render state
 
+				// Perform check if font family name is found
 				std::map<std::string, std::map<Font::FontType, Font>>::iterator it;
 				it = Font::fontCollection.find(text.currentFont);
 				if (it == Font::fontCollection.end())
@@ -129,6 +121,7 @@ namespace ALEngine
 					return;
 				}
 
+				// Perform check if font type is found
 				std::map<Font::FontType, Font>::iterator it2;
 				it2 = Font::fontCollection.find(text.currentFont)->second.find(text.currentType);
 				if (it2 == Font::fontCollection.find(text.currentFont)->second.end())
@@ -137,8 +130,10 @@ namespace ALEngine
 					return;
 				}
 
-				Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontShader.use();
-				Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
+				Font::fontCollection.find(text.currentFont)->second
+					.find(text.currentType)->second.fontShader.use();
+				Font::fontCollection.find(text.currentFont)->second
+					.find(text.currentType)->second.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
 				glActiveTexture(GL_TEXTURE0);
 
 				glBindVertexArray(Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVAO);
@@ -147,34 +142,41 @@ namespace ALEngine
 				std::string::const_iterator c;
 				for (c = text.textString.begin(); c != text.textString.end(); c++)
 				{
-					Character ch = Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.characterCollection[*c];
+					Character ch = Font::fontCollection.find(text.currentFont)->second
+						.find(text.currentType)->second.characterCollection[*c];
 
-					f32 xpos = text.position.x + ch.bearing.x * text.scale;
-					f32 ypos = text.position.y - (ch.size.y - ch.bearing.y) * text.scale;
+					// position of each glyph
+					f32 xPos = text.position.x + ch.bearing.x * text.scale;
+					f32 yPos = text.position.y - (ch.size.y - ch.bearing.y) * text.scale;
 
-					f32 w = ch.size.x * text.scale;
-					f32 h = ch.size.y * text.scale;
+					// scale of each glyph
+					f32 width = ch.size.x * text.scale;
+					f32 height = ch.size.y * text.scale;
+
 					// update VBO for each character
 					f32 vertices[6][4] = {
-						{ xpos,     ypos + h,   0.0f, 0.0f,},
-						{ xpos,     ypos,       0.0f, 1.0f },
-						{ xpos + w, ypos,       1.0f, 1.0f },
+						{ xPos,     yPos + height,   0.0f, 0.0f,},
+						{ xPos,     yPos,       0.0f, 1.0f },
+						{ xPos + width, yPos,       1.0f, 1.0f },
 
-						{ xpos,     ypos + h,   0.0f, 0.0f },
-						{ xpos + w, ypos,       1.0f, 1.0f },
-						{ xpos + w, ypos + h,   1.0f, 0.0f }
+						{ xPos,     yPos + height,   0.0f, 0.0f },
+						{ xPos + width, yPos,       1.0f, 1.0f },
+						{ xPos + width, yPos + height,   1.0f, 0.0f }
 					};
-					// render glyph texture over quad
+					// paste glyph texture on rect
 					glBindTexture(GL_TEXTURE_2D, ch.textureID);
-					// update content of VBO memory
+
+					// update VBO
 					glBindBuffer(GL_ARRAY_BUFFER, Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVBO);
-					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
+					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
-					// render quad
+					
+					// Render rect
 					glDrawArrays(GL_TRIANGLES, 0, 6);
-					// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-					text.position.x += (ch.advance >> 6) * text.scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+
+					// advance horizontal position of glyph
+					text.position.x += (ch.advance >> 6) * text.scale; 
 				}
 				glBindVertexArray(0);
 				glBindTexture(GL_TEXTURE_2D, 0);

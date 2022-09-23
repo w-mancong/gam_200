@@ -226,6 +226,14 @@ namespace ALEngine
 					//++displayed;
 				}
 			}
+			Text testText;
+			SetFont(testText, "roboto");
+			SetFontType(testText, Font::FontType::Regular);
+			SetTextPos(testText, Vector2(50.f,50.f));
+			SetTextSize(testText, 1.f);
+			SetTextString(testText, "Testing");
+			SetTextColor(testText, 1, 1, 1);
+			RenderText(testText);
 
 			//std::cout << "Total entities in scene: " << entities.size() << std::endl;
 			//std::cout << "Total entities displayed: " << displayed << std::endl;
