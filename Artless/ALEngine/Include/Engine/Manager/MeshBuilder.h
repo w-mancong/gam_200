@@ -16,32 +16,32 @@ namespace ALEngine::Engine
 	class MeshBuilder : public Templates::Singleton<MeshBuilder>
 	{
 	public:
-		/*!*********************************************************************************
-			\brief
-			Make a rectangle
+		///*!*********************************************************************************
+		//	\brief
+		//	Make a rectangle
 
-			\return
-			Sprite containing the relevant data to rendering a rectangle
-		***********************************************************************************/
-		Sprite MakeRectangle(void);
+		//	\return
+		//	Sprite containing the relevant data to rendering a rectangle
+		//***********************************************************************************/
+		//Sprite MakeRectangle(void);
 
-		/*!*********************************************************************************
-			\brief
-			Make a circle
+		///*!*********************************************************************************
+		//	\brief
+		//	Make a circle
 
-			\return
-			Sprite containing the relevant data to rendering a circle
-		***********************************************************************************/
-		Sprite MakeCircle(void);
+		//	\return
+		//	Sprite containing the relevant data to rendering a circle
+		//***********************************************************************************/
+		//Sprite MakeCircle(void);
 
-		/*!*********************************************************************************
-			\brief
-			Make a triangle
+		///*!*********************************************************************************
+		//	\brief
+		//	Make a triangle
 
-			\return
-			Sprite containing the relevant data to rendering a triangle
-		***********************************************************************************/
-		Sprite MakeTriangle(void);
+		//	\return
+		//	Sprite containing the relevant data to rendering a triangle
+		//***********************************************************************************/
+		//Sprite MakeTriangle(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -124,7 +124,7 @@ namespace ALEngine::Engine
 
 		using mem = Memory::DynamicAllocator<std::pair<std::string, Sprite>>;
 		std::vector<std::pair<std::string, Sprite>, mem> m_Sprites;
-		Sprite m_Shapes[static_cast<u64>(Shapes::Total)];
+		//Sprite m_Shapes[static_cast<u64>(Shapes::Total)];
 	};
 
 	struct BatchData

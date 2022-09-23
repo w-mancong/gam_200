@@ -63,14 +63,6 @@ namespace ALEngine::ECS
 			{  0.5f, -0.5f }	// btm right
 		};
 
-		vec2 const texture_position[4] =
-		{
-			{ 0.0f, 1.0f },		// top left
-			{ 0.0f, 0.0f },		// btm left
-			{ 1.0f, 1.0f },		// top right
-			{ 1.0f, 0.0f } 		// btm right
-		};
-
 		u64 constexpr INDICES_SIZE{ 6 };
 	}
 
@@ -156,7 +148,7 @@ namespace ALEngine::ECS
 				*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
 				 // assigning colors
 				(*(colors + j)).x = sprite.color.r; (*(colors + j)).y = sprite.color.g; (*(colors + j)).z = sprite.color.b; (*(colors + j)).w = sprite.color.a;
-				*(tex_coords + j) = *(texture_position + k);
+				*(tex_coords + j) = *(sprite.tex_coords + k);
 				*(tex_handles + j) = sprite.handle;
 			}
 			++counter;
@@ -171,8 +163,6 @@ namespace ALEngine::ECS
 		BatchData bd{ positions, colors, tex_coords, tex_handles };
 
 		SubVertexPosition(bd);
-
-		//std::cout << counter << std::endl;
 
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, INDICES_SIZE * counter, GL_UNSIGNED_INT, nullptr);
@@ -349,7 +339,7 @@ namespace ALEngine::ECS
 	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
 	{
 		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
-		sprite.layer = layer/*, sprite.mode = mode*/;
+		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}
 

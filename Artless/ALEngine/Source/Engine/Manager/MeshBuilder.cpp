@@ -6,7 +6,7 @@
 namespace
 {
 	// layout location inside vertex shader
-	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, SPRITE_RESERVE_SIZE{ 100 };
+	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, HANDLE{ 3 }, SPRITE_RESERVE_SIZE{ 100 };
 	u32 instanceVBO{ 0 }, batchVBO{ 0 };
 	u64 const NUM_VERTICES{ 4 }, 
 		TOTAL_POS_BYTE{ sizeof(ALEngine::Math::vec3) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
@@ -35,20 +35,21 @@ namespace
 		glBufferData(GL_ARRAY_BUFFER, TOTAL_BYTES, nullptr, GL_DYNAMIC_DRAW);
 
 		// position attribute
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(f32), (void*)0);
+		glEnableVertexAttribArray(POS);
+		glVertexAttribPointer(POS, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(f32), (void*)0);
 		// color attribute
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(f32), (void*)(TOTAL_POS_BYTE));
-		// tex attribute
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE));
+		glEnableVertexAttribArray(COLOR);
+		glVertexAttribPointer(COLOR, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(f32), (void*)(TOTAL_POS_BYTE));
+		// tex coord attribute
+		glEnableVertexAttribArray(TEX);
+		glVertexAttribPointer(TEX, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(f32), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE));
 		// tex_handle attribute
-		glEnableVertexAttribArray(3);
-		glVertexAttribLPointer(3, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE));
+		glEnableVertexAttribArray(HANDLE);
+		glVertexAttribLPointer(HANDLE, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE));
 
 		/*
-			Buffering indices. Draw Primitive: GL_TRIANGLES
+			Buffering indices. 
+			Draw Primitive: GL_TRIANGLES
 		*/
 		glGenBuffers(1, &ebo);
 		u64 const TOTAL_INDICES = 6 * ECS::MAX_ENTITIES;
@@ -78,10 +79,10 @@ namespace ALEngine::Engine
 	using namespace Math; using namespace Memory; using namespace ECS;
 	MeshBuilder::MeshBuilder(void)
 	{
-		memset(m_Shapes, 0, sizeof(m_Shapes));
-		CreateBatchVao();
+		//memset(m_Shapes, 0, sizeof(m_Shapes));
 		//CreateRectangle(); CreateCircle(); CreateTriangle();
 		//CreateInstanceBuffer();
+		CreateBatchVao();
 		m_Sprites.reserve(SPRITE_RESERVE_SIZE);
 	}
 
@@ -99,20 +100,20 @@ namespace ALEngine::Engine
 		glDeleteBuffers(1, &batch.ebo);
 	}
 
-	Sprite MeshBuilder::MakeRectangle(void)
-	{
-		return m_Shapes[static_cast<u64>(Shapes::Rectangle)];
-	}
+	//Sprite MeshBuilder::MakeRectangle(void)
+	//{
+	//	return m_Shapes[static_cast<u64>(Shapes::Rectangle)];
+	//}
 
-	Sprite MeshBuilder::MakeCircle(void)
-	{
-		return m_Shapes[static_cast<u64>(Shapes::Circle)];
-	}
+	//Sprite MeshBuilder::MakeCircle(void)
+	//{
+	//	return m_Shapes[static_cast<u64>(Shapes::Circle)];
+	//}
 
-	Sprite MeshBuilder::MakeTriangle(void)
-	{
-		return m_Shapes[static_cast<u64>(Shapes::Triangle)];
-	}
+	//Sprite MeshBuilder::MakeTriangle(void)
+	//{
+	//	return m_Shapes[static_cast<u64>(Shapes::Triangle)];
+	//}
 
 	Sprite MeshBuilder::MakeSprite(std::string const& filePath)
 	{
