@@ -9,7 +9,6 @@ brief:	This file contains the sprite component
 #ifndef	SPRITE_H
 #define SPRITE_H
 
-#include "Utility/Type.h"
 namespace ALEngine::ECS::Component
 {
 	/*!*********************************************************************************
@@ -20,6 +19,8 @@ namespace ALEngine::ECS::Component
 	{
 		u32 texture{ 0 };
 		u64 handle{ 0 };
+		// Top left, btm left, top right, btm right
+		Math::vec2 tex_coords[4]{ { 0.0f, 1.0f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f } };
 		Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
 		RenderLayer layer{ RenderLayer::Background };
 	};
