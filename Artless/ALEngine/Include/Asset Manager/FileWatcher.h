@@ -32,17 +32,31 @@ namespace ALEngine::Engine
 		std::chrono::duration<int, std::milli> delay;
 
 
+		/*!*********************************************************************************
+	    \brief
+	    function for keeping a record of files from the base directory and their last 
+		modification time
+	    ***********************************************************************************/
 		FileWatcher(std::string pathtoWatch, std::chrono::duration<int, std::milli> delay);
 
-
-
+		/*!*********************************************************************************
+	    \brief
+	    Monitor the "pathtoWatch" for any changes and if there is a case of a change execute
+		the user supplied "action" function
+	    ***********************************************************************************/
+		void start(const std::function<void(std::string, FileStatus)>& action);
 
 
 	private:
-		std::unordered_map<std::string, std::filesystem::file_time_type> filepaths;
+		std::unordered_map<std::string, std::filesystem::file_time_type> filePaths;
 		bool running = true;
 
 
+		/*!*********************************************************************************
+		\brief
+	    Check if "filePaths" contains a given key
+		***********************************************************************************/
+		bool contains(const std::string& key);
 
 	};
 
