@@ -105,7 +105,7 @@
 #define GLFW_HAS_GET_KEY_NAME         (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) // 3.2+ glfwGetKeyName()
 
 // GLFW data
-enum GlfwClientApi
+enum class GlfwClientApi
 {
     GlfwClientApi_Unknown,
     GlfwClientApi_OpenGL,
@@ -559,17 +559,17 @@ static bool ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, Glfw
 
 bool ImGui_ImplGlfw_InitForOpenGL(GLFWwindow* window, bool install_callbacks)
 {
-    return ImGui_ImplGlfw_Init(window, install_callbacks, GlfwClientApi_OpenGL);
+    return ImGui_ImplGlfw_Init(window, install_callbacks, GlfwClientApi::GlfwClientApi_OpenGL);
 }
 
 bool ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool install_callbacks)
 {
-    return ImGui_ImplGlfw_Init(window, install_callbacks, GlfwClientApi_Vulkan);
+    return ImGui_ImplGlfw_Init(window, install_callbacks, GlfwClientApi::GlfwClientApi_Vulkan);
 }
 
 bool ImGui_ImplGlfw_InitForOther(GLFWwindow* window, bool install_callbacks)
 {
-    return ImGui_ImplGlfw_Init(window, install_callbacks, GlfwClientApi_Unknown);
+    return ImGui_ImplGlfw_Init(window, install_callbacks, GlfwClientApi::GlfwClientApi_Unknown);
 }
 
 void ImGui_ImplGlfw_Shutdown()
@@ -614,7 +614,7 @@ static void ImGui_ImplGlfw_UpdateMouseData()
             // (Optional) Set OS mouse position from Dear ImGui if requested (rarely used, only when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
             // When multi-viewports are enabled, all Dear ImGui positions are same as OS positions.
             if (io.WantSetMousePos)
-                glfwSetCursorPos(window, (double)(mouse_pos_prev.x - viewport->Pos.x), (double)(mouse_pos_prev.y - viewport->Pos.y));
+                glfwSetCursorPos(window, (static_cast<double>(mouse_pos_prev.x) - static_cast<double>(viewport->Pos.x)), (static_cast<double>(mouse_pos_prev.y) - static_cast<double>(viewport->Pos.y)));
 
             // (Optional) Fallback to provide mouse position when focused (ImGui_ImplGlfw_CursorPosCallback already provides this when hovered or captured)
             if (bd->MouseWindow == NULL)
@@ -882,7 +882,7 @@ static void ImGui_ImplGlfw_CreateWindow(ImGuiViewport* viewport)
 #if GLFW_HAS_WINDOW_TOPMOST
     glfwWindowHint(GLFW_FLOATING, (viewport->Flags & ImGuiViewportFlags_TopMost) ? true : false);
 #endif
-    GLFWwindow* share_window = (bd->ClientApi == GlfwClientApi_OpenGL) ? bd->Window : NULL;
+    GLFWwindow* share_window = (bd->ClientApi == GlfwClientApi::GlfwClientApi_OpenGL) ? bd->Window : NULL;
     vd->Window = glfwCreateWindow((int)viewport->Size.x, (int)viewport->Size.y, "No Title Yet", NULL, share_window);
     vd->WindowOwned = true;
     viewport->PlatformHandle = (void*)vd->Window;
@@ -904,7 +904,7 @@ static void ImGui_ImplGlfw_CreateWindow(ImGuiViewport* viewport)
     glfwSetWindowCloseCallback(vd->Window, ImGui_ImplGlfw_WindowCloseCallback);
     glfwSetWindowPosCallback(vd->Window, ImGui_ImplGlfw_WindowPosCallback);
     glfwSetWindowSizeCallback(vd->Window, ImGui_ImplGlfw_WindowSizeCallback);
-    if (bd->ClientApi == GlfwClientApi_OpenGL)
+    if (bd->ClientApi == GlfwClientApi::GlfwClientApi_OpenGL)
     {
         glfwMakeContextCurrent(vd->Window);
         glfwSwapInterval(0);
@@ -1078,7 +1078,7 @@ static void ImGui_ImplGlfw_RenderWindow(ImGuiViewport* viewport, void*)
 {
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     ImGui_ImplGlfw_ViewportData* vd = (ImGui_ImplGlfw_ViewportData*)viewport->PlatformUserData;
-    if (bd->ClientApi == GlfwClientApi_OpenGL)
+    if (bd->ClientApi == GlfwClientApi::GlfwClientApi_OpenGL)
         glfwMakeContextCurrent(vd->Window);
 }
 
@@ -1086,7 +1086,7 @@ static void ImGui_ImplGlfw_SwapBuffers(ImGuiViewport* viewport, void*)
 {
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     ImGui_ImplGlfw_ViewportData* vd = (ImGui_ImplGlfw_ViewportData*)viewport->PlatformUserData;
-    if (bd->ClientApi == GlfwClientApi_OpenGL)
+    if (bd->ClientApi == GlfwClientApi::GlfwClientApi_OpenGL)
     {
         glfwMakeContextCurrent(vd->Window);
         glfwSwapBuffers(vd->Window);
@@ -1117,7 +1117,7 @@ static int ImGui_ImplGlfw_CreateVkSurface(ImGuiViewport* viewport, ImU64 vk_inst
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     ImGui_ImplGlfw_ViewportData* vd = (ImGui_ImplGlfw_ViewportData*)viewport->PlatformUserData;
     IM_UNUSED(bd);
-    IM_ASSERT(bd->ClientApi == GlfwClientApi_Vulkan);
+    IM_ASSERT(bd->ClientApi == GlfwClientApi::GlfwClientApi_Vulkan);
     VkResult err = glfwCreateWindowSurface((VkInstance)vk_instance, vd->Window, (const VkAllocationCallbacks*)vk_allocator, (VkSurfaceKHR*)out_vk_surface);
     return (int)err;
 }

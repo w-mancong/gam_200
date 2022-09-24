@@ -1,372 +1,143 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp" />
+    <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
+    <ClCompile Include="Source\Editor\ImGuizmo\GraphEditor.cpp" />
+    <ClCompile Include="Source\Editor\ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="Source\Editor\ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="Source\Editor\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Source\Editor\ImGuizmo\ImSequencer.cpp" />
+    <ClCompile Include="Source\Editor\Panels\InspectorPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp" />
+    <ClCompile Include="Source\Engine\Physics2D.cpp" />
+    <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
+    <ClCompile Include="Source\Editor\ALEditor.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Exceptions\Logger.cpp" />
+    <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp" />
+    <ClCompile Include="Source\ECS\Structure\EntityManager.cpp" />
+    <ClCompile Include="Source\ECS\Systems\RenderSystem.cpp" />
+    <ClCompile Include="Source\Engine\Application.cpp" />
+    <ClCompile Include="Source\Engine\Camera.cpp" />
+    <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp" />
+    <ClCompile Include="Source\Exceptions\GLDebug.cpp" />
+    <ClCompile Include="Source\Graphics\GLAD\glad.c" />
+    <ClCompile Include="Source\Graphics\OpenGLWindow.cpp" />
+    <ClCompile Include="Source\Graphics\ParticleSys.cpp" />
+    <ClCompile Include="Source\Graphics\Shader.cpp" />
+    <ClCompile Include="Source\Graphics\Text.cpp" />
+    <ClCompile Include="Source\Input\Input.cpp" />
+    <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
+    <ClCompile Include="Source\Math\Math.cpp" />
+    <ClCompile Include="Source\Math\matrix.cpp" />
+    <ClCompile Include="Source\Math\Matrix3x3.cpp" />
+    <ClCompile Include="Source\Math\Matrix4x4.cpp" />
+    <ClCompile Include="Source\Math\Vector2.cpp" />
+    <ClCompile Include="Source\Math\Vector3.cpp" />
+    <ClCompile Include="Source\Math\Vector4.cpp" />
+    <ClCompile Include="Source\Memory\Memory.cpp" />
+    <ClCompile Include="Source\misc\main.cpp" />
+    <ClCompile Include="Source\misc\pch.cpp" />
+    <ClCompile Include="Source\misc\Random.cpp" />
+    <ClCompile Include="Source\Utility\console.cpp" />
+    <ClCompile Include="Source\Utility\Gizmo.cpp" />
+    <ClCompile Include="Source\Utility\HelperFunction.cpp" />
+    <ClCompile Include="Source\Utility\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\misc\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\misc\pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\inverse_sqrt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\matrix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Matrix3x3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility\console.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Structure\EntityManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\misc\Random.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility\Time.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Memory\Memory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\GLAD\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\OpenGLWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility\HelperFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Exceptions\GLDebug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Matrix4x4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Systems\RenderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Physics2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Exceptions\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_impl_glfw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\ALEditor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility\Gizmo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\ParticleSys.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Include\pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\Vector2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\inverse_sqrt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\Matrix3x3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Utility\console.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Utility\Type.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\Vector3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Structure\entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Structure\component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Components\Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Structure\EntityManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Structure\ComponentArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Structure\ComponentManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Structure\SystemManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Structure\Coordinator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\MyMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\ECS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\Utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\Random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Utility\Time.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Input\InputKeys.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\MyInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Input\Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Memory\Memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\MyMemory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Memory\MemoryLeak.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Graphics\OpenGLWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\MyGraphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Engine\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\MyEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Components\Color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Utility\HelperFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Graphics\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Exceptions\GLDebug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\MyExceptions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Engine\Manager\MeshBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Templated Class\Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\TemplateClasses.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\Vector4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\Matrix4x4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Engine\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Structure\EcsSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Components\RenderData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Systems\RenderSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Components\Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Components\Collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Systems\ColliderSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Engine\Physics2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Components\Rigidbody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Systems\RigidbodySystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Components\Text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Graphics\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Exceptions\Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui_impl_glfw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imstb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imstb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imgui_impl_glfw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imstb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imstb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\imgui\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor\ALEditor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Graphics\Gizmo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Common Header\MyEditor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Graphics\ParticleSys.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h" />
+    <ClInclude Include="Include\Common Header\MyEditor.h" />
+    <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
+    <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
+    <ClInclude Include="Include\Common Header\ECS.h" />
+    <ClInclude Include="Include\Common Header\MyEngine.h" />
+    <ClInclude Include="Include\Common Header\MyExceptions.h" />
+    <ClInclude Include="Include\Common Header\MyGraphics.h" />
+    <ClInclude Include="Include\Common Header\MyInput.h" />
+    <ClInclude Include="Include\Common Header\MyMemory.h" />
+    <ClInclude Include="Include\Common Header\TemplateClasses.h" />
+    <ClInclude Include="Include\Common Header\Utility.h" />
+    <ClInclude Include="Include\ECS\Components\Collider.h" />
+    <ClInclude Include="Include\ECS\Components\Sprite.h" />
+    <ClInclude Include="Include\ECS\Components\RenderData.h" />
+    <ClInclude Include="Include\ECS\Components\Text.h" />
+    <ClInclude Include="Include\ECS\Structure\EcsSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\RenderSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\RigidbodySystem.h" />
+    <ClInclude Include="Include\Editor\ALEditor.h" />
+    <ClInclude Include="Include\Editor\imconfig.h" />
+    <ClInclude Include="Include\Editor\imgui.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\GraphEditor.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="Include\Editor\ImGuizmo\ImZoomSlider.h" />
+    <ClInclude Include="Include\Editor\imgui\imconfig.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Include\Editor\imgui\imgui_internal.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_textedit.h" />
+    <ClInclude Include="Include\Editor\imgui\imstb_truetype.h" />
+    <ClInclude Include="Include\Editor\imgui_impl_glfw.h" />
+    <ClInclude Include="Include\Editor\imgui_impl_opengl3.h" />
+    <ClInclude Include="Include\Editor\imgui_internal.h" />
+    <ClInclude Include="Include\Editor\imstb_rectpack.h" />
+    <ClInclude Include="Include\Editor\imstb_textedit.h" />
+    <ClInclude Include="Include\Editor\imstb_truetype.h" />
+    <ClInclude Include="Include\Editor\Panels\InspectorPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
+    <ClInclude Include="Include\Engine\Camera.h" />
+    <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
+    <ClInclude Include="Include\Exceptions\GLDebug.h" />
+    <ClInclude Include="Include\ECS\Structure\component.h" />
+    <ClInclude Include="Include\ECS\Structure\ComponentArray.h" />
+    <ClInclude Include="Include\ECS\Structure\ComponentManager.h" />
+    <ClInclude Include="Include\ECS\Components\Transform.h" />
+    <ClInclude Include="Include\ECS\Structure\Coordinator.h" />
+    <ClInclude Include="Include\ECS\Structure\entity.h" />
+    <ClInclude Include="Include\ECS\Structure\EntityManager.h" />
+    <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
+    <ClInclude Include="Include\Engine\Application.h" />
+    <ClInclude Include="Include\ECS\Components\Color.h" />
+    <ClInclude Include="Include\Exceptions\Logger.h" />
+    <ClInclude Include="Include\Graphics\Gizmo.h" />
+    <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
+    <ClInclude Include="Include\Graphics\ParticleSys.h" />
+    <ClInclude Include="Include\Graphics\Shader.h" />
+    <ClInclude Include="Include\Graphics\stb_image.h" />
+    <ClInclude Include="Include\Input\InputKeys.h" />
+    <ClInclude Include="Include\Input\Input.h" />
+    <ClInclude Include="Include\Math\Math.h" />
+    <ClInclude Include="Include\Math\matrix.h" />
+    <ClInclude Include="Include\Math\Matrix3x3.h" />
+    <ClInclude Include="Include\Math\Matrix4x4.h" />
+    <ClInclude Include="Include\Math\Vector3.h" />
+    <ClInclude Include="Include\Common Header\MyMath.h" />
+    <ClInclude Include="Include\Common Header\Random.h" />
+    <ClInclude Include="Include\Math\Vector4.h" />
+    <ClInclude Include="Include\Memory\Memory.h" />
+    <ClInclude Include="Include\Memory\MemoryLeak.h" />
+    <ClInclude Include="Include\Math\inverse_sqrt.h" />
+    <ClInclude Include="Include\Math\Vector2.h" />
+    <ClInclude Include="Include\pch.h" />
+    <ClInclude Include="Include\Templated Class\Singleton.h" />
+    <ClInclude Include="Include\Utility\console.h" />
+    <ClInclude Include="Include\Utility\HelperFunctions.h" />
+    <ClInclude Include="Include\Utility\Time.h" />
+    <ClInclude Include="Include\Utility\Type.h" />
+    <ClInclude Include="Include\Engine\Physics2D.h" />
   </ItemGroup>
 </Project>

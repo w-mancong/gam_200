@@ -114,6 +114,10 @@ namespace ALEngine
 		***********************************************************************************/
 		Math::Vector3 CameraPosition(void);
 
+		Math::Matrix4x4 GetProjection(void);
+
+		Math::Matrix4x4 GetView(void);
+
 		/*!*********************************************************************************
 			\brief
 			Set the fov angle of the camera
@@ -131,39 +135,6 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Create a sprite with basic shapes, no images will be loaded
-
-			\param [in] entity:
-			ID of entity to add Transform and Sprite component
-			\param [in] transform:
-			Tranform component to be added
-			\param [in] shape:
-			Shape to be created
-			\param [in] layer:
-			Rendering order of the sprite
-			\param [in] mode:
-			Different polygon draw mode
-		***********************************************************************************/
-		void CreateSprite(Entity const& entity, Transform const& transform, Shape shape = Shape::Rectangle, RenderLayer layer = RenderLayer::Background, RenderMode mode = RenderMode::Fill);
-
-		/*!*********************************************************************************
-			\brief
-			Create a sprite with basic shapes, no images will be loaded. Use this function
-			only if a transform component is added somewhere else for the entity
-
-			\param [in] entity:
-			ID of entity to add a Sprite component
-			\param [in] shape:
-			Shape to be created
-			\param [in] layer:
-			Rendering order of the sprite
-			\param [in] mode:
-			Different polygon draw mode
-		***********************************************************************************/
-		void CreateSprite(Entity const& entity, Shape shape = Shape::Rectangle, RenderLayer layer = RenderLayer::Background, RenderMode mode = RenderMode::Fill);
-
-		/*!*********************************************************************************
-			\brief
 			Create a sprite with image loaded in
 
 			\param [in] entity:
@@ -174,10 +145,8 @@ namespace ALEngine
 			Path to the image to be loaded
 			\param [in] layer:
 			Rendering order of the sprite
-			\param [in] mode:
-			Different polygon draw mode
 		***********************************************************************************/
-		void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer = RenderLayer::Background, RenderMode mode = RenderMode::Fill);
+		void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath = "Assets/Images/white.png", RenderLayer layer = RenderLayer::Background);
 
 		/*!*********************************************************************************
 			\brief
@@ -190,28 +159,8 @@ namespace ALEngine
 			Path to the image to be loaded
 			\param [in] layer:
 			Rendering order of the sprite
-			\param [in] mode:
-			Different polygon draw mode
 		***********************************************************************************/
-		void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer = RenderLayer::Background, RenderMode mode = RenderMode::Fill);
-
-		/*!*********************************************************************************
-			\brief
-			Create a sprite with basic shapes, no images will be loaded
-
-			\param [in] transform:
-			Tranform component to be added
-			\param [in] shape:
-			Shape to be created
-			\param [in] layer:
-			Rendering order of the sprite
-			\param [in] mode:
-			Different polygon draw mode
-
-			\return 
-			ID of the entity created with Sprite and Transform component added
-		***********************************************************************************/
-		Entity CreateSprite(Transform const& transform, Shape shape = Shape::Rectangle, RenderLayer layer = RenderLayer::Background, RenderMode mode = RenderMode::Fill);
+		void CreateSprite(Entity const& entity, const char* filePath = "Assets/Images/white.png", RenderLayer layer = RenderLayer::Background);
 
 		/*!*********************************************************************************
 			\brief
@@ -229,7 +178,7 @@ namespace ALEngine
 			\return
 			ID of the entity created with Sprite and Transform component added
 		***********************************************************************************/
-		Entity CreateSprite(Transform const& transform, const char* filePath, RenderLayer layer = RenderLayer::Background, RenderMode mode = RenderMode::Fill);
+		Entity CreateSprite(Transform const& transform, const char* filePath = "Assets/Images/white.png", RenderLayer layer = RenderLayer::Background);
 	}
 }
 

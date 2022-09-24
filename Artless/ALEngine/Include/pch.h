@@ -21,6 +21,7 @@
 #include <fstream>
 #include <chrono>
 #include <iterator>
+#include <filesystem>
 #include <scoped_allocator>
 
 // Data structures
@@ -44,6 +45,7 @@
 #include "Editor/imgui/imgui.h"
 #include "Editor/imgui/imgui_impl_glfw.h"
 #include "Editor/imgui/imgui_impl_opengl3.h"
+#include "Editor/ImGuizmo/ImGuizmo.h"
 
 // Graphics
 #include <glad/glad.h>
@@ -63,5 +65,9 @@
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
 #include "Common Header/MyEditor.h"
+
+
+// Asset Manager
+#include "Asset Manager/ContentBrowserPanel.h"
 
 #endif
