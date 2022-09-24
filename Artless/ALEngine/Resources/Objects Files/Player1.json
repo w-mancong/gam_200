@@ -1,0 +1,39 @@
+{
+  "id": 1,
+  "name": "Player1",
+  "type": "player",
+  "weapon": "bow",
+  "stats": {
+    "hp": 20,
+    "attack": 5,
+    "speed": 6
+  },
+  "transform": {
+    "position": {
+      "posX": 90,
+      "posY": 45,
+      "direction": "right"
+    },
+    "rotation": {
+      "rotX": 60,
+      "rotY": 20,
+      "rotSpeed": 15
+    },
+    "scale": {
+      "scaleX": 10,
+      "scaleY": 20
+    }
+  },
+  "sprite": "Player1.png",
+  "shader": "Plain",
+  "rgba": {
+    "red": 1,
+    "green": 2,
+    "blue": 3,
+    "alpha": 4
+  },
+  "behaviour": "Controlled",
+  "hitbox": "Square",
+  "collision": "AABB",
+  "specials": "Nil"
+}

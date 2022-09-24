@@ -1,0 +1,14 @@
+{
+  "id": 1,
+  "name": "SystemConfig",
+  "window title": "AL",
+  "dimensions": {
+    "dimensionWidth": 1600,
+    "dimensionHeight": 900
+  },
+  "aspectRatio": {
+    "aspectWidth": 16,
+    "aspectHeight": 9
+  }
+}
+

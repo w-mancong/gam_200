@@ -271,6 +271,12 @@
     <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
+    <ClCompile Include="Source\Serialization\Serialization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Factory\Factory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -503,5 +509,16 @@
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Serialization\Serialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Factory\Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Objects Files\Bishop.json" />
+    <None Include="Resources\Objects Files\Config.json" />
+    <None Include="Resources\Objects Files\Player1.json" />
   </ItemGroup>
 </Project>

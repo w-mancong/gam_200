@@ -56,6 +56,12 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+// Serializations
+#include "Serialization/Serialization.h"
+
+// Factory
+#include "Factory/Factory.h"
+
 // Self declared header file
 #include "Common Header/MyMemory.h"
 #include "Common Header/TemplateClasses.h"
