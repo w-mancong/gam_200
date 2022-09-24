@@ -46,7 +46,7 @@ namespace ALEngine
 				const auto& path = directoryEntry.path();
 
 				//file relative path
-				std::filesystem::path relativepath = std::filesystem::relative(directoryEntry.path(), assetpath);
+				std::filesystem::path relativepath = std::filesystem::relative(directoryEntry.path(), assetPath);
 
 				//file name from relative path 
 				std::string filenamestring = relativepath.filename().string();
