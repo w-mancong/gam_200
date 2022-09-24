@@ -1,8 +1,5 @@
 #include "pch.h"
-#include "Graphics/Shader.h"
-#include "Engine/Camera.h"
-#include "Engine/Manager/MeshBuilder.h"
-#include "Graphics/Gizmo.h"
+#include <Graphics/ParticleSys.h>
 
 namespace ALEngine::ECS
 {
@@ -10,14 +7,12 @@ namespace ALEngine::ECS
 	class RenderSystem : public System
 	{
 	public:
-		//void Render(Sprite const& sprite, Transform const& trans);
-		//void RenderInstance(s32 count);
 		void RenderBatch();
 	};
 
 	struct Plane
 	{
-		Vector3 position{ 0.0f, 0.0f, 0.0f };  
+		Vector3 position{ 0.0f, 0.0f, 0.0f };
 		Vector3 normal{ 0.0f, 1.0f, 0.0f };
 	};
 
@@ -37,7 +32,6 @@ namespace ALEngine::ECS
 		Plane planes[static_cast<u64>(Faces::Total)];
 	};
 
-	void UpdateViewMatrix(void); void UpdateProjectionMatrix(void);
 	void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2]);
 	void InitializeFrustum(Frustum& fstm);
 	bool ShouldRender(Transform const& trans);
@@ -45,10 +39,13 @@ namespace ALEngine::ECS
 	namespace
 	{
 		std::shared_ptr<RenderSystem> rs;
-		Shader spriteShader, meshShader, batchShader;
+		Shader batchShader;
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
+		
+		ParticleSys::ParticleSystem particleSys;
+
 		// Batch rendering
 		vec3* positions{ nullptr };
 		vec4* colors{ nullptr };
@@ -66,64 +63,6 @@ namespace ALEngine::ECS
 		u64 constexpr INDICES_SIZE{ 6 };
 	}
 
-	//void RenderSystem::Render(Sprite const& sprite, Transform const& trans)
-	//{
-	//	Color const& color = sprite.color;
-	//	Vector3 const& position{ trans.position }, scale{ trans.scale };
-
-	//	// Getting the appropriate shader
-	//	Shader* shader{ nullptr };
-	//	if (sprite.texture)
-	//		shader = &spriteShader;
-	//	else
-	//		shader = &meshShader;
-
-	//	// TRS model multiplication
-	//	Matrix4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
-
-	//	shader->use();
-	//	shader->Set("model", model); shader->Set("color", color.r, color.g, color.b, color.a);
-	//	glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(sprite.mode));
-	//	glActiveTexture(GL_TEXTURE0);
-	//	glBindTexture(GL_TEXTURE_2D, sprite.texture);
-	//	glBindVertexArray(sprite.vao);
-	//	// render based on the primitive type
-	//	switch (sprite.primitive)
-	//	{
-	//		case GL_TRIANGLE_FAN:
-	//		{
-	//			glDrawArrays(GL_TRIANGLE_FAN, 0, sprite.drawCount);
-	//			break;
-	//		}
-	//		case GL_TRIANGLE_STRIP:
-	//		{
-	//			glEnable(GL_PRIMITIVE_RESTART);
-	//			glPrimitiveRestartIndex( static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX) );
-	//			glDrawElements(GL_TRIANGLE_STRIP, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-	//			glDisable(GL_PRIMITIVE_RESTART);
-	//			break;
-	//		}
-	//		case GL_TRIANGLES:
-	//		{
-	//			glDrawElements(GL_TRIANGLES, sprite.drawCount, GL_UNSIGNED_INT, nullptr);
-	//			break;
-	//		}
-	//	}	
-	//	// Unbind to prevent any unintended behaviour to vao
-	//	glBindVertexArray(0);
-	//}
-
-	//void RenderSystem::RenderInstance(s32 count)
-	//{
-	//	meshShader.use();
-	//	glBindVertexArray(rect.vao);
-	//	//glEnable(GL_PRIMITIVE_RESTART);
-	//	//glPrimitiveRestartIndex(static_cast<GLushort>(GL_PRIMITIVE_RESTART_INDEX));
-	//	glDrawElementsInstanced(GL_TRIANGLES, rect.drawCount, GL_UNSIGNED_INT, nullptr, count);
-	//	//glDisable(GL_PRIMITIVE_RESTART);
-	//	glBindVertexArray(0);
-	//}
-
 	void RenderSystem::RenderBatch(void)
 	{
 		std::vector<Entity> entities; entities.reserve(mEntities.size());
@@ -131,11 +70,11 @@ namespace ALEngine::ECS
 		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
 		// sort entities by layer
 		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-		{
-			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-			return sp1.layer < sp2.layer;
-		});
+			{
+				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+				return sp1.layer < sp2.layer;
+			});
 
 		u64 counter{ 0 }; u64 const size = entities.size();
 		for (u64 i = 0; i < size; ++i)
@@ -146,7 +85,7 @@ namespace ALEngine::ECS
 			for (u64 j = i * 4, k = 0; j < (i * 4) + 4; ++j, ++k)
 			{
 				*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
-				 // assigning colors
+				// assigning colors
 				(*(colors + j)).x = sprite.color.r; (*(colors + j)).y = sprite.color.g; (*(colors + j)).z = sprite.color.b; (*(colors + j)).w = sprite.color.a;
 				*(tex_coords + j) = *(sprite.tex_coords + k);
 				*(tex_handles + j) = sprite.handle;
@@ -169,57 +108,42 @@ namespace ALEngine::ECS
 		glBindVertexArray(0);
 	}
 
-	void UpdateViewMatrix(void)
-	{
-		spriteShader.use();
-		spriteShader.Set("view", camera.ViewMatrix());
-		meshShader.use();
-		meshShader.Set("view", camera.ViewMatrix());
-	}
-
-	void UpdateProjectionMatrix(void)
-	{
-		spriteShader.use();
-		spriteShader.Set("proj", camera.ProjectionMatrix());
-		meshShader.use();
-		meshShader.Set("proj", camera.ProjectionMatrix());
-	}
-
 	void RegisterRenderSystem(void)
 	{
 		rs = Coordinator::Instance()->RegisterSystem<RenderSystem>();
 		Signature signature;
-		signature.set( Coordinator::Instance()->GetComponentType<Transform>() );
-		signature.set( Coordinator::Instance()->GetComponentType<Sprite>() );
+		signature.set(Coordinator::Instance()->GetComponentType<Transform>());
+		signature.set(Coordinator::Instance()->GetComponentType<Sprite>());
 		Coordinator::Instance()->SetSystemSignature<RenderSystem>(signature);
 
-		// Initialising shader
-		spriteShader = Shader{ "Assets/Shaders/sprite.vert", "Assets/Shaders/sprite.frag" };
-		spriteShader.use();
-		spriteShader.Set("view", camera.ViewMatrix());
-		spriteShader.Set("proj", camera.ProjectionMatrix());
+		// Load and initialise fonts
+		Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
+		Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
+		Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
 
-		meshShader = Shader{ "Assets/Shaders/mesh.vert", "Assets/Shaders/mesh.frag" };
-		meshShader.use();
-		meshShader.Set("view", camera.ViewMatrix());
-		meshShader.Set("proj", camera.ProjectionMatrix());
+		// Init Gizmo
+		Gizmos::Gizmo::GizmoInit();
 
+		// Particle system init here
+		particleSys.ParticleSysInit();
+
+		// Batch rendering
 		batchShader = Shader{ "Assets/Shaders/batch.vert", "Assets/Shaders/batch.frag" };
 		batchShader.use();
 		batchShader.Set("view", camera.ViewMatrix());
-		batchShader.Set("proj", camera.ProjectionMatrix());	
+		batchShader.Set("proj", camera.ProjectionMatrix());
 
-		positions = Memory::StaticMemory::New<vec3>( GetVertexPositionSize() );
-		colors = Memory::StaticMemory::New<vec4>( GetVertexPositionSize() );
-		tex_coords = Memory::StaticMemory::New<vec2>( GetVertexPositionSize() );
-		tex_handles = Memory::StaticMemory::New<u64>( GetVertexPositionSize() );
+		positions = Memory::StaticMemory::New<vec3>(GetVertexPositionSize());
+		colors = Memory::StaticMemory::New<vec4>(GetVertexPositionSize());
+		tex_coords = Memory::StaticMemory::New<vec2>(GetVertexPositionSize());
+		tex_handles = Memory::StaticMemory::New<u64>(GetVertexPositionSize());
 	}
 
 	void InitializeFrustum(Frustum& fstm)
 	{
 		f32 const zFar = camera.FarPlane();
 		f32 const halfVSide = zFar * std::tanf(DegreeToRadian(camera.Fov()) * 0.5f);
-		f32 const halfHSide = halfVSide * ( static_cast<f32>(OpenGLWindow::width / OpenGLWindow::height) );
+		f32 const halfHSide = halfVSide * (static_cast<f32>(OpenGLWindow::width / OpenGLWindow::height));
 		Vector3 const position = camera.Position(), right = camera.Right(), up = camera.Up(), front = camera.Front(), frontMultFar = zFar * front;
 
 		u64 planeIndex = static_cast<u64>(Faces::Near);
@@ -228,18 +152,18 @@ namespace ALEngine::ECS
 		// Far Plane
 		fstm.planes[planeIndex++] = { position + frontMultFar, -front };
 		// Left Plane
-		fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar - right * halfHSide, up) ) };
+		fstm.planes[planeIndex++] = { position, Vector3::Normalize(Vector3::Cross(frontMultFar - right * halfHSide, up)) };
 		// Right Plane
-		fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(up, frontMultFar + right * halfHSide) ) };
+		fstm.planes[planeIndex++] = { position, Vector3::Normalize(Vector3::Cross(up, frontMultFar + right * halfHSide)) };
 		// Top Plane
-		fstm.planes[planeIndex++] = { position, Vector3::Normalize( Vector3::Cross(frontMultFar + up * halfVSide, right) ) };
+		fstm.planes[planeIndex++] = { position, Vector3::Normalize(Vector3::Cross(frontMultFar + up * halfVSide, right)) };
 		// Bottom Plane
-		fstm.planes[planeIndex]   = { position, Vector3::Normalize( Vector3::Cross(right, frontMultFar - up * halfVSide) ) };
+		fstm.planes[planeIndex] = { position, Vector3::Normalize(Vector3::Cross(right, frontMultFar - up * halfVSide)) };
 	}
 
 	bool IntersectsPlane(Vector2 boxVec[2], Vector2 const& position, Plane const& plane)
 	{
-		return std::abs( boxVec[0].Dot(plane.normal) ) + std::abs( boxVec[1].Dot(plane.normal) ) >= std::abs( (Vector3(position) - plane.position).Dot(plane.normal) );
+		return std::abs(boxVec[0].Dot(plane.normal)) + std::abs(boxVec[1].Dot(plane.normal)) >= std::abs((Vector3(position) - plane.position).Dot(plane.normal));
 	}
 
 	bool ShouldRender(Transform const& trans)
@@ -270,8 +194,14 @@ namespace ALEngine::ECS
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		InitializeFrustum(fstm);
 		rs->RenderBatch();
+
+		// Update and render particles
+		particleSys.ParticleUpdate(Time::m_DeltaTime);
+		particleSys.ParticleRender();
+
+		// This needs to be at the end
+		Gizmos::Gizmo::RenderAllLines();
 
 		// End of ImGui frame, render ImGui!
 		Editor::ALEditor::Instance()->End();
@@ -288,7 +218,7 @@ namespace ALEngine::ECS
 	void SetBackgroundColor(f32 r, f32 g, f32 b, f32 a)
 	{
 		r = Clamp(r, 0.0f, 1.0f), g = Clamp(g, 0.0f, 1.0f), b = Clamp(b, 0.0f, 1.0f), a = Clamp(a, 0.0f, 1.0f);
-		SetBackgroundColor( { r, g, b, a } );
+		SetBackgroundColor({ r, g, b, a });
 	}
 
 	void SetBackgroundColor(s32 r, s32 g, s32 b, s32 a)
@@ -309,7 +239,6 @@ namespace ALEngine::ECS
 	void CameraPosition(Vector3 pos)
 	{
 		camera.Position(pos);
-		UpdateViewMatrix();
 		InitializeFrustum(fstm);
 	}
 
@@ -331,13 +260,11 @@ namespace ALEngine::ECS
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
-		UpdateProjectionMatrix();
 		InitializeFrustum(fstm);
 	}
 
 	void ViewportResizeCameraUpdate(void)
 	{
-		UpdateProjectionMatrix();
 		InitializeFrustum(fstm);
 	}
 
@@ -363,4 +290,3 @@ namespace ALEngine::ECS
 		return entity;
 	}
 }
-
