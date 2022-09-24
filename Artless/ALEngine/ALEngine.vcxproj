@@ -103,6 +103,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp" />
+    <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
     <ClCompile Include="Source\Editor\ImGuizmo\GraphEditor.cpp">
       <DeploymentContent>true</DeploymentContent>
@@ -203,7 +204,9 @@
   <ItemGroup>
     <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Common Header\MyEditor.h" />
+    <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
+    <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />
@@ -260,6 +263,7 @@
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\ECS\Components\Color.h" />
+    <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\Gizmo.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />

@@ -14,6 +14,8 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
+	// add function pointers here
+
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
@@ -25,9 +27,9 @@ namespace ALEngine::Engine
 		// Init Logger
 		ALEngine::Exceptions::Logger::Init();
 
-		// Init ImGui
-		ALEditor::Instance()->SetImGuiEnabled(true);
-		ALEditor::Instance()->SetDockingEnabled(false);
+		//// Init ImGui
+		//ALEditor::Instance()->SetImGuiEnabled(true);
+		//ALEditor::Instance()->SetDockingEnabled(false);
 
 		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
 		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");

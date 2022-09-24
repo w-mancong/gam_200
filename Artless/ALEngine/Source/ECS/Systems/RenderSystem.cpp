@@ -43,7 +43,7 @@ namespace ALEngine::ECS
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
-		
+
 		ParticleSys::ParticleSystem particleSys;
 
 		// Batch rendering
@@ -203,8 +203,8 @@ namespace ALEngine::ECS
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
 
-		// End of ImGui frame, render ImGui!
-		Editor::ALEditor::Instance()->End();
+		//// End of ImGui frame, render ImGui!
+		//Editor::ALEditor::Instance()->End();
 
 		glfwPollEvents();
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());

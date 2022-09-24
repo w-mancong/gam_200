@@ -41,7 +41,7 @@ namespace ALEngine
 			// Init GLFW
 			ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window() , true);
 			// Set GLSL version
-			ImGui_ImplOpenGL3_Init("#version 450");
+			ImGui_ImplOpenGL3_Init("#version 460");
 
 			// Set docking enabled or disabled
 			m_DockingEnabled = true;
