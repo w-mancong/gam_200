@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "spdlog/include/spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/sinks/rotating_file_sink.h"
 
 #define OUT_FILE "logs/debug_log.txt"
 #define MAX_OUTPUT_SIZE (1048576 * 5)

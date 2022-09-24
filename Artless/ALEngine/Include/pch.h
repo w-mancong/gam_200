@@ -68,10 +68,5 @@
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
 #include "Common Header/MyEditor.h"
-
-
-// Asset Manager
-#include "Asset Manager/AssetManager.h"
-#include "Asset Manager/ContentBrowserPanel.h"
-#include "Asset Manager/FileWatcher.h"
+#include "Common Header/MyAssetManager.h"
 #endif
