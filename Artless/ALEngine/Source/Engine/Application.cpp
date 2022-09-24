@@ -28,8 +28,8 @@ namespace ALEngine::Engine
 		ALEngine::Exceptions::Logger::Init();
 
 		//// Init ImGui
-		//ALEditor::Instance()->SetImGuiEnabled(true);
-		//ALEditor::Instance()->SetDockingEnabled(false);
+		ALEditor::Instance()->SetImGuiEnabled(true);
+		ALEditor::Instance()->SetDockingEnabled(false);
 
 		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
 		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
