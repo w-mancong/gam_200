@@ -29,7 +29,7 @@ namespace ALEngine
 			
 		}
 
-		void ContentBrowserPanel::OnImGuiRender()
+		void ContentBrowserPanel::OnImGuiRender(void)
 		{
 			//imgui window-------------------------------------------------------------------------
 			ImGui::Begin("Content Browser");
@@ -77,17 +77,12 @@ namespace ALEngine
 				{
 					//static char buf[128] = ;
 
-
 					//ImGui::InputText("1", buf, IM_ARRAYSIZE(filenamestring.c_str()));
 					if (ImGui::Selectable(filenamestring.c_str()))
 					{
-
 						ImGui::Button(filenamestring.c_str());
-						
-					
-
+		
 						//std::filesystem::rename();
-						
 					}
 				}
 	
