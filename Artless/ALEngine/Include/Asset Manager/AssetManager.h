@@ -7,8 +7,9 @@
 file: AssetManager.h
 author: Chan Jie Ming Stanley
 email: c.jiemingstanley\@digipen.edu
-brief:
-This file contains
+brief: This file contains function declaration for AssetManager. AssetManager is a singleton
+       pattern class. It will handle asset guid as well as build and generate guid for the
+	   meta file of assets file.
 
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -22,24 +23,26 @@ namespace ALEngine::Engine
 	public:
 		void Init();
 		void Update();
-
-		void Begin();
 		void End();
 
 
 		/*!*********************************************************************************
-		    \brief
-		    get timestamp in 3 16 bit parts and assign to vector container before return
-			vector 
+		 \brief
+		 get timestamp in 3 16 bit parts and assign to vector container before return
+		 vector 
+		 \return
+		 vector of 16 bits unsigned short of parts of the timestamp
         ***********************************************************************************/
-		std::vector<u16> GetTimeStamp();
+		std::vector<u16> GetTimeStamp(void);
 
 
 		/*!*********************************************************************************
 		\brief
-		bitshift all 16 bit parts into a single 64 bit guid
+		bitshift all 16 bit parts into two 32 bit parts then into a single 64 bit guid
+		then call the AddToAssetGuidContainer function to add the new guid into map container
+		storing guid.
 	    ***********************************************************************************/
-		void PrepareGuid();
+		void PrepareGuid(void);
 
 		//map<16 bit assetkeycount, 64 bit guid>
 		//map container for storing 64 bit guids 
@@ -48,20 +51,22 @@ namespace ALEngine::Engine
 		/*!*********************************************************************************
 		\brief
 		get the current asset counter that is tracking how many asset loaded currently
+		\return
+		16 bits unsigned short containing the number of asset that are loaded currently
 		***********************************************************************************/
-		u16 GetCurrentAssetCount();
+		u16 GetCurrentAssetCount(void);
 
 		/*!*********************************************************************************
 		\brief
 		increment the current asset counter
 		***********************************************************************************/
-		void IncrementCurrentAssetCount();
+		void IncrementCurrentAssetCount(void);
 
 		/*!*********************************************************************************
 		\brief
 	    decrement the current asset counter
 		***********************************************************************************/
-		void DecrementCurrentAssetCount();
+		void DecrementCurrentAssetCount(void);
 
 
 		/*!*********************************************************************************
@@ -87,14 +92,17 @@ namespace ALEngine::Engine
 		/*!*********************************************************************************
 	    \brief
 		get the current asset key counter
+		\return
+		16 bits unsigned short containing the number for asset guid to use which is also 
+		the number times of new assets is loaded.
 	    ***********************************************************************************/
-		u16 GetCurrentAssetKeyCount();
+		u16 GetCurrentAssetKeyCount(void);
 
 		/*!*********************************************************************************
 		\brief
 		increment the current asset key counter
 		***********************************************************************************/
-		void IncrementCurrentAssetKeyCount();
+		void IncrementCurrentAssetKeyCount(void);
 
 	private:
 		//constructor
@@ -109,7 +117,6 @@ namespace ALEngine::Engine
 
 		friend class Templates::Singleton<AssetManager>;
 		friend class Memory::StaticMemory;
-
 	};
 
 }

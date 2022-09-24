@@ -27,6 +27,10 @@ namespace ALEngine
 			~ContentBrowserPanel();
 
 			void OnImGuiRender();
+
+			//need to create a setter function
+			//void SetAssetDirectory();
+
 		private:
 			std::filesystem::path currentdirectory;// for keeping track of current file directory or path
 		};

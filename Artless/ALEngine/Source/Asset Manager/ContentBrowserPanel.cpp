@@ -17,7 +17,7 @@ namespace ALEngine
 
 	namespace CBP
 	{
-		//change this later for projects
+		//change this later to read from settings or 
 		extern const std::filesystem::path assetpath = "assets";//base file path
 
 		ContentBrowserPanel::ContentBrowserPanel()
@@ -79,16 +79,16 @@ namespace ALEngine
 
 
 					//ImGui::InputText("1", buf, IM_ARRAYSIZE(filenamestring.c_str()));
-					//if (ImGui::Selectable(filenamestring.c_str()))
-					//{
+					if (ImGui::Selectable(filenamestring.c_str()))
+					{
 
-						//ImGui::Button(filenamestring.c_str());
+						ImGui::Button(filenamestring.c_str());
 						
 					
 
 						//std::filesystem::rename();
 						
-					//}
+					}
 				}
 	
 				//ImGui::TextWrapped(filenamestring.c_str());

@@ -1,16 +1,29 @@
 #include "pch.h"
 
+/*!
+file: FileWatcher.cpp
+author: Chan Jie Ming Stanley
+email: c.jiemingstanley\@digipen.edu
+brief: This file contains function definition for FileWatcher. FileWatcher handles the
+       detection of changes in files using files' last write time.
+
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
+
+
 ALEngine::Engine::FileWatcher::FileWatcher(std::string pathtoWatch, std::chrono::duration<int, std::milli> delay) :
 pathtoWatch{pathtoWatch},
 delay{delay}
 {
+	//creating a record of files from the base directory and their last modification time
 	for (auto& file : std::filesystem::recursive_directory_iterator(pathtoWatch))
 	{
 		filePaths[file.path().string()] = std::filesystem::last_write_time(file);
 	}
 }
 
-void ALEngine::Engine::FileWatcher::start(const std::function<void(std::string, FileStatus)>& action)
+void ALEngine::Engine::FileWatcher::Start()
 {
 	while (running)
 	{
@@ -24,7 +37,10 @@ void ALEngine::Engine::FileWatcher::start(const std::function<void(std::string, 
 			//check if still file path exists, if not remove from unordered map of filePaths
 			if (!std::filesystem::exists(tempIt->first))
 			{
-				action(tempIt->first, FileStatus::Erased);
+				//need to define a function to alert assetmanager
+			    //AlertAssetManager(tempIt->first, FileStatus::Erased);
+
+				//remove from unordered map of filePaths
 				tempIt = filePaths.erase(tempIt);
 			}
 			else 
@@ -42,19 +58,29 @@ void ALEngine::Engine::FileWatcher::start(const std::function<void(std::string, 
 			if(!contains(file.path().string()))
 			{
 				filePaths[file.path().string()] = currentfileLastwritetime;
-				action(file.path().string(), FileStatus::Created);
+
+				//need to define a function to alert assetmanager
+				//AlertAssetManager(file.path().string(), FileStatus::Created);
+
 			}
 			else //detect file modifications or changes
 			{
 				if (filePaths[file.path().string()] != currentfileLastwritetime)
 				{
 					filePaths[file.path().string()] = currentfileLastwritetime;
-					action(file.path().string(), FileStatus::Modified);
+
+					//need to define a function to alert assetmanager
+					//AlertAssetManager(file.path().string(), FileStatus::Modified);
 				}
 			}
 		}
 
 	}
+}
+
+void ALEngine::Engine::FileWatcher::SetWatchPath(std::string watchFilepath)
+{
+	pathtoWatch = watchFilepath;
 }
 
 bool ALEngine::Engine::FileWatcher::contains(const std::string& key)

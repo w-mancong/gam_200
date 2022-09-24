@@ -4,8 +4,9 @@
 file: AssetManager.cpp
 author: Chan Jie Ming Stanley
 email: c.jiemingstanley\@digipen.edu
-brief:
-This file contains
+brief: This file contains function definition for AssetManager. AssetManager is a singleton
+       pattern class. It will handle asset guid as well as build and generate guid for the
+	   meta file of assets file.
 
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -18,26 +19,28 @@ namespace ALEngine
 		AssetManager::AssetManager():
 		currentassetKeycounter(0), 
 		assetloadedCounter(0)
-		{}
+		{
+			
+		}
 
 		void AssetManager::Init()
 		{
-
+			//initialize 
 		}
 
 		void AssetManager::Update()
 		{
+			//respond to file watcher alerts of any changes to file
+
 		}
 
-		void AssetManager::Begin()
-		{
-		}
+		
 
 		void AssetManager::End()
 		{
 		}
 
-		std::vector<u16> AssetManager::GetTimeStamp()
+		std::vector<u16> AssetManager::GetTimeStamp(void)
 		{
 			//vector to store 16bit parts of timestamp 
 			std::vector<u16> timeData;
@@ -97,7 +100,7 @@ namespace ALEngine
 			return timeData;
 		}
 
-		void AssetManager::PrepareGuid()
+		void AssetManager::PrepareGuid(void)
 		{
 			//get timestamp to new guid
 			std::vector<u16> timeStamp = GetTimeStamp();
@@ -119,18 +122,18 @@ namespace ALEngine
 			AddToAssetGuidContainer(newGuid);
 		}
 
-		u16 AssetManager::GetCurrentAssetCount()
+		u16 AssetManager::GetCurrentAssetCount(void)
 		{
 			//return assetloadedcounter value
 			return assetloadedCounter;
 		}
 
-		void AssetManager::IncrementCurrentAssetCount()
+		void AssetManager::IncrementCurrentAssetCount(void)
 		{
 			++assetloadedCounter;
 		}
 
-		void AssetManager::DecrementCurrentAssetCount()
+		void AssetManager::DecrementCurrentAssetCount(void)
 		{
 			--assetloadedCounter;
 		}
@@ -179,16 +182,13 @@ namespace ALEngine
 
 			return keyFound;
 		}
-		u16 AssetManager::GetCurrentAssetKeyCount()
+		u16 AssetManager::GetCurrentAssetKeyCount(void)
 		{
-			//temp var for storing assetloadedcounter value
-			u16 result = currentassetKeycounter;
-
 			//return assetloadedcounter value
-			return result;
+			return currentassetKeycounter;
 		}
 
-		void AssetManager::IncrementCurrentAssetKeyCount()
+		void AssetManager::IncrementCurrentAssetKeyCount(void)
 		{
 			++currentassetKeycounter;
 		}
