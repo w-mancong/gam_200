@@ -23,6 +23,9 @@
 #include <iterator>
 #include <filesystem>
 #include <scoped_allocator>
+#include <ctime>
+#include <chrono>
+#include <bitset>
 
 // Data structures
 #include <string>
@@ -68,6 +71,7 @@
 
 
 // Asset Manager
+#include "Asset Manager/AssetManager.h"
 #include "Asset Manager/ContentBrowserPanel.h"
-
+#include "Asset Manager/FileWatcher.h"
 #endif

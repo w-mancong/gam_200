@@ -1,38 +1,36 @@
-#pragma once
-#include <filesystem>
+/*!
+file: ContentBrowserPanel.h
+author: Chan Jie Ming Stanley
+email: c.jiemingstanley\@digipen.edu
+brief: This file contains the function declaration for ContentBrowserPanel. 
+       ContentBrowserPanel handles the panel that display the loaded assets in specified
+	   asset filepath.
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 
-/*!*****************************************************************************
- \file ContentBrowserPanel.h
- \author Chan Jie Ming Stanley
- \par DP email: c.jiemingstanley\@digipen.edu
- \par Course: CSD2400
- \par Gam200
- \date 3-9-2022
- \brief
-
-*******************************************************************************/
 #ifndef	CONTENT_BROWSER_PANEL_H
 #define CONTENT_BROWSER_PANEL_H
 
-namespace ALEngine
+namespace ALEngine::Editor
 {
-	namespace Editor
+	class ContentBrowserPanel
 	{
-		class ContentBrowserPanel
-		{
-		public:
-			ContentBrowserPanel();
-			~ContentBrowserPanel();
+	public:
+		ContentBrowserPanel();
+		~ContentBrowserPanel();
 
-			void OnImGuiRender();
-		private:
-			std::filesystem::path currentdirectory;// for keeping track of current file directory or path
-		};
-	}
+		/*!*********************************************************************************
+		\brief
+		renders out the panel displaying the loaded assets in specified
+		asset filepath and update the panel based on panel buttons.
+		***********************************************************************************/
+		void OnImGuiRender(void);
+
+		//need to create a setter function
+		//void SetAssetDirectory();
+
+	private:
+		std::filesystem::path currentdirectory;// for keeping track of current file directory or path
+	};
 }
-
-
-
-
-
 #endif

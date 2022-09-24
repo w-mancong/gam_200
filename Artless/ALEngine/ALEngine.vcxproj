@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -102,8 +102,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
+    <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
     <ClCompile Include="Source\Editor\ImGuizmo\GraphEditor.cpp">
       <DeploymentContent>true</DeploymentContent>
@@ -202,11 +204,15 @@
     <ClCompile Include="Source\Utility\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h" />
+    <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
+    <ClInclude Include="Include\Common Header\MyAssetManager.h" />
     <ClInclude Include="Include\Common Header\MyEditor.h" />
     <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
     <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
+    <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />

@@ -47,6 +47,7 @@ namespace ALEngine
 			Coordinator::Free();
 			Editor::ALEditor::Free();
 			Engine::MeshBuilder::Free();
+			Engine::AssetManager::Free();
 		}
 
 		/*!*********************************************************************************

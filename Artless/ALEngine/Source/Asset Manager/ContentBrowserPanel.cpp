@@ -1,20 +1,19 @@
 #include "pch.h"
-/*!*****************************************************************************
- \file ContentBrowserPanel.cpp
- \author Chan Jie Ming Stanley
- \par DP email: c.jiemingstanley\@digipen.edu
- \par Course: CSD2400
- \par Gam200
- \date 3-9-2022
- \brief
 
-*******************************************************************************/
+/*!
+file: ContentBrowserPanel.cpp
+author: Chan Jie Ming Stanley
+email: c.jiemingstanley\@digipen.edu
+brief:
+This file contains
 
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 namespace ALEngine
 {
 	namespace Editor
 	{
-		//change this later for projects
+		//change this later to read from settings or 
 		extern const std::filesystem::path assetpath = "assets";//base file path
 
 		ContentBrowserPanel::ContentBrowserPanel()
@@ -26,10 +25,10 @@ namespace ALEngine
 			
 		}
 
-		void ContentBrowserPanel::OnImGuiRender()
+		void ContentBrowserPanel::OnImGuiRender(void)
 		{
 			//imgui window-------------------------------------------------------------------------
-			ImGui::Begin("Assets Content Browser");
+			ImGui::Begin("Content Browser");
 
 			if (currentdirectory != std::filesystem::path(assetpath))
 			{
@@ -47,7 +46,7 @@ namespace ALEngine
 				const auto& path = directoryentry.path();
 
 				//file relative path
-				auto relativepath = std::filesystem::relative(directoryentry.path(), assetpath);
+				std::filesystem::path relativepath = std::filesystem::relative(directoryentry.path(), assetpath);
 
 				//file name from relative path 
 				std::string filenamestring = relativepath.filename().string();
@@ -59,22 +58,32 @@ namespace ALEngine
 				if (directoryentry.is_directory())
 				{
 					//buttons that show the files
-					if (ImGui::Button(filenamestring.c_str()))
+					//if (ImGui::Button(filenamestring.c_str()))
+					//{
+					//}
+
+					//selectable to show file
+					if (ImGui::Selectable(filenamestring.c_str()))
 					{
 						currentdirectory /= directoryentry.path().filename();
 					}
+
 				}
 				else
 				{
-					if (ImGui::Button(filenamestring.c_str()))
-					{
+					//static char buf[128] = ;
 
+					//ImGui::InputText("1", buf, IM_ARRAYSIZE(filenamestring.c_str()));
+					if (ImGui::Selectable(filenamestring.c_str()))
+					{
+						ImGui::Button(filenamestring.c_str());
+		
+						//std::filesystem::rename();
 					}
 				}
-
-				ImGui::TextWrapped(filenamestring.c_str());
-
-				ImGui::NextColumn();
+	
+				//ImGui::TextWrapped(filenamestring.c_str());
+				//ImGui::NextColumn();
 
 			}
 

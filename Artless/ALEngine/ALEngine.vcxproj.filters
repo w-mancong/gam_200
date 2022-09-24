@@ -51,6 +51,9 @@
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
     <ClCompile Include="Source\Utility\Time.cpp" />
+    <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
+    <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
+    <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h" />
@@ -258,12 +261,16 @@
     <ClCompile Include="Source\Utility\Gizmo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClInclude Include="Include\Asset Manager\AssetManager.h" />
+    <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
+    <ClInclude Include="Include\ECS\Components\CharacterController.h" />
+    <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
+    <ClInclude Include="Include\ECS\Components\Texture.h" />
+    <ClInclude Include="Include\Graphics\fonts.h" />
+    <ClInclude Include="Include\Common Header\MyAssetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -422,9 +429,6 @@
     <ClInclude Include="Include\ECS\Systems\RigidbodySystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Graphics\fonts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\ECS\Components\Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -494,12 +498,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Common Header\MyEditor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS\Components\CharacterController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h">

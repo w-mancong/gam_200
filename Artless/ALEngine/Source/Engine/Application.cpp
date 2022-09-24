@@ -31,6 +31,8 @@ namespace ALEngine::Engine
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(false);
 
+		Engine::AssetManager::Instance()->Init();
+
 		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
 		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
 		AL_CORE_INFO("THIS IS A INFO MESSAGE");

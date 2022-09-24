@@ -5,7 +5,7 @@ email:	l.nguyen@digipen.edu
 brief:	This file contains the function declarations for the ALEditor class.
 		This is where most of the ImGui related code will be done.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
