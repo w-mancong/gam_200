@@ -14,8 +14,6 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
-	Entity Noah, Hinata;
-
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
@@ -54,7 +52,7 @@ namespace ALEngine::Engine
 			ALEditor::Instance()->Begin();
 
 			// Normal Update
-			// Engine::Update();
+			Engine::Update();
 			// Fixed Update (Physics)
 			accumulator += Time::m_DeltaTime;
 			while (accumulator >= Time::m_FixedDeltaTime)
