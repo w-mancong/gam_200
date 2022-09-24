@@ -7,6 +7,10 @@ namespace ALEngine
 	{
 		namespace Component
 		{
+			/*!*********************************************************************************
+				\brief
+				struct to encapsulate font character data
+			***********************************************************************************/
 			struct Character
 			{
 				u32 textureID{}; // ID handle of the glyph texture
@@ -18,6 +22,10 @@ namespace ALEngine
 			class Font
 			{
 			public:
+				/*!*********************************************************************************
+					\brief
+					Enum class used for differentiating the different type of fonts
+				***********************************************************************************/
 				enum class FontType
 				{
 					Regular,
@@ -33,6 +41,10 @@ namespace ALEngine
 				static void FontInit(std::string fontAddress, std::string fontName, Font::FontType fontType);
 			};
 
+			/*!*********************************************************************************
+				\brief
+				Enum used for differentiating the different type of Shape to be created
+			***********************************************************************************/
 			struct Text
 			{
 				std::string currentFont{}; // current selected font

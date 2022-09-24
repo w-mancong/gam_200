@@ -1,0 +1,39 @@
+{
+  "id": 2,
+  "name": "Bishop",
+  "type": "enemy",
+  "weapon": "wand",
+  "stats": {
+    "hp": 10,
+    "attack": 15,
+    "speed": 5
+  },
+  "transform": {
+    "position": {
+      "posX": 0,
+      "posY": 5,
+      "direction": "left"
+    },
+    "rotation": {
+      "rotX": 30,
+      "rotY": 10,
+      "rotSpeed": 25
+    },
+    "scale": {
+      "scaleX": 30,
+      "scaleY": 60
+    }
+  },
+  "sprite": "Bishop.png",
+  "shader": "Vertex",
+  "rgba": {
+    "red": 0,
+    "green": 5,
+    "blue": 9,
+    "alpha": 3
+  },
+  "behaviour": "AI",
+  "hitbox": "Square",
+  "collision": "AABB",
+  "specials": "Diagonal"
+}

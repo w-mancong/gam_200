@@ -22,7 +22,11 @@
 #include <fstream>
 #include <chrono>
 #include <iterator>
+#include <filesystem>
 #include <scoped_allocator>
+#include <ctime>
+#include <chrono>
+#include <bitset>
 
 // Data structures
 #include <string>
@@ -45,12 +49,19 @@
 #include "Editor/imgui/imgui.h"
 #include "Editor/imgui/imgui_impl_glfw.h"
 #include "Editor/imgui/imgui_impl_opengl3.h"
+#include "Editor/ImGuizmo/ImGuizmo.h"
 
 // Graphics
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+// Serializations
+#include "Serialization/Serialization.h"
+
+// Factory
+#include "Factory/Factory.h"
 
 // Self declared header file
 #include "Common Header/MyMemory.h"
@@ -64,5 +75,5 @@
 #include "Common Header/Utility.h"
 #include "Common Header/Random.h"
 #include "Common Header/MyEditor.h"
-
+#include "Common Header/MyAssetManager.h"
 #endif

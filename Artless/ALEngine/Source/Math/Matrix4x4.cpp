@@ -227,10 +227,10 @@ namespace ALEngine
 
 			return Matrix4x4
 			(
-				Vector4{ scale.x * cos,  scale.x * sin,	0.0f,  pos.x },
-				Vector4{ -(scale.y * sin), scale.y * cos,	0.0f,  pos.y },
-				Vector4{ 0.0f,		   0.0f,			1.0f,  pos.z },
-				Vector4{ 0.0f,		   0.0f,			0.0f,  1.0f }
+				Vector4{ scale.x * cos,  -(scale.y * sin),	0.0f,  pos.x },
+				Vector4{ scale.x * sin,	   scale.y * cos,	0.0f,  pos.y },
+				Vector4{ 0.0f,			   0.0f,			1.0f,  pos.z },
+				Vector4{ 0.0f,			   0.0f,			0.0f,  1.0f }
 			);
 		}
 

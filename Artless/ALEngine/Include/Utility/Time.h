@@ -4,9 +4,8 @@ author:		Wong Man Cong
 co-author:	Lucas Nguyen
 email:		w.mancong@digipen.edu
 			l.nguyen@digipen.edu
-brief:		This file contain a static class declaration to calculating the dt, fps 
-			and fixedTime of the program.
-			This file contains a class "Time" that acts as the framerate controller
+brief:		This file contains a class "Time" that acts as the framerate controller.
+			The delta time and FPS are calculated here.
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -38,18 +37,21 @@ namespace ALEngine
 				Clock the current time.
 				Should be called just before calling update!
 			***********************************************************************************/
-			static void ClockTimeNow();
+			static void ClockTimeNow(void);
 
 			/*!*********************************************************************************
 				\brief
 				Calculates the delta time and makes the main thread wait according to the
 				FPS limit.
 			***********************************************************************************/
-			static void WaitUntil();
+			static void WaitUntil(void);
 
 			/*!*********************************************************************************
 				\brief
-				Set the Target FPS.
+				Set the Target FPS, which is the FPS the system will aim to hit
+
+				\param [in] _target:
+				Number to be set as the target FPS
 			***********************************************************************************/
 			static void SetTargetFPS(s32 _target);
 

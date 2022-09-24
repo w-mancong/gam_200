@@ -1,8 +1,16 @@
-#include "pch.h"
+/*!
+file:	ALEditor.cpp
+author:	Lucas Nguyen
+email:	l.nguyen@digipen.edu
+brief:	This file contains the function declarations for the ALEditor class
+
+		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+#include <pch.h>
 
 namespace ALEngine
 {
-	namespace Engine
+	namespace Editor
 	{
 		void ALEditor::Init()
 		{
@@ -34,29 +42,69 @@ namespace ALEngine
 			ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window() , true);
 			// Set GLSL version
 			ImGui_ImplOpenGL3_Init("#version 450");
+
+			// Set docking enabled or disabled
+			m_DockingEnabled = true;
+		}
+
+		void ALEditor::Exit()
+		{
+			// Shutdown imgui
+			ImGui_ImplGlfw_Shutdown();
+			ImGui_ImplOpenGL3_Shutdown();
+			// Destroy imgui context
+			ImGui::DestroyContext();
 		}
 
 		void ALEditor::Update()
 		{
+			// Check ImGui active
+			if (!m_ImGuiEnabled)
+				return;
+
 			static bool show{ true };
 			ImGui::ShowDemoWindow(&show);
+			cbp.OnImGuiRender();
+			logger_panel.OnImGuiRender();
+			if (imguizmo_panel.HasEntityTransform())
+				imguizmo_panel.OnImGuiRender();
+			hierarchy_panel.OnImGuiRender();
 		}
 
 		void ALEditor::Begin()
 		{
+			// Change ImGui Enabled or Disabled
+			if (Input::KeyTriggered(KeyCode::Backspace))
+			{
+				//m_ImGuiEnabled = !m_ImGuiEnabled;
+			}
+
+			// Check ImGui active
+			if (!m_ImGuiEnabled)
+				return;
+
 			// New ImGui Frame
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			// Enable DockSpace
-			//Docking();
+			// ImGuizmo Frame
+			ImGuizmo::SetOrthographic(true);
+			ImGuizmo::BeginFrame();
+
+			// Enable DockSpace if it is to be enabled!
+			if(m_DockingEnabled)
+				Docking();
 
 			Update();
 		}
 
 		void ALEditor::End()
 		{
+			// Check ImGui active
+			if (!m_ImGuiEnabled)
+				return;
+
 			// Get the ImGui IO
 			ImGuiIO& io = ImGui::GetIO();
 
@@ -64,8 +112,8 @@ namespace ALEngine
 			io.DeltaTime = Time::m_DeltaTime;
 
 			// Set IO display size
-			io.DisplaySize = ImVec2(static_cast<float>(Graphics::OpenGLWindow::width),
-				static_cast<float>(Graphics::OpenGLWindow::height));
+			io.DisplaySize = ImVec2(static_cast<f32>(Graphics::OpenGLWindow::width),
+				static_cast<f32>(Graphics::OpenGLWindow::height));
 
 			// Render ImGui
 			ImGui::Render();
@@ -111,7 +159,7 @@ namespace ALEngine
 			ImGui::PopStyleVar(3);
 
 			// Enable dockspace
-			ImGui::DockSpace(ImGui::GetID("Dockspace"));
+			ImGui::DockSpace(ImGui::GetID("DockSpace"));
 
 			// Make Dockspace inactive
 			ImGui::End();

@@ -11,5 +11,6 @@ brief:	This file contains all the relevant Graphics header files to be included 
 
 #include "Graphics/OpenGLWindow.h"
 #include "Graphics/Shader.h"
+#include "Graphics/Gizmo.h"
 
 #endif

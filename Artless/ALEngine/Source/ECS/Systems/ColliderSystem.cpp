@@ -2,7 +2,7 @@
 file:	ColliderSystem.cpp
 author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
-brief:	This file contains the function definition for ColliderSystem.h
+brief:	This file contains the function definition for ColliderSystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -14,35 +14,130 @@ namespace ALEngine
 {
 	namespace ECS
 	{
+		//Ease of use for ray
 		using Engine::Physics::Ray2D;
 
+		//Ease of use
 		using namespace Math; using namespace Engine; using namespace Graphics;
+
+		/*!*********************************************************************************
+			\brief
+				Collider System, contains functions needed to run components for ColliderSystem
+		***********************************************************************************/
 		class ColliderSystem : public System
 		{
 			public:
+				/*!*********************************************************************************
+					\brief
+						Updates colliders, checks between the type of the 2 colliders and calls a collision check that fits the two type
+				***********************************************************************************/
 				bool UpdateCollider(Collider2D & collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
+
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between AABB -> AABB
+				***********************************************************************************/
 				bool CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between Circle -> AABB
+				***********************************************************************************/
 				bool CheckCollision_Circle_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
-				bool CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
-				bool CheckCollision_Circle_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
-				bool CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
 				
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between Circle -> Circle
+				***********************************************************************************/
+				bool CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between Circle -> OOBB
+				***********************************************************************************/
+				bool CheckCollision_Circle_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+				
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between OOBB -> OOBB
+				***********************************************************************************/
+				bool CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between Point -> Circle
+				***********************************************************************************/
+				bool CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius);
+
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between Point -> AABB
+				***********************************************************************************/
+				bool CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight);
+
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between Moving AABB to static AABB 
+						Also checks if the rigidbody of moving is active, calculate the response here if collision is true
+				***********************************************************************************/
 				bool SweptCollision_AABB_ABBB(Collider2D& collider_one, Collider2D const& collider_two, Transform & parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
+			
+				/*!*********************************************************************************
+					\brief
+						Returns outcome of collision between Moving Circle to static Circle
+						Also checks if the rigidbody of moving is active, calculate the response here if collision is true
+				***********************************************************************************/
 				bool SweptCollision_Circle_Circle(Collider2D& collider_one, Collider2D const& collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
 
+				/*!*********************************************************************************
+					\brief
+					Get the min and max of an OOBB collider on it's own world axis
+					Used for OOBB collisions
+				***********************************************************************************/
 				Vector2 getMinMax_OOBB_On_Axis(Collider2D box, Vector2 axis, Transform const& parentTransform);
+
+				/*!*********************************************************************************
+					\brief
+					Returns if the world axis of 2 OOBB colliders are intersecting
+					Used for OOBB collision
+				***********************************************************************************/
 				bool CheckIfOverlapAxis(Collider2D box_one, Collider2D box_two, Vector3 axis, Transform const& parent_transform_one, Transform const& parent_transform_two);
+				
+				/*!*********************************************************************************
+					\brief
+					Updates the world axis of a collider with the rotation from it's transform
+					This will only be used by OOBB objects
+				***********************************************************************************/
 				void UpdateWorldAxis(Collider2D& collider, Transform const& parentTransform);
 				
-				std::vector<Ray2D> rayList;
+				/*!*********************************************************************************
+					\brief
+					Draws a collider's shape using transform
+				***********************************************************************************/
+				void DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector3 color);
+
+				/*!*********************************************************************************
+					\brief
+					Draws a collider's shape using position
+				***********************************************************************************/
+				void DrawCollider(const Vector2 position, const Collider2D& collider, const Vector3 color);
+
+				//Debug setting
+				bool isDebugDraw = false;
 
 			private:
-				Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };
+				//World axis
+				const Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };
+				
 		};
 
 		namespace
 		{
+			//RigidbodySystem to be accessed locally
 			std::shared_ptr<ColliderSystem> cs;
+
+			//Input Settings
+			u64 debugDrawKey = (u64)KeyCode::Key_2;
 		}
 
 		void RegisterColliderSystem(void)
@@ -55,15 +150,18 @@ namespace ALEngine
 		}
 
 		void CreatePhysics2D(Entity const& entity, ColliderType shape) {
+			//Setup both collider and rigidbody for physics and collision simulation
 			CreateCollider(entity, shape);
 			CreateRigidbody(entity);
 		}
 
 		void CreateCollider(Entity const& entity, ColliderType shape)
 		{
+			//Prepare collider for custom stats
 			Collider2D collider;
 			collider.colliderType = shape;
 
+			//Assign Shapes
 			switch (shape)
 			{
 				case ColliderType::Rectangle2D_AABB:
@@ -91,219 +189,166 @@ namespace ALEngine
 		}
 
 		void ColliderSystem::UpdateWorldAxis(Collider2D& collider, Transform const& parentTransform) {
+			//If the collider isn't OOBB, don't need to update
 			if (collider.colliderType != ColliderType::Rectangle2D_OOBB) {
 				return;
 			}
 
+			//Prepare rotation matrix
 			Math::Matrix3x3 rotationTransform = Math::Matrix3x3::Rotation(collider.rotation + parentTransform.rotation);
 
-			collider.globalRight = rotationTransform * worldXAxis;
-			collider.globalUp = rotationTransform * worldYAxis;
+			//Update the world x, y axis
+			collider.m_globalRight = rotationTransform * worldXAxis;
+			collider.m_globalUp = rotationTransform * worldYAxis;
 		}
 
 		bool ColliderSystem::UpdateCollider(Collider2D& collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two)
 		{
+			//Keep track of collision status
 			bool collision = false;
 
+			//AABB-AABB
 			if ((collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Rectangle2D_AABB)) {
+				//If rigid is enabled
+				//Do swept
 				if (rigidbody_one.isEnabled) {
-					collision = SweptCollision_Circle_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two, rigidbody_one, rigidbody_two);
+					collision = SweptCollision_AABB_ABBB(collider_one, collider_two, parent_transform_one, parent_transform_two, rigidbody_one, rigidbody_two);
 				}
 				else{
+					//Else static based collision
 					collision = CheckCollision_AABB_To_AABB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 				}
 			}
+			//Circle-Circle
 			else if (collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Circle2D) {
+				//If rigid is enabled
+				//Do swept
 				if (rigidbody_one.isEnabled) {
 					collision = SweptCollision_Circle_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two, rigidbody_one, rigidbody_two);
 				}
 				else {
+					//Else static based collision
 					collision = CheckCollision_Circle_To_Circle(collider_one, collider_two, parent_transform_one, parent_transform_two);
 				}
 			}
+			//AABB-Circle
 			else if ((collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Circle2D) ||
 				(collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Rectangle2D_AABB)) {
 				collision = CheckCollision_Circle_To_AABB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
+			//OOBB-Circle
 			else if ((collider_one.colliderType == ColliderType::Rectangle2D_OOBB && collider_two.colliderType == ColliderType::Rectangle2D_OOBB)) {
 				collision = CheckCollision_OOBB_To_OOBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
+			//OOBB-OOBB
 			else if (collider_one.colliderType == ColliderType::Rectangle2D_OOBB && collider_two.colliderType == ColliderType::Rectangle2D_OOBB) {
 				collision = CheckCollision_OOBB_To_OOBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
+			//Circle-OOBB
 			else if ((collider_one.colliderType == ColliderType::Circle2D && collider_two.colliderType == ColliderType::Rectangle2D_OOBB) ||
 				(collider_one.colliderType == ColliderType::Rectangle2D_OOBB && collider_two.colliderType == ColliderType::Circle2D)) {
 				collision = CheckCollision_Circle_To_OOBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
+			//AABB-OOBB
 			else if ((collider_one.colliderType == ColliderType::Rectangle2D_AABB && collider_two.colliderType == ColliderType::Rectangle2D_OOBB) ||
 				(collider_one.colliderType == ColliderType::Rectangle2D_OOBB && collider_two.colliderType == ColliderType::Rectangle2D_AABB)) {
 				collision = CheckCollision_OOBB_To_OOBB(collider_one, collider_two, parent_transform_one, parent_transform_two);
 			}
 
+			//Return outcome
 			return collision;
 		}
-
-
-
-		void UpdateStartColliderSystem() {
-			cs->rayList.clear();			
-		}
-
+		
 		void UpdateColliderSystem() {
+			//Toggle debug draw on input
+			if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugDrawKey)))
+			{
+				cs->isDebugDraw = !cs->isDebugDraw;
+			}
+			
+			//Keep track of collision status
 			bool collision = false;
+
+			//Shift through every collider, reset their data for the collision simulation
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
 				Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 
-				Collider.frameEndGlobalPosition = Collider.localPosition + trans.position;
+				//Clear collision flag
+				Collider.isCollided = false;
 
+				//Clear collision points
+				Collider.collisionPoints.clear();
+
+				//Update the world axis of OOBB
 				cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it), trans);
 			}
-
-			//***************************** Put here for now ************************//
-			//************ Each collider test each other once, but this doesn't test the other's movement ********//
-			//for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-			//{
-			//	auto jt = ++it; //jt is next iteration
-			//	--it;			//move it back
-
-			//	Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-			//	Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-
-			//	oneCollider.frameEndGlobalPosition = oneCollider.localPosition + oneParentTransform.position;
-			//	for (; jt != cs->mEntities.end(); ++jt) {
-			//		Collider2D& twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
-			//		Transform const& twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
-
-			//		
-			//		collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform);
-			//	}
-			//}
-			//***************************** Put here for now ************************//
-
-			//***************************** Alternative ************************//
-			//***** Unoptimized, but it will go through every collider with every other, can test for velocity ******//
+				
+			//Calculate collision between every collider
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
 			{
+				//One data (Treated as moving if rigidbody is enabled)
 				Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 
-
+				//Shift through other colliders to simulate collision with
 				for (auto jt = cs->mEntities.begin(); jt != cs->mEntities.end(); ++jt) {
+					//If same, skip
 					if (jt == it) {
 						continue;
 					}
 
+					//Two Data
 					Collider2D& twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
 					Transform const& twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
 					Rigidbody2D& twoRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt);
 
+					//Do collision check
 					collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform, oneRigidbody, twoRigidbody);
 
-					/// <summary>
-					///	Collision Condition Check
-					/// </summary>
+					//Update only if there is collision
+					//If current check has no collision and previous check has, will override
 					if (collision) {
-						//Collision Enter
-						if (!oneCollider.isCollidedStay) {
-							oneCollider.isColliderTriggered = true;
-							oneCollider.isCollidedStay = true;
-						}
-						else if (oneCollider.isColliderTriggered) {
-							//Collision Stay
-							oneCollider.isColliderTriggered = false;
-						}
-						if (!twoCollider.isCollidedStay) {
-							twoCollider.isColliderTriggered = true;
-							twoCollider.isCollidedStay = true;
-						}
-						else if (oneCollider.isColliderTriggered)
-						{
-							//Collision Stay
-							twoCollider.isColliderTriggered = false;
-						}
-					}
-					//Collision Exit
-					//No Collision
-					else {
-						if (oneCollider.isCollidedStay) {
-							oneCollider.isCollidedStay = false;
-							oneCollider.isColliderExit = true;
-						}
-						else {
-							oneCollider.isColliderExit = false;
-						}
-						if (twoCollider.isCollidedStay) {
-							twoCollider.isCollidedStay = false;
-							twoCollider.isColliderExit = true;
-						}
-						else {
-							twoCollider.isColliderExit = false;
-						}
-					}
-					
-					//Collision output updates
-					if (oneCollider.isColliderTriggered) {
-						printf("Collision Trigger\n");
-					}
-					else if (oneCollider.isCollidedStay) {
-						printf("Collision Stay\n");
-					}
-					else if (oneCollider.isColliderExit) {
-						printf("Collision Exit\n");
+						oneCollider.isCollided = collision;
+						twoCollider.isCollided = collision;
 					}
 				}
 			}
-			//***************************** Alternative ************************//
-
-			////**************** Raycast for any collider ************//
-			//bool raycastHit = false;
-			////Run through raycasts
-			//for (int i = 0; i < cs->rayList.size(); i++){
-			//	for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-			//	{
-			//		auto jt = ++it; //jt is next iteration
-			//		--it;			//move it back
-
-			//		Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-			//		Transform const& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-
-			//		if (oneCollider.colliderType == ColliderType::Rectangle2D_AABB) {
-			//			raycastHit = Physics::Raycast_AABB(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
-			//		}
-			//		else if (oneCollider.colliderType == ColliderType::Circle2D) {
-			//			raycastHit = Physics::Raycast_Circle(cs->rayList[i], oneCollider, oneParentTransform).isCollided;
-			//		}
-			//	}
-			//	//if (raycastHit) {
-			//	//	printf("raycast hit ");
-			//	//}
-			//}
-			//**************** Raycast for any collider ************//
 
 			//**************** Run through all colliders again ************//
 			//**************** Update the position to after all the response ************//
 			for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
 			{
-				Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-				Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+				Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+				
+				//If rigidbody is disabled or collider is trigger, no need to update position
+				if (!rigidbody.isEnabled || collider.isTrigger) {
+					continue;
+				}
 
-				oneParentTransform.position = oneCollider.frameEndGlobalPosition;
+				//Update position
+				parentTransform.position = rigidbody.nextPosition;
 			}
 		}
 
 		bool ColliderSystem::CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two) {
+			//Set up the bottom left and top right of both box
 			Vector2 oneBottomLeft = { parent_transform_one.position.x - collider_one.scale[0] * 0.5f, parent_transform_one.position.y - collider_one.scale[1] * 0.5f } ;
 			Vector2 oneTopRight = { parent_transform_one.position.x + collider_one.scale[0] * 0.5f, parent_transform_one.position.y + collider_one.scale[1] * 0.5f };
 			Vector2 twoBottomLeft = { parent_transform_two.position.x - collider_two.scale[0] * 0.5f, parent_transform_two.position.y - collider_two.scale[1] * 0.5f };
 			Vector2 twoTopRight = { parent_transform_two.position.x + collider_two.scale[0] * 0.5f, parent_transform_two.position.y + collider_two.scale[1] * 0.5f };
 
+			//Check for intersection
 			if (!(twoBottomLeft.x > oneTopRight.x || twoTopRight.x < oneBottomLeft.x || twoBottomLeft.y > oneTopRight.y || twoTopRight.y < oneBottomLeft.y))
 			{
+				//intersect
 				return true;
 			}
 
+			//no intersection
 			return false;
 		}
 		
@@ -317,49 +362,67 @@ namespace ALEngine
 
 			//Get closest point
 			Vector2 closestPoint; //From Box
-			Vector2 circlePosition = parent_transform_circle.position + collider_circle.localPosition;
-			Vector2 boxPosition = parent_transform_box_AABB.position + collider_box_AABB.localPosition;
+			Vector2 circlePosition = vec2(parent_transform_circle.position) + collider_circle.m_localPosition;
+			Vector2 boxPosition = vec2(parent_transform_box_AABB.position) + collider_box_AABB.m_localPosition;
 
+			//holder for box size
 			f32 boxWidth = collider_box_AABB.scale[0], boxHeight = collider_box_AABB.scale[1];
+			
+			//Calculate closest point
 			closestPoint.x = std::max(boxPosition.x - boxWidth * 0.5f, std::min(circlePosition.x, boxPosition.x + boxWidth * 0.5f));
 			closestPoint.y = std::max(boxPosition.y - boxHeight * 0.5f, std::min(circlePosition.y, boxPosition.y + boxHeight * 0.5f));
 
 			//Check if this point is inside circle
 			Vector2 vector_closestPoint_to_circle = circlePosition - closestPoint;
 
+			//Check for intersection
+			//If closest point is smallest than radius
 			if ((vector_closestPoint_to_circle.x * vector_closestPoint_to_circle.x + vector_closestPoint_to_circle.y * vector_closestPoint_to_circle.y) < collider_circle.scale[0] * collider_circle.scale[0])
 			{
+				//Intersection
 				return true;
 			}
 
+			//No intersect
 			return false;
 		}
 
 		bool ColliderSystem::CheckCollision_Circle_To_Circle(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two) {
-			Vector2 oneCirclePosition = parent_transform_one.position + collider_one.localPosition;
-			Vector2 twoCirclePosition = parent_transform_two.position + collider_two.localPosition;
+			//Holder for circle's world position
+			Vector2 oneCirclePosition = vec2(parent_transform_one.position) + collider_one.m_localPosition;
+			Vector2 twoCirclePosition = vec2(parent_transform_two.position) + collider_two.m_localPosition;
 			
+			//Get the distance
 			Vector2 vector_distance = oneCirclePosition - twoCirclePosition;
 
+			//combined radius
 			f32 radius = collider_one.scale[0] + collider_two.scale[0];
 
+			//Check for intersection
+			//If the disance < radius
 			if (vector_distance.x * vector_distance.x + vector_distance.y * vector_distance.y < (radius * radius))
 			{
+				//Intersection
 				return true;
 			}
+
+			//No intersection
 			return false;
 		}
 
 		bool ColliderSystem::CheckCollision_OOBB_To_OOBB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two) {
 			//Test both box on local Axis Box1.x, Box1.y Box2.x and Box2.y
-			if (!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalRight, parent_transform_one, parent_transform_two)	||
-				!CheckIfOverlapAxis(collider_one, collider_two, collider_one.globalUp, parent_transform_one, parent_transform_two)		||
-				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalRight, parent_transform_one, parent_transform_two)	||
-				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.globalUp, parent_transform_one, parent_transform_two))
+			if (!CheckIfOverlapAxis(collider_one, collider_two, collider_one.m_globalRight, parent_transform_one, parent_transform_two)	||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_one.m_globalUp, parent_transform_one, parent_transform_two)		||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.m_globalRight, parent_transform_one, parent_transform_two)	||
+				!CheckIfOverlapAxis(collider_one, collider_two, collider_two.m_globalUp, parent_transform_one, parent_transform_two))
 			{
-				//If any is not overlapping, means box ain't touching
+				//If any is not overlapping, means box isn't touching
+				//No intersection
 				return false;
 			}
+
+			//Intersection
 			return true;
 		}   
 
@@ -370,11 +433,13 @@ namespace ALEngine
 			Collider2D const& collider_circle = collider_one.colliderType == ColliderType::Circle2D ? collider_one : collider_two;
 			Collider2D const& collider_box_OOBB = collider_two.colliderType == ColliderType::Rectangle2D_OOBB ? collider_two : collider_one;
 			
+			//Holder for parents of both object
 			Transform const& parent_transform_circle = collider_one.colliderType == ColliderType::Circle2D ? parent_transform_one : parent_transform_two;
 			Transform const& parent_transform_box_OOBB = collider_two.colliderType == ColliderType::Rectangle2D_OOBB ? parent_transform_two : parent_transform_one;
 			
-			Vector2 circle_world_position = parent_transform_circle.position + collider_circle.localPosition;
-			Vector2 box_world_position = parent_transform_box_OOBB.position + collider_box_OOBB.localPosition;
+			//Holder for world position of both object
+			Vector2 circle_world_position = vec2(parent_transform_circle.position) + collider_circle.m_localPosition;
+			Vector2 box_world_position = vec2(parent_transform_box_OOBB.position) + collider_box_OOBB.m_localPosition;
 			
 			//recreate the box in local space, origin at 0, similar to NDC box concept
 			Vector2 min = { -collider_box_OOBB.scale[0] * 0.5f, -collider_box_OOBB.scale[1] * 0.5f };	//BL
@@ -400,14 +465,21 @@ namespace ALEngine
 			closestPointToCircle.x = std::max(min.x, std::min(closestPointToCircle.x, max.x));
 			closestPointToCircle.y = std::max(min.y, std::min(closestPointToCircle.y, max.y));
 			
+			//Vector from closest point to circle (will just be used to calculate distance)
 			Vector2 circleToBox = localCirclePos - closestPointToCircle;
-			f32 radius = collider_circle.scale[0] * 2.0f;
 			
+			//Holder for circle radius
+			f32 radius = collider_circle.scale[0];
+			
+			//Intersection check
+			//If distance between closest point and circle is less than radius
 			if ((circleToBox.x * circleToBox.x + circleToBox.y * circleToBox.y) < radius * radius)
 			{
+				//Intersection
 				return true;
 			}
 			
+			//No intersection
 			return false;
 		}
 		
@@ -427,10 +499,11 @@ namespace ALEngine
 			//x - min, y - max
 			Vector2 result_MinMax { 0,0 };
 
-			Vector2 half_right = box.globalRight * box.scale[0] * 0.5f;
-			Vector2 half_up = box.globalUp * box.scale[1] * 0.5f;
+			Vector2 half_right = box.m_globalRight * box.scale[0] * 0.5f;
+			Vector2 half_up = box.m_globalUp * box.scale[1] * 0.5f;
 
-			Vector2 globalPosition = parentTransform.position + box.localPosition;
+			//Holder for world position
+			Vector2 globalPosition = vec2(parentTransform.position) + box.m_localPosition;
 
 			//Four corners of the box
 			Vector2 vertices[4];
@@ -443,8 +516,10 @@ namespace ALEngine
 			result_MinMax.x = Math::Vec2::Dot(vertices[0], axis);
 			result_MinMax.y = result_MinMax.x;
 
+			//Shift through each of 4 point of box
 			for (int i = 1; i < 4; i++)
 			{
+				//Get distance
 				f32 distance = Math::Vec2::Dot(vertices[i], axis);
 
 				//if distance is smaller than current min
@@ -460,70 +535,241 @@ namespace ALEngine
 				}
 			}
 
+			//Return output
 			return result_MinMax;
 		}
 		
-
 		using Physics::RaycastHit2D;
 		bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
+			//If the velocity is zero
+			//Just calculate static
 			if (rigidbody_moving.velocity.Magnitude() == 0) {
 				return CheckCollision_AABB_To_AABB(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
 			}
-			Vector2 movingGlobalPosition = collider_moving.localPosition + parent_transform_moving.position;
-			Vector2 otherGlobalPosition = collider_other.localPosition + parent_transform_other.position;
 
+			//Holder for global positions
+			Vector2 movingGlobalPosition = collider_moving.m_localPosition + vec2(parent_transform_moving.position);
+			Vector2 otherGlobalPosition = collider_other.m_localPosition + vec2(parent_transform_other.position);
+
+			//For raycasting the combined size of box
 			Collider2D tempBox = collider_other;			
 			tempBox.scale[0] += collider_moving.scale[0];
 			tempBox.scale[1] += collider_moving.scale[1];
 
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.velocity };
+			//Raycast
+			Ray2D ray = { movingGlobalPosition, rigidbody_moving.nextPosition };
 			RaycastHit2D rayHit = Physics::Raycast_AABB(ray, tempBox, parent_transform_other);
-			
+
+			//If ray hit
+			//Means collision will happen
 			if (rayHit.isCollided)
 			{
-				collider_moving.frameEndGlobalPosition = rayHit.point;
-				return true;
-			}
+				//From the output normal
+				//Determine which velocity part is affected
+				if (rayHit.normal.y != 0) {
+					//normal is pointing up or down
+					//collision is vertical
 
+					//Stop vertical velocity
+					rigidbody_moving.frameVelocity.y = 0;
+					rigidbody_moving.velocity.y = 0;
+				}
+				else if (rayHit.normal.x != 0) {
+					//normal is pointing left or right
+					//collision is horizontal
+					
+					//Stop horizontal velocity
+					rigidbody_moving.frameVelocity.x = 0;
+					rigidbody_moving.velocity.x = 0;
+				}
+
+				//Determine if moving object move with velocity or point of raycast hit
+				bool canMoveX = true, canMoveY = true;
+
+				//Add collision point
+				collider_moving.collisionPoints.push_back({ rigidbody_moving.nextPosition, rayHit.normal });
+
+				//Shift through the collision points
+				for (int i = 0; i < collider_moving.collisionPoints.size(); ++i) {
+					//If the horizontal normal is not 0
+					if (collider_moving.collisionPoints[i].normal.x != 0) {
+						//Object won't move vertically
+						canMoveY = false;
+					}
+
+					//If the horizontal normal is not 0
+					else if (collider_moving.collisionPoints[i].normal.y != 0) {
+						//Object won't move horizontally
+						canMoveX = false;
+					}
+				}
+
+				//If can move horizontally
+				if (canMoveX) {
+					//Update next position to follow velocity
+					rigidbody_moving.nextPosition.x = rayHit.point.x + rigidbody_moving.frameVelocity.x;
+				}
+				else {
+					//Update next to be point of intersection 
+					rigidbody_moving.nextPosition.x = rayHit.point.x;
+				}
+
+				//If can move vertically
+				if (canMoveY) {
+					//Update next position to follow velocity
+					rigidbody_moving.nextPosition.y = rayHit.point.y + rigidbody_moving.frameVelocity.y;
+				}
+				else {
+					//Update next to be point of intersection
+					rigidbody_moving.nextPosition.y = rayHit.point.y;
+				}
+
+				//Collision Happen
+				return true;
+			}//End raycast check
+
+			//No collision
 			return false;
 		}
 
+		bool ColliderSystem::CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius) {
+			//Direction, used for distance 
+			Vector2 direction = position - circleCenter;
+
+			//Return Intersection
+			return (direction.x * direction.x + direction.y * direction.y) <= circleRadius * circleRadius;
+		}
+
+		bool ColliderSystem::CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight) {
+			//Holder for bottom left and top right
+			Vector2 bottomLeft = boxCenter - Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
+			Vector2 topRight = boxCenter + Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
+
+			//Intersection check
+			if (position.x < bottomLeft.x || position.x > topRight.x || position.y < bottomLeft.y || position.y > topRight.y) {
+				//No intersection
+				return false;
+			}
+
+			//Intersection
+			return true;
+		}
+
+
 		bool ColliderSystem::SweptCollision_Circle_Circle(Collider2D& collider_moving, Collider2D const& collider_other, Transform& parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbodyother) {
+			//If the velocity is zero
+			//Just calculate static
 			if (rigidbody_moving.velocity.Magnitude() == 0) {
 				return CheckCollision_Circle_To_Circle(collider_moving, collider_other, parent_transform_moving, parent_transform_other);
 			}
 
-			Vector2 movingGlobalPosition = collider_moving.localPosition + parent_transform_moving.position;
-			Vector2 otherGlobalPosition = collider_other.localPosition + parent_transform_other.position;
+			//Holder for global position
+			Vector2 movingGlobalPosition = collider_moving.m_localPosition + vec2(parent_transform_moving.position);
+			Vector2 otherGlobalPosition = collider_other.m_localPosition + vec2(parent_transform_other.position);
 
+			//For raycasting the combined size of circle
 			Collider2D tempCircle = collider_other;
 			tempCircle.scale[0] += collider_moving.scale[0];
 
-			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.velocity };
+			//Raycast
+			Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.frameVelocity };
 			RaycastHit2D rayHit = Physics::Raycast_Circle(ray, tempCircle, parent_transform_other);
 
+			//If ray hit
+			//Means collision will happen
 			if (rayHit.isCollided)
 			{
-				Vector2 x_direction = { rigidbody_moving.velocity.x, 0 };
-				Vector2 y_direction = { 0, rigidbody_moving.velocity.y };
+				//holder for velocity
+				Vector2 x_direction = { rigidbody_moving.frameVelocity.x, 0 };
+				Vector2 y_direction = { 0, rigidbody_moving.frameVelocity.y };
 
+				//Keep track of output velocity
 				Vector2 direction{ 0,0 };
 
+				//If the dot product of velocity.x and normal is > 0
 				if (Vector2::Dot(x_direction, rayHit.normal) > 0) {
+					//Update direction
 					direction += x_direction;
 				}
+				//If the dot product of velocity.y and normal is > 0
 				else if (Vector2::Dot(y_direction, rayHit.normal) > 0) {
+					//Update direction
 					direction += y_direction;
 				}
 
-				collider_moving.frameEndGlobalPosition = rayHit.point + direction;
+				//Update velocity
+				rigidbody_moving.velocity = direction;
+			
+				//Update next position
+				rigidbody_moving.nextPosition = rayHit.point + direction;
+				
+				//Collision
 				return true;
 			}
+
+			//No collision
 			return false;
 		}
 
-		void Raycast2DCollision(Vector2 start, Vector2 end) {
-			cs->rayList.push_back({ start,end });
+		void ColliderSystem::DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector3 color) {
+			//Set color
+			Gizmos::Gizmo::SetGizmoColor(color);
+
+			//Draw colliders based on their type
+			switch (collider.colliderType) {
+			case ColliderType::Rectangle2D_AABB:
+				{
+					//Box holder
+					Vector2 globalPosition = vec2(parentTransform.position) + collider.m_localPosition;
+					Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
+					Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
+
+					//Draw 4 lines
+					Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });	//Bottom
+					Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);		//top
+					Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });	//left
+					Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);		//right
+				}
+				break;			
+			
+			case ColliderType::Circle2D:
+				//Draw circle
+				//Gizmos::Gizmo::RenderCircle(vec2(parentTransform.position) + collider.m_localPosition, collider.scale[0]);
+				break;
+			}
+		}
+
+		void ColliderSystem::DrawCollider(const Vector2 position, const Collider2D& collider, const Vector3 color) {			
+			//Set color
+			Gizmos::Gizmo::SetGizmoColor(color);
+
+			//Draw colliders based on their type
+			switch (collider.colliderType) {
+
+			//Draw colliders based on their type
+			case ColliderType::Rectangle2D_AABB:
+			{
+				//Box holder
+				Vector2 globalPosition = position + collider.m_localPosition;
+				Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
+				Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
+
+				//Draw 4 lines
+				Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });	//Bottom
+				Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);	//top
+				Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });	//left
+				Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);	//right
+			}
+			break;
+
+			case ColliderType::Circle2D:
+				//Draw circle
+				//Gizmos::Gizmo::RenderCircle(position + collider.m_localPosition, collider.scale[0]);
+				break;
+			}
 		}
 	}
 }
+
+
+

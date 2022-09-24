@@ -45,7 +45,9 @@ namespace ALEngine
 		void FreeInstance(void)
 		{
 			Coordinator::Free();
+			Editor::ALEditor::Free();
 			Engine::MeshBuilder::Free();
+			Engine::AssetManager::Free();
 		}
 
 		/*!*********************************************************************************

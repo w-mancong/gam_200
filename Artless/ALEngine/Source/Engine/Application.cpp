@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Time.h"
-
-#include <iostream>
 
 namespace ALEngine::Engine
 {
-	using namespace Math; using namespace Graphics; using namespace ECS;
+	using namespace Math;
+	using namespace Graphics;
+	using namespace ECS;
+	using namespace Editor;
 	class Application
 	{
 	public:
@@ -14,34 +14,31 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
-	u64 constexpr ENTITIES_SIZE = 2'500;
-
-	Entity en[ENTITIES_SIZE];
+	// add function pointers here
 
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
 		ECS::InitSystem();
 
-		for (u64 i = 0; i < ENTITIES_SIZE; ++i)
-		{
-			Transform t{ { Random::Range(-600.0f, 600.0f), Random::Range(-300.0f, 300.0f), 0.0f },
-				{ Random::Range(20.0f, 75.0f), Random::Range(20.0f, 75.0f)},
-				{ Random::Range(0.0f, 360.0f) } };
-
-			if (!(i % 2))
-				*(en + i) = CreateSprite(t, "Assets/Images/awesomeface.png");
-			else
-				*(en + i) = CreateSprite(t, "Assets/Images/container.jpg");
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(*(en + i));
-			sprite.color = Color{ Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f) };
-		}
-
 		// Initialize Time (Framerate Controller)
 		Time::Init();
 
+		// Init Logger
+		ALEngine::Exceptions::Logger::Init();
+
 		//// Init ImGui
-		//ALEditor::Instance()->Init();
+		ALEditor::Instance()->SetImGuiEnabled(true);
+		ALEditor::Instance()->SetDockingEnabled(false);
+
+		Engine::AssetManager::Instance()->Init();
+
+		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
+		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
+		AL_CORE_INFO("THIS IS A INFO MESSAGE");
+		AL_CORE_WARN("THIS IS A WARNING MESSAGE");
+		AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
+		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 	}
 
 	void Application::Update(void)
@@ -50,13 +47,13 @@ namespace ALEngine::Engine
 		f32 accumulator{ 0.f };
 
 		// should do the game loop here
-		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::KeyTriggered(KeyCode::Escape))
+		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 		{
 			// Get Current Time
 			Time::ClockTimeNow();
 
-			//// Begin new ImGui frame
-			//ALEditor::Instance()->Begin();
+			// Begin new ImGui frame
+			ALEditor::Instance()->Begin();
 
 			// Normal Update
 			Engine::Update();
@@ -66,6 +63,7 @@ namespace ALEngine::Engine
 			{
 				Engine::FixedUpdate();
 				accumulator -= Time::m_FixedDeltaTime;
+				// AL_CORE_DEBUG(Time::m_FPS);
 			}
 
 			// Render
@@ -78,7 +76,8 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
-		glfwTerminate();	// clean/delete all GLFW resources
+		ALEditor::Instance()->Exit(); // Exit ImGui
+		glfwTerminate();			  // clean/delete all GLFW resources
 	}
 
 	void Run(void)
@@ -91,17 +90,12 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-		f32 constexpr rot_spd{ 50.0f };
-		for (u64 i = 0; i < ENTITIES_SIZE; ++i)
-		{
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(*(en + i));
-			trans.rotation += rot_spd * Time::m_DeltaTime;
-		}
+
 	}
 
 	void Engine::FixedUpdate(void)
 	{
-		//Raycast2DCollision({ -25, 25 }, { 25, 25 });
+		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 	}
