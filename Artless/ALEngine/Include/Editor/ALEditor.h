@@ -10,114 +10,110 @@ brief:	This file contains the function declarations for the ALEditor class.
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
-#include "Asset Manager/ContentBrowserPanel.h"
-
-namespace ALEngine
+#include  <Editor/Panels/ContentBrowserPanel.h>
+namespace ALEngine::Editor
 {
-	namespace Editor
+	class ALEditor : public Templates::Singleton<ALEditor>
 	{
-		class ALEditor : public Templates::Singleton<ALEditor>
-		{
-		public:
-			/*!*********************************************************************************
-				\brief
-				Updates the editor each frame.
-				Mainly updates each ImGui panel
-			***********************************************************************************/
-			void Update();
+	public:
+		/*!*********************************************************************************
+			\brief
+			Updates the editor each frame.
+			Mainly updates each ImGui panel
+		***********************************************************************************/
+		void Update();
 
-			/*!*********************************************************************************
-				\brief
-				Used to shutdown and delete all necessary ImGui related processes.
-			***********************************************************************************/
-			void Exit();
+		/*!*********************************************************************************
+			\brief
+			Used to shutdown and delete all necessary ImGui related processes.
+		***********************************************************************************/
+		void Exit();
 
-			/*!*********************************************************************************
-				\brief
-				Signals the start of a new ImGui frame; any ImGui code is sandwiched between 
-				this and End()
-				Ensure to call at the start of each frame, before any ImGui code is called
-			***********************************************************************************/
-			void Begin();
+		/*!*********************************************************************************
+			\brief
+			Signals the start of a new ImGui frame; any ImGui code is sandwiched between 
+			this and End()
+			Ensure to call at the start of each frame, before any ImGui code is called
+		***********************************************************************************/
+		void Begin();
 
-			/*!*********************************************************************************
-				\brief
-				Signals the end of an ImGui frame; any ImGui code is sandwiched between
-				this and Begin()
-				Ensure to call at the end of each frame, after all objects are rendered, but
-				before framebuffers get swapped.
-			***********************************************************************************/
-			void End();
+		/*!*********************************************************************************
+			\brief
+			Signals the end of an ImGui frame; any ImGui code is sandwiched between
+			this and Begin()
+			Ensure to call at the end of each frame, after all objects are rendered, but
+			before framebuffers get swapped.
+		***********************************************************************************/
+		void End();
 
-			/*!*********************************************************************************
-				\brief
-				Sets ImGui to be enabled or disabled.
+		/*!*********************************************************************************
+			\brief
+			Sets ImGui to be enabled or disabled.
 
-				\param [in] isEnabled
-				Boolean for whether the ImGui will be set to enabled or disabled
-			***********************************************************************************/
-			void SetImGuiEnabled(b8 isEnabled) { m_ImGuiEnabled = isEnabled; }
+			\param [in] isEnabled
+			Boolean for whether the ImGui will be set to enabled or disabled
+		***********************************************************************************/
+		void SetImGuiEnabled(b8 isEnabled) { m_ImGuiEnabled = isEnabled; }
 
-			/*!*********************************************************************************
-				\brief
-				Sets ImGui Docking to be enabled or disabled.
+		/*!*********************************************************************************
+			\brief
+			Sets ImGui Docking to be enabled or disabled.
 
-				\param [in] isEnabled
-				Boolean for whether the ImGui Docking will be set to enabled or disabled
-			***********************************************************************************/
-			void SetDockingEnabled(b8 isEnabled) { m_DockingEnabled = isEnabled; }
+			\param [in] isEnabled
+			Boolean for whether the ImGui Docking will be set to enabled or disabled
+		***********************************************************************************/
+		void SetDockingEnabled(b8 isEnabled) { m_DockingEnabled = isEnabled; }
 
-			/*!*********************************************************************************
-				\brief
-				Sets the entity to be selected by the ImGui inspector
+		/*!*********************************************************************************
+			\brief
+			Sets the entity to be selected by the ImGui inspector
 
-				\param [in] setter
-				Pointer to the transform of the entity to be selected by te inspector.
-				Soon It will be based on entity instead of just transform alone
-			***********************************************************************************/
-			void SetSelectedEntityTransform(ECS::Entity setter) { 
-				imguizmo_panel.SetSelectedEntityTransform(setter); };
+			\param [in] setter
+			Pointer to the transform of the entity to be selected by te inspector.
+			Soon It will be based on entity instead of just transform alone
+		***********************************************************************************/
+		void SetSelectedEntityTransform(ECS::Entity setter) { 
+			imguizmo_panel.SetSelectedEntityTransform(setter); };
 
-		private:
-			/*!*********************************************************************************
-				\brief
-				Constructor for the ALEditor class
-			***********************************************************************************/
-			ALEditor(void) { Init(); }
+	private:
+		/*!*********************************************************************************
+			\brief
+			Constructor for the ALEditor class
+		***********************************************************************************/
+		ALEditor(void) { Init(); }
 
-			/*!*********************************************************************************
-				\brief
-				Destructor for the ALEditor class
-			***********************************************************************************/
-			~ALEditor(void) = default;
+		/*!*********************************************************************************
+			\brief
+			Destructor for the ALEditor class
+		***********************************************************************************/
+		~ALEditor(void) = default;
 
-			/*!*********************************************************************************
-				\brief
-				Initialization for the ImGui editor
-			***********************************************************************************/
-			void Init();
+		/*!*********************************************************************************
+			\brief
+			Initialization for the ImGui editor
+		***********************************************************************************/
+		void Init();
 
-			/*!*********************************************************************************
-				\brief
-				Runs code that enables docking for ImGui windows/panels.
-				Is to be called every frame when Docking is enabled
-			***********************************************************************************/
-			void Docking();
+		/*!*********************************************************************************
+			\brief
+			Runs code that enables docking for ImGui windows/panels.
+			Is to be called every frame when Docking is enabled
+		***********************************************************************************/
+		void Docking();
 
-			friend class Templates::Singleton<ALEditor>;
-			friend class Memory::StaticMemory;
+		friend class Templates::Singleton<ALEditor>;
+		friend class Memory::StaticMemory;
 
-			// Variables
-			b8 m_ImGuiEnabled{ false };
-			b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
+		// Variables
+		b8 m_ImGuiEnabled{ false };
+		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
 
-			// Panels
-			ContentBrowserPanel cbp;
-			InspectorPanel imguizmo_panel;
-			LoggerPanel logger_panel;
-			SceneHierarchyPanel hierarchy_panel;
-		};
-	}
+		// Panels
+		ContentBrowserPanel cbp;
+		InspectorPanel imguizmo_panel;
+		LoggerPanel logger_panel;
+		SceneHierarchyPanel hierarchy_panel;
+	};
 }
 
 #endif

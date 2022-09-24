@@ -103,7 +103,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
-    <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
@@ -205,7 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
-    <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
     <ClInclude Include="Include\Common Header\MyEditor.h" />
