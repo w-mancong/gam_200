@@ -57,6 +57,9 @@ namespace ALEngine
 
 			// Init ImGui
 			ALEditor::Instance()->Init();
+
+			// Init AssetManager instance
+			AssetManager::Instance()->Init();
 		}
 
 		void Application::Update(void)
@@ -72,6 +75,8 @@ namespace ALEngine
 
 				// Begin new ImGui frame
 				ALEditor::Instance()->Begin();
+
+				//AssetManager::Instance()->Begin();
 
 				// Normal Update
 				Engine::Update();

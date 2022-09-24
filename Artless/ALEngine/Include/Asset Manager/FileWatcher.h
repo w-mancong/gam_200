@@ -22,7 +22,7 @@ namespace ALEngine::Engine
 		Erased
 	};
 
-	class FileWatcher : public Templates::Singleton<ALEditor>
+	class FileWatcher
 	{
 	public:
 
@@ -31,6 +31,8 @@ namespace ALEngine::Engine
 		//the time interval at which to check the base folder for changes
 		std::chrono::duration<int, std::milli> delay;
 
+
+		FileWatcher(std::string pathtoWatch, std::chrono::duration<int, std::milli> delay);
 
 
 
