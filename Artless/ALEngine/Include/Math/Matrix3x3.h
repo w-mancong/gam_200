@@ -163,7 +163,7 @@ namespace ALEngine
 
 		private:
 			static size_type constexpr R = 3, C = 3;
-		}; using Mat3 = Matrix3x3; using Mtx3 = Matrix3x3;
+		}; using Mat3 = Matrix3x3; using Mtx3 = Matrix3x3; using mat3 = Matrix3x3;
 
 		/*!*********************************************************************************
 			\brief

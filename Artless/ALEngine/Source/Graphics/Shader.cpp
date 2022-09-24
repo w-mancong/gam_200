@@ -35,9 +35,9 @@ namespace ALEngine
 				oss << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 				DebugLog::Exit(oss.str().c_str());
 			}
-			const char* vShaderCode = vertexCode.c_str(), *fShaderCode = fragmentCode.c_str();
+			const char* vShaderCode = vertexCode.c_str(), * fShaderCode = fragmentCode.c_str();
 			// 2. compile shaders
-			s32 success; sch infoLog[512];
+			s32 success; GLchar infoLog[512];
 
 			// vertex shader
 			u32 vertex = glCreateShader(GL_VERTEX_SHADER);
@@ -69,7 +69,7 @@ namespace ALEngine
 			glLinkProgram(id);
 			// print any linking errors
 			glGetProgramiv(id, GL_LINK_STATUS, &success);
-			if(!success)
+			if (!success)
 			{
 				glGetProgramInfoLog(id, sizeof(infoLog), nullptr, infoLog);
 				oss << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
