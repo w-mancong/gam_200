@@ -1,26 +1,23 @@
 #include "pch.h"
 
-namespace ALEngine
+namespace ALEngine::Console
 {
-	namespace Console
+	void ShowConsole(void)
 	{
-		void ShowConsole(void)
+		if (AllocConsole())
 		{
-			if (AllocConsole())
-			{
-				FILE* file;
+			FILE* file;
 
-				freopen_s(&file, "CONOUT$", "wt", stdout);
-				freopen_s(&file, "CONOUT$", "wt", stderr);
-				freopen_s(&file, "CONOUT$", "wt", stdin);
+			freopen_s(&file, "CONOUT$", "wt", stdout);
+			freopen_s(&file, "CONOUT$", "wt", stderr);
+			freopen_s(&file, "CONOUT$", "wt", stdin);
 
-				SetConsoleTitle("Debug Console");
-			}
+			SetConsoleTitle("Debug Console");
 		}
+	}
 
-		void StopConsole(void)
-		{
-			FreeConsole();
-		}
+	void StopConsole(void)
+	{
+		FreeConsole();
 	}
 }
