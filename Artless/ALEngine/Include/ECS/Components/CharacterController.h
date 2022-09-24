@@ -9,27 +9,21 @@ brief:	This file contains the function declarations for CharacterController.h
 
 #ifndef	CHARACTERCONTROLLER_H
 #define CHARACTERCONTROLLER_H
-namespace ALEngine
+namespace ALEngine::ECS::Component
 {
-	namespace ECS
+	/*!*********************************************************************************
+		\brief
+			Data for the character controller
+			This component will act as a quick interface for implementing 2D platformer controls
+	***********************************************************************************/
+	struct CharacterController
 	{
-		namespace Component
-		{
-			/*!*********************************************************************************
-				\brief
-					Data for the character controller
-					This component will act as a quick interface for implementing 2D platformer controls
-			***********************************************************************************/
-			struct CharacterController
-			{
-			public:
-				f32 speed;			//Acceleration of object
-				f32 jumpStrength;	//Velocity of jump
+	public:
+		f32 speed;			//Acceleration of object
+		f32 jumpStrength;	//Velocity of jump
 
-				//Interface for custom keys for control
-				u64 leftKey, rightKey, jumpKey, rotateLeftKey, rotateRightKey;
-			};
-		}
-	}
+		//Interface for custom keys for control
+		u64 leftKey, rightKey, jumpKey, rotateLeftKey, rotateRightKey;
+	};
 }
 #endif

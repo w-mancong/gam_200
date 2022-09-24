@@ -1,22 +1,19 @@
 #ifndef SCENE_HIERARCHY_PANEL_H
 #define SCENE_HIERARCHY_PANEL_H
 
-namespace ALEngine
+namespace ALEngine::Editor
 {
-	namespace Editor
+	class SceneHierarchyPanel
 	{
-		class SceneHierarchyPanel
-		{
-		public:
-			SceneHierarchyPanel(){}
-			~SceneHierarchyPanel(){}
+	public:
+		SceneHierarchyPanel(){}
+		~SceneHierarchyPanel(){}
 
-			void OnImGuiRender();
+		void OnImGuiRender();
 
-		private:
-			std::vector<ECS::Entity> m_entityList;
-		};
-	}
+	private:
+		std::vector<ECS::Entity> m_entityList;
+	};
 }
 
 #endif

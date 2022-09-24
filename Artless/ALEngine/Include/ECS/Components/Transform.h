@@ -9,24 +9,18 @@ brief:	This file contains the transform component
 #ifndef	TRANSFORM_H
 #define TRANSFORM_H
 
-namespace ALEngine
+namespace ALEngine::ECS::Component
 {
-	namespace ECS
+	/*!*********************************************************************************
+		\brief
+			Transform component will be used to move entities around the scene
+	***********************************************************************************/
+	struct Transform
 	{
-		namespace Component
-		{
-			/*!*********************************************************************************
-				\brief
-					Transform component will be used to move entities around the scene
-			***********************************************************************************/
-			struct Transform
-			{
-				Math::Vector3 position{ 0.0f, 0.0f, 0.0f };
-				Math::Vector2 scale{ 1.0f, 1.0f };
-				f32	rotation{ 0.0f };
-			};
-		}
-	}
+		Math::Vector3 position{ 0.0f, 0.0f, 0.0f };
+		Math::Vector2 scale{ 1.0f, 1.0f };
+		f32	rotation{ 0.0f };
+	};
 }
 
 #endif

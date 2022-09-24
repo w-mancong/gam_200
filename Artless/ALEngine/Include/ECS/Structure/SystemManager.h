@@ -1,78 +1,75 @@
 #ifndef	SYSTEM_MANAGER_H
 #define SYSTEM_MANAGER_H
 
-namespace ALEngine
+namespace ALEngine::ECS
 {
-	namespace ECS
+	class System
 	{
-		class System
+	public:
+		std::set<Entity> mEntities;
+	};
+
+	class SystemManager
+	{
+	public:
+		template <typename T>
+		std::shared_ptr<T> RegisterSystem(void)
 		{
-		public:
-			std::set<Entity> mEntities;
-		};
+			const char* typeName = typeid(T).name();
+#ifdef _DEBUG
+			assert(mSystems.find(typeName) == mSystems.end() && "Registering system more than once.");
+#endif	
+			// Create a pointer to the system and return it so it can be used externally
+			auto system = std::make_shared<T>();
+			mSystems.insert({ typeName, system });
+			return system;
+		}
 
-		class SystemManager
+		template <typename T>
+		void SetSignature(Signature signature)
 		{
-		public:
-			template <typename T>
-			std::shared_ptr<T> RegisterSystem(void)
-			{
-				const char* typeName = typeid(T).name();
+			const char* typeName = typeid(T).name();
 #ifdef _DEBUG
-				assert(mSystems.find(typeName) == mSystems.end() && "Registering system more than once.");
+			assert(mSystems.find(typeName) != mSystems.end() && "System used before registered.");
 #endif	
-				// Create a pointer to the system and return it so it can be used externally
-				auto system = std::make_shared<T>();
-				mSystems.insert({ typeName, system });
-				return system;
-			}
+			// Set the signature for this system
+			mSignatures.insert({ typeName, signature });
+		}
 
-			template <typename T>
-			void SetSignature(Signature signature)
+		void EntityDestroyed(Entity entity)
+		{
+			// Erase a destroyed entity from all system lists
+			// mEntities is a set so no check needed
+			for (auto const& pair : mSystems)
 			{
-				const char* typeName = typeid(T).name();
-#ifdef _DEBUG
-				assert(mSystems.find(typeName) != mSystems.end() && "System used before registered.");
-#endif	
-				// Set the signature for this system
-				mSignatures.insert({ typeName, signature });
+				auto const& system = pair.second;
+				system->mEntities.erase(entity);
 			}
+		}
 
-			void EntityDestroyed(Entity entity)
+		void EntitySignatureChanged(Entity entity, Signature entitySignature)
+		{
+			//Notify each system that an entity's signature changed
+			for (auto const& pair : mSystems)
 			{
-				// Erase a destroyed entity from all system lists
-				// mEntities is a set so no check needed
-				for (auto const& pair : mSystems)
-				{
-					auto const& system = pair.second;
+				auto const& type = pair.first;
+				auto const& system = pair.second;
+				auto const& systemSignature = mSignatures[type];
+
+				// Entity signature matches system signature - insert into set
+				if ((entitySignature & systemSignature) == systemSignature)
+					system->mEntities.insert(entity);
+				else
 					system->mEntities.erase(entity);
-				}
 			}
+		}
 
-			void EntitySignatureChanged(Entity entity, Signature entitySignature)
-			{
-				//Notify each system that an entity's signature changed
-				for (auto const& pair : mSystems)
-				{
-					auto const& type = pair.first;
-					auto const& system = pair.second;
-					auto const& systemSignature = mSignatures[type];
-
-					// Entity signature matches system signature - insert into set
-					if ((entitySignature & systemSignature) == systemSignature)
-						system->mEntities.insert(entity);
-					else
-						system->mEntities.erase(entity);
-				}
-			}
-
-		private:
-			// Map from system type string pointer to a signature
-			std::unordered_map<const char*, Signature> mSignatures{};
-			// Map from system type string pointer to a system pointer
-			std::unordered_map<const char*, std::shared_ptr<System>> mSystems{};
-		};
-	}
+	private:
+		// Map from system type string pointer to a signature
+		std::unordered_map<const char*, Signature> mSignatures{};
+		// Map from system type string pointer to a system pointer
+		std::unordered_map<const char*, std::shared_ptr<System>> mSystems{};
+	};
 }
 
 #endif

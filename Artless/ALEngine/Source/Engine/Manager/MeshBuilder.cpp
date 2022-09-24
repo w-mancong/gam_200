@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Engine/Manager/MeshBuilder.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "Graphics/stb_image.h"
 

@@ -1,12 +1,9 @@
 #ifndef	ECS_SYSTEM_H
 #define ECS_SYSTEM_H
 
-namespace ALEngine
+namespace ALEngine::ECS
 {
-	namespace ECS
-	{
-		void InitSystem(void);
-	}
+	void InitSystem(void);
 }
 
 #endif
