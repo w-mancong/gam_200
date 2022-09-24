@@ -5,7 +5,10 @@
 
 namespace ALEngine::Engine
 {
-	using namespace Math; using namespace Graphics; using namespace ECS;
+	using namespace Math;
+	using namespace Graphics;
+	using namespace ECS;
+	using namespace Editor;
 	class Application
 	{
 	public:
@@ -14,58 +17,54 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
-	u64 constexpr ENTITIES_SIZE = 2'500;
-
-	Entity en[ENTITIES_SIZE];
+	Entity Noah, Hinata;
 
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
 		ECS::InitSystem();
 
-		for (u64 i = 0; i < ENTITIES_SIZE; ++i)
-		{
-			Transform t{ { Random::Range(-600.0f, 600.0f), Random::Range(-300.0f, 300.0f), 0.0f },
-				{ Random::Range(20.0f, 75.0f), Random::Range(20.0f, 75.0f)},
-				{ Random::Range(0.0f, 360.0f) } };
-
-			if(!(i % 2))
-				*(en + i) = CreateSprite(t, "Assets/Images/awesomeface.png");
-			else
-				*(en + i) = CreateSprite(t, "Assets/Images/container.jpg");
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(*(en + i));
-			sprite.color = Color{ Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f) };
-		}
-
 		// Initialize Time (Framerate Controller)
 		Time::Init();
 
-		//// Init ImGui
-		//ALEditor::Instance()->Init();
+		// Init Logger
+		ALEngine::Exceptions::Logger::Init();
+
+		// Init ImGui
+		ALEditor::Instance()->SetImGuiEnabled(true);
+		ALEditor::Instance()->SetDockingEnabled(false);
+
+		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
+		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
+		AL_CORE_INFO("THIS IS A INFO MESSAGE");
+		AL_CORE_WARN("THIS IS A WARNING MESSAGE");
+		AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
+		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 	}
 
 	void Application::Update(void)
 	{
 		// Accumulator for fixed delta time
-		f32 accumulator{ 0.f };
+		f32 accumulator{0.f};
 
 		// should do the game loop here
-		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::KeyTriggered(KeyCode::Escape))
-		{				
+		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
+		{
 			// Get Current Time
 			Time::ClockTimeNow();
 
-			//// Begin new ImGui frame
-			//ALEditor::Instance()->Begin();
+			// Begin new ImGui frame
+			ALEditor::Instance()->Begin();
 
 			// Normal Update
-			Engine::Update();
+			// Engine::Update();
 			// Fixed Update (Physics)
 			accumulator += Time::m_DeltaTime;
 			while (accumulator >= Time::m_FixedDeltaTime)
 			{
 				Engine::FixedUpdate();
 				accumulator -= Time::m_FixedDeltaTime;
+				// AL_CORE_DEBUG(Time::m_FPS);
 			}
 
 			// Render
@@ -78,7 +77,8 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
-		glfwTerminate();	// clean/delete all GLFW resources
+		ALEditor::Instance()->Exit(); // Exit ImGui
+		glfwTerminate();			  // clean/delete all GLFW resources
 	}
 
 	void Run(void)
@@ -88,20 +88,85 @@ namespace ALEngine::Engine
 		app.Update();
 		app.Exit();
 	}
-		
+
 	void Engine::Update(void)
 	{
-		f32 constexpr rot_spd{ 50.0f };
-		for (u64 i = 0; i < ENTITIES_SIZE; ++i)
+		Transform &trans = Coordinator::Instance()->GetComponent<Transform>(Noah);
+		Rigidbody2D &rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah);
+		f32 constexpr speed = 150.f;
+		f32 constexpr rot = 1.0f;
+
+		/*
+		if (Input::Input::KeyTriggered(KeyCode::Space)) {
+			rigid.velocity.y = 250;
+		}*/
+
+		// Use Velocity
+		rigid.velocity.x = 0, rigid.velocity.y = 0;
+		if (Input::Input::KeyDown(KeyCode::Down))
 		{
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(*(en + i));
-			trans.rotation += rot_spd * Time::m_DeltaTime;
+			rigid.velocity.y = -speed;
 		}
+		if (Input::Input::KeyDown(KeyCode::Up))
+		{
+			rigid.velocity.y = speed;
+		}
+		if (Input::Input::KeyDown(KeyCode::Left))
+		{
+			rigid.velocity.x = -speed;
+		}
+		if (Input::Input::KeyDown(KeyCode::Right))
+		{
+			rigid.velocity.x = speed;
+		}
+
+		// Manual Position
+		// if (Input::Input::KeyTriggered(KeyCode::W))
+		//{
+		//	trans.position.y += speed;
+		// }
+		// if (Input::Input::KeyTriggered(KeyCode::S))
+		//{
+		//	trans.position.y -= speed * Time::m_DeltaTime;
+		// }
+		// if (Input::Input::KeyTriggered(KeyCode::D))
+		//{
+		//	trans.position.x += speed;
+		// }
+		// if (Input::Input::KeyTriggered(KeyCode::A))
+		//{
+		//	trans.position.x -= speed;
+		// }
+
+		// if(Input::Input::KeyDown(KeyCode::W))
+		//{
+		//	trans.position.y += speed * Time::m_DeltaTime;
+		// }
+		// if (Input::Input::KeyDown(KeyCode::S))
+		//{
+		//	trans.position.y -= speed * Time::m_DeltaTime;
+		// }
+		// if (Input::Input::KeyDown(KeyCode::D))
+		//{
+		//	trans.position.x += speed * Time::m_DeltaTime;
+		// }
+		// if (Input::Input::KeyDown(KeyCode::A))
+		//{
+		//	trans.position.x -= speed * Time::m_DeltaTime;
+		// }
+		// if (Input::Input::KeyDown(KeyCode::Q))
+		//{
+		//	trans.rotation += rot;
+		// }
+		// if (Input::Input::KeyDown(KeyCode::E))
+		//{
+		//	trans.rotation -= rot;
+		// }
 	}
-		
+
 	void Engine::FixedUpdate(void)
 	{
-		//Raycast2DCollision({ -25, 25 }, { 25, 25 });
+		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 	}

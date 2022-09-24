@@ -273,6 +273,9 @@ namespace ALEngine::ECS
 		InitializeFrustum(fstm);
 		rs->RenderBatch();
 
+		// End of ImGui frame, render ImGui!
+		Editor::ALEditor::Instance()->End();
+
 		glfwPollEvents();
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());
 	}
@@ -313,6 +316,16 @@ namespace ALEngine::ECS
 	Vector3 CameraPosition(void)
 	{
 		return camera.Position();
+	}
+
+	Matrix4x4 GetProjection(void)
+	{
+		return camera.ProjectionMatrix();
+	}
+
+	Matrix4x4 GetView(void)
+	{
+		return camera.ViewMatrix();
 	}
 
 	void CameraFov(f32 fov)

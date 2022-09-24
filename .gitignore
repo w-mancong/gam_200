@@ -33,3 +33,9 @@
 *.pdb
 .tmp/
 .vs/
+
+# ImGui
+Artless/bin/imgui.ini
+
+# Logs
+Artless/bin/logs

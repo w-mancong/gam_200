@@ -100,7 +100,10 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Set the Target FPS.
+			Set the Target FPS, which is the FPS the system will aim to hit
+
+			\param [in] _target:
+			Number to be set as the target FPS
 		***********************************************************************************/
 		void Time::SetTargetFPS(s32 _target)
 		{
