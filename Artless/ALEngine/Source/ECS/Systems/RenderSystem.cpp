@@ -318,6 +318,16 @@ namespace ALEngine::ECS
 		return camera.Position();
 	}
 
+	Matrix4x4 GetProjection(void)
+	{
+		return camera.ProjectionMatrix();
+	}
+
+	Matrix4x4 GetView(void)
+	{
+		return camera.ViewMatrix();
+	}
+
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);

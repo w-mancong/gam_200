@@ -24,22 +24,6 @@ namespace ALEngine::Engine
 		OpenGLWindow::InitGLFWWindow();
 		ECS::InitSystem();
 
-		// Obj 1
-		Transform transform{Vector2(0, 150.0f), Vector2(50.f, 50.f), 0.0f};
-		Noah = CreateSprite(transform, Shape::Circle, RenderLayer::Background);
-
-		Sprite &sprite2 = Coordinator::Instance()->GetComponent<Sprite>(Noah);
-		sprite2.mode = RenderMode::Line;
-		sprite2.color = Color{1.0f, 0.0f, 0.0f, 1.0f};
-
-		Transform &trans_noah = Coordinator::Instance()->GetComponent<Transform>(Noah);
-		CreatePhysics2D(Noah, ColliderType::Circle2D);
-		Coordinator::Instance()->GetComponent<Rigidbody2D>(Noah).isEnabled = true;
-		Collider2D &collider_Noah = Coordinator::Instance()->GetComponent<Collider2D>(Noah);
-		collider_Noah.scale[0] = 50.f, collider_Noah.scale[1] = 25.f;
-		collider_Noah.rotation = 0.f;
-		trans_noah.rotation = 0.f;
-
 		// Initialize Time (Framerate Controller)
 		Time::Init();
 
@@ -49,7 +33,6 @@ namespace ALEngine::Engine
 		// Init ImGui
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(false);
-		ALEditor::Instance()->SetSelectedEntityTransform(&trans_noah);
 
 		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
 		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");

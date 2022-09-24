@@ -11,7 +11,7 @@ brief:	This file contains all the relevant Editor header files to be included in
 
 #include "Editor/Panels/SceneHierarchyPanel.h"
 #include "Editor/Panels/LoggerPanel.h"
-#include "Editor/Panels/ImGuizmoPanel.h"
+#include "Editor/Panels/InspectorPanel.h"
 #include "Editor/ALEditor.h"
 
 #endif

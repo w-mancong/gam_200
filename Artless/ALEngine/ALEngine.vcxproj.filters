@@ -149,7 +149,7 @@
     <ClCompile Include="Source\Editor\ImGuizmo\ImSequencer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Editor\Panels\ImGuizmoPanel.cpp">
+    <ClCompile Include="Source\Editor\Panels\InspectorPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp">
@@ -411,7 +411,7 @@
     <ClInclude Include="Include\Editor\ImGuizmo\ImZoomSlider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Editor\Panels\ImGuizmoPanel.h">
+    <ClInclude Include="Include\Editor\Panels\InspectorPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h">

@@ -75,7 +75,8 @@ namespace ALEngine
 				Pointer to the transform of the entity to be selected by te inspector.
 				Soon It will be based on entity instead of just transform alone
 			***********************************************************************************/
-			void SetSelectedEntityTransform(Transform* setter) { imguizmo_panel.SetSelectedEntityTransform(setter); };
+			void SetSelectedEntityTransform(ECS::Entity setter) { 
+				imguizmo_panel.SetSelectedEntityTransform(setter); };
 
 		private:
 			/*!*********************************************************************************
@@ -112,7 +113,7 @@ namespace ALEngine
 
 			// Panels
 			ContentBrowserPanel cbp;
-			ImGuizmoPanel imguizmo_panel;
+			InspectorPanel imguizmo_panel;
 			LoggerPanel logger_panel;
 			SceneHierarchyPanel hierarchy_panel;
 		};
