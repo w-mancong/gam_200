@@ -5,7 +5,7 @@
 	\par    DP email: weitingdarrion.aw@digipen.edu
 	\par    DigiPen login: weitingdarrion.aw
 	\par    Course: CSD2400
-	\par    Assignment 5
+	\par    CSD2400 / GAM200
 	\date   24/09/22
 	\brief
   This file contains the declaration of the Factory for the Objects & Configuration
