@@ -12,27 +12,27 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 
 
 
-ALEngine::Engine::FileWatcher::FileWatcher(std::string pathtoWatch, std::chrono::duration<int, std::milli> delay) :
-pathtoWatch{pathtoWatch},
-delay{delay}
+ALEngine::Engine::FileWatcher::FileWatcher(std::string pathToWatch, std::chrono::duration<int, std::milli> delay) :
+m_PathToWatch{ pathToWatch },
+m_Delay{delay}
 {
 	//creating a record of files from the base directory and their last modification time
-	for (auto& file : std::filesystem::recursive_directory_iterator(pathtoWatch))
+	for (auto& file : std::filesystem::recursive_directory_iterator(m_PathToWatch))
 	{
-		filePaths[file.path().string()] = std::filesystem::last_write_time(file);
+		m_FilePaths[file.path().string()] = std::filesystem::last_write_time(file);
 	}
 }
 
 void ALEngine::Engine::FileWatcher::Start()
 {
-	while (running)
+	while (m_Running)
 	{
 		//wait for the milliseconds which is the "delay" time
-		std::this_thread::sleep_for(delay);
+		std::this_thread::sleep_for(m_Delay);
 
-		auto tempIt = filePaths.begin();
+		auto tempIt = m_FilePaths.begin();
 
-		while (tempIt != filePaths.end())
+		while (tempIt != m_FilePaths.end())
 		{
 			//check if still file path exists, if not remove from unordered map of filePaths
 			if (!std::filesystem::exists(tempIt->first))
@@ -41,7 +41,7 @@ void ALEngine::Engine::FileWatcher::Start()
 			    //AlertAssetManager(tempIt->first, FileStatus::Erased);
 
 				//remove from unordered map of filePaths
-				tempIt = filePaths.erase(tempIt);
+				tempIt = m_FilePaths.erase(tempIt);
 			}
 			else 
 			{
@@ -50,14 +50,14 @@ void ALEngine::Engine::FileWatcher::Start()
 		}
 
 		//check if a file was created or modified
-		for (auto& file : std::filesystem::recursive_directory_iterator(pathtoWatch))
+		for (auto& file : std::filesystem::recursive_directory_iterator(m_PathToWatch))
 		{
 			auto currentfileLastwritetime = std::filesystem::last_write_time(file);
 
 			//if detect new file creation
 			if(!contains(file.path().string()))
 			{
-				filePaths[file.path().string()] = currentfileLastwritetime;
+				m_FilePaths[file.path().string()] = currentfileLastwritetime;
 
 				//need to define a function to alert assetmanager
 				//AlertAssetManager(file.path().string(), FileStatus::Created);
@@ -65,9 +65,9 @@ void ALEngine::Engine::FileWatcher::Start()
 			}
 			else //detect file modifications or changes
 			{
-				if (filePaths[file.path().string()] != currentfileLastwritetime)
+				if (m_FilePaths[file.path().string()] != currentfileLastwritetime)
 				{
-					filePaths[file.path().string()] = currentfileLastwritetime;
+					m_FilePaths[file.path().string()] = currentfileLastwritetime;
 
 					//need to define a function to alert assetmanager
 					//AlertAssetManager(file.path().string(), FileStatus::Modified);
@@ -80,11 +80,11 @@ void ALEngine::Engine::FileWatcher::Start()
 
 void ALEngine::Engine::FileWatcher::SetWatchPath(std::string watchFilepath)
 {
-	pathtoWatch = watchFilepath;
+	m_PathToWatch = watchFilepath;
 }
 
 bool ALEngine::Engine::FileWatcher::contains(const std::string& key)
 {
-	auto temp = filePaths.find(key);
-	return temp != filePaths.end();
+	auto temp = m_FilePaths.find(key);
+	return temp != m_FilePaths.end();
 }

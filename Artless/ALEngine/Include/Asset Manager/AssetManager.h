@@ -46,7 +46,7 @@ namespace ALEngine::Engine
 
 		//map<16 bit assetkeycount, 64 bit guid>
 		//map container for storing 64 bit guids 
-		std::map<u16, u64>assetguidcontainer; // 64 bit guid format (48 bits: timestamp/ date & time ,16 bits: counter from 0 to 65,535
+		std::map<u16, u64> m_AssetGuidContainer; // 64 bit guid format (48 bits: timestamp/ date & time ,16 bits: counter from 0 to 65,535
 
 		/*!*********************************************************************************
 		\brief
@@ -73,20 +73,20 @@ namespace ALEngine::Engine
 		\brief
 		add guid to the map container of guid
 		***********************************************************************************/
-		void AddToAssetGuidContainer(u64 guidtoadd);
+		void AddToAssetGuidContainer(u64 guidToadd);
 
 		/*!*********************************************************************************
 	    \brief
 	    remove guid from map container of guid
 	    ***********************************************************************************/
-		void RemoveFromAssetGuidContainer(u64 guidtoremove);
+		void RemoveFromAssetGuidContainer(u64 guidToremove);
 
 
 		/*!*********************************************************************************
 	    \brief
 	    get key for current guid to find
 	    ***********************************************************************************/
-		u16 GetKeyForGuid(u64 guidtofind);
+		u16 GetKeyForGuid(u64 guidTofind);
 
 
 		/*!*********************************************************************************
@@ -110,10 +110,10 @@ namespace ALEngine::Engine
 		virtual ~AssetManager(void) = default;
 
 		//asset key counter for use in guid assetcount and map keys
-		u16 currentassetKeycounter{ 0 };
+		u16 m_CurrentAssetKeyCounter{ 0 };
 
 		//16 bits of asset counter from 0 to 65,535 for keeping track current number of asset loaded currently in editor
-		u16 assetloadedCounter{ 0 };
+		u16 m_AssetLoadedCounter{ 0 };
 
 		friend class Templates::Singleton<AssetManager>;
 		friend class Memory::StaticMemory;

@@ -17,8 +17,8 @@ namespace ALEngine
 	namespace Engine
 	{
 		AssetManager::AssetManager():
-		currentassetKeycounter(0), 
-		assetloadedCounter(0)
+		m_CurrentAssetKeyCounter(0),
+		m_AssetLoadedCounter(0)
 		{
 			
 		}
@@ -125,20 +125,20 @@ namespace ALEngine
 		u16 AssetManager::GetCurrentAssetCount(void)
 		{
 			//return assetloadedcounter value
-			return assetloadedCounter;
+			return m_AssetLoadedCounter;
 		}
 
 		void AssetManager::IncrementCurrentAssetCount(void)
 		{
-			++assetloadedCounter;
+			++m_AssetLoadedCounter;
 		}
 
 		void AssetManager::DecrementCurrentAssetCount(void)
 		{
-			--assetloadedCounter;
+			--m_AssetLoadedCounter;
 		}
 
-		void AssetManager::AddToAssetGuidContainer(u64 guidtoadd)
+		void AssetManager::AddToAssetGuidContainer(u64 guidToadd)
 		{
 			//asset key counter
 			IncrementCurrentAssetKeyCount();
@@ -147,32 +147,32 @@ namespace ALEngine
 			u16 currentAssetnum = GetCurrentAssetKeyCount();
 
 			//insert into the map container
-			assetguidcontainer.insert({ currentAssetnum, guidtoadd });
+			m_AssetGuidContainer.insert({ currentAssetnum, guidToadd });
 
 			//increment the counter for current number of asset loaded currently in editor
 			IncrementCurrentAssetCount();
 		}
 
-		void AssetManager::RemoveFromAssetGuidContainer(u64 guidtoremove)
+		void AssetManager::RemoveFromAssetGuidContainer(u64 guidToremove)
 		{
-			u16 keytoremove = GetKeyForGuid(guidtoremove);
+			u16 keytoremove = GetKeyForGuid(guidToremove);
 
 			//erase
-			assetguidcontainer.erase(keytoremove);
+			m_AssetGuidContainer.erase(keytoremove);
 
 			//decrement the counter for current number of asset loaded currently in editor
 			DecrementCurrentAssetCount();
 		}
 
-		u16 AssetManager::GetKeyForGuid(u64 guidtofind)
+		u16 AssetManager::GetKeyForGuid(u64 guidTofind)
 		{
 			u16 keyFound{ 0 };
 
 			// Traverse the guid map container
-			for (auto& it : assetguidcontainer)
+			for (auto& it : m_AssetGuidContainer)
 			{
 				// If mapped value is the guid that is needed
-				if (it.second == guidtofind) 
+				if (it.second == guidTofind) 
 				{
 					//assign to temp var
 					keyFound = it.first;
@@ -185,12 +185,12 @@ namespace ALEngine
 		u16 AssetManager::GetCurrentAssetKeyCount(void)
 		{
 			//return assetloadedcounter value
-			return currentassetKeycounter;
+			return m_CurrentAssetKeyCounter;
 		}
 
 		void AssetManager::IncrementCurrentAssetKeyCount(void)
 		{
-			++currentassetKeycounter;
+			++m_CurrentAssetKeyCounter;
 		}
 	}
 }

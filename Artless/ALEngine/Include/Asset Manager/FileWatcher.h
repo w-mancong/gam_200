@@ -27,10 +27,10 @@ namespace ALEngine::Engine
 	{
 	public:
 
-		std::string pathtoWatch;
+		std::string m_PathToWatch;
 
 		//the time interval at which to check the base folder for changes
-		std::chrono::duration<int, std::milli> delay;
+		std::chrono::duration<int, std::milli> m_Delay;
 
 	
 		/*!*********************************************************************************
@@ -44,7 +44,7 @@ namespace ALEngine::Engine
 		\param [in] delay:
 		time interval before needing to check files for any changes again
 	    ***********************************************************************************/
-		FileWatcher(std::string pathtoWatch, std::chrono::duration<int, std::milli> delay);
+		FileWatcher(std::string pathToWatch, std::chrono::duration<int, std::milli> delay);
 
 
 		virtual ~FileWatcher(void) = default;
@@ -67,8 +67,8 @@ namespace ALEngine::Engine
 		void SetWatchPath(std::string watchFilepath);
 
 	private:
-		std::unordered_map<std::string, std::filesystem::file_time_type> filePaths;
-		bool running = true;
+		std::unordered_map<std::string, std::filesystem::file_time_type> m_FilePaths;
+		bool m_Running = true;
 
 
 		/*!*********************************************************************************

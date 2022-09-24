@@ -14,10 +14,10 @@ namespace ALEngine
 	namespace Editor
 	{
 		//change this later to read from settings or 
-		extern const std::filesystem::path assetpath = "assets";//base file path
+		extern const std::filesystem::path assetPath = "assets";//base file path
 
 		ContentBrowserPanel::ContentBrowserPanel()
-			:currentdirectory(assetpath)
+		:m_CurrentDirectory(assetPath)
 		{}
 
 		ContentBrowserPanel::~ContentBrowserPanel()
@@ -30,23 +30,23 @@ namespace ALEngine
 			//imgui window-------------------------------------------------------------------------
 			ImGui::Begin("Content Browser");
 
-			if (currentdirectory != std::filesystem::path(assetpath))
+			if (m_CurrentDirectory != std::filesystem::path(assetPath))
 			{
 				//render makeshift back button
 				if (ImGui::Button("<-"))
 				{
-					currentdirectory = currentdirectory.parent_path();
+					m_CurrentDirectory = m_CurrentDirectory.parent_path();
 				}
 			}
 
 			//loop through directory and create buttons for each file
-			for (auto& directoryentry : std::filesystem::directory_iterator(currentdirectory))
+			for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 			{
 				//file default path
-				const auto& path = directoryentry.path();
+				const auto& path = directoryEntry.path();
 
 				//file relative path
-				std::filesystem::path relativepath = std::filesystem::relative(directoryentry.path(), assetpath);
+				std::filesystem::path relativepath = std::filesystem::relative(directoryEntry.path(), assetpath);
 
 				//file name from relative path 
 				std::string filenamestring = relativepath.filename().string();
@@ -55,7 +55,7 @@ namespace ALEngine
 
 			   // ImGui::ImageButton(ImTextureID)
 
-				if (directoryentry.is_directory())
+				if (directoryEntry.is_directory())
 				{
 					//buttons that show the files
 					//if (ImGui::Button(filenamestring.c_str()))
@@ -65,7 +65,7 @@ namespace ALEngine
 					//selectable to show file
 					if (ImGui::Selectable(filenamestring.c_str()))
 					{
-						currentdirectory /= directoryentry.path().filename();
+						m_CurrentDirectory /= directoryEntry.path().filename();
 					}
 
 				}
