@@ -53,6 +53,7 @@ namespace ALEngine
 						Coordinator::Instance()->DestroyEntity(*e_it);
 						e_delete = e_it;
 						remove = true;
+						ALEditor::Instance()->SetSelectedEntityTransform(-1);
 					}
 				}
 
@@ -93,6 +94,7 @@ namespace ALEngine
 					Coordinator::Instance()->DestroyEntity(*e_delete);
 					m_entityList.erase(e_delete);
 					e_delete = m_entityList.end();
+					ALEditor::Instance()->SetSelectedEntityTransform(-1);
 				}
 				ImGui::EndPopup();
 			}
