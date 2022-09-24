@@ -17,15 +17,13 @@
 
 #include <Utility/Type.h>
 
-namespace ALEngine
+namespace ALEngine::Serializer
 {
-
 	class commonJson {
 	public:
 		u32 checkID(const std::string& line);
 		u32 getID();
 		void setID(u32 objID);
-
 
 		std::string checkName(const std::string& line);
 		std::string getName();
@@ -34,7 +32,6 @@ namespace ALEngine
 	private:
 		u32 id;
 		std::string name;
-
 	};
 
 	class configJson : public commonJson {
@@ -61,7 +58,6 @@ namespace ALEngine
 		u32 getAspectHeight();
 		void setAspectHeight(u32 configAspectHeight);
 
-
 	private:
 		std::string windowTitle;
 		u32 dimensionWidth;
@@ -73,7 +69,6 @@ namespace ALEngine
 
 	class objectJson : public commonJson {
 	public:
-
 		bool deserializeObject(const std::string& filePath);
 
 		std::string checkType(const std::string& line);
@@ -168,8 +163,6 @@ namespace ALEngine
 		std::string getSpecials();
 		void setSpecials(std::string& objSpecials);
 
-
-
 	private:
 		//u32 id;
 		//std::string name;
@@ -204,7 +197,6 @@ namespace ALEngine
 		std::string hitbox;
 		std::string collision;
 		std::string specials;
-
 	};
 
 }

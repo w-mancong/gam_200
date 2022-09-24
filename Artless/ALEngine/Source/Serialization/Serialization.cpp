@@ -14,7 +14,7 @@
 
 #include "pch.h"
 
-namespace ALEngine
+namespace ALEngine::Serializer
 {
 	/*****************************************************************************/
 	/*!
@@ -304,7 +304,6 @@ namespace ALEngine
 	/*****************************************************************************/
 
 	u32 configJson::checkAspectWidth(const std::string& line) {
-
 		std::string idString = "\"aspectWidth\"";
 		std::size_t pos = line.find(":");
 		u32 configAspectWidth = 0;
@@ -336,9 +335,7 @@ namespace ALEngine
 
 	*/
 	/*****************************************************************************/
-
 	u32 configJson::checkAspectHeight(const std::string& line) {
-
 		std::string idString = "\"aspectHeight\"";
 		std::size_t pos = line.find(":");
 		u32 configAspectHeight = 0;
