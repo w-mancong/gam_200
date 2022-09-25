@@ -1,3 +1,13 @@
+/*!
+file:	Logger.cpp
+author:	Darrion Aw Wei Ting
+email:	weitingdarrion.aw@digipen.edu
+brief:	This file contains a logger for the project with the use of spdlog.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
+
 #include "pch.h"
 #include "spdlog/sinks/rotating_file_sink.h"
 
@@ -10,24 +20,10 @@ namespace ALEngine::Exceptions
 
 	void Logger::Init()
 	{
-		//auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-		// Set the patter for printing to console
-		//consoleSink->set_pattern("%^[%Y-%m-%d %H:%M:%S.&e] %v%$");
-		//consoleSink->set_pattern("%^[%D %T] %n: %v%$");
-		//spdlog::set_pattern("%^[%D %T] %n: %v%$");
 		AL_CORE_SET_PATTERN("%^[%n] [%l] [%D %T] %v%$");
 
-		//std::vector<spdlog::sink_ptr> sinks{ consoleSink };
-		//auto logger = std::make_shared<spdlog::logger>(LOGGER_NAME, sinks.begin(), sinks.end());
-		//// Set level to trace, basically lowest level to print to console
-		//logger->set_level(spdlog::level::trace);
-		//// Set flush level to trace, basically only print err onwards out to file
-		//logger->flush_on(spdlog::level::err);
-		//// Register logger
-		//spdlog::register_logger(logger);
-
 		s_CoreLogger = AL_CORE_SET_COLOR_MT("AL");
-		//s_CoreLogger->set_level(spdlog::level::trace);
+
 		AL_CORE_SET_LEVEL(spdlog::level::trace);
 
 		// Add sink for output file

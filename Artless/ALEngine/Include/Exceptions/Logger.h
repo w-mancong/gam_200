@@ -1,12 +1,12 @@
 /*!
-file:		Logger.h
-author:		Lucas Nguyen
-email:		l.nguyen@digipen.edu
-brief:		Contains a logger for the project with the use of spdlog.
-			More info on spdlog can be found here: https://github.com/gabime/spdlog
+file:	Logger.h
+author:	Darrion Aw Wei Ting
+email:	weitingdarrion.aw@digipen.edu
+brief:	This file contains a logger for the project with the use of spdlog.
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
+
 #ifndef LOGGER_H
 #define LOGGER_H
 
