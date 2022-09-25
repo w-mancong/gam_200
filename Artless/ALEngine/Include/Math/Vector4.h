@@ -9,8 +9,6 @@ brief:	This file contain class definition for representing a 4D vector
 #ifndef	VECTOR4_H
 #define VECTOR4_H
 
-#include <iostream>
-#include "Utility/Type.h"
 namespace ALEngine::Math
 {
 	class Vector2; class Vector3;

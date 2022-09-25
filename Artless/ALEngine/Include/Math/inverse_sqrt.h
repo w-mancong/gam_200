@@ -9,16 +9,13 @@ brief:	This file contain function declaration for Q_rsqrt
 #ifndef	INVERSE_SQRT_H
 #define INVERSE_SQRT_H
 
-namespace ALEngine
+namespace ALEngine::Math
 {
-	namespace Math
-	{
-		/*!*********************************************************************************
-			\brief
-			Function that does bit manipulation to simulate the effect of the sqrt function
-		***********************************************************************************/
-		f32 Q_rsqrt(f32 number);
-	}	
+	/*!*********************************************************************************
+		\brief
+		Function that does bit manipulation to simulate the effect of the sqrt function
+	***********************************************************************************/
+	f32 Q_rsqrt(f32 number);
 }
 
 #endif

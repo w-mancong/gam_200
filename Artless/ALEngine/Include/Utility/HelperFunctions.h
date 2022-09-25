@@ -10,24 +10,21 @@ brief:	This file contain useful functions declarations to help ease with the pro
 #define HELPER_FUNCTIONS_H
 
 #include "Utility/Type.h"
-namespace ALEngine
+namespace ALEngine::Utility
 {
-	namespace Utility
-	{
-		/*!*********************************************************************************
-			\brief
-			Helper function to check if two floats are equal within an epsilon range
+	/*!*********************************************************************************
+		\brief
+		Helper function to check if two floats are equal within an epsilon range
 
-			\param [in] a:
-			First float to be check with
-			\param [in] b:
-			Second float to be check with
+		\param [in] a:
+		First float to be check with
+		\param [in] b:
+		Second float to be check with
 
-			\return
-			True if both a and b are equal within the epsilon range, else false
-		***********************************************************************************/
-		bool IsEqual(f32 a, f32 b);
-	}
+		\return
+		True if both a and b are equal within the epsilon range, else false
+	***********************************************************************************/
+	bool IsEqual(f32 a, f32 b);
 }
 
 #endif

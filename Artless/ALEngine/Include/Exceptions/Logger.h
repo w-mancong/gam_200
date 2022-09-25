@@ -35,7 +35,7 @@ namespace ALEngine::Exceptions
 }
 
 #define LOGGER_NAME "AL Logger"
-
+#if EDITOR
 // SET THE MIN LEVEL FOR LOG OUTPUT. (CRITICAL > ERROR > WARN > INFO > DEBUG > TRACE)
 #define AL_CORE_SET_LEVEL(...) ::ALEngine::Exceptions::Logger::GetCoreLogger()->set_level(__VA_ARGS__) 
 
@@ -64,5 +64,35 @@ namespace ALEngine::Exceptions
 
 // To shut down the logger 
 #define AL_LOGGER_SHUT_DOWN ::spdlog::shutdown()
+#else
+// SET THE MIN LEVEL FOR LOG OUTPUT. (CRITICAL > ERROR > WARN > INFO > DEBUG > TRACE)
+#define AL_CORE_SET_LEVEL(...) 
+
+// Set the pattern to be used for log output
+#define AL_CORE_SET_PATTERN(...) 
+
+// Set the Color (Text) to be used for log output
+#define AL_CORE_SET_COLOR_MT(...) ::spdlog::stderr_color_mt(__VA_ARGS__)
+
+// Definitions for all the log outputs
+#define AL_CORE_TRACE(...)		
+#define AL_CORE_DEBUG(...)		
+#define AL_CORE_INFO(...)		
+#define AL_CORE_WARN(...)		
+#define AL_CORE_ERROR(...)		
+#define AL_CORE_CRITICAL(...)	
+
+// Definitions for all the level_enum in common.h (spdlog includes)
+#define AL_TRACE	
+#define AL_DEBUG	
+#define AL_INFO		
+#define AL_WARN		
+#define AL_ERROR	
+#define AL_CRITICAL 
+#define AL_OFF		
+
+// To shut down the logger 
+#define AL_LOGGER_SHUT_DOWN 
+#endif
 
 #endif

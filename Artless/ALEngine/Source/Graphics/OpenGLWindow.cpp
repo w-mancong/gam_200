@@ -81,12 +81,12 @@ namespace ALEngine::Graphics
 		char* device	= (char*)glGetString(GL_RENDERER);
 		char* version	= (char*)glGetString(GL_VERSION);
 
-		GLint n;
+		s32 n;
 		glGetIntegerv(GL_NUM_EXTENSIONS, &n);
 		std::vector<std::string> extensions(n);
 		if (n > 0)
 		{
-			GLint i;
+			s32 i;
 			for (i = 0; i < n; i++)
 			{
 				extensions[i] = (char*)glGetStringi(GL_EXTENSIONS, i);
