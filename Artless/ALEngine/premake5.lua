@@ -9,25 +9,18 @@ project "ALEngine"
 	objdir ("../bin-int" .. outputdir .. "/%{prj.name}")
 
 	files {
-		"%{prj.name}/Include/**.h",
-		"%{prj.name}/Source/**.cpp"
+		"Include/**.h",
+		"Source/**.cpp"
 	}
 
-	filter "systems:windows"
-		cppdialect "C++17"
-		staticruntime "On"
-		systemversion "10.0"
-		
-		defines
-		{
-			"_DEBUG",
-			"_CONSOLE"
-		}
-		
-		postbuildcommands
-		{
-			
-		}
+	includedirs
+	{
+		"../Extern/include/",
+		"../Extern/include/spdlog/include",
+		"Include/Editor/imgui",
+		"Include/Editor/ImGuizmo",
+		"Include"
+	}
 		
 	filter { "configurations:Debug" }
 		defines "_DEBUG"
@@ -37,10 +30,4 @@ project "ALEngine"
 	filter { "configurations:Release" }
 		runtime "Release"
 		optimize "On"
-
-	includedirs
-	{
-		"%{prj.name}/Extern/include/spdlog/include",
-		"%{prj.name}/Extern/include/imgui"		
-	}
 	
