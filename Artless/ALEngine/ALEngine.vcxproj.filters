@@ -3,11 +3,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Editor\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
-    <ClCompile Include="Source\Editor\ImGuizmo\GraphEditor.cpp" />
-    <ClCompile Include="Source\Editor\ImGuizmo\ImCurveEdit.cpp" />
-    <ClCompile Include="Source\Editor\ImGuizmo\ImGradient.cpp" />
     <ClCompile Include="Source\Editor\ImGuizmo\ImGuizmo.cpp" />
-    <ClCompile Include="Source\Editor\ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="Source\Editor\Panels\InspectorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp" />
@@ -54,6 +50,8 @@
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
+    <ClCompile Include="Source\Factory\Factory.cpp" />
+    <ClCompile Include="Source\Serialization\Serialization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -78,12 +76,7 @@
     <ClInclude Include="Include\Editor\ALEditor.h" />
     <ClInclude Include="Include\Editor\imconfig.h" />
     <ClInclude Include="Include\Editor\imgui.h" />
-    <ClInclude Include="Include\Editor\ImGuizmo\GraphEditor.h" />
-    <ClInclude Include="Include\Editor\ImGuizmo\ImCurveEdit.h" />
-    <ClInclude Include="Include\Editor\ImGuizmo\ImGradient.h" />
     <ClInclude Include="Include\Editor\ImGuizmo\ImGuizmo.h" />
-    <ClInclude Include="Include\Editor\ImGuizmo\ImSequencer.h" />
-    <ClInclude Include="Include\Editor\ImGuizmo\ImZoomSlider.h" />
     <ClInclude Include="Include\Editor\imgui\imconfig.h" />
     <ClInclude Include="Include\Editor\imgui\imgui.h" />
     <ClInclude Include="Include\Editor\imgui\imgui_impl_glfw.h" />
@@ -232,8 +225,6 @@
     <ClCompile Include="Source\Exceptions\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Asset Manager\ContentBrowserPanel.cpp">
-    </ClCompile>
     <ClCompile Include="Source\Editor\imgui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -271,12 +262,8 @@
     <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
-    <ClCompile Include="Source\Serialization\Serialization.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Factory\Factory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="Include\Factory\Factory.h" />
+    <ClInclude Include="Include\Serialization\Serialization.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -444,8 +431,6 @@
     <ClInclude Include="Include\Exceptions\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Asset Manager\ContentBrowserPanel.h">
-    </ClInclude>
     <ClInclude Include="Include\Editor\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -507,12 +492,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Serialization\Serialization.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Factory\Factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
