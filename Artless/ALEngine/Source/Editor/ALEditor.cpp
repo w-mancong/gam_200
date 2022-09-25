@@ -62,8 +62,6 @@ namespace ALEngine
 			if (!m_ImGuiEnabled)
 				return;
 
-			static bool show{ true };
-			ImGui::ShowDemoWindow(&show);
 			cbp.OnImGuiRender();
 			logger_panel.OnImGuiRender();
 			if (imguizmo_panel.HasEntityTransform())

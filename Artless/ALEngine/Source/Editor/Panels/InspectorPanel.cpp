@@ -22,7 +22,6 @@ namespace ALEngine
 			static bool boundSizing = false;
 			static bool boundSizingSnap = false;
 
-			ImGui::SetNextWindowPos(ImVec2(10, 10));
 			ImGui::SetNextWindowSize(ImVec2(320, 340));
 			// Begin ImGui
 			if (!ImGui::Begin("Inspector"))
@@ -67,7 +66,7 @@ namespace ALEngine
 
 			// FLoat inputs
 			ImGui::DragFloat2("Tr", mtx_translate);		// Traslate
-			ImGui::DragFloat("Rt", &xform.rotation);	// Rotate
+			ImGui::DragFloat("Rt", &xform.rotation, 1.f, 0.f, 360.f);	// Rotate
 			ImGui::DragFloat2("Sc", mtx_scale);			// Scale
 
 			// Rotate matrix
