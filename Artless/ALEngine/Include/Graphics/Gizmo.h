@@ -11,7 +11,7 @@ brief:	This file contains the Gizmo class declaration. Gizmo is a debugging feat
 #ifndef	GIZMO_H
 #define GIZMO_H
 
-namespace ALEngine::Gizmo
+namespace ALEngine::Gizmos
 {
 	class Gizmo
 	{
