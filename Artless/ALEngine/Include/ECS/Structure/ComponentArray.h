@@ -11,6 +11,10 @@ brief:	This file contains function definitions for ComponentArray
 
 namespace ALEngine::ECS
 {
+	/*!*********************************************************************************
+		\brief		
+		Interface class to keep track of entities that are destroyed
+	***********************************************************************************/
 	class IComponentArray
 	{
 	public:
@@ -18,10 +22,23 @@ namespace ALEngine::ECS
 		virtual void EntityDestroyed(Entity entity) = 0;
 	};
 
+	/*!*********************************************************************************
+		\brief
+		Class keeping track of all the component that an entities has
+	***********************************************************************************/
 	template <typename T>
 	class ComponentArray : public IComponentArray
 	{
 	public:
+		/*!*********************************************************************************
+			\brief
+			Insert data of component to the appropriate entity
+
+			\param [in] entity:
+			ID of the entity that contains the component
+			\param [in] component:
+			Component containing the relevant data
+		***********************************************************************************/
 		void InsertData(Entity entity, T component)
 		{
 #ifdef _DEBUG
@@ -35,6 +52,13 @@ namespace ALEngine::ECS
 			++mSize;
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Remove data of component from the requested entity
+
+			\param [in] entity:
+			ID of the entity that wants to remove the component
+		***********************************************************************************/
 		void RemoveData(Entity entity)
 		{
 #ifdef _DEBUG
@@ -55,6 +79,16 @@ namespace ALEngine::ECS
 			--mSize;
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Get the component data
+
+			\param [in] entity:
+			ID of the entity that contains the component
+
+			\return
+			Reference to the requested component
+		***********************************************************************************/
 		T& GetData(Entity entity)
 		{
 #ifdef _DEBUG
@@ -64,6 +98,13 @@ namespace ALEngine::ECS
 			return mComponentArray[mEntityToIndexMap[entity]];
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Overrided function to remove the data from this entity
+
+			\param [in] entity:
+			ID of the entity that is being destroyed
+		***********************************************************************************/
 		virtual void EntityDestroyed(Entity entity) override
 		{
 			if (mEntityToIndexMap.find(entity) != mEntityToIndexMap.end())

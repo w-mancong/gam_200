@@ -1,19 +1,45 @@
+/*!
+file:	Coordinator.h
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	This file contains function definitions for Coordinator
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	COORDINATOR_H
 #define COORDINATOR_H
 
 namespace ALEngine::ECS
 {
+	/*!*********************************************************************************
+		\brief
+		Class that manages the three managers of the ECS archiecture
+	***********************************************************************************/
 	class Coordinator : public Templates::Singleton<Coordinator>
 	{
 	public:
 		/*********************************************************************************
 										ENTITY METHODS
 		*********************************************************************************/
+		/*!*********************************************************************************
+			\brief
+			Creates an entity
+
+			\return
+			Return the first available entity
+		***********************************************************************************/
 		Entity CreateEntity(void)
 		{
 			return mEntityManager->CreateEntity();
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Calls all the three ECS manager to handle the destruction of an entity
+
+			\param [in] entity:
+			ID of entity to be destroyed
+		***********************************************************************************/
 		void DestroyEntity(Entity entity)
 		{
 			mEntityManager->DestroyEntity(entity);
@@ -24,12 +50,25 @@ namespace ALEngine::ECS
 		/*********************************************************************************
 										COMPONENT METHODS
 		*********************************************************************************/
+		/*!*********************************************************************************
+			\brief
+			Adds the component into the component manager
+		***********************************************************************************/
 		template <typename T>
 		void RegisterComponent(void)
 		{
 			mComponentManager->RegisterComponent<T>();
 		}
 
+		/*!*********************************************************************************
+			\brief
+			To associate an entity to this component
+
+			\param [in] entity:
+			ID of the entity to have an association to this component
+			\param [in] component:
+			Component data to be associated with this entity
+		***********************************************************************************/
 		template <typename T>
 		void AddComponent(Entity entity, T component)
 		{
@@ -40,6 +79,13 @@ namespace ALEngine::ECS
 			mSystemManager->EntitySignatureChanged(entity, signature);
 		}
 
+		/*!*********************************************************************************
+			\brief
+			To disassociate an entity to this component
+
+			\param [in] entity:
+			ID of the entity to be disassociated with this component
+		***********************************************************************************/
 		template <typename T>
 		void RemoveComponent(Entity entity)
 		{
@@ -49,12 +95,29 @@ namespace ALEngine::ECS
 			mSystemManager->EntitySignatureChanged(entity, signature);
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Retrieve the component data tagged to this entity
+
+			\param [in] entity:
+			ID of the entity to have the component data be retrieved
+
+			\return
+			Reference to the component data
+		***********************************************************************************/
 		template <typename T>
 		T& GetComponent(Entity entity)
 		{
 			return mComponentManager->GetComponent<T>(entity);
 		}
 
+		/*!*********************************************************************************
+			\brief
+			To get the index of the component registered to the component array
+
+			\return
+			Index of the component in the component array
+		***********************************************************************************/
 		template <typename T>
 		ComponentType GetComponentType(void)
 		{
@@ -64,12 +127,27 @@ namespace ALEngine::ECS
 		/*********************************************************************************
 										SYSTEM METHODS
 		*********************************************************************************/
+		/*!*********************************************************************************
+			\brief
+			Registers the ECS system to recongise this as part of a system
+
+			\return
+			A shared pointer containing all the references to all entities that has the same 
+			Signature with this system
+		***********************************************************************************/
 		template <typename T>
 		std::shared_ptr<T> RegisterSystem(void)
 		{
 			return mSystemManager->RegisterSystem<T>();
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Set the signature for this system
+
+			\param [in] signature:
+			All the relevant components related to the system are stored in this signature
+		***********************************************************************************/
 		template <typename T>
 		void SetSystemSignature(Signature signature)
 		{
@@ -80,6 +158,10 @@ namespace ALEngine::ECS
 		Coordinator(void) { Init(); }
 		virtual ~Coordinator(void) = default;
 
+		/*!*********************************************************************************
+			\brief
+			Initialise each manager
+		***********************************************************************************/
 		void Init(void)
 		{
 			// Create pointers to each manager

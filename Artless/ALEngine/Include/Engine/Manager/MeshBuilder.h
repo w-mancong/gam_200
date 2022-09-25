@@ -15,36 +15,10 @@ namespace ALEngine::Engine
 	class MeshBuilder : public Templates::Singleton<MeshBuilder>
 	{
 	public:
-		///*!*********************************************************************************
-		//	\brief
-		//	Make a rectangle
-
-		//	\return
-		//	Sprite containing the relevant data to rendering a rectangle
-		//***********************************************************************************/
-		//Sprite MakeRectangle(void);
-
-		///*!*********************************************************************************
-		//	\brief
-		//	Make a circle
-
-		//	\return
-		//	Sprite containing the relevant data to rendering a circle
-		//***********************************************************************************/
-		//Sprite MakeCircle(void);
-
-		///*!*********************************************************************************
-		//	\brief
-		//	Make a triangle
-
-		//	\return
-		//	Sprite containing the relevant data to rendering a triangle
-		//***********************************************************************************/
-		//Sprite MakeTriangle(void);
-
 		/*!*********************************************************************************
 			\brief
 			Load and make a sprite
+
 			\param [in] filePath:
 			Path to the image to be loaded
 			\return
@@ -71,29 +45,6 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		virtual ~MeshBuilder(void);
 
-		void CreateInstanceBuffer(void);
-
-		/*!*********************************************************************************
-			\brief
-			Helper function to create a single rectangle. The data will be used to render
-			all rectangles
-		***********************************************************************************/
-		void CreateRectangle(void);
-
-		/*!*********************************************************************************
-			\brief
-			Helper function to create a single circle. The data will be used to render
-			all circles
-		***********************************************************************************/
-		void CreateCircle(void);
-
-		/*!*********************************************************************************
-			\brief
-			Helper function to create a single triangle. The data will be used to render
-			all triangles
-		***********************************************************************************/
-		void CreateTriangle(void);
-
 		/*!*********************************************************************************
 			\brief
 			Helper function to load and create an image. Images (with the same filePath) will
@@ -119,7 +70,6 @@ namespace ALEngine::Engine
 
 		using mem = Memory::DynamicAllocator<std::pair<std::string, Sprite>>;
 		std::vector<std::pair<std::string, Sprite>, mem> m_Sprites;
-		//Sprite m_Shapes[static_cast<u64>(Shapes::Total)];
 	};
 
 	struct BatchData

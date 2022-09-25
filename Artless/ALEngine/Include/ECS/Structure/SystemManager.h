@@ -1,3 +1,11 @@
+/*!
+file:	SystemManager.h
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	This file contains function definitions for SystemManager
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	SYSTEM_MANAGER_H
 #define SYSTEM_MANAGER_H
 
