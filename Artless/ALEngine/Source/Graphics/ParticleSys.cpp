@@ -4,12 +4,10 @@ author:	Mohamed Zafir
 email:	m.zafir@digipen.edu
 brief:	This file contains function definitions for the engine's particle system.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
-#include "Engine/Camera.h"
-#include <random>
 #include "Graphics/ParticleSys.h"
 
 namespace ALEngine::Graphics::ParticleSys
@@ -47,8 +45,8 @@ namespace ALEngine::Graphics::ParticleSys
 	***********************************************************************************/
 	ParticleSystem::ParticleSystem()
 	{
-		// Instantiate 1000 particles in the vector (Max particles)
-		particleContainer.resize(1000);
+		// Instantiate 500 particles in the vector (Max particles)
+		particleContainer.resize(500);
 	}
 
 	/*!*********************************************************************************

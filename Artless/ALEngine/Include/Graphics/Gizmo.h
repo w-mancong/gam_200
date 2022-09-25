@@ -25,10 +25,29 @@ namespace ALEngine::Gizmos
 		static bool gizmoToggle;
 		static Math::Vector3 gizmoColor;
 
+		/*!*********************************************************************************
+			\brief
+				Initializes Gizmo, instantiates and buffers a line etc.
+		***********************************************************************************/
 		static void GizmoInit();
+
+		/*!*********************************************************************************
+			\brief
+				Pushes line data into linesContainer to be rendered.
+			\param [in] pt1:
+				Start point
+			\param [in] pt2:
+				End point
+		***********************************************************************************/
 		static void RenderLine(Math::Vector2 pt1, Math::Vector2 pt2);
+
+		/*!*********************************************************************************
+			\brief
+				Renders all Gizmo line draw requests.
+		***********************************************************************************/
 		static void RenderAllLines();
-		//static void RenderCircle(Math::Vector2 center, f32 radius);
+
+		// Gizmo data member set functions
 		static void SetGizmoLineWidth(f32 width) { gizmoLineWidith = width; }
 		static void SetGizmoColor(Math::Vector3 color) { gizmoColor = color; }
 	};

@@ -5,7 +5,7 @@ email:	m.zafir@digipen.edu
 brief:	This file contains the declarations relating to the engine's particle 
 		system.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #ifndef	PARTICLESYSTEM_H
@@ -13,6 +13,7 @@ brief:	This file contains the declarations relating to the engine's particle
 
 namespace ALEngine::Graphics::ParticleSys
 {
+	// struct to encapsulate information of particles
 	struct ParticleProperties // ParticleProperties comes with default values
 	{
 		Math::Vector2 position{0.f, 0.f}, velocity{10.f, 100.f}, velocityVariation{10.f, 10.f};
@@ -36,13 +37,46 @@ namespace ALEngine::Graphics::ParticleSys
 	class ParticleSystem
 	{
 	public:
+		/*!*********************************************************************************
+		\brief
+			Constructor of ParticleSystem class. Instantiates the particleContainer with
+			specified number of particles.
+		***********************************************************************************/
 		ParticleSystem();
+
+		/*!*********************************************************************************
+		\brief
+			Initializes the particle system, such as its shaders, random generator,
+			VAO & VBO.
+		***********************************************************************************/
 		void ParticleSysInit();
+
+		/*!*********************************************************************************
+		\brief
+			Updates all active particles in the particle container of its position,
+			rotation and remaining life time.
+		\param [in] deltaTime:
+			Delta time
+		***********************************************************************************/
 		void ParticleUpdate(f32 deltaTime);
+
+		/*!*********************************************************************************
+		\brief
+			Renders all active particles in the particle container.
+		***********************************************************************************/
 		void ParticleRender();
+
+		/*!*********************************************************************************
+		\brief
+			Emits the passed in particle property.
+		***********************************************************************************/
 		void Emit(const ParticleProperties& particleProperty);
 
 	private:
+		/*!*********************************************************************************
+			\brief
+			Private struct to encapsulate particle info used by particle system
+		***********************************************************************************/
 		struct Particle
 		{
 			Math::Vector2 position{}, velocity{};
@@ -52,8 +86,7 @@ namespace ALEngine::Graphics::ParticleSys
 			bool active{ false };
 		};
 		std::vector<Particle> particleContainer;
-		u32 particleIndex = 999; // max index of particles container
-
+		u32 particleIndex = 499; // max index of particles container
 		u32 particleVAO{ 0 }, particleVBO{}, particleEBO{};
 		Shader particleShader;
 	};

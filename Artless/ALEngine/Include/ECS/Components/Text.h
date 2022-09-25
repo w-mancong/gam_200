@@ -34,6 +34,17 @@ namespace ALEngine::ECS::Component
 		u32 fontsVAO{}, fontsVBO{};
 		ALEngine::Graphics::Shader fontShader;
 		static std::map<std::string, std::map<Font::FontType, Font>> fontCollection;
+
+		/*!*********************************************************************************
+			\brief
+				Initializes and processes font file (.ttf)
+			\param [in] fontAddress:
+				File path of font file.
+			\param [in] fontName:
+				Name of font.
+			\param [in] fontType:
+				Type of font.
+		***********************************************************************************/
 		static void FontInit(std::string fontAddress, std::string fontName, Font::FontType fontType);
 	};
 
@@ -51,7 +62,15 @@ namespace ALEngine::ECS::Component
 		std::string textString{}; // text string
 	};
 
+	/*!*********************************************************************************
+		\brief
+			Renders text.
+		\param [in] text:
+			Text type.
+	***********************************************************************************/
 	void RenderText(Text& text);
+
+	// Font data member set functionsc
 	void SetFont(Text& text, std::string fontName);
 	void SetFontType(Text& text, Font::FontType typeName);
 	void SetTextPos(Text& text, Math::Vector2 pos);
