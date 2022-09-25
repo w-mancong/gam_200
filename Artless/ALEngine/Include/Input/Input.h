@@ -9,66 +9,63 @@ brief:	This file contain static class declaration for basic key inputs from user
 #ifndef	INPUT_SYSTEM_H
 #define INPUT_SYSTEM_H
 
-namespace ALEngine
+namespace ALEngine::UserInput
 {
-	namespace UserInput
+	class Input
 	{
-		class Input
-		{
-		public:
-			/*!*********************************************************************************
-				\brief
-				Return the current state of the key
+	public:
+		/*!*********************************************************************************
+			\brief
+			Return the current state of the key
 
-				\param [in] key:
-				Getting the current state of this key
+			\param [in] key:
+			Getting the current state of this key
 
-				\return
-				True if the key is being pressed/held down, else false
-			***********************************************************************************/
-			static bool KeyState(KeyCode key);
+			\return
+			True if the key is being pressed/held down, else false
+		***********************************************************************************/
+		static bool KeyState(KeyCode key);
 
-			/*!*********************************************************************************
-				\brief
-				Checks if the current key is being held down
+		/*!*********************************************************************************
+			\brief
+			Checks if the current key is being held down
 
-				\param [in] key:
-				Getting the current state of this key
+			\param [in] key:
+			Getting the current state of this key
 
-				\return
-				True if the key is being held down, else false
-			***********************************************************************************/
-			static bool KeyDown(KeyCode key);
+			\return
+			True if the key is being held down, else false
+		***********************************************************************************/
+		static bool KeyDown(KeyCode key);
 
-			/*!*********************************************************************************
-				\brief
-				Check if the current key has been released after pressing it
+		/*!*********************************************************************************
+			\brief
+			Check if the current key has been released after pressing it
 
-				\param [in] key:
-				Getting the current state of this key
+			\param [in] key:
+			Getting the current state of this key
 
-				\return
-				True if the key has been released after pressing it, else false
-			***********************************************************************************/
-			static bool KeyReleased(KeyCode key);
+			\return
+			True if the key has been released after pressing it, else false
+		***********************************************************************************/
+		static bool KeyReleased(KeyCode key);
 
-			/*!*********************************************************************************
-				\brief
-				Check if the current key has been pressed once only
+		/*!*********************************************************************************
+			\brief
+			Check if the current key has been pressed once only
 
-				\param [in] key:
-				Getting the current state of this key
+			\param [in] key:
+			Getting the current state of this key
 
-				\return
-				True if the key has been pressed only once, else false
-			***********************************************************************************/
-			static bool KeyTriggered(KeyCode key);
+			\return
+			True if the key has been pressed only once, else false
+		***********************************************************************************/
+		static bool KeyTriggered(KeyCode key);
 
-		private:
-			Input(void)  = default;
-			~Input(void) = default;
-		};
-	}
+	private:
+		Input(void)  = default;
+		~Input(void) = default;
+	};
 }
 
 #endif

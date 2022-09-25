@@ -1,14 +1,18 @@
 #ifndef	PCH_H
 #define PCH_H
 
+// MACROS
 #define NOMINMAX
 #define _USE_MATH_DEFINES
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))	// find the number of elements in an array
+#define EDITOR 1
+
 // C++ standard library
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
 #include <functional>
+#include <cstdint>
 #include <memory>
 #include <thread>
 #include <utility>

@@ -1,103 +1,182 @@
+/*!
+file:	Coordinator.h
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	This file contains function definitions for Coordinator
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	COORDINATOR_H
 #define COORDINATOR_H
 
-namespace ALEngine
+namespace ALEngine::ECS
 {
-	namespace ECS
+	/*!*********************************************************************************
+		\brief
+		Class that manages the three managers of the ECS archiecture
+	***********************************************************************************/
+	class Coordinator : public Templates::Singleton<Coordinator>
 	{
-		class Coordinator : public Templates::Singleton<Coordinator>
+	public:
+		/*********************************************************************************
+										ENTITY METHODS
+		*********************************************************************************/
+		/*!*********************************************************************************
+			\brief
+			Creates an entity
+
+			\return
+			Return the first available entity
+		***********************************************************************************/
+		Entity CreateEntity(void)
 		{
-		public:
-			/*********************************************************************************
-											ENTITY METHODS
-			*********************************************************************************/
-			Entity CreateEntity(void)
-			{
-				return mEntityManager->CreateEntity();
-			}
+			return mEntityManager->CreateEntity();
+		}
 
-			void DestroyEntity(Entity entity)
-			{
-				mEntityManager->DestroyEntity(entity);
-				mComponentManager->EntityDestroy(entity);
-				mSystemManager->EntityDestroyed(entity);
-			}
+		/*!*********************************************************************************
+			\brief
+			Calls all the three ECS manager to handle the destruction of an entity
 
-			/*********************************************************************************
-										   COMPONENT METHODS
-			*********************************************************************************/
-			template <typename T>
-			void RegisterComponent(void)
-			{
-				mComponentManager->RegisterComponent<T>();
-			}
+			\param [in] entity:
+			ID of entity to be destroyed
+		***********************************************************************************/
+		void DestroyEntity(Entity entity)
+		{
+			mEntityManager->DestroyEntity(entity);
+			mComponentManager->EntityDestroy(entity);
+			mSystemManager->EntityDestroyed(entity);
+		}
 
-			template <typename T>
-			void AddComponent(Entity entity, T component)
-			{
-				mComponentManager->AddComponent<T>(entity, component);
-				auto signature = mEntityManager->GetSignature(entity);
-				signature.set(mComponentManager->GetComponentType<T>(), true);
-				mEntityManager->SetSignature(entity, signature);
-				mSystemManager->EntitySignatureChanged(entity, signature);
-			}
+		/*********************************************************************************
+										COMPONENT METHODS
+		*********************************************************************************/
+		/*!*********************************************************************************
+			\brief
+			Adds the component into the component manager
+		***********************************************************************************/
+		template <typename T>
+		void RegisterComponent(void)
+		{
+			mComponentManager->RegisterComponent<T>();
+		}
 
-			template <typename T>
-			void RemoveComponent(Entity entity)
-			{
-				mComponentManager->RemoveComponent<T>(entity);
-				auto signature = mEntityManager->GetSignature(entity);
-				signature.set(mComponentManager->GetComponentType<T>(), false);
-				mSystemManager->EntitySignatureChanged(entity, signature);
-			}
+		/*!*********************************************************************************
+			\brief
+			To associate an entity to this component
 
-			template <typename T>
-			T& GetComponent(Entity entity)
-			{
-				return mComponentManager->GetComponent<T>(entity);
-			}
+			\param [in] entity:
+			ID of the entity to have an association to this component
+			\param [in] component:
+			Component data to be associated with this entity
+		***********************************************************************************/
+		template <typename T>
+		void AddComponent(Entity entity, T component)
+		{
+			mComponentManager->AddComponent<T>(entity, component);
+			auto signature = mEntityManager->GetSignature(entity);
+			signature.set(mComponentManager->GetComponentType<T>(), true);
+			mEntityManager->SetSignature(entity, signature);
+			mSystemManager->EntitySignatureChanged(entity, signature);
+		}
 
-			template <typename T>
-			ComponentType GetComponentType(void)
-			{
-				return mComponentManager->GetComponentType<T>();
-			}
+		/*!*********************************************************************************
+			\brief
+			To disassociate an entity to this component
 
-			/*********************************************************************************
-											SYSTEM METHODS
-			*********************************************************************************/
-			template <typename T>
-			std::shared_ptr<T> RegisterSystem(void)
-			{
-				return mSystemManager->RegisterSystem<T>();
-			}
+			\param [in] entity:
+			ID of the entity to be disassociated with this component
+		***********************************************************************************/
+		template <typename T>
+		void RemoveComponent(Entity entity)
+		{
+			mComponentManager->RemoveComponent<T>(entity);
+			auto signature = mEntityManager->GetSignature(entity);
+			signature.set(mComponentManager->GetComponentType<T>(), false);
+			mSystemManager->EntitySignatureChanged(entity, signature);
+		}
 
-			template <typename T>
-			void SetSystemSignature(Signature signature)
-			{
-				mSystemManager->SetSignature<T>(signature);
-			}
+		/*!*********************************************************************************
+			\brief
+			Retrieve the component data tagged to this entity
 
-		private:
-			Coordinator(void) { Init(); }
-			virtual ~Coordinator(void) = default;
+			\param [in] entity:
+			ID of the entity to have the component data be retrieved
 
-			void Init(void)
-			{
-				// Create pointers to each manager
-				mComponentManager = std::make_unique<ComponentManager>();
-				mEntityManager = std::make_unique<EntityManager>();
-				mSystemManager = std::make_unique<SystemManager>();
-			}
+			\return
+			Reference to the component data
+		***********************************************************************************/
+		template <typename T>
+		T& GetComponent(Entity entity)
+		{
+			return mComponentManager->GetComponent<T>(entity);
+		}
 
-			friend class Templates::Singleton<Coordinator>;
-			friend class Memory::StaticMemory;
+		/*!*********************************************************************************
+			\brief
+			To get the index of the component registered to the component array
 
-			std::unique_ptr<ComponentManager> mComponentManager;
-			std::unique_ptr<EntityManager> mEntityManager;
-			std::unique_ptr<SystemManager> mSystemManager;
-		};
-	}
+			\return
+			Index of the component in the component array
+		***********************************************************************************/
+		template <typename T>
+		ComponentType GetComponentType(void)
+		{
+			return mComponentManager->GetComponentType<T>();
+		}
+
+		/*********************************************************************************
+										SYSTEM METHODS
+		*********************************************************************************/
+		/*!*********************************************************************************
+			\brief
+			Registers the ECS system to recongise this as part of a system
+
+			\return
+			A shared pointer containing all the references to all entities that has the same 
+			Signature with this system
+		***********************************************************************************/
+		template <typename T>
+		std::shared_ptr<T> RegisterSystem(void)
+		{
+			return mSystemManager->RegisterSystem<T>();
+		}
+
+		/*!*********************************************************************************
+			\brief
+			Set the signature for this system
+
+			\param [in] signature:
+			All the relevant components related to the system are stored in this signature
+		***********************************************************************************/
+		template <typename T>
+		void SetSystemSignature(Signature signature)
+		{
+			mSystemManager->SetSignature<T>(signature);
+		}
+
+	private:
+		Coordinator(void) { Init(); }
+		virtual ~Coordinator(void) = default;
+
+		/*!*********************************************************************************
+			\brief
+			Initialise each manager
+		***********************************************************************************/
+		void Init(void)
+		{
+			// Create pointers to each manager
+			mComponentManager = std::make_unique<ComponentManager>();
+			mEntityManager = std::make_unique<EntityManager>();
+			mSystemManager = std::make_unique<SystemManager>();
+		}
+
+		friend class Templates::Singleton<Coordinator>;
+		friend class Memory::StaticMemory;
+
+		std::unique_ptr<ComponentManager> mComponentManager;
+		std::unique_ptr<EntityManager> mEntityManager;
+		std::unique_ptr<SystemManager> mSystemManager;
+	};
 }
 
 #endif

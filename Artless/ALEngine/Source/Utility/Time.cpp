@@ -7,106 +7,102 @@ brief:		This file contains a class "Time" that acts as the framerate controller.
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#include "Utility/Time.h"
 #include "pch.h"
 
-namespace ALEngine
+namespace ALEngine::Utility
 {
-	namespace Utility
+	using namespace std::chrono;
+	static constexpr long NUM_NANO_IN_SEC = 1000000000;
+
+	// Static member variables definition
+	f32 Time::m_DeltaTime = 0.0f, 
+		Time::m_FPS = 0.0f;
+	const f32 Time::m_FixedDeltaTime = 1.f / 60.f;	// Fixed delta time is 60 fps
+
+	s32 Time::m_TargetFPS = 0;	// 0 means unlimited
+	bool Time::m_HasFPSLimit = false;
+
+	nanoseconds Time::m_Ticks[MAX_SAMPLES];
+	nanoseconds Time::m_TickSum = nanoseconds::zero();
+	s32 Time::m_TickIndex = 0;
+
+	hd_clock::time_point Time::m_StartTime = hd_clock::now();	// Set Application start time
+	steady_clock::time_point Time::m_ClockedTime{};
+
+	/*!*********************************************************************************
+		\brief
+		Initializes the timer to calculate the delta time every frame
+	***********************************************************************************/
+	void Time::Init()
 	{
-		using namespace std::chrono;
-		static constexpr long NUM_NANO_IN_SEC = 1000000000;
+		for (s32 i = 0; i < MAX_SAMPLES; ++i)
+			m_Ticks[i] = nanoseconds::zero();
 
-		// Static member variables definition
-		f32 Time::m_DeltaTime = 0.0f, 
-			Time::m_FPS = 0.0f;
-		const f32 Time::m_FixedDeltaTime = 1.f / 60.f;	// Fixed delta time is 60 fps
+		m_TickSum = nanoseconds::zero();
+		m_TickIndex = 0;
 
-		s32 Time::m_TargetFPS = 0;	// 0 means unlimited
-		bool Time::m_HasFPSLimit = false;
+		// Set Target FPS (Next time can read from file instead)
+		m_TargetFPS = 60;	// 60 FPS
+		m_HasFPSLimit = true;
+	}
 
-		nanoseconds Time::m_Ticks[MAX_SAMPLES];
-		nanoseconds Time::m_TickSum = nanoseconds::zero();
-		s32 Time::m_TickIndex = 0;
+	/*!*********************************************************************************
+		\brief
+		Clock the current time.
+		Should be called just before calling update!
+	***********************************************************************************/
+	void Time::ClockTimeNow()
+	{
+		m_ClockedTime = hd_clock::now();
+	}
 
-		hd_clock::time_point Time::m_StartTime = hd_clock::now();	// Set Application start time
-		steady_clock::time_point Time::m_ClockedTime{};
+	/*!*********************************************************************************
+		\brief
+		Calculates the delta time and makes the main thread wait according to the
+		FPS limit.
+	***********************************************************************************/
+	void Time::WaitUntil()
+	{
+		auto time_diff = hd_clock::now() - m_ClockedTime;
+		const auto ideal_wait_time = nanoseconds(NUM_NANO_IN_SEC / Time::m_TargetFPS);
 
-		/*!*********************************************************************************
-			\brief
-			Initializes the timer to calculate the delta time every frame
-		***********************************************************************************/
-		void Time::Init()
+		// If there is an FPS limit, wait
+		if (m_HasFPSLimit)
 		{
-			for (s32 i = 0; i < MAX_SAMPLES; ++i)
-				m_Ticks[i] = nanoseconds::zero();
+			// Loop until enough time has passed
+			while (hd_clock::now() - m_ClockedTime < ideal_wait_time) { /*empty loopings*/ }
 
-			m_TickSum = nanoseconds::zero();
-			m_TickIndex = 0;
-
-			// Set Target FPS (Next time can read from file instead)
-			m_TargetFPS = 60;	// 60 FPS
-			m_HasFPSLimit = true;
+			// Get time diff after wait
+			time_diff = hd_clock::now() - m_ClockedTime;
 		}
 
-		/*!*********************************************************************************
-			\brief
-			Clock the current time.
-			Should be called just before calling update!
-		***********************************************************************************/
-		void Time::ClockTimeNow()
-		{
-			m_ClockedTime = hd_clock::now();
-		}
+		// Calculate Delta Time
+		m_DeltaTime = static_cast<float>(static_cast<f64>(time_diff.count()) / static_cast<f64>(NUM_NANO_IN_SEC));
 
-		/*!*********************************************************************************
-			\brief
-			Calculates the delta time and makes the main thread wait according to the
-			FPS limit.
-		***********************************************************************************/
-		void Time::WaitUntil()
-		{
-			auto time_diff = hd_clock::now() - m_ClockedTime;
-			const auto ideal_wait_time = nanoseconds(NUM_NANO_IN_SEC / Time::m_TargetFPS);
+		// Calculate the number of ticks in the last 100 frames
+		m_TickSum -= m_Ticks[m_TickIndex];	// Subtract tick value falling off
+		m_TickSum += time_diff;				// Add new tick value
+		m_Ticks[m_TickIndex] = time_diff;	// Update new tick value
 
-			// If there is an FPS limit, wait
-			if (m_HasFPSLimit)
-			{
-				// Loop until enough time has passed
-				while (hd_clock::now() - m_ClockedTime < ideal_wait_time) { /*empty loopings*/ }
+		(++m_TickIndex) %= MAX_SAMPLES;
 
-				// Get time diff after wait
-				time_diff = hd_clock::now() - m_ClockedTime;
-			}
+		// Calculate current FPS
+		if (m_Ticks[MAX_SAMPLES - 1] != nanoseconds::zero())
+			m_FPS = static_cast<f32>(1.0 / ((m_TickSum / MAX_SAMPLES).count() / static_cast<f64>(NUM_NANO_IN_SEC)));
+		else
+			m_FPS = static_cast<f32>(1.0 / ((m_TickSum / m_TickIndex).count() / static_cast<f64>(NUM_NANO_IN_SEC)));
+	}
 
-			// Calculate Delta Time
-			m_DeltaTime = static_cast<float>(static_cast<f64>(time_diff.count()) / static_cast<f64>(NUM_NANO_IN_SEC));
+	/*!*********************************************************************************
+		\brief
+		Set the Target FPS, which is the FPS the system will aim to hit
 
-			// Calculate the number of ticks in the last 100 frames
-			m_TickSum -= m_Ticks[m_TickIndex];	// Subtract tick value falling off
-			m_TickSum += time_diff;				// Add new tick value
-			m_Ticks[m_TickIndex] = time_diff;	// Update new tick value
-
-			(++m_TickIndex) %= MAX_SAMPLES;
-
-			// Calculate current FPS
-			if (m_Ticks[MAX_SAMPLES - 1] != nanoseconds::zero())
-				m_FPS = static_cast<f32>(1.0 / ((m_TickSum / MAX_SAMPLES).count() / static_cast<f64>(NUM_NANO_IN_SEC)));
-			else
-				m_FPS = static_cast<f32>(1.0 / ((m_TickSum / m_TickIndex).count() / static_cast<f64>(NUM_NANO_IN_SEC)));
-		}
-
-		/*!*********************************************************************************
-			\brief
-			Set the Target FPS, which is the FPS the system will aim to hit
-
-			\param [in] _target:
-			Number to be set as the target FPS
-		***********************************************************************************/
-		void Time::SetTargetFPS(s32 _target)
-		{
-			m_TargetFPS = _target;
-			m_HasFPSLimit = _target ? true : false;
-		}
+		\param [in] _target:
+		Number to be set as the target FPS
+	***********************************************************************************/
+	void Time::SetTargetFPS(s32 _target)
+	{
+		m_TargetFPS = _target;
+		m_HasFPSLimit = _target ? true : false;
 	}
 }

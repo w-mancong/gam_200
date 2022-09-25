@@ -48,11 +48,10 @@ namespace ALEngine::Editor
 			if (Input::KeyTriggered(KeyCode::R))
 				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
 
-			// Select betwen the 3 Gizmos Operations by radio buttons
-			// Translate
-			if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
-				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-			ImGui::SameLine();
+		// Rotate
+		if (ImGui::RadioButton("Rotate", m_CurrentGizmoOperation == ImGuizmo::ROTATE))
+			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+		ImGui::SameLine();
 
 			// Rotate
 			if (ImGui::RadioButton("Rotate", m_CurrentGizmoOperation == ImGuizmo::ROTATE))

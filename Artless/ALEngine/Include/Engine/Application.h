@@ -9,28 +9,25 @@ brief:	This file contains function declaration that controls the flow of the pro
 #ifndef	APPLICATION_H
 #define APPLICATION_H
 
-namespace ALEngine
+namespace ALEngine::Engine
 {
-	namespace Engine
-	{
-		/*!*********************************************************************************
-			\brief
-			Starts running the game loop
-		***********************************************************************************/
-		void Run(void);
+	/*!*********************************************************************************
+		\brief
+		Starts running the game loop
+	***********************************************************************************/
+	void Run(void);
 
-		/*!*********************************************************************************
-			\brief
-			Normal Update, using Delta Time
-		***********************************************************************************/
-		void Update(void);
+	/*!*********************************************************************************
+		\brief
+		Normal Update, using Delta Time
+	***********************************************************************************/
+	void Update(void);
 
-		/*!*********************************************************************************
-			\brief
-			Fixed Update, using Fixed Delta Time (Mainly for physics)
-		***********************************************************************************/
-		void FixedUpdate(void);
-	}
+	/*!*********************************************************************************
+		\brief
+		Fixed Update, using Fixed Delta Time (Mainly for physics)
+	***********************************************************************************/
+	void FixedUpdate(void);
 }
 
 #endif

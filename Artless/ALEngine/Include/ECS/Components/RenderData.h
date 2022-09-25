@@ -9,37 +9,31 @@ brief:	This file contains the different type of rendering available
 #ifndef	RENDER_DATA_H
 #define RENDER_DATA_H
 
-namespace ALEngine
+namespace ALEngine::ECS::Component
 {
-	namespace ECS
+	/*!*********************************************************************************
+	\brief
+		Before rendering, entities will be sorted in accending order.
+		Entities with lower RenderLayer will be rendered first, while other entities
+		with higher RenderLayer will be rendered later. 
+	***********************************************************************************/
+	enum class RenderLayer
 	{
-		namespace Component
-		{
-			/*!*********************************************************************************
-			\brief
-				Before rendering, entities will be sorted in accending order.
-				Entities with lower RenderLayer will be rendered first, while other entities
-				with higher RenderLayer will be rendered later. 
-			***********************************************************************************/
-			enum class RenderLayer
-			{
-				Background = 0,
-				Player,
-				UI,
-			};
+		Background = 0,
+		Player,
+		UI,
+	};
 
-			/*!*********************************************************************************
-				\brief
-					Mode of render
-			***********************************************************************************/
-			enum class RenderMode
-			{
-				Fill	= GL_FILL,
-				Line	= GL_LINE,
-				Point	= GL_POINTS
-			};
-		}
-	}
+	/*!*********************************************************************************
+		\brief
+			Mode of render
+	***********************************************************************************/
+	enum class RenderMode
+	{
+		Fill	= GL_FILL,
+		Line	= GL_LINE,
+		Point	= GL_POINTS
+	};
 }
 
 #endif
