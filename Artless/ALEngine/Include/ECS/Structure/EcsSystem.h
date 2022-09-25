@@ -11,6 +11,10 @@ brief:	This file contains function declaration to init all systems
 
 namespace ALEngine::ECS
 {
+	/*!*********************************************************************************
+		\brief
+		To initialise the ECS architecture
+	***********************************************************************************/
 	void InitSystem(void);
 }
 

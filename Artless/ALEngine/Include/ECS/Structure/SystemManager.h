@@ -11,15 +11,32 @@ brief:	This file contains function definitions for SystemManager
 
 namespace ALEngine::ECS
 {
+	/*!*********************************************************************************
+		\brief
+		Base class for all systems to be inherited from
+	***********************************************************************************/
 	class System
 	{
 	public:
 		std::set<Entity> mEntities;
 	};
 
+	/*!*********************************************************************************
+		\brief
+		Manages the registration of systems, and setting the appropriate signature relevant
+		to the it. Will update the relevant systems if an entity is destroyed or if
+		the signature of an entity has changed
+	***********************************************************************************/
 	class SystemManager
 	{
 	public:
+		/*!*********************************************************************************
+			\brief
+			Registers a system to be part of the ECS architecture
+
+			\return
+			A shared pointer to reference all the entities with the same signatures
+		***********************************************************************************/
 		template <typename T>
 		std::shared_ptr<T> RegisterSystem(void)
 		{
@@ -33,6 +50,13 @@ namespace ALEngine::ECS
 			return system;
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Set component signature for this system
+
+			\param [in] signature:
+			All the relevant components sigature that will be associated to T
+		***********************************************************************************/
 		template <typename T>
 		void SetSignature(Signature signature)
 		{
@@ -44,6 +68,13 @@ namespace ALEngine::ECS
 			mSignatures.insert({ typeName, signature });
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Removing any entities associated with the system
+
+			\param [in] entity:
+			ID of entity that is destroyed
+		***********************************************************************************/
 		void EntityDestroyed(Entity entity)
 		{
 			// Erase a destroyed entity from all system lists
@@ -55,6 +86,16 @@ namespace ALEngine::ECS
 			}
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Update the relevant systems to include/remove them based on the signature
+			of the entity
+
+			\param [in] entity:
+			ID of the entity that has changes to it's signature
+			\param [in] entitySignature:
+			Signature of all the updated components for this entity
+		***********************************************************************************/
 		void EntitySignatureChanged(Entity entity, Signature entitySignature)
 		{
 			//Notify each system that an entity's signature changed

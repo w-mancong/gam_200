@@ -11,13 +11,59 @@ brief:	This file contains function definitions for EntityManager
 
 namespace ALEngine::ECS
 {
+	/*!*********************************************************************************
+		\brief
+		Manages the creation, destruction, and signatures of entities
+	***********************************************************************************/
 	class EntityManager
 	{
 	public:
+		/*!*********************************************************************************
+			\brief
+			Default constructor for the class
+		***********************************************************************************/
 		EntityManager(void);
+
+		/*!*********************************************************************************
+			\brief
+			Retrieve the first avaliable entity in the queue
+			
+			\return
+			ID of the entity
+		***********************************************************************************/
 		Entity CreateEntity(void);
+
+		/*!*********************************************************************************
+			\brief
+			Reset any components associated with the entity and add this entity back into
+			the queue
+
+			\param [in] entity:
+			ID of the entity to be destroyed
+		***********************************************************************************/
 		void DestroyEntity(Entity entity);
+
+		/*!*********************************************************************************
+			\brief
+			Set the components signature for this entity
+			
+			\param [in] entity:
+			ID of entity to set the component signature for
+			\param [in] signature:
+			Component signature to be associated with this entity
+		***********************************************************************************/
 		void SetSignature(Entity entity, Signature const& signature);
+
+		/*!*********************************************************************************
+			\brief
+			Retrieve the signature for this entity
+
+			\param [in] entity:
+			ID of entity to retrieve the signature for
+
+			\return
+			Signature containing the components associated to this entity
+		***********************************************************************************/
 		Signature GetSignature(Entity entity);
 
 	private:
