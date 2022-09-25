@@ -11,30 +11,46 @@ brief:	This file contains the Gizmo class declaration. Gizmo is a debugging feat
 #ifndef	GIZMO_H
 #define GIZMO_H
 
-namespace ALEngine
+namespace ALEngine::Gizmo
 {
-	namespace Gizmos
+	class Gizmo
 	{
-		class Gizmo
-		{
-		private:
-			static u32 GizmoVaoId, GizmoVboId;
+	private:
+		static u32 GizmoVaoId, GizmoVboId;
 
-		public:
-			static std::vector<std::pair<Math::Vector2, Math::Vector2>> linesContainer;
-			static f32 gizmoLineWidith; // thickness of line
-			static Graphics::Shader gizmolineShader;
-			static bool gizmoToggle;
-			static Math::Vector3 gizmoColor;
+	public:
+		static std::vector<std::pair<Math::Vector2, Math::Vector2>> linesContainer;
+		static f32 gizmoLineWidith; // thickness of line
+		static Graphics::Shader gizmolineShader;
+		static bool gizmoToggle;
+		static Math::Vector3 gizmoColor;
 
-			static void GizmoInit();
-			static void RenderLine(Math::Vector2 pt1, Math::Vector2 pt2);
-			static void RenderAllLines();
-			//static void RenderCircle(Math::Vector2 center, f32 radius);
-			static void SetGizmoLineWidth(f32 width) { gizmoLineWidith = width; }
-			static void SetGizmoColor(Math::Vector3 color) { gizmoColor = color; }
-		};
-	}
+		/*!*********************************************************************************
+			\brief
+				Initializes Gizmo, instantiates and buffers a line etc.
+		***********************************************************************************/
+		static void GizmoInit();
+
+		/*!*********************************************************************************
+			\brief
+				Pushes line data into linesContainer to be rendered.
+			\param [in] pt1:
+				Start point
+			\param [in] pt2:
+				End point
+		***********************************************************************************/
+		static void RenderLine(Math::Vector2 pt1, Math::Vector2 pt2);
+
+		/*!*********************************************************************************
+			\brief
+				Renders all Gizmo line draw requests.
+		***********************************************************************************/
+		static void RenderAllLines();
+
+		// Gizmo data member set functions
+		static void SetGizmoLineWidth(f32 width) { gizmoLineWidith = width; }
+		static void SetGizmoColor(Math::Vector3 color) { gizmoColor = color; }
+	};
 }
 
 #endif
