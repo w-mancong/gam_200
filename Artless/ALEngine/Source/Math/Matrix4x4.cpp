@@ -23,17 +23,15 @@ namespace ALEngine::Math
 
 	Matrix4x4::const_reference Matrix4x4::operator()(size_type row, size_type col) const
 	{
-		if (row >= 4 || row < 0 || col >= 4 || col < 0)
-		{
-			std::cerr << "Either row or column index is larger than 4 or smaller than 0" << std::endl;
-		}
-
+#ifdef _DEBUG
+		assert(0 <= row && 4 > row && 0 <= col && 4 > col, "Rows and Columns must be a positive integer lesser than 4!");
+#endif
 		return *(value_ptr() + row * 4 + col);
 	}
 
 	Matrix4x4& Matrix4x4::operator+=(Matrix4x4 const& rhs)
 	{
-		Matrix4x4 res(1.0f);  Matrix4 const& lhs = *this;
+		Matrix4x4 res(1.0f);  Matrix4x4 const& lhs = *this;
 		res(0, 0) = lhs(0, 0) + rhs(0, 0);
 		res(0, 1) = lhs(0, 1) + rhs(0, 1);
 		res(0, 2) = lhs(0, 2) + rhs(0, 2);
@@ -58,7 +56,7 @@ namespace ALEngine::Math
 
 	Matrix4x4& Matrix4x4::operator-=(Matrix4x4 const& rhs)
 	{
-		Matrix4x4 res(1.0f);  Matrix4 const& lhs = *this;
+		Matrix4x4 res(1.0f);  Matrix4x4 const& lhs = *this;
 		res(0, 0) = lhs(0, 0) - rhs(0, 0);
 		res(0, 1) = lhs(0, 1) - rhs(0, 1);
 		res(0, 2) = lhs(0, 2) - rhs(0, 2);
@@ -110,11 +108,28 @@ namespace ALEngine::Math
 
 	Matrix4x4& Matrix4x4::operator*=(value_type rhs)
 	{
-		mat[0].x *= rhs; mat[0].y *= rhs; mat[0].z *= rhs; mat[0].w = rhs;
-		mat[1].x *= rhs; mat[1].y *= rhs; mat[1].z *= rhs; mat[1].w = rhs;
-		mat[2].x *= rhs; mat[2].y *= rhs; mat[2].z *= rhs; mat[2].w = rhs;
-		mat[3].x *= rhs; mat[3].y *= rhs; mat[3].z *= rhs; mat[3].w = rhs;
-		return *this;
+		Matrix4x4 res(1.0f);  Matrix4x4 const& lhs = *this;
+		res(0, 0) = lhs(0, 0) * rhs;
+		res(0, 1) = lhs(0, 1) * rhs;
+		res(0, 2) = lhs(0, 2) * rhs;
+		res(0, 3) = lhs(0, 3) * rhs;
+
+		res(1, 0) = lhs(1, 0) * rhs;
+		res(1, 1) = lhs(1, 1) * rhs;
+		res(1, 2) = lhs(1, 2) * rhs;
+		res(1, 3) = lhs(1, 3) * rhs;
+
+		res(2, 0) = lhs(2, 0) * rhs;
+		res(2, 1) = lhs(2, 1) * rhs;
+		res(2, 2) = lhs(2, 2) * rhs;
+		res(2, 3) = lhs(2, 3) * rhs;
+
+		res(3, 0) = lhs(3, 0) * rhs;
+		res(3, 1) = lhs(3, 1) * rhs;
+		res(3, 2) = lhs(3, 2) * rhs;
+		res(3, 3) = lhs(3, 3) * rhs;
+
+		return (*this = res);
 	}
 
 	typename Matrix4x4::const_pointer Matrix4x4::value_ptr(void) const
@@ -239,10 +254,10 @@ namespace ALEngine::Math
 
 		return Matrix4x4
 		(
-			Vector4{ scale.x * cos,  scale.x * sin,	0.0f,  0.0f },
+			Vector4{   scale.x * cos,  scale.x * sin,	0.0f,  0.0f },
 			Vector4{ -(scale.y * sin), scale.y * cos,	0.0f,  0.0f },
-			Vector4{ 0.0f,		   0.0f,			1.0f,  0.0f },
-			Vector4{ pos.x,		   pos.y,			pos.z, 1.0f }
+			Vector4{   0.0f,		   0.0f,			1.0f,  0.0f },
+			Vector4{   pos.x,		   pos.y,			pos.z, 1.0f }
 		);
 	}
 
@@ -300,10 +315,11 @@ namespace ALEngine::Math
 	std::ostream& operator<<(std::ostream& os, Matrix4x4 const& rhs)
 	{
 		os << std::fixed << std::setprecision(5);
-		for (u64 i = 0; i < 4; ++i)
+		u64 constexpr MAX{ 4 };
+		for (u64 i = 0; i < MAX; ++i)
 		{
-			for (u64 j = 0; j < 4; ++j)
-				os << std::left << std::setw(10) << rhs(i, j) << (j + 1 == 4 ? '\0' : ' ');
+			for (u64 j = 0; j < MAX; ++j)
+				os << std::left << std::setw(10) << rhs(i, j) << (j + 1 == MAX ? '\0' : ' ');
 			os << std::endl;
 		}
 		return os;

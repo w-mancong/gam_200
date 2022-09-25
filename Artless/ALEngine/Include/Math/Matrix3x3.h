@@ -13,9 +13,15 @@ brief:	This file contain a 3x3 Matrix that is inherited from a base matrix class
 #include "matrix.h"
 namespace ALEngine::Math
 {
-	class Matrix3x3 : public matrix
+	class Matrix3x3
 	{
 	public:
+		using value_type = f32;
+		using reference = value_type&;
+		using const_reference = value_type const&;
+		using pointer = value_type*;
+		using const_pointer = value_type const*;
+		using size_type = s64;
 		/*!*********************************************************************************
 			\brief
 			Constructor that takes in a single value_type variable that initializes the
@@ -43,7 +49,7 @@ namespace ALEngine::Math
 			\brief
 			Destructor
 		***********************************************************************************/
-		virtual ~Matrix3x3(void) = default;
+		~Matrix3x3(void) = default;
 
 		/*!*********************************************************************************
 			\brief
@@ -92,6 +98,28 @@ namespace ALEngine::Math
 			A reference to this class's matrix after doing scalar multiplication
 		***********************************************************************************/
 		Matrix3x3& operator*=(value_type rhs);
+
+		/*!*********************************************************************************
+			\brief
+			Overloaded () operator to access and modify the matrix
+
+			\param [in] row:
+			Row of the matrix to retrieve data from
+			\param [in] col:
+			Column of the matrix to retrieve data from
+		***********************************************************************************/
+		reference operator()(size_type row, size_type col);
+
+		/*!*********************************************************************************
+			\brief
+			Overloaded () operator to access the matrix
+
+			\param [in] row:
+			Row of the matrix to retrieve the data from
+			\param [in] col:
+			Column of the matrix to retrieve the data from
+		***********************************************************************************/
+		const_reference operator()(size_type row, size_type col) const;
 
 		/*!*********************************************************************************
 			\brief
@@ -157,10 +185,8 @@ namespace ALEngine::Math
 		***********************************************************************************/
 		static Matrix3x3 Rotation(f32 deg);
 
-		static u64 constexpr size{ 36 };
-
 	private:
-		static size_type constexpr R = 3, C = 3;
+		Vector3 mat[3];
 	}; using Mat3 = Matrix3x3; using Mtx3 = Matrix3x3; using mat3 = Matrix3x3;
 
 	/*!*********************************************************************************
@@ -243,6 +269,27 @@ namespace ALEngine::Math
 		Vector2 on the left hand side of the * operator to multiply with
 	***********************************************************************************/
 	Vector2 operator*(Matrix3x3 const& lhs, Vector2 const& rhs);
+
+	/*!*********************************************************************************
+		\brief
+		Matrix multiplication with Vector3
+
+		\param [in] lhs:
+		Matrix on the left hand side of the * operator to multiply with
+		\param [in] rhs:
+		Vector2 on the left hand side of the * operator to multiply with
+	***********************************************************************************/
+	Vector3 operator*(Matrix3x3 const& lhs, Vector3 const& rhs);
+
+	/*!*********************************************************************************
+		\brief
+		To output data of matrix to the output stream
+		\param [in] os:
+		Reference to the output stream to stream the matrix data to
+		\param [in] rhs:
+		Matrix data to be streamed to the output stream os
+	***********************************************************************************/
+	std::ostream& operator<<(std::ostream& os, Matrix3x3 const& rhs);
 }
 
 #endif
