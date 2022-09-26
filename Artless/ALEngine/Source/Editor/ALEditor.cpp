@@ -73,9 +73,9 @@ namespace ALEngine::Editor
 	void ALEditor::Begin()
 	{
 		// Change ImGui Enabled or Disabled
-		if (Input::KeyTriggered(KeyCode::Backspace))
+		if (Input::KeyTriggered(KeyCode::Key_9))
 		{
-			//m_ImGuiEnabled = !m_ImGuiEnabled;
+			m_ImGuiEnabled = !m_ImGuiEnabled;
 		}
 
 		// Check ImGui active

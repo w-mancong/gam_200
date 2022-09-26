@@ -5,7 +5,7 @@ namespace ALEngine::Editor
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		// Entity to be deleted
-		static std::set<ECS::Entity>::iterator e_delete = Coordinator::Instance()->GetEntities().end();
+		static ECS::EntityList::iterator e_delete = Coordinator::Instance()->GetEntities().end();
 
 		// Set size constraints of inspector
 		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
@@ -67,8 +67,8 @@ namespace ALEngine::Editor
 		for (auto e_it = Coordinator::Instance()->GetEntities().begin(); 
 			e_it != Coordinator::Instance()->GetEntities().end(); ++e_it)
 		{
-			std::string tag = "entity #" + std::to_string(*e_it);
-			b8 opened = ImGui::TreeNodeEx((void*)*e_it, flags, tag.c_str());
+			EntityData data = Coordinator::Instance()->GetComponent<EntityData>(*e_it);
+			b8 opened = ImGui::TreeNodeEx((void*)*e_it, flags, data.tag.c_str());
 
 			// If this is clicked, select this
 			if (ImGui::IsItemClicked())

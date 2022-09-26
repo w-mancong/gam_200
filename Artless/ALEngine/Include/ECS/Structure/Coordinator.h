@@ -30,7 +30,44 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		Entity CreateEntity(void)
 		{
-			return mEntityManager->CreateEntity();
+			// Get entity ID
+			Entity ent_id = mEntityManager->CreateEntity();
+
+			// Entity data
+			Component::EntityData data;
+			data.active = true;
+			data.tag = "entity #" + std::to_string(static_cast<u32>(ent_id));
+
+			// Add EntityData component
+			Coordinator::Instance()->AddComponent<Component::EntityData>(ent_id, data);
+
+			return ent_id;
+		}
+
+		/*!*********************************************************************************
+			\brief
+			Creates an entity
+
+			\param [in] tag:
+			The entity's tag or name
+
+			\return
+			Return the first available entity
+		***********************************************************************************/
+		Entity CreateEntity(const c8* tag)
+		{
+			// Get entity ID
+			Entity ent_id = mEntityManager->CreateEntity();
+
+			// Entity data
+			Component::EntityData data;
+			data.active = true;
+			data.tag = tag;
+
+			// Add EntityData component
+			Coordinator::Instance()->AddComponent<Component::EntityData>(ent_id, data);
+
+			return ent_id;
 		}
 
 		/*!*********************************************************************************

@@ -222,9 +222,13 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}
 
-	Entity CreateSprite(Transform const& transform, const char* filePath, RenderLayer layer)
+	Entity CreateSprite(Transform const& transform, const char* tag, const char* filePath, RenderLayer layer)
 	{
-		Entity entity = Coordinator::Instance()->CreateEntity();
+		Entity entity;
+		if (tag == nullptr)
+			entity = Coordinator::Instance()->CreateEntity();
+		else
+			entity = Coordinator::Instance()->CreateEntity(tag);
 		CreateSprite(entity, transform, filePath, layer);
 		return entity;
 	}

@@ -47,7 +47,7 @@ namespace ALEngine::Engine
 		Transform t{ { oj.GetPosX()  , oj.GetPosY(),  0.0f	}, 
 					 { oj.GetScaleX(), oj.GetScaleY()		}, 
 					   oj.GetRotX()							};
-		player = CreateSprite(t, oj.GetSprite().c_str());
+		player = CreateSprite(t, "Player", oj.GetSprite().c_str());
 		Sprite& s = Coordinator::Instance()->GetComponent<Sprite>(player);
 		s.color.r = static_cast<f32>(oj.GetRed())	/ 255.0f;
 		s.color.g = static_cast<f32>(oj.GetGreen()) / 255.0f;

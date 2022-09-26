@@ -188,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
+    <ClInclude Include="Include\ECS\Components\EntityData.h" />
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
