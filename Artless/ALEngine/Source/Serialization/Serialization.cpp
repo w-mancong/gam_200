@@ -766,18 +766,18 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	u32 objectJson::checkPosX(const std::string& line) {
+	f32 objectJson::checkPosX(const std::string& line) {
 		std::string idString = "\"posX\"";
 
 		std::size_t pos = line.find(":");
-		u32 objPositionX = 0;
+		f32 objPositionX = 0.0f;
 
 		if ((pos != std::string::npos)) {
 
 			std::string left = line.substr(6, pos - 6);
 
 			if (idString == left) {
-				objPositionX = stoi(line.substr(pos + 2));
+				objPositionX = stof(line.substr(pos + 2));
 				setPosX(objPositionX);
 			}
 		}
@@ -799,18 +799,18 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	u32 objectJson::checkPosY(const std::string& line) {
+	f32 objectJson::checkPosY(const std::string& line) {
 		std::string idString = "\"posY\"";
 
 		std::size_t pos = line.find(":");
-		u32 objPositionY = 0;
+		f32 objPositionY = 0.0f;
 
 		if ((pos != std::string::npos)) {
 
 			std::string left = line.substr(6, pos - 6);
 
 			if (idString == left) {
-				objPositionY = stoi(line.substr(pos + 2));
+				objPositionY = stof(line.substr(pos + 2));
 				setPosY(objPositionY);
 			}
 		}
@@ -1521,7 +1521,7 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	u32 objectJson::getPosX() {
+	f32 objectJson::getPosX() {
 		return this->posX;
 	}
 
@@ -1537,7 +1537,7 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	void objectJson::setPosX(u32 objPositionX) {
+	void objectJson::setPosX(f32 objPositionX) {
 		this->posX = objPositionX;
 	}
 
@@ -1553,7 +1553,7 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	u32 objectJson::getPosY() {
+	f32 objectJson::getPosY() {
 		return this->posY;
 	}
 
@@ -1569,7 +1569,7 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	void objectJson::setPosY(u32 objPositionY) {
+	void objectJson::setPosY(f32 objPositionY) {
 		this->posY = objPositionY;
 	}
 

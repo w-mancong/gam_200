@@ -110,6 +110,22 @@ namespace ALEngine::ECS
 
 		/*!*********************************************************************************
 			\brief
+			Check if entity has the component
+
+			\param [in] entity:
+			ID of the entity to check if it has the component
+
+			\return
+			True if entity has the component, else false
+		***********************************************************************************/
+		template <typename T>
+		b8 HasComponent(Entity entity)
+		{
+			return GetComponentArray<T>()->HasData(entity);
+		}
+
+		/*!*********************************************************************************
+			\brief
 			Entity is destroyed, loop throw to remove all the components associated to this 
 			entity
 

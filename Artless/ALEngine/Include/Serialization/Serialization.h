@@ -30,8 +30,8 @@ namespace ALEngine::Serializer
 		void setName(std::string& objName);
 
 	private:
-		u32 id;
-		std::string name;
+		u32 id{};
+		std::string name{};
 	};
 
 	class configJson : public commonJson {
@@ -95,13 +95,13 @@ namespace ALEngine::Serializer
 		u32 getSpeed();
 		void setSpeed(u32 objSpeed);
 
-		u32 checkPosX(const std::string& line);
-		u32 getPosX();
-		void setPosX(u32 objPositionX);
+		f32 checkPosX(const std::string& line);
+		f32 getPosX();
+		void setPosX(f32 objPositionX);
 
-		u32 checkPosY(const std::string& line);
-		u32 getPosY();
-		void setPosY(u32 objPositionX);
+		f32 checkPosY(const std::string& line);
+		f32 getPosY();
+		void setPosY(f32 objPositionX);
 
 		std::string checkDirection(const std::string& line);
 		std::string getDirection();
@@ -177,8 +177,8 @@ namespace ALEngine::Serializer
 		u32 attack{};
 		u32 speed{};
 
-		u32 posX{};
-		u32 posY{};
+		f32 posX{};
+		f32 posY{};
 		std::string direction{};
 
 		u32 rotX{};

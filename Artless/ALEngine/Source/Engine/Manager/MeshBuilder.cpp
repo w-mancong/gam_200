@@ -134,22 +134,22 @@ namespace ALEngine::Engine
 		u32 format{ 0 };
 		switch (nrChannels)
 		{
-		case STBI_rgb:
-		{
-			format = GL_RGB;
-			break;
-		}
-		case STBI_rgb_alpha:
-		{
-			format = GL_RGBA;
-			break;
-		}
-		// I only want to accept files that have RGB/RGBA formats
-		default:
-		{
-			std::cerr << "Wrong file format: Must contain RGB/RGBA channels" << std::endl;
-			return Sprite{};
-		}
+			case STBI_rgb:
+			{
+				format = GL_RGB;
+				break;
+			}
+			case STBI_rgb_alpha:
+			{
+				format = GL_RGBA;
+				break;
+			}
+			// I only want to accept files that have RGB/RGBA formats
+			default:
+			{
+				std::cerr << "Wrong file format: Must contain RGB/RGBA channels" << std::endl;
+				return Sprite{};
+			}
 		}
 
 		u32 texture{ 0 };

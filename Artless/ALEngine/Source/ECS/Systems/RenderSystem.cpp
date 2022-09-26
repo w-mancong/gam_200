@@ -56,7 +56,7 @@ namespace ALEngine::ECS
 			{  0.5f, -0.5f }	// btm right
 		};
 
-		u64 constexpr INDICES_SIZE{ 6 };
+		s32 constexpr INDICES_SIZE{ 6 };
 	}
 
 	void RenderSystem::RenderBatch(void)

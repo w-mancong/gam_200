@@ -100,6 +100,21 @@ namespace ALEngine::ECS
 
 		/*!*********************************************************************************
 			\brief
+			Check if the entity has the component data
+
+			\param [in] entity:
+			ID of the entity that to check if there is the component data
+
+			\return
+			True if entity has the component, else false
+		***********************************************************************************/
+		b8 HasData(Entity entity)
+		{
+			return mEntityToIndexMap.find(entity) != mEntityToIndexMap.end();
+		}
+
+		/*!*********************************************************************************
+			\brief
 			Overrided function to remove the data from this entity
 
 			\param [in] entity:
