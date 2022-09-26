@@ -68,7 +68,7 @@ namespace ALEngine::Editor
 			e_it != Coordinator::Instance()->GetEntities().end(); ++e_it)
 		{
 			EntityData data = Coordinator::Instance()->GetComponent<EntityData>(*e_it);
-			b8 opened = ImGui::TreeNodeEx((void*)*e_it, flags, data.tag.c_str());
+			b8 opened = ImGui::TreeNodeEx((void*)static_cast<u64>(*e_it), flags, data.tag.c_str());
 
 			// If this is clicked, select this
 			if (ImGui::IsItemClicked())
