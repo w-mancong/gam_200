@@ -12,28 +12,28 @@ namespace
 
 namespace ALEngine::UserInput
 {
-	const s32 Input::GetScreenResX()
+	s32 Input::GetScreenResX()
 	{
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
 		return screenResX;
 	}
 
-	const s32 Input::GetScreenResY()
+	s32 Input::GetScreenResY()
 	{
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
 		return screenResY;
 	}
 
-	const f64 Input::GetMousePosX()
+	f64 Input::GetMousePosX()
 	{
 		f64 mousePosX, mousePosY;
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 		return mousePosX;
 	}
 
-	const f64 Input::GetMousePosY()
+	f64 Input::GetMousePosY()
 	{
 		f64 mousePosX, mousePosY;
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
