@@ -64,6 +64,42 @@ namespace ALEngine
 			***********************************************************************************/
 			static bool KeyTriggered(KeyCode key);
 
+			/*!*********************************************************************************
+				\brief
+				Returns the cursor's screen space X axis position.
+
+				\return
+				Cursor X axis position.
+			***********************************************************************************/
+			static const f64 GetMousePosX();
+
+			/*!*********************************************************************************
+				\brief
+				Returns the cursor's screen space Y axis position.
+
+				\return
+				Cursor Y axis position.
+			***********************************************************************************/
+			static const f64 GetMousePosY();
+
+			/*!*********************************************************************************
+				\brief
+				Returns the screen's X axis resolution.
+
+				\return
+				Screen X axis resolution.
+			***********************************************************************************/
+			static const s32 GetScreenResX();
+
+			/*!*********************************************************************************
+				\brief
+				Returns the screen's Y axis resolution.
+
+				\return
+				Screen Y axis resolution.
+			***********************************************************************************/
+			static const s32 GetScreenResY();
+
 		private:
 			Input(void)  = default;
 			~Input(void) = default;
