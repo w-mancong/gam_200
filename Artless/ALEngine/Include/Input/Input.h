@@ -71,7 +71,7 @@ namespace ALEngine
 				\return
 				Cursor X axis position.
 			***********************************************************************************/
-			static const f64 GetMousePosX();
+			static f64 GetMousePosX();
 
 			/*!*********************************************************************************
 				\brief
@@ -80,7 +80,7 @@ namespace ALEngine
 				\return
 				Cursor Y axis position.
 			***********************************************************************************/
-			static const f64 GetMousePosY();
+			static f64 GetMousePosY();
 
 			/*!*********************************************************************************
 				\brief
@@ -89,7 +89,7 @@ namespace ALEngine
 				\return
 				Screen X axis resolution.
 			***********************************************************************************/
-			static const s32 GetScreenResX();
+			static s32 GetScreenResX();
 
 			/*!*********************************************************************************
 				\brief
@@ -98,7 +98,7 @@ namespace ALEngine
 				\return
 				Screen Y axis resolution.
 			***********************************************************************************/
-			static const s32 GetScreenResY();
+			static s32 GetScreenResY();
 
 		private:
 			Input(void)  = default;
