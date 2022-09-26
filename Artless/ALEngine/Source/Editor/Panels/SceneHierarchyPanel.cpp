@@ -5,7 +5,7 @@ namespace ALEngine::Editor
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		// Entity to be deleted
-		static std::vector<ECS::Entity>::iterator e_delete = m_EntityList.end();
+		static std::set<ECS::Entity>::iterator e_delete = Coordinator::Instance()->GetEntities().end();
 
 		// Set size constraints of inspector
 		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
@@ -30,10 +30,7 @@ namespace ALEngine::Editor
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
 			sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
 
-			// Add entity to queue
-			m_EntityList.push_back(GO);
-
-			e_delete = m_EntityList.end();
+			e_delete = Coordinator::Instance()->GetEntities().end();
 
 			AL_CORE_INFO("Entity Created!");
 		}
@@ -41,21 +38,21 @@ namespace ALEngine::Editor
 		ImGui::SameLine();
 
 		// Remove Entity Button
-		if (!m_EntityList.empty() && ImGui::Button("Remove Entity"))
+		if (!Coordinator::Instance()->GetEntities().empty() && ImGui::Button("Remove Entity"))
 			ImGui::OpenPopup("remove_entity_popup");
 
 		b8 remove{ false };
 		if (ImGui::BeginPopup("remove_entity_popup"))
 		{
 			// Print selectable for popup
-			for (auto e_it = m_EntityList.begin(); e_it != m_EntityList.end(); ++e_it)
+			for (auto e_it = Coordinator::Instance()->GetEntities().begin(); 
+				e_it != Coordinator::Instance()->GetEntities().end(); ++e_it)
 			{
 				std::string tag = "entity #" + std::to_string(*e_it);
 
 				// Each selectable
 				if (ImGui::Selectable(tag.c_str()))
 				{
-					Coordinator::Instance()->DestroyEntity(*e_it);
 					e_delete = e_it;
 					remove = true;
 					ALEditor::Instance()->SetSelectedEntityTransform(static_cast<ECS::Entity>(-1));
@@ -67,7 +64,8 @@ namespace ALEngine::Editor
 
 		// Displaying each entity
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-		for (auto e_it = m_EntityList.begin(); e_it != m_EntityList.end(); ++e_it)
+		for (auto e_it = Coordinator::Instance()->GetEntities().begin(); 
+			e_it != Coordinator::Instance()->GetEntities().end(); ++e_it)
 		{
 			std::string tag = "entity #" + std::to_string(*e_it);
 			b8 opened = ImGui::TreeNodeEx((void*)*e_it, flags, tag.c_str());
@@ -88,9 +86,9 @@ namespace ALEngine::Editor
 		// Right click to remove entity
 		if (ImGui::BeginPopup("remove_entity_rightclick"))
 		{
-			if (ImGui::Selectable("Remove") && (e_delete != m_EntityList.end()))
+			if (ImGui::Selectable("Remove") && 
+				(e_delete != Coordinator::Instance()->GetEntities().end()))
 			{
-				Coordinator::Instance()->DestroyEntity(*e_delete);
 				ALEditor::Instance()->SetSelectedEntityTransform(static_cast<ECS::Entity>(-1));
 				remove = true;
 			}
@@ -100,8 +98,8 @@ namespace ALEngine::Editor
 		// If there is an entity to remove
 		if (remove)
 		{
-			m_EntityList.erase(e_delete);
-			e_delete = m_EntityList.end();
+			Coordinator::Instance()->DestroyEntity(*e_delete);
+			e_delete = Coordinator::Instance()->GetEntities().end();
 		}
 
 		ImGui::End();

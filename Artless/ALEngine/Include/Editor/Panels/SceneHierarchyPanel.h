@@ -12,9 +12,6 @@ namespace ALEngine::Editor
 		void OnImGuiRender();
 
 	private:
-		// List of entities in scene
-		std::vector<ECS::Entity> m_EntityList;
-
 		// Panel size
 		const ImVec2 PANEL_MIN{ 320, 350 };
 		const ImVec2 PANEL_MAX{ 1920, 1080 };
