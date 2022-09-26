@@ -104,6 +104,9 @@ namespace ALEngine::Editor
 		friend class Templates::Singleton<ALEditor>;
 		friend class Memory::StaticMemory;
 
+		// Window Min Size
+		ImVec2 m_WinMinSize{ 320, 350 };
+
 		// Variables
 		b8 m_ImGuiEnabled{ false };
 		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled

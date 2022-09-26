@@ -12,7 +12,9 @@ namespace ALEngine::Editor
 		void OnImGuiRender();
 
 	private:
-		std::vector<ECS::Entity> m_entityList;
+		// Panel size
+		const ImVec2 PANEL_MIN{ 320, 350 };
+		const ImVec2 PANEL_MAX{ 1920, 1080 };
 	};
 }
 

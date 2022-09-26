@@ -1,9 +1,7 @@
 /*!
 file:		Time.cpp
-author:		Wong Man Cong
-co-author:	Lucas Nguyen
-email:		w.mancong@digipen.edu
-			l.nguyen@digipen.edu
+author:		Lucas Nguyen
+email:		l.nguyen@digipen.edu
 brief:		This file contains a class "Time" that acts as the framerate controller.
 			The delta time and FPS are calculated here.
 

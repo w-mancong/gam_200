@@ -23,6 +23,9 @@ namespace ALEngine::Editor
 
 	void LoggerPanel::OnImGuiRender()
 	{
+		// Set size constraints of inspector
+		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+
 		// Start ImGui Window
 		if (!ImGui::Begin("Logger"))
 		{
@@ -43,11 +46,11 @@ namespace ALEngine::Editor
 		ImGui::SameLine(); ImGui::CheckboxFlags("Error", &log_flags, (u32)LOG_FLAGS::LOG_ERROR);
 		ImGui::SameLine(); ImGui::CheckboxFlags("Critical", &log_flags, (u32)LOG_FLAGS::LOG_CRITICAL);
 		ImGui::Text("           ");
-		ImGui::SameLine(); 
-		if (ImGui::SmallButton("Clear"))
-		{
-			ALEngine::Exceptions::Logger::GetCoreLogger()->flush();
-		}
+		//ImGui::SameLine(); 
+		//if (ImGui::SmallButton("Clear"))
+		//{
+		//	ALEngine::Exceptions::Logger::GetCoreLogger()->flush();
+		//}
 
 		// The Text Box
 		ImGui::BeginChild("LoggerTextBox", ImVec2(0.f, 0.f), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
@@ -55,8 +58,6 @@ namespace ALEngine::Editor
 		// Change OSS to ISS
 		std::string log_line;
 		std::istringstream iss(logger_oss.str());
-
-		//iss.seekg()
 
 		// Check each line for 
 		while (std::getline(iss, log_line))
@@ -127,5 +128,5 @@ namespace ALEngine::Editor
 		ImGui::EndChild();
 		//End ImGui Window
 		ImGui::End();
-	}
+	}	
 }

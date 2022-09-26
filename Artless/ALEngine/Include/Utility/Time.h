@@ -1,13 +1,11 @@
 /*!
 file:		Time.h
-author:		Wong Man Cong
-co-author:	Lucas Nguyen
-email:		w.mancong@digipen.edu
-			l.nguyen@digipen.edu
+author:		Lucas Nguyen
+email:		l.nguyen@digipen.edu
 brief:		This file contains a class "Time" that acts as the framerate controller.
 			The delta time and FPS are calculated here.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	TIME_H
 #define TIME_H
@@ -51,10 +49,9 @@ namespace ALEngine::Utility
 		static void SetTargetFPS(s32 _target);
 
 	public:
-		static f32 m_DeltaTime;			// Delta Time
+		static f32 m_DeltaTime;				// Delta Time
 		static const f32 m_FixedDeltaTime;	// Fixed Delta Time
-		static f32 m_FPS;				// Current FPS
-
+		static f32 m_FPS;					// Current FPS
 	private:
 		/*!*********************************************************************************
 			\brief

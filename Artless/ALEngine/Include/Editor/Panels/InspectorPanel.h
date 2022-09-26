@@ -9,7 +9,7 @@ namespace ALEngine::Editor
 		InspectorPanel() 
 		{ 
 			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE; 
-			m_SelectedEntity = -1;
+			m_SelectedEntity = static_cast<ECS::Entity>(-1);
 			m_HasEntityTransform = false;
 		};
 		~InspectorPanel() {};
@@ -25,6 +25,10 @@ namespace ALEngine::Editor
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;
 		ECS::Entity m_SelectedEntity{ static_cast<ECS::Entity>(-1) };
 		bool m_HasEntityTransform{ false };
+
+		// Panel size
+		const ImVec2 PANEL_MIN{ 320, 350 };
+		const ImVec2 PANEL_MAX{ 1920, 1080 };
 	};
 }
 

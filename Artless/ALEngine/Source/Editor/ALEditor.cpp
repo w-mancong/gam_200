@@ -21,6 +21,9 @@ namespace ALEngine::Editor
 		// Set imgui style to dark
 		ImGui::StyleColorsDark();
 
+		// Set minimum window size
+		ImGui::GetStyle().WindowMinSize = m_WinMinSize;
+
 		// ImGui IO stuff
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -60,8 +63,6 @@ namespace ALEngine::Editor
 		if (!m_ImGuiEnabled)
 			return;
 
-		static bool show{ true };
-		ImGui::ShowDemoWindow(&show);
 		cbp.OnImGuiRender();
 		logger_panel.OnImGuiRender();
 		if (imguizmo_panel.HasEntityTransform())
@@ -126,12 +127,12 @@ namespace ALEngine::Editor
 			glfwMakeContextCurrent(curr_context);
 		}
 	}
-		
+	
 	void ALEditor::Docking()
 	{
 		// Ensure the parent window is not dockable into
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-			
+		
 		// Get main viewport
 		const ImGuiViewport* vp = ImGui::GetMainViewport();
 

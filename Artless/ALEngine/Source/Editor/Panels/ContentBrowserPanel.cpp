@@ -1,5 +1,4 @@
 #include "pch.h"
-
 /*!
 file: ContentBrowserPanel.cpp
 author: Chan Jie Ming Stanley
@@ -20,7 +19,7 @@ namespace ALEngine::Editor
 
 	ContentBrowserPanel::~ContentBrowserPanel()
 	{
-			
+		
 	}
 
 	void ContentBrowserPanel::OnImGuiRender(void)
@@ -51,7 +50,7 @@ namespace ALEngine::Editor
 
 			//ImTextureID icon = directoryentry.is_directory()?  ;
 
-			// ImGui::ImageButton(ImTextureID)
+		   // ImGui::ImageButton(ImTextureID)
 
 			if (directoryEntry.is_directory())
 			{
@@ -75,7 +74,7 @@ namespace ALEngine::Editor
 				if (ImGui::Selectable(filenamestring.c_str()))
 				{
 					ImGui::Button(filenamestring.c_str());
-		
+	
 					//std::filesystem::rename();
 				}
 			}
