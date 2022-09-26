@@ -13,6 +13,7 @@ brief:	This file contains all the relevant Utility header files to be included i
 #include "Utility/console.h"
 #include "Utility/Type.h"
 #include "Utility/Time.h"
+#include "Utility/Timer.h"
 
 using ALEngine::Utility::Time;
 

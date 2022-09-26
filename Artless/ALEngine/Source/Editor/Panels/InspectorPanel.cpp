@@ -13,13 +13,6 @@ namespace ALEngine::Editor
 	
 	void InspectorPanel::OnImGuiRender()
 	{
-		static bool useSnap[3] = { false, false, false };
-		static float snap[3] = { 1.f, 1.f, 1.f };
-		static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
-		static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
-		static bool boundSizing = false;
-		static bool boundSizingSnap = false;
-
 		// Set size constraints of inspector
 		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
@@ -64,19 +57,19 @@ namespace ALEngine::Editor
 				*/
 
 		// Translate and Scale matrix
-		float mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
+		f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
 			mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f };
 
 		// FLoat inputs
-		ImGui::DragFloat2("Tr", mtx_translate);		// Traslate
+		ImGui::DragFloat2("Tr", mtx_translate);						// Traslate
 		ImGui::DragFloat("Rt", &xform.rotation, 1.f, 0.f, 360.f);	// Rotate
-		ImGui::DragFloat2("Sc", mtx_scale);			// Scale
+		ImGui::DragFloat2("Sc", mtx_scale);							// Scale
 
 		// Rotate matrix
-		float mtx_rot[3]{ 0.f, 0.f, xform.rotation };
+		f32 mtx_rot[3]{ 0.f, 0.f, xform.rotation };
 
 		// Make transform matrix
-		float mtx[16];
+		f32 mtx[16];
 		ImGuizmo::RecomposeMatrixFromComponents(mtx_translate, mtx_rot, mtx_scale, mtx);
 
 		// Set changes
@@ -87,14 +80,13 @@ namespace ALEngine::Editor
 		xform.scale.y = mtx_scale[1];
 
 		// Separate
-		ImGui::Separator();
-		
+		ImGui::Separator();		
 
 		// Get Sprite
 		Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectedEntity);
 		ImGui::Text("Sprite Component");
 		ImGuiColorEditFlags clr_flags =  ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
-		float clr[4] = { spr.color.r, spr.color.g, spr.color.b, spr.color.a };
+		f32 clr[4] = { spr.color.r, spr.color.g, spr.color.b, spr.color.a };
 		ImGui::ColorPicker4("Color", clr, clr_flags);
 
 		// Set new color

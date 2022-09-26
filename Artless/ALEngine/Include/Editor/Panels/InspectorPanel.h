@@ -9,7 +9,7 @@ namespace ALEngine::Editor
 		InspectorPanel() 
 		{ 
 			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE; 
-			m_SelectedEntity = -1;
+			m_SelectedEntity = static_cast<ECS::Entity>(-1);
 			m_HasEntityTransform = false;
 		};
 		~InspectorPanel() {};

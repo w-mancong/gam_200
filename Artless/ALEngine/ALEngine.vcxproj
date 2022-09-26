@@ -185,6 +185,7 @@
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
     <ClCompile Include="Source\Utility\Time.cpp" />
+    <ClCompile Include="Source\Utility\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
@@ -277,7 +278,9 @@
     <ClInclude Include="Include\Templated Class\Singleton.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
+    <ClInclude Include="Include\Utility\Profiler.h" />
     <ClInclude Include="Include\Utility\Time.h" />
+    <ClInclude Include="Include\Utility\Timer.h" />
     <ClInclude Include="Include\Utility\Type.h" />
     <ClInclude Include="Include\Engine\Physics2D.h" />
   </ItemGroup>

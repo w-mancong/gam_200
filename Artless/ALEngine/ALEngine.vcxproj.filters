@@ -52,6 +52,7 @@
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
     <ClCompile Include="Source\Factory\Factory.cpp" />
     <ClCompile Include="Source\Serialization\Serialization.cpp" />
+    <ClCompile Include="Source\Utility\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -264,6 +265,8 @@
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
     <ClInclude Include="Include\Factory\Factory.h" />
     <ClInclude Include="Include\Serialization\Serialization.h" />
+    <ClInclude Include="Include\Utility\Timer.h" />
+    <ClInclude Include="Include\Utility\Profiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

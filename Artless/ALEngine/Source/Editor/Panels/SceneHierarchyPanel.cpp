@@ -57,7 +57,7 @@ namespace ALEngine::Editor
 					Coordinator::Instance()->DestroyEntity(*e_it);
 					e_delete = e_it;
 					remove = true;
-					ALEditor::Instance()->SetSelectedEntityTransform(-1);
+					ALEditor::Instance()->SetSelectedEntityTransform(static_cast<ECS::Entity>(-1));
 				}
 			}
 
@@ -90,7 +90,7 @@ namespace ALEngine::Editor
 			if (ImGui::Selectable("Remove") && (e_delete != m_EntityList.end()))
 			{
 				Coordinator::Instance()->DestroyEntity(*e_delete);
-				ALEditor::Instance()->SetSelectedEntityTransform(-1);
+				ALEditor::Instance()->SetSelectedEntityTransform(static_cast<ECS::Entity>(-1));
 				remove = true;
 			}
 			ImGui::EndPopup();
