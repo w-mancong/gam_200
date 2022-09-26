@@ -76,7 +76,7 @@ namespace ALEngine::ECS
 				return sp1.layer < sp2.layer;
 			});
 
-		u64 counter{ 0 }; u64 const size = entities.size();
+		u64 counter{ 0 }; u64 const size{ entities.size() };
 		for (u64 i = 0; i < size; ++i)
 		{
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
