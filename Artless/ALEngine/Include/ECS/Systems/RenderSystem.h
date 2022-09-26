@@ -116,12 +116,6 @@ namespace ALEngine::ECS
 
 	/*!*********************************************************************************
 		\brief
-		Updates the camera when the viewport changes
-	***********************************************************************************/
-	void ViewportResizeCameraUpdate(void);
-
-	/*!*********************************************************************************
-		\brief
 		Create a sprite with image loaded in
 
 		\param [in] entity:
