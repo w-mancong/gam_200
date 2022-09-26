@@ -16,17 +16,27 @@ namespace ALEngine::Editor
 		// Set size constraints of inspector
 		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
-		// Title of inspector
-		std::string insp_title = "Inspector - ";
-		insp_title += ("entity #" + std::to_string(static_cast<u32>(m_SelectedEntity)));
-
 		// Begin ImGui
-		if (!ImGui::Begin(insp_title.c_str()))
+		if (!ImGui::Begin("Inspector"))
 		{
 			ImGui::End();
 			//AL_CORE_CRITICAL("Editor Panel Collapsed");
 			return;
 		}
+
+		// Window size
+		ImVec2 winSize = ImGui::GetWindowSize();
+
+		// Size of the entity name
+		std::string name = "entity #" + std::to_string(static_cast<u32>(m_SelectedEntity));
+		ImVec2 nameSize = ImGui::CalcTextSize(name.c_str());
+
+		// Same line, from middle
+		ImGui::SameLine((winSize.x - nameSize.x) * 0.5f);
+
+		// Entity name
+		ImGui::Text(name.c_str());
+		ImGui::Separator();
 
 		// Get transform
 		Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
