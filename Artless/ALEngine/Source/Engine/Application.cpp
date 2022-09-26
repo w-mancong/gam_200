@@ -44,15 +44,15 @@ namespace ALEngine::Engine
 
 		// Showcasing of de-serialisation
 		Serializer::objectJson oj{ "../ALEngine/Resources/Objects Files/Player1.json" };
-		Transform t{ { static_cast<f32>(oj.getPosX()), static_cast<f32>(oj.getPosY()), 0.0f }, 
-					 { static_cast<f32>(oj.getScaleX()), static_cast<f32>(oj.getScaleY()) }, 
-					   oj.getRotX() };
-		player = CreateSprite(t, oj.getSprite().c_str());
+		Transform t{ { oj.GetPosX(),   oj.GetPosY(), 0.0f }, 
+					 { oj.GetScaleX(), oj.GetScaleY() }, 
+					   oj.GetRotX() };
+		player = CreateSprite(t, oj.GetSprite().c_str());
 		Sprite& s = Coordinator::Instance()->GetComponent<Sprite>(player);
-		s.color.r = static_cast<f32>(oj.getRed())	/ 255.0f;
-		s.color.g = static_cast<f32>(oj.getGreen()) / 255.0f;
-		s.color.b = static_cast<f32>(oj.getBlue())	/ 255.0f;
-		s.color.a = static_cast<f32>(oj.getAlpha()) / 255.0f;
+		s.color.r = static_cast<f32>(oj.GetRed())	/ 255.0f;
+		s.color.g = static_cast<f32>(oj.GetGreen()) / 255.0f;
+		s.color.b = static_cast<f32>(oj.GetBlue())	/ 255.0f;
+		s.color.a = static_cast<f32>(oj.GetAlpha()) / 255.0f;
 		s.layer = RenderLayer::UI;
 
 		CreatePhysics2D(player);

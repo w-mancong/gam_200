@@ -48,9 +48,9 @@ namespace ALEngine::Graphics
 #endif
 
 		Serializer::configJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
-		title  = config.getWindowTitle();
-		width  = config.getDimensionWidth();
-		height = config.getDimensionHeight();
+		title  = config.GetWindowTitle();
+		width  = config.GetDimensionWidth();
+		height = config.GetDimensionHeight();
 
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 		if (!window)
