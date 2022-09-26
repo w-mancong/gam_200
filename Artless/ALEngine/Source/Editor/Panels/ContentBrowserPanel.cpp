@@ -40,7 +40,7 @@ namespace ALEngine::Editor
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 		{
 			//file default path
-			const auto& path = directoryEntry.path();
+			//const auto& path = directoryEntry.path();
 
 			//file relative path
 			std::filesystem::path relativepath = std::filesystem::relative(directoryEntry.path(), assetPath);
