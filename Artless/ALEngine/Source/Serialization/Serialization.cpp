@@ -140,6 +140,11 @@ namespace ALEngine::Serializer
 		this->name = objName;
 	}
 
+	configJson::configJson(std::string const& fileName)
+	{
+		deserializeConfig(fileName);
+	}
+
 	/*****************************************************************************/
 	/*!
 
@@ -507,6 +512,11 @@ namespace ALEngine::Serializer
 
 	u32 configJson::getAspectHeight() {
 		return this->aspectHeight;
+	}
+
+	objectJson::objectJson(std::string const& fileName)
+	{
+		deserializeObject(fileName);
 	}
 
 	/*****************************************************************************/

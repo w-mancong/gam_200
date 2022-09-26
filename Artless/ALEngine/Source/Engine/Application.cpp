@@ -70,7 +70,7 @@ namespace ALEngine::Engine
 			Render();
 
 			std::ostringstream oss;
-			oss << "ALEngine | FPS: " << Time::m_FPS;
+			oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
 			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
 
 			// Wait for next frame

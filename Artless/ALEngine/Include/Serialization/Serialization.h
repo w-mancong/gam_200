@@ -36,6 +36,8 @@ namespace ALEngine::Serializer
 
 	class configJson : public commonJson {
 	public:
+		configJson(std::string const& fileName);
+
 		bool deserializeConfig(const std::string& filePath);
 
 		std::string checkWindowTitle(const std::string& line);
@@ -59,16 +61,18 @@ namespace ALEngine::Serializer
 		void setAspectHeight(u32 configAspectHeight);
 
 	private:
-		std::string windowTitle;
-		u32 dimensionWidth;
-		u32 dimensionHeight;
-		u32 aspectWidth;
-		u32 aspectHeight;
+		std::string windowTitle{};
+		u32 dimensionWidth{};
+		u32 dimensionHeight{};
+		u32 aspectWidth{};
+		u32 aspectHeight{};
 	};
 
 
 	class objectJson : public commonJson {
 	public:
+		objectJson(std::string const& fileName);
+
 		bool deserializeObject(const std::string& filePath);
 
 		std::string checkType(const std::string& line);
@@ -166,37 +170,37 @@ namespace ALEngine::Serializer
 	private:
 		//u32 id;
 		//std::string name;
-		std::string type;
-		std::string combat;
-		std::string weapon;
-		u32 hp;
-		u32 attack;
-		u32 speed;
+		std::string type{};
+		std::string combat{};
+		std::string weapon{};
+		u32 hp{};
+		u32 attack{};
+		u32 speed{};
 
-		u32 posX;
-		u32 posY;
-		std::string direction;
+		u32 posX{};
+		u32 posY{};
+		std::string direction{};
 
-		u32 rotX;
-		u32 rotY;
+		u32 rotX{};
+		u32 rotY{};
 
-		u32 scaleX;
-		u32 scaleY;
+		u32 scaleX{};
+		u32 scaleY{};
 
-		u32 rotSpeed;
+		u32 rotSpeed{};
 
-		std::string sprite;
-		std::string shader;
+		std::string sprite{};
+		std::string shader{};
 
-		u32 red;
-		u32 green;
-		u32 blue;
-		u32 alpha;
+		u32 red{};
+		u32 green{};
+		u32 blue{};
+		u32 alpha{};
 
-		std::string behaviour;
-		std::string hitbox;
-		std::string collision;
-		std::string specials;
+		std::string behaviour{};
+		std::string hitbox{};
+		std::string collision{};
+		std::string specials{};
 	};
 
 }

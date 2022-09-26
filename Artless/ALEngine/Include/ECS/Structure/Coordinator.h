@@ -47,6 +47,18 @@ namespace ALEngine::ECS
 			mSystemManager->EntityDestroyed(entity);
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Get list of active entities
+			
+			\return
+			List of entities
+		***********************************************************************************/
+		std::set<Entity> const& GetEntities()
+		{
+			return mEntityManager->GetActiveEntities();
+		}
+
 		/*********************************************************************************
 										COMPONENT METHODS
 		*********************************************************************************/

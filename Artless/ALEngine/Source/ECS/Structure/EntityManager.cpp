@@ -6,18 +6,19 @@ namespace ALEngine::ECS
 	{
 		// Initialize the queue with all possible entity IDs
 		for (Entity entity = 0; entity < MAX_ENTITIES; ++entity)
-			mAvailableEntities.push(entity);
+			m_AvailableEntities.push(entity);
 	}
 
 	Entity EntityManager::CreateEntity(void)
 	{
 #ifdef _DEBUG
-		assert(mLivingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
+		assert(m_LivingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
 #endif	
 		// Take an ID from the front of the queue
-		Entity id = mAvailableEntities.front();
-		mAvailableEntities.pop();
-		++mLivingEntityCount;
+		Entity id = m_AvailableEntities.front();
+		m_AvailableEntities.pop();
+		m_ActiveEntities.insert(id);
+		++m_LivingEntityCount;
 		return id;
 	}
 
@@ -27,10 +28,11 @@ namespace ALEngine::ECS
 		assert(entity < MAX_ENTITIES && "Entity out of range.");
 #endif	
 		// Invalidate the destroyed entity's signature
-		mSignatures[entity].reset();
+		m_Signatures[entity].reset();
 		// Put the destroyed ID at the back of the queue
-		mAvailableEntities.push(entity);
-		--mLivingEntityCount;
+		m_AvailableEntities.push(entity);
+		m_ActiveEntities.erase(entity);
+		--m_LivingEntityCount;
 	}
 
 	void EntityManager::SetSignature(Entity entity, Signature const& signature)
@@ -39,7 +41,7 @@ namespace ALEngine::ECS
 		assert(entity < MAX_ENTITIES && "Entity out of range.");
 #endif	
 		// Put this entity's signature into the array
-		mSignatures[entity] = signature;
+		m_Signatures[entity] = signature;
 	}
 
 	Signature EntityManager::GetSignature(Entity entity)
@@ -48,7 +50,11 @@ namespace ALEngine::ECS
 		assert(entity < MAX_ENTITIES && "Entity out of range.");
 #endif	
 		//Get this entity's signature from the array
-		return mSignatures[entity];
+		return m_Signatures[entity];
+	}
 
+	std::set<Entity> const& EntityManager::GetActiveEntities()
+	{
+		return m_ActiveEntities;
 	}
 }
