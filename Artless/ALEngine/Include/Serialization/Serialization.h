@@ -119,13 +119,13 @@ namespace ALEngine::Serializer
 		u32 getRotSpeed();
 		void setRotSpeed(u32 objRotSpeed);
 
-		u32 checkScaleX(const std::string& line);
-		u32 getScaleX();
-		void setScaleX(u32 objScaleX);
+		f32 checkScaleX(const std::string& line);
+		f32 getScaleX();
+		void setScaleX(f32 objScaleX);
 
-		u32 checkScaleY(const std::string& line);
-		u32 getScaleY();
-		void setScaleY(u32 objScaleY);
+		f32 checkScaleY(const std::string& line);
+		f32 getScaleY();
+		void setScaleY(f32 objScaleY);
 
 		std::string checkSprite(const std::string& line);
 		std::string getSprite();
@@ -184,8 +184,8 @@ namespace ALEngine::Serializer
 		u32 rotX{};
 		u32 rotY{};
 
-		u32 scaleX{};
-		u32 scaleY{};
+		f32 scaleX{};
+		f32 scaleY{};
 
 		u32 rotSpeed{};
 

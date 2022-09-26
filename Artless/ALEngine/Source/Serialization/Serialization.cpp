@@ -964,18 +964,18 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	u32 objectJson::checkScaleX(const std::string& line) {
+	f32 objectJson::checkScaleX(const std::string& line) {
 		std::string idString = "\"scaleX\"";
 
 		std::size_t pos = line.find(":");
-		u32 objScaleX = 0;
+		f32 objScaleX = 0.0f;
 
 		if ((pos != std::string::npos)) {
 
 			std::string left = line.substr(6, pos - 6);
 
 			if (idString == left) {
-				objScaleX = stoi(line.substr(pos + 2));
+				objScaleX = stof(line.substr(pos + 2));
 				setScaleX(objScaleX);
 			}
 		}
@@ -997,18 +997,18 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	u32 objectJson::checkScaleY(const std::string& line) {
+	f32 objectJson::checkScaleY(const std::string& line) {
 		std::string idString = "\"scaleY\"";
 
 		std::size_t pos = line.find(":");
-		u32 objScaleY = 0;
+		f32 objScaleY = 0.0f;
 
 		if ((pos != std::string::npos)) {
 
 			std::string left = line.substr(6, pos - 6);
 
 			if (idString == left) {
-				objScaleY = stoi(line.substr(pos + 2));
+				objScaleY = stof(line.substr(pos + 2));
 				setScaleY(objScaleY);
 			}
 		}
@@ -1711,7 +1711,7 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	u32 objectJson::getScaleX() {
+	f32 objectJson::getScaleX() {
 		return this->scaleX;
 	}
 
@@ -1727,7 +1727,7 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	void objectJson::setScaleX(u32 objScaleX) {
+	void objectJson::setScaleX(f32 objScaleX) {
 		this->scaleX = objScaleX;
 	}
 
@@ -1743,7 +1743,7 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	u32 objectJson::getScaleY() {
+	f32 objectJson::getScaleY() {
 		return this->scaleY;
 	}
 
@@ -1759,7 +1759,7 @@ namespace ALEngine::Serializer
 	*/
 	/*****************************************************************************/
 
-	void objectJson::setScaleY(u32 objScaleY) {
+	void objectJson::setScaleY(f32 objScaleY) {
 		this->scaleY = objScaleY;
 	}
 
