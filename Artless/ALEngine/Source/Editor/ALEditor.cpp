@@ -76,16 +76,30 @@ namespace ALEngine::Editor
 		if (Input::KeyTriggered(KeyCode::Key_9))
 		{
 			m_ImGuiEnabled = !m_ImGuiEnabled;
-		}
 
-		// Check ImGui active
-		if (!m_ImGuiEnabled)
-			return;
+			ImGuiIO& io = ImGui::GetIO();
+			// If it is iactive, set MultiViewport to disable. 
+				// This is to stop rendering panels outside of main window
+			if (m_ImGuiEnabled)
+			{
+				io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+				ImGui::UpdatePlatformWindows();
+			}
+			else
+				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+		}
 
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		// Check ImGui active
+		if (!m_ImGuiEnabled)
+		{
+			End();
+			return;
+		}
 
 		// ImGuizmo Frame
 		ImGuizmo::SetOrthographic(true);
@@ -100,10 +114,6 @@ namespace ALEngine::Editor
 
 	void ALEditor::End()
 	{
-		// Check ImGui active
-		if (!m_ImGuiEnabled)
-			return;
-
 		// Get the ImGui IO
 		ImGuiIO& io = ImGui::GetIO();
 

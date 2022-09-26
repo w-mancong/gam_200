@@ -150,7 +150,8 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::RenderAllLines();
 
 		// End of ImGui frame, render ImGui!
-		Editor::ALEditor::Instance()->End();
+		if(Editor::ALEditor::Instance()->GetImGuiEnabled())
+			Editor::ALEditor::Instance()->End();
 
 		glfwPollEvents();
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());

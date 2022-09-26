@@ -57,6 +57,15 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Sets ImGui to be enabled or disabled.
+
+			\param [in] isEnabled
+			Boolean for whether the ImGui will be set to enabled or disabled
+		***********************************************************************************/
+		b8 GetImGuiEnabled() { return m_ImGuiEnabled; }
+
+		/*!*********************************************************************************
+			\brief
 			Sets ImGui Docking to be enabled or disabled.
 
 			\param [in] isEnabled
