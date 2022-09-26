@@ -1,0 +1,31 @@
+{
+  "id": 6,
+  "name": "wall3",
+  "transform": {
+    "position": {
+      "posX": 0.0,
+      "posY": 250.0
+    },
+    "rotation": {
+      "rotX": 0.0
+    },
+    "scale": {
+      "scaleX": 50.0,
+      "scaleY": 50.0
+    }
+  },
+  "sprite": "Assets/Images/white.png",
+  "rgba": {
+    "red": 255,
+    "green": 255,
+    "blue": 255,
+    "alpha": 255
+  },
+  "Collider Offset": {
+    "positionOffsetX": 0.0,
+    "positionOffsetY": 0.0,
+    "scaleOffsetX": 1000.0,
+    "scaleOffsetY": 50.0,
+    "rigidBodyEnabled": 0
+  }
+}

@@ -53,7 +53,7 @@ namespace ALEngine::ECS
 		return m_Signatures[entity];
 	}
 
-	std::set<Entity> const& EntityManager::GetActiveEntities()
+	EntityList const& EntityManager::GetActiveEntities()
 	{
 		return m_ActiveEntities;
 	}

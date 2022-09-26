@@ -35,5 +35,12 @@
   "behaviour": "AI",
   "hitbox": "Square",
   "collision": "AABB",
-  "specials": "Diagonal"
+  "specials": "Diagonal",
+  "Collider Offset": {
+    "positionOffsetX": 100,
+    "positionOffsetY": 20,
+    "scaleOffsetX": 100,
+    "scaleOffsetY": 50,
+    "rigidBodyEnabled": 1
+  }
 }

@@ -19,5 +19,12 @@
     "green": 255,
     "blue": 255,
     "alpha": 255
+  },
+  "Collider Offset": {
+    "positionOffsetX": 100,
+    "positionOffsetY": 20,
+    "scaleOffsetX": 100,
+    "scaleOffsetY": 50,
+    "rigidBodyEnabled": 1
   }
 }

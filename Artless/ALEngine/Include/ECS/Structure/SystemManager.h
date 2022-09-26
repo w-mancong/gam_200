@@ -18,7 +18,7 @@ namespace ALEngine::ECS
 	class System
 	{
 	public:
-		std::set<Entity> mEntities;
+		EntityList mEntities;
 	};
 
 	/*!*********************************************************************************

@@ -15,7 +15,7 @@ namespace ALEngine::Engine
 	};
 
 	Entity player;
-	Entity Wall_Bottom, Wall_Left, Wall_Right, Wall_Up;
+	Entity walls[4]; // btm, left, right, up
 	// add function pointers here
 
 	void Application::Init(void)
@@ -43,10 +43,10 @@ namespace ALEngine::Engine
 		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 
 		// Showcasing of de-serialisation
-		Serializer::objectJson oj{ "../ALEngine/Resources/Objects Files/Player1.json" };
-		Transform t{ { oj.GetPosX(),   oj.GetPosY(), 0.0f }, 
-					 { oj.GetScaleX(), oj.GetScaleY() }, 
-					   oj.GetRotX() };
+		Serializer::ObjectJson oj{ "../ALEngine/Resources/Objects Files/Player1.json" };
+		Transform t{ { oj.GetPosX()  , oj.GetPosY(),  0.0f	}, 
+					 { oj.GetScaleX(), oj.GetScaleY()		}, 
+					   oj.GetRotX()							};
 		player = CreateSprite(t, oj.GetSprite().c_str());
 		Sprite& s = Coordinator::Instance()->GetComponent<Sprite>(player);
 		s.color.r = static_cast<f32>(oj.GetRed())	/ 255.0f;
@@ -58,44 +58,27 @@ namespace ALEngine::Engine
 		CreatePhysics2D(player);
 		CreateCharacterController(player);
 		Collider2D& playerCollider = Coordinator::Instance()->GetComponent<Collider2D>(player);
-		playerCollider.scale[0] = 50.f;
-		playerCollider.scale[1] = 50.f; 
+		playerCollider.scale[0] = t.scale.x;
+		playerCollider.scale[1] = t.scale.y; 
 		Coordinator::Instance()->GetComponent<Rigidbody2D>(player).drag.x = 0.25f;
 
-		Wall_Bottom = CreateSprite(t);
-		Wall_Up = CreateSprite(t);
-		Wall_Left = CreateSprite(t);
-		Wall_Right = CreateSprite(t);
+		for (u64 i = 0; i < 4; ++i)
+		{
+			std::ostringstream oss;
+			oss << "../ALEngine/Resources/Objects Files/wall" << i << ".json";
+			Serializer::ObjectJson obj{ oss.str() };
+			Transform trans{ { obj.GetPosX()  , obj.GetPosY(),  0.0f },
+							 { obj.GetScaleX(), obj.GetScaleY()	 	 },
+							   obj.GetRotX()						 };
 
-		CreatePhysics2D(Wall_Bottom);
-		CreatePhysics2D(Wall_Up);
-		CreatePhysics2D(Wall_Left);
-		CreatePhysics2D(Wall_Right);
-
-		Coordinator::Instance()->GetComponent<Transform>(Wall_Bottom).position = Vector3(0.f, -250.f, 0.f);
-		Coordinator::Instance()->GetComponent<Transform>(Wall_Up).position = Vector3(0.f, 250.f, 0.f);
-		Coordinator::Instance()->GetComponent<Transform>(Wall_Left).position = Vector3(-450.f, 0.f, 0.f);
-		Coordinator::Instance()->GetComponent<Transform>(Wall_Right).position = Vector3(450.f, 0.f, 0.f);
-
-		Collider2D& wallBottomCollider = Coordinator::Instance()->GetComponent<Collider2D>(Wall_Bottom);
-		Collider2D& wallUpCollider = Coordinator::Instance()->GetComponent<Collider2D>(Wall_Up);
-		Collider2D& wallLeftCollider = Coordinator::Instance()->GetComponent<Collider2D>(Wall_Left);
-		Collider2D& wallRightCollider = Coordinator::Instance()->GetComponent<Collider2D>(Wall_Right);
-		wallBottomCollider.scale[0] = 1000.f, wallBottomCollider.scale[1] = 50.f;
-		wallUpCollider.scale[0] = 1000.f, wallUpCollider.scale[1] = 50.f;
-		wallLeftCollider.scale[0] = 50.f, wallLeftCollider.scale[1] = 430.f;
-		wallRightCollider.scale[0] = 50.f, wallRightCollider.scale[1] = 430.f;
-
-		wallLeftCollider.m_localPosition.x -= 20.f;
-
-		Rigidbody2D& wallBottomRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(Wall_Bottom);
-		Rigidbody2D& wallUpRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(Wall_Up);
-		Rigidbody2D& wallLeftRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(Wall_Left);
-		Rigidbody2D& wallRightRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(Wall_Right);
-		wallBottomRigidbody.isEnabled = false;
-		wallUpRigidbody.isEnabled = false;
-		wallLeftRigidbody.isEnabled = false;
-		wallRightRigidbody.isEnabled = false;
+			*(walls + i) = CreateSprite(trans);
+			CreatePhysics2D(*(walls + i));
+			Collider2D& col = Coordinator::Instance()->GetComponent<Collider2D>(*(walls + i));
+			Rigidbody2D& rb = Coordinator::Instance()->GetComponent<Rigidbody2D>(*(walls + i));
+			col.scale[0] = obj.GetScaleOffsetX(), col.scale[1] = obj.GetScaleOffsetY();
+			col.m_localPosition.x = obj.GetPositionOffsetX(), col.m_localPosition.y = obj.GetPositionOffsetY();
+			rb.isEnabled = obj.GetRigidBodyEnabled();
+		}
 	}
 
 	void Application::Update(void)

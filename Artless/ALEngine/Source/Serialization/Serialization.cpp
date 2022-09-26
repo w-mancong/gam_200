@@ -15,7 +15,6 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the ID of the object before assigning the ID to the object
 	***********************************************************************************/
-
 	u32 commonJson::CheckID(const std::string& line) {
 
 		std::string idString = "\"id\"";
@@ -39,7 +38,6 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the name of the object before assigning the name to the object
 	***********************************************************************************/
-
 	std::string commonJson::CheckName(const std::string& line) {
 		std::size_t pos = line.find("name");
 		std::string objName;
@@ -55,7 +53,6 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the id of the object
 	***********************************************************************************/
-
 	u32 commonJson::GetID() {
 		return this->id;
 	}
@@ -64,7 +61,6 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the id of the object
 	***********************************************************************************/
-
 	void commonJson::SetID(u32 objID) {
 		this->id = objID;
 	}
@@ -73,7 +69,6 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the name of the object
 	***********************************************************************************/
-
 	std::string commonJson::GetName() {
 		return this->name;
 	}
@@ -82,12 +77,15 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the name of the object
 	***********************************************************************************/
-
 	void commonJson::SetName(std::string& objName) {
 		this->name = objName;
 	}
 
-	configJson::configJson(std::string const& fileName)
+	/*!*********************************************************************************
+		\brief
+		Default constructor will call the function to start deserialize the data
+	***********************************************************************************/
+	ConfigJson::ConfigJson(std::string const& fileName)
 	{
 		deserializeConfig(fileName);
 	}
@@ -106,8 +104,7 @@ namespace ALEngine::Serializer
 
 	*/
 	/*****************************************************************************/
-
-	bool configJson::deserializeConfig(const std::string& filePath) {
+	bool ConfigJson::deserializeConfig(const std::string& filePath) {
 		std::ifstream file;
 
 		file.open(filePath);
@@ -140,8 +137,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the title of the window before assigning it to the object
 	***********************************************************************************/
-
-	std::string configJson::CheckWindowTitle(const std::string& line) {
+	std::string ConfigJson::CheckWindowTitle(const std::string& line) {
 
 		std::string idString = "\"window title\"";
 		std::size_t pos = line.find(":");
@@ -166,8 +162,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the width of the window before assigning it to the object
 	***********************************************************************************/
-
-	u32 configJson::CheckDimensionWidth(const std::string& line) {
+	u32 ConfigJson::CheckDimensionWidth(const std::string& line) {
 
 		std::string idString = "\"dimensionWidth\"";
 		std::size_t pos = line.find(":");
@@ -190,8 +185,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the height of the window before assigning it to the object
 	***********************************************************************************/
-
-	u32 configJson::CheckDimensionHeight(const std::string& line) {
+	u32 ConfigJson::CheckDimensionHeight(const std::string& line) {
 
 		std::string idString = "\"dimensionHeight\"";
 		std::size_t pos = line.find(":");
@@ -214,8 +208,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the width aspect ratio of the window before assigning it to the object
 	***********************************************************************************/
-
-	u32 configJson::CheckAspectWidth(const std::string& line) {
+	u32 ConfigJson::CheckAspectWidth(const std::string& line) {
 		std::string idString = "\"aspectWidth\"";
 		std::size_t pos = line.find(":");
 		u32 configAspectWidth = 0;
@@ -237,8 +230,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the height aspect ratio of the window before assigning it to the object
 	***********************************************************************************/
-
-	u32 configJson::CheckAspectHeight(const std::string& line) {
+	u32 ConfigJson::CheckAspectHeight(const std::string& line) {
 		std::string idString = "\"aspectHeight\"";
 		std::size_t pos = line.find(":");
 		u32 configAspectHeight = 0;
@@ -260,8 +252,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the window title
 	***********************************************************************************/
-
-	void configJson::SetWindowTitle(std::string& configwindowTitle) {
+	void ConfigJson::SetWindowTitle(std::string& configwindowTitle) {
 		this->windowTitle = configwindowTitle;
 	}
 
@@ -269,8 +260,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the window title
 	***********************************************************************************/
-
-	std::string configJson::GetWindowTitle() {
+	std::string ConfigJson::GetWindowTitle() {
 		return this->windowTitle;
 	}
 
@@ -278,8 +268,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the width of the window
 	***********************************************************************************/
-
-	void configJson::SetDimensionWidth(u32 configDimensionWidth) {
+	void ConfigJson::SetDimensionWidth(u32 configDimensionWidth) {
 		this->dimensionWidth = configDimensionWidth;
 	}
 
@@ -287,18 +276,15 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the width of the window
 	***********************************************************************************/
-
-	u32 configJson::GetDimensionWidth() {
+	u32 ConfigJson::GetDimensionWidth() {
 		return this->dimensionWidth;
 	}
-
 
 	/*!*********************************************************************************
 		\brief
 		This function sets the height of the window
 	***********************************************************************************/
-
-	void configJson::SetDimensionHeight(u32 configDimensionHeight) {
+	void ConfigJson::SetDimensionHeight(u32 configDimensionHeight) {
 		this->dimensionHeight = configDimensionHeight;
 	}
 
@@ -306,8 +292,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the height of the window
 	***********************************************************************************/
-
-	u32 configJson::GetDimensionHeight() {
+	u32 ConfigJson::GetDimensionHeight() {
 		return this->dimensionHeight;
 	}
 
@@ -315,8 +300,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the width aspect ratio of the window
 	***********************************************************************************/
-
-	void configJson::SetAspectWidth(u32 configAspectWidth) {
+	void ConfigJson::SetAspectWidth(u32 configAspectWidth) {
 		this->aspectWidth = configAspectWidth;
 	}
 
@@ -324,8 +308,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the width aspect ratio of the window
 	***********************************************************************************/
-
-	u32 configJson::GetAspectWidth() {
+	u32 ConfigJson::GetAspectWidth() {
 		return this->aspectWidth;
 	}
 
@@ -333,8 +316,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the height aspect ratio of the window
 	***********************************************************************************/
-
-	void configJson::SetAspectHeight(u32 configAspectHeight) {
+	void ConfigJson::SetAspectHeight(u32 configAspectHeight) {
 		this->aspectHeight = configAspectHeight;
 	}
 
@@ -342,12 +324,15 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the height aspect ratio of the window
 	***********************************************************************************/
-
-	u32 configJson::GetAspectHeight() {
+	u32 ConfigJson::GetAspectHeight() {
 		return this->aspectHeight;
 	}
 
-	objectJson::objectJson(std::string const& fileName)
+	/*!*********************************************************************************
+		\brief
+		Default constructor will call the function to start deserialize the data
+	***********************************************************************************/
+	ObjectJson::ObjectJson(std::string const& fileName)
 	{
 		deserializeObject(fileName);
 	}
@@ -366,8 +351,7 @@ namespace ALEngine::Serializer
 
 	*/
 	/*****************************************************************************/
-
-	bool objectJson::deserializeObject(const std::string& filePath) {
+	bool ObjectJson::deserializeObject(const std::string& filePath) {
 		std::ifstream file;
 
 		file.open(filePath);
@@ -375,10 +359,8 @@ namespace ALEngine::Serializer
 		std::string line;
 		if (file.is_open())
 		{
-			u32 i = 0;
 			while (std::getline(file, line))
 			{
-				i++;
 				this->CheckID(line);
 				this->CheckName(line);
 				this->CheckType(line);
@@ -405,6 +387,11 @@ namespace ALEngine::Serializer
 				this->CheckHitbox(line);
 				this->CheckCollision(line);
 				this->CheckSpecials(line);
+				this->CheckPositionOffsetX(line);
+				this->CheckPositionOffsetY(line);
+				this->CheckScaleOffsetX(line);
+				this->CheckScaleOffsetY(line);
+				this->CheckRigidBodyEnabled(line);
 			}
 			file.close();
 			return true;
@@ -419,8 +406,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the type of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckType(const std::string& line) {
+	std::string ObjectJson::CheckType(const std::string& line) {
 
 		std::string idString = "\"type\"";
 		std::size_t pos = line.find(":");
@@ -443,8 +429,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the weapon of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckWeapon(const std::string& line) {
+	std::string ObjectJson::CheckWeapon(const std::string& line) {
 
 		std::string idString = "\"weapon\"";
 		std::size_t pos = line.find(":");
@@ -467,8 +452,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the hp of the object before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckHP(const std::string& line) {
+	u32 ObjectJson::CheckHP(const std::string& line) {
 		std::string idString = "\"hp\"";
 
 		std::size_t pos = line.find(":");
@@ -490,8 +474,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the attack of the object before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckAttack(const std::string& line) {
+	u32 ObjectJson::CheckAttack(const std::string& line) {
 		std::string idString = "\"attack\"";
 
 		std::size_t pos = line.find(":");
@@ -513,8 +496,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the speed of the object before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckSpeed(const std::string& line) {
+	u32 ObjectJson::CheckSpeed(const std::string& line) {
 		std::string idString = "\"speed\"";
 
 		std::size_t pos = line.find(":");
@@ -543,8 +525,7 @@ namespace ALEngine::Serializer
 		The x-position of the object
 	*/
 	/*****************************************************************************/
-
-	f32 objectJson::CheckPosX(const std::string& line) {
+	f32 ObjectJson::CheckPosX(const std::string& line) {
 		std::string idString = "\"posX\"";
 
 		std::size_t pos = line.find(":");
@@ -573,8 +554,7 @@ namespace ALEngine::Serializer
 		The y-position of the object
 	*/
 	/*****************************************************************************/
-
-	f32 objectJson::CheckPosY(const std::string& line) {
+	f32 ObjectJson::CheckPosY(const std::string& line) {
 		std::string idString = "\"posY\"";
 
 		std::size_t pos = line.find(":");
@@ -596,8 +576,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the direction of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckDirection(const std::string& line) {
+	std::string ObjectJson::CheckDirection(const std::string& line) {
 
 		std::string idString = "\"direction\"";
 		std::size_t pos = line.find(":");
@@ -620,8 +599,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the x-rotation of the object before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckRotX(const std::string& line) {
+	u32 ObjectJson::CheckRotX(const std::string& line) {
 		std::string idString = "\"rotX\"";
 
 		std::size_t pos = line.find(":");
@@ -643,8 +621,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the y-rotation of the object before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckRotY(const std::string& line) {
+	u32 ObjectJson::CheckRotY(const std::string& line) {
 		std::string idString = "\"rotY\"";
 
 		std::size_t pos = line.find(":");
@@ -666,8 +643,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the rotational speed of the object before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckRotSpeed(const std::string& line) {
+	u32 ObjectJson::CheckRotSpeed(const std::string& line) {
 		std::string idString = "\"rotSpeed\"";
 
 		std::size_t pos = line.find(":");
@@ -696,8 +672,7 @@ namespace ALEngine::Serializer
 		The x-scale of the object
 	*/
 	/*****************************************************************************/
-
-	f32 objectJson::CheckScaleX(const std::string& line) {
+	f32 ObjectJson::CheckScaleX(const std::string& line) {
 		std::string idString = "\"scaleX\"";
 
 		std::size_t pos = line.find(":");
@@ -726,8 +701,7 @@ namespace ALEngine::Serializer
 		The y-scale of the object
 	*/
 	/*****************************************************************************/
-
-	f32 objectJson::CheckScaleY(const std::string& line) {
+	f32 ObjectJson::CheckScaleY(const std::string& line) {
 		std::string idString = "\"scaleY\"";
 
 		std::size_t pos = line.find(":");
@@ -749,8 +723,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the sprite of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckSprite(const std::string& line) {
+	std::string ObjectJson::CheckSprite(const std::string& line) {
 
 		std::string idString = "\"sprite\"";
 		std::size_t pos = line.find(":");
@@ -773,8 +746,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the shader of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckShader(const std::string& line) {
+	std::string ObjectJson::CheckShader(const std::string& line) {
 
 		std::string idString = "\"shader\"";
 		std::size_t pos = line.find(":");
@@ -797,8 +769,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the red of the object's alpha channel before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckRed(const std::string& line) {
+	u32 ObjectJson::CheckRed(const std::string& line) {
 		std::string idString = "\"red\"";
 
 		std::size_t pos = line.find(":");
@@ -820,8 +791,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the green of the object's alpha channel before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckGreen(const std::string& line) {
+	u32 ObjectJson::CheckGreen(const std::string& line) {
 		std::string idString = "\"green\"";
 
 		std::size_t pos = line.find(":");
@@ -843,8 +813,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the blue of the object's alpha channel before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckBlue(const std::string& line) {
+	u32 ObjectJson::CheckBlue(const std::string& line) {
 		std::string idString = "\"blue\"";
 
 		std::size_t pos = line.find(":");
@@ -866,8 +835,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the alpha of the object's alpha channel before assigning it to the object
 	***********************************************************************************/
-
-	u32 objectJson::CheckAlpha(const std::string& line) {
+	u32 ObjectJson::CheckAlpha(const std::string& line) {
 		std::string idString = "\"alpha\"";
 
 		std::size_t pos = line.find(":");
@@ -889,8 +857,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the behaviour of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckBehaviour(const std::string& line) {
+	std::string ObjectJson::CheckBehaviour(const std::string& line) {
 
 		std::string idString = "\"behaviour\"";
 		std::size_t pos = line.find(":");
@@ -913,8 +880,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the hit box of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckHitbox(const std::string& line) {
+	std::string ObjectJson::CheckHitbox(const std::string& line) {
 
 		std::string idString = "\"hitbox\"";
 		std::size_t pos = line.find(":");
@@ -937,8 +903,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the collision of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckCollision(const std::string& line) {
+	std::string ObjectJson::CheckCollision(const std::string& line) {
 
 		std::string idString = "\"collision\"";
 		std::size_t pos = line.find(":");
@@ -961,8 +926,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function checks the specials of the object before assigning it to the object
 	***********************************************************************************/
-
-	std::string objectJson::CheckSpecials(const std::string& line) {
+	std::string ObjectJson::CheckSpecials(const std::string& line) {
 
 		std::string idString = "\"specials\"";
 		std::size_t pos = line.find(":");
@@ -985,8 +949,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the type of the object
 	***********************************************************************************/
-
-	std::string objectJson::GetType() {
+	std::string ObjectJson::GetType() {
 		return this->type;
 	}
 
@@ -994,8 +957,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the type of the object
 	***********************************************************************************/
-
-	void objectJson::SetType(std::string& objType) {
+	void ObjectJson::SetType(std::string& objType) {
 		this->type = objType;
 	}
 
@@ -1003,8 +965,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the weapon of the object
 	***********************************************************************************/
-
-	std::string objectJson::GetWeapon() {
+	std::string ObjectJson::GetWeapon() {
 		return this->weapon;
 	}
 
@@ -1012,8 +973,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the weapon of the object
 	***********************************************************************************/
-
-	void objectJson::SetWeapon(std::string& objWeapon) {
+	void ObjectJson::SetWeapon(std::string& objWeapon) {
 		this->weapon = objWeapon;
 	}
 
@@ -1021,8 +981,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the HP of the object
 	***********************************************************************************/
-
-	u32 objectJson::GetHP() {
+	u32 ObjectJson::GetHP() {
 		return this->hp;
 	}
 
@@ -1030,8 +989,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the HP of the object
 	***********************************************************************************/
-
-	void objectJson::SetHP(u32 objHP) {
+	void ObjectJson::SetHP(u32 objHP) {
 		this->hp = objHP;
 	}
 
@@ -1039,8 +997,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the attack of the object
 	***********************************************************************************/
-
-	u32 objectJson::GetAttack() {
+	u32 ObjectJson::GetAttack() {
 		return this->attack;
 	}
 
@@ -1048,8 +1005,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the attack of the object
 	***********************************************************************************/
-
-	void objectJson::SetAttack(u32 objAtk) {
+	void ObjectJson::SetAttack(u32 objAtk) {
 		this->attack = objAtk;
 	}
 
@@ -1057,8 +1013,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the speed of the object
 	***********************************************************************************/
-
-	u32 objectJson::GetSpeed() {
+	u32 ObjectJson::GetSpeed() {
 		return this->speed;
 	}
 
@@ -1066,8 +1021,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the speed of the object
 	***********************************************************************************/
-
-	void objectJson::SetSpeed(u32 objSpd) {
+	void ObjectJson::SetSpeed(u32 objSpd) {
 		this->speed = objSpd;
 	}
 
@@ -1079,8 +1033,7 @@ namespace ALEngine::Serializer
 		  The x-position of the object
 	*/
 	/*****************************************************************************/
-
-	f32 objectJson::GetPosX() {
+	f32 ObjectJson::GetPosX() {
 		return this->posX;
 	}
 
@@ -1092,8 +1045,7 @@ namespace ALEngine::Serializer
 		The string line obtained from the file
 	*/
 	/*****************************************************************************/
-
-	void objectJson::SetPosX(f32 objPositionX) {
+	void ObjectJson::SetPosX(f32 objPositionX) {
 		this->posX = objPositionX;
 	}
 
@@ -1105,8 +1057,7 @@ namespace ALEngine::Serializer
 		The y-position of the object
 	*/
 	/*****************************************************************************/
-
-	f32 objectJson::GetPosY() {
+	f32 ObjectJson::GetPosY() {
 		return this->posY;
 	}
 
@@ -1118,8 +1069,7 @@ namespace ALEngine::Serializer
 		The string line obtained from the file
 	*/
 	/*****************************************************************************/
-
-	void objectJson::SetPosY(f32 objPositionY) {
+	void ObjectJson::SetPosY(f32 objPositionY) {
 		this->posY = objPositionY;
 	}
 
@@ -1127,8 +1077,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the direction of the object
 	***********************************************************************************/
-
-	std::string objectJson::GetDirection() {
+	std::string ObjectJson::GetDirection() {
 		return this->direction;
 	}
 
@@ -1136,8 +1085,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the direction of the object
 	***********************************************************************************/
-
-	void objectJson::SetDirection(std::string& objDirection) {
+	void ObjectJson::SetDirection(std::string& objDirection) {
 		this->direction = objDirection;
 	}
 
@@ -1145,8 +1093,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the x-rotation of the object
 	***********************************************************************************/
-
-	u32 objectJson::GetRotX() {
+	u32 ObjectJson::GetRotX() {
 		return this->rotX;
 	}
 
@@ -1154,8 +1101,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the x-rotation of the object
 	***********************************************************************************/
-
-	void objectJson::SetRotX(u32 objRotationX) {
+	void ObjectJson::SetRotX(u32 objRotationX) {
 		this->rotX = objRotationX;
 	}
 
@@ -1163,8 +1109,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the y-rotation of the object
 	***********************************************************************************/
-
-	u32 objectJson::GetRotY() {
+	u32 ObjectJson::GetRotY() {
 		return this->rotY;
 	}
 
@@ -1172,8 +1117,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the y-rotation of the object
 	***********************************************************************************/
-
-	void objectJson::SetRotY(u32 objRotationY) {
+	void ObjectJson::SetRotY(u32 objRotationY) {
 		this->rotY = objRotationY;
 	}
 
@@ -1181,8 +1125,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the rotational speed of the object
 	***********************************************************************************/
-
-	u32 objectJson::GetRotSpeed() {
+	u32 ObjectJson::GetRotSpeed() {
 		return this->rotSpeed;
 	}
 
@@ -1190,8 +1133,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the rotational speed of the object
 	***********************************************************************************/
-
-	void objectJson::SetRotSpeed(u32 objRotSpd) {
+	void ObjectJson::SetRotSpeed(u32 objRotSpd) {
 		this->rotSpeed = objRotSpd;
 	}
 
@@ -1203,8 +1145,7 @@ namespace ALEngine::Serializer
 		The x-scale of the object
 	*/
 	/*****************************************************************************/
-
-	f32 objectJson::GetScaleX() {
+	f32 ObjectJson::GetScaleX() {
 		return this->scaleX;
 	}
 
@@ -1219,8 +1160,7 @@ namespace ALEngine::Serializer
 
 	*/
 	/*****************************************************************************/
-
-	void objectJson::SetScaleX(f32 objScaleX) {
+	void ObjectJson::SetScaleX(f32 objScaleX) {
 		this->scaleX = objScaleX;
 	}
 
@@ -1232,8 +1172,7 @@ namespace ALEngine::Serializer
 		The y-scale of the object
 	*/
 	/*****************************************************************************/
-
-	f32 objectJson::GetScaleY() {
+	f32 ObjectJson::GetScaleY() {
 		return this->scaleY;
 	}
 
@@ -1245,8 +1184,7 @@ namespace ALEngine::Serializer
 		The string line obtained from the file
 	*/
 	/*****************************************************************************/
-
-	void objectJson::SetScaleY(f32 objScaleY) {
+	void ObjectJson::SetScaleY(f32 objScaleY) {
 		this->scaleY = objScaleY;
 	}
 
@@ -1255,7 +1193,7 @@ namespace ALEngine::Serializer
 		This function gets the sprite of the object
 	***********************************************************************************/
 
-	std::string objectJson::GetSprite() {
+	std::string ObjectJson::GetSprite() {
 		return this->sprite;
 	}
 
@@ -1263,8 +1201,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the sprite of the object
 	***********************************************************************************/
-
-	void objectJson::SetSprite(std::string& objSprite) {
+	void ObjectJson::SetSprite(std::string& objSprite) {
 		this->sprite = objSprite;
 	}
 
@@ -1272,8 +1209,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the shader of the object
 	***********************************************************************************/
-
-	std::string objectJson::GetShader() {
+	std::string ObjectJson::GetShader() {
 		return this->shader;
 	}
 
@@ -1281,8 +1217,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the sprite of the object
 	***********************************************************************************/
-
-	void objectJson::SetShader(std::string& objShader) {
+	void ObjectJson::SetShader(std::string& objShader) {
 		this->shader = objShader;
 	}
 
@@ -1290,8 +1225,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the red of the object's alpha channel
 	***********************************************************************************/
-
-	u32 objectJson::GetRed() {
+	u32 ObjectJson::GetRed() {
 		return this->red;
 	}
 
@@ -1299,8 +1233,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the red of the object's alpha channel
 	***********************************************************************************/
-
-	void objectJson::SetRed(u32 objRed) {
+	void ObjectJson::SetRed(u32 objRed) {
 		this->red = objRed;
 	}
 
@@ -1308,8 +1241,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the green of the object's alpha channel
 	***********************************************************************************/
-
-	u32 objectJson::GetGreen() {
+	u32 ObjectJson::GetGreen() {
 		return this->green;
 	}
 
@@ -1317,8 +1249,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the green of the object's alpha channel
 	***********************************************************************************/
-
-	void objectJson::SetGreen(u32 objGreen) {
+	void ObjectJson::SetGreen(u32 objGreen) {
 		this->green = objGreen;
 	}
 
@@ -1326,8 +1257,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the blue of the object's alpha channel
 	***********************************************************************************/
-
-	u32 objectJson::GetBlue() {
+	u32 ObjectJson::GetBlue() {
 		return this->blue;
 	}
 
@@ -1335,8 +1265,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the blue of the object's alpha channel
 	***********************************************************************************/
-
-	void objectJson::SetBlue(u32 objBlue) {
+	void ObjectJson::SetBlue(u32 objBlue) {
 		this->blue = objBlue;
 	}
 
@@ -1344,8 +1273,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the alpha of the object's alpha channel
 	***********************************************************************************/
-
-	u32 objectJson::GetAlpha() {
+	u32 ObjectJson::GetAlpha() {
 		return this->alpha;
 	}
 
@@ -1353,8 +1281,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the alpha of the object's alpha channel
 	***********************************************************************************/
-
-	void objectJson::SetAlpha(u32 objAlpha) {
+	void ObjectJson::SetAlpha(u32 objAlpha) {
 		this->alpha = objAlpha;
 	}
 
@@ -1362,8 +1289,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the behaviour of the object
 	***********************************************************************************/
-
-	std::string objectJson::GetBehaviour() {
+	std::string ObjectJson::GetBehaviour() {
 		return this->behaviour;
 	}
 
@@ -1371,8 +1297,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the behaviour of the object
 	***********************************************************************************/
-
-	void objectJson::SetBehaviour(std::string& objBehaviour) {
+	void ObjectJson::SetBehaviour(std::string& objBehaviour) {
 		this->behaviour = objBehaviour;
 	}
 
@@ -1380,8 +1305,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the hit box of the object
 	***********************************************************************************/
-
-	std::string objectJson::GetHitbox() {
+	std::string ObjectJson::GetHitbox() {
 		return this->hitbox;
 	}
 
@@ -1389,8 +1313,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the hit box of the object
 	***********************************************************************************/
-
-	void objectJson::SetHitbox(std::string& objHitBox) {
+	void ObjectJson::SetHitbox(std::string& objHitBox) {
 		this->hitbox = objHitBox;
 	}
 
@@ -1398,8 +1321,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the collision of the object
 	***********************************************************************************/
-
-	std::string objectJson::GetCollision() {
+	std::string ObjectJson::GetCollision() {
 		return this->collision;
 	}
 
@@ -1407,8 +1329,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the collision of the object
 	***********************************************************************************/
-
-	void objectJson::SetCollision(std::string& objCollision) {
+	void ObjectJson::SetCollision(std::string& objCollision) {
 		this->collision = objCollision;
 	}
 
@@ -1416,8 +1337,7 @@ namespace ALEngine::Serializer
 		\brief
 		This function gets the specials of the object
 	***********************************************************************************/
-
-	std::string objectJson::GetSpecials() {
+	std::string ObjectJson::GetSpecials() {
 		return this->specials;
 	}
 
@@ -1425,8 +1345,128 @@ namespace ALEngine::Serializer
 		\brief
 		This function sets the specials of the object
 	***********************************************************************************/
-
-	void objectJson::SetSpecials(std::string& objSpecials) {
+	void ObjectJson::SetSpecials(std::string& objSpecials) {
 		this->specials = objSpecials;
+	}
+
+	f32 ObjectJson::CheckPositionOffsetX(const std::string& line) {
+
+		std::string idString = "\"positionOffsetX\"";
+		std::size_t pos = line.find(":");
+		f32 offset = 0.0f;
+
+		if ((pos != std::string::npos)) {
+			std::string left = line.substr(4, pos - 4);
+
+			if (idString == left) {
+				offset = stof(line.substr(pos + 1));
+				SetPositionOffsetX(offset);
+			}
+		}
+		return offset;
+	}
+
+	f32 ObjectJson::GetPositionOffsetX() {
+		return positionOffsetX;
+	}
+
+	void ObjectJson::SetPositionOffsetX(f32 positionOffsetX) {
+		this->positionOffsetX = positionOffsetX;
+	}
+
+	f32 ObjectJson::CheckPositionOffsetY(const std::string& line) {
+		std::string idString = "\"positionOffsetY\"";
+		std::size_t pos = line.find(":");
+		f32 offset = 0.0f;
+
+		if ((pos != std::string::npos)) {
+			std::string left = line.substr(4, pos - 4);
+
+			if (idString == left) {
+				offset = stof(line.substr(pos + 1));
+				SetPositionOffsetY(offset);
+			}
+		}
+		return offset;
+	}
+
+	f32 ObjectJson::GetPositionOffsetY() {
+		return positionOffsetY;
+	}
+
+	void ObjectJson::SetPositionOffsetY(f32 positionOffsetY) {
+		this->positionOffsetY = positionOffsetY;
+	}
+
+	f32 ObjectJson::CheckScaleOffsetX(const std::string& line) {
+		std::string idString = "\"scaleOffsetX\"";
+		std::size_t pos = line.find(":");
+		f32 offset = 0.0f;
+
+		if ((pos != std::string::npos)) {
+			std::string left = line.substr(4, pos - 4);
+
+			if (idString == left) {
+				offset = stof(line.substr(pos + 1));
+				SetScaleOffsetX(offset);
+			}
+		}
+		return offset;
+	}
+
+	f32 ObjectJson::GetScaleOffsetX() {
+		return scaleOffsetX;
+	}
+
+	void ObjectJson::SetScaleOffsetX(f32 scaleOffsetX) {
+		this->scaleOffsetX = scaleOffsetX;
+	}
+
+	f32 ObjectJson::CheckScaleOffsetY(const std::string& line) {
+		std::string idString = "\"scaleOffsetY\"";
+		std::size_t pos = line.find(":");
+		f32 offset = 0.0f;
+
+		if ((pos != std::string::npos)) {
+			std::string left = line.substr(4, pos - 4);
+
+			if (idString == left) {
+				offset = stof(line.substr(pos + 1));
+				SetScaleOffsetY(offset);
+			}
+		}
+		return offset;
+	}
+
+	f32 ObjectJson::GetScaleOffsetY() {
+		return scaleOffsetY;
+	}
+
+	void ObjectJson::SetScaleOffsetY(f32 scaleOffsetY) {
+		this->scaleOffsetY = scaleOffsetY;
+	}
+
+	b8 ObjectJson::CheckRigidBodyEnabled(const std::string& line) {
+		std::string idString = "\"rigidBodyEnabled\"";
+		std::size_t pos = line.find(":");
+		b8 enabled = 0;
+
+		if ((pos != std::string::npos)) {
+			std::string left = line.substr(4, pos - 4);
+
+			if (idString == left) {
+				enabled = static_cast<b8>( stoi(line.substr(pos + 1)) );
+				SetRigidBodyEnabled(enabled);
+			}
+		}
+		return enabled;
+	}
+
+	b8 ObjectJson::GetRigidBodyEnabled() {
+		return rigidBodyEnabled;
+	}
+
+	void ObjectJson::SetRigidBodyEnabled(b8 rigidBodyEnabled) {
+		this->rigidBodyEnabled = rigidBodyEnabled;
 	}
 }

@@ -29,9 +29,9 @@ namespace ALEngine::Serializer
 		std::string name{};
 	};
 
-	class configJson : public commonJson {
+	class ConfigJson : public commonJson {
 	public:
-		configJson(std::string const& fileName);
+		ConfigJson(std::string const& fileName);
 
 		bool deserializeConfig(const std::string& filePath);
 
@@ -64,9 +64,9 @@ namespace ALEngine::Serializer
 	};
 
 
-	class objectJson : public commonJson {
+	class ObjectJson : public commonJson {
 	public:
-		objectJson(std::string const& fileName);
+		ObjectJson(std::string const& fileName);
 
 		bool deserializeObject(const std::string& filePath);
 
@@ -162,6 +162,26 @@ namespace ALEngine::Serializer
 		std::string GetSpecials();
 		void SetSpecials(std::string& objSpecials);
 
+		f32 CheckPositionOffsetX(const std::string& line);
+		f32 GetPositionOffsetX();
+		void SetPositionOffsetX(f32 positionOffsetX);
+
+		f32 CheckPositionOffsetY(const std::string& line);
+		f32 GetPositionOffsetY();
+		void SetPositionOffsetY(f32 positionOffsetY);
+
+		f32 CheckScaleOffsetX(const std::string& line);
+		f32 GetScaleOffsetX();
+		void SetScaleOffsetX(f32 scaleOffsetX);
+
+		f32 CheckScaleOffsetY(const std::string& line);
+		f32 GetScaleOffsetY();
+		void SetScaleOffsetY(f32 scaleOffsetY);
+
+		b8 CheckRigidBodyEnabled(const std::string& line);
+		b8 GetRigidBodyEnabled();
+		void SetRigidBodyEnabled(b8 rigidBodyEnabled);
+
 	private:
 		//u32 id;
 		//std::string name;
@@ -196,6 +216,12 @@ namespace ALEngine::Serializer
 		std::string hitbox{};
 		std::string collision{};
 		std::string specials{};
+
+		f32 positionOffsetX{};
+		f32 positionOffsetY{};
+		f32 scaleOffsetX{};
+		f32 scaleOffsetY{};
+		b8 rigidBodyEnabled{};
 	};
 
 }

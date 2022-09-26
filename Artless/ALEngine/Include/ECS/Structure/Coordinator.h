@@ -54,7 +54,7 @@ namespace ALEngine::ECS
 			\return
 			List of entities
 		***********************************************************************************/
-		std::set<Entity> const& GetEntities()
+		EntityList const& GetEntities()
 		{
 			return mEntityManager->GetActiveEntities();
 		}

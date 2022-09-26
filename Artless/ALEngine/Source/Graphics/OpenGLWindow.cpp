@@ -4,8 +4,8 @@ author:		Wong Man Cong
 co-author:	Lucas Nguyen
 email:		w.mancong@digipen.edu
 			l.nguyen@digipen.edu
-brief:		This file contains a class "Time" that acts as the framerate controller.
-			The delta time and FPS are calculated here.
+brief:		This file contains function to initialise the GLFW Window and provides
+			interface to interact with it
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -47,7 +47,7 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		Serializer::configJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
+		Serializer::ConfigJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
 		title  = config.GetWindowTitle();
 		width  = config.GetDimensionWidth();
 		height = config.GetDimensionHeight();

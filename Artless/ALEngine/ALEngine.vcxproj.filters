@@ -506,5 +506,9 @@
     <None Include="Resources\Objects Files\Bishop.json" />
     <None Include="Resources\Objects Files\Config.json" />
     <None Include="Resources\Objects Files\Player1.json" />
+    <None Include="Resources\Objects Files\wall0.json" />
+    <None Include="Resources\Objects Files\wall1.json" />
+    <None Include="Resources\Objects Files\wall2.json" />
+    <None Include="Resources\Objects Files\wall3.json" />
   </ItemGroup>
 </Project>

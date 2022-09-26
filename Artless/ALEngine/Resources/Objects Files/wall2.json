@@ -1,0 +1,31 @@
+{
+  "id": 5,
+  "name": "wall2",
+  "transform": {
+    "position": {
+      "posX": 450.0,
+      "posY": 0.0
+    },
+    "rotation": {
+      "rotX": 0.0
+    },
+    "scale": {
+      "scaleX": 50.0,
+      "scaleY": 50.0
+    }
+  },
+  "sprite": "Assets/Images/white.png",
+  "rgba": {
+    "red": 255,
+    "green": 255,
+    "blue": 255,
+    "alpha": 255
+  },
+  "Collider Offset": {
+    "positionOffsetX": 0.0,
+    "positionOffsetY": 0.0,
+    "scaleOffsetX": 50.0,
+    "scaleOffsetY": 430.0,
+    "rigidBodyEnabled": 0
+  }
+}
