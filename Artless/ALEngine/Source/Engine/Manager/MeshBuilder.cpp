@@ -188,12 +188,12 @@ namespace ALEngine::Engine
 		return batch.vao;
 	}
 
-	u64 GetVertexPositionSize(void)
+	u64 GetVertexSize(void)
 	{
 		return NUM_VERTICES * MAX_ENTITIES;
 	}
 
-	void SubVertexPosition(BatchData const& bd)
+	void SubVertexData(BatchData const& bd)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, batch.vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, TOTAL_POS_BYTE, bd.positions);	// positions
@@ -201,5 +201,10 @@ namespace ALEngine::Engine
 		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE, TOTAL_TEXCOORD_BYTE, bd.tex_coords); // tex coords
 		glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE, TOTAL_TEXTURE_HANDLE_BYTE, bd.tex_handles); // tex handles
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	u32 GetColliderVao(void)
+	{
+		return 0;
 	}
 }

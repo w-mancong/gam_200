@@ -24,9 +24,11 @@ namespace ALEngine::Engine::Physics
 		Vector2 direction = ray.end - ray.origin;
 		Vector2 directionNormalized = direction.Normalize();
 
+		Vector2 globalPosition = Vector2(parent_transform_collider.position) + collider.m_localPosition;
+
 		//Holder for bottom left and top right of box
-		Vector2 BottomLeft = { parent_transform_collider.position.x - collider.scale[0] * 0.5f, parent_transform_collider.position.y - collider.scale[1] * 0.5f };
-		Vector2 TopRight = { parent_transform_collider.position.x + collider.scale[0] * 0.5f, parent_transform_collider.position.y + collider.scale[1] * 0.5f };
+		Vector2 BottomLeft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
+		Vector2 TopRight = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
 
 		//Holder of min and max of intersection
 		Vector2 minNormalY, minNormalX;

@@ -112,7 +112,7 @@ namespace ALEngine::ECS
 				\brief
 				Draws a collider's shape using transform
 			***********************************************************************************/
-			void DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector3 color);
+			void DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector4& color);
 
 			/*!*********************************************************************************
 				\brief
@@ -324,11 +324,30 @@ namespace ALEngine::ECS
 				
 			//If rigidbody is disabled or collider is trigger, no need to update position
 			if (!rigidbody.isEnabled || collider.isTrigger) {
+				if (cs->isDebugDraw) {
+					if (collider.isCollided) {
+						cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
+					}
+					else {
+						cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
+					}
+				}
 				continue;
 			}
 
 			//Update position
 			parentTransform.position = rigidbody.nextPosition;
+
+			if (cs->isDebugDraw){
+				
+				std::cout << collider.isCollided << " ";
+				if (collider.isCollided) {
+					cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
+				}
+				else {
+					cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
+				}
+			}
 		}
 	}
 
@@ -709,10 +728,7 @@ namespace ALEngine::ECS
 		return false;
 	}
 
-	void ColliderSystem::DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector3 color) {
-		//Set color
-		Gizmos::Gizmo::SetGizmoColor(color);
-
+	void ColliderSystem::DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector4& color) {
 		//Draw colliders based on their type
 		switch (collider.colliderType) {
 		case ColliderType::Rectangle2D_AABB:
@@ -723,10 +739,10 @@ namespace ALEngine::ECS
 				Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
 
 				//Draw 4 lines
-				Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });	//Bottom
-				Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);		//top
-				Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });	//left
-				Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);		//right
+				Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);		//Bottom
+				Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);		//top
+				Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);		//left
+				Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);		//right
 			}
 			break;			
 			
@@ -738,9 +754,6 @@ namespace ALEngine::ECS
 	}
 
 	void ColliderSystem::DrawCollider(const Vector2 position, const Collider2D& collider, const Vector3 color) {			
-		//Set color
-		Gizmos::Gizmo::SetGizmoColor(color);
-
 		//Draw colliders based on their type
 		switch (collider.colliderType) {
 

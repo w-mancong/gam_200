@@ -13,13 +13,25 @@ brief:	This file contains the Gizmo class definition. Gizmo is a debugging featu
 
 namespace ALEngine::Gizmos
 {
+	namespace
+	{
+		/*!*********************************************************************************
+			\brief
+				Contain relevant data to render line
+		***********************************************************************************/
+		struct LineData
+		{
+			Math::vec2 pt1{}, pt2{};
+			Math::vec4 color{};
+			f32 width{ 1.0f };
+		};
+	}
+
 	// declare static class member variables
 	u32 Gizmo::GizmoVaoId, Gizmo::GizmoVboId;
 	Graphics::Shader Gizmo::gizmolineShader;
-	f32 Gizmo::gizmoLineWidith;
-	std::vector<std::pair<Math::Vector2, Math::Vector2>> Gizmo::linesContainer;
+	std::vector<LineData> linesContainer;
 	bool Gizmo::gizmoToggle;
-	Math::Vector3 Gizmo::gizmoColor;
 
 	/*!*********************************************************************************
 		\brief
@@ -30,20 +42,12 @@ namespace ALEngine::Gizmos
 		f32 position[] =
 		{
 			-0.5f, 0.0f,
-				0.5f, 0.0f
+			 0.5f, 0.0f
 		};
 
 		// initialize line shader
 		gizmolineShader = Graphics::Shader{ "Assets/Shaders/gizmo.vert", "Assets/Shaders/gizmo.frag" };
-		Engine::Camera camera{ Math::Vector3(0.0f, 0.0f, 725.0f) };
-		gizmolineShader.use();
-		gizmolineShader.Set("view", camera.ViewMatrix());
-		gizmolineShader.Set("proj", camera.ProjectionMatrix());
-		Math::Matrix4x4 model = Math::Matrix4x4::Scale(0.0f, 1.0f, 1.0f) * Math::Matrix4x4::Rotation(0.f, Math::Vector3(0.0f, 0.0f, 1.0f)) * Math::Matrix4x4::Translate(0.f, 0.f, 0.0f);
-		gizmolineShader.Set("model", model);
-		gizmoLineWidith = 1.f;
 		gizmoToggle = true;
-		gizmoColor = Math::Vector3(0.f, 1.f, 0.f); // default color is green
 		//gizmoCircleSegments = 32; // default circle will have 32 line segments
 
 		glGenVertexArrays(1, &GizmoVaoId);
@@ -60,15 +64,20 @@ namespace ALEngine::Gizmos
 	/*!*********************************************************************************
 		\brief
 			Pushes line data into linesContainer to be rendered.
+
 		\param [in] pt1:
 			Start point
 		\param [in] pt2:
 			End point
+		\param [in] color:
+			color of the line
+		\param [in] width:
+			width of the line
 	***********************************************************************************/
-	void Gizmo::RenderLine(Math::Vector2 pt1, Math::Vector2 pt2)
+	void Gizmo::RenderLine(Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector4 const& color, f32 width)
 	{
-		if(gizmoToggle)
-			linesContainer.push_back(std::pair<Math::Vector2, Math::Vector2>(pt1, pt2));
+		if (gizmoToggle)
+			linesContainer.push_back({ pt1, pt2, color, width });
 	}
 
 	/*!*********************************************************************************
@@ -79,18 +88,20 @@ namespace ALEngine::Gizmos
 	{
 		if (gizmoToggle)
 		{
-			for (std::pair<Math::Vector2, Math::Vector2>& pair : linesContainer)
+			for (LineData const& ld : linesContainer)
 			{
-				Math::Vector2 pt1 = pair.first, pt2 = pair.second;
+				Math::Vector2 const& pt1 = ld.pt1, pt2 = ld.pt2;
 				Math::Vector2 midPoint = (pt1 + pt2) / 2.f;
 				f32 lineLength = sqrt((pt1.x - pt2.x) * (pt1.x - pt2.x) + (pt1.y - pt2.y) * (pt1.y - pt2.y));
 				f32 angle = atan2(pt2.y - pt1.y, pt2.x - pt1.x) * 180.f / 3.141592f;
 				gizmolineShader.use();
+				gizmolineShader.Set("view", ECS::GetView());
+				gizmolineShader.Set("proj", ECS::GetProjection());
 				gizmolineShader.Set("scale", Math::Matrix4x4::Scale(lineLength, 1.0f, 1.0f));
 				gizmolineShader.Set("rotate", Math::Matrix4x4::Rotation(angle, Math::Vector3(0.0f, 0.0f, 1.0f)));
 				gizmolineShader.Set("translate", Math::Matrix4x4::Translate(midPoint.x, midPoint.y, 0.0f));
-				gizmolineShader.Set("color", gizmoColor.x, gizmoColor.y, gizmoColor.z, 1.f);
-				glLineWidth(gizmoLineWidith);
+				gizmolineShader.Set("color", ld.color.x, ld.color.y, ld.color.z, ld.color.w);
+				glLineWidth(ld.width);
 
 				glBindVertexArray(GizmoVaoId);
 				glBindBuffer(GL_ARRAY_BUFFER, GizmoVboId);

@@ -72,7 +72,7 @@ namespace ALEngine::ECS
 				return sp1.layer < sp2.layer;
 			});
 
-		u64 counter{ 0 }; u64 const size = entities.size();
+		s32 counter{ 0 }; u64 const size = entities.size();
 		for (u64 i = 0; i < size; ++i)
 		{
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
@@ -97,7 +97,7 @@ namespace ALEngine::ECS
 
 		BatchData bd{ positions, colors, tex_coords, tex_handles };
 
-		SubVertexPosition(bd);
+		SubVertexData(bd);
 
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, INDICES_SIZE * counter, GL_UNSIGNED_INT, nullptr);
@@ -129,10 +129,10 @@ namespace ALEngine::ECS
 		batchShader.Set("view", camera.ViewMatrix());
 		batchShader.Set("proj", camera.ProjectionMatrix());
 
-		positions = Memory::StaticMemory::New<vec3>(GetVertexPositionSize());
-		colors = Memory::StaticMemory::New<vec4>(GetVertexPositionSize());
-		tex_coords = Memory::StaticMemory::New<vec2>(GetVertexPositionSize());
-		tex_handles = Memory::StaticMemory::New<u64>(GetVertexPositionSize());
+		positions = Memory::StaticMemory::New<vec3>(GetVertexSize());
+		colors = Memory::StaticMemory::New<vec4>(GetVertexSize());
+		tex_coords = Memory::StaticMemory::New<vec2>(GetVertexSize());
+		tex_handles = Memory::StaticMemory::New<u64>(GetVertexSize());
 	}
 
 	void Render(void)
