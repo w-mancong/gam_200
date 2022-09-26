@@ -18,13 +18,16 @@ namespace ALEngine::Graphics
 	{
 		void ResizeWindow(GLFWwindow* _window, int width, int height)
 		{
+			(void)_window;
 			glViewport(0, 0, width, height);
-			ECS::ViewportResizeCameraUpdate();
 		}
+
+		u32 constexpr DEFAULT_WIDTH{ 1200 }, DEFAULT_HEIGHT{ 600 };
 	}
 
 	GLFWwindow* OpenGLWindow::window = nullptr;
-	s32 OpenGLWindow::width = 1200, OpenGLWindow::height = 600;
+	u32 OpenGLWindow::width{ DEFAULT_WIDTH }, OpenGLWindow::height{ DEFAULT_HEIGHT };
+	std::string OpenGLWindow::title{};
 	void OpenGLWindow::InitGLFWWindow(void)
 	{
 		glfwInit();
@@ -44,7 +47,12 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		window = glfwCreateWindow(width, height, "LearnOpenGL", nullptr, nullptr);
+		Serializer::configJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
+		title  = config.GetWindowTitle();
+		width  = config.GetDimensionWidth();
+		height = config.GetDimensionHeight();
+
+		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 		if (!window)
 		{
 			std::cerr << "Failed to create GLFW window" << std::endl;

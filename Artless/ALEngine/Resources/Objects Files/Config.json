@@ -1,7 +1,7 @@
 {
   "id": 1,
   "name": "SystemConfig",
-  "window title": "AL",
+  "window title": "ALEngine",
   "dimensions": {
     "dimensionWidth": 1600,
     "dimensionHeight": 900

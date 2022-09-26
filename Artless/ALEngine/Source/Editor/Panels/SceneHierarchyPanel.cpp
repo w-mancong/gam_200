@@ -20,7 +20,8 @@ namespace ALEngine::Editor
 		if (ImGui::Button("Add Entity"))
 		{
 			// Entity Transform
-			Transform xform{ Math::Vector2(0.f, 0.f), Math::Vector2(50.f, 50.f), 0.f };
+			Transform xform{ Math::Vector2( Random::Range(-300.0f, 300.f), Random::Range(-300.0f, 300.f) ), 
+				Math::Vector2(50.f, 50.f), 0.f };
 
 			// Create Entity
 			ECS::Entity GO = Coordinator::Instance()->CreateEntity();

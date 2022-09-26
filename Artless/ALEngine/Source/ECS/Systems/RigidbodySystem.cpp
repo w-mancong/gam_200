@@ -124,7 +124,6 @@ namespace ALEngine::ECS
 			if (!rigid.isEnabled) {
 				continue;
 			}
-
 			//Gravity
 			AddForce(rigid, Vector2(0,-earthGravity * rigid.mass), FORCEMODE::FORCE);
 				
@@ -173,11 +172,9 @@ namespace ALEngine::ECS
 
 	void RigidbodySystem::DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid) {
 		//Draw velocity
-		Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 255.f, 0.f));
-		Gizmos::Gizmo::RenderLine(transform.position, vec2(transform.position) + rigid.frameVelocity);
+		Gizmos::Gizmo::RenderLine(transform.position, vec2(transform.position) + rigid.frameVelocity, { 1.f,0.f,0.f,1.f }, 10.0f);
 
 		//Draw acceleration
-		Gizmos::Gizmo::SetGizmoColor(Vector3(255.f, 255.f, 255.f));
-		Gizmos::Gizmo::RenderLine(vec2(transform.position) + Vector2(5.f, 5.f), vec2(transform.position) + rigid.acceleration * Time::m_FixedDeltaTime);
+		Gizmos::Gizmo::RenderLine(vec2(transform.position), vec2(transform.position) + rigid.acceleration * Time::m_FixedDeltaTime, { 1.f, 0.f, 1.f,1.f }, 10.0f);
 	}
 }
