@@ -57,14 +57,6 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		Sprite CreateSprite(std::string const& filePath);
 
-		enum class Shapes
-		{
-			Rectangle,
-			Circle,
-			Triangle,
-			Total
-		};
-
 		friend class Templates::Singleton<MeshBuilder>;
 		friend class Memory::StaticMemory;
 
@@ -72,6 +64,10 @@ namespace ALEngine::Engine
 		std::vector<std::pair<std::string, Sprite>, mem> m_Sprites;
 	};
 
+	/*!*********************************************************************************
+		\brief
+		Used to group together the common data for batch rendering of entities on screen
+	***********************************************************************************/
 	struct BatchData
 	{
 		Math::vec3 const* positions{ nullptr };
@@ -80,9 +76,32 @@ namespace ALEngine::Engine
 		u64 const* tex_handles{ nullptr };
 	};
 
+	/*!*********************************************************************************
+		\brief
+		Return the vao used for batch rendering of entities
+
+		\return
+		Vao for batch rendering of entities
+	***********************************************************************************/
 	u32 GetBatchVao(void);
-	u64 GetVertexPositionSize(void);
-	void SubVertexPosition(BatchData const& bd);
+
+	/*!*********************************************************************************
+		\brief
+		NUM_VERTICES (default at 4) * MAX_ENTITIES
+
+		\return
+		The total vertices that is needed
+	***********************************************************************************/
+	u64 GetVertexSize(void);
+
+	/*!*********************************************************************************
+		\brief
+		Sub in the vertex data used for the batch rendering of entities
+
+		\param [in] bd:
+		All the relevant data used for batch rendering of entities
+	***********************************************************************************/
+	void SubVertexData(BatchData const& bd);
 }
 
 #endif

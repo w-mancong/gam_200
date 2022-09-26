@@ -66,14 +66,25 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		Signature GetSignature(Entity entity);
 
+		/*!*********************************************************************************
+			\brief
+			Return a list of active entities in the scene
+
+			\return
+			List of active entities in the scene
+		***********************************************************************************/
+		std::set<Entity> const& GetActiveEntities();
+
 	private:
 		//std::queue<Entity, std::deque<Entity, Memory::DynamicAllocator<Entity>>> mAvailableEntities{};
 		// Queue of unused entity IDs
-		std::queue<Entity> mAvailableEntities{};
+		std::queue<Entity> m_AvailableEntities{};
 		// Array of signatures where the index corresponds to the entity ID
-		std::array<Signature, MAX_ENTITIES> mSignatures{};
+		std::array<Signature, MAX_ENTITIES> m_Signatures{};
+		// List of activie entities in the scene
+		std::set<Entity> m_ActiveEntities{};
 		// Total living entities - used to keep limits on how many exist
-		u32 mLivingEntityCount{};
+		u32 m_LivingEntityCount{};
 	};
 }
 

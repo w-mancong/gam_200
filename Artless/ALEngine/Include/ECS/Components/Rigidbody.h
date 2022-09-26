@@ -27,7 +27,7 @@ namespace ALEngine::ECS::Component
 				
 		f32 mass{ 1.f };			//Mass
 		bool hasGravity{ true };	//Is Gravity Enabled
-		bool isEnabled{ false };	//Is the rigidbody enabled
+		bool isEnabled{ true };	//Is the rigidbody enabled
 	};
 }
 #endif

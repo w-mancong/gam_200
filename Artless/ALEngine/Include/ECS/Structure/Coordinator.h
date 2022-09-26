@@ -47,6 +47,18 @@ namespace ALEngine::ECS
 			mSystemManager->EntityDestroyed(entity);
 		}
 
+		/*!*********************************************************************************
+			\brief
+			Get list of active entities
+			
+			\return
+			List of entities
+		***********************************************************************************/
+		std::set<Entity> const& GetEntities()
+		{
+			return mEntityManager->GetActiveEntities();
+		}
+
 		/*********************************************************************************
 										COMPONENT METHODS
 		*********************************************************************************/
@@ -109,6 +121,22 @@ namespace ALEngine::ECS
 		T& GetComponent(Entity entity)
 		{
 			return mComponentManager->GetComponent<T>(entity);
+		}
+
+		/*!*********************************************************************************
+			\brief
+			Check if entity has the component data
+
+			\param [in] entity:
+			ID of the entity to check if it has the component data
+
+			\return
+			True if entity has the component, else false
+		***********************************************************************************/
+		template <typename T>
+		b8 HasComponent(Entity entity)
+		{
+			return mComponentManager->HasComponent<T>(entity);
 		}
 
 		/*!*********************************************************************************

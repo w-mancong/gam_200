@@ -4,7 +4,7 @@ author:	Darrion Aw Wei Ting
 email:	weitingdarrion.aw@digipen.edu
 brief:	This file contains the implementation of Serialization and Deserialization of Objects & Configuration
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #ifndef SERIALIZATION_H
@@ -25,12 +25,14 @@ namespace ALEngine::Serializer
 		void SetName(std::string& objName);
 
 	private:
-		u32 id;
-		std::string name;
+		u32 id{};
+		std::string name{};
 	};
 
 	class configJson : public commonJson {
 	public:
+		configJson(std::string const& fileName);
+
 		bool deserializeConfig(const std::string& filePath);
 
 		std::string CheckWindowTitle(const std::string& line);
@@ -54,16 +56,18 @@ namespace ALEngine::Serializer
 		void SetAspectHeight(u32 configAspectHeight);
 
 	private:
-		std::string windowTitle;
-		u32 dimensionWidth;
-		u32 dimensionHeight;
-		u32 aspectWidth;
-		u32 aspectHeight;
+		std::string windowTitle{};
+		u32 dimensionWidth{};
+		u32 dimensionHeight{};
+		u32 aspectWidth{};
+		u32 aspectHeight{};
 	};
 
 
 	class objectJson : public commonJson {
 	public:
+		objectJson(std::string const& fileName);
+
 		bool deserializeObject(const std::string& filePath);
 
 		std::string CheckType(const std::string& line);
@@ -86,13 +90,13 @@ namespace ALEngine::Serializer
 		u32 GetSpeed();
 		void SetSpeed(u32 objSpeed);
 
-		u32 CheckPosX(const std::string& line);
-		u32 GetPosX();
-		void SetPosX(u32 objPositionX);
+		f32 CheckPosX(const std::string& line);
+		f32 GetPosX();
+		void SetPosX(f32 objPositionX);
 
-		u32 CheckPosY(const std::string& line);
-		u32 GetPosY();
-		void SetPosY(u32 objPositionX);
+		f32 CheckPosY(const std::string& line);
+		f32 GetPosY();
+		void SetPosY(f32 objPositionX);
 
 		std::string CheckDirection(const std::string& line);
 		std::string GetDirection();
@@ -110,13 +114,13 @@ namespace ALEngine::Serializer
 		u32 GetRotSpeed();
 		void SetRotSpeed(u32 objRotSpeed);
 
-		u32 CheckScaleX(const std::string& line);
-		u32 GetScaleX();
-		void SetScaleX(u32 objScaleX);
+		f32 CheckScaleX(const std::string& line);
+		f32 GetScaleX();
+		void SetScaleX(f32 objScaleX);
 
-		u32 CheckScaleY(const std::string& line);
-		u32 GetScaleY();
-		void SetScaleY(u32 objScaleY);
+		f32 CheckScaleY(const std::string& line);
+		f32 GetScaleY();
+		void SetScaleY(f32 objScaleY);
 
 		std::string CheckSprite(const std::string& line);
 		std::string GetSprite();
@@ -161,37 +165,37 @@ namespace ALEngine::Serializer
 	private:
 		//u32 id;
 		//std::string name;
-		std::string type;
-		std::string combat;
-		std::string weapon;
-		u32 hp;
-		u32 attack;
-		u32 speed;
+		std::string type{};
+		std::string combat{};
+		std::string weapon{};
+		u32 hp{};
+		u32 attack{};
+		u32 speed{};
 
-		u32 posX;
-		u32 posY;
-		std::string direction;
+		f32 posX{};
+		f32 posY{};
+		std::string direction{};
 
-		u32 rotX;
-		u32 rotY;
+		u32 rotX{};
+		u32 rotY{};
 
-		u32 scaleX;
-		u32 scaleY;
+		f32 scaleX{};
+		f32 scaleY{};
 
-		u32 rotSpeed;
+		u32 rotSpeed{};
 
-		std::string sprite;
-		std::string shader;
+		std::string sprite{};
+		std::string shader{};
 
-		u32 red;
-		u32 green;
-		u32 blue;
-		u32 alpha;
+		u32 red{};
+		u32 green{};
+		u32 blue{};
+		u32 alpha{};
 
-		std::string behaviour;
-		std::string hitbox;
-		std::string collision;
-		std::string specials;
+		std::string behaviour{};
+		std::string hitbox{};
+		std::string collision{};
+		std::string specials{};
 	};
 
 }

@@ -34,8 +34,6 @@ namespace ALEngine
 
 		}
 
-		
-
 		void AssetManager::End()
 		{
 		}

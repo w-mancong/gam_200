@@ -4,7 +4,7 @@ author:	Darrion Aw Wei Ting
 email:	weitingdarrion.aw@digipen.edu
 brief:	This file contains the implementation of Serialization and Deserialization of Objects & Configuration 
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
@@ -87,10 +87,25 @@ namespace ALEngine::Serializer
 		this->name = objName;
 	}
 
-	/*!*********************************************************************************
-		\brief
-		This function deserializes the configuration file into data and allocates the data to it's class
-	***********************************************************************************/
+	configJson::configJson(std::string const& fileName)
+	{
+		deserializeConfig(fileName);
+	}
+
+	/*****************************************************************************/
+	/*!
+
+	\brief
+	  This deserializes the configuration file into data and allocates the data to it's class
+
+	\param filePath
+	  The path of the file that is to be deserialized
+
+	\return
+	  Returns true if file is successfully opened and deserialized. False if it failed to open file.
+
+	*/
+	/*****************************************************************************/
 
 	bool configJson::deserializeConfig(const std::string& filePath) {
 		std::ifstream file;
@@ -332,10 +347,25 @@ namespace ALEngine::Serializer
 		return this->aspectHeight;
 	}
 
-	/*!*********************************************************************************
-		\brief
-		This function deserializes the object file into data and allocates the data to it's class
-	***********************************************************************************/
+	objectJson::objectJson(std::string const& fileName)
+	{
+		deserializeObject(fileName);
+	}
+
+	/*****************************************************************************/
+	/*!
+
+	\brief
+	  This deserializes the object file into data and allocates the data to it's class
+
+	\param filePath
+	  The path of the file that is to be deserialized
+
+	\return
+	  Returns true if file is successfully opened and deserialized. False if it failed to open file.
+
+	*/
+	/*****************************************************************************/
 
 	bool objectJson::deserializeObject(const std::string& filePath) {
 		std::ifstream file;
@@ -505,20 +535,27 @@ namespace ALEngine::Serializer
 	/*!*********************************************************************************
 		\brief
 		This function checks the x-position of the object before assigning it to the object
-	***********************************************************************************/
 
-	u32 objectJson::CheckPosX(const std::string& line) {
+		\param line
+		The string line obtained from the file
+
+		\return
+		The x-position of the object
+	*/
+	/*****************************************************************************/
+
+	f32 objectJson::CheckPosX(const std::string& line) {
 		std::string idString = "\"posX\"";
 
 		std::size_t pos = line.find(":");
-		u32 objPositionX = 0;
+		f32 objPositionX = 0.0f;
 
 		if ((pos != std::string::npos)) {
 
 			std::string left = line.substr(6, pos - 6);
 
 			if (idString == left) {
-				objPositionX = stoi(line.substr(pos + 2));
+				objPositionX = stof(line.substr(pos + 2));
 				SetPosX(objPositionX);
 			}
 		}
@@ -528,20 +565,27 @@ namespace ALEngine::Serializer
 	/*!*********************************************************************************
 		\brief
 		This function checks the y-position of the object before assigning it to the object
-	***********************************************************************************/
 
-	u32 objectJson::CheckPosY(const std::string& line) {
+		\param line
+		The string line obtained from the file
+
+		\return
+		The y-position of the object
+	*/
+	/*****************************************************************************/
+
+	f32 objectJson::CheckPosY(const std::string& line) {
 		std::string idString = "\"posY\"";
 
 		std::size_t pos = line.find(":");
-		u32 objPositionY = 0;
+		f32 objPositionY = 0.0f;
 
 		if ((pos != std::string::npos)) {
 
 			std::string left = line.substr(6, pos - 6);
 
 			if (idString == left) {
-				objPositionY = stoi(line.substr(pos + 2));
+				objPositionY = stof(line.substr(pos + 2));
 				SetPosY(objPositionY);
 			}
 		}
@@ -644,20 +688,27 @@ namespace ALEngine::Serializer
 	/*!*********************************************************************************
 		\brief
 		This function checks the x-scale of the object before assigning it to the object
-	***********************************************************************************/
 
-	u32 objectJson::CheckScaleX(const std::string& line) {
+		\param line
+		The string line obtained from the file
+
+		\return
+		The x-scale of the object
+	*/
+	/*****************************************************************************/
+
+	f32 objectJson::CheckScaleX(const std::string& line) {
 		std::string idString = "\"scaleX\"";
 
 		std::size_t pos = line.find(":");
-		u32 objScaleX = 0;
+		f32 objScaleX = 0.0f;
 
 		if ((pos != std::string::npos)) {
 
 			std::string left = line.substr(6, pos - 6);
 
 			if (idString == left) {
-				objScaleX = stoi(line.substr(pos + 2));
+				objScaleX = stof(line.substr(pos + 2));
 				SetScaleX(objScaleX);
 			}
 		}
@@ -667,20 +718,27 @@ namespace ALEngine::Serializer
 	/*!*********************************************************************************
 		\brief
 		This function checks the y-scale of the object before assigning it to the object
-	***********************************************************************************/
 
-	u32 objectJson::CheckScaleY(const std::string& line) {
+		\param line
+		The string line obtained from the file
+
+		\return
+		The y-scale of the object
+	*/
+	/*****************************************************************************/
+
+	f32 objectJson::CheckScaleY(const std::string& line) {
 		std::string idString = "\"scaleY\"";
 
 		std::size_t pos = line.find(":");
-		u32 objScaleY = 0;
+		f32 objScaleY = 0.0f;
 
 		if ((pos != std::string::npos)) {
 
 			std::string left = line.substr(6, pos - 6);
 
 			if (idString == left) {
-				objScaleY = stoi(line.substr(pos + 2));
+				objScaleY = stof(line.substr(pos + 2));
 				SetScaleY(objScaleY);
 			}
 		}
@@ -1016,36 +1074,52 @@ namespace ALEngine::Serializer
 	/*!*********************************************************************************
 		\brief
 		This function gets the x-position of the object
-	***********************************************************************************/
 
-	u32 objectJson::GetPosX() {
+		\return
+		  The x-position of the object
+	*/
+	/*****************************************************************************/
+
+	f32 objectJson::GetPosX() {
 		return this->posX;
 	}
 
 	/*!*********************************************************************************
 		\brief
 		This function sets the x-position of the object
-	***********************************************************************************/
 
-	void objectJson::SetPosX(u32 objPositionX) {
+		\param positionX
+		The string line obtained from the file
+	*/
+	/*****************************************************************************/
+
+	void objectJson::SetPosX(f32 objPositionX) {
 		this->posX = objPositionX;
 	}
 
 	/*!*********************************************************************************
 		\brief
 		This function gets the y-position of the object
-	***********************************************************************************/
 
-	u32 objectJson::GetPosY() {
+		\return
+		The y-position of the object
+	*/
+	/*****************************************************************************/
+
+	f32 objectJson::GetPosY() {
 		return this->posY;
 	}
 
 	/*!*********************************************************************************
 		\brief
 		This function sets the y-position of the object
-	***********************************************************************************/
 
-	void objectJson::SetPosY(u32 objPositionY) {
+		\param positionY
+		The string line obtained from the file
+	*/
+	/*****************************************************************************/
+
+	void objectJson::SetPosY(f32 objPositionY) {
 		this->posY = objPositionY;
 	}
 
@@ -1124,35 +1198,55 @@ namespace ALEngine::Serializer
 	/*!*********************************************************************************
 		\brief
 		This function gets the x-scale of the object
-	***********************************************************************************/
 
-	u32 objectJson::GetScaleX() {
+		\return
+		The x-scale of the object
+	*/
+	/*****************************************************************************/
+
+	f32 objectJson::GetScaleX() {
 		return this->scaleX;
 	}
-	/*!*********************************************************************************
-		\brief
-		This function sets the x-scale of the object
-	***********************************************************************************/
 
-	void objectJson::SetScaleX(u32 objScaleX) {
+	/*****************************************************************************/
+	/*!
+
+	\brief
+	  This function sets the x-scale of the object
+
+	\param objScaleX
+	  The string line obtained from the file
+
+	*/
+	/*****************************************************************************/
+
+	void objectJson::SetScaleX(f32 objScaleX) {
 		this->scaleX = objScaleX;
 	}
 
 	/*!*********************************************************************************
 		\brief
 		This function gets the y-scale of the object
-	***********************************************************************************/
 
-	u32 objectJson::GetScaleY() {
+		\return
+		The y-scale of the object
+	*/
+	/*****************************************************************************/
+
+	f32 objectJson::GetScaleY() {
 		return this->scaleY;
 	}
 
 	/*!*********************************************************************************
 		\brief
 		This function sets the y-scale of the object
-	***********************************************************************************/
 
-	void objectJson::SetScaleY(u32 objScaleY) {
+		\param objScaleY
+		The string line obtained from the file
+	*/
+	/*****************************************************************************/
+
+	void objectJson::SetScaleY(f32 objScaleY) {
 		this->scaleY = objScaleY;
 	}
 

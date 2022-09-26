@@ -32,10 +32,6 @@ namespace ALEngine::ECS
 		Plane planes[static_cast<u64>(Faces::Total)];
 	};
 
-	void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2]);
-	void InitializeFrustum(Frustum& fstm);
-	bool ShouldRender(Transform const& trans);
-
 	namespace
 	{
 		std::shared_ptr<RenderSystem> rs;
@@ -60,7 +56,7 @@ namespace ALEngine::ECS
 			{  0.5f, -0.5f }	// btm right
 		};
 
-		u64 constexpr INDICES_SIZE{ 6 };
+		s32 constexpr INDICES_SIZE{ 6 };
 	}
 
 	void RenderSystem::RenderBatch(void)
@@ -76,7 +72,7 @@ namespace ALEngine::ECS
 				return sp1.layer < sp2.layer;
 			});
 
-		u64 counter{ 0 }; u64 const size{ entities.size() };
+		s32 counter{ 0 }; u64 const size = entities.size();
 		for (u64 i = 0; i < size; ++i)
 		{
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
@@ -101,7 +97,7 @@ namespace ALEngine::ECS
 
 		BatchData bd{ positions, colors, tex_coords, tex_handles };
 
-		SubVertexPosition(bd);
+		SubVertexData(bd);
 
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, INDICES_SIZE * counter, GL_UNSIGNED_INT, nullptr);
@@ -133,60 +129,10 @@ namespace ALEngine::ECS
 		batchShader.Set("view", camera.ViewMatrix());
 		batchShader.Set("proj", camera.ProjectionMatrix());
 
-		positions = Memory::StaticMemory::New<vec3>(GetVertexPositionSize());
-		colors = Memory::StaticMemory::New<vec4>(GetVertexPositionSize());
-		tex_coords = Memory::StaticMemory::New<vec2>(GetVertexPositionSize());
-		tex_handles = Memory::StaticMemory::New<u64>(GetVertexPositionSize());
-	}
-
-	void InitializeFrustum(Frustum& fstm)
-	{
-		f32 const zFar = camera.FarPlane();
-		f32 const halfVSide = zFar * std::tanf(DegreeToRadian(camera.Fov()) * 0.5f);
-		f32 const halfHSide = halfVSide * (static_cast<f32>(OpenGLWindow::width / OpenGLWindow::height));
-		Vector3 const position = camera.Position(), right = camera.Right(), up = camera.Up(), front = camera.Front(), frontMultFar = zFar * front;
-
-		u64 planeIndex = static_cast<u64>(Faces::Near);
-		// Near Plane
-		fstm.planes[planeIndex++] = { position + camera.NearPlane() * front, front };
-		// Far Plane
-		fstm.planes[planeIndex++] = { position + frontMultFar, -front };
-		// Left Plane
-		fstm.planes[planeIndex++] = { position, Vector3::Normalize(Vector3::Cross(frontMultFar - right * halfHSide, up)) };
-		// Right Plane
-		fstm.planes[planeIndex++] = { position, Vector3::Normalize(Vector3::Cross(up, frontMultFar + right * halfHSide)) };
-		// Top Plane
-		fstm.planes[planeIndex++] = { position, Vector3::Normalize(Vector3::Cross(frontMultFar + up * halfVSide, right)) };
-		// Bottom Plane
-		fstm.planes[planeIndex] = { position, Vector3::Normalize(Vector3::Cross(right, frontMultFar - up * halfVSide)) };
-	}
-
-	bool IntersectsPlane(Vector2 boxVec[2], Vector2 const& position, Plane const& plane)
-	{
-		return std::abs(boxVec[0].Dot(plane.normal)) + std::abs(boxVec[1].Dot(plane.normal)) >= std::abs((Vector3(position) - plane.position).Dot(plane.normal));
-	}
-
-	bool ShouldRender(Transform const& trans)
-	{
-		// Do frustum culling here
-		u64 constexpr TOTAL_FACES = static_cast<u64>(Faces::Total);
-		// Vector will be use to calculate the distance of the oriented box to the plane
-		Vector2 boxVec[2]{ Vector2(1.0f, 0.0f), Vector2(0.0f, 1.0f) }; InitializeBoxVector(trans, boxVec);
-		for (u64 i = 0; i < TOTAL_FACES; ++i)
-		{
-			Vector3 v = Vector3(trans.position) - fstm.planes[i].position; // vector to be dotted to check if the object is inside the frustum
-			if (0.0f < v.Dot(fstm.planes[i].normal))
-				continue;
-			// When it reaches this point, means that the object is outside of the frustum
-			return IntersectsPlane(boxVec, trans.position, fstm.planes[i]);	// Checks if it is intersecting with the plane
-		}
-		return true; // Object is within the frustum
-	}
-
-	void InitializeBoxVector(Transform const& trans, Vector2 boxVec[2])
-	{
-		boxVec[0] = Matrix3x3::Rotation(trans.rotation) * boxVec[0] * (trans.scale.x * 0.5f);
-		boxVec[1] = Vector2::ClampMagnitude(Vector2::Perpendicular(boxVec[0]), trans.scale.y * 0.5f);
+		positions = Memory::StaticMemory::New<vec3>(GetVertexSize());
+		colors = Memory::StaticMemory::New<vec4>(GetVertexSize());
+		tex_coords = Memory::StaticMemory::New<vec2>(GetVertexSize());
+		tex_handles = Memory::StaticMemory::New<u64>(GetVertexSize());
 	}
 
 	void Render(void)
@@ -203,7 +149,7 @@ namespace ALEngine::ECS
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
 
-		//// End of ImGui frame, render ImGui!
+		// End of ImGui frame, render ImGui!
 		Editor::ALEditor::Instance()->End();
 
 		glfwPollEvents();
@@ -239,7 +185,6 @@ namespace ALEngine::ECS
 	void CameraPosition(Vector3 pos)
 	{
 		camera.Position(pos);
-		InitializeFrustum(fstm);
 	}
 
 	Vector3 CameraPosition(void)
@@ -260,12 +205,6 @@ namespace ALEngine::ECS
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
-		InitializeFrustum(fstm);
-	}
-
-	void ViewportResizeCameraUpdate(void)
-	{
-		InitializeFrustum(fstm);
 	}
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
