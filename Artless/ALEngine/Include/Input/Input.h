@@ -1,10 +1,12 @@
 /*!
 file:	Input.h
 author:	Wong Man Cong
+co-author: Mohamed Zafir
 email:	w.mancong@digipen.edu
-brief:	This file contain static class declaration for basic key inputs from user
+brief:	This file contain static class declaration for basic key inputs from user.
+		It also contains functions that return mouse cursor position on screen.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	INPUT_SYSTEM_H
 #define INPUT_SYSTEM_H
@@ -62,10 +64,45 @@ namespace ALEngine::UserInput
 		***********************************************************************************/
 		static bool KeyTriggered(KeyCode key);
 
+		/*!*********************************************************************************
+			\brief
+			Returns the cursor's screen space X axis position.
+
+			\return
+			Cursor X axis position.
+		***********************************************************************************/
+		static f64 GetMousePosX();
+
+		/*!*********************************************************************************
+			\brief
+			Returns the cursor's screen space Y axis position.
+
+			\return
+			Cursor Y axis position.
+		***********************************************************************************/
+		static f64 GetMousePosY();
+
+		/*!*********************************************************************************
+			\brief
+			Returns the screen's X axis resolution.
+
+			\return
+			Screen X axis resolution.
+		***********************************************************************************/
+		static s32 GetScreenResX();
+
+		/*!*********************************************************************************
+			\brief
+			Returns the screen's Y axis resolution.
+
+			\return
+			Screen Y axis resolution.
+		***********************************************************************************/
+		static s32 GetScreenResY();
+
 	private:
 		Input(void)  = default;
 		~Input(void) = default;
 	};
 }
-
 #endif

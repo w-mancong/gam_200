@@ -12,6 +12,34 @@ namespace
 
 namespace ALEngine::UserInput
 {
+	s32 Input::GetScreenResX()
+	{
+		s32 screenResX, screenResY;
+		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
+		return screenResX;
+	}
+
+	s32 Input::GetScreenResY()
+	{
+		s32 screenResX, screenResY;
+		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
+		return screenResY;
+	}
+
+	f64 Input::GetMousePosX()
+	{
+		f64 mousePosX, mousePosY;
+		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
+		return mousePosX;
+	}
+
+	f64 Input::GetMousePosY()
+	{
+		f64 mousePosX, mousePosY;
+		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
+		return static_cast<f64>(GetScreenResY()) - mousePosY;
+	}
+
 	bool Input::KeyState(KeyCode key)
 	{
 		u64 const code = static_cast<u64>(key);
