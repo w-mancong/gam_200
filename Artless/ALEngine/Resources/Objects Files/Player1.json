@@ -13,7 +13,7 @@
       "scaleY": 50
     }
   },
-  "sprite": "Assets/Images/awesomeface.png",
+  "sprite": "Assets/Images/player.png",
   "rgba": {
     "red": 255,
     "green": 255,

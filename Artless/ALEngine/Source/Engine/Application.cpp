@@ -14,11 +14,32 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
-	Entity player;
-	Entity walls[4]; // btm, left, right, up
-	// add function pointers here
-	u64 constexpr MAX_BATCH{ 3'000 };
-	Entity batchShowCase[MAX_BATCH];
+	namespace
+	{
+		Entity player;
+		Entity walls[4]; // btm, left, right, up
+		// add function pointers here
+		u64 constexpr MAX_BATCH{ 3'000 };
+		f32 constexpr ROT_SPEED{ 50.0f };
+		Entity batchShowCase[MAX_BATCH];
+
+		void PhysicShowcase(void)
+		{
+			UpdateCharacterControllerSystem();
+		}
+
+		void BatchShowcase(void)
+		{
+			for (u64 i{}; i < MAX_BATCH; ++i)
+			{
+				Transform& t = Coordinator::Instance()->GetComponent<Transform>(*(batchShowCase + i));
+				t.rotation += Time::m_DeltaTime * ROT_SPEED;
+			}
+		}
+
+		std::function<void(void)> showcase[2]{ PhysicShowcase, BatchShowcase };
+		u64 showcaseIndex{ 0 };
+	}
 
 	void Application::Init(void)
 	{
@@ -82,18 +103,23 @@ namespace ALEngine::Engine
 			rb.isEnabled = obj.GetRigidBodyEnabled();
 		}
 
-		f32 const HALF_WIDTH{ static_cast<f32>(OpenGLWindow::width >> 1) }, HALF_HEIGHT{ static_cast<f32>(OpenGLWindow::height >> 1) };
+		f32 const HALF_WIDTH{ static_cast<f32>(OpenGLWindow::width >> 1) * 0.85f }, HALF_HEIGHT{ static_cast<f32>(OpenGLWindow::height >> 1) * 0.85f };
 		for (u64 i = 0; i < MAX_BATCH; ++i)
 		{
 			Transform trans{ { Random::Range(-HALF_WIDTH, HALF_WIDTH), Random::Range(-HALF_HEIGHT, HALF_HEIGHT), 0.0f },
 							 { Random::Range(30.0f, 60.0f), Random::Range(30.0f, 60.0f)},
 							   Random::Range(0.0f, 360.0f) };
+			Entity& en = *(batchShowCase + i);
 			if (!(i % 2))
-				*(batchShowCase + i) = CreateSprite(trans, "Assets/Images/awesomeface.png");
+				en = CreateSprite(trans, "Assets/Images/awesomeface.png");
 			else
-				*(batchShowCase + i) = CreateSprite(trans, "Assets/Images/container.jpg");
-			Entity en = *(batchShowCase + i);
-			Coordinator::Instance()->GetComponent<EntityData>(*(batchShowCase + i)).active = false;
+				en = CreateSprite(trans, "Assets/Images/container.jpg");
+			Coordinator::Instance()->GetComponent<EntityData>(en).active = false;
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+			sprite.color.r = Random::Range(0.0f, 1.0f);
+			sprite.color.g = Random::Range(0.0f, 1.0f);
+			sprite.color.b = Random::Range(0.0f, 1.0f);
+			sprite.color.a = Random::Range(0.0f, 1.0f);
 		}
 	}
 
@@ -173,7 +199,40 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-		UpdateCharacterControllerSystem();
+		if (Input::KeyTriggered(KeyCode::LeftControl))
+		{
+			(++showcaseIndex) %= 2;
+
+			auto batch_status = [](b8 active)
+			{
+				for (u64 i = 0; i < MAX_BATCH; ++i)
+					Coordinator::Instance()->GetComponent<EntityData>(*(batchShowCase + i)).active = active;
+			};
+
+			auto physic_status = [](b8 active)
+			{
+				for (u64 i{}; i < 4; ++i)
+					Coordinator::Instance()->GetComponent<EntityData>(*(walls + i)).active = active;
+				Coordinator::Instance()->GetComponent<EntityData>(player).active = active;
+			};
+
+			switch (showcaseIndex)
+			{
+				case 0: // physics showcase
+				{
+					physic_status(true);
+					batch_status(false);
+					break;
+				}
+				case 1: // batch showcase
+				{
+					physic_status(false);
+					batch_status(true);
+					break;
+				}
+			}
+		}
+		showcase[showcaseIndex]();
 	}
 
 	void Engine::FixedUpdate(void)
