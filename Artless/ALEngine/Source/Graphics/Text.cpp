@@ -129,7 +129,7 @@ namespace ALEngine::ECS::Component
 		it = Font::fontCollection.find(text.currentFont);
 		if (it == Font::fontCollection.end())
 		{
-			std::cout << "FONT ERROR: Font Family Name " << text.currentFont << "not found\n";
+			std::cout << "FONT ERROR: Font Family Name " << text.currentFont << " not found\n";
 			return;
 		}
 

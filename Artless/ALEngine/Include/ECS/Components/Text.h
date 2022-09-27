@@ -57,7 +57,7 @@ namespace ALEngine::ECS::Component
 		std::string currentFont{}; // current selected font
 		Font::FontType currentType{}; // current selected font type
 		Math::Vector2 position{}; // position of text
-		Math::Vector3 colour{}; // color of text
+		Math::Vector3 colour{ 1.f, 1.f, 1.f }; // color of text
 		f32 scale{ 1.f }; // scale of text
 		std::string textString{}; // text string
 	};

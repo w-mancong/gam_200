@@ -17,6 +17,8 @@ namespace ALEngine::Engine
 	Entity player;
 	Entity walls[4]; // btm, left, right, up
 	// add function pointers here
+	u64 constexpr MAX_BATCH{ 3'000 };
+	Entity batchShowCase[MAX_BATCH];
 
 	void Application::Init(void)
 	{
@@ -46,8 +48,8 @@ namespace ALEngine::Engine
 		Serializer::ObjectJson oj{ "../ALEngine/Resources/Objects Files/Player1.json" };
 		Transform t{ { oj.GetPosX()  , oj.GetPosY(),  0.0f	}, 
 					 { oj.GetScaleX(), oj.GetScaleY()		}, 
-					   oj.GetRotX()							};
-		player = CreateSprite(t, "Player", oj.GetSprite().c_str());
+					   static_cast<f32>(oj.GetRotX())		};
+		player = CreateSprite(t, oj.GetSprite().c_str(), "Player");
 		Sprite& s = Coordinator::Instance()->GetComponent<Sprite>(player);
 		s.color.r = static_cast<f32>(oj.GetRed())	/ 255.0f;
 		s.color.g = static_cast<f32>(oj.GetGreen()) / 255.0f;
@@ -69,7 +71,7 @@ namespace ALEngine::Engine
 			Serializer::ObjectJson obj{ oss.str() };
 			Transform trans{ { obj.GetPosX()  , obj.GetPosY(),  0.0f },
 							 { obj.GetScaleX(), obj.GetScaleY()	 	 },
-							   obj.GetRotX()						 };
+							   static_cast<f32>(obj.GetRotX())		 };
 
 			*(walls + i) = CreateSprite(trans);
 			CreatePhysics2D(*(walls + i));
@@ -78,6 +80,20 @@ namespace ALEngine::Engine
 			col.scale[0] = obj.GetScaleOffsetX(), col.scale[1] = obj.GetScaleOffsetY();
 			col.m_localPosition.x = obj.GetPositionOffsetX(), col.m_localPosition.y = obj.GetPositionOffsetY();
 			rb.isEnabled = obj.GetRigidBodyEnabled();
+		}
+
+		f32 const HALF_WIDTH{ static_cast<f32>(OpenGLWindow::width >> 1) }, HALF_HEIGHT{ static_cast<f32>(OpenGLWindow::height >> 1) };
+		for (u64 i = 0; i < MAX_BATCH; ++i)
+		{
+			Transform trans{ { Random::Range(-HALF_WIDTH, HALF_WIDTH), Random::Range(-HALF_HEIGHT, HALF_HEIGHT), 0.0f },
+							 { Random::Range(30.0f, 60.0f), Random::Range(30.0f, 60.0f)},
+							   Random::Range(0.0f, 360.0f) };
+			if (!(i % 2))
+				*(batchShowCase + i) = CreateSprite(trans, "Assets/Images/awesomeface.png");
+			else
+				*(batchShowCase + i) = CreateSprite(trans, "Assets/Images/container.jpg");
+			Entity en = *(batchShowCase + i);
+			Coordinator::Instance()->GetComponent<EntityData>(*(batchShowCase + i)).active = false;
 		}
 	}
 
@@ -108,16 +124,6 @@ namespace ALEngine::Engine
 
 			// Render
 			Render();
-
-			std::ostringstream oss;
-			oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-
-			Text tx;
-
-
-			ECS::RenderText(tx);
-
-			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
 
 			// Wait for next frame
 			Time::WaitUntil();

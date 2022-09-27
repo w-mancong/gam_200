@@ -75,10 +75,13 @@ namespace ALEngine::ECS
 		s32 counter{ 0 }; u64 const size = entities.size();
 		for (u64 i = 0; i < size; ++i)
 		{
-			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(entities[i]);
-			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(entities[i]);
+			Entity const& en = entities[i];
+			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
+				continue;
+			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 			mat4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
-			for (u64 j = i * 4, k = 0; j < (i * 4) + 4; ++j, ++k)
+			for (u64 j = static_cast<u64>(counter) * 4, k = 0; j < (static_cast<u64>(counter) * 4) + 4; ++j, ++k)
 			{
 				*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
 				// assigning colors
@@ -148,6 +151,20 @@ namespace ALEngine::ECS
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+
+		std::ostringstream oss;
+		oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
+
+		glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
+
+		Text tx;
+		SetFont(tx, "roboto");
+		SetTextSize(tx, 0.5f);
+		SetTextColor(tx, { 0.375f, 0.85f, 0.75f });
+		SetTextPos(tx, vec2{ 0.0f, static_cast<f32>(OpenGLWindow::height) - 20.0f });
+		SetTextString(tx, oss.str());
+
+		ECS::RenderText(tx);
 
 		// End of ImGui frame, render ImGui!
 		if(Editor::ALEditor::Instance()->GetImGuiEnabled())
@@ -223,7 +240,7 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}
 
-	Entity CreateSprite(Transform const& transform, const char* tag, const char* filePath, RenderLayer layer)
+	Entity CreateSprite(Transform const& transform, const char* filePath, const char* tag, RenderLayer layer)
 	{
 		Entity entity;
 		if (tag == nullptr)
