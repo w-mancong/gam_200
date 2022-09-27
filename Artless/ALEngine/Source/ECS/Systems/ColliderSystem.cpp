@@ -338,9 +338,7 @@ namespace ALEngine::ECS
 			//Update position
 			parentTransform.position = rigidbody.nextPosition;
 
-			if (cs->isDebugDraw){
-				
-				std::cout << collider.isCollided << " ";
+			if (cs->isDebugDraw){	
 				if (collider.isCollided) {
 					cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
 				}
@@ -353,10 +351,10 @@ namespace ALEngine::ECS
 
 	bool ColliderSystem::CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two) {
 		//Set up the bottom left and top right of both box
-		Vector2 oneBottomLeft = { parent_transform_one.position.x - collider_one.scale[0] * 0.5f, parent_transform_one.position.y - collider_one.scale[1] * 0.5f } ;
-		Vector2 oneTopRight = { parent_transform_one.position.x + collider_one.scale[0] * 0.5f, parent_transform_one.position.y + collider_one.scale[1] * 0.5f };
-		Vector2 twoBottomLeft = { parent_transform_two.position.x - collider_two.scale[0] * 0.5f, parent_transform_two.position.y - collider_two.scale[1] * 0.5f };
-		Vector2 twoTopRight = { parent_transform_two.position.x + collider_two.scale[0] * 0.5f, parent_transform_two.position.y + collider_two.scale[1] * 0.5f };
+		Vector2 oneBottomLeft = { parent_transform_one.position.x + collider_one.m_localPosition.x - collider_one.scale[0] * 0.5f, parent_transform_one.position.y + collider_one.m_localPosition.y - collider_one.scale[1] * 0.5f } ;
+		Vector2 oneTopRight = { parent_transform_one.position.x + collider_one.m_localPosition.x + collider_one.scale[0] * 0.5f, parent_transform_one.position.y + collider_one.m_localPosition.y + collider_one.scale[1] * 0.5f };
+		Vector2 twoBottomLeft = { parent_transform_two.position.x + collider_two.m_localPosition.x - collider_two.scale[0] * 0.5f, parent_transform_two.position.y + collider_two.m_localPosition.y - collider_two.scale[1] * 0.5f };
+		Vector2 twoTopRight = { parent_transform_two.position.x + collider_two.m_localPosition.x + collider_two.scale[0] * 0.5f, parent_transform_two.position.y + collider_two.m_localPosition.y + collider_two.scale[1] * 0.5f };
 
 		//Check for intersection
 		if (!(twoBottomLeft.x > oneTopRight.x || twoTopRight.x < oneBottomLeft.x || twoBottomLeft.y > oneTopRight.y || twoTopRight.y < oneBottomLeft.y))
@@ -627,8 +625,13 @@ namespace ALEngine::ECS
 				rigidbody_moving.nextPosition.x = rayHit.point.x + rigidbody_moving.frameVelocity.x;
 			}
 			else {
-				//Update next to be point of intersection 
-				rigidbody_moving.nextPosition.x = rayHit.point.x;
+				//if the collision is horizontal
+				if (rayHit.normal.x != 0) {
+					//revert movement of x and stop velocity
+					rigidbody_moving.nextPosition.x = rayHit.point.x - rigidbody_moving.frameVelocity.x;
+					rigidbody_moving.velocity.x = 0;
+					rigidbody_moving.frameVelocity.x = 0;
+				}
 			}
 
 			//If can move vertically
@@ -637,8 +640,13 @@ namespace ALEngine::ECS
 				rigidbody_moving.nextPosition.y = rayHit.point.y + rigidbody_moving.frameVelocity.y;
 			}
 			else {
-				//Update next to be point of intersection
-				rigidbody_moving.nextPosition.y = rayHit.point.y;
+				//if the collision is horizontal
+				if (rayHit.normal.y != 0) {
+					//revert movement of y and stop velocity
+					rigidbody_moving.nextPosition.y = rayHit.point.y - rigidbody_moving.frameVelocity.y;
+					rigidbody_moving.velocity.y = 0;
+					rigidbody_moving.frameVelocity.y = 0;
+				}
 			}
 
 			//Collision Happen
