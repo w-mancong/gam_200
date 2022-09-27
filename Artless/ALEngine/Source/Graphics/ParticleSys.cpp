@@ -1,5 +1,5 @@
 /*!
-file:	Gizmo.cpp
+file:	ParticleSys.cpp
 author:	Mohamed Zafir
 email:	m.zafir@digipen.edu
 brief:	This file contains function definitions for the engine's particle system.

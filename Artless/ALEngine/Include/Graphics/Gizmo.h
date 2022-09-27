@@ -52,5 +52,4 @@ namespace ALEngine::Gizmos
 		static void SetGizmoColor(Math::Vector3 color) { gizmoColor = color; }
 	};
 }
-
 #endif

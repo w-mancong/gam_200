@@ -196,9 +196,18 @@ namespace ALEngine::ECS
 
 		rs->RenderBatch();
 
+		Text test;
+		SetTextFont(test, "roboto");
+		SetTextString(test, "Hello World!!");
+		SetTextColor(test, Vector3(1.f, 1.f, 0.f));
+		Text::RenderText(test);
+
 		// Update and render particles
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
 		particleSys.ParticleRender();
+
+		// Render all text
+		Text::RenderAllText();
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();

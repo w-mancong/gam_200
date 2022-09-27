@@ -27,7 +27,14 @@ namespace ALEngine
 			void InsertData(Entity entity, T component)
 			{
 #ifdef _DEBUG
-				assert(mEntityToIndexMap.find(entity) == mEntityToIndexMap.end() && "Component added to same entity more than once.");
+				
+				
+				
+				
+				
+				
+				
+				(mEntityToIndexMap.find(entity) == mEntityToIndexMap.end() && "Component added to same entity more than once.");
 #endif
 				// Put new entry at end and update the maps
 				u64 newIndex = mSize;
