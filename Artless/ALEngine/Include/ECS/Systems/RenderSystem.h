@@ -149,10 +149,10 @@ namespace ALEngine::ECS
 
 		\param [in] transform:
 		Tranform component to be added
-		\param [in] tag:
-		Tag or name of the entity
 		\param [in] filePath:
 		Path to the image to be loaded
+		\param [in] tag:
+		Tag or name of the entity
 		\param [in] layer:
 		Rendering order of the sprite
 		\param [in] mode:
@@ -161,7 +161,7 @@ namespace ALEngine::ECS
 		\return
 		ID of the entity created with Sprite and Transform component added
 	***********************************************************************************/
-	Entity CreateSprite(Transform const& transform, const char* tag = nullptr, const char* filePath = "Assets/Images/white.png", RenderLayer layer = RenderLayer::Background);
+	Entity CreateSprite(Transform const& transform, const char* filePath = "Assets/Images/white.png", const char* tag = nullptr, RenderLayer layer = RenderLayer::Background);
 }
 
 #endif
