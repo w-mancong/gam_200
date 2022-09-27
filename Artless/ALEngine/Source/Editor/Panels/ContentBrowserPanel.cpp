@@ -48,14 +48,14 @@ namespace ALEngine::Editor
 			//file name from relative path 
 			std::string fileNamestring = relativepath.filename().string();
 
-			//for dragging file
-			if (ImGui::BeginDragDropSource())
-			{
-				auto relativePath = std::filesystem::relative(path, assetPath);
-				const wchar_t* itemPath = relativePath.c_str();
-				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-				ImGui::EndDragDropSource();
-			}
+			//for dragging file, need to fix window crash when moving window
+			//if (ImGui::BeginDragDropSource())
+			//{
+			//	auto relativePath = std::filesystem::relative(path, assetPath);
+			//	const wchar_t* itemPath = relativePath.c_str();
+			//	ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+			//	ImGui::EndDragDropSource();
+			//}
 
 			if (ImGui::Selectable(fileNamestring.c_str()) && ImGui::IsItemHovered())
 			{
