@@ -171,10 +171,19 @@ namespace ALEngine::ECS
 	}
 
 	void RigidbodySystem::DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid) {
-		//Draw velocity
-		Gizmos::Gizmo::RenderLine(transform.position, vec2(transform.position) + rigid.frameVelocity, { 1.f,0.f,0.f,1.f }, 10.0f);
+		if (isDebugStep) {
+			//Draw velocity
+			Gizmos::Gizmo::RenderLine(transform.position, vec2(transform.position) + rigid.frameVelocity, { 1.f,0.f,0.f,1.f }, 10.0f);
 
-		//Draw acceleration
-		Gizmos::Gizmo::RenderLine(vec2(transform.position), vec2(transform.position) + rigid.acceleration * Time::m_FixedDeltaTime, { 1.f, 0.f, 1.f,1.f }, 10.0f);
+			//Draw acceleration
+			Gizmos::Gizmo::RenderLine(vec2(transform.position), vec2(transform.position) + rigid.acceleration * Time::m_FixedDeltaTime, { 1.f, 0.f, 1.f,1.f }, 10.0f);
+		}
+		else {
+			//Draw velocity
+			Gizmos::Gizmo::RenderLine(vec2(transform.position) + rigid.frameVelocity, vec2(transform.position) + rigid.frameVelocity * 2, { 1.f,0.f,0.f,1.f }, 10.0f);
+
+			//Draw acceleration
+			Gizmos::Gizmo::RenderLine(vec2(transform.position) + rigid.frameVelocity, vec2(transform.position) + rigid.acceleration * Time::m_FixedDeltaTime * 2, { 1.f, 0.f, 1.f,1.f }, 10.0f);
+		}
 	}
 }
