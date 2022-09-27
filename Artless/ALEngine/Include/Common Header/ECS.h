@@ -21,6 +21,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Components/CharacterController.h"
 #include "ECS/Components/Texture.h"
 
+// --------------- Structure --------------------
 #include "ECS/Structure/entity.h"
 #include "ECS/Structure/component.h"
 #include "ECS/Structure/EntityManager.h"

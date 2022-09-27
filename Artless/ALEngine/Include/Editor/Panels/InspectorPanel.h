@@ -21,6 +21,13 @@ namespace ALEngine::Editor
 
 		bool HasEntityTransform() { return !(m_SelectedEntity == -1); };
 
+		void DisplayEntityData();
+
+		void DisplayTransform();
+
+		void DisplaySprite();
+
+
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;
 		ECS::Entity m_SelectedEntity{ static_cast<ECS::Entity>(-1) };
