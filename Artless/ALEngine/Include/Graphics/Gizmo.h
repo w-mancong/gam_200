@@ -32,5 +32,4 @@ namespace ALEngine::Gizmos
 		//static void RenderCircle(Math::Vector2 center, f32 radius);
 	};
 }
-
 #endif

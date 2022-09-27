@@ -1,3 +1,12 @@
+/*!
+file:	Text.h
+author:	Mohamed Zafir
+email:	m.zafir@digipen.edu
+brief:	This file contains the class declaration for classes Font and Text which
+		renders text on screen.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef TEXT_H
 #define TEXT_H
 
@@ -52,27 +61,35 @@ namespace ALEngine::ECS::Component
 		\brief
 		Enum used for differentiating the different type of Shape to be created
 	***********************************************************************************/
-	struct Text
+	class Text
 	{
+	public:
 		std::string currentFont{}; // current selected font
-		Font::FontType currentType{}; // current selected font type
+		Font::FontType currentType{Font::FontType::Regular}; // current selected font type
 		Math::Vector2 position{}; // position of text
 		Math::Vector3 colour{}; // color of text
 		f32 scale{ 1.f }; // scale of text
-		std::string textString{}; // text string
+		std::string textString{"[new text]"}; // text string
+		static std::vector<Text> textCollection;
+
+		/*!*********************************************************************************
+			\brief
+				Renders all the text objects stored in textCollection container
+		***********************************************************************************/
+		static void RenderAllText();
+
+		/*!*********************************************************************************
+			\brief
+				Stores text object into the textCollection container to render later.
+			\param [in] text:
+				Text type.
+		***********************************************************************************/
+		static void RenderText(Text& text);
 	};
 
-	/*!*********************************************************************************
-		\brief
-			Renders text.
-		\param [in] text:
-			Text type.
-	***********************************************************************************/
-	void RenderText(Text& text);
-
 	// Font data member set functionsc
-	void SetFont(Text& text, std::string fontName);
-	void SetFontType(Text& text, Font::FontType typeName);
+	void SetTextFont(Text& text, std::string fontName);
+	void SetTextFontType(Text& text, Font::FontType typeName);
 	void SetTextPos(Text& text, Math::Vector2 pos);
 	void SetTextPos(Text& text, f32 x, f32 y);
 	void SetTextColor(Text& text, Math::Vector3 col);

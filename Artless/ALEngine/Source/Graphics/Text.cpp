@@ -1,20 +1,20 @@
+/*!
+file:	Text.cpp
+author:	Mohamed Zafir
+email:	m.zafir@digipen.edu
+brief:	This file contains the class definition for classes Font and Text to load and
+		render text fonts.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::ECS::Component
 {
 	// declare static class variable
 	std::map<std::string, std::map<Font::FontType, Font>> Font::fontCollection;
+	std::vector<Text> Text::textCollection;
 
-	/*!*********************************************************************************
-		\brief
-			Initializes and processes font file (.ttf)
-		\param [in] fontAddress:
-			File path of font file.
-		\param [in] fontName:
-			Name of font.
-		\param [in] fontType:
-			Type of font.
-	***********************************************************************************/
 	void Font::FontInit(std::string fontAddress, std::string fontName, Font::FontType fontType)
 	{
 		Font newFont;
@@ -114,92 +114,96 @@ namespace ALEngine::ECS::Component
 		Font::fontCollection.insert(std::pair<std::string, std::map<Font::FontType, Font>>(fontName, map));
 	}
 
-	/*!*********************************************************************************
-		\brief
-			Renders text.
-		\param [in] text:
-			Text type.
-	***********************************************************************************/
-	void RenderText(Text& text)
+	void Text::RenderText(Text& text)
+	{
+		textCollection.push_back(text);
+	}
+
+	void Text::RenderAllText()
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		// Perform check if font family name is found
-		std::map<std::string, std::map<Font::FontType, Font>>::iterator it;
-		it = Font::fontCollection.find(text.currentFont);
-		if (it == Font::fontCollection.end())
+		for (Text& text : textCollection)
 		{
-			std::cout << "FONT ERROR: Font Family Name " << text.currentFont << "not found\n";
-			return;
+			// Perform check if font family name is found
+			std::map<std::string, std::map<Font::FontType, Font>>::iterator it;
+			it = Font::fontCollection.find(text.currentFont);
+			if (it == Font::fontCollection.end())
+			{
+				std::cout << "FONT ERROR: Font Family Name " << text.currentFont << "not found\n";
+				return;
+			}
+
+			// Perform check if font type is found
+			std::map<Font::FontType, Font>::iterator it2;
+			it2 = Font::fontCollection.find(text.currentFont)->second.find(text.currentType);
+			if (it2 == Font::fontCollection.find(text.currentFont)->second.end())
+			{
+				std::cout << "FONT ERROR: Font Type not found\n";
+				return;
+			}
+
+			Font::fontCollection.find(text.currentFont)->second
+				.find(text.currentType)->second.fontShader.use();
+			Font::fontCollection.find(text.currentFont)->second
+				.find(text.currentType)->second.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
+			glActiveTexture(GL_TEXTURE0);
+
+			glBindVertexArray(Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVAO);
+
+			// iterate through all characters
+			std::string::const_iterator c;
+			for (c = text.textString.begin(); c != text.textString.end(); c++)
+			{
+				Character ch = Font::fontCollection.find(text.currentFont)->second
+					.find(text.currentType)->second.characterCollection[*c];
+
+				// position of each glyph
+				f32 xPos = text.position.x + ch.bearing.x * text.scale;
+				f32 yPos = text.position.y - (ch.size.y - ch.bearing.y) * text.scale;
+
+				// scale of each glyph
+				f32 width = ch.size.x * text.scale;
+				f32 height = ch.size.y * text.scale;
+
+				// update VBO for each character
+				f32 vertices[6][4] = {
+					{ xPos,     yPos + height,   0.0f, 0.0f,},
+					{ xPos,     yPos,       0.0f, 1.0f },
+					{ xPos + width, yPos,       1.0f, 1.0f },
+
+					{ xPos,     yPos + height,   0.0f, 0.0f },
+					{ xPos + width, yPos,       1.0f, 1.0f },
+					{ xPos + width, yPos + height,   1.0f, 0.0f }
+				};
+				// paste glyph texture on rect
+				glBindTexture(GL_TEXTURE_2D, ch.textureID);
+
+				// update VBO
+				glBindBuffer(GL_ARRAY_BUFFER, Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVBO);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+				// Render rect
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+
+				// advance horizontal position of glyph
+				text.position.x += (ch.advance >> 6) * text.scale;
+			}
 		}
-
-		// Perform check if font type is found
-		std::map<Font::FontType, Font>::iterator it2;
-		it2 = Font::fontCollection.find(text.currentFont)->second.find(text.currentType);
-		if (it2 == Font::fontCollection.find(text.currentFont)->second.end())
-		{
-			std::cout << "FONT ERROR: Font Type not found\n";
-			return;
-		}
-
-		Font::fontCollection.find(text.currentFont)->second
-			.find(text.currentType)->second.fontShader.use();
-		Font::fontCollection.find(text.currentFont)->second
-			.find(text.currentType)->second.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
-		glActiveTexture(GL_TEXTURE0);
-
-		glBindVertexArray(Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVAO);
-
-		// iterate through all characters
-		std::string::const_iterator c;
-		for (c = text.textString.begin(); c != text.textString.end(); c++)
-		{
-			Character ch = Font::fontCollection.find(text.currentFont)->second
-				.find(text.currentType)->second.characterCollection[*c];
-
-			// position of each glyph
-			f32 xPos = text.position.x + ch.bearing.x * text.scale;
-			f32 yPos = text.position.y - (ch.size.y - ch.bearing.y) * text.scale;
-
-			// scale of each glyph
-			f32 width = ch.size.x * text.scale;
-			f32 height = ch.size.y * text.scale;
-
-			// update VBO for each character
-			f32 vertices[6][4] = {
-				{ xPos,     yPos + height,   0.0f, 0.0f,},
-				{ xPos,     yPos,       0.0f, 1.0f },
-				{ xPos + width, yPos,       1.0f, 1.0f },
-
-				{ xPos,     yPos + height,   0.0f, 0.0f },
-				{ xPos + width, yPos,       1.0f, 1.0f },
-				{ xPos + width, yPos + height,   1.0f, 0.0f }
-			};
-			// paste glyph texture on rect
-			glBindTexture(GL_TEXTURE_2D, ch.textureID);
-
-			// update VBO
-			glBindBuffer(GL_ARRAY_BUFFER, Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVBO);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-					
-			// Render rect
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-
-			// advance horizontal position of glyph
-			text.position.x += (ch.advance >> 6) * text.scale; 
-		}
+		textCollection.clear();
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void SetFont(Text& text, std::string fontName)
+	// Text set functions
+	void SetTextFont(Text& text, std::string fontName)
 	{
 		text.currentFont = fontName;
 	}
 
-	void SetFontType(Text& text, Font::FontType typeName)
+	void SetTextFontType(Text& text, Font::FontType typeName)
 	{
 		text.currentType = typeName;
 	}
