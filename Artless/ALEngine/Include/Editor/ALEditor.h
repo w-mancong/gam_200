@@ -81,8 +81,17 @@ namespace ALEngine::Editor
 			Pointer to the transform of the entity to be selected by te inspector.
 			Soon It will be based on entity instead of just transform alone
 		***********************************************************************************/
-		void SetSelectedEntityTransform(ECS::Entity setter) { 
-			imguizmo_panel.SetSelectedEntityTransform(setter); };
+		void SetSelectedEntity(ECS::Entity setter) { imguizmo_panel.SetSelectedEntity(setter); };
+
+		/*!*********************************************************************************
+			\brief
+			Sets the entity to be selected by the ImGui inspector
+
+			\param [in] setter
+			Pointer to the transform of the entity to be selected by te inspector.
+			Soon It will be based on entity instead of just transform alone
+		***********************************************************************************/
+		const ECS::Entity GetSelectedEntity(void) { return imguizmo_panel.GetSelectedEntity(); }
 
 	private:
 		/*!*********************************************************************************

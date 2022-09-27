@@ -29,10 +29,6 @@ namespace ALEngine::Utility
 	hd_clock::time_point Time::m_StartTime = hd_clock::now();	// Set Application start time
 	steady_clock::time_point Time::m_ClockedTime{};
 
-	/*!*********************************************************************************
-		\brief
-		Initializes the timer to calculate the delta time every frame
-	***********************************************************************************/
 	void Time::Init()
 	{
 		for (s32 i = 0; i < MAX_SAMPLES; ++i)
@@ -46,21 +42,11 @@ namespace ALEngine::Utility
 		m_HasFPSLimit = true;
 	}
 
-	/*!*********************************************************************************
-		\brief
-		Clock the current time.
-		Should be called just before calling update!
-	***********************************************************************************/
 	void Time::ClockTimeNow()
 	{
 		m_ClockedTime = hd_clock::now();
 	}
 
-	/*!*********************************************************************************
-		\brief
-		Calculates the delta time and makes the main thread wait according to the
-		FPS limit.
-	***********************************************************************************/
 	void Time::WaitUntil()
 	{
 		auto time_diff = hd_clock::now() - m_ClockedTime;
@@ -93,13 +79,6 @@ namespace ALEngine::Utility
 			m_FPS = static_cast<f32>(1.0 / ((m_TickSum / m_TickIndex).count() / static_cast<f64>(NUM_NANO_IN_SEC)));
 	}
 
-	/*!*********************************************************************************
-		\brief
-		Set the Target FPS, which is the FPS the system will aim to hit
-
-		\param [in] _target:
-		Number to be set as the target FPS
-	***********************************************************************************/
 	void Time::SetTargetFPS(s32 _target)
 	{
 		m_TargetFPS = _target;

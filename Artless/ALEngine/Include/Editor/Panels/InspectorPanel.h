@@ -12,15 +12,17 @@ namespace ALEngine::Editor
 
 		void OnImGuiRender(void);
 
-		void SetSelectedEntityTransform(ECS::Entity setter) { m_SelectedEntity = setter; }
+		void SetSelectedEntity(ECS::Entity setter) { m_SelectedEntity = setter; }
 
-		bool HasEntityTransform() { return !(m_SelectedEntity == ECS::MAX_ENTITIES); };
+		const ECS::Entity GetSelectedEntity(void) { return m_SelectedEntity; }
 
-		void DisplayEntityData();
+		bool HasEntityTransform(void) { return !(m_SelectedEntity == ECS::MAX_ENTITIES); };
 
-		void DisplayTransform();
+		void DisplayEntityData(void);
 
-		void DisplaySprite();
+		void DisplayTransform(void);
+
+		void DisplaySprite(void);
 
 
 	private:

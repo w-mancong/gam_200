@@ -55,7 +55,7 @@ namespace ALEngine::Editor
 				{
 					e_delete = e_it;
 					remove = true;
-					ALEditor::Instance()->SetSelectedEntityTransform(static_cast<ECS::Entity>(-1));
+					ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 				}
 			}
 
@@ -72,7 +72,7 @@ namespace ALEngine::Editor
 
 			// If this is clicked, select this
 			if (ImGui::IsItemClicked())
-				ALEditor::Instance()->SetSelectedEntityTransform(*e_it);
+				ALEditor::Instance()->SetSelectedEntity(*e_it);
 			else if (ImGui::IsItemClicked(1))
 			{
 				ImGui::OpenPopup("remove_entity_rightclick"); 
@@ -89,7 +89,7 @@ namespace ALEngine::Editor
 			if (ImGui::Selectable("Remove") && 
 				(e_delete != Coordinator::Instance()->GetEntities().end()))
 			{
-				ALEditor::Instance()->SetSelectedEntityTransform(static_cast<ECS::Entity>(-1));
+				ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 				remove = true;
 			}
 			ImGui::EndPopup();
