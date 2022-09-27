@@ -51,6 +51,8 @@
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
     <ClCompile Include="Source\Serialization\Serialization.cpp" />
     <ClCompile Include="Source\Utility\Timer.cpp" />
+    <ClCompile Include="Source\Utility\Profiler.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -227,9 +229,6 @@
     <ClCompile Include="Source\Editor\imgui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Editor\imgui\imgui_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -265,6 +264,7 @@
     <ClInclude Include="Include\Utility\Timer.h" />
     <ClInclude Include="Include\Utility\Profiler.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
+    <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

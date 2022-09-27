@@ -92,29 +92,52 @@ namespace ALEngine::Engine
 			// Get Current Time
 			Time::ClockTimeNow();
 
-			// Begin new ImGui frame
-			ALEditor::Instance()->Begin();
+			// ImGui Editor
+			{
+				PROFILER_TIMER("Editor");
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
+			}
 
 			// Normal Update
-			Engine::Update();
-			// Fixed Update (Physics)
-			accumulator += Time::m_DeltaTime;
-			while (accumulator >= Time::m_FixedDeltaTime)
 			{
-				Engine::FixedUpdate();
-				accumulator -= Time::m_FixedDeltaTime;
-				// AL_CORE_DEBUG(Time::m_FPS);
+				PROFILER_TIMER("Update");
+				// Normal Update
+				Engine::Update();
+			}
+
+			// Physics
+			{
+				PROFILER_TIMER("Physics");
+
+				// Fixed Update (Physics)
+				accumulator += Time::m_DeltaTime;
+
+				while (accumulator >= Time::m_FixedDeltaTime)
+				{
+					Engine::FixedUpdate();
+					accumulator -= Time::m_FixedDeltaTime;
+					// AL_CORE_DEBUG(Time::m_FPS);
+				}
 			}
 
 			// Render
-			Render();
+			{
+				PROFILER_TIMER("Render");
+				Render();
 
-			std::ostringstream oss;
-			oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
 
-			// Wait for next frame
-			Time::WaitUntil();
+				std::ostringstream oss;
+				oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
+				glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
+			}
+
+			// Wait Time
+			{
+				PROFILER_TIMER("FPS Wait");
+				// Wait for next frame
+				Time::WaitUntil();
+			}
 		}
 	}
 

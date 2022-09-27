@@ -115,6 +115,7 @@
     </ClCompile>
     <ClCompile Include="Source\Editor\Panels\InspectorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
+    <ClCompile Include="Source\Utility\Profiler.cpp" />
     <ClCompile Include="Source\Utility\Time.cpp" />
     <ClCompile Include="Source\Utility\Timer.cpp" />
   </ItemGroup>
@@ -230,6 +232,7 @@
     <ClInclude Include="Include\Editor\imstb_truetype.h" />
     <ClInclude Include="Include\Editor\Panels\InspectorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />

@@ -68,6 +68,7 @@ namespace ALEngine::Editor
 		if (imguizmo_panel.HasEntityTransform())
 			imguizmo_panel.OnImGuiRender();
 		hierarchy_panel.OnImGuiRender();
+		profiler_panel.OnImGuiRender();
 	}
 
 	void ALEditor::Begin()

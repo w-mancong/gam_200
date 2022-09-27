@@ -124,6 +124,7 @@ namespace ALEngine::Editor
 		ContentBrowserPanel cbp;
 		InspectorPanel imguizmo_panel;
 		LoggerPanel logger_panel;
+		ProfilerPanel profiler_panel;
 		SceneHierarchyPanel hierarchy_panel;
 	};
 }

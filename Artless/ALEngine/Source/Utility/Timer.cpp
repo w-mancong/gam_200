@@ -22,5 +22,12 @@ namespace ALEngine::Utility
 		long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count();
 
 		f32 dur = static_cast<f32>(end - start) * 0.001f;
+
+		// Create new timer data
+		TimerData newTD;
+		newTD.m_Name = m_Name;
+		newTD.m_Time = dur;
+
+		Profiler::AddTimerData(newTD);
 	}
 }

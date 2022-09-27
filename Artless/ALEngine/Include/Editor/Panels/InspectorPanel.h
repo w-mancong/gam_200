@@ -6,20 +6,15 @@ namespace ALEngine::Editor
 	class InspectorPanel
 	{
 	public:
-		InspectorPanel() 
-		{ 
-			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE; 
-			m_SelectedEntity = static_cast<ECS::Entity>(-1);
-			m_HasEntityTransform = false;
-		};
-		~InspectorPanel() {};
+		InspectorPanel(void);
 
-		void OnImGuiRender();
+		~InspectorPanel(void) {};
 
-		void SetSelectedEntityTransform(ECS::Entity setter) { 
-			m_SelectedEntity = setter; }
+		void OnImGuiRender(void);
 
-		bool HasEntityTransform() { return !(m_SelectedEntity == -1); };
+		void SetSelectedEntityTransform(ECS::Entity setter) { m_SelectedEntity = setter; }
+
+		bool HasEntityTransform() { return !(m_SelectedEntity == ECS::MAX_ENTITIES); };
 
 		void DisplayEntityData();
 
@@ -30,7 +25,7 @@ namespace ALEngine::Editor
 
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;
-		ECS::Entity m_SelectedEntity{ static_cast<ECS::Entity>(-1) };
+		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES };
 		bool m_HasEntityTransform{ false };
 
 		// Panel size

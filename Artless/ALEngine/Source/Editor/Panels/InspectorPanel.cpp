@@ -10,8 +10,15 @@ namespace ALEngine::Editor
 		ROTATE,
 		SCALE
 	};
+
+	InspectorPanel::InspectorPanel(void)
+	{
+		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		m_SelectedEntity = ECS::MAX_ENTITIES;
+		m_HasEntityTransform = false;
+	}
 	
-	void InspectorPanel::OnImGuiRender()
+	void InspectorPanel::OnImGuiRender(void)
 	{
 		// Set size constraints of inspector
 		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
@@ -20,7 +27,6 @@ namespace ALEngine::Editor
 		if (!ImGui::Begin("Inspector"))
 		{
 			ImGui::End();
-			//AL_CORE_CRITICAL("Editor Panel Collapsed");
 			return;
 		}
 
@@ -58,8 +64,6 @@ namespace ALEngine::Editor
 
 		// Get entity data
 		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_SelectedEntity);
-		// Size of the entity name
-		ImVec2 nameSize = ImGui::CalcTextSize(data.tag.c_str());
 
 		// Tag
 		c8* tag = (c8*)data.tag.c_str();

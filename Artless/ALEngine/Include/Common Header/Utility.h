@@ -14,7 +14,9 @@ brief:	This file contains all the relevant Utility header files to be included i
 #include "Utility/Type.h"
 #include "Utility/Time.h"
 #include "Utility/Timer.h"
+#include "Utility/Profiler.h"
 
 using ALEngine::Utility::Time;
+using ALEngine::Utility::Timer;
 
 #endif
