@@ -24,7 +24,7 @@ namespace ALEngine::Math
 	Matrix4x4::const_reference Matrix4x4::operator()(size_type row, size_type col) const
 	{
 #ifdef _DEBUG
-		assert(0 <= row && 4 > row && 0 <= col && 4 > col, "Rows and Columns must be a positive integer lesser than 4!");
+		assert(0 <= row && 4 > row && 0 <= col && 4 > col && "Rows and Columns must be a positive integer lesser than 4!");
 #endif
 		return *(value_ptr() + row * 4 + col);
 	}

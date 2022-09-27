@@ -96,7 +96,7 @@ namespace ALEngine::Math
 	Matrix3x3::const_reference Matrix3x3::operator()(size_type row, size_type col) const
 	{
 #ifdef _DEBUG
-		assert(0 <= row && 3 > row && 0 <= col && 3 > col, "Rows and Columns must be a positive integer lesser than 3!");
+		assert(0 <= row && 3 > row && 0 <= col && 3 > col && "Rows and Columns must be a positive integer lesser than 3!");
 #endif
 		return *(&mat[0].x + row * 3 + col);
 	}

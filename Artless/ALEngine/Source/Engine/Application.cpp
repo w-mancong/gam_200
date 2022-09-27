@@ -66,41 +66,46 @@ namespace ALEngine::Engine
 		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 
 		// Showcasing of de-serialisation
-		Serializer::ObjectJson oj{ "../ALEngine/Resources/Objects Files/Player1.json" };
-		Transform t{ { oj.GetPosX()  , oj.GetPosY(),  0.0f	}, 
-					 { oj.GetScaleX(), oj.GetScaleY()		}, 
-					   static_cast<f32>(oj.GetRotX())		};
-		player = CreateSprite(t, oj.GetSprite().c_str(), "Player");
-		Sprite& s = Coordinator::Instance()->GetComponent<Sprite>(player);
-		s.color.r = static_cast<f32>(oj.GetRed())	/ 255.0f;
-		s.color.g = static_cast<f32>(oj.GetGreen()) / 255.0f;
-		s.color.b = static_cast<f32>(oj.GetBlue())	/ 255.0f;
-		s.color.a = static_cast<f32>(oj.GetAlpha()) / 255.0f;
-		s.layer = RenderLayer::UI;
+		{
+			Serializer::ObjectJson oj{ "../ALEngine/Resources/Objects Files/Player1.json" };
+			Transform t{ { oj.GetPosX()  , oj.GetPosY(),  0.0f	},
+						 { oj.GetScaleX(), oj.GetScaleY()		},
+						   static_cast<f32>(oj.GetRotX()) };
+			player = CreateSprite(t, oj.GetSprite().c_str(), "Player");
+			Sprite& s = Coordinator::Instance()->GetComponent<Sprite>(player);
+			s.color.r = static_cast<f32>(oj.GetRed()) / 255.0f;
+			s.color.g = static_cast<f32>(oj.GetGreen()) / 255.0f;
+			s.color.b = static_cast<f32>(oj.GetBlue()) / 255.0f;
+			s.color.a = static_cast<f32>(oj.GetAlpha()) / 255.0f;
+			s.layer = RenderLayer::UI;
 
-		CreatePhysics2D(player);
-		CreateCharacterController(player);
-		Collider2D& playerCollider = Coordinator::Instance()->GetComponent<Collider2D>(player);
-		playerCollider.scale[0] = t.scale.x;
-		playerCollider.scale[1] = t.scale.y; 
-		Coordinator::Instance()->GetComponent<Rigidbody2D>(player).drag.x = 0.25f;
+			CreatePhysics2D(player);
+			CreateCharacterController(player);
+			Collider2D& col = Coordinator::Instance()->GetComponent<Collider2D>(player);
+			col.scale[0] = oj.GetScaleOffsetX(), col.scale[1] = oj.GetScaleOffsetY();
+		}
 
 		for (u64 i = 0; i < 4; ++i)
 		{
 			std::ostringstream oss;
 			oss << "../ALEngine/Resources/Objects Files/wall" << i << ".json";
-			Serializer::ObjectJson obj{ oss.str() };
-			Transform trans{ { obj.GetPosX()  , obj.GetPosY(),  0.0f },
-							 { obj.GetScaleX(), obj.GetScaleY()	 	 },
-							   static_cast<f32>(obj.GetRotX())		 };
+			Serializer::ObjectJson oj{ oss.str() };
+			Transform t{ { oj.GetPosX()  , oj.GetPosY(),  0.0f },
+							 { oj.GetScaleX(), oj.GetScaleY()	 	 },
+							   static_cast<f32>(oj.GetRotX())		 };
 
-			*(walls + i) = CreateSprite(trans);
+			Coordinator::Instance()->GetComponent<EntityData>(*(walls + i)).tag = "wall" + i;
+
+			*(walls + i) = CreateSprite(t);
 			CreatePhysics2D(*(walls + i));
 			Collider2D& col = Coordinator::Instance()->GetComponent<Collider2D>(*(walls + i));
 			Rigidbody2D& rb = Coordinator::Instance()->GetComponent<Rigidbody2D>(*(walls + i));
-			col.scale[0] = obj.GetScaleOffsetX(), col.scale[1] = obj.GetScaleOffsetY();
-			col.m_localPosition.x = obj.GetPositionOffsetX(), col.m_localPosition.y = obj.GetPositionOffsetY();
-			rb.isEnabled = obj.GetRigidBodyEnabled();
+			col.scale[0] = oj.GetScaleOffsetX(), col.scale[1] = oj.GetScaleOffsetY();
+			col.m_localPosition.x = oj.GetPositionOffsetX(), col.m_localPosition.y = oj.GetPositionOffsetY();
+			rb.isEnabled = oj.GetRigidBodyEnabled();
+
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(*(walls + i));
+			sprite.layer = RenderLayer::UI;
 		}
 
 		f32 const HALF_WIDTH{ static_cast<f32>(OpenGLWindow::width >> 1) * 0.85f }, HALF_HEIGHT{ static_cast<f32>(OpenGLWindow::height >> 1) * 0.85f };
@@ -120,6 +125,21 @@ namespace ALEngine::Engine
 			sprite.color.g = Random::Range(0.0f, 1.0f);
 			sprite.color.b = Random::Range(0.0f, 1.0f);
 			sprite.color.a = Random::Range(0.0f, 1.0f);
+			sprite.layer = RenderLayer::UI;
+		}
+
+		{
+			Serializer::ObjectJson oj{ "../ALEngine/Resources/Objects Files/background.json" };
+			Transform t{ { oj.GetPosX()  , oj.GetPosY(),  0.0f	},
+						 { oj.GetScaleX(), oj.GetScaleY()		},
+						   static_cast<f32>(oj.GetRotX()) };
+			Entity en = CreateSprite(t, oj.GetSprite().c_str(), "background");
+			Sprite& s = Coordinator::Instance()->GetComponent<Sprite>(en);
+			s.color.r = static_cast<f32>(oj.GetRed()) / 255.0f;
+			s.color.g = static_cast<f32>(oj.GetGreen()) / 255.0f;
+			s.color.b = static_cast<f32>(oj.GetBlue()) / 255.0f;
+			s.color.a = static_cast<f32>(oj.GetAlpha()) / 255.0f;
+			s.layer = RenderLayer::Background;
 		}
 	}
 
@@ -167,7 +187,6 @@ namespace ALEngine::Engine
 			{
 				PROFILER_TIMER("Render");
 				Render();
-
 
 				std::ostringstream oss;
 				oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;

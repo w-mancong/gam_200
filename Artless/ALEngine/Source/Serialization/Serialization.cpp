@@ -1370,8 +1370,8 @@ namespace ALEngine::Serializer
 		return positionOffsetX;
 	}
 
-	void ObjectJson::SetPositionOffsetX(f32 positionOffsetX) {
-		this->positionOffsetX = positionOffsetX;
+	void ObjectJson::SetPositionOffsetX(f32 _positionOffsetX) {
+		this->positionOffsetX = _positionOffsetX;
 	}
 
 	f32 ObjectJson::CheckPositionOffsetY(const std::string& line) {
@@ -1394,8 +1394,8 @@ namespace ALEngine::Serializer
 		return positionOffsetY;
 	}
 
-	void ObjectJson::SetPositionOffsetY(f32 positionOffsetY) {
-		this->positionOffsetY = positionOffsetY;
+	void ObjectJson::SetPositionOffsetY(f32 _positionOffsetY) {
+		this->positionOffsetY = _positionOffsetY;
 	}
 
 	f32 ObjectJson::CheckScaleOffsetX(const std::string& line) {
@@ -1418,8 +1418,8 @@ namespace ALEngine::Serializer
 		return scaleOffsetX;
 	}
 
-	void ObjectJson::SetScaleOffsetX(f32 scaleOffsetX) {
-		this->scaleOffsetX = scaleOffsetX;
+	void ObjectJson::SetScaleOffsetX(f32 _scaleOffsetX) {
+		this->scaleOffsetX = _scaleOffsetX;
 	}
 
 	f32 ObjectJson::CheckScaleOffsetY(const std::string& line) {
@@ -1442,8 +1442,8 @@ namespace ALEngine::Serializer
 		return scaleOffsetY;
 	}
 
-	void ObjectJson::SetScaleOffsetY(f32 scaleOffsetY) {
-		this->scaleOffsetY = scaleOffsetY;
+	void ObjectJson::SetScaleOffsetY(f32 _scaleOffsetY) {
+		this->scaleOffsetY = _scaleOffsetY;
 	}
 
 	b8 ObjectJson::CheckRigidBodyEnabled(const std::string& line) {
@@ -1466,7 +1466,7 @@ namespace ALEngine::Serializer
 		return rigidBodyEnabled;
 	}
 
-	void ObjectJson::SetRigidBodyEnabled(b8 rigidBodyEnabled) {
-		this->rigidBodyEnabled = rigidBodyEnabled;
+	void ObjectJson::SetRigidBodyEnabled(b8 _rigidBodyEnabled) {
+		this->rigidBodyEnabled = _rigidBodyEnabled;
 	}
 }

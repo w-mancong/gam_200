@@ -179,6 +179,7 @@ namespace ALEngine::Memory
 		***********************************************************************************/
 		static void deallocate(void* ptr, bool diff)
 		{
+			(void)diff;
 			Bookmark* free_bm = nullptr, *allo_bm = nullptr;
 			FindBookmark(m_Freed, free_bm);		 // Find a bookmark in freed that is not used
 			FindAllocatedBookmark(allo_bm, ptr); // Find the bookmark containing ptr
@@ -268,7 +269,7 @@ namespace ALEngine::Memory
 
 		DynamicAllocator(void) = default;
 		template <class U>
-		DynamicAllocator(DynamicAllocator<U> const& other) {  };
+		DynamicAllocator(DynamicAllocator<U> const& other) { (void)other; };
 		~DynamicAllocator(void) = default;
 
 		pointer allocate(size_type size)
@@ -278,6 +279,7 @@ namespace ALEngine::Memory
 
 		void deallocate(pointer ptr, size_type size)
 		{
+			(void)size;
 			DynamicMemory::template deallocate<T>(ptr);
 		}
 

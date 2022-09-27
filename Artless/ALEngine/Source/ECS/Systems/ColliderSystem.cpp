@@ -556,6 +556,7 @@ namespace ALEngine::ECS
 		
 	using Physics::RaycastHit2D;
 	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
+		(void)rigidbody_other;
 		//If the velocity is zero
 		//Just calculate static
 		if (rigidbody_moving.velocity.Magnitude() == 0) {
@@ -682,6 +683,7 @@ namespace ALEngine::ECS
 
 
 	bool ColliderSystem::SweptCollision_Circle_Circle(Collider2D& collider_moving, Collider2D const& collider_other, Transform& parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbodyother) {
+		(void)rigidbodyother;
 		//If the velocity is zero
 		//Just calculate static
 		if (rigidbody_moving.velocity.Magnitude() == 0) {
@@ -774,10 +776,10 @@ namespace ALEngine::ECS
 			Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
 
 			//Draw 4 lines
-			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y });	//Bottom
-			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright);	//top
-			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y });	//left
-			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright);	//right
+			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
 		}
 		break;
 

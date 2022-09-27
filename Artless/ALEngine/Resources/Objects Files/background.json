@@ -9,22 +9,15 @@
       "rotX": 0
     },
     "scale": {
-      "scaleX": 50,
-      "scaleY": 50
+      "scaleX": 1600,
+      "scaleY": 900
     }
   },
-  "sprite": "Assets/Images/player.png",
+  "sprite": "Assets/Images/background.jpg",
   "rgba": {
     "red": 255,
     "green": 255,
     "blue": 255,
     "alpha": 255
-  },
-  "Collider Offset": {
-    "positionOffsetX": 0,
-    "positionOffsetY": 0,
-    "scaleOffsetX": 50,
-    "scaleOffsetY": 50,
-    "rigidBodyEnabled": 1
   }
 }
