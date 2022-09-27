@@ -142,12 +142,31 @@ namespace ALEngine::ECS
 
 		rs->RenderBatch();
 
+		Text test;
+		SetTextFont(test, "roboto");
+		SetTextFontType(test, Font::FontType::Italic);
+		SetTextString(test, "Hello World!!");
+		SetTextColor(test, Vector3(1.f, 0.f, 1.f));
+		Text::RenderText(test);
+
+		std::ostringstream ossFPS;
+		ossFPS << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
+		Text FPS;
+		SetTextPos(FPS, Vector2(500.f, Input::GetScreenResY() - 50.f));
+		SetTextFont(FPS, "roboto");
+		SetTextString(FPS, ossFPS.str());
+		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
+		Text::RenderText(FPS);
+
 		// Update and render particles
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
 		particleSys.ParticleRender();
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+
+		// Render all text
+		Text::RenderAllText();
 
 		// End of ImGui frame, render ImGui!
 		if(Editor::ALEditor::Instance()->GetImGuiEnabled())

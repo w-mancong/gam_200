@@ -30,7 +30,7 @@ namespace ALEngine::Editor
 		if (m_CurrentDirectory != std::filesystem::path(assetPath))
 		{
 			//render makeshift back button
-			if (ImGui::Button("<-"))
+			if (ImGui::Button("<- Back"))
 			{
 				m_CurrentDirectory = m_CurrentDirectory.parent_path();
 			}
@@ -40,48 +40,34 @@ namespace ALEngine::Editor
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 		{
 			//file default path
-			//const auto& path = directoryEntry.path();
+			const auto& path = directoryEntry.path();
 
 			//file relative path
 			std::filesystem::path relativepath = std::filesystem::relative(directoryEntry.path(), assetPath);
 
 			//file name from relative path 
-			std::string filenamestring = relativepath.filename().string();
+			std::string fileNamestring = relativepath.filename().string();
 
-			//ImTextureID icon = directoryentry.is_directory()?  ;
-
-		   // ImGui::ImageButton(ImTextureID)
-
-			if (directoryEntry.is_directory())
+			//for dragging file
+			if (ImGui::BeginDragDropSource())
 			{
-				//buttons that show the files
-				//if (ImGui::Button(filenamestring.c_str()))
-				//{
-				//}
-
-				//selectable to show file
-				if (ImGui::Selectable(filenamestring.c_str()))
-				{
-					m_CurrentDirectory /= directoryEntry.path().filename();
-				}
-
+				auto relativePath = std::filesystem::relative(path, assetPath);
+				const wchar_t* itemPath = relativePath.c_str();
+				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				ImGui::EndDragDropSource();
 			}
-			else
-			{
-				//static char buf[128] = ;
 
-				//ImGui::InputText("1", buf, IM_ARRAYSIZE(filenamestring.c_str()));
-				if (ImGui::Selectable(filenamestring.c_str()))
+			if (ImGui::Selectable(fileNamestring.c_str()) && ImGui::IsItemHovered())
+			{
+				if (directoryEntry.is_directory())
 				{
-					ImGui::Button(filenamestring.c_str());
-	
-					//std::filesystem::rename();
+					//selectable to show file
+					//if (ImGui::Selectable(fileNamestring.c_str()))
+					{
+						m_CurrentDirectory /= path.filename();
+					}
 				}
 			}
-	
-			//ImGui::TextWrapped(filenamestring.c_str());
-			//ImGui::NextColumn();
-
 		}
 
 		ImGui::End();
