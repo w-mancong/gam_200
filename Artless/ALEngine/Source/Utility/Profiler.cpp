@@ -6,7 +6,7 @@ namespace ALEngine::Utility
 
 	void Profiler::AddTimerData(TimerData data)
 	{
-		for (auto td : m_TimerDataList)
+		for (auto &td : m_TimerDataList)
 		{
 			if (td.m_Name == data.m_Name)
 			{

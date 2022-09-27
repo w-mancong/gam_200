@@ -18,6 +18,8 @@ namespace ALEngine::Editor
 				total_time += it.m_Time;
 			}
 			counter = 0.f;
+
+			Utility::Profiler::ClearTimerData();
 		}
 
 		if (m_TempTimerDataList.empty())
@@ -47,8 +49,6 @@ namespace ALEngine::Editor
 				std::string timer_data = i.m_Name + ": %.3fms (%.2f%%)";
 				ImGui::Text(timer_data.c_str(), i.m_Time, percent);
 			}
-
-			Utility::Profiler::ClearTimerData();
 		}
 
 		ImGui::End();
