@@ -111,6 +111,12 @@ namespace ALEngine::Engine
 
 			std::ostringstream oss;
 			oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
+
+			Text tx;
+
+
+			ECS::RenderText(tx);
+
 			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
 
 			// Wait for next frame
