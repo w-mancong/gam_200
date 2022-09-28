@@ -1,34 +1,92 @@
+/*!
+file:	InspectorPanel.h
+author: Lucas Nguyen
+email:	l.nguyen@digipen.edu
+brief:	This file contains function declarations for the InspectorPanel class.
+		The InspectorPanel class contains information and functions necessary for
+		the Inspector Panel of the editor to be displayed.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
 
 namespace ALEngine::Editor
 {
+	/*!*********************************************************************************
+		\brief
+		Class that aids in the display of the Inspector Panel for the editor
+	***********************************************************************************/
 	class InspectorPanel
 	{
 	public:
+		/*!*********************************************************************************
+			\brief
+			Default constructor for the InspectorPanel 
+		***********************************************************************************/
 		InspectorPanel(void);
 
+		/*!*********************************************************************************
+			\brief
+			Default destructor for the InspectorPanel
+		***********************************************************************************/
 		~InspectorPanel(void) {};
 
+		/*!*********************************************************************************
+			\brief
+			Updates the Inspector Panel
+		***********************************************************************************/
 		void OnImGuiRender(void);
 
-		void SetSelectedEntity(ECS::Entity setter) { m_SelectedEntity = setter; }
+		/*!*********************************************************************************
+			\brief
+			Set the selected entity for the Inspector
 
-		const ECS::Entity GetSelectedEntity(void) { return m_SelectedEntity; }
+			\param [in] setter
+			Entity to be selected
+		***********************************************************************************/
+		void SetSelectedEntity(ECS::Entity setter);
 
-		bool HasEntityTransform(void) { return !(m_SelectedEntity == ECS::MAX_ENTITIES); };
+		/*!*********************************************************************************
+			\brief
+			Get the selected entity for the Inspector
 
+			\return
+			Returns the selected Entity
+		***********************************************************************************/
+		const ECS::Entity GetSelectedEntity(void);
+
+		/*!*********************************************************************************
+			\brief
+			Gets whether there is a selected entity
+
+			\return
+			Returns true if there is a selected entity, else returns false
+		***********************************************************************************/
+		bool HasSelectedEntity(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the EntityData component info on the panel
+		***********************************************************************************/
 		void DisplayEntityData(void);
 
+		/*!*********************************************************************************
+			\brief
+			Displays the Transform component info on the panel
+		***********************************************************************************/
 		void DisplayTransform(void);
 
+		/*!*********************************************************************************
+			\brief
+			Displays the Sprite component info on the panel
+		***********************************************************************************/
 		void DisplaySprite(void);
 
 
 	private:
-		static ImGuizmo::OPERATION m_CurrentGizmoOperation;
-		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES };
-		bool m_HasEntityTransform{ false };
+		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
+		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES };	// Entity Selected in Inspector
 
 		// Panel size
 		const ImVec2 PANEL_MIN{ 320, 350 };

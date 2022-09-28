@@ -1,32 +1,55 @@
 /*!
-file:	ALEditor.h
-author:	Lucas Nguyen
+file:	LoggerPanel.h
+author: Lucas Nguyen
 email:	l.nguyen@digipen.edu
-brief:	This file contains the function declarations for the LoggerPanel class
+brief:	This file contains function definitions for the LoggerPanel class.
+		The LoggerPanel class contains information and functions necessary for the
+		Logger Panel of the editor to be displayed.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef LOGGER_PANEL_H
 #define LOGGER_PANEL_H
 
 namespace ALEngine::Editor
 {
+	/*!*********************************************************************************
+		\brief
+		Class that aids in the display of the Logger Panel for the editor
+	***********************************************************************************/
 	class LoggerPanel
 	{
 	public:
-		LoggerPanel();
-		~LoggerPanel();
+		/*!*********************************************************************************
+			\brief
+			Default constructor for the LoggerPanel class
+		***********************************************************************************/
+		LoggerPanel(void);
 
-		void OnImGuiRender();
+		/*!*********************************************************************************
+			\brief
+			Default destructor for the LoggerPanel class
+		***********************************************************************************/
+		~LoggerPanel(void);
+
+		/*!*********************************************************************************
+			\brief
+			Updates the Logger Panel
+		***********************************************************************************/
+		void OnImGuiRender(void);
 	private:
-		std::ostringstream logger_oss;
-		u32 log_flags{ 0 };
+		std::ostringstream m_LoggerOSS;		// Logger's ostringtream
+		u32 m_LogFlags{ 0 };				// Flag for which level to display
 
 		// Panel size
 		const ImVec2 PANEL_MIN{ 500, 350 };
 		const ImVec2 PANEL_MAX{ 1920, 1080 };
 	};
 
+	/*!*********************************************************************************
+		\brief
+		enum class for Log's levels
+	***********************************************************************************/
 	enum class LOG_FLAGS
 	{
 		LOG_NONE		= 0,

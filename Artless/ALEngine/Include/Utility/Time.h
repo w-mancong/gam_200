@@ -10,12 +10,16 @@ brief:		This file contains a class "Time" that acts as the framerate controller.
 #ifndef	TIME_H
 #define TIME_H
 
-static constexpr s32 MAX_SAMPLES = 100;
+static constexpr s32 MAX_SAMPLES = 100;	// Max number of frames to track the number of ticks
 
 namespace ALEngine::Utility
 {
 	using hd_clock = std::chrono::high_resolution_clock;
 
+	/*!*********************************************************************************
+		\brief
+		Class that keeps track of the engine's delta time and manages the engine's FPS
+	***********************************************************************************/
 	class Time
 	{
 	public:

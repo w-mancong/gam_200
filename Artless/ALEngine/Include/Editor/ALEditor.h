@@ -3,7 +3,8 @@ file:	ALEditor.h
 author:	Lucas Nguyen
 email:	l.nguyen@digipen.edu
 brief:	This file contains the function declarations for the ALEditor class.
-		This is where most of the ImGui related code will be done.
+		The ALEditor class essentially manages the Dear ImGui functions, as well as the
+		different editor panels generated with the help of Dear ImGui.
 
 		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -13,6 +14,11 @@ brief:	This file contains the function declarations for the ALEditor class.
 #include  <Editor/Panels/ContentBrowserPanel.h>
 namespace ALEngine::Editor
 {
+	/*!*********************************************************************************
+		\brief
+		Class that manages the Dear ImGui functions and editor panels generated with 
+		the aid of Dear ImGui
+	***********************************************************************************/
 	class ALEditor : public Templates::Singleton<ALEditor>
 	{
 	public:
@@ -21,13 +27,13 @@ namespace ALEngine::Editor
 			Updates the editor each frame.
 			Mainly updates each ImGui panel
 		***********************************************************************************/
-		void Update();
+		void Update(void);
 
 		/*!*********************************************************************************
 			\brief
 			Used to shutdown and delete all necessary ImGui related processes.
 		***********************************************************************************/
-		void Exit();
+		void Exit(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -35,7 +41,7 @@ namespace ALEngine::Editor
 			this and End()
 			Ensure to call at the start of each frame, before any ImGui code is called
 		***********************************************************************************/
-		void Begin();
+		void Begin(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -44,7 +50,7 @@ namespace ALEngine::Editor
 			Ensure to call at the end of each frame, after all objects are rendered, but
 			before framebuffers get swapped.
 		***********************************************************************************/
-		void End();
+		void End(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -53,16 +59,16 @@ namespace ALEngine::Editor
 			\param [in] isEnabled
 			Boolean for whether the ImGui will be set to enabled or disabled
 		***********************************************************************************/
-		void SetImGuiEnabled(b8 isEnabled) { m_ImGuiEnabled = isEnabled; }
+		void SetImGuiEnabled(b8 isEnabled);
 
 		/*!*********************************************************************************
 			\brief
-			Sets ImGui to be enabled or disabled.
+			Get whether ImGui is to be enabled or disabled.
 
-			\param [in] isEnabled
-			Boolean for whether the ImGui will be set to enabled or disabled
+			\return
+			Returns true if ImGui is enabled, otherwise returns false
 		***********************************************************************************/
-		b8 GetImGuiEnabled() { return m_ImGuiEnabled; }
+		b8 GetImGuiEnabled(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -71,7 +77,7 @@ namespace ALEngine::Editor
 			\param [in] isEnabled
 			Boolean for whether the ImGui Docking will be set to enabled or disabled
 		***********************************************************************************/
-		void SetDockingEnabled(b8 isEnabled) { m_DockingEnabled = isEnabled; }
+		void SetDockingEnabled(b8 isEnabled);
 
 		/*!*********************************************************************************
 			\brief
@@ -81,28 +87,27 @@ namespace ALEngine::Editor
 			Pointer to the transform of the entity to be selected by te inspector.
 			Soon It will be based on entity instead of just transform alone
 		***********************************************************************************/
-		void SetSelectedEntity(ECS::Entity setter) { imguizmo_panel.SetSelectedEntity(setter); };
+		void SetSelectedEntity(ECS::Entity setter);
 
 		/*!*********************************************************************************
 			\brief
-			Sets the entity to be selected by the ImGui inspector
+			Gets the entity selected by the ImGui inspector
 
-			\param [in] setter
-			Pointer to the transform of the entity to be selected by te inspector.
-			Soon It will be based on entity instead of just transform alone
+			\return
+			Returns the selected Entity
 		***********************************************************************************/
-		const ECS::Entity GetSelectedEntity(void) { return imguizmo_panel.GetSelectedEntity(); }
+		const ECS::Entity GetSelectedEntity(void);
 
 	private:
 		/*!*********************************************************************************
 			\brief
-			Constructor for the ALEditor class
+			Default constructor for the ALEditor class
 		***********************************************************************************/
-		ALEditor(void) { Init(); }
+		ALEditor(void);
 
 		/*!*********************************************************************************
 			\brief
-			Destructor for the ALEditor class
+			Default destructor for the ALEditor class
 		***********************************************************************************/
 		~ALEditor(void) = default;
 
@@ -110,15 +115,16 @@ namespace ALEngine::Editor
 			\brief
 			Initialization for the ImGui editor
 		***********************************************************************************/
-		void Init();
+		void Init(void);
 
 		/*!*********************************************************************************
 			\brief
 			Runs code that enables docking for ImGui windows/panels.
 			Is to be called every frame when Docking is enabled
 		***********************************************************************************/
-		void Docking();
+		void Docking(void);
 
+		// Required for Singleton to function
 		friend class Templates::Singleton<ALEditor>;
 		friend class Memory::StaticMemory;
 
@@ -130,11 +136,11 @@ namespace ALEngine::Editor
 		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
 
 		// Panels
-		ContentBrowserPanel cbp;
-		InspectorPanel imguizmo_panel;
-		LoggerPanel logger_panel;
-		ProfilerPanel profiler_panel;
-		SceneHierarchyPanel hierarchy_panel;
+		ContentBrowserPanel m_ContentBrowserPanel;
+		InspectorPanel m_InspectorPanel;
+		LoggerPanel m_LoggerPanel;
+		ProfilerPanel m_ProfilerPanel;
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};
 }
 
