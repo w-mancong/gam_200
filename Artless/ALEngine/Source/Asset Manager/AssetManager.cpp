@@ -12,26 +12,26 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 *//*__________________________________________________________________________________*/
 
 
-namespace ALEngine
+namespace ALEngine::Engine
 {
-	namespace Engine
-	{
 		AssetManager::AssetManager():
 		m_CurrentAssetKeyCounter(0),
 		m_AssetLoadedCounter(0)
 		{
-			
 		}
 
 		void AssetManager::Init()
 		{
 			//initialize 
+			//check the assets files if got meta
+			// no meta file generate
+			// if got meta file load into memory/stream
+			// need to store handle u64
 		}
 
 		void AssetManager::Update()
 		{
 			//respond to file watcher alerts of any changes to file
-
 		}
 
 		void AssetManager::End()
@@ -153,10 +153,10 @@ namespace ALEngine
 
 		void AssetManager::RemoveFromAssetGuidContainer(u64 guidToremove)
 		{
-			u16 keytoremove = GetKeyForGuid(guidToremove);
+			u16 keyToremove = GetKeyForGuid(guidToremove);
 
 			//erase
-			m_AssetGuidContainer.erase(keytoremove);
+			m_AssetGuidContainer.erase(keyToremove);
 
 			//decrement the counter for current number of asset loaded currently in editor
 			DecrementCurrentAssetCount();
@@ -177,7 +177,6 @@ namespace ALEngine
 					break;
 				}
 			}
-
 			return keyFound;
 		}
 		u16 AssetManager::GetCurrentAssetKeyCount(void)
@@ -190,5 +189,4 @@ namespace ALEngine
 		{
 			++m_CurrentAssetKeyCounter;
 		}
-	}
 }

@@ -1,8 +1,6 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
-
-
 /*!
 file: AssetManager.h
 author: Chan Jie Ming Stanley
@@ -13,8 +11,6 @@ brief: This file contains function declaration for AssetManager. AssetManager is
 
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-
-
 namespace ALEngine::Engine
 {
 
@@ -25,7 +21,6 @@ namespace ALEngine::Engine
 		void Update();
 		void End();
 
-
 		/*!*********************************************************************************
 		 \brief
 		 get timestamp in 3 16 bit parts and assign to vector container before return
@@ -34,7 +29,6 @@ namespace ALEngine::Engine
 		 vector of 16 bits unsigned short of parts of the timestamp
         ***********************************************************************************/
 		std::vector<u16> GetTimeStamp(void);
-
 
 		/*!*********************************************************************************
 		\brief
@@ -81,13 +75,13 @@ namespace ALEngine::Engine
 	    ***********************************************************************************/
 		void RemoveFromAssetGuidContainer(u64 guidToremove);
 
-
 		/*!*********************************************************************************
 	    \brief
 	    get key for current guid to find
+		\return
+		16 bit key of guid
 	    ***********************************************************************************/
 		u16 GetKeyForGuid(u64 guidTofind);
-
 
 		/*!*********************************************************************************
 	    \brief
@@ -118,7 +112,6 @@ namespace ALEngine::Engine
 		friend class Templates::Singleton<AssetManager>;
 		friend class Memory::StaticMemory;
 	};
-
 }
 #endif // !ASSET_MANAGER_H
 
