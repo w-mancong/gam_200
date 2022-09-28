@@ -21,4 +21,22 @@ When you startup the project, you will be able to use the physics control to mov
 Batch Rendering:
 After using the left control key, you will be able to see about 3000 entities rotating on the spot. 
 
+Debug
+When building the project in debug mode, there will be no optimization of the code at all. 
+Warning Level will be set to 4. This build will be the slowest among the two other build. 
+This build is to be used for the development of the engine and will be used to debug the codes.
 
+Development
+Like debug mode, Warning Level will also be set to 4. A low-level optimization of the code will 
+be applied to this build. This build will be used for alpha testing where optimization is wanted 
+but we still want to be able to catch some errors.
+
+Distribution
+This build is mainly for the distribution of our game engine. Codes are compiled in the most 
+optimized way possible, very prone to breaking if there are underlying bugs in the build. Hence 
+this is only used at the end when distributing to our “customers”. 
+
+Cloning of game entities:
+For this milestone, a known bug is that when the create entity is pressed inside the editor, it might
+not be rendering on the screen at first. However, just have to click the create entity button again for entities
+to spawn

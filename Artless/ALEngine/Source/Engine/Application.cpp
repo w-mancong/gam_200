@@ -32,6 +32,8 @@ namespace ALEngine::Engine
 		{
 			for (u64 i{}; i < MAX_BATCH; ++i)
 			{
+				if (!Coordinator::Instance()->HasComponent<EntityData>(*batchShowCase + i))
+					continue;
 				Transform& t = Coordinator::Instance()->GetComponent<Transform>(*(batchShowCase + i));
 				t.rotation += Time::m_DeltaTime * ROT_SPEED;
 			}
@@ -225,13 +227,23 @@ namespace ALEngine::Engine
 			auto batch_status = [](b8 active)
 			{
 				for (u64 i = 0; i < MAX_BATCH; ++i)
+				{
+					if (!Coordinator::Instance()->HasComponent<EntityData>(*batchShowCase + i))
+						continue;
 					Coordinator::Instance()->GetComponent<EntityData>(*(batchShowCase + i)).active = active;
+				}
 			};
 
 			auto physic_status = [](b8 active)
 			{
 				for (u64 i{}; i < 4; ++i)
+				{
+					if (!Coordinator::Instance()->HasComponent<EntityData>(*(walls + i)))
+						continue;
 					Coordinator::Instance()->GetComponent<EntityData>(*(walls + i)).active = active;
+				}
+				if (!Coordinator::Instance()->HasComponent<EntityData>(player))
+					return;
 				Coordinator::Instance()->GetComponent<EntityData>(player).active = active;
 			};
 
