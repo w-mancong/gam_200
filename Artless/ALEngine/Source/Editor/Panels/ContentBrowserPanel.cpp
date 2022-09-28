@@ -3,9 +3,9 @@
 file: ContentBrowserPanel.cpp
 author: Chan Jie Ming Stanley
 email: c.jiemingstanley\@digipen.edu
-brief:
-This file contains
-
+brief: This file contains the function declaration for ContentBrowserPanel.
+	   ContentBrowserPanel handles the panel that display the loaded assets in specified
+	   asset filepath.
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 namespace ALEngine::Editor
