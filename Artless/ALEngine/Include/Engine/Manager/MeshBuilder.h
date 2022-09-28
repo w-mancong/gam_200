@@ -70,10 +70,12 @@ namespace ALEngine::Engine
 	***********************************************************************************/
 	struct BatchData
 	{
-		Math::vec3 const* positions{ nullptr };
+		//Math::vec3 const* positions{ nullptr };
+		//Math::vec2 const* tex_coords{ nullptr };
 		Math::vec4 const* colors{ nullptr };
-		Math::vec2 const* tex_coords{ nullptr };
+		Math::mat4 const* models{ nullptr };
 		u64 const* tex_handles{ nullptr };
+		u64 count{ 0 };
 	};
 
 	/*!*********************************************************************************
@@ -102,6 +104,8 @@ namespace ALEngine::Engine
 		All the relevant data used for batch rendering of entities
 	***********************************************************************************/
 	void SubVertexData(BatchData const& bd);
+
+	void GenerateDrawCall(BatchData const& bd);
 }
 
 #endif
