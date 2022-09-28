@@ -2,7 +2,6 @@
 
 namespace ALEngine::ECS
 {
-	
 	AiFiniteStateMachine::AiFiniteStateMachine(u32 currentState, u32 nextState, u32 previousState)
 	:m_CurrentStateId(currentState),
 	m_NextStateId(nextState),
