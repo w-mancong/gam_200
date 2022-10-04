@@ -79,6 +79,9 @@ namespace ALEngine::Utility
 		static hd_clock::time_point m_StartTime;	// Start time of the application
 		static hd_clock::time_point m_ClockedTime;	// Time that was last clocked
 	};
+
+	//Max steps for fixed delta time for physics
+	u32 constexpr MAX_STEP_FIXED_DT{ 3 };
 }
 
 #endif

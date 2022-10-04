@@ -177,8 +177,15 @@ namespace ALEngine::Engine
 				// Fixed Update (Physics)
 				accumulator += Time::m_DeltaTime;
 
+				// Steps to limit num times physics will run per frame
+				int currNumSteps{ 0 };
+
 				while (accumulator >= Time::m_FixedDeltaTime)
 				{
+					// Exit if physics happen more than limit
+					if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
+						break;
+
 					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
 					// AL_CORE_DEBUG(Time::m_FPS);
