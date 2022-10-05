@@ -49,7 +49,6 @@
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
-    <ClCompile Include="Source\Serialization\Serialization.cpp" />
     <ClCompile Include="Source\Utility\Timer.cpp" />
     <ClCompile Include="Source\Utility\Profiler.cpp" />
     <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
@@ -261,7 +260,6 @@
     <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
-    <ClInclude Include="Include\Serialization\Serialization.h" />
     <ClInclude Include="Include\Utility\Timer.h" />
     <ClInclude Include="Include\Utility\Profiler.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />

@@ -232,7 +232,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
-    <ClCompile Include="Source\Serialization\Serialization.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
@@ -331,7 +330,6 @@
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
-    <ClInclude Include="Include\Serialization\Serialization.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
