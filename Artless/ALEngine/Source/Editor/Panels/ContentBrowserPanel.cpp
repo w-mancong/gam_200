@@ -48,26 +48,36 @@ namespace ALEngine::Editor
 			//file name from relative path 
 			std::string fileNamestring = relativepath.filename().string();
 
-			//for dragging file, need to fix window crash when moving window
-			//if (ImGui::BeginDragDropSource())
-			//{
-			//	auto relativePath = std::filesystem::relative(path, assetPath);
-			//	const wchar_t* itemPath = relativePath.c_str();
-			//	ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-			//	ImGui::EndDragDropSource();
-			//}
+			//push files ID 
+			ImGui::PushID(fileNamestring.c_str());
 
-			if (ImGui::Selectable(fileNamestring.c_str()) && ImGui::IsItemHovered())
+			//selectable files
+			ImGui::Selectable(fileNamestring.c_str());
+
+			//for dragging file, need to fix window crash when moving window
+			if (ImGui::BeginDragDropSource())
+			{
+				auto relativePath = std::filesystem::relative(path, assetPath);
+				const wchar_t* itemPath = relativePath.c_str();
+				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				ImGui::EndDragDropSource();
+			}
+
+			if ( ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
 			{
 				if (directoryEntry.is_directory())
 				{
 					//selectable to show file
-					//if (ImGui::Selectable(fileNamestring.c_str()))
-					{
-						m_CurrentDirectory /= path.filename();
-					}
+					m_CurrentDirectory /= path.filename();
+					
 				}
 			}
+
+			//set next column
+			ImGui::NextColumn();
+
+			//pop files ID
+			ImGui::PopID();
 		}
 
 		ImGui::End();
