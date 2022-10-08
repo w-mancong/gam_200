@@ -56,7 +56,7 @@ namespace ALEngine::Engine
 
 		//// Init ImGui
 		ALEditor::Instance()->SetImGuiEnabled(true);
-		ALEditor::Instance()->SetDockingEnabled(false);
+		ALEditor::Instance()->SetDockingEnabled(true);
 
 		Engine::AssetManager::Instance()->Init();		
 
