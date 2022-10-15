@@ -1,17 +1,14 @@
-#version 460 core
-#extension GL_ARB_bindless_texture  : require
-#extension ARB_gpu_shader_int64     : enable
-
-layout (location = 0) in vec4 vColor;
-layout (location = 1) in vec2 vTexCoord;
-layout (location = 2) in flat uint64_t vTexHandle;
+#version 430 core
+layout (location = 0) in vec2 uv;
+layout (location = 1) flat in uint drawID;
+layout (location = 2) in vec4 vColor;
 
 layout (location = 0) out vec4 fColor;
+layout (binding  = 0) uniform sampler2DArray textureArray;
 
-uniform sampler2D tex;
-
-void main()
+void main(void)
 {
-    // fColor = vColor;
-    fColor = texture(sampler2D(uvec2(vTexHandle)), vTexCoord) * vColor;
+    fColor = vColor;
+    
+    // fColor = texture(textureArray, vec3(uv.x, uv.y, drawID) );
 }
