@@ -4,9 +4,9 @@
 
 layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec2 aTexCoord;
-layout (location = 2) in uint aDrawID;
-layout (location = 3) in vec4 aColor;
-layout (location = 4) in uint64_t aTexHandle;
+layout (location = 2) in vec4 aColor;
+layout (location = 3) in uint64_t aTexHandle;
+layout (location = 4) in uint aDrawID;
 layout (location = 5) in mat4 instanceMatrix;
 
 layout (location = 0) out vec2 vTexCoord;

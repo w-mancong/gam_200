@@ -9,9 +9,16 @@ brief:	This file contain class definition for representing a 4D vector
 #ifndef	VECTOR4_H
 #define VECTOR4_H
 
+namespace ALEngine::ECS::Component
+{
+	struct Color;
+}
+
 namespace ALEngine::Math
 {
 	class Vector2; class Vector3;
+
+	
 	class Vector4
 	{
 	public:
@@ -49,6 +56,12 @@ namespace ALEngine::Math
 			Conversion constructor that converts a Vector3 into a Vector4
 		***********************************************************************************/
 		Vector4(Vector3 const& rhs);
+
+		/*!*********************************************************************************
+			\brief
+			Conversion constructor that converts a Color into a Vector4
+		***********************************************************************************/
+		Vector4(ALEngine::ECS::Component::Color const& rhs);
 
 		/*!*********************************************************************************
 			\brief

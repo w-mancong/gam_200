@@ -33,12 +33,14 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		void Reset(void);
 
+		void Init(void);
 	private:
 		/*!*********************************************************************************
 			\brief
 			Constructor
 		***********************************************************************************/
 		MeshBuilder(void);
+
 		/*!*********************************************************************************
 			\brief
 			Destructor
@@ -70,42 +72,13 @@ namespace ALEngine::Engine
 	***********************************************************************************/
 	struct BatchData
 	{
-		//Math::vec3 const* positions{ nullptr };
-		//Math::vec2 const* tex_coords{ nullptr };
-		Math::vec4 const* colors{ nullptr };
-		Math::mat4 const* models{ nullptr };
-		u64 const* tex_handles{ nullptr };
-		u64 count{ 0 };
+		Math::vec4 const* vColor{ nullptr };
+		Math::mat4 const* vMatrix{ nullptr };
+		u64 const* texHandle{ nullptr };
 	};
 
-	/*!*********************************************************************************
-		\brief
-		Return the vao used for batch rendering of entities
-
-		\return
-		Vao for batch rendering of entities
-	***********************************************************************************/
-	u32 GetBatchVao(void);
-
-	/*!*********************************************************************************
-		\brief
-		NUM_VERTICES (default at 4) * MAX_ENTITIES
-
-		\return
-		The total vertices that is needed
-	***********************************************************************************/
-	u64 GetVertexSize(void);
-
-	/*!*********************************************************************************
-		\brief
-		Sub in the vertex data used for the batch rendering of entities
-
-		\param [in] bd:
-		All the relevant data used for batch rendering of entities
-	***********************************************************************************/
-	void SubVertexData(BatchData const& bd);
-
 	void GenerateDrawCall(BatchData const& bd);
+	u32 GetVao(void);
 }
 
 #endif

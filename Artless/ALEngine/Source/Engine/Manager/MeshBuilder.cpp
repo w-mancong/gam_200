@@ -5,173 +5,144 @@
 namespace
 {
 	// layout location inside vertex shader
-	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, HANDLE{ 3 }, SPRITE_RESERVE_SIZE{ 100 };
-	u32 instanceVBO{ 0 }, batchVBO{ 0 }, indirectBuffer{ 0 }, maxtrixBuffer{ 0 };
-	u64 const NUM_VERTICES{ 4 },
-		TOTAL_POS_BYTE{ sizeof(ALEngine::Math::vec3) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
-		TOTAL_COLOR_BYTE{ sizeof(ALEngine::Math::vec4) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
-		TOTAL_TEXCOORD_BYTE{ sizeof(ALEngine::Math::vec2) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
-		TOTAL_TEXTURE_HANDLE_BYTE{ sizeof(u64) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES };
+	u32 constexpr POS{ 0 }, TEX{ 1 }, COLOR{ 2 }, HANDLE{ 3 }, DRAW_ID{ 4 }, INSTANCE_MATRIX{ 5 }, SPRITE_RESERVE_SIZE{ 100 };
 
-	struct Batch
+	struct Vertex2D
 	{
-		u32 vao{ 0 }, vbo{ 0 }, ebo{ 0 };
-	};
-
-	struct Vertex
-	{
-		f32 x{}, y{}, z{};
-		f32 u{}, v{};
+		float x, y, z;  // Position
+		float u, v;     // Uv
 	};
 
 	struct DrawElementsCommand
 	{
-		u32 vertexCount;
-		u32 instanceCount;
-		u32 firstIndex;
-		u32 baseVertex;
-		ALEngine::Math::vec4 color;
-		u32 baseInstance;
-		u64 texHandle;
+		GLuint vertexCount;
+		GLuint instanceCount;
+		GLuint firstIndex;
+		GLuint baseVertex;
+		GLuint baseInstance;
 	};
 
-	Batch batch{}; DrawElementsCommand* commands{ nullptr };
-	ALEngine::Math::mat4* models{ nullptr };
-	void CreateIndirectBuffer(void)
+	const std::vector<Vertex2D> gQuad = {
+		//xy			            //uv
+		{ -0.5f, -0.5f,   0.0f,	    0.0f, 0.0f },   // btm left
+		{  0.5f, -0.5f,   0.0f,	    1.0f, 0.0f },   // btm right
+		{ -0.5f,  0.5f,   0.0f,	    0.0f, 1.0f },   // top left
+		{  0.5f,  0.5f,   0.0f,	    1.0f, 1.0f }    // top right
+	};
+
+	const std::vector<unsigned int> gQuadIndex = {
+		3, 2, 0,
+		0, 1, 3
+	};
+
+	struct Batch
 	{
-		glGenBuffers(1, &indirectBuffer);
-	}
+		u32 vao;	// vertex array
+		u32 vbo;	// vertex buffer
+		u32 ebo;	// element buffer
+		u32 mbo;	// matrix buffer
+		u32 cbo;	// color buffer
+		u32 hbo;	// texture handle buffer
+		u32 ibo;	// indirect buffer
+	} batch;
+
+	using namespace ALEngine;
+	DrawElementsCommand* vDrawCommand{ nullptr };
 
 	void GenerateGeometry(void)
 	{
-		using namespace ALEngine;
-		u32 vao{}, vbo{}, ebo{};
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
-
-		CreateIndirectBuffer();
-
-		models = Memory::DynamicMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
-		commands = Memory::DynamicMemory::New<DrawElementsCommand>(ECS::MAX_ENTITIES);
-
-		std::vector<Vertex> const aQuad =
-		{
-			// xyz			  | // uv
-		  { -0.5f,  0.5f, 0.0f, 0.0f, 1.0f }, // top left
-		  { -0.5f, -0.5f, 0.0f, 0.0f, 0.0f }, // btm left
-		  {  0.5f,  0.5f, 0.0f, 1.0f, 1.0f }, // top right
-		  {  0.5f, -0.5f, 0.0f, 1.0f, 0.0f }, // btm right
-		};
-
-		std::vector<u32> const indices =
-		{
-			0, 1, 2, 1, 3, 2
-		};
-
-		u64 const NUM_VERTICES{ aQuad.size() * ECS::MAX_ENTITIES };
-		std::vector<Vertex> vertices(NUM_VERTICES);
+		u64 const num_vertices = gQuad.size() * ECS::MAX_ENTITIES;
+		std::vector<Vertex2D> vVertex(num_vertices);
 		u64 vertexIndex{};
+		// populate geometry
 		for (u64 i{}; i < ECS::MAX_ENTITIES; ++i)
 		{
-			for (u64 j{}; j < aQuad.size(); ++j)
-				vertices[vertexIndex++] = aQuad[j];
+			for (u64 j{}; j != gQuad.size(); ++j)
+				vVertex[vertexIndex++] = gQuad[j];
 		}
 
-		// create buffer for batch
+		vDrawCommand = Memory::StaticMemory::New<DrawElementsCommand>(ECS::MAX_ENTITIES);
+
+		u32 vao{}, vbo{}, ebo{}, mbo{}, cbo{}, hbo{}, ibo{};
+		/***********************************************************
+									VAO
+		***********************************************************/
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+		
+		/***********************************************************
+									VBO
+		***********************************************************/
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex2D) * vVertex.size(), vVertex.data(), GL_STATIC_DRAW);
+		// Enabling the vertex attributes
+		glEnableVertexAttribArray(POS);
+		glVertexAttribPointer(POS, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)(offsetof(Vertex2D, x)));
+		glEnableVertexAttribArray(TEX);
+		glVertexAttribPointer(TEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)(offsetof(Vertex2D, u)));
 
-		//Specify vertex attributes for the shader
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, x)));
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, u)));
-
-		//Create an element buffer and populate it
+		/***********************************************************
+									EBO
+		***********************************************************/
+		u64 quad_bytes = sizeof(u32) * gQuadIndex.size();
 		glGenBuffers(1, &ebo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * indices.size(), indices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, quad_bytes, NULL, GL_STATIC_DRAW);
 
-		//Setup per instance matrices
-		glGenBuffers(1, &maxtrixBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, maxtrixBuffer);
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, quad_bytes, gQuadIndex.data());
+
+		/***********************************************************
+									MBO
+		***********************************************************/
+		glGenBuffers(1, &mbo);
+		glBindBuffer(GL_ARRAY_BUFFER, mbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Math::mat4) * ECS::MAX_ENTITIES, nullptr, GL_DYNAMIC_DRAW);
-		//A matrix is 4 vec4s
-		glEnableVertexAttribArray(5 + 0);
-		glEnableVertexAttribArray(5 + 1);
-		glEnableVertexAttribArray(5 + 2);
-		glEnableVertexAttribArray(5 + 3);
 
-		glVertexAttribPointer(5 + 0, 4, GL_FLOAT, GL_FALSE, sizeof(Math::mat4), (GLvoid*)(offsetof(Math::mat4, mat[0].x)));
-		glVertexAttribPointer(5 + 1, 4, GL_FLOAT, GL_FALSE, sizeof(Math::mat4), (GLvoid*)(offsetof(Math::mat4, mat[1].x)));
-		glVertexAttribPointer(5 + 2, 4, GL_FLOAT, GL_FALSE, sizeof(Math::mat4), (GLvoid*)(offsetof(Math::mat4, mat[2].x)));
-		glVertexAttribPointer(5 + 3, 4, GL_FLOAT, GL_FALSE, sizeof(Math::mat4), (GLvoid*)(offsetof(Math::mat4, mat[3].x)));
+		glEnableVertexAttribArray(INSTANCE_MATRIX + 0);
+		glEnableVertexAttribArray(INSTANCE_MATRIX + 1);
+		glEnableVertexAttribArray(INSTANCE_MATRIX + 2);
+		glEnableVertexAttribArray(INSTANCE_MATRIX + 3);
+
+		glVertexAttribPointer(INSTANCE_MATRIX + 0, 4, GL_FLOAT, GL_FALSE, sizeof(Math::mat4), (void*)(offsetof(Math::mat4, mat[0])));
+		glVertexAttribPointer(INSTANCE_MATRIX + 1, 4, GL_FLOAT, GL_FALSE, sizeof(Math::mat4), (void*)(offsetof(Math::mat4, mat[1])));
+		glVertexAttribPointer(INSTANCE_MATRIX + 2, 4, GL_FLOAT, GL_FALSE, sizeof(Math::mat4), (void*)(offsetof(Math::mat4, mat[2])));
+		glVertexAttribPointer(INSTANCE_MATRIX + 3, 4, GL_FLOAT, GL_FALSE, sizeof(Math::mat4), (void*)(offsetof(Math::mat4, mat[3])));
 		//Only apply one per instance
-		glVertexAttribDivisor(5 + 0, 1);
-		glVertexAttribDivisor(5 + 1, 1);
-		glVertexAttribDivisor(5 + 2, 1);
-		glVertexAttribDivisor(5 + 3, 1);
+		glVertexAttribDivisor(INSTANCE_MATRIX + 0, 1);
+		glVertexAttribDivisor(INSTANCE_MATRIX + 1, 1);
+		glVertexAttribDivisor(INSTANCE_MATRIX + 2, 1);
+		glVertexAttribDivisor(INSTANCE_MATRIX + 3, 1);
 
+		/***********************************************************
+									CBO
+		***********************************************************/
+		glGenBuffers(1, &cbo);
+		glBindBuffer(GL_ARRAY_BUFFER, cbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Math::vec4) * ECS::MAX_ENTITIES, nullptr, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(COLOR);
+		glVertexAttribPointer(COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Math::vec4), (void*)(offsetof(Math::vec4, x)));
+		glVertexAttribDivisor(COLOR, 1);
+
+		/***********************************************************
+									HBO
+		***********************************************************/
+		glGenBuffers(1, &hbo);
+		glBindBuffer(GL_ARRAY_BUFFER, hbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, nullptr, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(HANDLE);
+		glVertexAttribLPointer(HANDLE, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (void*)0);
+		glVertexAttribDivisor(HANDLE, 1);
+
+		glGenBuffers(1, &ibo);
+
+		/***********************************************************
+								 Unbind VAO
+		***********************************************************/
 		glBindVertexArray(0);
 
-		batch.vao = vao;
-		batch.vbo = vbo;
-		batch.ebo = ebo;
+		batch.vao = vao, batch.vbo = vbo, batch.ebo = ebo, batch.mbo = mbo, batch.cbo = cbo, batch.hbo = hbo, batch.ibo = ibo;
 	}
-
-	//void CreateBatchVao()
-	//{
-	//	using namespace ALEngine;
-	//	u32 vao{ 0 }, vbo{ 0 }, ebo{ 0 };
-
-	//	u64 const TOTAL_BYTES = TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE + TOTAL_TEXTURE_HANDLE_BYTE;
-
-	//	glGenVertexArrays(1, &vao);
-	//	glBindVertexArray(vao);
-
-	//	glGenBuffers(1, &vbo);
-	//	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	//	glBufferData(GL_ARRAY_BUFFER, TOTAL_BYTES, nullptr, GL_STATIC_DRAW);
-
-	//	// position attribute
-	//	glEnableVertexAttribArray(POS);
-	//	glVertexAttribPointer(POS, 3, GL_FLOAT, GL_FALSE, sizeof(Math::vec3), (void*)0);
-	//	// color attribute
-	//	glEnableVertexAttribArray(COLOR);
-	//	glVertexAttribPointer(COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Math::vec4), (void*)(TOTAL_POS_BYTE));
-	//	// tex coord attribute
-	//	glEnableVertexAttribArray(TEX);
-	//	glVertexAttribPointer(TEX, 2, GL_FLOAT, GL_FALSE, sizeof(Math::vec2), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE));
-	//	// tex_handle attribute
-	//	glEnableVertexAttribArray(HANDLE);
-	//	glVertexAttribLPointer(HANDLE, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (void*)(TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE));
-
-	//	/*
-	//		Buffering indices.
-	//		Draw Primitive: GL_TRIANGLES
-	//	*/
-	//	glGenBuffers(1, &ebo);
-	//	u32 const TOTAL_INDICES = 6 * ECS::MAX_ENTITIES;
-	//	u32* indices = Memory::DynamicMemory::New<u32>(TOTAL_INDICES);
-	//	for (u64 i = 0, j = 0; i < TOTAL_INDICES; i += 6, ++j)
-	//	{
-	//		u32 currIndex = static_cast<u32>(j) * 4;
-	//		*(indices + i)	   = 0 + currIndex;
-	//		*(indices + i + 1) = 1 + currIndex;
-	//		*(indices + i + 2) = 2 + currIndex;
-	//		*(indices + i + 3) = 1 + currIndex;
-	//		*(indices + i + 4) = 3 + currIndex;
-	//		*(indices + i + 5) = 2 + currIndex;
-	//	}
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * TOTAL_INDICES, indices, GL_STATIC_DRAW);
-
-	//	Memory::DynamicMemory::Delete(indices);
-	//	batch.vao = vao;
-	//	batch.vbo = vbo;
-	//	batch.ebo = ebo;
-	//}
 }
 
 namespace ALEngine::Engine
@@ -179,10 +150,7 @@ namespace ALEngine::Engine
 	using namespace Math; using namespace Memory; using namespace ECS;
 	MeshBuilder::MeshBuilder(void)
 	{
-		//CreateBatchVao();
-		//CreateIndirectBuffer();
-		GenerateGeometry();
-		m_Sprites.reserve(SPRITE_RESERVE_SIZE);
+
 	}
 
 	MeshBuilder::~MeshBuilder(void)
@@ -190,6 +158,10 @@ namespace ALEngine::Engine
 		glDeleteVertexArrays(1, &batch.vao);
 		glDeleteBuffers(1, &batch.vbo);
 		glDeleteBuffers(1, &batch.ebo);
+		glDeleteBuffers(1, &batch.mbo);
+		glDeleteBuffers(1, &batch.cbo);
+		glDeleteBuffers(1, &batch.hbo);
+		glDeleteBuffers(1, &batch.ibo);
 	}
 
 	Sprite MeshBuilder::MakeSprite(std::string const& filePath)
@@ -217,6 +189,12 @@ namespace ALEngine::Engine
 			glMakeTextureHandleNonResidentARB(it->second.handle);
 		}
 		m_Sprites.clear();
+	}
+
+	void MeshBuilder::Init(void)
+	{
+		GenerateGeometry();
+		m_Sprites.reserve(SPRITE_RESERVE_SIZE);
 	}
 
 	Sprite MeshBuilder::CreateSprite(std::string const& filePath)
@@ -277,63 +255,40 @@ namespace ALEngine::Engine
 		return m_Sprites.back().second;
 	}
 
-	u32 GetBatchVao(void)
-	{
-		return batch.vao;
-	}
-
-	u64 GetVertexSize(void)
-	{
-		return NUM_VERTICES * MAX_ENTITIES;
-	}
-
-	void SubVertexData(BatchData const& bd)
-	{
-		//glBindBuffer(GL_ARRAY_BUFFER, batch.vbo);
-		//glBufferSubData(GL_ARRAY_BUFFER, 0, TOTAL_POS_BYTE, bd.positions);	// positions
-		//glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE, TOTAL_COLOR_BYTE, bd.colors); // colors
-		//glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE, TOTAL_TEXCOORD_BYTE, bd.tex_coords); // tex coords
-		//glBufferSubData(GL_ARRAY_BUFFER, TOTAL_POS_BYTE + TOTAL_COLOR_BYTE + TOTAL_TEXCOORD_BYTE, TOTAL_TEXTURE_HANDLE_BYTE, bd.tex_handles); // tex handles
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-
 	void GenerateDrawCall(BatchData const& bd)
 	{
-		u32 baseVert{ 0 };
-		for (u64 i{}; i < bd.count; ++i, baseVert += 4)
+		u64 baseVert = 0;
+		for (u64 i{}; i < ECS::MAX_ENTITIES; ++i)
 		{
-			(*(commands + i)).vertexCount	= 6;						// 2 triangles = 6 vertices
-			(*(commands + i)).instanceCount = 1;						// Draw 1 instance
-			(*(commands + i)).firstIndex	= 0;						// Draw from index 0 for this instance
-			(*(commands + i)).baseVertex	= baseVert;					// Starting from baseVert
-			(*(commands + i)).baseInstance	= i;						// gl_InstanceID
-			(*(commands + i)).color			= *(bd.colors + i);			// color value for this entity
-			(*(commands + i)).texHandle		= *(bd.tex_handles + i);	// texture handle for this entity
+			(vDrawCommand + i)->vertexCount = 6;		//4 triangles = 12 vertices
+			(vDrawCommand + i)->instanceCount = 1;		//Draw 1 instance
+			(vDrawCommand + i)->firstIndex = 0;			//Draw from index 0 for this instance
+			(vDrawCommand + i)->baseVertex = baseVert;	//Starting from baseVert
+			(vDrawCommand + i)->baseInstance = i;		//gl_InstanceID
+			baseVert += gQuad.size();
 		}
 
-		//feed the draw command data to the gpu
-		glBindBuffer(GL_DRAW_INDIRECT_BUFFER, indirectBuffer);
-		glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(DrawElementsCommand) * ECS::MAX_ENTITIES, commands, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_DRAW_INDIRECT_BUFFER, batch.ibo);
+		glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(DrawElementsCommand) * ECS::MAX_ENTITIES, vDrawCommand, GL_DYNAMIC_DRAW);
 
-		glBindBuffer(GL_ARRAY_BUFFER, indirectBuffer);
-		//feed color into the shader
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(DrawElementsCommand), (void*)(offsetof(DrawElementsCommand, color)));
-		glVertexAttribDivisor(2, 1); //only once per instance
+		glBindBuffer(GL_ARRAY_BUFFER, batch.mbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Math::mat4) * ECS::MAX_ENTITIES, bd.vMatrix, GL_DYNAMIC_DRAW);
 
-		//feed the instance id to the shader.
-		glEnableVertexAttribArray(3);
-		glVertexAttribIPointer(3, 1, GL_UNSIGNED_INT, sizeof(DrawElementsCommand), (void*)(offsetof(DrawElementsCommand, baseInstance)));
-		glVertexAttribDivisor(3, 1); //only once per instance
+		glBindBuffer(GL_ARRAY_BUFFER, batch.cbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Math::vec4) * ECS::MAX_ENTITIES, bd.vColor, GL_DYNAMIC_DRAW);
+
+		glBindBuffer(GL_ARRAY_BUFFER, batch.hbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, bd.texHandle, GL_DYNAMIC_DRAW);
 
 		//feed the instance id to the shader.
-		glEnableVertexAttribArray(4);
-		glVertexAttribLPointer(4, 1, GL_UNSIGNED_INT64_ARB, sizeof(DrawElementsCommand), (void*)(offsetof(DrawElementsCommand, texHandle)));
-		glVertexAttribDivisor(4, 1); //only once per instance
+		glBindBuffer(GL_ARRAY_BUFFER, batch.ibo);
+		glEnableVertexAttribArray(DRAW_ID);
+		glVertexAttribIPointer(DRAW_ID, 1, GL_UNSIGNED_INT, sizeof(DrawElementsCommand), (void*)(offsetof(DrawElementsCommand, baseInstance)));
+		glVertexAttribDivisor(DRAW_ID, 1);
+	}
 
-		// sub model matrix in
-		glBindBuffer(GL_ARRAY_BUFFER, maxtrixBuffer);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(mat4) * ECS::MAX_ENTITIES, bd.models);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	u32 GetVao(void)
+	{
+		return batch.vao;
 	}
 }
