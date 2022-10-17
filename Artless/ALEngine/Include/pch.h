@@ -63,6 +63,8 @@
 // Serializations
 
 // Self declared header file
+#include <Common Header/MySerializer.h>
+
 #include <Common Header/Utility.h>
 #include <Common Header/MyMemory.h>
 #include <Common Header/TemplateClasses.h>
