@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <Graphics/stb_image.h>
 
 void processInput(GLFWwindow* window);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
@@ -137,7 +138,9 @@ namespace
 
     Math::mat4 vMatrix[TEST_SIZE];
     Math::vec4 vColor[TEST_SIZE];
-    u64 texIndex[TEST_SIZE];
+    u64 texHandle[TEST_SIZE];
+
+    u64 handle[2];
 
 }//Unnamed namespace
 
@@ -190,7 +193,7 @@ void GenerateGeometry()
     glBindBuffer(GL_ARRAY_BUFFER, gMatrixBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vMatrix), vMatrix, GL_DYNAMIC_DRAW);
 
-    u32 constexpr colorLayout{ 3 }, matrixLayout{ 4 };
+    u32 constexpr colorLayout{ 3 }, textureHandleLayout{ 4 }, matrixLayout{ 5 };
 
     //A matrix is 4 vec4s
     glEnableVertexAttribArray(matrixLayout + 0);
@@ -215,7 +218,64 @@ void GenerateGeometry()
     glVertexAttribPointer(colorLayout, 4, GL_FLOAT, GL_FALSE, sizeof(Math::vec4), (GLvoid*)(offsetof(Math::vec4, x)));
     glVertexAttribDivisor(colorLayout, 1);
 
+    glGenBuffers(1, &gTextureIndexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, gTextureIndexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texHandle), texHandle, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(textureHandleLayout);
+    glVertexAttribLPointer(textureHandleLayout, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (GLvoid*)0);
+    glVertexAttribDivisor(textureHandleLayout, 1);
+
     glBindVertexArray(0);
+
+    // load and create a texture 
+// -------------------------
+// load image, create texture and generate mipmaps
+    s32 width, height, nrChannels;
+    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+    stbi_set_flip_vertically_on_load(true);
+    u8* data = stbi_load("Assets/Images/awesomeface.png", &width, &height, &nrChannels, STBI_rgb_alpha);
+    if (!data)
+    {
+        std::cerr << "Failed to load texture" << std::endl;
+        std::cerr << "File path: " << "Assets/Images/awesomeface.png" << std::endl;
+    }
+    u32 format{ 0 };
+    switch (nrChannels)
+    {
+        case STBI_rgb:
+        {
+            format = GL_RGB;
+            break;
+        }
+        case STBI_rgb_alpha:
+        {
+            format = GL_RGBA;
+            break;
+        }
+        // I only want to accept files that have RGB/RGBA formats
+        default:
+        {
+            std::cerr << "Wrong file format: Must contain RGB/RGBA channels" << std::endl;
+        }
+    }
+
+    u32 texture{ 0 };
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // buffer imagge data
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    handle[0] = glGetTextureHandleARB(texture);
+    glMakeTextureHandleResidentARB(handle[0]);
+
+    stbi_image_free(data);
+    // Unbind vertex array and texture to prevent accidental modifications
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     //Method 2. Use Uniform Buffers. Not shown here
 }
@@ -326,11 +386,17 @@ void generateDrawCommands()
     //    *(vColor + i) = Math::vec4{ Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f), Random::Range(0.0f, 1.0f) };
     //}
 
+    for (u64 i{}; i < TEST_SIZE; ++i)
+        *(texHandle + i) = handle[0];
+
     glBindBuffer(GL_ARRAY_BUFFER, gMatrixBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vMatrix), vMatrix, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, gColorBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vColor), vColor, GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, gTextureIndexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texHandle), texHandle, GL_DYNAMIC_DRAW);
 
     //feed the instance id to the shader.
     glBindBuffer(GL_ARRAY_BUFFER, gIndirectBuffer);
