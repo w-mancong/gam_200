@@ -36,6 +36,20 @@ namespace ALEngine::Editor
 			}
 		}
 
+		static float padding = 16.0f;
+		static float thumbnailSize = 128.0f;
+		float cellSize = thumbnailSize + padding;
+
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		int columnCount = (int)(panelWidth / cellSize);
+		if (columnCount < 1)
+		{
+			columnCount = 1;
+		}
+			
+
+		ImGui::Columns(columnCount, 0, false);
+
 		//loop through directory and create buttons for each file
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 		{
@@ -43,16 +57,19 @@ namespace ALEngine::Editor
 			const auto& path = directoryEntry.path();
 
 			//file relative path
-			std::filesystem::path relativepath = std::filesystem::relative(directoryEntry.path(), assetPath);
+			std::filesystem::path relativePath = std::filesystem::relative(directoryEntry.path(), assetPath);
 
 			//file name from relative path 
-			std::string fileNamestring = relativepath.filename().string();
+			std::string fileNamestring = relativePath.filename().string();
 
 			//push files ID 
 			ImGui::PushID(fileNamestring.c_str());
 
 			//selectable files
-			ImGui::Selectable(fileNamestring.c_str());
+			//ImGui::Selectable(fileNamestring.c_str());
+
+			//need change to imagebuttons for icons
+			ImGui::Button(fileNamestring.c_str(), { thumbnailSize, thumbnailSize });
 
 			//for dragging file, need to fix window crash when moving window
 			if (ImGui::BeginDragDropSource())
@@ -69,9 +86,10 @@ namespace ALEngine::Editor
 				{
 					//selectable to show file
 					m_CurrentDirectory /= path.filename();
-					
 				}
 			}
+			//file name under button of file
+			ImGui::TextWrapped(fileNamestring.c_str());
 
 			//set next column
 			ImGui::NextColumn();
@@ -79,6 +97,12 @@ namespace ALEngine::Editor
 			//pop files ID
 			ImGui::PopID();
 		}
+
+
+		ImGui::Columns(1);
+
+		ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
+		ImGui::SliderFloat("Padding", &padding, 0, 32);
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
