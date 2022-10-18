@@ -88,7 +88,7 @@ namespace
 		u64 quad_bytes = sizeof(u32) * gQuadIndex.size();
 		glGenBuffers(1, &ebo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, quad_bytes, NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, quad_bytes, nullptr, GL_STATIC_DRAW);
 
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, quad_bytes, gQuadIndex.data());
 
