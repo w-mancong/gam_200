@@ -27,12 +27,12 @@ namespace ALEngine::Graphics
 
 	GLFWwindow* OpenGLWindow::window = nullptr;
 	u32 OpenGLWindow::width{ DEFAULT_WIDTH }, OpenGLWindow::height{ DEFAULT_HEIGHT };
-	std::string OpenGLWindow::title{};
+	std::string OpenGLWindow::title{"ALEngine"};
 	void OpenGLWindow::InitGLFWWindow(void)
 	{
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_SAMPLES, 4);
 
@@ -49,10 +49,10 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		Serializer::ConfigJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
-		title  = config.GetWindowTitle();
-		width  = config.GetDimensionWidth();
-		height = config.GetDimensionHeight();
+		//Serializer::ConfigJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
+		//title  = config.GetWindowTitle();
+		//width  = config.GetDimensionWidth();
+		//height = config.GetDimensionHeight();
 
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 		if (!window)
@@ -85,7 +85,7 @@ namespace ALEngine::Graphics
 		int major{ 0 }, minor{ 0 };
 		glGetIntegerv(GL_MAJOR_VERSION, &major);
 		glGetIntegerv(GL_MINOR_VERSION, &minor);
-		std::cout << "Version: " << major << "." << minor << std::endl;
+		//std::cout << "Version: " << major << "." << minor << std::endl;
 
 		char* vendor	= (char*)glGetString(GL_VENDOR);
 		char* device	= (char*)glGetString(GL_RENDERER);
@@ -93,7 +93,7 @@ namespace ALEngine::Graphics
 
 		s32 n;
 		glGetIntegerv(GL_NUM_EXTENSIONS, &n);
-		std::vector<std::string> extensions(n);
+		//std::vector<std::string> extensions(n);
 		//if (n > 0)
 		//{
 		//	s32 i;
@@ -107,10 +107,10 @@ namespace ALEngine::Graphics
 		std::cout << "Device: " << device << std::endl;
 		std::cout << "Version: " << version << std::endl;
 		std::cout << "Supported extensions: " << std::endl;
-		//for (s32 i = 0; i < n; ++i)
-		//{
-		//	std::cout << extensions[i] << std::endl;
-		//}
+		for (s32 i = 0; i < n; ++i)
+		{
+			std::cout << extensions[i] << std::endl;
+		}
 #endif // _DEBUG
 
 		// first two params specify location of the lower left corner of window
