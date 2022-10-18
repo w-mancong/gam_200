@@ -2,8 +2,12 @@
 
 namespace
 {
-	u64 const totalKeys = static_cast<u64>(ALEngine::UserInput::KeyCode::TotalKeys);
-	bool keyState[totalKeys] = { false }, keyDownState[totalKeys] = { false }, keyReleasedState[totalKeys] = { false }, keyTriggeredState[totalKeys] = { false };
+	u64 constexpr TOTAL_KEYS{ static_cast<u64>(ALEngine::UserInput::KeyCode::TotalKeys) }, TOTAL_STATES{ 2 };
+	u64 constexpr currentKeyIndex{ 0 }, nextKeyIndex{ 1 };
+	bool keyState[TOTAL_STATES][TOTAL_KEYS]			 = { false }, 
+		 keyDownState[TOTAL_STATES][TOTAL_KEYS]		 = { false }, 
+		 keyReleasedState[TOTAL_STATES][TOTAL_KEYS]  = { false }, 
+		 keyTriggeredState[TOTAL_STATES][TOTAL_KEYS] = { false };
 	bool CheckInput(u64 key)
 	{
 		return GetAsyncKeyState(static_cast<u32>(key));
@@ -12,6 +16,15 @@ namespace
 
 namespace ALEngine::UserInput
 {
+	void Input::Update()
+	{
+		// Copy next state's to current state
+		std::copy(keyState[nextKeyIndex], keyState[nextKeyIndex] + TOTAL_KEYS, keyState[currentKeyIndex]);
+		std::copy(keyDownState[nextKeyIndex], keyDownState[nextKeyIndex] + TOTAL_KEYS, keyDownState[currentKeyIndex]);
+		std::copy(keyReleasedState[nextKeyIndex], keyReleasedState[nextKeyIndex] + TOTAL_KEYS, keyReleasedState[currentKeyIndex]);
+		std::copy(keyTriggeredState[nextKeyIndex], keyTriggeredState[nextKeyIndex] + TOTAL_KEYS, keyTriggeredState[currentKeyIndex]);
+	}
+
 	s32 Input::GetScreenResX()
 	{
 		s32 screenResX, screenResY;
@@ -43,39 +56,42 @@ namespace ALEngine::UserInput
 	bool Input::KeyState(KeyCode key)
 	{
 		u64 const code = static_cast<u64>(key);
-		return keyState[code];
+		return keyState[currentKeyIndex][code];
 	}
 
 	bool Input::KeyDown(KeyCode key)
 	{
 		u64 const code = static_cast<u64>(key);
-		keyState[code] = keyDownState[code] = CheckInput(code);
-		return keyDownState[code];
+		b8 input = CheckInput(code);
+		keyState[nextKeyIndex][code] = keyDownState[nextKeyIndex][code] = input;
+		return input;
 	}
 
 	bool Input::KeyReleased(KeyCode key)
 	{
 		u64 const code = static_cast<u64>(key);
-		if (keyReleasedState[code] && !CheckInput(code))
+		b8 input = CheckInput(code);
+		if (keyReleasedState[currentKeyIndex][code] && !input)
 		{
-			keyState[code] = keyReleasedState[code] = false;
+			keyState[nextKeyIndex][code] = keyReleasedState[nextKeyIndex][code] = false;
 			return true;
 		}
-		else if (!keyReleasedState[code] && CheckInput(code))
-			keyState[code] = keyReleasedState[code] = true;
+		else if (!keyReleasedState[currentKeyIndex][code] && input)
+			keyState[nextKeyIndex][code] = keyReleasedState[nextKeyIndex][code] = true;
 		return false;
 	}
 
 	bool Input::KeyTriggered(KeyCode key)
 	{
 		u64 const code = static_cast<u64>(key);
-		if (!keyTriggeredState[code] && CheckInput(code))
+		b8 input = CheckInput(code);
+		if (!keyTriggeredState[currentKeyIndex][code] && input)
 		{
-			keyState[code] = keyTriggeredState[code] = true;
+			keyState[nextKeyIndex][code] = keyTriggeredState[nextKeyIndex][code] = true;
 			return true;
 		}
-		else if (keyTriggeredState[code] && !CheckInput(code))
-			keyState[code] = keyTriggeredState[code] = false;
+		else if (keyTriggeredState[currentKeyIndex][code] && !input)
+			keyState[nextKeyIndex][code] = keyTriggeredState[nextKeyIndex][code] = false;
 		return false;
 	}
 }

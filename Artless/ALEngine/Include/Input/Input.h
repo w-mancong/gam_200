@@ -16,6 +16,8 @@ namespace ALEngine::UserInput
 	class Input
 	{
 	public:
+		static void Update();
+
 		/*!*********************************************************************************
 			\brief
 			Return the current state of the key

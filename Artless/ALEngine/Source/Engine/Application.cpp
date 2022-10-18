@@ -47,6 +47,7 @@ namespace ALEngine::Engine
 		// should do the game loop here
 		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
 		{
+			Input::Update();
 			// Get Current Time
 			Time::ClockTimeNow();
 
