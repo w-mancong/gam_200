@@ -27,14 +27,7 @@ namespace ALEngine::Editor
 		//imgui window-------------------------------------------------------------------------
 		ImGui::Begin("Content Browser");
 
-		if (m_CurrentDirectory != std::filesystem::path(assetPath))
-		{
-			//render makeshift back button
-			if (ImGui::Button("<- Back"))
-			{
-				m_CurrentDirectory = m_CurrentDirectory.parent_path();
-			}
-		}
+	
 
 		static float padding = 16.0f;
 		static float thumbnailSize = 128.0f;
@@ -57,7 +50,7 @@ namespace ALEngine::Editor
 			const auto& path = directoryEntry.path();
 
 			//file relative path
-			std::filesystem::path relativePath = std::filesystem::relative(directoryEntry.path(), assetPath);
+			std::filesystem::path relativePath = std::filesystem::relative(path, assetPath);
 
 			//file name from relative path 
 			std::string fileNamestring = relativePath.filename().string();
@@ -74,7 +67,6 @@ namespace ALEngine::Editor
 			//for dragging file, need to fix window crash when moving window
 			if (ImGui::BeginDragDropSource())
 			{
-				auto relativePath = std::filesystem::relative(path, assetPath);
 				const wchar_t* itemPath = relativePath.c_str();
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();
@@ -103,6 +95,17 @@ namespace ALEngine::Editor
 
 		ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 		ImGui::SliderFloat("Padding", &padding, 0, 32);
+
+
+		//back button
+		if (m_CurrentDirectory != std::filesystem::path(assetPath))
+		{
+			//render makeshift back button
+			if (ImGui::Button("<-- Back to previous"))
+			{
+				m_CurrentDirectory = m_CurrentDirectory.parent_path();
+			}
+		}
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
