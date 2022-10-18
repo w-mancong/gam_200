@@ -233,17 +233,67 @@ namespace ALEngine::Engine
 			}
 		}
 
+		//u32 texture{ 0 };
+		//glGenTextures(1, &texture);
+		//glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		//// set texture filtering parameters
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		//// buffer imagge data
+		//glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		//glGenerateMipmap(GL_TEXTURE_2D);
+		//u64 handle = glGetTextureHandleARB(texture);
+		//glMakeTextureHandleResidentARB(handle);
+
+		//stbi_image_free(data);
+
+		//m_Sprites.push_back(std::pair<std::string, Sprite>{ filePath, { texture, handle } });
+		//// Unbind vertex array and texture to prevent accidental modifications
+		//glBindTexture(GL_TEXTURE_2D, 0);
+
 		u32 texture{ 0 };
 		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		// buffer imagge data
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+
+		u32 pbo{};
+		glGenBuffers(1, &pbo);
+		std::cout << "Gen pbo" << glGetError() << std::endl;
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
+		std::cout << "Bind pbo" << glGetError() << std::endl;
+		glBufferData(GL_PIXEL_UNPACK_BUFFER, width * height * nrChannels, data, GL_STREAM_DRAW);
+		std::cout << "Buffer pbo" << glGetError() << std::endl;
+
+		glTexStorage3D(GL_TEXTURE_2D_ARRAY,
+			1,
+			GL_RGBA8,
+			128, 128,
+			100
+		);
+
+		for (s32 i{}; i < 126; ++i)
+		{
+			s32 row = std::floor(i / 8) * 128;
+			s32 col = (i % 8) * 128;
+
+			//glPixelStorei(GL_UNPACK_SKIP_PIXELS, col);
+			//glPixelStorei(GL_UNPACK_SKIP_ROWS, row);
+
+			glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0,
+				0, 0, i,
+				128, 128, 1,
+				GL_RGBA,
+				GL_UNSIGNED_BYTE,
+				0);
+			std::cout << glGetError() << std::endl;
+		}
+
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 		u64 handle = glGetTextureHandleARB(texture);
 		glMakeTextureHandleResidentARB(handle);
 
@@ -251,7 +301,9 @@ namespace ALEngine::Engine
 
 		m_Sprites.push_back(std::pair<std::string, Sprite>{ filePath, { texture, handle } });
 		// Unbind vertex array and texture to prevent accidental modifications
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+
 		return m_Sprites.back().second;
 	}
 

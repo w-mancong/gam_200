@@ -37,6 +37,9 @@ namespace ALEngine::Engine
 		AL_CORE_WARN("THIS IS A WARNING MESSAGE");
 		AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
 		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
+
+		Transform trans{ {}, { 200.0f, 200.0f } };
+		CreateSprite(trans, "Assets/Images/tileset.png");
 	}
 
 	void Application::Update(void)

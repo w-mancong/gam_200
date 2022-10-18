@@ -94,23 +94,23 @@ namespace ALEngine::Graphics
 		s32 n;
 		glGetIntegerv(GL_NUM_EXTENSIONS, &n);
 		std::vector<std::string> extensions(n);
-		if (n > 0)
-		{
-			s32 i;
-			for (i = 0; i < n; i++)
-			{
-				extensions[i] = (char*)glGetStringi(GL_EXTENSIONS, i);
-			}
-		}
+		//if (n > 0)
+		//{
+		//	s32 i;
+		//	for (i = 0; i < n; i++)
+		//	{
+		//		extensions[i] = (char*)glGetStringi(GL_EXTENSIONS, i);
+		//	}
+		//}
 
 		std::cout << "Vendor: " << vendor << std::endl;
 		std::cout << "Device: " << device << std::endl;
 		std::cout << "Version: " << version << std::endl;
 		std::cout << "Supported extensions: " << std::endl;
-		for (s32 i = 0; i < n; ++i)
-		{
-			std::cout << extensions[i] << std::endl;
-		}
+		//for (s32 i = 0; i < n; ++i)
+		//{
+		//	std::cout << extensions[i] << std::endl;
+		//}
 #endif // _DEBUG
 
 		// first two params specify location of the lower left corner of window
