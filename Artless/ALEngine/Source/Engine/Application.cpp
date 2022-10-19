@@ -81,10 +81,14 @@ namespace ALEngine::Engine
 			s.color.a = static_cast<f32>(oj.GetAlpha()) / 255.0f;
 			s.layer = RenderLayer::UI;
 
-			CreatePhysics2D(player);
+			//CreateCollider(player);
+			//CreateRigidbody(player);
 			CreateCharacterController(player);
-			Collider2D& col = Coordinator::Instance()->GetComponent<Collider2D>(player);
-			col.scale[0] = oj.GetScaleOffsetX(), col.scale[1] = oj.GetScaleOffsetY();
+
+			if (Coordinator::Instance()->HasComponent<Collider2D>(player)) {
+				Collider2D& col = Coordinator::Instance()->GetComponent<Collider2D>(player);
+				col.scale[0] = oj.GetScaleOffsetX(), col.scale[1] = oj.GetScaleOffsetY();
+			}
 		}
 
 		for (u64 i = 0; i < 4; ++i)
@@ -278,5 +282,9 @@ namespace ALEngine::Engine
 		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
+		UpdatePostRigidbodySystem();
+
+		DebugDrawRigidbody();
+		DebugDrawCollider();
 	}
 }

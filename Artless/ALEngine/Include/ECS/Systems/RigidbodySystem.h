@@ -32,6 +32,14 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
+			Used at end of update, runs through each rigidbody, makes use of collider component to give the updated position of the entity
+		***********************************************************************************/
+		void UpdatePostRigidbodySystem(void);
+
+		void DebugDrawRigidbody(void);
+
+		/*!*********************************************************************************
+			\brief
 			Adds rigidbody component to the entity
 		***********************************************************************************/
 		void CreateRigidbody(Entity const& entity);

@@ -62,6 +62,13 @@ namespace ALEngine::ECS
 		charControl.jumpStrength = 350.f;
 
 		Coordinator::Instance()->AddComponent(entity, charControl);
+
+		if (!Coordinator::Instance()->HasComponent<Rigidbody2D>(entity)) {
+			Coordinator::Instance()->AddComponent(entity, Rigidbody2D{});
+		}
+		if (!Coordinator::Instance()->HasComponent<Collider2D>(entity)) {
+			Coordinator::Instance()->AddComponent(entity, Collider2D{});
+		}
 	}
 
 	void UpdateCharacterControllerSystem() {
