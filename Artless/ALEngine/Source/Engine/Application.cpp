@@ -6,6 +6,11 @@ namespace ALEngine::Engine
 	using namespace Graphics;
 	using namespace ECS;
 	using namespace Editor;
+	namespace
+	{
+		b8 appStatus{ true };
+	}
+
 	class Application
 	{
 	public:
@@ -37,6 +42,8 @@ namespace ALEngine::Engine
 		AL_CORE_WARN("THIS IS A WARNING MESSAGE");
 		AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
 		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
+
+		appStatus = true;
 	}
 
 	void Application::Update(void)
@@ -45,11 +52,14 @@ namespace ALEngine::Engine
 		f32 accumulator{ 0.f };
 
 		// should do the game loop here
-		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
+		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && appStatus)
 		{
 			Input::Update();
+			AssetManager::Instance()->Update();
 			// Get Current Time
 			Time::ClockTimeNow();
+
+			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
 			// ImGui Editor
 			{
@@ -119,6 +129,7 @@ namespace ALEngine::Engine
 		app.Init();
 		app.Update();
 		app.Exit();
+		RunFileWatcher();
 	}
 
 	void Engine::Update(void)
@@ -131,5 +142,10 @@ namespace ALEngine::Engine
 		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
+	}
+
+	b8 Engine::GetApplicationStatus(void)
+	{
+		return appStatus;
 	}
 }

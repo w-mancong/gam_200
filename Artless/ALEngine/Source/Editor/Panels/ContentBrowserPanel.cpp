@@ -36,10 +36,10 @@ namespace ALEngine::Editor
 			const auto& path = directoryEntry.path();
 
 			//file relative path
-			std::filesystem::path relativePath = std::filesystem::relative(path, assetPath);
+			std::filesystem::path const& relativePath = std::filesystem::relative(path, assetPath);
 
 			//file name from relative path 
-			std::string fileNamestring = relativePath.filename().string();
+			std::string const& fileNamestring = relativePath.filename().string();
 
 			if (fileNamestring == "Dev")
 			{
@@ -111,10 +111,10 @@ namespace ALEngine::Editor
 			const auto& path = directoryEntry.path();
 
 			//file relative path
-			std::filesystem::path relativePath = std::filesystem::relative(path, assetPath);
+			std::filesystem::path const& relativePath = std::filesystem::relative(path, assetPath);
 
 			//file name from relative path 
-			std::string fileNamestring = relativePath.filename().string();
+			std::string const& fileNamestring = relativePath.filename().string();
 
 			if (fileNamestring == "Dev")
 			{

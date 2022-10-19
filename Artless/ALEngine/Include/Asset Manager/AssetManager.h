@@ -38,6 +38,8 @@ namespace ALEngine::Engine
 
 		void Alert(std::string const& filePath, FileStatus status);
 
+		void Reset(void);
+
 	private:
 		/*!*********************************************************************************
 		 \brief
@@ -108,6 +110,12 @@ namespace ALEngine::Engine
 		void ModifiedFiles(std::string const& filePath);
 
 		void RemovedFiles(std::string const& filePath);
+
+		void UpdateNewFiles(void);
+
+		void UpdateModifiedFiles(void);
+
+		void UpdateRemovedFiles(void);
 
 		//constructor
 		AssetManager();

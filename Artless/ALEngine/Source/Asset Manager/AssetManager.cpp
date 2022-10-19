@@ -21,6 +21,12 @@ namespace
 		TextureHandle handle;
 	};
 
+	enum class FileType
+	{
+		Image,
+		Audio
+	};
+
 	std::unordered_map<Guid, Texture> textureList;
 
 	void GenerateMetaFile(char const* filePath, Guid id)
@@ -53,7 +59,7 @@ namespace
 		}
 	}
 
-	Texture LoadTexture(char const* filePath, Guid id)
+	Texture LoadTexture(char const* filePath)
 	{
 		// load and create a texture 
 		// -------------------------
@@ -106,6 +112,14 @@ namespace
 
 		return { texture, handle };
 	}
+
+	FileType GetFileType(std::string const& fileName)
+	{
+		if (fileName.find(".png") != std::string::npos || fileName.find(".jpg") != std::string::npos)
+			return FileType::Image;
+		if (fileName.find(".wav") != std::string::npos)
+			return FileType::Audio;
+	};
 }
 
 namespace ALEngine::Engine
@@ -131,10 +145,10 @@ namespace ALEngine::Engine
 			const auto& path = directoryEntry.path();
 
 			//file relative path
-			std::filesystem::path relativePath = std::filesystem::relative(path, basePath);
+			std::filesystem::path const& relativePath = std::filesystem::relative(path, basePath);
 
 			//file name from relative path 
-			std::string fileNamestring = relativePath.filename().string();
+			std::string const& fileNamestring = relativePath.filename().string();
 
 			if (fileNamestring == "Dev")
 			{
@@ -145,24 +159,6 @@ namespace ALEngine::Engine
 			FolderEntry(currentCheckPath, metaFiles, fileNames);
 		}
 
-		enum class FileType 
-		{
-			Image,
-			Audio
-		};
-
-		auto GetFileType = [](std::string const& fileName) 
-		{
-			if (fileName.find(".png") != std::string::npos || fileName.find(".jpg") != std::string::npos)
-			{
-				return FileType::Image;
-			}
-			if (fileName.find(".wav") != std::string::npos)
-			{
-				return FileType::Audio;
-			}
-		};
-
 		for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
 		{
 			std::string meta = *it + ".meta";
@@ -170,7 +166,7 @@ namespace ALEngine::Engine
 
 			Guid id{};
 
-			if (it2 == metaFiles.end())// no meta file generate meta file 
+			if (it2 == metaFiles.end())// no meta file, generate meta file 
 			{
 				id = PrepareGuid();
 				GenerateMetaFile(it->c_str(), id);
@@ -189,7 +185,7 @@ namespace ALEngine::Engine
 				case FileType::Image:
 				{
 					//into memory/stream
-					Texture texture = LoadTexture(it->c_str(), id);
+					Texture texture = LoadTexture(it->c_str());
 					// Insert into texture list
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 					break;
@@ -211,7 +207,7 @@ namespace ALEngine::Engine
 			{
 				char error[1024];
 				strerror_s(error, errno); strcat_s(error, "\n");
-				std::cerr << "Error: " << error;
+				std::cerr << "Remove Error: " << error;
 			}
 		}
 	}
@@ -219,6 +215,9 @@ namespace ALEngine::Engine
 	void AssetManager::Update()
 	{
 		//respond to file watcher alerts of any changes to file
+		UpdateNewFiles();
+		UpdateModifiedFiles();
+		UpdateRemovedFiles();
 	}
 
 	void AssetManager::Exit()
@@ -259,18 +258,24 @@ namespace ALEngine::Engine
 	{
 		switch(status)
 		{
-		case ALEngine::Engine::FileStatus::Created:
+		case FileStatus::Created:
 			NewFiles(filePath);
 			break;
-		case ALEngine::Engine::FileStatus::Modified:
+		case FileStatus::Modified:
 			ModifiedFiles(filePath);
 			break;
-		case ALEngine::Engine::FileStatus::Erased:
+		case FileStatus::Erased:
 			RemovedFiles(filePath);
 			break;
 		default:
 			break;
 		}
+	}
+
+	void AssetManager::Reset(void)
+	{
+		for (auto const& texture : textureList)
+			glMakeTextureHandleNonResidentARB(texture.second.handle);
 	}
 
 	std::vector<u16> AssetManager::GetTimeStamp(void)
@@ -423,19 +428,122 @@ namespace ALEngine::Engine
 
 	void AssetManager::NewFiles(std::string const& filePath)
 	{
-		std::lock_guard<std::mutex> guardN{ m_NLock };
+		std::lock_guard<std::mutex> guard{ m_NLock };
 		m_NewFiles.push_back(filePath);
 	}
 
 	void AssetManager::ModifiedFiles(std::string const& filePath)
 	{
-		std::lock_guard<std::mutex> guardM{ m_MLock };
+		std::lock_guard<std::mutex> guard{ m_MLock };
 		m_ModifiedFiles.push_back(filePath);
 	}
 
 	void AssetManager::RemovedFiles(std::string const& filePath)
 	{
-		std::lock_guard<std::mutex> guardR{ m_RLock };
+		std::lock_guard<std::mutex> guard{ m_RLock };
 		m_RemovedFiles.push_back(filePath);
+	}
+
+	void AssetManager::UpdateNewFiles(void)
+	{
+		std::lock_guard<std::mutex> guard{ m_NLock };
+		// File is new
+		// Load files into memory stream
+		// Generate meta files
+		while (m_NewFiles.size())
+		{
+			std::string const& filePath{ m_NewFiles.back() };
+			Guid id{ PrepareGuid() };
+			GenerateMetaFile(filePath.c_str(), id);
+			switch (GetFileType(filePath))
+			{
+				case FileType::Image:
+				{
+					//into memory/stream
+					Texture texture = LoadTexture(filePath.c_str());
+					// Insert into texture list
+					textureList.insert(std::pair<Guid, Texture>{ id, texture });
+					break;
+				}
+				case FileType::Audio:
+				{
+					break;
+				}
+				default:
+					break;
+			}
+			m_NewFiles.pop_back();
+		}
+	}
+
+	void AssetManager::UpdateModifiedFiles(void)
+	{
+		std::lock_guard<std::mutex> guard{ m_MLock };
+		// File is modified
+		// Guid remains the same
+		// Load new file into stream and delete old files already in memory stream
+		while (m_ModifiedFiles.size())
+		{
+			std::string const& filePath{ m_ModifiedFiles.back() };
+			Guid id{ GetGuid(filePath) };
+			switch (GetFileType(filePath))
+			{
+				case FileType::Image:
+				{
+					Texture const& oldTexture = textureList[id];
+					// Unload memory
+					glMakeTextureHandleNonResidentARB(oldTexture.handle);
+					glDeleteTextures(1, &oldTexture.texture);
+
+					// Load in new file
+					Texture newTexture = LoadTexture(filePath.c_str());
+					textureList[id]	   = newTexture;
+
+					break;
+				}
+				case FileType::Audio:
+				{
+					break;
+				}
+				default:
+					break;
+			}
+			m_ModifiedFiles.pop_back();
+		}
+	}
+
+	void AssetManager::UpdateRemovedFiles(void)
+	{
+		std::lock_guard<std::mutex> guard{ m_RLock };
+		// File is to be removed
+		// Unload from memory stream
+		// Do not keep track of guid
+		while (m_RemovedFiles.size())
+		{
+			std::string const& filePath{ m_RemovedFiles.back() };
+			Guid id{ GetGuid(filePath) };
+			switch (GetFileType(filePath))
+			{
+			case FileType::Image:
+			{
+				Texture const& texture = textureList[id];
+				// Unload memory
+				glMakeTextureHandleNonResidentARB(texture.handle);
+				glDeleteTextures(1, &texture.texture);
+
+				// Do not keep track of this guid anymore
+				textureList.erase(id);
+
+				break;
+			}
+			case FileType::Audio:
+			{
+				break;
+			}
+			default:
+				break;
+			}
+			m_RemovedFiles.pop_back();
+		}
 	}
 }
