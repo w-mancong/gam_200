@@ -18,8 +18,6 @@ namespace ALEngine::ECS::Component
 	struct Sprite
 	{
 		Guid id;
-		// Top left, btm left, top right, btm right
-		Math::vec2 tex_coords[4]{ { 0.0f, 1.0f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f } };
 		Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
 		RenderLayer layer{ RenderLayer::Background };
 	};
