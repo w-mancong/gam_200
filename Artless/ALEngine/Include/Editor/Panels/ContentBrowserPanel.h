@@ -30,7 +30,10 @@ namespace ALEngine::Editor
 		//void SetAssetDirectory();
 
 	private:
+		c8 searchKeyword[256]; //for search bar
+
 		std::filesystem::path m_CurrentDirectory;// for keeping track of current file directory or path
+		std::filesystem::path m_MainDirectory;
 	};
 }
 #endif

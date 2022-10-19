@@ -55,7 +55,7 @@ namespace ALEngine::Engine
 			\return
 			Pointer to the sprite that was created
 		***********************************************************************************/
-		Sprite CreateSprite(std::string const& filePath);
+		//Sprite CreateSprite(std::string const& filePath);
 
 		friend class Templates::Singleton<MeshBuilder>;
 		friend class Memory::StaticMemory;

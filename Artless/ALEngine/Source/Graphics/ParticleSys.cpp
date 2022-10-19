@@ -113,7 +113,7 @@ namespace ALEngine::Graphics::ParticleSys
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(idx), idx, GL_STATIC_DRAW);
 
 		// Init particle shaders
-		particleShader = Graphics::Shader{ "Assets/Shaders/particlesys.vert", "Assets/Shaders/particlesys.frag" };
+		particleShader = Graphics::Shader{ "Assets/Dev/Shaders/particlesys.vert", "Assets/Dev/Shaders/particlesys.frag" };
 
 		// Seed the random generator
 		generator.seed(static_cast<unsigned int>(time(NULL))); // Use current time as seed for random generator

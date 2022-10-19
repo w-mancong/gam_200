@@ -252,7 +252,6 @@
     <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
     <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
-    <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />

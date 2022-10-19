@@ -11,10 +11,12 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 namespace ALEngine::Editor
 {
 	//change this later to read from settings or 
-	extern const std::filesystem::path assetPath = "assets";//base file path
+	const std::filesystem::path assetPath = "assets";//base file path
 
 	ContentBrowserPanel::ContentBrowserPanel()
-	:m_CurrentDirectory(assetPath)
+	:m_CurrentDirectory(assetPath),
+	m_MainDirectory(assetPath),
+	searchKeyword("Search...")
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -27,7 +29,67 @@ namespace ALEngine::Editor
 		//imgui window-------------------------------------------------------------------------
 		ImGui::Begin("Content Browser");
 
+		//loop through directory and create buttons for each file
+		for (auto& directoryEntry : std::filesystem::directory_iterator(m_MainDirectory))
+		{
+			//file default path
+			const auto& path = directoryEntry.path();
+
+			//file relative path
+			std::filesystem::path relativePath = std::filesystem::relative(path, assetPath);
+
+			//file name from relative path 
+			std::string fileNamestring = relativePath.filename().string();
+
+			if (fileNamestring == "Dev")
+			{
+				continue;
+			}
+
+			//push files ID 
+			ImGui::PushID(fileNamestring.c_str());
+
+			//selectable files
+		   // ImGui::MenuItem(fileNamestring.c_str());
+
+			if (ImGui::TreeNode(fileNamestring.c_str()))
+			{
+				//for dragging file, need to fix window crash when moving window
+				if (ImGui::BeginDragDropSource())
+				{
+					const wchar_t* itemPath = relativePath.c_str();
+					ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+					ImGui::EndDragDropSource();
+				}
+
+				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
+				{
+					if (directoryEntry.is_directory() && (m_MainDirectory == m_CurrentDirectory))
+					{
+						//selectable to show file
+						m_CurrentDirectory /= path.filename();
+					}
+				}
+
+				ImGui::TreePop();
+			}
 	
+			//set next column
+			ImGui::NextColumn();
+
+			//pop files ID
+			ImGui::PopID();
+		}
+		ImGui::End();
+		//------------------------------------------------------------------------------------
+
+		//imgui window 2----------------------------------------------------------------------
+		ImGui::Begin("Assets");
+
+		ImGui::Text("Search Bar");
+		ImGui::InputText("Search Tag", searchKeyword, IM_ARRAYSIZE(searchKeyword));
+
+
 
 		static float padding = 16.0f;
 		static float thumbnailSize = 128.0f;
@@ -39,7 +101,6 @@ namespace ALEngine::Editor
 		{
 			columnCount = 1;
 		}
-			
 
 		ImGui::Columns(columnCount, 0, false);
 
@@ -54,6 +115,11 @@ namespace ALEngine::Editor
 
 			//file name from relative path 
 			std::string fileNamestring = relativePath.filename().string();
+
+			if (fileNamestring == "Dev")
+			{
+				continue;
+			}
 
 			//push files ID 
 			ImGui::PushID(fileNamestring.c_str());
@@ -72,7 +138,7 @@ namespace ALEngine::Editor
 				ImGui::EndDragDropSource();
 			}
 
-			if ( ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
+			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
 			{
 				if (directoryEntry.is_directory())
 				{
@@ -90,12 +156,10 @@ namespace ALEngine::Editor
 			ImGui::PopID();
 		}
 
-
 		ImGui::Columns(1);
 
 		ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 		ImGui::SliderFloat("Padding", &padding, 0, 32);
-
 
 		//back button
 		if (m_CurrentDirectory != std::filesystem::path(assetPath))
@@ -109,5 +173,6 @@ namespace ALEngine::Editor
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
+
 	}	
 }	

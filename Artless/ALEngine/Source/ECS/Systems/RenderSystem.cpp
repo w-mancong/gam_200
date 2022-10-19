@@ -127,7 +127,7 @@ namespace ALEngine::ECS
 		particleSys.ParticleSysInit();
 
 		// Batch rendering
-		batchShader = Shader{ "Assets/Shaders/batch.vert", "Assets/Shaders/batch.frag" };
+		batchShader = Shader{ "Assets/Dev/Shaders/batch.vert", "Assets/Dev/Shaders/batch.frag" };
 		batchShader.use();
 		batchShader.Set("view", camera.ViewMatrix());
 		batchShader.Set("proj", camera.ProjectionMatrix());

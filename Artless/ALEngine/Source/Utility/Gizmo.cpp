@@ -46,7 +46,7 @@ namespace ALEngine::Gizmos
 		};
 
 		// initialize line shader
-		gizmolineShader = Graphics::Shader{ "Assets/Shaders/gizmo.vert", "Assets/Shaders/gizmo.frag" };
+		gizmolineShader = Graphics::Shader{ "Assets/Dev/Shaders/gizmo.vert", "Assets/Dev/Shaders/gizmo.frag" };
 		gizmoToggle = true;
 		//gizmoCircleSegments = 32; // default circle will have 32 line segments
 

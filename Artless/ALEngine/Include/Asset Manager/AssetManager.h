@@ -13,7 +13,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 *//*__________________________________________________________________________________*/
 namespace ALEngine::Engine
 {
-
+	using Guid = u64;
 	class AssetManager : public Templates::Singleton<AssetManager>
 	{
 	public:
@@ -21,6 +21,20 @@ namespace ALEngine::Engine
 		void Update();
 		void End();
 
+		//map<16 bit assetkeycount, 64 bit guid>
+		//map container for storing 64 bit guids 
+		std::map<u16, u64> m_AssetGuidContainer; // 64 bit guid format (48 bits: timestamp/ date & time ,16 bits: counter from 0 to 65,535
+
+		/*!*********************************************************************************
+		\brief
+		get the current asset counter that is tracking how many asset loaded currently
+		\return
+		16 bits unsigned short containing the number of asset that are loaded currently
+		***********************************************************************************/
+		u16 GetCurrentAssetCount(void);
+
+		TextureHandle GetTexture(Guid id);
+	private:
 		/*!*********************************************************************************
 		 \brief
 		 get timestamp in 3 16 bit parts and assign to vector container before return
@@ -36,19 +50,7 @@ namespace ALEngine::Engine
 		then call the AddToAssetGuidContainer function to add the new guid into map container
 		storing guid.
 	    ***********************************************************************************/
-		void PrepareGuid(void);
-
-		//map<16 bit assetkeycount, 64 bit guid>
-		//map container for storing 64 bit guids 
-		std::map<u16, u64> m_AssetGuidContainer; // 64 bit guid format (48 bits: timestamp/ date & time ,16 bits: counter from 0 to 65,535
-
-		/*!*********************************************************************************
-		\brief
-		get the current asset counter that is tracking how many asset loaded currently
-		\return
-		16 bits unsigned short containing the number of asset that are loaded currently
-		***********************************************************************************/
-		u16 GetCurrentAssetCount(void);
+		Guid PrepareGuid(void);
 
 		/*!*********************************************************************************
 		\brief
@@ -61,7 +63,6 @@ namespace ALEngine::Engine
 	    decrement the current asset counter
 		***********************************************************************************/
 		void DecrementCurrentAssetCount(void);
-
 
 		/*!*********************************************************************************
 		\brief
@@ -92,13 +93,7 @@ namespace ALEngine::Engine
 	    ***********************************************************************************/
 		u16 GetCurrentAssetKeyCount(void);
 
-		/*!*********************************************************************************
-		\brief
-		increment the current asset key counter
-		***********************************************************************************/
-		void IncrementCurrentAssetKeyCount(void);
 
-	private:
 		//constructor
 		AssetManager();
 		virtual ~AssetManager(void) = default;
@@ -111,6 +106,12 @@ namespace ALEngine::Engine
 
 		friend class Templates::Singleton<AssetManager>;
 		friend class Memory::StaticMemory;
+
+		/*!*********************************************************************************
+		\brief
+		increment the current asset key counter
+		***********************************************************************************/
+		void IncrementCurrentAssetKeyCount(void);
 	};
 }
 #endif // !ASSET_MANAGER_H

@@ -258,7 +258,6 @@
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
-    <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
     <ClInclude Include="Include\Serialization\Serialization.h" />
