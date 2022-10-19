@@ -255,6 +255,24 @@ namespace ALEngine::Engine
 		return id;
 	}
 
+	void AssetManager::Alert(std::string const& filePath, FileStatus status)
+	{
+		switch(status)
+		{
+		case ALEngine::Engine::FileStatus::Created:
+			NewFiles(filePath);
+			break;
+		case ALEngine::Engine::FileStatus::Modified:
+			ModifiedFiles(filePath);
+			break;
+		case ALEngine::Engine::FileStatus::Erased:
+			RemovedFiles(filePath);
+			break;
+		default:
+			break;
+		}
+	}
+
 	std::vector<u16> AssetManager::GetTimeStamp(void)
 	{
 		//vector to store 16bit parts of timestamp 
@@ -401,5 +419,23 @@ namespace ALEngine::Engine
 	void AssetManager::IncrementCurrentAssetKeyCount(void)
 	{
 		++m_CurrentAssetKeyCounter;
+	}
+
+	void AssetManager::NewFiles(std::string const& filePath)
+	{
+		std::lock_guard<std::mutex> guardN{ m_NLock };
+		m_NewFiles.push_back(filePath);
+	}
+
+	void AssetManager::ModifiedFiles(std::string const& filePath)
+	{
+		std::lock_guard<std::mutex> guardM{ m_MLock };
+		m_ModifiedFiles.push_back(filePath);
+	}
+
+	void AssetManager::RemovedFiles(std::string const& filePath)
+	{
+		std::lock_guard<std::mutex> guardR{ m_RLock };
+		m_RemovedFiles.push_back(filePath);
 	}
 }
