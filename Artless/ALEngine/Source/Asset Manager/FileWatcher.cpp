@@ -49,7 +49,7 @@ namespace ALEngine::Engine
 			}
 
 			//check if a file was created or modified
-			for (auto& file : std::filesystem::recursive_directory_iterator(m_PathToWatch))
+			for (auto const& file : std::filesystem::recursive_directory_iterator(m_PathToWatch))
 			{
 				auto currentfileLastwritetime = std::filesystem::last_write_time(file);
 

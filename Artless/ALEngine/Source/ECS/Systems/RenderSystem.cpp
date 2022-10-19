@@ -1,4 +1,4 @@
-	#include "pch.h"
+#include "pch.h"
 #include <Graphics/ParticleSys.h>
 
 namespace ALEngine::ECS
@@ -35,18 +35,16 @@ namespace ALEngine::ECS
 	namespace
 	{
 		std::shared_ptr<RenderSystem> rs;
-		Shader batchShader;
+		Shader indirectShader;
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
 
 		ParticleSys::ParticleSystem particleSys;
 
-		// Batch rendering
-		vec3* positions{ nullptr };
-		vec4* colors{ nullptr };
-		vec2* tex_coords{ nullptr };
-		u64* tex_handles{ nullptr };
+		Math::mat4* vMatrix{ nullptr };
+		Math::vec4* vColor{ nullptr };
+		u64* texHandle{ nullptr };
 
 		vec2 const vertex_position[4] =
 		{
@@ -69,45 +67,45 @@ namespace ALEngine::ECS
 		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
 		// sort entities by layer
 		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-			{
-				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-				return sp1.layer < sp2.layer;
-			});
+		{
+			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+			return sp1.layer < sp2.layer;
+		});
 
-		s32 counter{ 0 }; u64 const size = entities.size();
-		for (u64 i = 0; i < size; ++i)
+		u64 counter{};
+		for (u64 i{}; i < entities.size(); ++i)
 		{
 			Entity const& en = entities[i];
 			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
 				continue;
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-			mat4 model = Matrix4::Model(trans.position, trans.scale, trans.rotation);
-			for (u64 j = static_cast<u64>(counter) * 4, k = 0; j < (static_cast<u64>(counter) * 4) + 4; ++j, ++k)
-			{
-				*(positions + j) = model * vec4(vertex_position[k].x, vertex_position[k].y, 0.0f, 1.0f);
-				// assigning colors
-				(*(colors + j)).x = sprite.color.r; (*(colors + j)).y = sprite.color.g; (*(colors + j)).z = sprite.color.b; (*(colors + j)).w = sprite.color.a;
-				*(tex_coords + j) = *(sprite.tex_coords + k);
-				*(tex_handles + j) = sprite.handle;
-			}
+
+			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vColor    + i) = sprite.color;
+			*(texHandle + i) = AssetManager::Instance()->GetTexture(sprite.id);
+
 			++counter;
 		}
 
-		u32 vao = GetBatchVao();
+		indirectShader.use();
+		indirectShader.Set("proj", camera.ProjectionMatrix());
+		indirectShader.Set("view", camera.ViewMatrix());
 
-		batchShader.use();
-		batchShader.Set("view", camera.ViewMatrix());
-		batchShader.Set("proj", camera.ProjectionMatrix());
+        glBindVertexArray(GetVao());
 
-		BatchData bd{ positions, colors, tex_coords, tex_handles };
+		BatchData bd{ vColor, vMatrix, texHandle };
+		GenerateDrawCall(bd);
 
-		SubVertexData(bd);
+        //draw
+        glMultiDrawElementsIndirect(GL_TRIANGLES,   //type
+            GL_UNSIGNED_INT,                        //indices represented as unsigned ints
+            (void*)0,                               //start with the first draw command
+            static_cast<s32>(counter),              //draw objects
+            0);                                     //no stride, the draw commands are tightly packed
 
-		glBindVertexArray(vao);
-		glDrawElements(GL_TRIANGLES, INDICES_SIZE * counter, GL_UNSIGNED_INT, nullptr);
-		glBindVertexArray(0);
+        glBindVertexArray(0);
 	}
 	
 	void RegisterRenderSystem(void)
@@ -130,15 +128,7 @@ namespace ALEngine::ECS
 		particleSys.ParticleSysInit();
 
 		// Batch rendering
-		batchShader = Shader{ "Assets/Shaders/batch.vert", "Assets/Shaders/batch.frag" };
-		batchShader.use();
-		batchShader.Set("view", camera.ViewMatrix());
-		batchShader.Set("proj", camera.ProjectionMatrix());
-
-		positions = Memory::StaticMemory::New<vec3>(GetVertexSize());
-		colors = Memory::StaticMemory::New<vec4>(GetVertexSize());
-		tex_coords = Memory::StaticMemory::New<vec2>(GetVertexSize());
-		tex_handles = Memory::StaticMemory::New<u64>(GetVertexSize());
+		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 
 		// frame buffer init
 		glGenFramebuffers(1, &fbo);
@@ -151,6 +141,12 @@ namespace ALEngine::ECS
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbTexture, 0);
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
 			std::cout << " Frame buffer failed to initialize properly\n";
+
+		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
+		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
+		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
+
+		MeshBuilder::Instance()->Init();
 	}
 
 	void Render(void)
@@ -253,7 +249,8 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+		Sprite sprite;
+		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 		Coordinator::Instance()->AddComponent(entity, transform);
@@ -261,7 +258,8 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+		Sprite sprite;
+		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}

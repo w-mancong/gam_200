@@ -263,7 +263,6 @@ namespace ALEngine::Math
 		***********************************************************************************/
 		static Matrix4x4 ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot);
 
-	private:
 		Vector4 mat[4];
 	}; using Mat4 = Matrix4x4; using Mtx4 = Matrix4x4; using Matrix4 = Matrix4x4; using mat4 = Matrix4x4;
 

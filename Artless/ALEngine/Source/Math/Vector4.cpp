@@ -6,6 +6,7 @@ namespace ALEngine::Math
 	Vector4::Vector4(f32 x, f32 y, f32 z, f32 w) : x{ x }, y{ y }, z{ z }, w{ w } {}
 	Vector4::Vector4(Vector2 const& rhs) : x{ rhs.x }, y{ rhs.y }, z{ 0.0f }, w{ 1.0f } {}
 	Vector4::Vector4(Vector3 const& rhs) : x{ rhs.x }, y{ rhs.y }, z{ rhs.z }, w{ 1.0f } {}
+	Vector4::Vector4(Color const& rhs) : x{ rhs.r }, y{ rhs.g }, z{ rhs.b }, w{ rhs.a } {}
 
 	Vector4& Vector4::operator=(Vector2 const& rhs)
 	{
