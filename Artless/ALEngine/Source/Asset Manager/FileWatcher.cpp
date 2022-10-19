@@ -11,15 +11,16 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 
 namespace
 {
-	// Container used to check for orphan meta files
-	std::vector<std::string> metaFiles, assetFiles;
 	const std::filesystem::path basePath = "Assets"; //base file path
-
+		// Container used to check for orphan meta files
+	std::vector<std::string> metaFiles, assetFiles;
 	u64 constexpr RESERVE_SIZE{ 100 };
-
 	// Function to track meta files, if got orphan .meta files must delete
+
 	void TrackMetaFiles(void)
 	{
+		const std::filesystem::path basePath = "Assets"; //base file path
+
 		for (auto& file : std::filesystem::recursive_directory_iterator(basePath))
 		{
 			if (file.path().string().find("Dev") != std::string::npos || file.is_directory())
@@ -73,8 +74,8 @@ namespace ALEngine::Engine
 
 	void FileWatcher::Start()
 	{
-		while (m_Running && GetApplicationStatus())
-		{
+		//while (m_Running && GetApplicationStatus())
+		//{
 			//wait for the milliseconds which is the "delay" time
 			std::this_thread::sleep_for(m_Delay);
 
@@ -129,8 +130,9 @@ namespace ALEngine::Engine
 				}
 			}
 
+			//respond to file watcher alerts of any changes to file
 			TrackMetaFiles();
-		}
+		//}
 	}
 
 	bool FileWatcher::contains(const std::string& key)
@@ -141,17 +143,17 @@ namespace ALEngine::Engine
 
 	namespace
 	{
-		void FileWatcherWorkerThread(void)
-		{
-			FileWatcher watcher{ std::chrono::milliseconds(0) };
-			watcher.Start();
-		}
-		std::thread worker{ FileWatcherWorkerThread };
+		//void FileWatcherWorkerThread(void)
+		//{
+		//	FileWatcher watcher{ std::chrono::milliseconds(0) };
+		//	watcher.Start();
+		//}
+		//std::thread worker{ FileWatcherWorkerThread };
 	}
 
 	void RunFileWatcher(void)
 	{
-		worker.join();
+		//worker.join();
 	}
 }
 

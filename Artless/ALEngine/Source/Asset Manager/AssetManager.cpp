@@ -214,10 +214,10 @@ namespace ALEngine::Engine
 
 	void AssetManager::Update()
 	{
-		//respond to file watcher alerts of any changes to file
 		UpdateNewFiles();
 		UpdateModifiedFiles();
 		UpdateRemovedFiles();
+		std::cout << textureList.size() << std::endl;
 	}
 
 	void AssetManager::Exit()
@@ -258,17 +258,17 @@ namespace ALEngine::Engine
 	{
 		switch(status)
 		{
-		case FileStatus::Created:
-			NewFiles(filePath);
-			break;
-		case FileStatus::Modified:
-			ModifiedFiles(filePath);
-			break;
-		case FileStatus::Erased:
-			RemovedFiles(filePath);
-			break;
-		default:
-			break;
+			case FileStatus::Created:
+				NewFiles(filePath);
+				break;
+			case FileStatus::Modified:
+				ModifiedFiles(filePath);
+				break;
+			case FileStatus::Erased:
+				RemovedFiles(filePath);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -428,122 +428,99 @@ namespace ALEngine::Engine
 
 	void AssetManager::NewFiles(std::string const& filePath)
 	{
-		std::lock_guard<std::mutex> guard{ m_NLock };
-		m_NewFiles.push_back(filePath);
+		//std::lock_guard<std::mutex> guard{ m_NLock };
+		//m_NewFiles.push_back(filePath);
+
+		Guid id{ PrepareGuid() };
+		GenerateMetaFile(filePath.c_str(), id);
+		switch (GetFileType(filePath))
+		{
+		case FileType::Image:
+		{
+			//into memory/stream
+			Texture texture = LoadTexture(filePath.c_str());
+			// Insert into texture list
+			textureList.insert(std::pair<Guid, Texture>{ id, texture });
+			break;
+		}
+		case FileType::Audio:
+		{
+			break;
+		}
+		default:
+			break;
+		}
 	}
 
 	void AssetManager::ModifiedFiles(std::string const& filePath)
 	{
-		std::lock_guard<std::mutex> guard{ m_MLock };
-		m_ModifiedFiles.push_back(filePath);
+		//std::lock_guard<std::mutex> guard{ m_MLock };
+		//m_ModifiedFiles.push_back(filePath);
+		Guid id{ GetGuid(filePath) };
+		switch (GetFileType(filePath))
+		{
+		case FileType::Image:
+		{
+			Texture const& oldTexture = textureList[id];
+			// Unload memory
+			glMakeTextureHandleNonResidentARB(oldTexture.handle);
+			glDeleteTextures(1, &oldTexture.texture);
+
+			// Load in new file
+			Texture newTexture = LoadTexture(filePath.c_str());
+			textureList[id] = newTexture;
+
+			break;
+		}
+		case FileType::Audio:
+		{
+			break;
+		}
+		default:
+			break;
+		}
 	}
 
 	void AssetManager::RemovedFiles(std::string const& filePath)
 	{
-		std::lock_guard<std::mutex> guard{ m_RLock };
-		m_RemovedFiles.push_back(filePath);
+		//std::lock_guard<std::mutex> guard{ m_RLock };
+		//m_RemovedFiles.push_back(filePath);
+		Guid id{ GetGuid(filePath) };
+		switch (GetFileType(filePath))
+		{
+		case FileType::Image:
+		{
+			Texture& texture = textureList[id];
+			// Unload memory
+			glMakeTextureHandleNonResidentARB(texture.handle);
+			glDeleteTextures(1, &texture.texture);
+
+			// Do not keep track of this guid anymore
+			textureList.erase(id);
+
+			break;
+		}
+		case FileType::Audio:
+		{
+			break;
+		}
+		default:
+			break;
+		}
 	}
 
 	void AssetManager::UpdateNewFiles(void)
 	{
-		std::lock_guard<std::mutex> guard{ m_NLock };
-		// File is new
-		// Load files into memory stream
-		// Generate meta files
-		while (m_NewFiles.size())
-		{
-			std::string const& filePath{ m_NewFiles.back() };
-			Guid id{ PrepareGuid() };
-			GenerateMetaFile(filePath.c_str(), id);
-			switch (GetFileType(filePath))
-			{
-				case FileType::Image:
-				{
-					//into memory/stream
-					Texture texture = LoadTexture(filePath.c_str());
-					// Insert into texture list
-					textureList.insert(std::pair<Guid, Texture>{ id, texture });
-					break;
-				}
-				case FileType::Audio:
-				{
-					break;
-				}
-				default:
-					break;
-			}
-			m_NewFiles.pop_back();
-		}
+
 	}
 
 	void AssetManager::UpdateModifiedFiles(void)
 	{
-		std::lock_guard<std::mutex> guard{ m_MLock };
-		// File is modified
-		// Guid remains the same
-		// Load new file into stream and delete old files already in memory stream
-		while (m_ModifiedFiles.size())
-		{
-			std::string const& filePath{ m_ModifiedFiles.back() };
-			Guid id{ GetGuid(filePath) };
-			switch (GetFileType(filePath))
-			{
-				case FileType::Image:
-				{
-					Texture const& oldTexture = textureList[id];
-					// Unload memory
-					glMakeTextureHandleNonResidentARB(oldTexture.handle);
-					glDeleteTextures(1, &oldTexture.texture);
 
-					// Load in new file
-					Texture newTexture = LoadTexture(filePath.c_str());
-					textureList[id]	   = newTexture;
-
-					break;
-				}
-				case FileType::Audio:
-				{
-					break;
-				}
-				default:
-					break;
-			}
-			m_ModifiedFiles.pop_back();
-		}
 	}
 
 	void AssetManager::UpdateRemovedFiles(void)
 	{
-		std::lock_guard<std::mutex> guard{ m_RLock };
-		// File is to be removed
-		// Unload from memory stream
-		// Do not keep track of guid
-		while (m_RemovedFiles.size())
-		{
-			std::string const& filePath{ m_RemovedFiles.back() };
-			Guid id{ GetGuid(filePath) };
-			switch (GetFileType(filePath))
-			{
-			case FileType::Image:
-			{
-				Texture const& texture = textureList[id];
-				// Unload memory
-				glMakeTextureHandleNonResidentARB(texture.handle);
-				glDeleteTextures(1, &texture.texture);
 
-				// Do not keep track of this guid anymore
-				textureList.erase(id);
-
-				break;
-			}
-			case FileType::Audio:
-			{
-				break;
-			}
-			default:
-				break;
-			}
-			m_RemovedFiles.pop_back();
-		}
 	}
 }

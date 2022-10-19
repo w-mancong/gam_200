@@ -9,6 +9,7 @@ namespace ALEngine::Engine
 	namespace
 	{
 		b8 appStatus{ true };
+		FileWatcher watcher{ std::chrono::milliseconds(0) };
 	}
 
 	class Application
@@ -34,7 +35,7 @@ namespace ALEngine::Engine
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(true);
 
-		Engine::AssetManager::Instance()->Init();		
+		Engine::AssetManager::Instance()->Init();
 
 		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
 		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
@@ -55,6 +56,7 @@ namespace ALEngine::Engine
 		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && appStatus)
 		{
 			Input::Update();
+			watcher.Start();
 			AssetManager::Instance()->Update();
 			// Get Current Time
 			Time::ClockTimeNow();
@@ -129,7 +131,7 @@ namespace ALEngine::Engine
 		app.Init();
 		app.Update();
 		app.Exit();
-		RunFileWatcher();
+		//RunFileWatcher();
 	}
 
 	void Engine::Update(void)
