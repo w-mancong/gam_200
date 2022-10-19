@@ -1,4 +1,4 @@
-	#include "pch.h"
+#include "pch.h"
 #include <Graphics/ParticleSys.h>
 
 namespace ALEngine::ECS
@@ -55,6 +55,9 @@ namespace ALEngine::ECS
 		};
 
 		s32 constexpr INDICES_SIZE{ 6 };
+		
+		// frame buffer
+		unsigned int fbo, fbTexture;
 	}
 
 	void RenderSystem::RenderBatch(void)
@@ -104,7 +107,7 @@ namespace ALEngine::ECS
 
         glBindVertexArray(0);
 	}
-
+	
 	void RegisterRenderSystem(void)
 	{
 		rs = Coordinator::Instance()->RegisterSystem<RenderSystem>();
@@ -127,6 +130,18 @@ namespace ALEngine::ECS
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 
+		// frame buffer init
+		glGenFramebuffers(1, &fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+		glGenTextures(1, &fbTexture);
+		glBindTexture(GL_TEXTURE_2D, fbTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbTexture, 0);
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
+			std::cout << " Frame buffer failed to initialize properly\n";
+
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
@@ -136,6 +151,7 @@ namespace ALEngine::ECS
 
 	void Render(void)
 	{
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -166,6 +182,11 @@ namespace ALEngine::ECS
 
 		// Render all text
 		Text::RenderAllText();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
+		ImGui::Begin("Viewport");
+		ImGui::Image((void*)(intptr_t)fbTexture, ImVec2(Input::GetScreenResX(), Input::GetScreenResY()), ImVec2(0,1), ImVec2(1,0)); // render opengl in imgui window
+		ImGui::End();
 
 		// End of ImGui frame, render ImGui!
 		if(Editor::ALEditor::Instance()->GetImGuiEnabled())
