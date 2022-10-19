@@ -13,13 +13,12 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 *//*__________________________________________________________________________________*/
 namespace ALEngine::Engine
 {
-	using Guid = u64;
 	class AssetManager : public Templates::Singleton<AssetManager>
 	{
 	public:
 		void Init();
 		void Update();
-		void End();
+		void Exit();
 
 		//map<16 bit assetkeycount, 64 bit guid>
 		//map container for storing 64 bit guids 
@@ -34,6 +33,8 @@ namespace ALEngine::Engine
 		u16 GetCurrentAssetCount(void);
 
 		TextureHandle GetTexture(Guid id);
+
+		Guid GetGuid(std::string const& fileName);
 	private:
 		/*!*********************************************************************************
 		 \brief

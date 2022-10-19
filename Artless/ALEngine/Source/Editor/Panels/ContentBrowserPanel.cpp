@@ -11,7 +11,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 namespace ALEngine::Editor
 {
 	//change this later to read from settings or 
-	const std::filesystem::path assetPath = "assets";//base file path
+	const std::filesystem::path assetPath = "Assets";//base file path
 
 	ContentBrowserPanel::ContentBrowserPanel()
 	:m_CurrentDirectory(assetPath),
@@ -133,7 +133,7 @@ namespace ALEngine::Editor
 			//for dragging file, need to fix window crash when moving window
 			if (ImGui::BeginDragDropSource())
 			{
-				const wchar_t* itemPath = relativePath.c_str();
+				const wchar_t* itemPath = path.c_str();
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();
 			}

@@ -1,7 +1,3 @@
-#include "pch.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "Graphics/stb_image.h"
-
 /*!
 file: AssetManager.cpp
 author: Chan Jie Ming Stanley
@@ -12,6 +8,9 @@ brief: This file contains function definition for AssetManager. AssetManager is 
 
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
+#include "pch.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "Graphics/stb_image.h"
 
 namespace
 {
@@ -27,20 +26,20 @@ namespace
 	void GenerateMetaFile(char const* filePath, Guid id)
 	{
 		std::ofstream metaFile(std::string(filePath) + ".meta", std::ios_base::binary);
-		metaFile << id;
+		metaFile.write(reinterpret_cast<char*>(&id), sizeof(Guid));
 	}
 
-	void FolderEntry(std::filesystem::path checkPath, std::vector<std::string>& metaFiles, std::vector<std::string>& fileNames)
+	void FolderEntry(std::filesystem::path const& checkPath, std::vector<std::string>& metaFiles, std::vector<std::string>& fileNames)
 	{
 		for (auto const& innerDirectoryEntry : std::filesystem::directory_iterator(checkPath))
 		{
 			if (innerDirectoryEntry.is_directory())// check if entry is sub folder
 			{
-				FolderEntry(innerDirectoryEntry, metaFiles, fileNames);
+				FolderEntry(innerDirectoryEntry.path(), metaFiles, fileNames);
 			}
 			else // if entry is a file
 			{
-				std::string const& fileName = std::filesystem::relative(innerDirectoryEntry.path(), checkPath).filename().string();
+				std::string const& fileName = checkPath.string() + "\\" + std::filesystem::relative(innerDirectoryEntry.path(), checkPath).filename().string();
 				//check if is meta
 				if (fileName.find(".meta")!= std::string::npos)
 				{
@@ -54,7 +53,7 @@ namespace
 		}
 	}
 
-	void LoadTexture(char const* filePath, Guid id)
+	Texture LoadTexture(char const* filePath, Guid id)
 	{
 		// load and create a texture 
 		// -------------------------
@@ -105,8 +104,7 @@ namespace
 		// Unbind vertex array and texture to prevent accidental modifications
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		// Insert into texture list
-		textureList.insert(std::pair<Guid, Texture>{ id, { texture, handle } });
+		return { texture, handle };
 	}
 }
 
@@ -123,12 +121,12 @@ namespace ALEngine::Engine
 		std::vector<std::string> metaFiles, fileNames;
 
 		//initialize 
-		const std::filesystem::path basePath = "assets";//base file path
-		std::filesystem::path currentCheckPath = basePath;
+		const std::filesystem::path basePath = "Assets"; //base file path
 
 		//check the assets files if got meta
 		for (auto const& directoryEntry : std::filesystem::directory_iterator(basePath))
 		{
+			std::filesystem::path currentCheckPath = basePath;
 			//file default path
 			const auto& path = directoryEntry.path();
 
@@ -181,7 +179,9 @@ namespace ALEngine::Engine
 			{
 				//open and read meta file
 				std::ifstream mFile(meta, std::ios_base::binary);
-
+				mFile.read(reinterpret_cast<c8*>(&id), sizeof(Guid));
+				// Remove .meta files from the vector, so that whatever files is left inside metaFiles vector are considered as orphans
+				metaFiles.erase(it2);
 			}
 
 			switch (GetFileType(*it))
@@ -189,7 +189,9 @@ namespace ALEngine::Engine
 				case FileType::Image:
 				{
 					//into memory/stream
-					LoadTexture()
+					Texture texture = LoadTexture(it->c_str(), id);
+					// Insert into texture list
+					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 					break;
 				}
 				case FileType::Audio:
@@ -201,11 +203,17 @@ namespace ALEngine::Engine
 					break;
 			}
 		}
-		//if orphaned meta file, then delete
-		
-		// if got meta file load into memory/stream
-			
-		// need to store handle u64
+
+		//if orphan meta file, then delete
+		for (auto it = metaFiles.begin(); it != metaFiles.end(); ++it)
+		{
+			if (remove(it->c_str()))
+			{
+				char error[1024];
+				strerror_s(error, errno); strcat_s(error, "\n");
+				std::cerr << "Error: " << error;
+			}
+		}
 	}
 
 	void AssetManager::Update()
@@ -213,8 +221,38 @@ namespace ALEngine::Engine
 		//respond to file watcher alerts of any changes to file
 	}
 
-	void AssetManager::End()
+	void AssetManager::Exit()
 	{
+		for (auto& it : textureList)
+		{
+			Texture& texture{ it.second };
+			glDeleteTextures(1, &texture.texture);
+		}
+
+		// Remove audio from memory stream here
+	}
+	
+	u16 AssetManager::GetCurrentAssetCount(void)
+	{
+		//return assetloadedcounter value
+		return m_AssetLoadedCounter;
+	}
+
+	TextureHandle AssetManager::GetTexture(Guid id)
+	{
+		return textureList[id].handle;
+	}
+
+	Guid AssetManager::GetGuid(std::string const& fileName)
+	{
+		std::ifstream ifs(fileName + ".meta", std::ios::binary);
+#ifdef LOAD_WITH_CODE
+		if (!ifs)
+			return 0;
+#endif
+		Guid id{};
+		ifs.read(reinterpret_cast<char*>(&id), sizeof(Guid));
+		return id;
 	}
 
 	std::vector<u16> AssetManager::GetTimeStamp(void)
@@ -299,12 +337,6 @@ namespace ALEngine::Engine
 		AddToAssetGuidContainer(newGuid);
 
 		return newGuid;
-	}
-
-	u16 AssetManager::GetCurrentAssetCount(void)
-	{
-		//return assetloadedcounter value
-		return m_AssetLoadedCounter;
 	}
 
 	void AssetManager::IncrementCurrentAssetCount(void)

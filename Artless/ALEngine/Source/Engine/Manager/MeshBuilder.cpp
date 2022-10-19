@@ -3,7 +3,7 @@
 namespace
 {
 	// layout location inside vertex shader
-	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, HANDLE{ 3 }, SPRITE_RESERVE_SIZE{ 100 };
+	u32 constexpr POS{ 0 }, COLOR{ 1 }, TEX{ 2 }, HANDLE{ 3 };
 	u32 instanceVBO{ 0 }, batchVBO{ 0 };
 	u64 const NUM_VERTICES{ 4 },
 		TOTAL_POS_BYTE{ sizeof(ALEngine::Math::vec3) * NUM_VERTICES * ALEngine::ECS::MAX_ENTITIES },
@@ -77,7 +77,6 @@ namespace ALEngine::Engine
 	MeshBuilder::MeshBuilder(void)
 	{
 		CreateBatchVao();
-		m_Sprites.reserve(SPRITE_RESERVE_SIZE);
 	}
 
 	MeshBuilder::~MeshBuilder(void)
@@ -87,89 +86,23 @@ namespace ALEngine::Engine
 		glDeleteBuffers(1, &batch.ebo);
 	}
 
-	Sprite MeshBuilder::MakeSprite(std::string const& filePath)
+#ifdef LOAD_WITH_CODE
+	TextureHandle MeshBuilder::MakeSprite(std::string const& filePath)
 	{
-		Sprite sprite;
-		for (auto it = m_Sprites.begin(); it != m_Sprites.end(); ++it)
-		{
-			if ((*it).first == filePath)
-			{
-				sprite = it->second;
-				break;
-			}
-		}
-		//if (!sprite.texture)
-		//	sprite = CreateSprite(filePath);
-		return sprite;
+		Guid id = AssetManager::Instance()->GetGuid(filePath);
+		return AssetManager::Instance()->GetTexture(id);
 	}
+#endif
 
-	void MeshBuilder::Reset(void)
-	{
-		for (auto it = m_Sprites.begin(); it != m_Sprites.end(); ++it)
-		{
-			// Release resources in the gpu
-			glDeleteTextures(1, &(*it).second.texture);
-			glMakeTextureHandleNonResidentARB(it->second.handle);
-		}
-		m_Sprites.clear();
-	}
-
-	//Sprite MeshBuilder::CreateSprite(std::string const& filePath)
+	//void MeshBuilder::Reset(void)
 	//{
-	//	// load and create a texture 
-	//	// -------------------------
-	//	// load image, create texture and generate mipmaps
-	//	s32 width, height, nrChannels;
-	//	// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-	//	stbi_set_flip_vertically_on_load(true);
-	//	u8* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
-	//	if (!data)
+	//	for (auto it = m_Sprites.begin(); it != m_Sprites.end(); ++it)
 	//	{
-	//		std::cerr << "Failed to load texture" << std::endl;
-	//		std::cerr << "File path: " << filePath << std::endl;
-	//		return Sprite{};
+	//		// Release resources in the gpu
+	//		glDeleteTextures(1, &(*it).second.texture);
+	//		glMakeTextureHandleNonResidentARB(it->second.handle);
 	//	}
-	//	u32 format{ 0 };
-	//	switch (nrChannels)
-	//	{
-	//		case STBI_rgb:
-	//		{
-	//			format = GL_RGB;
-	//			break;
-	//		}
-	//		case STBI_rgb_alpha:
-	//		{
-	//			format = GL_RGBA;
-	//			break;
-	//		}
-	//		// I only want to accept files that have RGB/RGBA formats
-	//		default:
-	//		{
-	//			std::cerr << "Wrong file format: Must contain RGB/RGBA channels" << std::endl;
-	//			return Sprite{};
-	//		}
-	//	}
-
-	//	u32 texture{ 0 };
-	//	glGenTextures(1, &texture);
-	//	glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//	// set texture filtering parameters
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//	// buffer imagge data
-	//	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	//	glGenerateMipmap(GL_TEXTURE_2D);
-	//	u64 handle = glGetTextureHandleARB(texture);
-	//	glMakeTextureHandleResidentARB(handle);
-
-	//	stbi_image_free(data);
-
-	//	m_Sprites.push_back(std::pair<std::string, Sprite>{ filePath, { texture, handle } });
-	//	// Unbind vertex array and texture to prevent accidental modifications
-	//	glBindTexture(GL_TEXTURE_2D, 0);
-	//	return m_Sprites.back().second;
+	//	m_Sprites.clear();
 	//}
 
 	void SubMeshInstanceBuffer(Matrix4 const* mat)

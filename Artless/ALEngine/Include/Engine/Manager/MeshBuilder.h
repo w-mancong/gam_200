@@ -15,6 +15,7 @@ namespace ALEngine::Engine
 	class MeshBuilder : public Templates::Singleton<MeshBuilder>
 	{
 	public:
+#ifdef LOAD_WITH_CODE
 		/*!*********************************************************************************
 			\brief
 			Load and make a sprite
@@ -24,15 +25,8 @@ namespace ALEngine::Engine
 			\return
 			Sprite containing the relevant data to rendering the image
 		***********************************************************************************/
-		Sprite MakeSprite(std::string const& filePath);
-
-		/*!*********************************************************************************
-			\brief
-			Reset MeshBuilder state. Unload and free memory loaded into the stream of all
-			images
-		***********************************************************************************/
-		void Reset(void);
-
+		TextureHandle MakeSprite(std::string const& filePath);
+#endif
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -59,9 +53,6 @@ namespace ALEngine::Engine
 
 		friend class Templates::Singleton<MeshBuilder>;
 		friend class Memory::StaticMemory;
-
-		using mem = Memory::DynamicAllocator<std::pair<std::string, Sprite>>;
-		std::vector<std::pair<std::string, Sprite>, mem> m_Sprites;
 	};
 
 	/*!*********************************************************************************
