@@ -15,9 +15,7 @@ namespace ALEngine::Engine
 	class MeshBuilder : public Templates::Singleton<MeshBuilder>
 	{
 	public:
-#ifdef LOAD_WITH_CODE
 		void Init();
-#endif
 	private:
 		/*!*********************************************************************************
 			\brief
