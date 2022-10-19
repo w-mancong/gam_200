@@ -228,7 +228,8 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+		Sprite sprite;
+		sprite.handle = MeshBuilder::Instance()->MakeSprite(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 		Coordinator::Instance()->AddComponent(entity, transform);
@@ -236,7 +237,8 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite = MeshBuilder::Instance()->MakeSprite(filePath);
+		Sprite sprite;
+		sprite.handle = MeshBuilder::Instance()->MakeSprite(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}

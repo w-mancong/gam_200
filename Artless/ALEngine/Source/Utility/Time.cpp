@@ -29,7 +29,7 @@ namespace ALEngine::Utility
 	hd_clock::time_point Time::m_StartTime = hd_clock::now();	// Set Application start time
 	steady_clock::time_point Time::m_ClockedTime{};
 
-	void Time::Init()
+	void Time::Init(void)
 	{
 		for (s32 i = 0; i < MAX_SAMPLES; ++i)
 			m_Ticks[i] = nanoseconds::zero();
@@ -42,12 +42,12 @@ namespace ALEngine::Utility
 		m_HasFPSLimit = true;
 	}
 
-	void Time::ClockTimeNow()
+	void Time::ClockTimeNow(void)
 	{
 		m_ClockedTime = hd_clock::now();
 	}
 
-	void Time::WaitUntil()
+	void Time::WaitUntil(void)
 	{
 		auto time_diff = hd_clock::now() - m_ClockedTime;
 		const auto ideal_wait_time = nanoseconds(NUM_NANO_IN_SEC / Time::m_TargetFPS);

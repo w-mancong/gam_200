@@ -13,4 +13,6 @@ brief:	This file contains all the relevant Graphics header files to be included 
 #include "Graphics/Shader.h"
 #include "Graphics/Gizmo.h"
 
+using TextureHandle = u64;
+
 #endif

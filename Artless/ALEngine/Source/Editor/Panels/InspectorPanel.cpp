@@ -1,3 +1,13 @@
+/*!
+file:	InspectorPanel.cpp
+author: Lucas Nguyen
+email:	l.nguyen@digipen.edu
+brief:	This file contains function definitions for the InspectorPanel class.
+		The InspectorPanel class contains information and functions necessary for 
+		the Inspector Panel of the editor to be displayed.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::Editor 
@@ -15,7 +25,6 @@ namespace ALEngine::Editor
 	{
 		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		m_SelectedEntity = ECS::MAX_ENTITIES;
-		m_HasEntityTransform = false;
 	}
 	
 	void InspectorPanel::OnImGuiRender(void)
@@ -62,7 +71,22 @@ namespace ALEngine::Editor
 		ImGui::End();
 	}	
 
-	void InspectorPanel::DisplayEntityData()
+	void InspectorPanel::SetSelectedEntity(ECS::Entity setter)
+	{
+		m_SelectedEntity = setter;
+	}
+
+	const ECS::Entity InspectorPanel::GetSelectedEntity(void)
+	{
+		return m_SelectedEntity;
+	}
+
+	b8 InspectorPanel::HasSelectedEntity(void)
+	{
+		return !(m_SelectedEntity == ECS::MAX_ENTITIES);
+	}
+
+	void InspectorPanel::DisplayEntityData(void)
 	{
 		ImGui::Text("Entity Data");
 
@@ -83,7 +107,7 @@ namespace ALEngine::Editor
 		data.tag = tag;
 	}
 
-	void InspectorPanel::DisplayTransform()
+	void InspectorPanel::DisplayTransform(void)
 	{
 		// Get transform
 		Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
@@ -140,7 +164,7 @@ namespace ALEngine::Editor
 		ImGui::Separator();
 	}
 
-	void InspectorPanel::DisplaySprite()
+	void InspectorPanel::DisplaySprite(void)
 	{
 		// Get Sprite
 		Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectedEntity);

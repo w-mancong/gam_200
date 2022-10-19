@@ -1,8 +1,6 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
-
-
 /*!
 file: AssetManager.h
 author: Chan Jie Ming Stanley
@@ -13,36 +11,14 @@ brief: This file contains function declaration for AssetManager. AssetManager is
 
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-
-
 namespace ALEngine::Engine
 {
-
 	class AssetManager : public Templates::Singleton<AssetManager>
 	{
 	public:
 		void Init();
 		void Update();
-		void End();
-
-
-		/*!*********************************************************************************
-		 \brief
-		 get timestamp in 3 16 bit parts and assign to vector container before return
-		 vector 
-		 \return
-		 vector of 16 bits unsigned short of parts of the timestamp
-        ***********************************************************************************/
-		std::vector<u16> GetTimeStamp(void);
-
-
-		/*!*********************************************************************************
-		\brief
-		bitshift all 16 bit parts into two 32 bit parts then into a single 64 bit guid
-		then call the AddToAssetGuidContainer function to add the new guid into map container
-		storing guid.
-	    ***********************************************************************************/
-		void PrepareGuid(void);
+		void Exit();
 
 		//map<16 bit assetkeycount, 64 bit guid>
 		//map container for storing 64 bit guids 
@@ -56,6 +32,27 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		u16 GetCurrentAssetCount(void);
 
+		TextureHandle GetTexture(Guid id);
+
+		Guid GetGuid(std::string const& fileName);
+	private:
+		/*!*********************************************************************************
+		 \brief
+		 get timestamp in 3 16 bit parts and assign to vector container before return
+		 vector 
+		 \return
+		 vector of 16 bits unsigned short of parts of the timestamp
+        ***********************************************************************************/
+		std::vector<u16> GetTimeStamp(void);
+
+		/*!*********************************************************************************
+		\brief
+		bitshift all 16 bit parts into two 32 bit parts then into a single 64 bit guid
+		then call the AddToAssetGuidContainer function to add the new guid into map container
+		storing guid.
+	    ***********************************************************************************/
+		Guid PrepareGuid(void);
+
 		/*!*********************************************************************************
 		\brief
 		increment the current asset counter
@@ -67,7 +64,6 @@ namespace ALEngine::Engine
 	    decrement the current asset counter
 		***********************************************************************************/
 		void DecrementCurrentAssetCount(void);
-
 
 		/*!*********************************************************************************
 		\brief
@@ -81,13 +77,13 @@ namespace ALEngine::Engine
 	    ***********************************************************************************/
 		void RemoveFromAssetGuidContainer(u64 guidToremove);
 
-
 		/*!*********************************************************************************
 	    \brief
 	    get key for current guid to find
+		\return
+		16 bit key of guid
 	    ***********************************************************************************/
 		u16 GetKeyForGuid(u64 guidTofind);
-
 
 		/*!*********************************************************************************
 	    \brief
@@ -98,13 +94,7 @@ namespace ALEngine::Engine
 	    ***********************************************************************************/
 		u16 GetCurrentAssetKeyCount(void);
 
-		/*!*********************************************************************************
-		\brief
-		increment the current asset key counter
-		***********************************************************************************/
-		void IncrementCurrentAssetKeyCount(void);
 
-	private:
 		//constructor
 		AssetManager();
 		virtual ~AssetManager(void) = default;
@@ -117,8 +107,13 @@ namespace ALEngine::Engine
 
 		friend class Templates::Singleton<AssetManager>;
 		friend class Memory::StaticMemory;
-	};
 
+		/*!*********************************************************************************
+		\brief
+		increment the current asset key counter
+		***********************************************************************************/
+		void IncrementCurrentAssetKeyCount(void);
+	};
 }
 #endif // !ASSET_MANAGER_H
 

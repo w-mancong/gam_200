@@ -1,3 +1,13 @@
+/*!
+file:	LoggerPanel.cpp
+author: Lucas Nguyen
+email:	l.nguyen@digipen.edu
+brief:	This file contains function definitions for the LoggerPanel class.
+		The LoggerPanel class contains information and functions necessary for the 
+		Logger Panel of the editor to be displayed.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <spdlog/sinks/ostream_sink.h>
 
@@ -6,14 +16,14 @@ namespace ALEngine::Editor
 	LoggerPanel::LoggerPanel()
 	{
 		// Create spdlog sink to ostream to print log on imgui
-		auto ostream_sink = std::make_shared<spdlog::sinks::ostream_sink_st>(logger_oss);
+		auto ostream_sink = std::make_shared<spdlog::sinks::ostream_sink_st>(m_LoggerOSS);
 		ALEngine::Exceptions::Logger::GetCoreLogger()->sinks().push_back(ostream_sink);
 		AL_CORE_SET_PATTERN("%^[%n] [%l] [%D %T] %v%$");
 
 		spdlog::flush_every(std::chrono::seconds(5));
 
 		// Set logger flags to all
-		log_flags = (u32)LOG_FLAGS::LOG_ALL;
+		m_LogFlags = (u32)LOG_FLAGS::LOG_ALL;
 	}
 
 	LoggerPanel::~LoggerPanel()
@@ -37,14 +47,14 @@ namespace ALEngine::Editor
 		// Align text baseline to the baseline of the panel
 		ImGui::AlignTextToFramePadding();
 		ImGui::Text("Log Levels:");
-		ImGui::SameLine(); ImGui::CheckboxFlags("All", &log_flags, (u32)LOG_FLAGS::LOG_ALL);
-		ImGui::SameLine(); ImGui::CheckboxFlags("Trace", &log_flags, (u32)LOG_FLAGS::LOG_TRACE);
-		ImGui::SameLine(); ImGui::CheckboxFlags("Debug", &log_flags, (u32)LOG_FLAGS::LOG_DEBUG);
-		ImGui::SameLine(); ImGui::CheckboxFlags("Info", &log_flags, (u32)LOG_FLAGS::LOG_INFO);
+		ImGui::SameLine(); ImGui::CheckboxFlags("All", &m_LogFlags, (u32)LOG_FLAGS::LOG_ALL);
+		ImGui::SameLine(); ImGui::CheckboxFlags("Trace", &m_LogFlags, (u32)LOG_FLAGS::LOG_TRACE);
+		ImGui::SameLine(); ImGui::CheckboxFlags("Debug", &m_LogFlags, (u32)LOG_FLAGS::LOG_DEBUG);
+		ImGui::SameLine(); ImGui::CheckboxFlags("Info", &m_LogFlags, (u32)LOG_FLAGS::LOG_INFO);
 		ImGui::Text("           "); 
-		ImGui::SameLine(); ImGui::CheckboxFlags("Warn", &log_flags, (u32)LOG_FLAGS::LOG_WARN);
-		ImGui::SameLine(); ImGui::CheckboxFlags("Error", &log_flags, (u32)LOG_FLAGS::LOG_ERROR);
-		ImGui::SameLine(); ImGui::CheckboxFlags("Critical", &log_flags, (u32)LOG_FLAGS::LOG_CRITICAL);
+		ImGui::SameLine(); ImGui::CheckboxFlags("Warn", &m_LogFlags, (u32)LOG_FLAGS::LOG_WARN);
+		ImGui::SameLine(); ImGui::CheckboxFlags("Error", &m_LogFlags, (u32)LOG_FLAGS::LOG_ERROR);
+		ImGui::SameLine(); ImGui::CheckboxFlags("Critical", &m_LogFlags, (u32)LOG_FLAGS::LOG_CRITICAL);
 		ImGui::Text("           ");
 		//ImGui::SameLine(); 
 		//if (ImGui::SmallButton("Clear"))
@@ -57,7 +67,7 @@ namespace ALEngine::Editor
 
 		// Change OSS to ISS
 		std::string log_line;
-		std::istringstream iss(logger_oss.str());
+		std::istringstream iss(m_LoggerOSS.str());
 
 		// Check each line for 
 		while (std::getline(iss, log_line))
@@ -73,42 +83,42 @@ namespace ALEngine::Editor
 			{
 			case 'e':	// Error
 			case 'E':
-				if (!(log_flags & (u32)LOG_FLAGS::LOG_ERROR))
+				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_ERROR))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(255, 128, 0, 255);
 				break;
 			case 'd':	// Debug
 			case 'D':
-				if (!(log_flags & (u32)LOG_FLAGS::LOG_DEBUG))
+				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_DEBUG))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(0, 128, 255, 255);
 				break;
 			case 't':	// Trace
 			case 'T':
-				if (!(log_flags & (u32)LOG_FLAGS::LOG_TRACE))
+				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_TRACE))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(255, 255, 255, 255);
 				break;
 			case 'w':	// Warning
 			case 'W':
-				if (!(log_flags & (u32)LOG_FLAGS::LOG_WARN))
+				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_WARN))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(255, 255, 0, 255);
 				break;
 			case 'i':	// Info
 			case 'I':
-				if (!(log_flags & (u32)LOG_FLAGS::LOG_INFO))
+				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_INFO))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(0, 255, 0, 255);
 				break;
 			case 'c':	// Critical
 			case 'C':
-				if (!(log_flags & (u32)LOG_FLAGS::LOG_CRITICAL))
+				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_CRITICAL))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(255, 0, 0, 255);

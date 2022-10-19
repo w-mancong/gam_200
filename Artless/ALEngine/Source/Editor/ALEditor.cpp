@@ -2,7 +2,9 @@
 file:	ALEditor.cpp
 author:	Lucas Nguyen
 email:	l.nguyen@digipen.edu
-brief:	This file contains the function declarations for the ALEditor class
+brief:	This file contains the function definitions for the ALEditor class.
+		The ALEditor class essentially manages the Dear ImGui functions, as well as the
+		different editor panels generated with the help of Dear ImGui.
 
 		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -10,7 +12,13 @@ brief:	This file contains the function declarations for the ALEditor class
 
 namespace ALEngine::Editor
 {
-	void ALEditor::Init()
+	ALEditor::ALEditor(void)
+	{
+		// Initialize the editor
+		Init();
+	}
+
+	void ALEditor::Init(void)
 	{
 		// Check ImGui version
 		IMGUI_CHECKVERSION();
@@ -48,7 +56,21 @@ namespace ALEngine::Editor
 		m_DockingEnabled = true;
 	}
 
-	void ALEditor::Exit()
+	void ALEditor::Update(void)
+	{
+		// Check ImGui active
+		if (!m_ImGuiEnabled)
+			return;
+
+		m_ContentBrowserPanel.OnImGuiRender();
+		m_LoggerPanel.OnImGuiRender();
+		if (m_InspectorPanel.HasSelectedEntity())
+			m_InspectorPanel.OnImGuiRender();
+		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ProfilerPanel.OnImGuiRender();
+	}
+
+	void ALEditor::Exit(void)
 	{
 		// Shutdown imgui
 		ImGui_ImplGlfw_Shutdown();
@@ -57,21 +79,7 @@ namespace ALEngine::Editor
 		ImGui::DestroyContext();
 	}
 
-	void ALEditor::Update()
-	{
-		// Check ImGui active
-		if (!m_ImGuiEnabled)
-			return;
-
-		cbp.OnImGuiRender();
-		logger_panel.OnImGuiRender();
-		if (imguizmo_panel.HasEntityTransform())
-			imguizmo_panel.OnImGuiRender();
-		hierarchy_panel.OnImGuiRender();
-		profiler_panel.OnImGuiRender();
-	}
-
-	void ALEditor::Begin()
+	void ALEditor::Begin(void)
 	{
 		// Change ImGui Enabled or Disabled
 		if (Input::KeyTriggered(KeyCode::Key_9))
@@ -113,7 +121,7 @@ namespace ALEngine::Editor
 		Update();
 	}
 
-	void ALEditor::End()
+	void ALEditor::End(void)
 	{
 		// Get the ImGui IO
 		ImGuiIO& io = ImGui::GetIO();
@@ -139,7 +147,32 @@ namespace ALEngine::Editor
 		}
 	}
 	
-	void ALEditor::Docking()
+	void ALEditor::SetImGuiEnabled(b8 isEnabled)
+	{
+		m_ImGuiEnabled = isEnabled;
+	}
+
+	b8 ALEditor::GetImGuiEnabled(void)
+	{
+		return m_ImGuiEnabled;
+	}
+
+	void ALEditor::SetDockingEnabled(b8 isEnabled)
+	{
+		m_DockingEnabled = isEnabled;
+	}
+
+	void ALEditor::SetSelectedEntity(ECS::Entity setter)
+	{
+		m_InspectorPanel.SetSelectedEntity(setter);
+	}
+
+	const ECS::Entity ALEditor::GetSelectedEntity(void)
+	{
+		return m_InspectorPanel.GetSelectedEntity();
+	}
+
+	void ALEditor::Docking(void)
 	{
 		// Ensure the parent window is not dockable into
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;

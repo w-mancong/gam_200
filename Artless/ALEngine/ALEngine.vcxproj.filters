@@ -53,6 +53,7 @@
     <ClCompile Include="Source\Utility\Timer.cpp" />
     <ClCompile Include="Source\Utility\Profiler.cpp" />
     <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
+    <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -257,7 +258,6 @@
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
-    <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
     <ClInclude Include="Include\Serialization\Serialization.h" />
@@ -265,6 +265,8 @@
     <ClInclude Include="Include\Utility\Profiler.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
+    <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\Common Header\MyAi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

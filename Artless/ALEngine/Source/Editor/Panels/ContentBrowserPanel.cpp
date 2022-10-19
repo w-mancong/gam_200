@@ -3,18 +3,20 @@
 file: ContentBrowserPanel.cpp
 author: Chan Jie Ming Stanley
 email: c.jiemingstanley\@digipen.edu
-brief:
-This file contains
-
+brief: This file contains the function declaration for ContentBrowserPanel.
+	   ContentBrowserPanel handles the panel that display the loaded assets in specified
+	   asset filepath.
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 namespace ALEngine::Editor
 {
 	//change this later to read from settings or 
-	extern const std::filesystem::path assetPath = "assets";//base file path
+	const std::filesystem::path assetPath = "Assets";//base file path
 
 	ContentBrowserPanel::ContentBrowserPanel()
-	:m_CurrentDirectory(assetPath)
+	:m_CurrentDirectory(assetPath),
+	m_MainDirectory(assetPath),
+	searchKeyword("Search...")
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -27,14 +29,80 @@ namespace ALEngine::Editor
 		//imgui window-------------------------------------------------------------------------
 		ImGui::Begin("Content Browser");
 
-		if (m_CurrentDirectory != std::filesystem::path(assetPath))
+		//loop through directory and create buttons for each file
+		for (auto& directoryEntry : std::filesystem::directory_iterator(m_MainDirectory))
 		{
-			//render makeshift back button
-			if (ImGui::Button("<- Back"))
+			//file default path
+			const auto& path = directoryEntry.path();
+
+			//file relative path
+			std::filesystem::path relativePath = std::filesystem::relative(path, assetPath);
+
+			//file name from relative path 
+			std::string fileNamestring = relativePath.filename().string();
+
+			if (fileNamestring == "Dev")
 			{
-				m_CurrentDirectory = m_CurrentDirectory.parent_path();
+				continue;
 			}
+
+			//push files ID 
+			ImGui::PushID(fileNamestring.c_str());
+
+			//selectable files
+		   // ImGui::MenuItem(fileNamestring.c_str());
+
+			if (ImGui::TreeNode(fileNamestring.c_str()))
+			{
+				//for dragging file, need to fix window crash when moving window
+				if (ImGui::BeginDragDropSource())
+				{
+					const wchar_t* itemPath = relativePath.c_str();
+					ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+					ImGui::EndDragDropSource();
+				}
+
+				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
+				{
+					if (directoryEntry.is_directory() && (m_MainDirectory == m_CurrentDirectory))
+					{
+						//selectable to show file
+						m_CurrentDirectory /= path.filename();
+					}
+				}
+
+				ImGui::TreePop();
+			}
+	
+			//set next column
+			ImGui::NextColumn();
+
+			//pop files ID
+			ImGui::PopID();
 		}
+		ImGui::End();
+		//------------------------------------------------------------------------------------
+
+		//imgui window 2----------------------------------------------------------------------
+		ImGui::Begin("Assets");
+
+		ImGui::Text("Search Bar");
+		ImGui::InputText("Search Tag", searchKeyword, IM_ARRAYSIZE(searchKeyword));
+
+
+
+		static float padding = 16.0f;
+		static float thumbnailSize = 128.0f;
+		float cellSize = thumbnailSize + padding;
+
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		int columnCount = (int)(panelWidth / cellSize);
+		if (columnCount < 1)
+		{
+			columnCount = 1;
+		}
+
+		ImGui::Columns(columnCount, 0, false);
 
 		//loop through directory and create buttons for each file
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
@@ -43,34 +111,68 @@ namespace ALEngine::Editor
 			const auto& path = directoryEntry.path();
 
 			//file relative path
-			std::filesystem::path relativepath = std::filesystem::relative(directoryEntry.path(), assetPath);
+			std::filesystem::path relativePath = std::filesystem::relative(path, assetPath);
 
 			//file name from relative path 
-			std::string fileNamestring = relativepath.filename().string();
+			std::string fileNamestring = relativePath.filename().string();
+
+			if (fileNamestring == "Dev")
+			{
+				continue;
+			}
+
+			//push files ID 
+			ImGui::PushID(fileNamestring.c_str());
+
+			//selectable files
+			//ImGui::Selectable(fileNamestring.c_str());
+
+			//need change to imagebuttons for icons
+			ImGui::Button(fileNamestring.c_str(), { thumbnailSize, thumbnailSize });
 
 			//for dragging file, need to fix window crash when moving window
-			//if (ImGui::BeginDragDropSource())
-			//{
-			//	auto relativePath = std::filesystem::relative(path, assetPath);
-			//	const wchar_t* itemPath = relativePath.c_str();
-			//	ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-			//	ImGui::EndDragDropSource();
-			//}
+			if (ImGui::BeginDragDropSource())
+			{
+				const wchar_t* itemPath = path.c_str();
+				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				ImGui::EndDragDropSource();
+			}
 
-			if (ImGui::Selectable(fileNamestring.c_str()) && ImGui::IsItemHovered())
+			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
 			{
 				if (directoryEntry.is_directory())
 				{
 					//selectable to show file
-					//if (ImGui::Selectable(fileNamestring.c_str()))
-					{
-						m_CurrentDirectory /= path.filename();
-					}
+					m_CurrentDirectory /= path.filename();
 				}
+			}
+			//file name under button of file
+			ImGui::TextWrapped(fileNamestring.c_str());
+
+			//set next column
+			ImGui::NextColumn();
+
+			//pop files ID
+			ImGui::PopID();
+		}
+
+		ImGui::Columns(1);
+
+		ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
+		ImGui::SliderFloat("Padding", &padding, 0, 32);
+
+		//back button
+		if (m_CurrentDirectory != std::filesystem::path(assetPath))
+		{
+			//render makeshift back button
+			if (ImGui::Button("<-- Back to previous"))
+			{
+				m_CurrentDirectory = m_CurrentDirectory.parent_path();
 			}
 		}
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
+
 	}	
 }	
