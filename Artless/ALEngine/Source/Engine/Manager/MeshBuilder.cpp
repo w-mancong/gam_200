@@ -1,4 +1,4 @@
-#include "pch.h"
+#include <pch.h>
 
 namespace
 {
@@ -159,19 +159,6 @@ namespace ALEngine::Engine
 		glDeleteBuffers(1, &batch.cbo);
 		glDeleteBuffers(1, &batch.hbo);
 		glDeleteBuffers(1, &batch.ibo);
-	}
-
-#ifdef LOAD_WITH_CODE
-	TextureHandle MeshBuilder::MakeSprite(std::string const& filePath)
-	{
-		Guid id = AssetManager::Instance()->GetGuid(filePath);
-		return AssetManager::Instance()->GetTexture(id);
-	}
-#endif
-
-	void MeshBuilder::Reset(void)
-	{
-
 	}
 
 	void MeshBuilder::Init(void)

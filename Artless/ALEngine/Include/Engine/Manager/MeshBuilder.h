@@ -16,16 +16,7 @@ namespace ALEngine::Engine
 	{
 	public:
 #ifdef LOAD_WITH_CODE
-		/*!*********************************************************************************
-			\brief
-			Load and make a sprite
-
-			\param [in] filePath:
-			Path to the image to be loaded
-			\return
-			Sprite containing the relevant data to rendering the image
-		***********************************************************************************/
-		TextureHandle MakeSprite(std::string const& filePath);
+		void Init();
 #endif
 	private:
 		/*!*********************************************************************************

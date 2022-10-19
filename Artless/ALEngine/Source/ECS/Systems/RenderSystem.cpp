@@ -81,7 +81,7 @@ namespace ALEngine::ECS
 
 			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vColor    + i) = sprite.color;
-			*(texHandle + i) = sprite.handle;
+			*(texHandle + i) = AssetManager::Instance()->GetTexture(sprite.id);
 
 			++counter;
 		}
@@ -125,7 +125,7 @@ namespace ALEngine::ECS
 		particleSys.ParticleSysInit();
 
 		// Batch rendering
-		indirectShader = Shader{ "Assets/Shaders/indirect.vert", "Assets/Shaders/indirect.frag" };
+		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
@@ -229,7 +229,7 @@ namespace ALEngine::ECS
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
 	{
 		Sprite sprite;
-		sprite.handle = MeshBuilder::Instance()->MakeSprite(filePath);
+		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 		Coordinator::Instance()->AddComponent(entity, transform);
@@ -238,7 +238,7 @@ namespace ALEngine::ECS
 	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
 	{
 		Sprite sprite;
-		sprite.handle = MeshBuilder::Instance()->MakeSprite(filePath);
+		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}

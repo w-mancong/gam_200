@@ -17,7 +17,6 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Sprite
 	{
-		TextureHandle handle;
 		Guid id;
 		// Top left, btm left, top right, btm right
 		Math::vec2 tex_coords[4]{ { 0.0f, 1.0f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f } };
