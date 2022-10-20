@@ -11,7 +11,8 @@ layout (location = 0) out vec4 fColor;
 
 void main(void)
 {
-    fColor = texture(sampler2D(uvec2(vTexHandle)), vTexCoord) * vColor;
+    fColor = texture(sampler2DArray(uvec2(vTexHandle)), vec3(vTexCoord, 0.0)) * vColor;
+    // fColor = texture(sampler2D(uvec2(vTexHandle)), vTexCoord) * vColor;
     
     // fColor = texture(textureArray, vec3(uv.x, uv.y, drawID) );
 }

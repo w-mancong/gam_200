@@ -45,6 +45,9 @@ namespace ALEngine::Engine
 
 		appStatus = 1;
 		RunFileWatcher();
+
+		Transform trans{ {}, { 200.0f, 200.0f } };
+		CreateSprite(trans, "Assets/Images/awesomeface.png");
 	}
 
 	void Application::Update(void)
