@@ -137,6 +137,7 @@ namespace ALEngine::Editor
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;
+		ScenePanel m_ScenePanel;
 		InspectorPanel m_InspectorPanel;
 		LoggerPanel m_LoggerPanel;
 		ProfilerPanel m_ProfilerPanel;

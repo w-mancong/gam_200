@@ -26,6 +26,10 @@ namespace ALEngine::Editor
 		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		m_SelectedEntity = ECS::MAX_ENTITIES;
 	}
+
+	InspectorPanel::~InspectorPanel(void)
+	{
+	}
 	
 	void InspectorPanel::OnImGuiRender(void)
 	{
@@ -57,16 +61,6 @@ namespace ALEngine::Editor
 		// Check if there is sprite component
 		if (Coordinator::Instance()->HasComponent<Sprite>(m_SelectedEntity))
 			DisplaySprite();
-		/*
-		ImGuizmo::SetDrawlist();
-		float windowWidth = (float)Graphics::OpenGLWindow::width;
-		float windowHeight = (float)Graphics::OpenGLWindow::height;
-		ImGuizmo::SetRect(0, 0, windowWidth, windowHeight);
-
-		// Manipulate
-		ImGuizmo::Manipulate(ECS::GetView().value_ptr(), ECS::GetProjection().value_ptr(),
-			m_CurrentGizmoOperation, ImGuizmo::LOCAL, mtx);
-		*/
 
 		ImGui::End();
 	}	
@@ -178,5 +172,10 @@ namespace ALEngine::Editor
 		spr.color.g = clr[1];
 		spr.color.b = clr[2];
 		spr.color.a = clr[3];
+	}
+
+	ImGuizmo::OPERATION InspectorPanel::GetCurrGizmoOperation(void) const
+	{
+		return m_CurrentGizmoOperation;
 	}
 }

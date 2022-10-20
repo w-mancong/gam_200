@@ -62,11 +62,24 @@ namespace ALEngine::Editor
 		if (!m_ImGuiEnabled)
 			return;
 
+		// Content Browser Panel
 		m_ContentBrowserPanel.OnImGuiRender();
+
+		// Logger Panel
 		m_LoggerPanel.OnImGuiRender();
+
+		// Check if there is a selected entity for Inspector
 		if (m_InspectorPanel.HasSelectedEntity())
-			m_InspectorPanel.OnImGuiRender();
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+
+		// Set selected entity for Scene Panel (for Gizmos)
+		m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
+		m_ScenePanel.OnImGuiRender();	// Scene Panel
+
+		// Scene Hierarchy Panel
 		m_SceneHierarchyPanel.OnImGuiRender();
+
+		// Profiler Panel
 		m_ProfilerPanel.OnImGuiRender();
 	}
 

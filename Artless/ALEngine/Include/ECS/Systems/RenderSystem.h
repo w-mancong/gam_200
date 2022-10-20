@@ -26,6 +26,15 @@ namespace ALEngine::ECS
 
 	/*!*********************************************************************************
 		\brief
+		Gets the FB Texture ID
+
+		\return
+		FB Texture ID for rendering to ImGui space
+	***********************************************************************************/
+	u32 GetFBTexture(void);
+
+	/*!*********************************************************************************
+		\brief
 		Set the color of background
 
 		\param [in] color:
