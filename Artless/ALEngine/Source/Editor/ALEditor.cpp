@@ -73,6 +73,7 @@ namespace ALEngine::Editor
 			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
 		// Set selected entity for Scene Panel (for Gizmos)
+		m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
 		m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
 		m_ScenePanel.OnImGuiRender();	// Scene Panel
 

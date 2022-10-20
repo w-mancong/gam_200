@@ -40,9 +40,19 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
-			Updates the Scene Panel
+			Sets the current gizmo operation
+			\param [in] _op:
+			Current gizmo operation
 		***********************************************************************************/
-		void SetCurrentGizmoOperation(ImGuizmo::OPERATION);
+		void SetCurrentGizmoOperation(ImGuizmo::OPERATION _op);
+
+		/*!*********************************************************************************
+			\brief
+			Sets the selected entity
+			\param [in] _entt
+			Selected Entity
+		***********************************************************************************/
+		void SetSelectedEntity(ECS::Entity _entt);
 
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo

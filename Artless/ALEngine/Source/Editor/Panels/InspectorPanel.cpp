@@ -107,31 +107,28 @@ namespace ALEngine::Editor
 		Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
 		// Transform
 		ImGui::Text("Transform Component");
-		/*
-			// Select between the 3 Gizmos Operations by keypress
-			if (Input::KeyTriggered(KeyCode::T))
-				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-			if (Input::KeyTriggered(KeyCode::S))
-				m_CurrentGizmoOperation = ImGuizmo::SCALE;
-			if (Input::KeyTriggered(KeyCode::R))
-				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+		
+		// Select between the 3 Gizmos Operations by keypress
+		if (Input::KeyTriggered(KeyCode::T))
+			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		if (Input::KeyTriggered(KeyCode::S))
+			m_CurrentGizmoOperation = ImGuizmo::SCALE;
+		if (Input::KeyTriggered(KeyCode::R))
+			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
 
+		// Rotate
+		if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
+			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		ImGui::SameLine();
 		// Rotate
 		if (ImGui::RadioButton("Rotate", m_CurrentGizmoOperation == ImGuizmo::ROTATE))
 			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
 		ImGui::SameLine();
+		// Scale
+		if (ImGui::RadioButton("Scale", m_CurrentGizmoOperation == ImGuizmo::SCALE))
+			m_CurrentGizmoOperation = ImGuizmo::SCALE;			
 
-			// Rotate
-			if (ImGui::RadioButton("Rotate", m_CurrentGizmoOperation == ImGuizmo::ROTATE))
-				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
-			ImGui::SameLine();
-
-			// Scale
-			if (ImGui::RadioButton("Scale", m_CurrentGizmoOperation == ImGuizmo::SCALE))
-				m_CurrentGizmoOperation = ImGuizmo::SCALE;
-				*/
-
-				// Translate and Scale matrix
+		// Translate and Scale matrix
 		f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
 			mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f };
 
@@ -139,13 +136,6 @@ namespace ALEngine::Editor
 		ImGui::DragFloat2("Tr", mtx_translate);						// Traslate
 		ImGui::DragFloat("Rt", &xform.rotation, 1.f, 0.f, 360.f);	// Rotate
 		ImGui::DragFloat2("Sc", mtx_scale);							// Scale
-
-		// Rotate matrix
-		f32 mtx_rot[3]{ 0.f, 0.f, xform.rotation };
-
-		// Make transform matrix
-		f32 mtx[16];
-		ImGuizmo::RecomposeMatrixFromComponents(mtx_translate, mtx_rot, mtx_scale, mtx);
 
 		// Set changes
 		xform.position.x = mtx_translate[0];
