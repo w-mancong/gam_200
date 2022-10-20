@@ -35,6 +35,11 @@ namespace ALEngine::Engine
 		TextureHandle GetTexture(Guid id);
 
 		Guid GetGuid(std::string const& fileName);
+
+		void Alert(std::string const& filePath, FileStatus status);
+
+		void Reset(void);
+
 	private:
 		/*!*********************************************************************************
 		 \brief
@@ -94,6 +99,17 @@ namespace ALEngine::Engine
 	    ***********************************************************************************/
 		u16 GetCurrentAssetKeyCount(void);
 
+		/*!*********************************************************************************
+		\brief
+		increment the current asset key counter
+		***********************************************************************************/
+		void IncrementCurrentAssetKeyCount(void);
+
+		void NewFiles(void);
+
+		void ModifiedFiles(void);
+
+		void RemovedFiles(void);
 
 		//constructor
 		AssetManager();
@@ -105,14 +121,12 @@ namespace ALEngine::Engine
 		//16 bits of asset counter from 0 to 65,535 for keeping track current number of asset loaded currently in editor
 		u16 m_AssetLoadedCounter{ 0 };
 
+		std::vector<std::string> m_ModifiedFiles{}, m_NewFiles{}, m_RemovedFiles{};
+
+		std::mutex m_Resource{};
+
 		friend class Templates::Singleton<AssetManager>;
 		friend class Memory::StaticMemory;
-
-		/*!*********************************************************************************
-		\brief
-		increment the current asset key counter
-		***********************************************************************************/
-		void IncrementCurrentAssetKeyCount(void);
 	};
 }
 #endif // !ASSET_MANAGER_H

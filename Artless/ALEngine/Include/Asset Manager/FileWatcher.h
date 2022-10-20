@@ -26,23 +26,16 @@ namespace ALEngine::Engine
 	class FileWatcher
 	{
 	public:
-		std::string m_PathToWatch;
-
-		//the time interval at which to check the base folder for changes
-		std::chrono::duration<int, std::milli> m_Delay;
-
 		/*!*********************************************************************************
 	    \brief
 	    constructor for creating a record of files from the base directory and their last 
 		modification time
-		\param [in] pathtoWatch:
-		Path to the where files need to be watch
 		\param [in] delay:
 		time interval before needing to check files for any changes again
 	    ***********************************************************************************/
-		FileWatcher(std::string pathToWatch, std::chrono::duration<int, std::milli> delay);
+		FileWatcher();
 
-		virtual ~FileWatcher(void) = default;
+		~FileWatcher(void) = default;
 
 		/*!*********************************************************************************
 	    \brief
@@ -50,14 +43,6 @@ namespace ALEngine::Engine
 		the user supplied "action" function
 	    ***********************************************************************************/
 		void Start();
-
-		/*!*********************************************************************************
-	    \brief
-		Setter function to set the file path to watch
-		\param [in] watchFilepath:
-		The new file Path to set for file watching
-	    ***********************************************************************************/
-		void SetWatchPath(std::string watchFilepath);
 
 	private:
 		std::unordered_map<std::string, std::filesystem::file_time_type> m_FilePaths;
@@ -71,5 +56,7 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		bool contains(const std::string& key);
 	};
+	
+	void RunFileWatcher(void);
 }
 #endif // !FILE_WATCHER_H
