@@ -105,17 +105,11 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		void IncrementCurrentAssetKeyCount(void);
 
-		void NewFiles(std::string const& filePath);
+		void NewFiles(void);
 
-		void ModifiedFiles(std::string const& filePath);
+		void ModifiedFiles(void);
 
-		void RemovedFiles(std::string const& filePath);
-
-		void UpdateNewFiles(void);
-
-		void UpdateModifiedFiles(void);
-
-		void UpdateRemovedFiles(void);
+		void RemovedFiles(void);
 
 		//constructor
 		AssetManager();
@@ -129,7 +123,7 @@ namespace ALEngine::Engine
 
 		std::vector<std::string> m_ModifiedFiles{}, m_NewFiles{}, m_RemovedFiles{};
 
-		std::mutex m_MLock{}, m_RLock{}, m_NLock{};
+		std::mutex m_Resource{};
 
 		friend class Templates::Singleton<AssetManager>;
 		friend class Memory::StaticMemory;

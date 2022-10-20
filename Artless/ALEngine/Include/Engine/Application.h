@@ -29,7 +29,11 @@ namespace ALEngine::Engine
 	***********************************************************************************/
 	void FixedUpdate(void);
 
-	b8 GetApplicationStatus(void);
+	/*!*********************************************************************************
+		\brief
+		Return the status of the application
+	***********************************************************************************/
+	int GetAppStatus(void);
 }
 
 #endif

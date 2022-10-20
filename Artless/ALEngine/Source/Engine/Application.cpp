@@ -8,8 +8,7 @@ namespace ALEngine::Engine
 	using namespace Editor;
 	namespace
 	{
-		b8 appStatus{ true };
-		FileWatcher watcher{ std::chrono::milliseconds(0) };
+		std::atomic<int> appStatus;
 	}
 
 	class Application
@@ -44,7 +43,8 @@ namespace ALEngine::Engine
 		AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
 		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 
-		appStatus = true;
+		appStatus = 1;
+		RunFileWatcher();
 	}
 
 	void Application::Update(void)
@@ -56,7 +56,6 @@ namespace ALEngine::Engine
 		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && appStatus)
 		{
 			Input::Update();
-			watcher.Start();
 			AssetManager::Instance()->Update();
 			// Get Current Time
 			Time::ClockTimeNow();
@@ -126,12 +125,11 @@ namespace ALEngine::Engine
 	}
 
 	void Run(void)
-	{
+	{		
 		Application app;
 		app.Init();
 		app.Update();
 		app.Exit();
-		//RunFileWatcher();
 	}
 
 	void Engine::Update(void)
@@ -146,7 +144,7 @@ namespace ALEngine::Engine
 		UpdateColliderSystem();
 	}
 
-	b8 Engine::GetApplicationStatus(void)
+	int GetAppStatus(void)
 	{
 		return appStatus;
 	}

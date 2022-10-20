@@ -12,7 +12,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 namespace
 {
 	const std::filesystem::path basePath = "Assets"; //base file path
-		// Container used to check for orphan meta files
+	// Container used to check for orphan meta files
 	std::vector<std::string> metaFiles, assetFiles;
 	u64 constexpr RESERVE_SIZE{ 100 };
 	// Function to track meta files, if got orphan .meta files must delete
@@ -59,8 +59,7 @@ namespace
 
 namespace ALEngine::Engine
 {
-    FileWatcher::FileWatcher(std::chrono::duration<int, std::milli> delay) :
-	m_Delay{ delay }
+    FileWatcher::FileWatcher()
 	{
 		metaFiles.reserve(RESERVE_SIZE); assetFiles.reserve(RESERVE_SIZE);
 		//creating a record of files from the base directory and their last modification time
@@ -74,10 +73,9 @@ namespace ALEngine::Engine
 
 	void FileWatcher::Start()
 	{
-		//while (m_Running && GetApplicationStatus())
-		//{
-			//wait for the milliseconds which is the "delay" time
-			std::this_thread::sleep_for(m_Delay);
+		while (GetAppStatus())
+		{
+			b8 should_delay = false;
 
 			auto tempIt = m_FilePaths.begin();
 
@@ -89,6 +87,8 @@ namespace ALEngine::Engine
 					//need to define a function to alert assetmanager
 					if(tempIt->first.find(".meta") == std::string::npos)
 						AssetManager::Instance()->Alert(tempIt->first, FileStatus::Erased);
+
+					should_delay = true;
 
 					//remove from unordered map of filePaths
 					tempIt = m_FilePaths.erase(tempIt);
@@ -105,34 +105,41 @@ namespace ALEngine::Engine
 				std::string const& filePath = file.path().string();
 				if (filePath.find("Dev") != std::string::npos || file.is_directory())
 					continue;
-
-				auto currentfileLastwritetime = std::filesystem::last_write_time(file);
-
-				//if detect new file creation
-				if (!contains(filePath))
+				try
 				{
-					m_FilePaths[filePath] = currentfileLastwritetime;
+					auto currentfileLastwritetime = std::filesystem::last_write_time(file);
 
-					//need to define a function to alert assetmanager
-					if(filePath.find(".meta") == std::string::npos)
-						AssetManager::Instance()->Alert(file.path().string(), FileStatus::Created);
-				}
-				else //detect file modifications or changes
-				{
-					if (m_FilePaths[filePath] != currentfileLastwritetime)
+					//if detect new file creation
+					if (!contains(filePath))
 					{
 						m_FilePaths[filePath] = currentfileLastwritetime;
 
 						//need to define a function to alert assetmanager
 						if (filePath.find(".meta") == std::string::npos)
-							AssetManager::Instance()->Alert(file.path().string(), FileStatus::Modified);
+							AssetManager::Instance()->Alert(file.path().string(), FileStatus::Created);
 					}
+					else //detect file modifications or changes
+					{
+						if (m_FilePaths[filePath] != currentfileLastwritetime)
+						{
+							m_FilePaths[filePath] = currentfileLastwritetime;
+
+							//need to define a function to alert assetmanager
+							if (filePath.find(".meta") == std::string::npos)
+								AssetManager::Instance()->Alert(file.path().string(), FileStatus::Modified);
+						}
+					}
+				}
+				catch (std::exception const& e)
+				{
+					//std::cerr << e.what() << std::endl;
 				}
 			}
 
-			//respond to file watcher alerts of any changes to file
-			TrackMetaFiles();
-		//}
+			//if(should_delay)
+			//	std::this_thread::sleep_for(std::chrono::seconds(2));
+			//TrackMetaFiles();
+		}
 	}
 
 	bool FileWatcher::contains(const std::string& key)
@@ -143,17 +150,17 @@ namespace ALEngine::Engine
 
 	namespace
 	{
-		//void FileWatcherWorkerThread(void)
-		//{
-		//	FileWatcher watcher{ std::chrono::milliseconds(0) };
-		//	watcher.Start();
-		//}
-		//std::thread worker{ FileWatcherWorkerThread };
+		void FileWatcherWorkerThread(void)
+		{
+			FileWatcher watcher{};
+			watcher.Start();
+		}
 	}
 
 	void RunFileWatcher(void)
 	{
-		//worker.join();
+		std::thread worker{ FileWatcherWorkerThread };
+		worker.detach();
 	}
 }
 

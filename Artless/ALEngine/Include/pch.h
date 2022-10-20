@@ -31,6 +31,7 @@
 #include <ctime>
 #include <chrono>
 #include <bitset>
+#include <atomic>
 
 // Data structures
 #include <string>
