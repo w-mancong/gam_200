@@ -103,14 +103,14 @@ namespace ALEngine::Graphics
 		//	}
 		//}
 
-		std::cout << "Vendor: " << vendor << std::endl;
-		std::cout << "Device: " << device << std::endl;
-		std::cout << "Version: " << version << std::endl;
-		std::cout << "Supported extensions: " << std::endl;
-		for (s32 i = 0; i < n; ++i)
-		{
-			std::cout << extensions[i] << std::endl;
-		}
+		//std::cout << "Vendor: " << vendor << std::endl;
+		//std::cout << "Device: " << device << std::endl;
+		//std::cout << "Version: " << version << std::endl;
+		//std::cout << "Supported extensions: " << std::endl;
+		//for (s32 i = 0; i < n; ++i)
+		//{
+		//	std::cout << extensions[i] << std::endl;
+		//}
 #endif // _DEBUG
 
 		// first two params specify location of the lower left corner of window
