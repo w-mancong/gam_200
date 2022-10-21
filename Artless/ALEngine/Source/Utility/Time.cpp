@@ -84,4 +84,9 @@ namespace ALEngine::Utility
 		m_TargetFPS = _target;
 		m_HasFPSLimit = _target ? true : false;
 	}
+	
+	void Time::SetHasFPSLimit(b8 _hasLimit)
+	{
+		m_HasFPSLimit = _hasLimit;
+	}
 }

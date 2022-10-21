@@ -34,9 +34,7 @@ namespace ALEngine::ECS
 			Entity ent_id = mEntityManager->CreateEntity();
 
 			// Entity data
-			Component::EntityData data;
-			data.active = true;
-			data.tag = "entity #" + std::to_string(static_cast<u32>(ent_id));
+			Component::EntityData data{ "entity #" + std::to_string(static_cast<u32>(ent_id)), true, ent_id };
 
 			// Add EntityData component
 			Coordinator::Instance()->AddComponent<Component::EntityData>(ent_id, data);
@@ -60,9 +58,7 @@ namespace ALEngine::ECS
 			Entity ent_id = mEntityManager->CreateEntity();
 
 			// Entity data
-			Component::EntityData data;
-			data.active = true;
-			data.tag = tag;
+			Component::EntityData data{ tag, true, ent_id };
 
 			// Add EntityData component
 			Coordinator::Instance()->AddComponent<Component::EntityData>(ent_id, data);

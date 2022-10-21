@@ -28,6 +28,12 @@ namespace ALEngine::Engine
 		Fixed Update, using Fixed Delta Time (Mainly for physics)
 	***********************************************************************************/
 	void FixedUpdate(void);
+
+	/*!*********************************************************************************
+		\brief
+		Return the status of the application
+	***********************************************************************************/
+	int GetAppStatus(void);
 }
 
 #endif

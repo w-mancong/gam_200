@@ -6,6 +6,7 @@
 #define _USE_MATH_DEFINES
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))	// find the number of elements in an array
 #define EDITOR 1
+#define LOAD_WITH_CODE 1	// Use this when loading resources in code
 
 // C++ standard library
 #include <iostream>
@@ -30,6 +31,7 @@
 #include <ctime>
 #include <chrono>
 #include <bitset>
+#include <atomic>
 
 // Data structures
 #include <string>
@@ -61,9 +63,11 @@
 #include FT_FREETYPE_H
 
 // Serializations
-#include "Serialization/Serialization.h"
 
 // Self declared header file
+#include <Common Header/MySerializer.h>
+
+#include <Common Header/Utility.h>
 #include <Common Header/MyMemory.h>
 #include <Common Header/TemplateClasses.h>
 #include <Common Header/MyMath.h>
@@ -72,7 +76,6 @@
 #include <Common Header/MyEngine.h>
 #include <Common Header/MyInput.h>
 #include <Common Header/MyExceptions.h>
-#include <Common Header/Utility.h>
 #include <Common Header/Random.h>
 #include <Common Header/MyEditor.h>
 #include <Common Header/MyAssetManager.h>

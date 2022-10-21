@@ -49,11 +49,12 @@
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
-    <ClCompile Include="Source\Serialization\Serialization.cpp" />
     <ClCompile Include="Source\Utility\Timer.cpp" />
     <ClCompile Include="Source\Utility\Profiler.cpp" />
     <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
+    <ClCompile Include="Source\Serialization\Serializer.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -258,17 +259,17 @@
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
-    <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
-    <ClInclude Include="Include\Serialization\Serialization.h" />
     <ClInclude Include="Include\Utility\Timer.h" />
     <ClInclude Include="Include\Utility\Profiler.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
-    <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
+    <ClInclude Include="Include\Common Header\MySerializer.h" />
+    <ClInclude Include="Include\Serialization\Serializer.h" />
+    <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

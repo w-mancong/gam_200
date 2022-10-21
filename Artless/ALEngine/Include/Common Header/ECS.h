@@ -19,8 +19,6 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Components/Rigidbody.h"
 #include "ECS/Components/Text.h"
 #include "ECS/Components/CharacterController.h"
-#include "ECS/Components/Texture.h"
-#include "ECS/Components/EventTrigger.h""
 
 // --------------- Structure --------------------
 #include "ECS/Structure/entity.h"

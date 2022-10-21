@@ -126,7 +126,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -165,6 +165,7 @@
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
     <ClCompile Include="Source\Editor\ALEditor.cpp" />
@@ -232,7 +233,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
-    <ClCompile Include="Source\Serialization\Serialization.cpp" />
+    <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
+    <ClInclude Include="Include\Common Header\MySerializer.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
     <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -253,7 +255,6 @@
     <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
     <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
-    <ClInclude Include="Include\ECS\Components\Texture.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />
@@ -293,6 +294,7 @@
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
     <ClInclude Include="Include\Exceptions\GLDebug.h" />
@@ -332,7 +334,7 @@
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
-    <ClInclude Include="Include\Serialization\Serialization.h" />
+    <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
