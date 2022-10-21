@@ -133,11 +133,11 @@ namespace ALEngine::Editor
 			//push files ID 
 			ImGui::PushID(fileNamestring.c_str());
 
-			//selectable files
-			//ImGui::Selectable(fileNamestring.c_str());
-
 			//need change to imagebuttons for icons
 			ImGui::Button(fileNamestring.c_str(), { thumbnailSize, thumbnailSize });
+	
+			//ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+			//ImGui::ImageButton(, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 
 			//for dragging file, need to fix window crash when moving window
 			if (ImGui::BeginDragDropSource())
