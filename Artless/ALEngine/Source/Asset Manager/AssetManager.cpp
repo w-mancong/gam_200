@@ -36,7 +36,9 @@ namespace
 
 	std::unordered_map<std::string, Guid> guidList;
 	std::unordered_map<Guid, Texture>  textureList;
+#ifdef EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList;
+#endif
 
 	void GenerateMetaFile(char const* filePath, Guid id)
 	{
@@ -179,7 +181,7 @@ namespace
 
 		return { texture, handle };
 	}
-
+#ifdef EDITOR
 	u32 LoadButtonImage(char const* filePath)
 	{
 		s32 width, height, nrChannels;
@@ -231,7 +233,7 @@ namespace
 
 		return texture;
 	}
-
+#endif
 	FileType GetFileType(std::string const& fileName)
 	{
 		if (fileName.find(".png") != std::string::npos || fileName.find(".jpg") != std::string::npos)
@@ -315,13 +317,14 @@ namespace ALEngine::Engine
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
-
+#ifdef EDITOR
 					u32 button = LoadButtonImage(it->c_str());
+
 #ifdef _DEBUG
 					if (button)
 #endif
 						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
-
+#endif
 					break;
 				}
 				case FileType::Audio:
@@ -364,9 +367,10 @@ namespace ALEngine::Engine
 			Texture const& texture{ it.second };
 			glDeleteTextures(1, &texture.texture);
 		}
+#ifdef EDITOR
 		for (auto const& it : buttonImageList)
-			glDeleteTextures(1, &it.second);
-
+			glDeleteTextures(1, &it.second );
+#endif
 		// Remove audio from memory stream here
 	}
 	
@@ -596,12 +600,14 @@ namespace ALEngine::Engine
 #ifdef _DEBUG
 				if (texture.handle)
 #endif
+#ifdef EDITOR
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 				u32 button = LoadButtonImage(filePath.c_str());
 #ifdef _DEBUG
 				if (button)
 #endif
 					buttonImageList.insert(std::pair<Guid, u32>{ id, button });
+#endif
 				break;
 			}
 			case FileType::Audio:
@@ -639,12 +645,13 @@ namespace ALEngine::Engine
 				if (newTexture.handle)
 #endif
 					textureList[id] = newTexture;
+#ifdef EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
 #ifdef _DEBUG
 				if (button)
 #endif
 					buttonImageList[id] = button;
-
+#endif
 				break;
 			}
 			case FileType::Audio:
@@ -678,8 +685,9 @@ namespace ALEngine::Engine
 
 				// Do not keep track of this guid anymore
 				textureList.erase(id);
+#ifdef EDITOR
 				buttonImageList.erase(id);
-
+#endif
 				break;
 			}
 			case FileType::Audio:
