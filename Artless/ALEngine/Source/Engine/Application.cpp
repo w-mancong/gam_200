@@ -114,25 +114,25 @@ namespace ALEngine::Engine
 			sprite.layer = RenderLayer::UI;
 		}
 
-		f32 const HALF_WIDTH{ static_cast<f32>(OpenGLWindow::width >> 1) * 0.85f }, HALF_HEIGHT{ static_cast<f32>(OpenGLWindow::height >> 1) * 0.85f };
-		for (u64 i = 0; i < MAX_BATCH; ++i)
-		{
-			Transform trans{ { Random::Range(-HALF_WIDTH, HALF_WIDTH), Random::Range(-HALF_HEIGHT, HALF_HEIGHT), 0.0f },
-							 { Random::Range(30.0f, 60.0f), Random::Range(30.0f, 60.0f)},
-							   Random::Range(0.0f, 360.0f) };
-			Entity& en = *(batchShowCase + i);
-			if (!(i % 2))
-				en = CreateSprite(trans, "Assets/Images/awesomeface.png");
-			else
-				en = CreateSprite(trans, "Assets/Images/container.jpg");
-			Coordinator::Instance()->GetComponent<EntityData>(en).active = false;
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
-			sprite.color.r = Random::Range(0.0f, 1.0f);
-			sprite.color.g = Random::Range(0.0f, 1.0f);
-			sprite.color.b = Random::Range(0.0f, 1.0f);
-			sprite.color.a = Random::Range(0.0f, 1.0f);
-			sprite.layer = RenderLayer::UI;
-		}
+		//f32 const HALF_WIDTH{ static_cast<f32>(OpenGLWindow::width >> 1) * 0.85f }, HALF_HEIGHT{ static_cast<f32>(OpenGLWindow::height >> 1) * 0.85f };
+		//for (u64 i = 0; i < MAX_BATCH; ++i)
+		//{
+		//	Transform trans{ { Random::Range(-HALF_WIDTH, HALF_WIDTH), Random::Range(-HALF_HEIGHT, HALF_HEIGHT), 0.0f },
+		//					 { Random::Range(30.0f, 60.0f), Random::Range(30.0f, 60.0f)},
+		//					   Random::Range(0.0f, 360.0f) };
+		//	Entity& en = *(batchShowCase + i);
+		//	if (!(i % 2))
+		//		en = CreateSprite(trans, "Assets/Images/awesomeface.png");
+		//	else
+		//		en = CreateSprite(trans, "Assets/Images/container.jpg");
+		//	Coordinator::Instance()->GetComponent<EntityData>(en).active = false;
+		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		//	sprite.color.r = Random::Range(0.0f, 1.0f);
+		//	sprite.color.g = Random::Range(0.0f, 1.0f);
+		//	sprite.color.b = Random::Range(0.0f, 1.0f);
+		//	sprite.color.a = Random::Range(0.0f, 1.0f);
+		//	sprite.layer = RenderLayer::UI;
+		//}
 
 		{
 			Serializer::ObjectJson oj{ "../ALEngine/Resources/Objects Files/background.json" };

@@ -268,6 +268,7 @@
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
+    <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

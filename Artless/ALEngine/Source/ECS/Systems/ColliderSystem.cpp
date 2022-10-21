@@ -349,6 +349,8 @@ namespace ALEngine::ECS
 				//Update only if there is collision
 				//If current check has no collision and previous check has, will override
 				if (collision) {
+					//oneCollider.m_CollisionEvents.SubscribeToCollisionEvents(ON_COLLISION_ENTER, );
+
 					oneCollider.isCollided = collision;
 					twoCollider.isCollided = collision;
 				}

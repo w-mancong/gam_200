@@ -30,6 +30,7 @@ namespace ALEngine::ECS
 				Reads inputs from user and moves the gameobject through addforce on the rigidbody
 		***********************************************************************************/
 		void UpdateCharacterController(CharacterController& characControl, Rigidbody2D& rigid);
+		//void OnCollisionEnter(Collider2D* otherCollider);
 	};
 
 	namespace
@@ -68,6 +69,11 @@ namespace ALEngine::ECS
 		}
 		if (!Coordinator::Instance()->HasComponent<Collider2D>(entity)) {
 			Coordinator::Instance()->AddComponent(entity, Collider2D{});
+
+			//Collider2D collider = Coordinator::Instance()->GetComponent<Collider2D>(entity);
+			//void(CharacterControllerSystem::*fp)(Collider2D*) = &CharacterControllerSystem::OnCollisionEnter;
+			//IEventListener listener ();
+			//collider.m_CollisionEvents.SubscribeToCollisionEvents(ON_COLLISION_ENTER, listener);
 		}
 	}
 
@@ -106,5 +112,9 @@ namespace ALEngine::ECS
 		if (Input::Input::KeyDown(KeyCode::W)) {
 			AddForce(rigid, Vector2(0, characControl.speed * 2), FORCEMODE::FORCE);
 		}
-	}
+	}	
+	/*
+	void CharacterControllerSystem::OnCollisionEnter(Collider2D* otherCollider) {
+		printf("Collision Event Enter");
+	}*/
 }
