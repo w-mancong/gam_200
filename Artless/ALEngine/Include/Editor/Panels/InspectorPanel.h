@@ -30,7 +30,7 @@ namespace ALEngine::Editor
 			\brief
 			Default destructor for the InspectorPanel
 		***********************************************************************************/
-		~InspectorPanel(void) {};
+		~InspectorPanel(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -83,6 +83,14 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void DisplaySprite(void);
 
+		/*!*********************************************************************************
+			\brief
+			Displays the Sprite component info on the panel
+
+			\return
+			Current Gizmo Operation
+		***********************************************************************************/
+		ImGuizmo::OPERATION GetCurrGizmoOperation(void) const;
 
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
