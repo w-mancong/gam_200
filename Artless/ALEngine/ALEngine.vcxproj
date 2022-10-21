@@ -246,7 +246,9 @@
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
     <ClInclude Include="Include\Common Header\MySerializer.h" />
+    <ClInclude Include="Include\ECS\Components\Animation.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
+    <ClInclude Include="Include\ECS\Components\Transition.h" />
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
@@ -307,6 +309,7 @@
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\ECS\Components\Color.h" />
+    <ClInclude Include="Include\ECS\Components\Animator.h" />
     <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\Gizmo.h" />
