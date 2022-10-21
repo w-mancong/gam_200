@@ -136,7 +136,7 @@ namespace ALEngine::ECS
 		\param [in] layer:
 		Rendering order of the sprite
 	***********************************************************************************/
-	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath = "Assets/Images/white.png", RenderLayer layer = RenderLayer::Background);
+	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath = "", RenderLayer layer = RenderLayer::Background);
 
 	/*!*********************************************************************************
 		\brief
@@ -150,7 +150,7 @@ namespace ALEngine::ECS
 		\param [in] layer:
 		Rendering order of the sprite
 	***********************************************************************************/
-	void CreateSprite(Entity const& entity, const char* filePath = "Assets/Images/white.png", RenderLayer layer = RenderLayer::Background);
+	void CreateSprite(Entity const& entity, const char* filePath = "", RenderLayer layer = RenderLayer::Background);
 
 	/*!*********************************************************************************
 		\brief
@@ -170,7 +170,7 @@ namespace ALEngine::ECS
 		\return
 		ID of the entity created with Sprite and Transform component added
 	***********************************************************************************/
-	Entity CreateSprite(Transform const& transform, const char* filePath = "Assets/Images/white.png", const char* tag = nullptr, RenderLayer layer = RenderLayer::Background);
+	Entity CreateSprite(Transform const& transform, const char* filePath = "", const char* tag = nullptr, RenderLayer layer = RenderLayer::Background);
 }
 
 #endif

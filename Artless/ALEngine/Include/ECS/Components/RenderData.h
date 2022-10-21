@@ -17,7 +17,7 @@ namespace ALEngine::ECS::Component
 		Entities with lower RenderLayer will be rendered first, while other entities
 		with higher RenderLayer will be rendered later. 
 	***********************************************************************************/
-	enum class RenderLayer
+	enum class RenderLayer : u64
 	{
 		Background = 0,
 		Player,

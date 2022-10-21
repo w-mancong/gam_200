@@ -6,6 +6,7 @@
 #define _USE_MATH_DEFINES
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))	// find the number of elements in an array
 #define EDITOR 1
+#define LOAD_WITH_CODE 1	// Use this when loading resources in code
 
 // C++ standard library
 #include <iostream>
@@ -30,6 +31,7 @@
 #include <ctime>
 #include <chrono>
 #include <bitset>
+#include <atomic>
 
 // Data structures
 #include <string>
