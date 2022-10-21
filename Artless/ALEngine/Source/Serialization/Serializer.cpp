@@ -1,9 +1,13 @@
 
 #include "pch.h"
-#include <stdlib.h>     /* exit, EXIT_FAILURE */
 
 namespace ALEngine::Serializer
 {
+	Deserializer::Deserializer(const std::string& fileName)
+	{
+		ReadFile(fileName);
+	}
+
 	b8 Deserializer::ReadFile(const std::string& fileName) {
 		using namespace rapidjson;
 		std::ifstream ifs{fileName};

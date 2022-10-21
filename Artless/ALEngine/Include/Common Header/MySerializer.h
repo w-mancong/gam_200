@@ -38,8 +38,9 @@ namespace ALEngine::Serializer
 	class Deserializer {
 
 	public:
+		Deserializer(const std::string& fileName = "");
 
-		b8 ReadFile(const std::string& filePath);
+		b8 ReadFile(const std::string& fileName);
 
 		int getInt(const char* pairName, const int defaultInt);
 
