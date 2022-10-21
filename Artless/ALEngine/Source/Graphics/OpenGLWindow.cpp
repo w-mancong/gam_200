@@ -49,10 +49,10 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		Serializer::ConfigJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
-		title  = config.GetWindowTitle();
-		width  = config.GetDimensionWidth();
-		height = config.GetDimensionHeight();
+		//Serializer::ConfigJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
+		//title  = config.GetWindowTitle();
+		//width  = config.GetDimensionWidth();
+		//height = config.GetDimensionHeight();
 
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 		if (!window)

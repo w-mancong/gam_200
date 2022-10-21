@@ -233,7 +233,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
-    <ClCompile Include="Source\Serialization\Serialization.cpp" />
+    <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
@@ -245,6 +245,7 @@
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
+    <ClInclude Include="Include\Common Header\MySerializer.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
@@ -332,7 +333,7 @@
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
-    <ClInclude Include="Include\Serialization\Serialization.h" />
+    <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
