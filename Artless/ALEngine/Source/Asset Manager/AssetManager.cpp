@@ -36,6 +36,7 @@ namespace
 
 	std::unordered_map<std::string, Guid> guidList;
 	std::unordered_map<Guid, Texture>  textureList;
+	std::unordered_map<Guid, u32>  buttonImageList;
 
 	void GenerateMetaFile(char const* filePath, Guid id)
 	{
@@ -179,6 +180,58 @@ namespace
 		return { texture, handle };
 	}
 
+	u32 LoadButtonImage(char const* filePath)
+	{
+		s32 width, height, nrChannels;
+		// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+		stbi_set_flip_vertically_on_load(true);
+		u8* data = stbi_load(filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
+		if (!data)
+		{
+			std::string err_msg{ "Failed to load texture.\nFile path: " + std::string(filePath) };
+			AL_CORE_CRITICAL(err_msg);
+			return {};
+		}
+		u32 format{ 0 };
+		switch (nrChannels)
+		{
+			case STBI_rgb:
+			{
+				format = GL_RGB;
+				break;
+			}
+			case STBI_rgb_alpha:
+			{
+				format = GL_RGBA;
+				break;
+			}
+			// I only want to accept files that have RGB/RGBA formats
+			default:
+			{
+				std::string err_msg{ "Wrong file format: Must contain RGB/RGBA channels" };
+				AL_CORE_CRITICAL(err_msg);
+				return {};
+			}
+		}
+
+		u32 texture{ 0 };
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// set texture filtering parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		// buffer image data
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		stbi_image_free(data);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		return texture;
+	}
+
 	FileType GetFileType(std::string const& fileName)
 	{
 		if (fileName.find(".png") != std::string::npos || fileName.find(".jpg") != std::string::npos)
@@ -261,7 +314,14 @@ namespace ALEngine::Engine
 #ifdef _DEBUG
 					if (texture.handle)
 #endif
-					textureList.insert(std::pair<Guid, Texture>{ id, texture });
+						textureList.insert(std::pair<Guid, Texture>{ id, texture });
+
+					u32 button = LoadButtonImage(it->c_str());
+#ifdef _DEBUG
+					if (button)
+#endif
+						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
+
 					break;
 				}
 				case FileType::Audio:
@@ -299,11 +359,13 @@ namespace ALEngine::Engine
 	void AssetManager::Exit()
 	{
 		std::lock_guard<std::mutex> guard{ m_Resource };
-		for (auto& it : textureList)
+		for (auto const& it : textureList)
 		{
-			Texture& texture{ it.second };
+			Texture const& texture{ it.second };
 			glDeleteTextures(1, &texture.texture);
 		}
+		for (auto const& it : buttonImageList)
+			glDeleteTextures(1, &it.second);
 
 		// Remove audio from memory stream here
 	}
@@ -324,6 +386,11 @@ namespace ALEngine::Engine
 	{
 		std::lock_guard<std::mutex> guard{ m_Resource };
 		return textureList[id].handle;
+	}
+
+	u32 AssetManager::GetButtonImage(Guid id)
+	{
+		return buttonImageList[id];
 	}
 
 	Guid AssetManager::GetGuid(std::string fileName)
@@ -529,7 +596,12 @@ namespace ALEngine::Engine
 #ifdef _DEBUG
 				if (texture.handle)
 #endif
-				textureList.insert(std::pair<Guid, Texture>{ id, texture });
+					textureList.insert(std::pair<Guid, Texture>{ id, texture });
+				u32 button = LoadButtonImage(filePath.c_str());
+#ifdef _DEBUG
+				if (button)
+#endif
+					buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 				break;
 			}
 			case FileType::Audio:
@@ -559,13 +631,19 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(oldTexture.handle);
 				glDeleteTextures(1, &oldTexture.texture);
+				glDeleteTextures(1, &buttonImageList[id]);
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
 #ifdef _DEBUG
 				if (newTexture.handle)
 #endif
-				textureList[id] = newTexture;
+					textureList[id] = newTexture;
+				u32 button = LoadButtonImage(filePath.c_str());
+#ifdef _DEBUG
+				if (button)
+#endif
+					buttonImageList[id] = button;
 
 				break;
 			}
@@ -596,9 +674,11 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);
 				glDeleteTextures(1, &texture.texture);
+				glDeleteTextures(1, &buttonImageList[id]);
 
 				// Do not keep track of this guid anymore
 				textureList.erase(id);
+				buttonImageList.erase(id);
 
 				break;
 			}

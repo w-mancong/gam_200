@@ -49,6 +49,8 @@ namespace ALEngine::Engine
 
 		TextureHandle GetTextureHandle(Guid id);
 
+		u32 GetButtonImage(Guid id);
+
 		Guid GetGuid(std::string fileName);
 
 		void Alert(std::string const& filePath, FileStatus status);
