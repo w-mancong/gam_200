@@ -45,9 +45,11 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		u16 GetCurrentAssetCount(void);
 
-		TextureHandle GetTexture(Guid id);
+		u32 GetTexture(Guid id);
 
-		Guid GetGuid(std::string const& fileName);
+		TextureHandle GetTextureHandle(Guid id);
+
+		Guid GetGuid(std::string fileName);
 
 		void Alert(std::string const& filePath, FileStatus status);
 

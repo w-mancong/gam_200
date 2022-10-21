@@ -30,10 +30,12 @@ namespace
 	enum class FileType
 	{
 		Image,
-		Audio
+		Audio,
+		Animation
 	};
 
-	std::unordered_map<Guid, Texture> textureList;
+	std::unordered_map<std::string, Guid> guidList;
+	std::unordered_map<Guid, Texture>  textureList;
 
 	void GenerateMetaFile(char const* filePath, Guid id)
 	{
@@ -183,6 +185,8 @@ namespace
 			return FileType::Image;
 		if (fileName.find(".wav") != std::string::npos)
 			return FileType::Audio;
+		if (fileName.find(".anim") != std::string::npos)
+			return FileType::Animation;
 	};
 }
 
@@ -244,6 +248,9 @@ namespace ALEngine::Engine
 				metaFiles.erase(it2);
 			}
 
+			// Get a list of Guid inserted into an unordered_map
+			guidList.insert(std::pair<std::string, Guid>{ *it, id });
+
 			switch (GetFileType(*it))
 			{
 				case FileType::Image:
@@ -251,7 +258,7 @@ namespace ALEngine::Engine
 					//into memory/stream
 					Texture texture = LoadTexture(it->c_str());
 					// Insert into texture list
-#ifndef NDEBUG
+#ifdef _DEBUG
 					if (texture.handle)
 #endif
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
@@ -307,24 +314,29 @@ namespace ALEngine::Engine
 		return m_AssetLoadedCounter;
 	}
 
-	TextureHandle AssetManager::GetTexture(Guid id)
+	u32 AssetManager::GetTexture(Guid id)
+	{
+		std::lock_guard<std::mutex> guard{ m_Resource };
+		return textureList[id].texture;
+	}
+
+	TextureHandle AssetManager::GetTextureHandle(Guid id)
 	{
 		std::lock_guard<std::mutex> guard{ m_Resource };
 		return textureList[id].handle;
 	}
 
-	Guid AssetManager::GetGuid(std::string const& fileName)
+	Guid AssetManager::GetGuid(std::string fileName)
 	{
+		std::lock_guard<std::mutex> guard{ m_Resource };
 		if (!fileName.size())
 			return std::numeric_limits<Guid>::max();
-		std::ifstream ifs(fileName + ".meta", std::ios::binary);
-#ifdef LOAD_WITH_CODE
-		if (!ifs)
+		std::replace(fileName.begin(), fileName.end(), '/', '\\');	// Change all the '/' to '\\'
+#ifdef _DEBUG // In release mode, files should already exist and thus this check is not needed
+		if (guidList.find(fileName) == guidList.end())
 			return 0;
 #endif
-		Guid id{};
-		ifs.read(reinterpret_cast<char*>(&id), sizeof(Guid));
-		return id;
+		return guidList[fileName];
 	}
 
 	void AssetManager::Alert(std::string const& filePath, FileStatus status)
@@ -515,7 +527,7 @@ namespace ALEngine::Engine
 			{
 				//into memory/stream
 				Texture texture = LoadTexture(filePath.c_str());
-#ifndef NDEBUG
+#ifdef _DEBUG
 				if (texture.handle)
 #endif
 				textureList.insert(std::pair<Guid, Texture>{ id, texture });
@@ -528,6 +540,7 @@ namespace ALEngine::Engine
 			default:
 				break;
 			}
+			guidList.insert(std::pair<std::string, Guid>{ filePath, id });
 			files.created.pop_back();
 		}
 	}
@@ -550,7 +563,7 @@ namespace ALEngine::Engine
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
-#ifndef NDEBUG
+#ifdef _DEBUG
 				if (newTexture.handle)
 #endif
 				textureList[id] = newTexture;
@@ -588,13 +601,6 @@ namespace ALEngine::Engine
 				// Do not keep track of this guid anymore
 				textureList.erase(id);
 
-				if (remove(meta.c_str()))
-				{
-					char error[1024];
-					strerror_s(error, errno); strcat_s(error, "\n");
-					std::cerr << "Error: " << error;
-				}
-
 				break;
 			}
 			case FileType::Audio:
@@ -604,6 +610,16 @@ namespace ALEngine::Engine
 			default:
 				break;
 			}
+
+			// Remove meta file from folder
+			if (remove(meta.c_str()))
+			{
+				char error[1024];
+				strerror_s(error, errno); strcat_s(error, "\n");
+				std::cerr << "Error: " << error;
+			}
+			// Remove guid from this list
+			guidList.erase(filePath);
 			files.removed.pop_back();
 		}
 	}
