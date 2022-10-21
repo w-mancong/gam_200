@@ -153,6 +153,39 @@ namespace ALEngine::ECS
 		CreateRigidbody(entity);
 	}
 
+	void DebugDrawCollider()
+	{
+		//**************** Run through all colliders again ************//
+		//**************** Update the position to after all the response ************//
+		for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
+		{
+			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+
+			//If rigidbody is disabled or collider is trigger, no need to update position
+			if (!Coordinator::Instance()->HasComponent<Rigidbody2D>(*it) || collider.isTrigger) {
+				if (cs->isDebugDraw) {
+					if (collider.isCollided) {
+						cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
+					}
+					else {
+						cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
+					}
+				}
+				continue;
+			}
+
+			if (cs->isDebugDraw) {
+				if (collider.isCollided) {
+					cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
+				}
+				else {
+					cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
+				}
+			}
+		}
+	}
+
 	void CreateCollider(Entity const& entity, ColliderType shape)
 	{
 		//Prepare collider for custom stats
@@ -288,7 +321,13 @@ namespace ALEngine::ECS
 			//One data (Treated as moving if rigidbody is enabled)
 			Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 			Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-			Rigidbody2D& oneRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+
+			Rigidbody2D emptyRigidody{};
+			emptyRigidody.isEnabled = false;
+
+			Rigidbody2D& oneRigidbody = Coordinator::Instance()->HasComponent<Rigidbody2D>(*it) ? 
+				Coordinator::Instance()->GetComponent<Rigidbody2D>(*it) :
+				emptyRigidody;
 
 			//Shift through other colliders to simulate collision with
 			for (auto jt = cs->mEntities.begin(); jt != cs->mEntities.end(); ++jt) {
@@ -300,8 +339,10 @@ namespace ALEngine::ECS
 				//Two Data
 				Collider2D& twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
 				Transform const& twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
-				Rigidbody2D& twoRigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt);
 
+				Rigidbody2D& twoRigidbody = Coordinator::Instance()->HasComponent<Rigidbody2D>(*jt) ?
+					Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt) :
+					emptyRigidody;
 				//Do collision check
 				collision = cs->UpdateCollider(oneCollider, twoCollider, oneParentTransform, twoParentTransform, oneRigidbody, twoRigidbody);
 
@@ -310,40 +351,6 @@ namespace ALEngine::ECS
 				if (collision) {
 					oneCollider.isCollided = collision;
 					twoCollider.isCollided = collision;
-				}
-			}
-		}
-
-		//**************** Run through all colliders again ************//
-		//**************** Update the position to after all the response ************//
-		for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-		{
-			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-			Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-				
-			//If rigidbody is disabled or collider is trigger, no need to update position
-			if (!rigidbody.isEnabled || collider.isTrigger) {
-				if (cs->isDebugDraw) {
-					if (collider.isCollided) {
-						cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
-					}
-					else {
-						cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
-					}
-				}
-				continue;
-			}
-
-			//Update position
-			parentTransform.position = rigidbody.nextPosition;
-
-			if (cs->isDebugDraw){	
-				if (collider.isCollided) {
-					cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
-				}
-				else {
-					cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
 				}
 			}
 		}
@@ -556,7 +563,6 @@ namespace ALEngine::ECS
 		
 	using Physics::RaycastHit2D;
 	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
-		(void)rigidbody_other;
 		//If the velocity is zero
 		//Just calculate static
 		if (rigidbody_moving.velocity.Magnitude() == 0) {

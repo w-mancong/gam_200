@@ -45,9 +45,6 @@ namespace ALEngine::Engine
 
 		appStatus = 1;
 		RunFileWatcher();
-
-		Transform trans{ {}, { 200.0f, 200.0f } };
-		CreateSprite(trans, "Assets/Images/awesomeface.png");
 	}
 
 	void Application::Update(void)
@@ -145,6 +142,10 @@ namespace ALEngine::Engine
 		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
+		UpdatePostRigidbodySystem();
+
+		DebugDrawRigidbody();
+		DebugDrawCollider();
 	}
 
 	int GetAppStatus(void)

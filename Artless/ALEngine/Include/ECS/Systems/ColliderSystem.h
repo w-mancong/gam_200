@@ -42,6 +42,13 @@ namespace ALEngine
 		***********************************************************************************/
 		void CreateCollider(Entity const& entity, ColliderType shape = ColliderType::Rectangle2D_AABB);
 
+
+		/*!*********************************************************************************
+			\brief
+			Draw colliders of entity
+		***********************************************************************************/
+		void DebugDrawCollider(void);
+
 		/*!*********************************************************************************
 			\brief
 			Adds a raycast to the overall collision check, will check through every collider with the ray
