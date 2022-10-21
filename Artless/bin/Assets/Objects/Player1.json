@@ -1,0 +1,20 @@
+{
+  "id": 10,
+  "position": [ -200, 45 ],
+
+  "rotation": 0,
+  "scale": [ 50, 50 ],
+
+  "sprite": "Assets/Images/player.png",
+
+  "red": 255,
+  "green": 255,
+  "blue": 255,
+  "alpha": 255,
+
+  "Collider positionOffsetX": 0,
+  "Collider positionOffsetY": 0,
+  "Collider scaleOffsetX": 50,
+  "Collider scaleOffsetY": 50,
+  "Collider rigidBodyEnabled": 1
+}

@@ -22,12 +22,31 @@
 #include <rapidjson/uri.h>
 #include <rapidjson/writer.h>
 #include <Utility/Type.h>
+#include <Math/Vector2.h>
 
 namespace ALEngine::Serializer
 {
-	b8 SerializeTest(const std::string& filePath);
-	b8 ReadConfig(const std::string& filePath);
+	class Deserializer {
 
+	public:
+
+		b8 ReadFile(const std::string& filePath);
+
+		//int getInt(std::string pairName);
+		int getInt(const char* pairName, const int defaultInt);
+		std::string getString(const char* pairName, const char* defaultString);
+		f32 getFloat(const char* pairName, const f32 defaultFloat);
+		Math::Vec2 getVec2(const char* pairName, Math::Vec2 defaultVec2);
+		//int getVec2(const char* pairName, Math::Vector2 defaultVec2);
+
+		b8 readConfig(std::string filePath);
+
+		b8 readConfig2(std::string filePath);
+
+	private:
+		rapidjson::Document doc;
+
+	};
 
 }
 

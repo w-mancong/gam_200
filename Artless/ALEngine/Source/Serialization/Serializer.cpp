@@ -1,135 +1,177 @@
 
 #include "pch.h"
+#include <stdlib.h>     /* exit, EXIT_FAILURE */
 
 namespace ALEngine::Serializer
 {
-
-	b8 SerializeTest(const std::string& filePath) {
+	b8 Deserializer::ReadFile(const std::string& fileName) {
 		using namespace rapidjson;
+		std::ifstream ifs{fileName};
+		std::ifstream ifs2{fileName};
+		if (!ifs2.is_open())
+		{
+			std::cerr << "Could not open file for reading!\n";
+			return EXIT_FAILURE;
+		}
+		std::string line;
 
-		//std::ifstream file;
+		if (ifs2.is_open())
+		{
+			u32 i = 0;
+			while (std::getline(ifs2, line))
+			{
+				i++;
+				std::cout << "LINE " << i << ":" << line << std::endl;
+			}
+			ifs2.close();
+		}
 
-		//file.open(filePath);
+		IStreamWrapper isw{ ifs };
 
-		//std::string line;
-		//if (file.is_open())
-		//{
-		//	std::cout << "FILE IS OPENED!!!" << std::endl;
+		this->doc.ParseStream(isw);
 
-		//	u32 i = 0;
-		//	while (std::getline(file, line))
-		//	{
+		StringBuffer buffer{};
+		Writer<StringBuffer> writer{ buffer };
+		this->doc.Accept(writer);
 
-		//	}
-		//	file.close();
-		//	return true;
-		//}
-		//else {
-		//	std::cout << "Unable to open file";
-		//}
-		//return false;
+		if (this->doc.HasParseError())
+		{
+			std::cout << "Error  : " << this->doc.GetParseError() << '\n'
+				<< "Offset : " << this->doc.GetErrorOffset() << '\n';
+			return EXIT_FAILURE;
+		}
 
-		// 1. Parse a JSON string into DOM.
-		//const char* json = "{\"project\":\"rapidjson\",\"stars\":10}";
-		//  "id": 1,
-		//const char* json = "{\"project\":\"rapidjson\",\"id\":1}";
-		const char* json = "{\"id\":1}";
-		//const char* json = "{\"id\":\"1\"}";
-		Document d;
+		const std::string jsonStr{
+			buffer.GetString()
+		};
 
-		d.Parse(json);
+		std::cout << "ORIGINAL STRING :" << jsonStr << std::endl;
 
-		// 2. Modify it by DOM.
-		Value& s = d["id"];
-		s.SetInt(s.GetInt() + 1);
+		//assert(this->doc.HasMember("id"));
+		//assert(this->doc["id"].IsInt());
+		//assert(this->doc["id"].IsNumber());
+		//assert(this->doc["name"].IsString());
+		//assert(this->doc["window title"].IsString());
+		//assert(this->doc["dimensions"]["dimensionWidth"].IsNumber());
 
-		// 3. Stringify the DOM
-		StringBuffer buffer;
-		Writer<StringBuffer> writer(buffer);
-		d.Accept(writer);
+		//std::cout << "ID = " << this->doc["id"].GetInt() << std::endl;
+		//std::cout << "NAME = " << this->doc["name"].GetString() << std::endl;
+		//std::cout << "Window Title = " << this->doc["window title"].GetString() << std::endl;
+		//std::cout << "dimensionWidth = " << this->doc["dimensions"]["dimensionWidth"].GetInt() << std::endl;
 
-		////std::ofstream myfile;
-		//std::ofstream outfile("test.txt");
-		////myfile.open("example.txt");
+		//printf("ID = %d\n", doc["id"].GetInt());
 
-		////std::ofstream outfile("test.txt");
-		//outfile << buffer.GetString() << std::endl;
-
-		// Output {"project":"rapidjson","stars":11}
-		std::cout << buffer.GetString() << std::endl;
-
-		std::ofstream os{ "../ALEngine/Resources/Objects Files/test.json" };
-		os << buffer.GetString();
-
-		return true;
 	}
 
-	//void Serializer::Exit() {
 
-	//}
+	int Deserializer::getInt(const char* pairName, const int defaultInt) {
 
-	b8 ReadConfig(const std::string & filePath) {
+		//this->doc2.HasMember(pairName)
+		if (this->doc.HasMember(pairName)) {
+			assert(this->doc.HasMember(pairName));
 
-		std::ifstream file;
+			//std::cout << "GET INT OF \"" << pairName << "\" : " << this->doc[pairName].GetInt() << std::endl;
 
-		file.open(filePath);
-
-		std::string line;
-		const char* c;
-
-		if (file.is_open())
-
-		{
-			std::cout << "FILE IS OPENED!!!" << std::endl;
-			rapidjson::Document d;
-
-
-			u32 i = 0;
-			while (std::getline(file, line))
-			{
-				std::cout << "THIS IS LINE : " << line << std::endl;
-				//std::size_t pos = line.find(":");
-				//std::cout << "POS : " << pos << std::endl;
-				//std::string oldString = line.substr(1, pos - 1);
-				//std::string newString = "\"|" + oldString + "\"";
-				//std::cout << "OLD STRING :" << oldString << std::endl;
-				//std::cout << "NEW STRING :" << newString << std::endl;
-
-
-				c = const_cast<char*>(line.c_str());
-
-				std::cout << "THIS IS C : " << c << std::endl;
-
-				////{"id":2}
-				////  "id": 1,
-				////const char* json = "{\"id\":1}";
-
-
-				////d.Parse(c);
-				d.Parse(c);
-
-				rapidjson::StringBuffer buffer;
-				rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-				d.Accept(writer);
-
-				// Output {"project":"rapidjson","stars":11}
-				std::cout << "THIS IS BUFFER.GETSTRING() : " << buffer.GetString() << std::endl;
-
-				std::ofstream os{ "../ALEngine/Resources/Objects Files/test2.json" };
-				os << buffer.GetString();
-
-			}
-			file.close();
-			return true;
+			return this->doc[pairName].GetInt();
 		}
 		else {
-			std::cout << "Unable to open file";
+
+			this->doc.AddMember(rapidjson::StringRef(pairName), defaultInt, this->doc.GetAllocator());
+			//std::cout << "GET INT OF \"" << pairName << "\" : " << this->doc[pairName].GetInt() << std::endl;
+
+			return defaultInt;
 		}
-		return false;
 	}
 
+	std::string Deserializer::getString(const char* pairName, const char* defaultString) {
 
 
+		//this->doc2.HasMember(pairName)
+		if (this->doc.HasMember(pairName)) {
+			assert(this->doc.HasMember(pairName));
+
+			//std::cout << "GET STRING OF \"" << pairName << "\" : " << this->doc[pairName].GetString() << std::endl;
+
+			return this->doc[pairName].GetString();
+		}
+		else {
+
+
+			//rapidjson::Value s; // = doc[pairName];
+			//s = rapidjson::StringRef(defaultString);
+			this->doc.AddMember(rapidjson::StringRef(pairName), rapidjson::StringRef(defaultString), this->doc.GetAllocator());
+
+			//std::cout << "GET STRING OF \"" << pairName << "\" : " << this->doc[pairName].GetString() << std::endl;
+
+
+			return defaultString;
+		}
+
+	}
+
+	f32 Deserializer::getFloat(const char* pairName, const f32 defaultFloat) {
+
+		//std::cout << "FINAL PAIRNAME IS : " << pairName << std::endl;
+
+		//this->doc2.HasMember(pairName)
+		if (this->doc.HasMember(pairName)) {
+			assert(this->doc.HasMember(pairName));
+
+			//std::cout << "GET FLOAT OF \"" << pairName << "\" : " << this->doc[pairName].GetFloat() << std::endl;
+
+			return this->doc[pairName].GetFloat();
+		}
+		else {
+			//rapidjson::Value s; // = doc[pairName];
+			//s = rapidjson::StringRef(defaultString);
+			this->doc.AddMember(rapidjson::StringRef(pairName), defaultFloat, this->doc.GetAllocator());
+			//std::cout << "GET INT OF \"" << pairName << "\" : " << this->doc[pairName].GetFloat() << std::endl;
+
+			return defaultFloat;
+		}
+	}
+	Math::Vec2 Deserializer::getVec2(const char* pairName, Math::Vec2 defaultVec2){
+		Math::Vec2 vec2;
+
+		if (this->doc.HasMember(pairName)) {
+			assert(this->doc.HasMember(pairName));
+			
+
+			assert(this->doc[pairName].IsArray());
+			//for (rapidjson::SizeType i = 0; i < this->doc[pairName].Size(); i++) // rapidjson uses SizeType instead of size_t.
+			//	printf("a[%d] = %d\n", i, this->doc[pairName][i].GetInt());
+
+			vec2.x = this->doc[pairName][0].GetInt();
+			vec2.y = this->doc[pairName][1].GetInt();
+
+			//std::cout << "GET VEC2 X OF \"" << pairName << "\" : " << vec2.x << std::endl;
+			//std::cout << "GET VEC2 Y OF \"" << pairName << "\" : " << vec2.y << std::endl;
+
+			return vec2;
+		}
+		else {
+			rapidjson::Value a(rapidjson::kArrayType);
+			rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
+			int defaultVec2X = defaultVec2.x;
+			int defaultVec2Y = defaultVec2.y;
+
+			//a.PushBack(defaultVec2.x, allocator);
+			//a.PushBack(test, allocator);
+			//a.PushBack(defaultVec2.y, allocator);
+
+			this->doc.AddMember(rapidjson::StringRef(pairName), defaultVec2X, this->doc.GetAllocator());
+			this->doc[pairName].SetArray();
+
+			doc[pairName].PushBack(defaultVec2X, allocator);
+			doc[pairName].PushBack(defaultVec2Y, allocator);
+
+			this->doc[pairName][0] = 5;
+
+			//std::cout << "GET ARRAY OF \"" << pairName << "\" : [" << this->doc[pairName][0].GetInt() << ", " << this->doc[pairName][1].GetInt() << "]" << std::endl;
+
+			return defaultVec2;
+		}
+	}
 }
 
 
