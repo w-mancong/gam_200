@@ -234,6 +234,7 @@
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
+    <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
@@ -335,6 +336,7 @@
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
+    <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
     <ClInclude Include="Include\Utility\Profiler.h" />
