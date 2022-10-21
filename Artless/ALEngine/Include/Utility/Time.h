@@ -45,12 +45,22 @@ namespace ALEngine::Utility
 
 		/*!*********************************************************************************
 			\brief
-			Set the Target FPS, which is the FPS the system will aim to hit
+			Set the Target FPS, which is the FPS the system will aim to hit.
+			Set to 0 for Unlimited FPS
 
 			\param [in] _target:
 			Number to be set as the target FPS
 		***********************************************************************************/
 		static void SetTargetFPS(s32 _target);
+
+		/*!*********************************************************************************
+			\brief
+			Set whether the engine has an FPS Limit
+
+			\param [in] _hasLimit:
+			Whether there is an FPS Limit or not
+		***********************************************************************************/
+		static void SetHasFPSLimit(b8 _hasLimit);
 
 	public:
 		static f32 m_DeltaTime;				// Delta Time
@@ -70,7 +80,7 @@ namespace ALEngine::Utility
 		~Time(void) = default;
 
 		static s32 m_TargetFPS;		// Target FPS
-		static bool m_HasFPSLimit;	// Whether there is an FPS limit
+		static b8 m_HasFPSLimit;	// Whether there is an FPS limit
 
 		static std::chrono::nanoseconds m_Ticks[MAX_SAMPLES];		// Stores the number of ticks in the past 100 frames
 		static std::chrono::nanoseconds m_TickSum;				// Number of ticks
