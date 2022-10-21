@@ -6,6 +6,11 @@ namespace ALEngine::Engine
 	using namespace Graphics;
 	using namespace ECS;
 	using namespace Editor;
+	namespace
+	{
+		std::atomic<int> appStatus;
+	}
+
 	class Application
 	{
 	public:
@@ -27,9 +32,9 @@ namespace ALEngine::Engine
 
 		//// Init ImGui
 		ALEditor::Instance()->SetImGuiEnabled(true);
-		ALEditor::Instance()->SetDockingEnabled(false);
+		ALEditor::Instance()->SetDockingEnabled(true);
 
-		Engine::AssetManager::Instance()->Init();		
+		Engine::AssetManager::Instance()->Init();
 
 		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
 		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
@@ -37,6 +42,12 @@ namespace ALEngine::Engine
 		AL_CORE_WARN("THIS IS A WARNING MESSAGE");
 		AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
 		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
+
+		appStatus = 1;
+		RunFileWatcher();
+
+		Transform trans{ {}, { 200.0f, 200.0f } };
+		CreateSprite(trans, "Assets/Images/awesomeface.png");
 	}
 
 	void Application::Update(void)
@@ -45,10 +56,14 @@ namespace ALEngine::Engine
 		f32 accumulator{ 0.f };
 
 		// should do the game loop here
-		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && !Input::Input::KeyTriggered(KeyCode::Escape))
+		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && appStatus)
 		{
+			Input::Update();
+			AssetManager::Instance()->Update();
 			// Get Current Time
 			Time::ClockTimeNow();
+
+			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
 			// ImGui Editor
 			{
@@ -107,12 +122,13 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
-		ALEditor::Instance()->Exit(); // Exit ImGui
-		glfwTerminate();			  // clean/delete all GLFW resources
+		ALEditor::Instance()->Exit();		// Exit ImGui
+		AssetManager::Instance()->Exit();	// Clean up all Assets
+		glfwTerminate();					// clean/delete all GLFW resources
 	}
 
 	void Run(void)
-	{
+	{		
 		Application app;
 		app.Init();
 		app.Update();
@@ -129,5 +145,10 @@ namespace ALEngine::Engine
 		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
+	}
+
+	int GetAppStatus(void)
+	{
+		return appStatus;
 	}
 }

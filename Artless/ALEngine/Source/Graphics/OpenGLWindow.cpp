@@ -36,7 +36,9 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_SAMPLES, 4);
 
-		//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+		//Console::StopConsole();
 
 #ifdef _DEBUG
 		// Enable OPENGL Debug Context if on debug mode
