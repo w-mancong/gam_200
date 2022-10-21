@@ -16,7 +16,7 @@ namespace ALEngine::Editor
 	ContentBrowserPanel::ContentBrowserPanel()
 	:m_CurrentDirectory(assetPath),
 	m_MainDirectory(assetPath),
-	searchKeyword("Search...")
+	searchKeyword("")
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -93,7 +93,7 @@ namespace ALEngine::Editor
 		ImGui::Begin("Assets");
 
 		ImGui::Text("Search Bar");
-		ImGui::InputText("Search Tag", searchKeyword, IM_ARRAYSIZE(searchKeyword));
+		ImGui::InputText("Search Tag", searchKeyword, 256);
 
 		static float padding = 16.0f;
 		static float thumbnailSize = 96.0f;
@@ -119,6 +119,11 @@ namespace ALEngine::Editor
 
 			//file name from relative path 
 			std::string const& fileNamestring = relativePath.filename().string();
+
+			if (!(fileNamestring.find(std::string(searchKeyword)) != std::string::npos))
+			{
+				continue;
+			}
 
 			if (fileNamestring == "Dev")
 			{
