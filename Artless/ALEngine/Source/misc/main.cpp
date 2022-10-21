@@ -1,5 +1,4 @@
-#include "pch.h"
-#include <Math/Vector2.h>
+#include <pch.h>
 
 int main(void)
 {
