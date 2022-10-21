@@ -138,10 +138,8 @@ namespace ALEngine::Editor
 			if (fileNamestring.find(".jpg")!= std::string::npos || fileNamestring.find(".png") != std::string::npos)
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid(directoryEntry.path().string());
-				u32 texture = Engine::AssetManager::Instance()->GetTexture(id);
-
-				//ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-				ImGui::ImageButton((ImTextureID)2, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+				u32 texture = Engine::AssetManager::Instance()->GetButtonImage(id);
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}
 			else
 			{
@@ -191,6 +189,5 @@ namespace ALEngine::Editor
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
-
 	}	
 }	
