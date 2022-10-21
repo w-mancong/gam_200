@@ -1,6 +1,7 @@
 /*!
 file: AssetManager.cpp
-author: Chan Jie Ming Stanley
+author:		Chan Jie Ming Stanley
+co-author:	Wong Man Cong
 email: c.jiemingstanley\@digipen.edu
 brief: This file contains function definition for AssetManager. AssetManager is a singleton
        pattern class. It will handle asset guid as well as build and generate guid for the
@@ -19,7 +20,6 @@ namespace
 	{
 		u32 texture;
 		TextureHandle handle;
-		std::string filePath;
 	};
 
 	struct Files
@@ -30,10 +30,12 @@ namespace
 	enum class FileType
 	{
 		Image,
-		Audio
+		Audio,
+		Animation
 	};
 
-	std::unordered_map<Guid, Texture> textureList;
+	std::unordered_map<std::string, Guid> guidList;
+	std::unordered_map<Guid, Texture>  textureList;
 
 	void GenerateMetaFile(char const* filePath, Guid id)
 	{
@@ -76,47 +78,105 @@ namespace
 		u8* data = stbi_load(filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
 		if (!data)
 		{
-			std::cerr << "Failed to load texture" << std::endl;
-			std::cerr << "File path: " << filePath << std::endl;
+			std::string err_msg{ "Failed to load texture.\nFile path: " + std::string(filePath) };
+			AL_CORE_CRITICAL(err_msg);
+			return {};
 		}
-		u32 format{ 0 };
+		u32 format[2]{};
 		switch (nrChannels)
 		{
 			case STBI_rgb:
 			{
-				format = GL_RGB;
+				format[0] = GL_RGB8;
+				format[1] = GL_RGB;
 				break;
 			}
 			case STBI_rgb_alpha:
 			{
-				format = GL_RGBA;
+				format[0] = GL_RGBA8;
+				format[1] = GL_RGBA;
 				break;
 			}
 			// I only want to accept files that have RGB/RGBA formats
 			default:
-				std::cerr << "Wrong file format: Must contain RGB/RGBA channels" << std::endl;
+			{
+				std::string err_msg{ "Wrong file format: Must contain RGB/RGBA channels" };
+				AL_CORE_CRITICAL(err_msg);
+				return {};
+			}
 		}
 
-		u32 texture{ 0 };
+		u32 texture{};
 		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		// buffer image data
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, texture);
+		glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, format[0], width, height, 1);
+
+		s64 const DATA_SIZE = static_cast<s64>(width) * static_cast<s64>(height) * static_cast<s64>(nrChannels);
+		u32 pbo{};
+		glGenBuffers(1, &pbo);
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
+		glBufferData(GL_PIXEL_UNPACK_BUFFER, DATA_SIZE, data, GL_STREAM_DRAW);
+		glPixelStorei(GL_UNPACK_ROW_LENGTH,   width);		// width
+		glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, height);		// height
+
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
+			0,
+			0, 0, 0,
+			width, height, 1,
+			format[1],
+			GL_UNSIGNED_BYTE,
+			0);
+
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 		TextureHandle handle = glGetTextureHandleARB(texture);
 		glMakeTextureHandleResidentARB(handle);
 
 		stbi_image_free(data);
 
-		// Unbind vertex array and texture to prevent accidental modifications
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		glDeleteBuffers(1, &pbo);
 
-		return { texture, handle, filePath };
+		return { texture, handle };
+	}
+
+	Texture LoadWhiteImage(void)
+	{
+		u32 texture;
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, texture);
+
+		//Create storage for the texture. (100 layers of 1x1 texels)
+		glTexStorage3D(GL_TEXTURE_2D_ARRAY,
+			1,                    //No mipmaps as textures are 1x1
+			GL_RGB8,              //Internal format
+			1, 1,                 //width,height
+			1					  //Number of layers
+		);
+
+		u8 color[3] = { 255, 255, 255 };
+		//Specify i-essim image
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
+			0,                     //Mipmap number
+			0, 0, 0,               //xoffset, yoffset, zoffset
+			1, 1, 1,               //width, height, depth
+			GL_RGB,                //format
+			GL_UNSIGNED_BYTE,      //type
+			color);                //pointer to data
+
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		TextureHandle handle = glGetTextureHandleARB(texture);
+		glMakeTextureHandleResidentARB(handle);
+
+		return { texture, handle };
 	}
 
 	FileType GetFileType(std::string const& fileName)
@@ -125,6 +185,8 @@ namespace
 			return FileType::Image;
 		if (fileName.find(".wav") != std::string::npos)
 			return FileType::Audio;
+		if (fileName.find(".anim") != std::string::npos)
+			return FileType::Animation;
 	};
 }
 
@@ -186,6 +248,9 @@ namespace ALEngine::Engine
 				metaFiles.erase(it2);
 			}
 
+			// Get a list of Guid inserted into an unordered_map
+			guidList.insert(std::pair<std::string, Guid>{ *it, id });
+
 			switch (GetFileType(*it))
 			{
 				case FileType::Image:
@@ -193,6 +258,9 @@ namespace ALEngine::Engine
 					//into memory/stream
 					Texture texture = LoadTexture(it->c_str());
 					// Insert into texture list
+#ifdef _DEBUG
+					if (texture.handle)
+#endif
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 					break;
 				}
@@ -216,6 +284,9 @@ namespace ALEngine::Engine
 				std::cerr << "Remove Error: " << error;
 			}
 		}
+
+		// Load white image
+		textureList.insert(std::pair<Guid, Texture>{ std::numeric_limits<Guid>::max(), LoadWhiteImage() });
 	}
 
 	void AssetManager::Update()
@@ -223,7 +294,6 @@ namespace ALEngine::Engine
 		NewFiles();
 		ModifiedFiles();
 		RemovedFiles();
-		std::cout << textureList.size() << std::endl;
 	}
 
 	void AssetManager::Exit()
@@ -244,22 +314,29 @@ namespace ALEngine::Engine
 		return m_AssetLoadedCounter;
 	}
 
-	TextureHandle AssetManager::GetTexture(Guid id)
+	u32 AssetManager::GetTexture(Guid id)
+	{
+		std::lock_guard<std::mutex> guard{ m_Resource };
+		return textureList[id].texture;
+	}
+
+	TextureHandle AssetManager::GetTextureHandle(Guid id)
 	{
 		std::lock_guard<std::mutex> guard{ m_Resource };
 		return textureList[id].handle;
 	}
 
-	Guid AssetManager::GetGuid(std::string const& fileName)
+	Guid AssetManager::GetGuid(std::string fileName)
 	{
-		std::ifstream ifs(fileName + ".meta", std::ios::binary);
-#ifdef LOAD_WITH_CODE
-		if (!ifs)
+		std::lock_guard<std::mutex> guard{ m_Resource };
+		if (!fileName.size())
+			return std::numeric_limits<Guid>::max();
+		std::replace(fileName.begin(), fileName.end(), '/', '\\');	// Change all the '/' to '\\'
+#ifdef _DEBUG // In release mode, files should already exist and thus this check is not needed
+		if (guidList.find(fileName) == guidList.end())
 			return 0;
 #endif
-		Guid id{};
-		ifs.read(reinterpret_cast<char*>(&id), sizeof(Guid));
-		return id;
+		return guidList[fileName];
 	}
 
 	void AssetManager::Alert(std::string const& filePath, FileStatus status)
@@ -450,7 +527,9 @@ namespace ALEngine::Engine
 			{
 				//into memory/stream
 				Texture texture = LoadTexture(filePath.c_str());
-				// Insert into texture list
+#ifdef _DEBUG
+				if (texture.handle)
+#endif
 				textureList.insert(std::pair<Guid, Texture>{ id, texture });
 				break;
 			}
@@ -461,6 +540,7 @@ namespace ALEngine::Engine
 			default:
 				break;
 			}
+			guidList.insert(std::pair<std::string, Guid>{ filePath, id });
 			files.created.pop_back();
 		}
 	}
@@ -483,6 +563,9 @@ namespace ALEngine::Engine
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
+#ifdef _DEBUG
+				if (newTexture.handle)
+#endif
 				textureList[id] = newTexture;
 
 				break;
@@ -518,13 +601,6 @@ namespace ALEngine::Engine
 				// Do not keep track of this guid anymore
 				textureList.erase(id);
 
-				if (remove(meta.c_str()))
-				{
-					char error[1024];
-					strerror_s(error, errno); strcat_s(error, "\n");
-					std::cerr << "Error: " << error;
-				}
-
 				break;
 			}
 			case FileType::Audio:
@@ -534,6 +610,16 @@ namespace ALEngine::Engine
 			default:
 				break;
 			}
+
+			// Remove meta file from folder
+			if (remove(meta.c_str()))
+			{
+				char error[1024];
+				strerror_s(error, errno); strcat_s(error, "\n");
+				std::cerr << "Error: " << error;
+			}
+			// Remove guid from this list
+			guidList.erase(filePath);
 			files.removed.pop_back();
 		}
 	}

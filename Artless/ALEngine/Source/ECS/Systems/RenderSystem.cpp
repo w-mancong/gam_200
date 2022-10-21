@@ -84,7 +84,7 @@ namespace ALEngine::ECS
 
 			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vColor    + i) = sprite.color;
-			*(texHandle + i) = AssetManager::Instance()->GetTexture(sprite.id);
+			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
 
 			++counter;
 		}
@@ -99,11 +99,11 @@ namespace ALEngine::ECS
 		GenerateDrawCall(bd);
 
         //draw
-        glMultiDrawElementsIndirect(GL_TRIANGLES,   //type
-            GL_UNSIGNED_INT,                        //indices represented as unsigned ints
-            (void*)0,                               //start with the first draw command
-            static_cast<s32>(counter),              //draw objects
-            0);                                     //no stride, the draw commands are tightly packed
+        glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
+            GL_UNSIGNED_INT,							//indices represented as unsigned ints
+            (void*)0,									//start with the first draw command
+            static_cast<s32>(counter),					//draw objects
+            0);											//no stride, the draw commands are tightly packed
 
         glBindVertexArray(0);
 	}

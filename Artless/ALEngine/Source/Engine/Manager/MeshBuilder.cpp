@@ -7,17 +7,17 @@ namespace
 
 	struct Vertex2D
 	{
-		float x, y, z;  // Position
-		float u, v;     // Uv
+		f32 x, y, z;  // Position
+		f32 u, v;     // Uv
 	};
 
 	struct DrawElementsCommand
 	{
-		GLuint vertexCount;
-		GLuint instanceCount;
-		GLuint firstIndex;
-		GLuint baseVertex;
-		GLuint baseInstance;
+		u32 vertexCount;
+		u32 instanceCount;
+		u32 firstIndex;
+		u32 baseVertex;
+		u32 baseInstance;
 	};
 
 	const std::vector<Vertex2D> gQuad = {
@@ -29,8 +29,7 @@ namespace
 	};
 
 	const std::vector<unsigned int> gQuadIndex = {
-		3, 2, 0,
-		0, 1, 3
+		1, 3, 0, 2
 	};
 
 	struct Batch

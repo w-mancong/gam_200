@@ -1,18 +1,31 @@
-#ifndef ASSET_MANAGER_H
-#define ASSET_MANAGER_H
-
 /*!
 file: AssetManager.h
-author: Chan Jie Ming Stanley
+author:		Chan Jie Ming Stanley
+co-author:	Wong Man Cong
 email: c.jiemingstanley\@digipen.edu
+	   w.mancong\@digipen.edu
 brief: This file contains function declaration for AssetManager. AssetManager is a singleton
-       pattern class. It will handle asset guid as well as build and generate guid for the
+	   pattern class. It will handle asset guid as well as build and generate guid for the
 	   meta file of assets file.
 
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
+#ifndef ASSET_MANAGER_H
+#define ASSET_MANAGER_H
+
 namespace ALEngine::Engine
 {
+	/*!*********************************************************************************
+		\brief
+		Struct to store all the relevant data to load in sprite sheets
+	***********************************************************************************/
+	struct SpriteSheet
+	{
+		s32 width;				// Value used to determine how wide	each texture should be
+		s32 height;				// Value used to determine how tall each texture should be
+		char filePath[1024];	// Path to the sprite sheet
+	};
+
 	class AssetManager : public Templates::Singleton<AssetManager>
 	{
 	public:
@@ -32,9 +45,11 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		u16 GetCurrentAssetCount(void);
 
-		TextureHandle GetTexture(Guid id);
+		u32 GetTexture(Guid id);
 
-		Guid GetGuid(std::string const& fileName);
+		TextureHandle GetTextureHandle(Guid id);
+
+		Guid GetGuid(std::string fileName);
 
 		void Alert(std::string const& filePath, FileStatus status);
 
