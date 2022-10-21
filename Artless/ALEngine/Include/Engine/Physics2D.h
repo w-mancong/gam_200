@@ -37,6 +37,18 @@ namespace ALEngine::Engine::Physics
 		Raycast line to 2D circle
 	***********************************************************************************/
 	RaycastHit2D Raycast_Circle(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider);
+
+	/*!*********************************************************************************
+		\brief
+			Returns outcome of collision between Point -> Circle
+	***********************************************************************************/
+	bool Physics2D_CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius);
+
+	/*!*********************************************************************************
+		\brief
+			Returns outcome of collision between Point -> AABB
+	***********************************************************************************/
+	bool Physics2D_CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight);
 }
 
 #endif

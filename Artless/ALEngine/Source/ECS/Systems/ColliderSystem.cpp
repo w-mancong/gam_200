@@ -63,18 +63,6 @@ namespace ALEngine::ECS
 
 			/*!*********************************************************************************
 				\brief
-					Returns outcome of collision between Point -> Circle
-			***********************************************************************************/
-			bool CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius);
-
-			/*!*********************************************************************************
-				\brief
-					Returns outcome of collision between Point -> AABB
-			***********************************************************************************/
-			bool CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight);
-
-			/*!*********************************************************************************
-				\brief
 					Returns outcome of collision between Moving AABB to static AABB 
 					Also checks if the rigidbody of moving is active, calculate the response here if collision is true
 			***********************************************************************************/
@@ -666,30 +654,6 @@ namespace ALEngine::ECS
 		return false;
 	}
 
-	bool ColliderSystem::CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius) {
-		//Direction, used for distance 
-		Vector2 direction = position - circleCenter;
-
-		//Return Intersection
-		return (direction.x * direction.x + direction.y * direction.y) <= circleRadius * circleRadius;
-	}
-
-	bool ColliderSystem::CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight) {
-		//Holder for bottom left and top right
-		Vector2 bottomLeft = boxCenter - Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
-		Vector2 topRight = boxCenter + Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
-
-		//Intersection check
-		if (position.x < bottomLeft.x || position.x > topRight.x || position.y < bottomLeft.y || position.y > topRight.y) {
-			//No intersection
-			return false;
-		}
-
-		//Intersection
-		return true;
-	}
-
-
 	bool ColliderSystem::SweptCollision_Circle_Circle(Collider2D& collider_moving, Collider2D const& collider_other, Transform& parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbodyother) {
 		(void)rigidbodyother;
 		//If the velocity is zero
@@ -753,8 +717,8 @@ namespace ALEngine::ECS
 			{
 				//Box holder
 				Vector2 globalPosition = vec2(parentTransform.position) + collider.m_localPosition;
-				Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
-				Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
+				Vector2 bottomleft = { globalPosition.x - (collider.scale[0] + parentTransform.scale.x) * 0.5f, globalPosition.y - (collider.scale[1] + parentTransform.scale.y) * 0.5f };
+				Vector2 topright = { globalPosition.x + (collider.scale[0] + parentTransform.scale.x) * 0.5f, globalPosition.y + (collider.scale[1] + parentTransform.scale.y) * 0.5f };
 
 				//Draw 4 lines
 				Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);		//Bottom

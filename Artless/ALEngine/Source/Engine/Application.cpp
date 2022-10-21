@@ -19,6 +19,12 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
+	Entity player;
+	
+	void Poop() {
+		printf("PooP");
+	}
+
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
@@ -36,12 +42,21 @@ namespace ALEngine::Engine
 
 		Engine::AssetManager::Instance()->Init();
 
-		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
-		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
-		AL_CORE_INFO("THIS IS A INFO MESSAGE");
-		AL_CORE_WARN("THIS IS A WARNING MESSAGE");
-		AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
-		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
+		//AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
+		//AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
+		//AL_CORE_INFO("THIS IS A INFO MESSAGE");
+		//AL_CORE_WARN("THIS IS A WARNING MESSAGE");
+		//AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
+		//AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
+
+		Transform playerTransform;
+		playerTransform.scale = { 100,100 };
+		Coordinator::Instance()->AddComponent(player, playerTransform);
+		
+		CreateCollider(player);
+		CreateEventTrigger(player);
+		
+		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Poop);
 
 		appStatus = 1;
 		RunFileWatcher();
@@ -61,6 +76,11 @@ namespace ALEngine::Engine
 			Time::ClockTimeNow();
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
+
+			if (Input::KeyTriggered(KeyCode::Space)) {
+				EventTrigger& new_event = Coordinator::Instance()->GetComponent<EventTrigger>(player);
+				new_event.OnPointEnter.isTriggered = true;
+			}
 
 			// ImGui Editor
 			{
@@ -143,6 +163,8 @@ namespace ALEngine::Engine
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
+
+		UpdateEventTriggerSystem();
 
 		DebugDrawRigidbody();
 		DebugDrawCollider();
