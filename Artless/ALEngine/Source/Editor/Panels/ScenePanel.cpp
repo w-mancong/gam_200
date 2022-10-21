@@ -66,7 +66,38 @@ namespace ALEngine::Editor
 		}
 
 		// Select Entity by clicking on Scene
+		if (Input::KeyTriggered(KeyCode::MouseLeftButton))
+		{	// Left click
+			// Convert mouse pos from ImGui space to screen space		
+			Math::Vec2 mousePos{ ImGui::GetMousePos().x, ImGui::GetMousePos().y };
+			mousePos.x = mousePos.x * (Graphics::OpenGLWindow::width / ImGui::GetWindowWidth());
+			mousePos.y = mousePos.y * (Graphics::OpenGLWindow::height / ImGui::GetWindowHeight());
 
+			// Convert mouse pos from screen space to world space
+
+
+			// Get list
+			ECS::EntityList list = Coordinator::Instance()->GetEntities();
+
+			// Iterate List
+			for (const auto& entt : list)
+			{
+				// Check if has collider
+				if (Coordinator::Instance()->HasComponent<Collider2D>(entt) &&
+					Coordinator::Instance()->HasComponent<Transform>(entt))
+				{
+					// Get entity Collider2D and Transform
+					Collider2D enttCol = Coordinator::Instance()->GetComponent<Collider2D>(entt);
+					Transform enttXform = Coordinator::Instance()->GetComponent<Transform>(entt);
+
+					if (Check_Point_To_AABB(mousePos, enttXform.position, enttCol.scale[0], enttCol.scale[1]))
+					{
+						m_SelectedEntity = entt;
+						break;
+					}
+				}
+			}
+		}
 
 		ImGui::End();
 	}
@@ -79,5 +110,30 @@ namespace ALEngine::Editor
 	void ScenePanel::SetSelectedEntity(ECS::Entity _entt)
 	{
 		m_SelectedEntity = _entt;
+	}
+
+	ECS::Entity ScenePanel::GetSelectedEntity(void)
+	{
+		return m_SelectedEntity;
+	}
+
+	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,
+		float width, float height) 
+	{
+		//Holder for bottom left and top right
+		Math::Vec2 bottomLeft = boxCenter - Math::Vec2(width * 0.5f, height * 0.5f);
+		Math::Vec2 topRight = boxCenter + Math::Vec2(width * 0.5f, height * 0.5f);
+
+		//Intersection check
+		if (position.x < bottomLeft.x || 
+			position.x > topRight.x || 
+			position.y < bottomLeft.y || 
+			position.y > topRight.y) {
+			//No intersection
+			return false;
+		}
+
+		//Intersection
+		return true;
 	}
 }

@@ -54,6 +54,14 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void SetSelectedEntity(ECS::Entity _entt);
 
+		/*!*********************************************************************************
+			\brief
+			Gets the selected entity
+			\return
+			Returns the selected entity
+		***********************************************************************************/
+		ECS::Entity GetSelectedEntity(void);
+
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
 		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES }; // Entity Selected in Inspector
@@ -62,5 +70,21 @@ namespace ALEngine::Editor
 		const ImVec2 PANEL_MIN{ 320, 350 };
 		const ImVec2 PANEL_MAX{ 1920, 1080 };
 	};
+
+	/*!*********************************************************************************
+		\brief
+		Checks if the point and object are colliding
+		\param [in] pointPos
+		Position of point
+		\param [in] aabbPos
+		Position of AABB's center
+		\param [in] width
+		AABB width
+		\param [in] height
+		AABB height
+		\Brief
+		Returns true is colliding, else returns false
+	***********************************************************************************/
+	bool Check_Point_To_AABB(Math::Vec2 pointPos, Math::Vec2 aabbPos, float width, float height);
 }
 #endif

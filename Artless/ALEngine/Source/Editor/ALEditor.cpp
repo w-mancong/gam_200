@@ -77,6 +77,9 @@ namespace ALEngine::Editor
 		m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
 		m_ScenePanel.OnImGuiRender();	// Scene Panel
 
+		// Update if selected entity has changed
+		m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
+
 		// Scene Hierarchy Panel
 		m_SceneHierarchyPanel.OnImGuiRender();
 
