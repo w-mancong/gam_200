@@ -4,6 +4,3 @@
 [submodule "Artless/Extern/include/ImGuizmo"]
 	path = Artless/Extern/include/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo
-[submodule "Artless/Extern/include/Tracy"]
-	path = Artless/Extern/include/Tracy
-	url = https://github.com/wolfpld/tracy
