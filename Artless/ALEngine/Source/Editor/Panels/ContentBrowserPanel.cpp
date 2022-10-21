@@ -46,12 +46,17 @@ namespace ALEngine::Editor
 				continue;
 			}
 
+			if (fileNamestring.find(".meta") != std::string::npos)
+			{
+				continue;
+			}
+
 			//push files ID 
 			ImGui::PushID(fileNamestring.c_str());
 
 			//selectable files
 		   // ImGui::MenuItem(fileNamestring.c_str());
-
+			
 			if (ImGui::TreeNode(fileNamestring.c_str()))
 			{
 				//for dragging file, need to fix window crash when moving window
@@ -73,7 +78,8 @@ namespace ALEngine::Editor
 
 				ImGui::TreePop();
 			}
-	
+
+		
 			//set next column
 			ImGui::NextColumn();
 
@@ -89,10 +95,8 @@ namespace ALEngine::Editor
 		ImGui::Text("Search Bar");
 		ImGui::InputText("Search Tag", searchKeyword, IM_ARRAYSIZE(searchKeyword));
 
-
-
 		static float padding = 16.0f;
-		static float thumbnailSize = 128.0f;
+		static float thumbnailSize = 96.0f;
 		float cellSize = thumbnailSize + padding;
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;
@@ -117,6 +121,11 @@ namespace ALEngine::Editor
 			std::string const& fileNamestring = relativePath.filename().string();
 
 			if (fileNamestring == "Dev")
+			{
+				continue;
+			}
+
+			if (fileNamestring.find(".meta") != std::string::npos)
 			{
 				continue;
 			}
@@ -158,8 +167,8 @@ namespace ALEngine::Editor
 
 		ImGui::Columns(1);
 
-		ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
-		ImGui::SliderFloat("Padding", &padding, 0, 32);
+		//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
+		//ImGui::SliderFloat("Padding", &padding, 0, 32);
 
 		//back button
 		if (m_CurrentDirectory != std::filesystem::path(assetPath))
