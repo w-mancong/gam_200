@@ -1,3 +1,12 @@
+/*!
+file:	MySerializer.h
+author:	Darrion Aw Wei Ting
+email:	weitingdarrion.aw@digipen.edu
+brief:	This file contains a custom serializer for the project with the help of rapidJSON
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #ifndef	MY_SERIALIZER_H
 #define MY_SERIALIZER_H
 
@@ -32,16 +41,13 @@ namespace ALEngine::Serializer
 
 		b8 ReadFile(const std::string& filePath);
 
-		//int getInt(std::string pairName);
 		int getInt(const char* pairName, const int defaultInt);
+
 		std::string getString(const char* pairName, const char* defaultString);
+
 		f32 getFloat(const char* pairName, const f32 defaultFloat);
+
 		Math::Vec2 getVec2(const char* pairName, Math::Vec2 defaultVec2);
-		//int getVec2(const char* pairName, Math::Vector2 defaultVec2);
-
-		b8 readConfig(std::string filePath);
-
-		b8 readConfig2(std::string filePath);
 
 	private:
 		rapidjson::Document doc;

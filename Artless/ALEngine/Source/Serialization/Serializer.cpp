@@ -47,26 +47,11 @@ namespace ALEngine::Serializer
 
 		std::cout << "ORIGINAL STRING :" << jsonStr << std::endl;
 
-		//assert(this->doc.HasMember("id"));
-		//assert(this->doc["id"].IsInt());
-		//assert(this->doc["id"].IsNumber());
-		//assert(this->doc["name"].IsString());
-		//assert(this->doc["window title"].IsString());
-		//assert(this->doc["dimensions"]["dimensionWidth"].IsNumber());
-
-		//std::cout << "ID = " << this->doc["id"].GetInt() << std::endl;
-		//std::cout << "NAME = " << this->doc["name"].GetString() << std::endl;
-		//std::cout << "Window Title = " << this->doc["window title"].GetString() << std::endl;
-		//std::cout << "dimensionWidth = " << this->doc["dimensions"]["dimensionWidth"].GetInt() << std::endl;
-
-		//printf("ID = %d\n", doc["id"].GetInt());
-
 	}
 
 
 	int Deserializer::getInt(const char* pairName, const int defaultInt) {
 
-		//this->doc2.HasMember(pairName)
 		if (this->doc.HasMember(pairName)) {
 			assert(this->doc.HasMember(pairName));
 
@@ -78,32 +63,22 @@ namespace ALEngine::Serializer
 
 			this->doc.AddMember(rapidjson::StringRef(pairName), defaultInt, this->doc.GetAllocator());
 			//std::cout << "GET INT OF \"" << pairName << "\" : " << this->doc[pairName].GetInt() << std::endl;
-
 			return defaultInt;
 		}
 	}
 
 	std::string Deserializer::getString(const char* pairName, const char* defaultString) {
 
-
 		//this->doc2.HasMember(pairName)
 		if (this->doc.HasMember(pairName)) {
 			assert(this->doc.HasMember(pairName));
-
 			//std::cout << "GET STRING OF \"" << pairName << "\" : " << this->doc[pairName].GetString() << std::endl;
-
 			return this->doc[pairName].GetString();
 		}
 		else {
 
-
-			//rapidjson::Value s; // = doc[pairName];
-			//s = rapidjson::StringRef(defaultString);
 			this->doc.AddMember(rapidjson::StringRef(pairName), rapidjson::StringRef(defaultString), this->doc.GetAllocator());
-
 			//std::cout << "GET STRING OF \"" << pairName << "\" : " << this->doc[pairName].GetString() << std::endl;
-
-
 			return defaultString;
 		}
 
@@ -111,22 +86,17 @@ namespace ALEngine::Serializer
 
 	f32 Deserializer::getFloat(const char* pairName, const f32 defaultFloat) {
 
-		//std::cout << "FINAL PAIRNAME IS : " << pairName << std::endl;
-
 		//this->doc2.HasMember(pairName)
 		if (this->doc.HasMember(pairName)) {
 			assert(this->doc.HasMember(pairName));
 
 			//std::cout << "GET FLOAT OF \"" << pairName << "\" : " << this->doc[pairName].GetFloat() << std::endl;
-
 			return this->doc[pairName].GetFloat();
 		}
 		else {
-			//rapidjson::Value s; // = doc[pairName];
-			//s = rapidjson::StringRef(defaultString);
+
 			this->doc.AddMember(rapidjson::StringRef(pairName), defaultFloat, this->doc.GetAllocator());
 			//std::cout << "GET INT OF \"" << pairName << "\" : " << this->doc[pairName].GetFloat() << std::endl;
-
 			return defaultFloat;
 		}
 	}
@@ -136,7 +106,6 @@ namespace ALEngine::Serializer
 		if (this->doc.HasMember(pairName)) {
 			assert(this->doc.HasMember(pairName));
 			
-
 			assert(this->doc[pairName].IsArray());
 			//for (rapidjson::SizeType i = 0; i < this->doc[pairName].Size(); i++) // rapidjson uses SizeType instead of size_t.
 			//	printf("a[%d] = %d\n", i, this->doc[pairName][i].GetInt());
@@ -154,10 +123,6 @@ namespace ALEngine::Serializer
 			rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
 			int defaultVec2X = defaultVec2.x;
 			int defaultVec2Y = defaultVec2.y;
-
-			//a.PushBack(defaultVec2.x, allocator);
-			//a.PushBack(test, allocator);
-			//a.PushBack(defaultVec2.y, allocator);
 
 			this->doc.AddMember(rapidjson::StringRef(pairName), defaultVec2X, this->doc.GetAllocator());
 			this->doc[pairName].SetArray();

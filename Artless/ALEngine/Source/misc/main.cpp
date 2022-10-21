@@ -39,8 +39,6 @@ int main(void)
 
     colliderPositionOffset = loadPlayer.getVec2("Collider positionOffset", colliderPositionOffset);
 
-
-
     std::cout << "ID IS : " << id << std::endl;
     std::cout << "NAME IS : " << name << std::endl;
     std::cout << "PLAYER NAME IS : " << playerName << std::endl;
@@ -54,7 +52,6 @@ int main(void)
 
     std::cout << "PLAYER POSITION IS : " << playerPosition.x <<  ", " << playerPosition.y << std::endl;
     std::cout << "PLAYER COLLIDER POSITION OFFSET IS : " << colliderPositionOffset.x <<  ", " << colliderPositionOffset.y << std::endl;
-
 
     ALEngine::Engine::Run();
 
