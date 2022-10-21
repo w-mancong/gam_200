@@ -19,6 +19,7 @@ namespace ALEngine::ECS::Component
 	{
 		std::string tag{};	// Entity Tag
 		b8 active{ true };	// Entity Active (For rendering)
+		u32 id{};	// Id of entity
 	};
 }
 
