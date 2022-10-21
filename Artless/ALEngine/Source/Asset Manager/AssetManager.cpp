@@ -328,7 +328,6 @@ namespace ALEngine::Engine
 
 	Guid AssetManager::GetGuid(std::string fileName)
 	{
-		std::lock_guard<std::mutex> guard{ m_Resource };
 		if (!fileName.size())
 			return std::numeric_limits<Guid>::max();
 		std::replace(fileName.begin(), fileName.end(), '/', '\\');	// Change all the '/' to '\\'
