@@ -16,7 +16,7 @@ namespace ALEngine::Editor
 	ContentBrowserPanel::ContentBrowserPanel()
 	:m_CurrentDirectory(assetPath),
 	m_MainDirectory(assetPath),
-	searchKeyword("Search...")
+	searchKeyword("")
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -46,12 +46,17 @@ namespace ALEngine::Editor
 				continue;
 			}
 
+			if (fileNamestring.find(".meta") != std::string::npos)
+			{
+				continue;
+			}
+
 			//push files ID 
 			ImGui::PushID(fileNamestring.c_str());
 
 			//selectable files
 		   // ImGui::MenuItem(fileNamestring.c_str());
-
+			
 			if (ImGui::TreeNode(fileNamestring.c_str()))
 			{
 				//for dragging file, need to fix window crash when moving window
@@ -73,7 +78,8 @@ namespace ALEngine::Editor
 
 				ImGui::TreePop();
 			}
-	
+
+		
 			//set next column
 			ImGui::NextColumn();
 
@@ -87,12 +93,10 @@ namespace ALEngine::Editor
 		ImGui::Begin("Assets");
 
 		ImGui::Text("Search Bar");
-		ImGui::InputText("Search Tag", searchKeyword, IM_ARRAYSIZE(searchKeyword));
-
-
+		ImGui::InputText("Search Tag", searchKeyword, 256);
 
 		static float padding = 16.0f;
-		static float thumbnailSize = 128.0f;
+		static float thumbnailSize = 96.0f;
 		float cellSize = thumbnailSize + padding;
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;
@@ -116,7 +120,17 @@ namespace ALEngine::Editor
 			//file name from relative path 
 			std::string const& fileNamestring = relativePath.filename().string();
 
+			if (!(fileNamestring.find(std::string(searchKeyword)) != std::string::npos))
+			{
+				continue;
+			}
+
 			if (fileNamestring == "Dev")
+			{
+				continue;
+			}
+
+			if (fileNamestring.find(".meta") != std::string::npos)
 			{
 				continue;
 			}
@@ -124,12 +138,19 @@ namespace ALEngine::Editor
 			//push files ID 
 			ImGui::PushID(fileNamestring.c_str());
 
-			//selectable files
-			//ImGui::Selectable(fileNamestring.c_str());
-
 			//need change to imagebuttons for icons
-			ImGui::Button(fileNamestring.c_str(), { thumbnailSize, thumbnailSize });
 
+			if (fileNamestring.find(".jpg")!= std::string::npos || fileNamestring.find(".png") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid(directoryEntry.path().string());
+				u32 texture = Engine::AssetManager::Instance()->GetButtonImage(id);
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			else
+			{
+				ImGui::Button(fileNamestring.c_str(), { thumbnailSize, thumbnailSize });
+			}
+			
 			//for dragging file, need to fix window crash when moving window
 			if (ImGui::BeginDragDropSource())
 			{
@@ -158,8 +179,8 @@ namespace ALEngine::Editor
 
 		ImGui::Columns(1);
 
-		ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
-		ImGui::SliderFloat("Padding", &padding, 0, 32);
+		//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
+		//ImGui::SliderFloat("Padding", &padding, 0, 32);
 
 		//back button
 		if (m_CurrentDirectory != std::filesystem::path(assetPath))
@@ -173,6 +194,5 @@ namespace ALEngine::Editor
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
-
 	}	
 }	
