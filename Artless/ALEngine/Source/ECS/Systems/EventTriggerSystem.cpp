@@ -45,10 +45,18 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->SetSystemSignature<EventTriggerSystem>(signature);
 	}
 
-	void UpdateEventCollisionTriggerSystem() {
+	void UpdateEventColliderTriggerSystem() {
 		//Shift through each component
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
-			Collider2D collide = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+			//If has collider
+			if (Coordinator::Instance()->HasComponent<Collider2D>(*it)) {
+				Collider2D collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+				
+				//Update Trigger Status
+				if (collider.isCollided) {
+					EventTrigger collider = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
+				}
+			}
 		}
 	}
 
@@ -91,7 +99,7 @@ namespace ALEngine::ECS
 			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(entity);
 			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
 
-			std::cout << Vector2{ (f32)Input::GetMousePosX(), (f32)Input::GetMousePosY() } << std::endl;
+			//std::cout << Vector2{ (f32)Input::GetMousePosX(), (f32)Input::GetMousePosY() } << std::endl;
 			if (Physics::Physics2D_CheckCollision_Point_To_AABBBox(Vector2 { (f32)Input::GetMousePosX(), (f32)Input::GetMousePosY() }, (Vector2)transform.position + collider.m_localPosition, collider.scale[0], collider.scale[1])) {
 			}
 		}

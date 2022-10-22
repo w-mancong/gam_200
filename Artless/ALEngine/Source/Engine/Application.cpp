@@ -20,6 +20,7 @@ namespace ALEngine::Engine
 	};
 
 	Entity player;
+	Entity Target;
 	
 	void Poop() {
 		printf("PooP");
@@ -49,14 +50,26 @@ namespace ALEngine::Engine
 		//AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
 		//AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 
+		player = Coordinator::Instance()->CreateEntity();
+		Target = Coordinator::Instance()->CreateEntity();
+
 		Transform playerTransform;
-		playerTransform.scale = { 100,100 };
+		playerTransform.position = { 10, 300 };
+		playerTransform.scale = { 100, 100 };
 		Coordinator::Instance()->AddComponent(player, playerTransform);
-		
+
 		CreateCollider(player);
-		CreateEventTrigger(player);
-		
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Poop);
+		CreateRigidbody(player);
+		CreateCharacterController(player);
+		//CreateEventTrigger(player);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Poop);
+
+		Transform targetTransform;
+		targetTransform.position = { 0, -250 };
+		targetTransform.scale = { 800,100 };
+		Coordinator::Instance()->AddComponent(Target, targetTransform);
+
+		CreateCollider(Target);
 
 		appStatus = 1;
 		RunFileWatcher();
@@ -77,10 +90,10 @@ namespace ALEngine::Engine
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
-			if (Input::KeyTriggered(KeyCode::Space)) {
-				EventTrigger& new_event = Coordinator::Instance()->GetComponent<EventTrigger>(player);
-				new_event.OnPointEnter.isTriggered = true;
-			}
+			//if (Input::KeyTriggered(KeyCode::Space)) {
+			//	EventTrigger& new_event = Coordinator::Instance()->GetComponent<EventTrigger>(player);
+			//	new_event.OnPointEnter.isTriggered = true;
+			//}
 
 			// ImGui Editor
 			{
@@ -159,15 +172,17 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
-		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
+		UpdateCharacterControllerSystem();
+		
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 
+		UpdateEventCollisionTriggerSystem();
 		UpdateEventTriggerSystem();
 
-		DebugDrawRigidbody();
 		DebugDrawCollider();
+		DebugDrawRigidbody();
 	}
 
 	int GetAppStatus(void)

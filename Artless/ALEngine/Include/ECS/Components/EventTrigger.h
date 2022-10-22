@@ -12,7 +12,7 @@ brief:	This file contains the function declarations for EventTrigger.h
 namespace ALEngine::ECS::Component
 {
 	enum class EVENT_TRIGGER_TYPE { ON_POINTER_ENTER, ON_POINTER_EXIT };
-	enum class EVENT_COLLISION_TRIGGER_TYPE { ON_COLLISION_ENTER, ON_COLLISION_EXIT };
+	enum class EVENT_COLLISION_TRIGGER_TYPE { NOTHING, ON_COLLISION_ENTER, ON_COLLISION_STAY, ON_COLLISION_EXIT };
 
 	struct EventListener {
 		void (*invokeFunction)();
@@ -29,20 +29,22 @@ namespace ALEngine::ECS::Component
 		Event OnPointEnter, OnPointExit;
 	};
 
-
 	struct EventCollisionListener {
-		void (*invokeFunction)(void*);
+		void (*invokeFunction)(Collider2D*);
 		uint32_t m_position = 0;
 	};
 
 	struct CollisionEvent {
 		std::unordered_map<uint32_t, EventCollisionListener> m_Listeners;
+
 		b8 isTriggered = 0;
 	};
 
 	struct EventCollisionTrigger
 	{
-		Event OnCollisionEnter, OnCollisionExit;
+		CollisionEvent OnCollisionEnter, OnCollisionStay, OnCollisionExit;
+		EVENT_COLLISION_TRIGGER_TYPE currentCollisionTrigger_Type;
+		std::vector<Collider2D*> otherColliderPtr;
 	};
 }
 #endif

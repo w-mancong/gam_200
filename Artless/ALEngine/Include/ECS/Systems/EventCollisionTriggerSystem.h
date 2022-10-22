@@ -1,13 +1,13 @@
 /*!
-file:	CharacterControllerSystem.h
+file:	EventCollisionTriggerSystem.h
 author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
-brief:	This file contains the function declarations for CharacterControllerSystem.h
+brief:	This file contains the function declarations for EventTriggerSystem.h
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#ifndef	CHARACTERCONTROLLER_SYSTEM_H
-#define CHARACTERCONTROLLER_SYSTEM_H
+#ifndef	EVENT_COLLISION_TRIGGER_SYSTEM_H
+#define EVENT_COLLISION_TRIGGER_SYSTEM_H
 
 namespace ALEngine
 {
@@ -17,27 +17,21 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Register Character Controller for ECS
+			Register RigidbodySystem for ECS
 		***********************************************************************************/
-		void RegisterCharacterControllerSystem(void);
+		void RegisterEventCollisionTriggerSystem(void);
 
 		/*!*********************************************************************************
 			\brief
-			Used at end of update, runs through each Character Controller
+			Update EventTrigger System for colliders
 		***********************************************************************************/
-		void UpdateCharacterControllerSystem(void);
+		void UpdateEventCollisionTriggerSystem();
 
 		/*!*********************************************************************************
 			\brief
-			Adds Character Controller component to the entity
+			Adds rigidbody component to the entity
 		***********************************************************************************/
-		void CreateCharacterController(Entity const& entity);
-
-
-		void OnCollisionEnter_Player(Collider2D* otherCollider);
-		void OnCollisionStay_Player(Collider2D* otherCollider);
-		void OnCollisionExit_Player(Collider2D* otherCollider);
+		void CreateEventCollisionTrigger(Entity const& entity);
 	}
 }
-
 #endif

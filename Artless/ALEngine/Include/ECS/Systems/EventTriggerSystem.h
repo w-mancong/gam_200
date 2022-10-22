@@ -29,16 +29,11 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Update EventTrigger System for colliders
-		***********************************************************************************/
-		void UpdateEventColliderTriggerSystem();
-
-		/*!*********************************************************************************
-			\brief
 			Adds rigidbody component to the entity
 		***********************************************************************************/
 		void CreateEventTrigger(Entity const& entity);
 
+		void Subscribe(EventCollisionTrigger& eventTrig, EVENT_COLLISION_TRIGGER_TYPE eventType, void (*fp)(Collider2D*));
 		void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType, void (*fp)());
 		void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)());
 		//void Unsubscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType);

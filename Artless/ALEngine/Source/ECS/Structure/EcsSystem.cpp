@@ -11,6 +11,7 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<Rigidbody2D>();
 		Coordinator::Instance()->RegisterComponent<CharacterController>();
 		Coordinator::Instance()->RegisterComponent<EventTrigger>();
+		Coordinator::Instance()->RegisterComponent<EventCollisionTrigger>();
 	}
 
 	void RegisterSystem(void)
@@ -20,6 +21,7 @@ namespace ALEngine::ECS
 		RegisterRigidbodySystem();
 		RegisterCharacterControllerSystem();
 		RegisterEventTriggerSystem();
+		RegisterEventCollisionTriggerSystem();
 	}
 
 	void InitSystem(void)

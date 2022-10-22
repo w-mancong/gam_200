@@ -30,7 +30,7 @@ namespace ALEngine::ECS
 				Reads inputs from user and moves the gameobject through addforce on the rigidbody
 		***********************************************************************************/
 		void UpdateCharacterController(CharacterController& characControl, Rigidbody2D& rigid);
-		//void OnCollisionEnter(Collider2D* otherCollider);
+		void OnCollisionEnter(Collider2D* otherCollider);
 	};
 
 	namespace
@@ -59,22 +59,38 @@ namespace ALEngine::ECS
 		charControl.jumpKey= static_cast<u64>(KeyCode::Space);
 
 		//Set speed
-		charControl.speed = 150.f;
-		charControl.jumpStrength = 350.f;
+		charControl.speed = 25.f;
+		charControl.jumpStrength = 5.f;
 
 		Coordinator::Instance()->AddComponent(entity, charControl);
 
 		if (!Coordinator::Instance()->HasComponent<Rigidbody2D>(entity)) {
-			Coordinator::Instance()->AddComponent(entity, Rigidbody2D{});
+			Rigidbody2D rigid;
+			rigid.mass = 10;
+			Coordinator::Instance()->AddComponent(entity, rigid);
+		}
+		else {
+			Coordinator::Instance()->GetComponent<Rigidbody2D>(entity).mass = 10;
 		}
 		if (!Coordinator::Instance()->HasComponent<Collider2D>(entity)) {
 			Coordinator::Instance()->AddComponent(entity, Collider2D{});
-
-			//Collider2D collider = Coordinator::Instance()->GetComponent<Collider2D>(entity);
-			//void(CharacterControllerSystem::*fp)(Collider2D*) = &CharacterControllerSystem::OnCollisionEnter;
-			//IEventListener listener ();
-			//collider.m_CollisionEvents.SubscribeToCollisionEvents(ON_COLLISION_ENTER, listener);
 		}
+
+		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, OnCollisionEnter_Player);
+		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, OnCollisionStay_Player);
+		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
+	}
+
+	void OnCollisionEnter_Player(Collider2D* otherCollider) {
+		std::cout << "Player Collided with something ON BEGIN\n";
+	}
+
+	void OnCollisionStay_Player(Collider2D* otherCollider) {
+		std::cout << "Player Collided with something AND STAYING\n";
+	}
+
+	void OnCollisionExit_Player(Collider2D* otherCollider) {
+		std::cout << "Player Collided with something AND EXIT\n";
 	}
 
 	void UpdateCharacterControllerSystem() {
@@ -91,7 +107,7 @@ namespace ALEngine::ECS
 	void CharacterControllerSystem::UpdateCharacterController(CharacterController & characControl, Rigidbody2D & rigid) {
 		//Jump
 		if (Input::Input::KeyTriggered(static_cast<KeyCode>(characControl.jumpKey))) {
-			AddForce(rigid, Vector2(0, characControl.jumpStrength), FORCEMODE::FORCE);
+			AddForce(rigid, Vector2(0, characControl.jumpStrength), FORCEMODE::VELOCITY_CHANGE);
 		}				
 
 		//Movement
@@ -113,8 +129,4 @@ namespace ALEngine::ECS
 			AddForce(rigid, Vector2(0, characControl.speed * 2), FORCEMODE::FORCE);
 		}
 	}	
-	/*
-	void CharacterControllerSystem::OnCollisionEnter(Collider2D* otherCollider) {
-		printf("Collision Event Enter");
-	}*/
 }
