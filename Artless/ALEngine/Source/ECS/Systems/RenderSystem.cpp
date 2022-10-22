@@ -46,16 +46,6 @@ namespace ALEngine::ECS
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
 		u32* vIndex{ nullptr };
-
-		vec2 const vertex_position[4] =
-		{
-			{ -0.5f,  0.5f },	// top left
-			{ -0.5f, -0.5f },	// btm left
-			{  0.5f,  0.5f },	// top right
-			{  0.5f, -0.5f }	// btm right
-		};
-
-		s32 constexpr INDICES_SIZE{ 6 };
 		
 		// frame buffer
 		u32 fbo, fbTexture;
@@ -75,7 +65,8 @@ namespace ALEngine::ECS
 		});
 
 		u64 counter{};
-		for (u64 i{}; i < entities.size(); ++i)
+		u64 const SIZE{ entities.size() };
+		for (u64 i{}; i < SIZE; ++i)
 		{
 			Entity const& en = entities[i];
 			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
@@ -158,6 +149,7 @@ namespace ALEngine::ECS
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		UpdateAnimatorSystem();
 		rs->RenderBatch();
 
 		Text test;
@@ -259,7 +251,7 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite;
+		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
@@ -268,7 +260,7 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite;
+		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
@@ -276,7 +268,7 @@ namespace ALEngine::ECS
 
 	Entity CreateSprite(Transform const& transform, const char* filePath, const char* tag, RenderLayer layer)
 	{
-		Entity entity;
+		Entity entity{};
 		if (tag == nullptr)
 			entity = Coordinator::Instance()->CreateEntity();
 		else

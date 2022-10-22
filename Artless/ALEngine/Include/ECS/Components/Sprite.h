@@ -18,6 +18,7 @@ namespace ALEngine::ECS::Component
 	struct Sprite
 	{
 		Guid id;
+		std::string filePath;
 		Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
 		RenderLayer layer{ RenderLayer::Background };
 		u32 index{};	// used to determine which 

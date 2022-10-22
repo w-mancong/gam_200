@@ -55,8 +55,6 @@ namespace ALEngine::Engine
 		// should do the game loop here
 		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && appStatus)
 		{
-			Input::Update();
-			AssetManager::Instance()->Update();
 			// Get Current Time
 			Time::ClockTimeNow();
 
@@ -134,7 +132,8 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-
+		Input::Update();
+		AssetManager::Instance()->Update();
 	}
 
 	void Engine::FixedUpdate(void)

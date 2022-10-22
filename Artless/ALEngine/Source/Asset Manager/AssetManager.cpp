@@ -36,7 +36,7 @@ namespace
 	};
 
 	std::unordered_map<std::string, Guid> guidList{};
-	std::unordered_map<Guid, Texture>  textureList{};
+	std::unordered_map<Guid, Texture> textureList{};
 	std::unordered_map<Guid, Animation> animationList{};
 #if EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList{};
@@ -147,7 +147,7 @@ namespace
 		return { texture, handle };
 	}
 
-	Texture LoadAnimation(Animation animation)
+	Texture LoadAnimation(Animation& animation)
 	{
 		s32 width, height, nrChannels;
 		stbi_set_flip_vertically_on_load(true);
@@ -192,7 +192,10 @@ namespace
 		}
 #endif
 		s32 const TILE_X = width / animation.width, TILE_Y = height / animation.height;
-		s32 const TOTAL_TILES = TILE_X * TILE_Y;
+		// Calculate the total sprites if totalSprites == 0
+		if (!animation.totalSprites)
+			animation.totalSprites = static_cast<u32>(TILE_X * TILE_Y);
+		u64 const TOTAL_TILES = animation.totalSprites;
 
 		u32 texture{};
 		glGenTextures(1, &texture);
@@ -400,9 +403,7 @@ namespace ALEngine::Engine
 				metaFiles.erase(it2);
 			}
 
-			// Get a list of Guid inserted into an unordered_map
-			guidList.insert(std::pair<std::string, Guid>{ *it, id });
-
+			std::string guidKey{};
 			switch (GetFileType(*it))
 			{
 				case FileType::Image:
@@ -422,6 +423,7 @@ namespace ALEngine::Engine
 #endif
 						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
+					guidKey = *it;
 					break;
 				}
 				case FileType::Audio:
@@ -443,10 +445,14 @@ namespace ALEngine::Engine
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
 					break;
+					guidKey = animation.clipName;
 				}
 				default:
 					break;
 			}
+
+			// Get a list of Guid inserted into an unordered_map
+			guidList.insert(std::pair<std::string, Guid>{ guidKey, id });
 		}
 
 		//if orphan meta file, then delete
@@ -706,10 +712,14 @@ namespace ALEngine::Engine
 		while (files.created.size())
 		{
 			std::string const& filePath{ files.created.back() };
+			std::string guidKey{};
 			Guid id{ PrepareGuid() };
 			GenerateMetaFile(filePath.c_str(), id);
 			switch (GetFileType(filePath))
 			{
+			/******************************************************************************
+												Image
+			******************************************************************************/
 			case FileType::Image:
 			{
 				//into memory/stream
@@ -725,12 +735,20 @@ namespace ALEngine::Engine
 #endif
 					buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
+				guidKey = filePath;
 				break;
 			}
+			/******************************************************************************
+												Audio
+			******************************************************************************/
 			case FileType::Audio:
 			{
 				break;
 			}
+
+			/******************************************************************************
+												Animation
+			******************************************************************************/
 			case FileType::Animation:
 			{
 				Animation animation;
@@ -738,6 +756,7 @@ namespace ALEngine::Engine
 				ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
 
 				animationList.insert(std::pair<Guid, Animation>{ id, animation });
+				guidKey = animation.clipName;
 
 				Texture texture = LoadAnimation(animation);
 #ifdef _DEBUG
@@ -749,7 +768,7 @@ namespace ALEngine::Engine
 			default:
 				break;
 			}
-			guidList.insert(std::pair<std::string, Guid>{ filePath, id });
+			guidList.insert(std::pair<std::string, Guid>{ guidKey, id });
 			files.created.pop_back();
 		}
 	}
@@ -763,6 +782,9 @@ namespace ALEngine::Engine
 			Guid id{ GetGuid(filePath) };
 			switch (GetFileType(filePath))
 			{
+			/******************************************************************************
+												Image
+			******************************************************************************/
 			case FileType::Image:
 			{
 				Texture const& oldTexture = textureList[id];
@@ -786,10 +808,16 @@ namespace ALEngine::Engine
 #endif
 				break;
 			}
+			/******************************************************************************
+												Audio
+			******************************************************************************/
 			case FileType::Audio:
 			{
 				break;
 			}
+			/******************************************************************************
+												Animation
+			******************************************************************************/
 			case FileType::Animation:
 			{
 				Texture const& oldTexture = textureList[id];
@@ -823,10 +851,14 @@ namespace ALEngine::Engine
 		while (files.removed.size())
 		{
 			std::string const& filePath{ files.removed.back() };
+			std::string guidKey{};
 			Guid id{ GetGuid(filePath) };
 			std::string const meta = filePath + ".meta";
 			switch (GetFileType(filePath))
 			{
+			/******************************************************************************
+												Image
+			******************************************************************************/
 			case FileType::Image:
 			{
 				Texture const& texture = textureList[id];
@@ -840,22 +872,32 @@ namespace ALEngine::Engine
 #if	EDITOR
 				buttonImageList.erase(id);
 #endif
+				guidKey = filePath;
 				break;
 			}
+			/******************************************************************************
+												Audio
+			******************************************************************************/
 			case FileType::Audio:
 			{
 				break;
 			}
+			/******************************************************************************
+												Animation
+			******************************************************************************/
 			case FileType::Animation:
 			{
 				Texture const& texture = textureList[id];
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);
 				glDeleteTextures(1, &texture.texture);
+				Animation const& animation = animationList[id];
 
 				// Do not keep track of this guid anymore
 				textureList.erase(id);
 				animationList.erase(id);
+
+				guidKey = animation.clipName;
 
 				break;
 			}
@@ -871,7 +913,7 @@ namespace ALEngine::Engine
 				std::cerr << "Error: " << error;
 			}
 			// Remove guid from this list
-			guidList.erase(filePath);
+			guidList.erase(guidKey);
 			files.removed.pop_back();
 		}
 	}

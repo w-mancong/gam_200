@@ -3,10 +3,13 @@
 
 namespace ALEngine::ECS::Component
 {
+	using FloatConditions = std::unordered_map < std::string, std::function<b8(f32, f32) >>;
+	using BoolConditions  = std::unordered_map<std::string, b8>;
 	struct Transition
 	{
-		Animation nextAnim{};			// Next animation clip
-		f32 transitionTime{ 0.0f };		// Time used to transite from this animation to the next
+		std::string nextClip;	// Name of the next clip
+		FloatConditions fCond;	// List of float conditions
+		BoolConditions  bCond;	// List of bool conditions
 	};
 }
 

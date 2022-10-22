@@ -5,8 +5,9 @@ namespace ALEngine::ECS::Component
 {
 	struct Animator
 	{
-		std::vector<Animation> clips{};
-		std::vector<Transition> transitions{};
+		std::string currClip{};
+		std::string animatorName{};
+		std::map<std::string, Animation> animations{}; // Key: clipName of animation
 	};
 }
 
