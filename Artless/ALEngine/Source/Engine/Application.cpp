@@ -53,8 +53,8 @@ namespace ALEngine::Engine
 
 		//Transform trans{ {}, {200.0f, 200.0f}, 0 };
 		//entity = CreateSprite(trans);
-		////Animator animator = CreateAnimator("Test");
-		////AttachAnimator(entity, animator);
+		//Animator animator = CreateAnimator("Test");
+		//AttachAnimator(entity, animator);
 
 		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
 		//AddAnimationToAnimator(animator, "PlayingGuitar");

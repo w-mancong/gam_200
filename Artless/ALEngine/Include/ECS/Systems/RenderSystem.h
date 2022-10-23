@@ -131,6 +131,11 @@ namespace ALEngine::ECS
 	Math::Matrix4x4 GetOrthographic(void);
 
 	/*!*********************************************************************************
+		\brief Get the orthographic matrix constructed from camera for Imgui
+	***********************************************************************************/
+	Math::Matrix4x4 GetOrthographicImgui(void);
+
+	/*!*********************************************************************************
 		\brief
 		Set the fov angle of the camera
 

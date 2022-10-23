@@ -101,6 +101,11 @@ namespace ALEngine::Engine
 		Matrix4x4 OrthographicMatrix(void) const;
 
 		/*!*********************************************************************************
+			\brief Calcualte and return an orthographic matrix for imgui
+		***********************************************************************************/
+		Matrix4x4 OrthographicMatrixImgui(void) const;
+
+		/*!*********************************************************************************
 			\brief
 			Set camera position
 
