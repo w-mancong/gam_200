@@ -45,16 +45,6 @@ namespace ALEngine::ECS
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
-
-		vec2 const vertex_position[4] =
-		{
-			{ -0.5f,  0.5f },	// top left
-			{ -0.5f, -0.5f },	// btm left
-			{  0.5f,  0.5f },	// top right
-			{  0.5f, -0.5f }	// btm right
-		};
-
-		s32 constexpr INDICES_SIZE{ 6 };
 		
 		// frame buffer
 		u32 fbo, fbTexture;
@@ -74,7 +64,8 @@ namespace ALEngine::ECS
 		});
 
 		u64 counter{};
-		for (u64 i{}; i < entities.size(); ++i)
+		u64 const SIZE{ entities.size() };
+		for (u64 i{}; i < SIZE; ++i)
 		{
 			Entity const& en = entities[i];
 			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
@@ -85,6 +76,7 @@ namespace ALEngine::ECS
 			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vColor    + i) = sprite.color;
 			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + i))(3, 3) = sprite.index;
 
 			++counter;
 		}
@@ -95,7 +87,8 @@ namespace ALEngine::ECS
 
         glBindVertexArray(GetVao());
 
-		BatchData bd{ vColor, vMatrix, texHandle };
+		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
         //draw
@@ -140,11 +133,12 @@ namespace ALEngine::ECS
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbTexture, 0);
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
-			std::cout << " Frame buffer failed to initialize properly\n";
+			std::cerr << " Frame buffer failed to initialize properly\n";
 
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
+		//vIndex = Memory::StaticMemory::New<u32>(ECS::MAX_ENTITIES);
 
 		MeshBuilder::Instance()->Init();
 	}
@@ -155,6 +149,7 @@ namespace ALEngine::ECS
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		UpdateAnimatorSystem();
 		rs->RenderBatch();
 
 		Text test;
@@ -246,6 +241,16 @@ namespace ALEngine::ECS
 		return camera.ViewMatrix();
 	}
 
+	Matrix4x4 GetPerspective(void)
+	{
+		return camera.PerspectiveMatrix();
+	}
+
+	Matrix4x4 GetOrthographic(void)
+	{
+		return camera.OrthographicMatrix();
+	}
+
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
@@ -253,7 +258,7 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite;
+		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
@@ -262,7 +267,7 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite;
+		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
@@ -270,7 +275,7 @@ namespace ALEngine::ECS
 
 	Entity CreateSprite(Transform const& transform, const char* filePath, const char* tag, RenderLayer layer)
 	{
-		Entity entity;
+		Entity entity{};
 		if (tag == nullptr)
 			entity = Coordinator::Instance()->CreateEntity();
 		else

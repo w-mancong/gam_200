@@ -16,7 +16,7 @@ namespace ALEngine::Editor
 	ContentBrowserPanel::ContentBrowserPanel()
 	:m_CurrentDirectory(assetPath),
 	m_MainDirectory(assetPath),
-	searchKeyword("Search...")
+	searchKeyword("")
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -92,8 +92,23 @@ namespace ALEngine::Editor
 		//imgui window 2----------------------------------------------------------------------
 		ImGui::Begin("Assets");
 
+		//back button
+		if (m_CurrentDirectory != std::filesystem::path(assetPath))
+		{
+			//render makeshift back button
+			if (ImGui::Button("<-- Back to previous"))
+			{
+				m_CurrentDirectory = m_CurrentDirectory.parent_path();
+			}
+		}
+
 		ImGui::Text("Search Bar");
-		ImGui::InputText("Search Tag", searchKeyword, IM_ARRAYSIZE(searchKeyword));
+		ImGui::InputText("Search Tag", searchKeyword, 256);
+
+		std::string searchString(searchKeyword);
+		std::transform(searchString.begin(), searchString.end(), searchString.begin(), ::tolower);
+
+		std::string fileNameCheck{ "" };
 
 		static float padding = 16.0f;
 		static float thumbnailSize = 96.0f;
@@ -119,6 +134,14 @@ namespace ALEngine::Editor
 
 			//file name from relative path 
 			std::string const& fileNamestring = relativePath.filename().string();
+
+			fileNameCheck = fileNamestring;
+			std::transform(fileNameCheck.begin(), fileNameCheck.end(), fileNameCheck.begin(), ::tolower);
+
+			if (!(fileNameCheck.find(searchString) != std::string::npos))
+			{
+				continue;
+			}
 
 			if (fileNamestring == "Dev")
 			{
@@ -176,16 +199,6 @@ namespace ALEngine::Editor
 
 		//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 		//ImGui::SliderFloat("Padding", &padding, 0, 32);
-
-		//back button
-		if (m_CurrentDirectory != std::filesystem::path(assetPath))
-		{
-			//render makeshift back button
-			if (ImGui::Button("<-- Back to previous"))
-			{
-				m_CurrentDirectory = m_CurrentDirectory.parent_path();
-			}
-		}
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
