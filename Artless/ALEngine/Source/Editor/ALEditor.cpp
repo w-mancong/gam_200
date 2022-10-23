@@ -62,29 +62,38 @@ namespace ALEngine::Editor
 		if (!m_ImGuiEnabled)
 			return;
 
-		// Content Browser Panel
-		m_ContentBrowserPanel.OnImGuiRender();
+		if (Input::KeyTriggered(KeyCode::G))
+			m_GameStart = !m_GameStart;
 
-		// Logger Panel
-		m_LoggerPanel.OnImGuiRender();
+		// Check if Game Mode
+		if (m_GameStart)
+			m_GamePanel.OnImGuiRender();
+		else
+		{
+			// Content Browser Panel
+			m_ContentBrowserPanel.OnImGuiRender();
 
-		// Check if there is a selected entity for Inspector
-		if (m_InspectorPanel.HasSelectedEntity())
-			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+			// Logger Panel
+			m_LoggerPanel.OnImGuiRender();
 
-		// Set selected entity for Scene Panel (for Gizmos)
-		m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
-		m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
-		m_ScenePanel.OnImGuiRender();	// Scene Panel
+			// Check if there is a selected entity for Inspector
+			if (m_InspectorPanel.HasSelectedEntity())
+				m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
-		// Update if selected entity has changed
-		m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
+			// Set selected entity for Scene Panel (for Gizmos)
+			m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
+			m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
+			m_ScenePanel.OnImGuiRender();	// Scene Panel
 
-		// Scene Hierarchy Panel
-		m_SceneHierarchyPanel.OnImGuiRender();
+			// Update if selected entity has changed
+			m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
 
-		// Profiler Panel
-		m_ProfilerPanel.OnImGuiRender();
+			// Scene Hierarchy Panel
+			m_SceneHierarchyPanel.OnImGuiRender();
+
+			// Profiler Panel
+			m_ProfilerPanel.OnImGuiRender();
+		}
 	}
 
 	void ALEditor::Exit(void)

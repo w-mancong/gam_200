@@ -89,7 +89,7 @@ namespace ALEngine::Editor
 		const ImVec2 PANEL_MAX{ 1920, 1080 };
 
 		// Scene Size
-		f32 m_SceneWidth{ 0 }, m_SceneHeight{ 0 };
+		f32 m_SceneWidth{ 0 }, m_SceneHeight{ 0 };		
 	};
 
 	/*!*********************************************************************************

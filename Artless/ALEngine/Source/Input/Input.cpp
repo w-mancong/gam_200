@@ -53,6 +53,11 @@ namespace ALEngine::UserInput
 		return static_cast<f64>(GetScreenResY()) - mousePosY;
 	}
 
+	Math::Vec2 Input::GetMouseWorldPos()
+	{
+		return Math::Vec2();
+	}
+
 	bool Input::KeyState(KeyCode key)
 	{
 		u64 const code = static_cast<u64>(key);

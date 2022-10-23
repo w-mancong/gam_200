@@ -64,7 +64,7 @@
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)\Extern\include\spdlog\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -72,7 +72,7 @@
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)\Extern\include\spdlog\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -80,13 +80,13 @@
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)\Extern\include\spdlog\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;EDITOR;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -106,7 +106,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;EDITOR;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -162,6 +162,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Development|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\InspectorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
@@ -234,6 +235,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
+    <ClCompile Include="Source\Editor\Profiler\TracyClient.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
@@ -293,11 +295,13 @@
     <ClInclude Include="Include\Editor\imstb_rectpack.h" />
     <ClInclude Include="Include\Editor\imstb_textedit.h" />
     <ClInclude Include="Include\Editor\imstb_truetype.h" />
+    <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
     <ClInclude Include="Include\Editor\Panels\InspectorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
+    <ClInclude Include="Include\Editor\Profiler\Tracy.hpp" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
     <ClInclude Include="Include\Exceptions\GLDebug.h" />

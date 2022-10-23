@@ -47,20 +47,22 @@ namespace ALEngine::Editor
 				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
 				mtx_rot[3]{ 0.f, 0.f, xform.rotation };
 
+			// Matrix to contain all transforms (SRT)
 			float mtx[16];
 			
 			ImGuizmo::RecomposeMatrixFromComponents(mtx_translate, mtx_rot, mtx_scale, mtx);
-									
+			
+			// Size of the scene
 			ImGuizmo::SetDrawlist();
-			float windowWidth = m_SceneWidth;
-			float windowHeight = m_SceneHeight;
-			//ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x + windowWidth * 0.5f, ImGui::GetWindowPos().y + windowHeight * 0.5f, windowWidth, windowHeight);
+			ImGuiStyle& style = ImGui::GetStyle();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x + style.WindowPadding.x, 
+				ImGui::GetWindowPos().y + style.WindowPadding.y * 3.5f, m_SceneWidth, m_SceneHeight);
 
-			// Manipulate
-			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), ECS::GetOrthographic().value_ptr(),
+			// Manipulate, used for Gizmos
+			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), ECS::GetOrthographicImgui().value_ptr(),
 				m_CurrentGizmoOperation, ImGuizmo::WORLD, mtx);
 
+			// Get transform matrices
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
 
 			// Set changes
@@ -91,11 +93,6 @@ namespace ALEngine::Editor
 			if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
 				mousePos.y >= -1.f && mousePos.y <= 1.f)
 			{
-				AL_CORE_INFO("Mouse Position: {}, {}", mousePos.x, mousePos.y);
-
-				// Ray clip coords
-				glm::vec4 ray_clip = glm::vec4(mousePos.x, mousePos.y, -1.f, 1.f);
-
 				// Convert mouse pos from screen space to world space
 				// Projection mtx
 				glm::mat4x4 inv_proj;
@@ -104,10 +101,6 @@ namespace ALEngine::Editor
 						inv_proj[i][j] = ECS::GetProjection()(i, j);
 				inv_proj = glm::inverse(inv_proj);
 
-				// Ray Camera Coords
-				glm::vec4 ray_eye = inv_proj * ray_clip;
-				ray_eye.z = -1.f;	ray_eye.w = 0.f;
-
 				// View matrix
 				glm::mat4x4 inv_view;
 				for (size_t i = 0; i < 4; ++i)
@@ -115,17 +108,7 @@ namespace ALEngine::Editor
 						inv_view[i][j] = ECS::GetView()(i, j);
 				inv_view = glm::inverse(inv_view);
 
-				// Ray in world coords
-				glm::vec4 ray_world = inv_view * ray_eye;
-				ray_world = glm::normalize(ray_world);
-
-
-				//mousePos.w = (mousePos.w == 0.f) ? 1.f : 1.f / mousePos.w;
-				//mousePos.x *= (f32)Graphics::OpenGLWindow::width * 0.5f;
-				//mousePos.y *= (f32)Graphics::OpenGLWindow::height * 0.5f;
-
-				AL_CORE_DEBUG("Mouse Position: {}, {}", mousePos.x, mousePos.y);
-
+				mousePos = inv_proj * inv_view * mousePos;
 
 				// Get list
 				ECS::EntityList list = Coordinator::Instance()->GetEntities();
@@ -134,14 +117,12 @@ namespace ALEngine::Editor
 				for (const auto& entt : list)
 				{
 					// Check if has collider
-					if (Coordinator::Instance()->HasComponent<Collider2D>(entt) &&
-						Coordinator::Instance()->HasComponent<Transform>(entt))
+					if (Coordinator::Instance()->HasComponent<Transform>(entt))
 					{
-						// Get entity Collider2D and Transform
-						Collider2D enttCol = Coordinator::Instance()->GetComponent<Collider2D>(entt);
+						// Get entity Transform
 						Transform enttXform = Coordinator::Instance()->GetComponent<Transform>(entt);
 
-						if (Check_Point_To_AABB(Math::Vec2(mousePos.x, mousePos.y), enttXform.position, enttCol.scale[0], enttCol.scale[1]))
+						if (Check_Point_To_AABB(Math::Vec2(mousePos.x, mousePos.y), enttXform.position, enttXform.scale.x, enttXform.scale.y))
 						{
 							m_SelectedEntity = entt;
 							break;

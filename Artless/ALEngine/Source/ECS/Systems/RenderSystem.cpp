@@ -113,7 +113,7 @@ namespace ALEngine::ECS
 		Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
 		Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
 		Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
-
+		
 		// Init Gizmo
 		Gizmos::Gizmo::GizmoInit();
 
@@ -141,6 +141,8 @@ namespace ALEngine::ECS
 		//vIndex = Memory::StaticMemory::New<u32>(ECS::MAX_ENTITIES);
 
 		MeshBuilder::Instance()->Init();
+
+		camera.ProjectionMatrix(Camera::Projection::Orthographic);
 	}
 
 	void Render(void)

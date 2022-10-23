@@ -150,16 +150,18 @@ namespace ALEngine::Editor
 		ImVec2 m_WinMinSize{ 320, 350 };
 
 		// Variables
-		b8 m_ImGuiEnabled{ false };
+		b8 m_ImGuiEnabled{ false };		// Set to true if ImGui is enabled
 		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
+		b8 m_GameStart{ false };		// Set to true if in Game Mode
 
 		// Panels
-		ContentBrowserPanel m_ContentBrowserPanel;
-		ScenePanel m_ScenePanel;
-		InspectorPanel m_InspectorPanel;
-		LoggerPanel m_LoggerPanel;
-		ProfilerPanel m_ProfilerPanel;
-		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;	// Content Browser Panel
+		ScenePanel m_ScenePanel;					// Scene Panel (Editor)
+		GamePanel m_GamePanel;						// Game Panel
+		InspectorPanel m_InspectorPanel;			// Inspector Panel
+		LoggerPanel m_LoggerPanel;					// Logger Panel
+		ProfilerPanel m_ProfilerPanel;				// Profiler Panel
+		SceneHierarchyPanel m_SceneHierarchyPanel;	// Scene Hierarchy Panel
 	};
 }
 

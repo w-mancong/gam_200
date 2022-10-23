@@ -127,6 +127,9 @@ namespace ALEngine::Engine
 				// Wait for next frame
 				Time::WaitUntil();
 			}
+
+			// Marks the end of a frame loop, for tracy profiler
+			FrameMark;
 		}
 	}
 
