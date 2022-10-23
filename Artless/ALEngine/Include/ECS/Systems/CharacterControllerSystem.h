@@ -34,9 +34,9 @@ namespace ALEngine
 		void CreateCharacterController(Entity const& entity);
 
 
-		void OnCollisionEnter_Player(u32 otherEntity);
-		void OnCollisionStay_Player(u32 otherEntity);
-		void OnCollisionExit_Player(u32 otherEntity);
+		void OnCollisionEnter_Player(u32 currentEntity, u32 otherEntity);
+		void OnCollisionStay_Player(u32 currentEntity, u32 otherEntity);
+		void OnCollisionExit_Player(u32 currentEntity, u32 otherEntity);
 	}
 }
 

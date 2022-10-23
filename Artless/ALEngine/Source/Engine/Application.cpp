@@ -23,9 +23,10 @@ namespace ALEngine::Engine
 	Entity Target;
 	Entity PretendCoin;
 
-	void CollectCoint(Entity other) {
-		if(Coordinator::Instance()->HasComponent<CharacterController>(other))
-		printf("Coin Collected\n");
+	void CollectCoint(Entity current, Entity other) {
+		if (Coordinator::Instance()->HasComponent<CharacterController>(other)) {
+			printf("Coin Collected\n");
+		}
 	}
 
 	void Application::Init(void)

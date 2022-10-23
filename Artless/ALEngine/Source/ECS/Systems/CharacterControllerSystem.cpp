@@ -30,7 +30,6 @@ namespace ALEngine::ECS
 				Reads inputs from user and moves the gameobject through addforce on the rigidbody
 		***********************************************************************************/
 		void UpdateCharacterController(CharacterController& characControl, Rigidbody2D& rigid);
-		void OnCollisionEnter(Collider2D* otherCollider);
 	};
 
 	namespace
@@ -81,17 +80,17 @@ namespace ALEngine::ECS
 		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
 	}
 
-	void OnCollisionEnter_Player(u32 otherEntity) {
+	void OnCollisionEnter_Player(u32 currentEntity, u32 otherEntity) {
 		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity))
 		std::cout << "Player Collided with something that has collider commponent ON BEGIN\n";
 	}
 
-	void OnCollisionStay_Player(u32 otherEntity) {
+	void OnCollisionStay_Player(u32 currentEntityu32, u32 otherEntity) {
 		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
 		std::cout << "Player Collided with something that has collider commponent AND STAYING\n";
 	}
 
-	void OnCollisionExit_Player(u32 otherEntity) {
+	void OnCollisionExit_Player(u32 currentEntityu32, u32 otherEntity) {
 		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
 		std::cout << "Player Collided with something that has collider commponent AND EXIT\n";
 	}

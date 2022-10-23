@@ -26,11 +26,11 @@ namespace ALEngine::ECS::Component
 
 	struct EventTrigger
 	{
-		Event OnPointEnter, OnPointExit;
+		Event OnPointEnter, OnPointerStay, OnPointExit;
 	};
 
 	struct EventCollisionListener {
-		void (*invokeFunction)(u32);
+		void (*invokeFunction)(u32, u32);
 		uint32_t m_position = 0;
 	};
 

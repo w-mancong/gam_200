@@ -135,7 +135,7 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void Subscribe(EventCollisionTrigger& eventTrig, EVENT_COLLISION_TRIGGER_TYPE eventType, void (*fp)(u32)) {
+	void Subscribe(EventCollisionTrigger& eventTrig, EVENT_COLLISION_TRIGGER_TYPE eventType, void (*fp)(u32, u32)) {
 		CollisionEvent& evnt = eventCollisionSystem->GetEventFromTrigger(eventTrig, eventType);
 
 		EventCollisionListener listener; 
@@ -149,21 +149,21 @@ namespace ALEngine::ECS
 			case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER:		
 				for (auto it = collisionTrigger.OnCollisionEnter.m_Listeners.begin(); it != collisionTrigger.OnCollisionEnter.m_Listeners.end(); ++it) {
 					for (uint32_t i = 0; i < collisionTrigger.otherEnterColliderPtr.size(); ++i) {
-						it->second.invokeFunction(collisionTrigger.otherEnterColliderPtr[i]);
+						it->second.invokeFunction((Entity&)*it, collisionTrigger.otherEnterColliderPtr[i]);
 					}
 				}
 				break;
 			case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY:		
 				for (auto it = collisionTrigger.OnCollisionStay.m_Listeners.begin(); it != collisionTrigger.OnCollisionStay.m_Listeners.end(); ++it) {
 					for (uint32_t i = 0; i < collisionTrigger.otherStayColliderPtr.size(); ++i) {
-						it->second.invokeFunction(collisionTrigger.otherStayColliderPtr[i]);
+						it->second.invokeFunction((Entity&)*it, collisionTrigger.otherStayColliderPtr[i]);
 					}
 				}
 				break;
 			case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT:	
 				for (auto it = collisionTrigger.OnCollisionExit.m_Listeners.begin(); it != collisionTrigger.OnCollisionExit.m_Listeners.end(); ++it) {
 					for (uint32_t i = 0; i < collisionTrigger.otherExitColliderPtr.size(); ++i) {
-						it->second.invokeFunction(collisionTrigger.otherExitColliderPtr[i]);
+						it->second.invokeFunction((Entity&)*it, collisionTrigger.otherExitColliderPtr[i]);
 					}
 				}
 			break;
