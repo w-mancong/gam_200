@@ -23,6 +23,11 @@ namespace ALEngine::Engine
 	Entity Target;
 	Entity PretendCoin;
 
+	void CollectCoint(Entity other) {
+		if(Coordinator::Instance()->HasComponent<CharacterController>(other))
+		printf("Coin Collected\n");
+	}
+
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
@@ -59,8 +64,6 @@ namespace ALEngine::Engine
 		CreateCollider(player);
 		CreateRigidbody(player);
 		CreateCharacterController(player);
-		//CreateEventTrigger(player);
-		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Poop);
 
 		Transform targetTransform;
 		targetTransform.position = { 0, -250 };
@@ -72,7 +75,8 @@ namespace ALEngine::Engine
 		targetTransform.scale = { 35, 35 };
 		Coordinator::Instance()->AddComponent(PretendCoin, targetTransform);
 		CreateCollider(PretendCoin);
-		//Coordinator::Instance()->GetComponent<Collider2D>(PretendCoin).isTrigger = true;
+		Coordinator::Instance()->GetComponent<Collider2D>(PretendCoin).isTrigger = true;
+		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(PretendCoin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
 
 		appStatus = 1;
 		RunFileWatcher();

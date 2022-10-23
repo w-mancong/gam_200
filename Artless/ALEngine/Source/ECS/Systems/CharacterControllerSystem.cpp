@@ -76,9 +76,9 @@ namespace ALEngine::ECS
 			Coordinator::Instance()->AddComponent(entity, Collider2D{});
 		}
 
-		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, OnCollisionEnter_Player);
-		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, OnCollisionStay_Player);
-		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
+		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, OnCollisionEnter_Player);
+		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, OnCollisionStay_Player);
+		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
 	}
 
 	void OnCollisionEnter_Player(u32 otherEntity) {
