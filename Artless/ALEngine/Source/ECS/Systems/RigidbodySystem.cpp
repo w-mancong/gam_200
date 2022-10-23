@@ -150,7 +150,7 @@ namespace ALEngine::ECS
 			if (!rigid.isEnabled) {
 				continue;
 			}
-
+			
 			transform.position = rigid.nextPosition;
 		}
 	}

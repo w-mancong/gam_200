@@ -21,6 +21,7 @@ namespace ALEngine::Engine
 
 	Entity player;
 	Entity Target;
+	Entity PretendCoin;
 
 	void Application::Init(void)
 	{
@@ -48,6 +49,7 @@ namespace ALEngine::Engine
 
 		player = Coordinator::Instance()->CreateEntity();
 		Target = Coordinator::Instance()->CreateEntity();
+		PretendCoin = Coordinator::Instance()->CreateEntity();
 
 		Transform playerTransform;
 		playerTransform.position = { 10, 300 };
@@ -64,8 +66,13 @@ namespace ALEngine::Engine
 		targetTransform.position = { 0, -250 };
 		targetTransform.scale = { 800,100 };
 		Coordinator::Instance()->AddComponent(Target, targetTransform);
-
 		CreateCollider(Target);
+
+		targetTransform.position = { 150, -170 };
+		targetTransform.scale = { 35, 35 };
+		Coordinator::Instance()->AddComponent(PretendCoin, targetTransform);
+		CreateCollider(PretendCoin);
+		//Coordinator::Instance()->GetComponent<Collider2D>(PretendCoin).isTrigger = true;
 
 		appStatus = 1;
 		RunFileWatcher();

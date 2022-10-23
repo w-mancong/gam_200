@@ -77,23 +77,22 @@ namespace ALEngine::ECS
 		}
 
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, OnCollisionEnter_Player);
-		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, OnCollisionStay_Player);
+		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, OnCollisionStay_Player);
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
 	}
 
 	void OnCollisionEnter_Player(u32 otherEntity) {
-		if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)){
-			std::cout << "Player Collided with something that has collider commponent ON BEGIN\n";
-		}
+		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity))
+		std::cout << "Player Collided with something that has collider commponent ON BEGIN\n";
 	}
 
 	void OnCollisionStay_Player(u32 otherEntity) {
-		if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
+		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
 		std::cout << "Player Collided with something that has collider commponent AND STAYING\n";
 	}
 
 	void OnCollisionExit_Player(u32 otherEntity) {
-		if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
+		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
 		std::cout << "Player Collided with something that has collider commponent AND EXIT\n";
 	}
 

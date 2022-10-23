@@ -204,9 +204,9 @@ namespace ALEngine::ECS
 			}
 			else{
 				//Else static based collision
-				//collision = CheckCollision_AABB_To_AABB(collider_one.m_localPosition + (Vector2)parent_transform_one.position, collider_two.m_localPosition + (Vector2)parent_transform_two.position,
-				//										{ collider_one.scale[0] + parent_transform_one.scale.x, collider_one.scale[1] + parent_transform_one.scale.y },
-				//										{ collider_two.scale[0] + parent_transform_two.scale.x, collider_two.scale[1] + parent_transform_two.scale.y });
+				collision = CheckCollision_AABB_To_AABB(collider_one.m_localPosition + (Vector2)parent_transform_one.position, collider_two.m_localPosition + (Vector2)parent_transform_two.position,
+														{ collider_one.scale[0] + parent_transform_one.scale.x, collider_one.scale[1] + parent_transform_one.scale.y },
+														{ collider_two.scale[0] + parent_transform_two.scale.x, collider_two.scale[1] + parent_transform_two.scale.y });
 			}
 		}
 		//Circle-Circle
@@ -330,11 +330,8 @@ namespace ALEngine::ECS
 					oneCollider.isCollided = collision;
 					twoCollider.isCollided = collision;
 
-					oneCollider.collidedCollidersPtr.push_back(&twoCollider);
-					twoCollider.collidedCollidersPtr.push_back(&oneCollider);
-				}
-				else {
-
+					oneCollider.collidedCollidersPtr.push_back(*jt);
+					twoCollider.collidedCollidersPtr.push_back(*it);
 				}
 			}
 		}
@@ -572,6 +569,10 @@ namespace ALEngine::ECS
 		//Means collision will happen
 		if (rayHit.isCollided)
 		{
+			if (collider_other.isTrigger) {
+				return true;
+			}
+
 			//From the output normal
 			//Determine which velocity part is affected
 			if (rayHit.normal.y != 0) {

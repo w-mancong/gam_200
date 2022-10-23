@@ -36,15 +36,13 @@ namespace ALEngine::ECS::Component
 
 	struct CollisionEvent {
 		std::unordered_map<uint32_t, EventCollisionListener> m_Listeners;
-
 		b8 isTriggered = 0;
 	};
 
 	struct EventCollisionTrigger
 	{
 		CollisionEvent OnCollisionEnter, OnCollisionStay, OnCollisionExit;
-		EVENT_COLLISION_TRIGGER_TYPE currentCollisionTrigger_Type;
-		std::vector<u32> otherColliderPtr;
+		std::vector<u32> otherCurrentCollidingPtr, otherPreviousColliderPtr, otherEnterColliderPtr, otherStayColliderPtr, otherExitColliderPtr;
 	};
 }
 #endif
