@@ -92,7 +92,10 @@ namespace ALEngine::ECS
 		}
 #endif
 		for (auto const& it : animator.animations)
+		{
 			ofs << it.first;
+			ofs << std::endl;
+		}
 	}
 
 	void ChangeAnimation(Animator& animator, c8 const* clipName)

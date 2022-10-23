@@ -21,7 +21,6 @@ namespace ALEngine::Engine
 
 	namespace
 	{
-		Animator animator;
 		Entity entity;
 	}
 
@@ -54,11 +53,12 @@ namespace ALEngine::Engine
 
 		Transform trans{ {}, {200.0f, 200.0f}, 0 };
 		entity = CreateSprite(trans);
-		animator = CreateAnimator("Test");
+		Animator animator = CreateAnimator("Test");
 		AttachAnimator(entity, animator);
 
-		//CreateAnimationClip("Assets/Images/test_spritesheet.png", "PlayingGuitar", 103, 89, 12, 6);
+		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
 		//AddAnimationToAnimator(animator, "PlayingGuitar");
+		//AddAnimationToAnimator(animator, "PlayerRunning");
 		//SaveAnimator(animator);
 	}
 
@@ -149,6 +149,13 @@ namespace ALEngine::Engine
 	{
 		Input::Update();
 		AssetManager::Instance()->Update();
+
+		Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+
+		if (Input::KeyTriggered(KeyCode::A))
+			ChangeAnimation(animator, "PlayingGuitar");
+		if (Input::KeyTriggered(KeyCode::D))
+			ChangeAnimation(animator, "PlayerRunning");
 	}
 
 	void Engine::FixedUpdate(void)
