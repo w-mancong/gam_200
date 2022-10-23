@@ -79,7 +79,7 @@ namespace ALEngine::ECS
 				-> Default value of 0 means totalSprites will be calculated by the system
 		\param [in] savePath: Path for .anim to be saved
 	***********************************************************************************/
-	void CreateAnimationClip(c8 const* filePath, c8 const* clipName, s32 width, s32 height, u32 sample, u32 totalSprites = 0, c8 const* savePath = "Assets\\");
+	void CreateAnimationClip(c8 const* filePath, c8 const* clipName, s32 width, s32 height, u32 sample, u32 totalSprites = 0, c8 const* savePath = "Assets\\Animation\\");
 }
 
 #endif

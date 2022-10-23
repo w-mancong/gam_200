@@ -174,7 +174,7 @@ namespace ALEngine::Engine
 			(vDrawCommand + i)->instanceCount	= 1;					//Draw 1 instance
 			(vDrawCommand + i)->firstIndex		= 0;					//Draw from index 0 for this instance
 			(vDrawCommand + i)->baseVertex		= baseVert;				//Starting from baseVert
-			(vDrawCommand + i)->baseInstance	= *(bd.vIndex + i);		//gl_InstanceID
+			(vDrawCommand + i)->baseInstance	= i;					//gl_InstanceID
 			baseVert += static_cast<u32>(gQuad.size());
 		}
 

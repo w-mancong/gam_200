@@ -19,6 +19,12 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
+	namespace
+	{
+		Animator animator;
+		Entity entity;
+	}
+
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
@@ -46,7 +52,14 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		CreateAnimator("Test");
+		Transform trans{ {}, {200.0f, 200.0f}, 0 };
+		entity = CreateSprite(trans);
+		animator = CreateAnimator("Test");
+		AttachAnimator(entity, animator);
+
+		//CreateAnimationClip("Assets/Images/test_spritesheet.png", "PlayingGuitar", 103, 89, 12, 6);
+		//AddAnimationToAnimator(animator, "PlayingGuitar");
+		//SaveAnimator(animator);
 	}
 
 	void Application::Update(void)

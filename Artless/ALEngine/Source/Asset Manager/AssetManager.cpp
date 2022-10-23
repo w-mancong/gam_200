@@ -185,7 +185,7 @@ namespace
 		}
 
 #ifdef _DEBUG
-		if (animation.width < width || animation.height < height)
+		if (animation.width > width || animation.height > height)
 		{
 			AL_CORE_CRITICAL("Image width/height is smaller than the size to be sampled.\n");
 			return {};
@@ -236,6 +236,9 @@ namespace
 		glMakeTextureHandleResidentARB(handle);
 
 		stbi_image_free(data);
+
+		glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+		glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
@@ -444,8 +447,8 @@ namespace ALEngine::Engine
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
-					break;
 					guidKey = animation.clipName;
+					break;
 				}
 				default:
 					break;

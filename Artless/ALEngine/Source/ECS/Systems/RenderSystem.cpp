@@ -45,7 +45,6 @@ namespace ALEngine::ECS
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
-		u32* vIndex{ nullptr };
 		
 		// frame buffer
 		u32 fbo, fbTexture;
@@ -77,7 +76,7 @@ namespace ALEngine::ECS
 			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vColor    + i) = sprite.color;
 			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			*(vIndex    + i) = sprite.index;
+			(*(vMatrix + i))(3, 3) = sprite.index;
 
 			++counter;
 		}
@@ -88,7 +87,8 @@ namespace ALEngine::ECS
 
         glBindVertexArray(GetVao());
 
-		BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
+		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
         //draw
@@ -138,7 +138,7 @@ namespace ALEngine::ECS
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
-		vIndex = Memory::StaticMemory::New<u32>(ECS::MAX_ENTITIES);
+		//vIndex = Memory::StaticMemory::New<u32>(ECS::MAX_ENTITIES);
 
 		MeshBuilder::Instance()->Init();
 	}

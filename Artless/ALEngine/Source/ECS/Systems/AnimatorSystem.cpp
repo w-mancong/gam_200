@@ -119,6 +119,7 @@ namespace ALEngine::ECS
 			animation.id = id;
 			animator.animations[buffer] = animation;
 		}
+		animator.animatorName = animatorName;
 		animator.currClip = animator.animations.begin()->second.clipName;
 		return animator;
 	}
@@ -131,7 +132,7 @@ namespace ALEngine::ECS
 		// Set the path to the sprite sheet
 		strcpy_s(animation.filePath, sizeof(animation.filePath), filePath);
 
-		std::string saveFileName = std::string(savePath) + std::string(clipName);
+		std::string saveFileName = std::string(savePath) + std::string(clipName) + ".anim";
 
 		// Creating a new anim file
 		std::ofstream ofs{ saveFileName, std::ios::binary };
