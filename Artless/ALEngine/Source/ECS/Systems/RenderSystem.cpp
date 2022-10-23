@@ -244,6 +244,16 @@ namespace ALEngine::ECS
 		return camera.ViewMatrix();
 	}
 
+	Matrix4x4 GetPerspective(void)
+	{
+		camera.PerspectiveMatrix();
+	}
+
+	Matrix4x4 GetOrthographic(void)
+	{
+		camera.OrthographicMatrix();
+	}
+
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
