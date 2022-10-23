@@ -56,7 +56,7 @@ namespace ALEngine::ECS
 		//Set controls
 		charControl.leftKey = static_cast<u64>(KeyCode::A);
 		charControl.rightKey = static_cast<u64>(KeyCode::D);
-		charControl.jumpKey= static_cast<u64>(KeyCode::Space);
+		charControl.jumpKey = static_cast<u64>(KeyCode::Space);
 
 		//Set speed
 		charControl.speed = 25.f;
@@ -77,20 +77,24 @@ namespace ALEngine::ECS
 		}
 
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, OnCollisionEnter_Player);
-		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, OnCollisionStay_Player);
+		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, OnCollisionStay_Player);
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
 	}
 
-	void OnCollisionEnter_Player(Collider2D* otherCollider) {
-		std::cout << "Player Collided with something ON BEGIN\n";
+	void OnCollisionEnter_Player(u32 otherEntity) {
+		if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)){
+			std::cout << "Player Collided with something that has collider commponent ON BEGIN\n";
+		}
 	}
 
-	void OnCollisionStay_Player(Collider2D* otherCollider) {
-		std::cout << "Player Collided with something AND STAYING\n";
+	void OnCollisionStay_Player(u32 otherEntity) {
+		if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
+		std::cout << "Player Collided with something that has collider commponent AND STAYING\n";
 	}
 
-	void OnCollisionExit_Player(Collider2D* otherCollider) {
-		std::cout << "Player Collided with something AND EXIT\n";
+	void OnCollisionExit_Player(u32 otherEntity) {
+		if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
+		std::cout << "Player Collided with something that has collider commponent AND EXIT\n";
 	}
 
 	void UpdateCharacterControllerSystem() {

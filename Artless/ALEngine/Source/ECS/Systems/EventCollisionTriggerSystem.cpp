@@ -56,23 +56,11 @@ namespace ALEngine::ECS
 
 			if (collider.collidedCollidersPtr.size() > eventTrigger.otherColliderPtr.size()) {
 				for (int i = 0; i < collider.collidedCollidersPtr.size(); ++i) {
-					eventTrigger.otherColliderPtr.push_back(collider.collidedCollidersPtr[i]);
+					eventTrigger.otherColliderPtr.push_back(*it);
 				}
 			}
 
 			eventCollisionSystem->UpdateCollisionEventTriggers(eventTrigger);
-
-			//switch (collision_Trigger_Cycle) {
-			//	case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER:
-			//		std::cout << "COLLISION ENTER\n";
-			//	break;
-			//	case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY:
-			//		std::cout << "COLLISION STAY\n";
-			//		break;
-			//	case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT:
-			//		std::cout << "COLLISION EXIT\n";
-			//		break;
-			//}
 		}
 	}
 
@@ -93,7 +81,7 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void Subscribe(EventCollisionTrigger& eventTrig, EVENT_COLLISION_TRIGGER_TYPE eventType, void (*fp)(Collider2D*)) {
+	void Subscribe(EventCollisionTrigger& eventTrig, EVENT_COLLISION_TRIGGER_TYPE eventType, void (*fp)(u32)) {
 		CollisionEvent& evnt = eventCollisionSystem->GetEventFromTrigger(eventTrig, eventType);
 
 		EventCollisionListener listener;
@@ -155,3 +143,15 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(entity, charControl);
 	}
 }
+
+//switch (collision_Trigger_Cycle) {
+//	case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER:
+//		std::cout << "COLLISION ENTER\n";
+//	break;
+//	case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY:
+//		std::cout << "COLLISION STAY\n";
+//		break;
+//	case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT:
+//		std::cout << "COLLISION EXIT\n";
+//		break;
+//}

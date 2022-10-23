@@ -21,10 +21,6 @@ namespace ALEngine::Engine
 
 	Entity player;
 	Entity Target;
-	
-	void Poop() {
-		printf("PooP");
-	}
 
 	void Application::Init(void)
 	{

@@ -11,7 +11,7 @@ brief:	This file contains the function declarations for EventTrigger.h
 #define EVENTTRIGGER_H
 namespace ALEngine::ECS::Component
 {
-	enum class EVENT_TRIGGER_TYPE { ON_POINTER_ENTER, ON_POINTER_EXIT };
+	enum class EVENT_TRIGGER_TYPE { ON_POINTER_ENTER, ON_POINTER_STAY, ON_POINTER_EXIT };
 	enum class EVENT_COLLISION_TRIGGER_TYPE { NOTHING, ON_COLLISION_ENTER, ON_COLLISION_STAY, ON_COLLISION_EXIT };
 
 	struct EventListener {
@@ -30,7 +30,7 @@ namespace ALEngine::ECS::Component
 	};
 
 	struct EventCollisionListener {
-		void (*invokeFunction)(Collider2D*);
+		void (*invokeFunction)(u32);
 		uint32_t m_position = 0;
 	};
 
@@ -44,7 +44,7 @@ namespace ALEngine::ECS::Component
 	{
 		CollisionEvent OnCollisionEnter, OnCollisionStay, OnCollisionExit;
 		EVENT_COLLISION_TRIGGER_TYPE currentCollisionTrigger_Type;
-		std::vector<Collider2D*> otherColliderPtr;
+		std::vector<u32> otherColliderPtr;
 	};
 }
 #endif
