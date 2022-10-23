@@ -184,9 +184,6 @@ namespace ALEngine::ECS
 		Text::RenderAllText();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
-		//ImGui::Begin("Viewport");
-		//ImGui::Image((void*)(intptr_t)fbTexture, ImVec2(Input::GetScreenResX(), Input::GetScreenResY()), ImVec2(0,1), ImVec2(1,0)); // render opengl in imgui window
-		//ImGui::End();
 
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())

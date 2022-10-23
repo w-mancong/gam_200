@@ -189,6 +189,16 @@ namespace ALEngine::Editor
 		return m_InspectorPanel.GetSelectedEntity();
 	}
 
+	f64 ALEditor::GetSceneWidth(void)
+	{
+		return m_ScenePanel.GetSceneWidth();
+	}
+
+	f64 ALEditor::GetSceneHeight(void)
+	{
+		return m_ScenePanel.GetSceneHeight();
+	}
+
 	void ALEditor::Docking(void)
 	{
 		// Ensure the parent window is not dockable into

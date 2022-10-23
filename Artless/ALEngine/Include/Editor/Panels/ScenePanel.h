@@ -62,6 +62,24 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		ECS::Entity GetSelectedEntity(void);
 
+		/*!*********************************************************************************
+		\brief
+		Gets the Width of the Scene Panel
+
+		\return
+		Returns the selected Entity
+		***********************************************************************************/
+		f64 GetSceneWidth(void);
+
+		/*!*********************************************************************************
+		\brief
+		Gets the Height of the Scene Panel
+
+		\return
+		Returns the selected Entity
+		***********************************************************************************/
+		f64 GetSceneHeight(void);
+
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
 		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES }; // Entity Selected in Inspector
@@ -69,6 +87,9 @@ namespace ALEngine::Editor
 		// Panel size
 		const ImVec2 PANEL_MIN{ 320, 350 };
 		const ImVec2 PANEL_MAX{ 1920, 1080 };
+
+		// Scene Size
+		f32 m_SceneWidth{ 0 }, m_SceneHeight{ 0 };
 	};
 
 	/*!*********************************************************************************
