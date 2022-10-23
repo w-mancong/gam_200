@@ -18,26 +18,28 @@ namespace
 	using namespace ALEngine::Engine;
 	struct Texture
 	{
-		u32 texture;
-		TextureHandle handle;
+		u32 texture{};
+		TextureHandle handle{};
 	};
 
 	struct Files
 	{
-		std::vector<std::string> created, modified, removed;
+		std::vector<std::string> created{}, modified{}, removed{};
 	} files;
 
 	enum class FileType
 	{
+		Not_A_File = -1,
 		Image,
 		Audio,
 		Animation
 	};
 
-	std::unordered_map<std::string, Guid> guidList;
-	std::unordered_map<Guid, Texture>  textureList;
-#ifdef EDITOR
-	std::unordered_map<Guid, u32>  buttonImageList;
+	std::unordered_map<std::string, Guid> guidList{};
+	std::unordered_map<Guid, Texture> textureList{};
+	std::unordered_map<Guid, Animation> animationList{};
+#if EDITOR
+	std::unordered_map<Guid, u32>  buttonImageList{};
 #endif
 
 	void GenerateMetaFile(char const* filePath, Guid id)
@@ -72,19 +74,16 @@ namespace
 
 	Texture LoadTexture(char const* filePath)
 	{
-		// load and create a texture 
-		// -------------------------
-		// load image, create texture and generate mipmaps
 		s32 width, height, nrChannels;
-		// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
 		stbi_set_flip_vertically_on_load(true);
 		u8* data = stbi_load(filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
+#ifdef _DEBUG
 		if (!data)
 		{
-			std::string err_msg{ "Failed to load texture.\nFile path: " + std::string(filePath) };
-			AL_CORE_CRITICAL(err_msg);
+			AL_CORE_CRITICAL("Failed to load texture.\nFile path: {}", filePath);
 			return {};
 		}
+#endif
 		u32 format[2]{};
 		switch (nrChannels)
 		{
@@ -103,8 +102,9 @@ namespace
 			// I only want to accept files that have RGB/RGBA formats
 			default:
 			{
-				std::string err_msg{ "Wrong file format: Must contain RGB/RGBA channels" };
-				AL_CORE_CRITICAL(err_msg);
+#ifdef _DEBUG
+				AL_CORE_CRITICAL("Wrong file format: Must contain RGB/RGBA channels\n");
+#endif
 				return {};
 			}
 		}
@@ -139,6 +139,106 @@ namespace
 		glMakeTextureHandleResidentARB(handle);
 
 		stbi_image_free(data);
+
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		glDeleteBuffers(1, &pbo);
+
+		return { texture, handle };
+	}
+
+	Texture LoadAnimation(Animation& animation)
+	{
+		s32 width, height, nrChannels;
+		stbi_set_flip_vertically_on_load(true);
+		u8* data = stbi_load(animation.filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
+#ifdef _DEBUG
+		if (!data)
+		{
+			AL_CORE_CRITICAL("Failed to load texture.\nFile path: {}", animation.filePath);
+			return {};
+		}
+#endif
+		u32 format[2]{};
+		switch (nrChannels)
+		{
+			case STBI_rgb:
+			{
+				format[0] = GL_RGB8;
+				format[1] = GL_RGB;
+				break;
+			}
+			case STBI_rgb_alpha:
+			{
+				format[0] = GL_RGBA8;
+				format[1] = GL_RGBA;
+				break;
+			}
+			// I only want to accept files that have RGB/RGBA formats
+			default:
+			{
+#ifdef _DEBUG
+				AL_CORE_CRITICAL("Wrong file format: Must contain RGB/RGBA channels\n");
+#endif
+				return {};
+			}
+		}
+
+#ifdef _DEBUG
+		if (animation.width > width || animation.height > height)
+		{
+			AL_CORE_CRITICAL("Image width/height is smaller than the size to be sampled.\n");
+			return {};
+		}
+#endif
+		s32 const TILE_X = width / animation.width, TILE_Y = height / animation.height;
+		// Calculate the total sprites if totalSprites == 0
+		if (!animation.totalSprites)
+			animation.totalSprites = static_cast<u32>(TILE_X * TILE_Y);
+		u64 const TOTAL_TILES = animation.totalSprites;
+
+		u32 texture{};
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, texture);
+		glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, format[0], animation.width, animation.height, TOTAL_TILES);
+
+		s64 const DATA_SIZE = static_cast<s64>(width) * static_cast<s64>(height) * static_cast<s64>(nrChannels);
+		u32 pbo{};
+		glGenBuffers(1, &pbo);
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
+		glBufferData(GL_PIXEL_UNPACK_BUFFER, DATA_SIZE, data, GL_STREAM_DRAW);
+		glPixelStorei(GL_UNPACK_ROW_LENGTH,   width);	// width
+		glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, height);	// height
+
+		for (s32 i{}; i < TOTAL_TILES; ++i)
+		{
+			s32 const row = static_cast<s32>(std::floor(i / TILE_X)) * animation.height;
+			s32 const col = (i % TILE_X) * animation.width;
+
+			glPixelStorei(GL_UNPACK_SKIP_PIXELS, col);
+			glPixelStorei(GL_UNPACK_SKIP_ROWS, row);
+
+			glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
+				0,
+				0, 0, i,
+				animation.width, animation.height, 1,
+				format[1],
+				GL_UNSIGNED_BYTE,
+				0);
+		}
+
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		TextureHandle handle = glGetTextureHandleARB(texture);
+		glMakeTextureHandleResidentARB(handle);
+
+		stbi_image_free(data);
+
+		glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+		glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
@@ -188,13 +288,14 @@ namespace
 		// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
 		stbi_set_flip_vertically_on_load(true);
 		u8* data = stbi_load(filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
+#ifdef _DEBUG
 		if (!data)
 		{
-			std::string err_msg{ "Failed to load texture.\nFile path: " + std::string(filePath) };
-			AL_CORE_CRITICAL(err_msg);
+			AL_CORE_CRITICAL("Failed to load texture.\nFile path: {}", filePath);
 			return {};
 		}
-		u32 format{ 0 };
+#endif
+		u32 format{};
 		switch (nrChannels)
 		{
 			case STBI_rgb:
@@ -210,8 +311,9 @@ namespace
 			// I only want to accept files that have RGB/RGBA formats
 			default:
 			{
-				std::string err_msg{ "Wrong file format: Must contain RGB/RGBA channels" };
-				AL_CORE_CRITICAL(err_msg);
+#ifdef _DEBUG
+				AL_CORE_CRITICAL("Wrong file format: Must contain RGB/RGBA channels\n");
+#endif
 				return {};
 			}
 		}
@@ -242,6 +344,7 @@ namespace
 			return FileType::Audio;
 		if (fileName.find(".anim") != std::string::npos)
 			return FileType::Animation;
+		return FileType::Not_A_File;
 	};
 }
 
@@ -303,9 +406,7 @@ namespace ALEngine::Engine
 				metaFiles.erase(it2);
 			}
 
-			// Get a list of Guid inserted into an unordered_map
-			guidList.insert(std::pair<std::string, Guid>{ *it, id });
-
+			std::string guidKey{};
 			switch (GetFileType(*it))
 			{
 				case FileType::Image:
@@ -317,7 +418,7 @@ namespace ALEngine::Engine
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
-#ifdef EDITOR
+#if		EDITOR
 					u32 button = LoadButtonImage(it->c_str());
 
 #ifdef _DEBUG
@@ -325,6 +426,7 @@ namespace ALEngine::Engine
 #endif
 						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
+					guidKey = *it;
 					break;
 				}
 				case FileType::Audio:
@@ -332,9 +434,28 @@ namespace ALEngine::Engine
 
 					break;
 				}
+				case FileType::Animation:
+				{
+					Animation animation;
+					std::ifstream ifs{ *it, std::ios::binary };
+					ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
+
+					animationList.insert(std::pair<Guid, Animation>{ id, animation });
+
+					Texture texture = LoadAnimation(animation);
+#ifdef _DEBUG
+					if (texture.handle)
+#endif
+						textureList.insert(std::pair<Guid, Texture>{ id, texture });
+					guidKey = animation.clipName;
+					break;
+				}
 				default:
 					break;
 			}
+
+			// Get a list of Guid inserted into an unordered_map
+			guidList.insert(std::pair<std::string, Guid>{ guidKey, id });
 		}
 
 		//if orphan meta file, then delete
@@ -395,6 +516,11 @@ namespace ALEngine::Engine
 	u32 AssetManager::GetButtonImage(Guid id)
 	{
 		return buttonImageList[id];
+	}
+
+	Animation AssetManager::GetAnimation(Guid id)
+	{
+		return animationList[id];
 	}
 
 	Guid AssetManager::GetGuid(std::string fileName)
@@ -589,10 +715,14 @@ namespace ALEngine::Engine
 		while (files.created.size())
 		{
 			std::string const& filePath{ files.created.back() };
+			std::string guidKey{};
 			Guid id{ PrepareGuid() };
 			GenerateMetaFile(filePath.c_str(), id);
 			switch (GetFileType(filePath))
 			{
+			/******************************************************************************
+												Image
+			******************************************************************************/
 			case FileType::Image:
 			{
 				//into memory/stream
@@ -600,24 +730,48 @@ namespace ALEngine::Engine
 #ifdef _DEBUG
 				if (texture.handle)
 #endif
-#ifdef EDITOR
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
+#if		EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
 #ifdef _DEBUG
 				if (button)
 #endif
 					buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
+				guidKey = filePath;
 				break;
 			}
+			/******************************************************************************
+												Audio
+			******************************************************************************/
 			case FileType::Audio:
 			{
+				break;
+			}
+
+			/******************************************************************************
+												Animation
+			******************************************************************************/
+			case FileType::Animation:
+			{
+				Animation animation;
+				std::ifstream ifs{ filePath, std::ios::binary };
+				ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
+
+				animationList.insert(std::pair<Guid, Animation>{ id, animation });
+				guidKey = animation.clipName;
+
+				Texture texture = LoadAnimation(animation);
+#ifdef _DEBUG
+				if (texture.handle)
+#endif 
+					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 				break;
 			}
 			default:
 				break;
 			}
-			guidList.insert(std::pair<std::string, Guid>{ filePath, id });
+			guidList.insert(std::pair<std::string, Guid>{ guidKey, id });
 			files.created.pop_back();
 		}
 	}
@@ -631,6 +785,9 @@ namespace ALEngine::Engine
 			Guid id{ GetGuid(filePath) };
 			switch (GetFileType(filePath))
 			{
+			/******************************************************************************
+												Image
+			******************************************************************************/
 			case FileType::Image:
 			{
 				Texture const& oldTexture = textureList[id];
@@ -645,7 +802,7 @@ namespace ALEngine::Engine
 				if (newTexture.handle)
 #endif
 					textureList[id] = newTexture;
-#ifdef EDITOR
+#if		EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
 #ifdef _DEBUG
 				if (button)
@@ -654,8 +811,34 @@ namespace ALEngine::Engine
 #endif
 				break;
 			}
+			/******************************************************************************
+												Audio
+			******************************************************************************/
 			case FileType::Audio:
 			{
+				break;
+			}
+			/******************************************************************************
+												Animation
+			******************************************************************************/
+			case FileType::Animation:
+			{
+				Texture const& oldTexture = textureList[id];
+				// Unload memory
+				glMakeTextureHandleNonResidentARB(oldTexture.handle);
+				glDeleteTextures(1, &oldTexture.texture);
+
+				Animation animation;
+				std::ifstream ifs{ filePath, std::ios::binary };
+				ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
+
+				animationList[id] = animation;
+
+				Texture newTexture = LoadAnimation(animation);
+#ifdef _DEBUG
+				if (newTexture.handle)
+#endif 
+					textureList[id] = newTexture;
 				break;
 			}
 			default:
@@ -671,13 +854,17 @@ namespace ALEngine::Engine
 		while (files.removed.size())
 		{
 			std::string const& filePath{ files.removed.back() };
+			std::string guidKey{};
 			Guid id{ GetGuid(filePath) };
 			std::string const meta = filePath + ".meta";
 			switch (GetFileType(filePath))
 			{
+			/******************************************************************************
+												Image
+			******************************************************************************/
 			case FileType::Image:
 			{
-				Texture& texture = textureList[id];
+				Texture const& texture = textureList[id];
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);
 				glDeleteTextures(1, &texture.texture);
@@ -685,13 +872,36 @@ namespace ALEngine::Engine
 
 				// Do not keep track of this guid anymore
 				textureList.erase(id);
-#ifdef EDITOR
+#if	EDITOR
 				buttonImageList.erase(id);
 #endif
+				guidKey = filePath;
 				break;
 			}
+			/******************************************************************************
+												Audio
+			******************************************************************************/
 			case FileType::Audio:
 			{
+				break;
+			}
+			/******************************************************************************
+												Animation
+			******************************************************************************/
+			case FileType::Animation:
+			{
+				Texture const& texture = textureList[id];
+				// Unload memory
+				glMakeTextureHandleNonResidentARB(texture.handle);
+				glDeleteTextures(1, &texture.texture);
+				Animation const& animation = animationList[id];
+
+				// Do not keep track of this guid anymore
+				textureList.erase(id);
+				animationList.erase(id);
+
+				guidKey = animation.clipName;
+
 				break;
 			}
 			default:
@@ -706,7 +916,7 @@ namespace ALEngine::Engine
 				std::cerr << "Error: " << error;
 			}
 			// Remove guid from this list
-			guidList.erase(filePath);
+			guidList.erase(guidKey);
 			files.removed.pop_back();
 		}
 	}
