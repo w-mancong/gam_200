@@ -5,7 +5,7 @@ namespace ALEngine::Tree
 {
     class BinaryTree
     {
-    private:
+    public:
         struct Node
         {
             u32 id{};
@@ -20,8 +20,8 @@ namespace ALEngine::Tree
         void FindChildren(u32 parent);
         void Destruct(u32 id);
         std::vector<u32> const& GetChildren();
-    private:
         Node* GetHead();
+    private:
         Node* SearchRight(Node* node, u32 id);
         Node* SearchLeft(Node* node, u32 id);
         void FindLeftChildren(Node* node);
@@ -32,9 +32,9 @@ namespace ALEngine::Tree
 
         Node* head;
         Node* prevNode{ nullptr };
-        std::vector<Node*> searchVect;
-        std::vector<Node*> destructVect;
-        std::vector<u32> childrenVect;
+        std::vector<Node*> searchVect{};
+        std::vector<Node*> destructVect{};
+        std::vector<u32> childrenVect{};
     }; // end of class BinaryTree
 } // end of namespace Tree
 #endif
