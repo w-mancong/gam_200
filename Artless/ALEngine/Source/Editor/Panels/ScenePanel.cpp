@@ -52,12 +52,13 @@ namespace ALEngine::Editor
 			ImGuizmo::RecomposeMatrixFromComponents(mtx_translate, mtx_rot, mtx_scale, mtx);
 									
 			ImGuizmo::SetDrawlist();
-			float windowWidth = (float)ImGui::GetWindowWidth();
-			float windowHeight = (float)ImGui::GetWindowHeight();
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+			float windowWidth = m_SceneWidth;
+			float windowHeight = m_SceneHeight;
+			//ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x + windowWidth * 0.5f, ImGui::GetWindowPos().y + windowHeight * 0.5f, windowWidth, windowHeight);
 
 			// Manipulate
-			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), ECS::GetProjection().value_ptr(),
+			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), ECS::GetOrthographic().value_ptr(),
 				m_CurrentGizmoOperation, ImGuizmo::WORLD, mtx);
 
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
@@ -114,7 +115,10 @@ namespace ALEngine::Editor
 						inv_view[i][j] = ECS::GetView()(i, j);
 				inv_view = glm::inverse(inv_view);
 
-				mousePos = inv_view * mousePos;
+				// Ray in world coords
+				glm::vec4 ray_world = inv_view * ray_eye;
+				ray_world = glm::normalize(ray_world);
+
 
 				//mousePos.w = (mousePos.w == 0.f) ? 1.f : 1.f / mousePos.w;
 				//mousePos.x *= (f32)Graphics::OpenGLWindow::width * 0.5f;
