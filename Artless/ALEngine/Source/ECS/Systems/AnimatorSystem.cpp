@@ -31,16 +31,17 @@ namespace ALEngine::ECS
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);
 			Animator& animator = Coordinator::Instance()->GetComponent<Animator>(*it);
 
-			Animation& animation = animator.animations[animator.currClip];
+			Animation const& animation = animator.animations[animator.currClip];
 			sprite.id = animation.id;
 
 			f32 const changeTime = 1.0f / static_cast<f32>(animation.sample);
-			animation.time += Time::m_DeltaTime;
+			animator.time += Time::m_DeltaTime;
 
-			if (animation.time < changeTime)
+			if (animator.time < changeTime)
 				continue;
 
 			(++sprite.index) %= animation.totalSprites;
+			animator.time = 0.0f;
 		}
 	}
 
@@ -101,6 +102,7 @@ namespace ALEngine::ECS
 			return;
 #endif
 		animator.currClip = clipName;
+		animator.time = 0.0f;
 	}
 
 	Animator CreateAnimator(c8 const* animatorName)

@@ -44,7 +44,9 @@ namespace ALEngine::Engine
 		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 
 		appStatus = 1;
-		RunFileWatcher();
+		RunFileWatcherThread();
+
+		CreateAnimator("Test");
 	}
 
 	void Application::Update(void)

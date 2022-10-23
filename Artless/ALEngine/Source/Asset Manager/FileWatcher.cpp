@@ -109,7 +109,7 @@ namespace ALEngine::Engine
 		}
 	}
 
-	void RunFileWatcher(void)
+	void RunFileWatcherThread(void)
 	{
 		std::thread worker{ FileWatcherWorkerThread };
 		worker.detach();
