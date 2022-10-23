@@ -254,6 +254,11 @@ namespace ALEngine::ECS
 		return camera.OrthographicMatrix();
 	}
 
+	Matrix4x4 GetOrthographicImgui(void)
+	{
+		return camera.OrthographicMatrixImgui();
+	}
+
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);

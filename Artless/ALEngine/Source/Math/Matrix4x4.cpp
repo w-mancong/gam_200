@@ -203,6 +203,18 @@ namespace ALEngine::Math
 		return res;
 	}
 
+	Matrix4x4 Matrix4x4::OrthoImgui(f32 left, f32 right, f32 bottom, f32 top, f32 zNear, f32 zFar)
+	{
+		Matrix4x4 res{ 1.0f };
+		res(0, 0) = 2.0f / (right - left);
+		res(1, 1) = 2.0f / (top - bottom);
+		res(2, 2) = 1.0f / (zFar - zNear);
+		res(3, 0) = (left + right) / (left - right);
+		res(3, 1) = (bottom + top) / (bottom - top);
+		res(3, 2) = zNear / (zNear - zFar);
+		return res;
+	}
+
 	Matrix4x4 Matrix4x4::Perspective(f32 fov, f32 aspect, f32 zNear, f32 zFar)
 	{
 #if _DEBUG

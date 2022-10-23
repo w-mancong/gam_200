@@ -51,10 +51,10 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		Transform trans{ {}, {200.0f, 200.0f}, 0 };
-		entity = CreateSprite(trans);
-		Animator animator = CreateAnimator("Test");
-		AttachAnimator(entity, animator);
+		//Transform trans{ {}, {200.0f, 200.0f}, 0 };
+		//entity = CreateSprite(trans);
+		//Animator animator = CreateAnimator("Test");
+		//AttachAnimator(entity, animator);
 
 		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
 		//AddAnimationToAnimator(animator, "PlayingGuitar");
@@ -150,12 +150,12 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 
-		Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+		//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
-		if (Input::KeyTriggered(KeyCode::A))
-			ChangeAnimation(animator, "PlayingGuitar");
-		if (Input::KeyTriggered(KeyCode::D))
-			ChangeAnimation(animator, "PlayerRunning");
+		//if (Input::KeyTriggered(KeyCode::A))
+		//	ChangeAnimation(animator, "PlayingGuitar");
+		//if (Input::KeyTriggered(KeyCode::D))
+		//	ChangeAnimation(animator, "PlayerRunning");
 	}
 
 	void Engine::FixedUpdate(void)
