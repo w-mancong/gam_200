@@ -29,6 +29,21 @@ namespace ALEngine::Engine
 		}
 	}
 
+	void START() {
+		printf("START ");
+	}
+	void STAY() {
+		printf("STAY ");
+	}
+
+	void CLICK() {
+		printf("CLICK ");
+	}
+
+	void EXIT() {
+		printf("EXIT ");
+	}
+
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
@@ -65,6 +80,12 @@ namespace ALEngine::Engine
 		CreateCollider(player);
 		CreateRigidbody(player);
 		CreateCharacterController(player);
+		
+		CreateEventTrigger(player);
+		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
+		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
+		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
 		Transform targetTransform;
 		targetTransform.position = { 0, -250 };

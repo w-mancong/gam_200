@@ -11,7 +11,7 @@ brief:	This file contains the function declarations for EventTrigger.h
 #define EVENTTRIGGER_H
 namespace ALEngine::ECS::Component
 {
-	enum class EVENT_TRIGGER_TYPE { ON_POINTER_ENTER, ON_POINTER_STAY, ON_POINTER_EXIT };
+	enum class EVENT_TRIGGER_TYPE { NOTHING, ON_POINTER_ENTER, ON_POINTER_STAY, ON_POINTER_EXIT, ON_POINTER_CLICK };
 	enum class EVENT_COLLISION_TRIGGER_TYPE { NOTHING, ON_COLLISION_ENTER, ON_COLLISION_STAY, ON_COLLISION_EXIT };
 
 	struct EventListener {
@@ -21,12 +21,12 @@ namespace ALEngine::ECS::Component
 
 	struct Event {
 		std::unordered_map<uint32_t, EventListener> m_Listeners;
-		b8 isTriggered = 0;
 	};
 
 	struct EventTrigger
 	{
-		Event OnPointEnter, OnPointerStay, OnPointExit;
+		Event OnPointEnter, OnPointStay, OnPointExit, OnPointClick;
+		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 	};
 
 	struct EventCollisionListener {
@@ -36,7 +36,6 @@ namespace ALEngine::ECS::Component
 
 	struct CollisionEvent {
 		std::unordered_map<uint32_t, EventCollisionListener> m_Listeners;
-		b8 isTriggered = 0;
 	};
 
 	struct EventCollisionTrigger

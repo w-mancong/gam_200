@@ -25,7 +25,9 @@ namespace ALEngine::ECS
 	class EventTriggerSystem : public System
 	{
 	public:
-		void InvokeEventListeners(Event event_trigger);
+		void InvokeTriggerListeners(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type);
+		void InvokeEvent(Event& event_trigger);
+		void UpdateEventTriggerState(EventTrigger& event_trigger, b8 isCurrentlyPointingOn);
 		Event& GetEventFromTrigger(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type);
 
 		void UpdatePointerStatus(Entity entity);
@@ -45,35 +47,122 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->SetSystemSignature<EventTriggerSystem>(signature);
 	}
 
-	void UpdateEventColliderTriggerSystem() {
-		//Shift through each component
-		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
-			//If has collider
-			if (Coordinator::Instance()->HasComponent<Collider2D>(*it)) {
-				Collider2D collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-				
-				//Update Trigger Status
-				if (collider.isCollided) {
-					EventTrigger collider = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
-				}
-			}
-		}
-	}
-
 	void UpdateEventTriggerSystem() {
 		//Shift through each component
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
 			eventSystem->UpdatePointerStatus(*it);
 			
-			if (event_Trigger.OnPointEnter.isTriggered) {
-				eventSystem->InvokeEventListeners(event_Trigger.OnPointEnter);
-				event_Trigger.OnPointEnter.isTriggered = false;
+			switch (event_Trigger.current_Trigger_State) {
+				case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
+					eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER);
+					break;
+				case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
+					if (Input::KeyTriggered(KeyCode::MouseLeftButton)) {
+						eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK);
+					}
+					else {
+						eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_STAY);
+					}
+					break;
+				case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
+					eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT);
+					break;
 			}
 		}
 	}
 
-	void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType,void (*fp)()) {
+	void EventTriggerSystem::UpdatePointerStatus(Entity entity) {
+		if (Coordinator::Instance()->HasComponent<Collider2D>(entity)) {
+			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(entity);
+			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
+
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
+
+			//Check if mouse position is over the collider
+			b8 isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Vector2{ (f32)Input::GetMousePosX(), (f32)Input::GetMousePosY() }, (Vector2)transform.position + collider.m_localPosition, collider.scale[0], collider.scale[1]);
+			
+			isPointingOver = true;
+			//Set the state
+			UpdateEventTriggerState(eventTrigger,isPointingOver);
+		}
+	}
+
+	void EventTriggerSystem::InvokeEvent(Event& evnt) {
+		for (auto it = evnt.m_Listeners.begin(); it != evnt.m_Listeners.end(); ++it) {
+			it->second.invokeFunction();
+		}
+	}
+
+	void EventTriggerSystem::InvokeTriggerListeners(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type) {
+		switch (trigger_type) {
+		case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
+			eventSystem->InvokeEvent(event_trigger.OnPointEnter);
+			break;
+		case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
+			eventSystem->InvokeEvent(event_trigger.OnPointStay);
+			break;
+		case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
+			eventSystem->InvokeEvent(event_trigger.OnPointExit);
+			break;
+		case EVENT_TRIGGER_TYPE::ON_POINTER_CLICK:
+			eventSystem->InvokeEvent(event_trigger.OnPointClick);
+			break;
+		}
+	}
+
+	Event& EventTriggerSystem::GetEventFromTrigger(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type) {
+		switch (trigger_type)
+		{
+			case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
+				return event_trigger.OnPointEnter;
+
+			case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
+				return event_trigger.OnPointStay;
+
+			case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
+				return event_trigger.OnPointExit;
+
+			case EVENT_TRIGGER_TYPE::ON_POINTER_CLICK:
+				return event_trigger.OnPointClick;
+
+			default:
+				return event_trigger.OnPointEnter;
+		}
+	}
+
+	void EventTriggerSystem::UpdateEventTriggerState(EventTrigger& event_trigger, b8 isCurrentlyPointingOn) {
+		switch (event_trigger.current_Trigger_State)
+		{
+		case EVENT_TRIGGER_TYPE::NOTHING:
+			if (isCurrentlyPointingOn)
+				event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_ENTER;
+			break;
+
+		case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
+			if (isCurrentlyPointingOn)
+				event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_STAY;
+			else
+				event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_EXIT;
+			break;
+
+		case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
+			if (!isCurrentlyPointingOn)
+				event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_EXIT;
+			break;
+		case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
+			event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+			break;
+		}
+	}
+
+	void CreateEventTrigger(Entity const& entity) {
+		//Setup EventTrigger for custom stats
+		EventTrigger charControl{};
+		Coordinator::Instance()->AddComponent(entity, charControl);
+	}
+
+	void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType, void (*fp)()) {
 		Event& evnt = eventSystem->GetEventFromTrigger(eventTrig, eventType);
 
 		EventListener listener;
@@ -92,42 +181,5 @@ namespace ALEngine::ECS
 			listener.invokeFunction = fp;
 			evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 		}
-	}
-
-	void EventTriggerSystem::UpdatePointerStatus(Entity entity) {
-		if (Coordinator::Instance()->HasComponent<Collider2D>(entity)) {
-			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(entity);
-			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
-
-			//std::cout << Vector2{ (f32)Input::GetMousePosX(), (f32)Input::GetMousePosY() } << std::endl;
-			if (Physics::Physics2D_CheckCollision_Point_To_AABBBox(Vector2 { (f32)Input::GetMousePosX(), (f32)Input::GetMousePosY() }, (Vector2)transform.position + collider.m_localPosition, collider.scale[0], collider.scale[1])) {
-			}
-		}
-	}
-
-	void EventTriggerSystem::InvokeEventListeners(Event event_Trigger) {
-		for (auto it = event_Trigger.m_Listeners.begin(); it != event_Trigger.m_Listeners.end(); ++it) {
-			it->second.invokeFunction();
-		}
-	}
-
-	Event& EventTriggerSystem::GetEventFromTrigger(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type) {
-		switch (trigger_type)
-		{
-			case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
-				return event_trigger.OnPointEnter;
-
-			case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
-				return event_trigger.OnPointExit;
-
-			default:
-				return event_trigger.OnPointEnter;
-		}
-	}
-
-	void CreateEventTrigger(Entity const& entity) {
-		//Setup EventTrigger for custom stats
-		EventTrigger charControl{};
-		Coordinator::Instance()->AddComponent(entity, charControl);
 	}
 }
