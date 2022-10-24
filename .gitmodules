@@ -7,3 +7,4 @@
 [submodule "Artless/Extern/include/tracy"]
 	path = Artless/ALEngine/tracy
 	url = https://github.com/wolfpld/tracy
+	ignore = dirty
