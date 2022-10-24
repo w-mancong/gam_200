@@ -30,11 +30,11 @@ namespace ALEngine::Tree
             if (node->id == id)
                 return node;
         }
-        if (node->right != nullptr)
+        if (node->right != nullptr) // if have right branch
         {
             return SearchRight(searchVect[searchVect.size() - 1], id);
         }
-        else
+        else // if no right branch
         {
             if (searchVect.size() > 1)
             {
@@ -68,8 +68,15 @@ namespace ALEngine::Tree
             searchVect[searchVect.size() - 1] = node;
         }
         // end of right branch
-        searchVect.pop_back();
-        return SearchRight(searchVect[searchVect.size() - 1], id);
+        if (searchVect.size() > 1)
+        {
+            searchVect.pop_back();
+            return SearchRight(searchVect[searchVect.size() - 1], id);
+        }
+        else
+        {
+            return nullptr;
+        }
     }
 
     BinaryTree::Node* BinaryTree::Find(u32 id)
@@ -83,7 +90,6 @@ namespace ALEngine::Tree
 
     void BinaryTree::Push(u32 parent, u32 newchild)
     {
-        std::cout << "New child: " << newchild << "\n";
         if (parent == -1)
         {
             Insert(head, newchild);
@@ -107,7 +113,6 @@ namespace ALEngine::Tree
     {
         while (node->right != nullptr)
         {
-            std::cout << node->id << " ";
             node = node->right;
         }
         Node* newNode = Memory::DynamicMemory::New<Node>();
@@ -191,11 +196,7 @@ namespace ALEngine::Tree
             Node* node = Find(id);
             if (prevNode == nullptr)
             {
-                std::cout << "prevnode failed\n";
-            }
-            else
-            {
-                std::cout << "prevNode: " << prevNode->id << "\n";
+                std::cerr << "Previous node detection failed for " << id << "\n";
             }
             return DestructLeft(node, id);
         }
@@ -216,7 +217,7 @@ namespace ALEngine::Tree
     {
         if (node == nullptr)
         {
-            std::cout << "ERORR: " << id;
+            std::cerr << "ERORR: node " << id << " is NULL";
             return;
         }
         while (node != nullptr && node->right != nullptr)
