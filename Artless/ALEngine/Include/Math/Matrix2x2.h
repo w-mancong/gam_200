@@ -248,7 +248,7 @@ namespace ALEngine::Math
 		\param [in] rhs:
 		Matrix data to be streamed to the output stream os
 	***********************************************************************************/
-	std::ostream& operator<<(std::ostream& os, Matrix4x4 const& rhs);
+	std::ostream& operator<<(std::ostream& os, Matrix2x2 const& rhs);
 }
 
 #endif

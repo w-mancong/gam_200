@@ -143,6 +143,13 @@ namespace ALEngine::Math
 		Matrix3x3 Inverse(void) const;
 
 		/*!*********************************************************************************
+			\brief Construct and return a column major inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		Matrix3x3 InverseT(void) const;
+
+		/*!*********************************************************************************
 			\brief Construct and return a transpose matrix
 
 			\param [in] matrix: Matrix to be transposed
@@ -226,6 +233,13 @@ namespace ALEngine::Math
 			\param [in] matrix: Matrix to be inversed
 		***********************************************************************************/
 		static Matrix3x3 Inverse(Matrix3x3 const& mat);
+
+		/*!*********************************************************************************
+			\brief Construct and return a column major inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		static Matrix3x3 InverseT(Matrix3x3 const& mat);
 
 		/*!*********************************************************************************
 			\brief Construct and return a transpose matrix

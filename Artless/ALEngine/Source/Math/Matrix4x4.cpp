@@ -308,12 +308,13 @@ namespace ALEngine::Math
 
 	Matrix4x4 Matrix4x4::Inverse(Matrix4x4 const& mat)
 	{
-		return InverseT(mat).Transpose();
-	}
-
-	Matrix4x4 Matrix4x4::InverseT(Matrix4x4 const& mat)
-	{
+#if _DEBUG
+		f32 const det = Determinant(mat);
+		assert(!Utility::IsEqual(det, 0.0f) && "Determinant is 0, unable to proceed due to division by 0!!");
+		f32 const oneOverDeterminant = 1.0f / det;
+#else
 		f32 const oneOverDeterminant = 1.0f / Determinant(mat);
+#endif
 		mat4 adj{ 1.0f }; mat4 const transposed{ mat.Transpose() };
 		vec4 const row0 = transposed(0), row1 = transposed(1), row2 = transposed(2), row3 = transposed(3);
 
@@ -345,14 +346,19 @@ namespace ALEngine::Math
 		return oneOverDeterminant * adj;
 	}
 
+	Matrix4x4 Matrix4x4::InverseT(Matrix4x4 const& mat)
+	{
+		return Inverse(mat).Transpose();
+	}
+
 	Matrix4x4 Matrix4x4::Transpose(Matrix4x4 const& mat)
 	{
 		return mat4
 		{
-			vec4(mat(0, 0), mat(1, 0), mat(2, 0), mat(3, 0)),
-			vec4(mat(0, 1), mat(1, 1), mat(2, 1), mat(3, 1)),
-			vec4(mat(0, 2), mat(1, 2), mat(2, 2), mat(3, 2)),
-			vec4(mat(0, 3), mat(1, 3), mat(2, 3), mat(3, 3)),
+			vec4{ mat(0, 0), mat(1, 0), mat(2, 0), mat(3, 0) },
+			vec4{ mat(0, 1), mat(1, 1), mat(2, 1), mat(3, 1) },
+			vec4{ mat(0, 2), mat(1, 2), mat(2, 2), mat(3, 2) },
+			vec4{ mat(0, 3), mat(1, 3), mat(2, 3), mat(3, 3) },
 		};
 	}
 

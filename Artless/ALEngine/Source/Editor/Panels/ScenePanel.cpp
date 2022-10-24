@@ -1,5 +1,5 @@
 #include "pch.h"
-#include <glm/glm/glm.hpp>
+//#include <glm/glm/glm.hpp>
 #include "imgui.h"
 //#include "imgui_internal.h"
 
@@ -184,55 +184,12 @@ namespace ALEngine::Editor
 			// Convert mouse pos from screen space to world space
 			// Projection mtx
 			Mat4 inv_proj = m_EditorCamera.ProjectionMatrix();
-			inv_proj = mat4::Inverse(inv_proj);
+			inv_proj = mat4::InverseT(inv_proj);
 
 			// View matrix
 			Mat4 inv_view = m_EditorCamera.ViewMatrix();
-			inv_view = Mat4::Inverse(inv_view);
+			inv_view = Mat4::InverseT(inv_view);
 
-			//// Use glm for proj
-			//glm::mat4 glm_proj;
-			//for (size_t i = 0; i < 4; ++i)
-			//	for (size_t j = 0; j < 4; ++j)
-			//		glm_proj[i][j] = inv_proj(i, j);
-
-			//glm_proj = glm::inverse(glm_proj);
-
-			//for (u64 i{}; i < 4; ++i)
-			//{
-			//	for (u64 j{}; j < 4; ++j)
-			//		std::cout << glm_proj[i][j] << ' ';
-			//	std::cout << std::endl;
-			//}
-
-			//std::cout << std::endl;
-
-			//std::cout << std::endl;
-
-			//inv_proj = Mat4::Inverse(inv_proj);
-			//std::cout << inv_proj << std::endl;
-
-			//for (u64 i{}; i < 4; ++i)
-			//{
-			//	for (u64 j{}; j < 4; ++j)
-			//		std::cout << glm_proj[i][j] << ' ';
-			//	std::cout << std::endl;
-			//}
-
-			//std::cout << std::endl;
-			//inv_proj = Mat4::InverseT(inv_proj);
-
-			//std::cout << inv_proj << std::endl;
-
-			//// Use glm for view
-			//glm::mat4 glm_view;
-			//for (size_t i = 0; i < 4; ++i)
-			//	for (size_t j = 0; j < 4; ++j)
-			//		glm_view[i][j] = inv_view(i, j);
-			//glm_view = glm::inverse(glm_view);
-
-			// Get mousepos after transform
-			//mousePos = inv_proj * inv_view * mousePos;
 			mousePos = inv_proj * inv_view * mousePos;
 
 			AL_CORE_CRITICAL("Mouse Pos: {}, {}", mousePos.x, mousePos.y);
