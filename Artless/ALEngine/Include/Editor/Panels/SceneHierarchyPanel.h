@@ -45,6 +45,8 @@ namespace ALEngine::Editor
 
 		// Pointer to the list of entities
 		const ECS::EntityList *m_EntityList;
+
+		Tree::BinaryTree sceneGraph{};
 	};
 }
 

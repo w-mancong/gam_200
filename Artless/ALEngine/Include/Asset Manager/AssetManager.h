@@ -15,17 +15,6 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 
 namespace ALEngine::Engine
 {
-	/*!*********************************************************************************
-		\brief
-		Struct to store all the relevant data to load in sprite sheets
-	***********************************************************************************/
-	struct SpriteSheet
-	{
-		s32 width;				// Value used to determine how wide	each texture should be
-		s32 height;				// Value used to determine how tall each texture should be
-		char filePath[1024];	// Path to the sprite sheet
-	};
-
 	class AssetManager : public Templates::Singleton<AssetManager>
 	{
 	public:
@@ -48,6 +37,10 @@ namespace ALEngine::Engine
 		u32 GetTexture(Guid id);
 
 		TextureHandle GetTextureHandle(Guid id);
+
+		u32 GetButtonImage(Guid id);
+
+		Animation GetAnimation(Guid id);
 
 		Guid GetGuid(std::string fileName);
 

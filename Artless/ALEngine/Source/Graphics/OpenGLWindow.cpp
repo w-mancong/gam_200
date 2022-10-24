@@ -27,7 +27,7 @@ namespace ALEngine::Graphics
 
 	GLFWwindow* OpenGLWindow::window = nullptr;
 	u32 OpenGLWindow::width{ DEFAULT_WIDTH }, OpenGLWindow::height{ DEFAULT_HEIGHT };
-	std::string OpenGLWindow::title{};
+	std::string OpenGLWindow::title{ "ALEngine" };
 	void OpenGLWindow::InitGLFWWindow(void)
 	{
 		glfwInit();
@@ -49,10 +49,11 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		//Serializer::ConfigJson config{ "../ALEngine/Resources/Objects Files/Config.json" };
-		//title  = config.GetWindowTitle();
-		//width  = config.GetDimensionWidth();
-		//height = config.GetDimensionHeight();
+		Serializer::Deserializer config{ "Assets/Dev/Objects/Config.json" };
+		title = config.getString("window title", "ALEngine");
+		Math::vec2 dimension = config.getVec2("dimensions", { DEFAULT_WIDTH, DEFAULT_HEIGHT });
+		width = static_cast<u32>(dimension.x);
+		height = static_cast<u32>(dimension.y);
 
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 		if (!window)

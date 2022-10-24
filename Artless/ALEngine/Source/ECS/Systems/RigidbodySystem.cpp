@@ -34,6 +34,14 @@ namespace ALEngine::ECS
 
 		/*!*********************************************************************************
 			\brief
+				Updates rigidbody, adds the acceleration onto velocity and resets acceleration after
+				Then sets the next positon of the using calculated velocity
+		***********************************************************************************/
+		void UpdateRigidbody(Transform& transform, Rigidbody2D& rigid);
+
+
+		/*!*********************************************************************************
+			\brief
 				For Debugging, will be used as an interface to run visual feedback for rigidbody simulation
 		***********************************************************************************/
 		void DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid);
@@ -85,22 +93,6 @@ namespace ALEngine::ECS
 			rigidS->isDebugDraw = !rigidS->isDebugDraw;
 		}
 
-		//If is debug draw
-		if (rigidS->isDebugDraw) {
-			//Shift through every rigidbody and draw their rigidbody debug feedback
-			for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
-				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
-				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-
-				if (!rigid.isEnabled) {
-					continue;
-				}
-
-				//Visual the debug feedback
-				rigidS->DrawRigidbodyForces(transform, rigid);
-			}
-		}
-
 		//If debug step is on
 		if (rigidS->isDebugStep) {
 			//And the step key insn't return
@@ -118,12 +110,12 @@ namespace ALEngine::ECS
 		for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
 			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-				
+
 			//If rigidbody isn't enabled, skip
 			if (!rigid.isEnabled) {
 				continue;
 			}
+
 			//Gravity
 			AddForce(rigid, Vector2(0,-earthGravity * rigid.mass), FORCEMODE::FORCE);
 				
@@ -132,10 +124,48 @@ namespace ALEngine::ECS
 			AddForce(rigid, friction, FORCEMODE::FORCE);
 
 			//Update rigidbody from all forces
-			rigidS->UpdateRigidbody(transform, collider, rigid);
+			if (Coordinator::Instance()->HasComponent<Collider2D>(*it)) {
+				rigidS->UpdateRigidbody(transform, Coordinator::Instance()->GetComponent<Collider2D>(*it), rigid);
+			}
+			else {
+				rigidS->UpdateRigidbody(transform, rigid);
+			}
 		}
 	}
 
+	void DebugDrawRigidbody() {
+		//If is debug draw
+		if (rigidS->isDebugDraw) {
+			//Shift through every rigidbody and draw their rigidbody debug feedback
+			for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+
+				if (!rigid.isEnabled) {
+					continue;
+				}
+
+				//Visual the debug feedback
+				rigidS->DrawRigidbodyForces(transform, rigid);
+			}
+		}
+	}
+
+	void UpdatePostRigidbodySystem() {
+		//*******Debugging*******//
+		//Shift through each component
+		for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
+			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+
+			//If rigidbody isn't enabled, skip
+			if (!rigid.isEnabled) {
+				continue;
+			}
+
+			transform.position = rigid.nextPosition;
+		}
+	}
 	void RigidbodySystem::UpdateRigidbody(Transform& t, Collider2D& collider, Rigidbody2D& rigid) {
 		//Update velocity
 		rigid.velocity += rigid.acceleration;
@@ -149,7 +179,21 @@ namespace ALEngine::ECS
 		//Refresh acceleration
 		rigid.acceleration *= 0;
 	}
-	
+
+	void RigidbodySystem::UpdateRigidbody(Transform& t, Rigidbody2D& rigid) {
+		//Update velocity
+		rigid.velocity += rigid.acceleration;
+
+		//Update frame's velocity
+		rigid.frameVelocity = rigid.velocity * Time::m_FixedDeltaTime;
+
+		//Calculate next position
+		rigid.nextPosition = vec2(t.position) + rigid.frameVelocity;
+
+		//Refresh acceleration
+		rigid.acceleration *= 0;
+	}
+
 	void AddForce(Rigidbody2D& rigidbody, Math::Vec2 forceVelocity, FORCEMODE mode) {
 		//Force modes
 		switch (mode) {

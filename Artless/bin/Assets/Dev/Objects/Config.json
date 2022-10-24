@@ -1,6 +1,4 @@
 {
-  "id": 1,
-  "floatTest":  3.33333,
   "name": "SystemConfig",
   "window title": "ALEngine",
   "dimensions": [ 1600, 900 ],
