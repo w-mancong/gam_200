@@ -42,6 +42,8 @@ namespace ALEngine::Editor
 			ECS::Entity GO = Coordinator::Instance()->CreateEntity();
 			ECS::CreateSprite(GO, xform);
 
+			sceneGraph.Push(-1, GO);
+
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
 			sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
 
@@ -106,12 +108,17 @@ namespace ALEngine::Editor
 				ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 				remove = true;
 			}
+			//if (ImGui::Selectable("Add child"))
+			//{
+			//	std::cerr << "child added\n";
+			//}
 			ImGui::EndPopup();
 		}
 
 		// If there is an entity to remove
 		if (remove)
 		{
+			sceneGraph.Destruct(*e_delete);
 			Coordinator::Instance()->DestroyEntity(*e_delete);
 			
 			remove = false;

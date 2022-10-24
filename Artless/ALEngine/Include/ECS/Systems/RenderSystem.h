@@ -24,14 +24,25 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	void Render(void);
 
+#if EDITOR
 	/*!*********************************************************************************
 		\brief
-		Gets the FB Texture ID
+		Gets the FB Texture ID for game panel
 
 		\return
 		FB Texture ID for rendering to ImGui space
 	***********************************************************************************/
 	u32 GetFBTexture(void);
+
+	/*!*********************************************************************************
+		\brief
+		Gets the FB Texture ID for scene panel
+
+		\return
+		FB Texture ID for rendering to ImGui space
+	***********************************************************************************/
+	u32 GetEditorTexture(void);
+#endif
 
 	/*!*********************************************************************************
 		\brief

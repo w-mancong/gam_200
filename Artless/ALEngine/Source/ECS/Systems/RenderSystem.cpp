@@ -46,8 +46,8 @@ namespace ALEngine::ECS
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
 		
-		// frame buffer
-		u32 fbo, fbTexture;
+		// Viewport and editor framebuffers
+		u32 fbo, fbTexture, editorFbo, editorTexture;
 	}
 
 	void RenderSystem::RenderBatch(void)
@@ -123,7 +123,7 @@ namespace ALEngine::ECS
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 
-		// frame buffer init
+		// Viewport frame buffer init
 		glGenFramebuffers(1, &fbo);
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 		glGenTextures(1, &fbTexture);
@@ -134,21 +134,41 @@ namespace ALEngine::ECS
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbTexture, 0);
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
 			std::cerr << " Frame buffer failed to initialize properly\n";
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// Editor frame buffer init
+		glGenFramebuffers(1, &editorFbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo);
+		glGenTextures(1, &editorTexture);
+		glBindTexture(GL_TEXTURE_2D, editorTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, editorTexture, 0);
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
+			std::cerr << " Editor frame buffer failed to initialize properly\n";
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
-		//vIndex = Memory::StaticMemory::New<u32>(ECS::MAX_ENTITIES);
 
-		MeshBuilder::Instance()->Init();
-
-		
+		MeshBuilder::Instance()->Init();	
 	}
 
 	void Render(void)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
+		//------------------ Begin editor framebuffer rendering ------------------//
+		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
+		//------------------- End editor framebuffer rendering -------------------//
+
+		//----------------- Begin viewport framebuffer rendering -----------------//
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		UpdateAnimatorSystem();
@@ -181,9 +201,7 @@ namespace ALEngine::ECS
 		Text::RenderAllText();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
-		//ImGui::Begin("Viewport");
-		//ImGui::Image((void*)(intptr_t)fbTexture, ImVec2(Input::GetScreenResX(), Input::GetScreenResY()), ImVec2(0,1), ImVec2(1,0)); // render opengl in imgui window
-		//ImGui::End();
+		//------------------ End viewport framebuffer rendering ------------------//
 
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
@@ -198,6 +216,11 @@ namespace ALEngine::ECS
 	u32 GetFBTexture(void)
 	{
 		return fbTexture;
+	}
+
+	u32 GetEditorTexture(void)
+	{
+		return editorTexture;
 	}
 
 	void SetBackgroundColor(Color const& color)

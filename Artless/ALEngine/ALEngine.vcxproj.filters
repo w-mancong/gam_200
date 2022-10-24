@@ -56,6 +56,7 @@
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
+    <ClCompile Include="Source\Utility\BinaryTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -275,6 +276,7 @@
     <ClInclude Include="Include\ECS\Components\Animator.h" />
     <ClInclude Include="Include\ECS\Components\Transition.h" />
     <ClInclude Include="Include\ECS\Systems\AnimatorSystem.h" />
+    <ClInclude Include="Include\Utility\BinaryTree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
