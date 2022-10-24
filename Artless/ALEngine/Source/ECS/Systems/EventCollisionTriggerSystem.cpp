@@ -25,7 +25,7 @@ namespace ALEngine::ECS
 	class EventCollisionTriggerSystem : public System
 	{
 	public:
-		void InvokeCollisionEventTriggers(EventCollisionTrigger& collisionTrigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type);
+		void InvokeCollisionEventTriggers(EventCollisionTrigger& collisionTrigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type, Entity current);
 		CollisionEvent& GetEventFromTrigger(EventCollisionTrigger& event_trigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type);
 	};
 
@@ -68,6 +68,7 @@ namespace ALEngine::ECS
 
 			//Check for Enter and stayed
 			for (uint32_t i = 0; i < eventTrigger.otherCurrentCollidingPtr.size(); ++i) {
+
 				b8 hasFirstEntered = true;
 				for (uint32_t j = 0; j < eventTrigger.otherPreviousColliderPtr.size(); ++j) {
 					if (eventTrigger.otherPreviousColliderPtr[j] == eventTrigger.otherCurrentCollidingPtr[i]) {
@@ -106,10 +107,15 @@ namespace ALEngine::ECS
 				eventTrigger.otherPreviousColliderPtr.push_back(eventTrigger.otherCurrentCollidingPtr[i]);
 			}
 
+			//for (uint32_t i = 0; i < eventTrigger.otherCurrentCollidingPtr.size(); ++i) {
+			//	std::cout << *it << " : " << eventTrigger.otherCurrentCollidingPtr[i] << " A ";
+			//}
+			//std::cout << "\n";
+
 			//Invoke all colliders
-			eventCollisionSystem->InvokeCollisionEventTriggers(eventTrigger, EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER);
-			eventCollisionSystem->InvokeCollisionEventTriggers(eventTrigger, EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY);
-			eventCollisionSystem->InvokeCollisionEventTriggers(eventTrigger, EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT);
+			eventCollisionSystem->InvokeCollisionEventTriggers(eventTrigger, EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, *it);
+			eventCollisionSystem->InvokeCollisionEventTriggers(eventTrigger, EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, *it);
+			eventCollisionSystem->InvokeCollisionEventTriggers(eventTrigger, EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, *it);
 
 			//Clear exit
 			eventTrigger.otherEnterColliderPtr.clear();
@@ -144,26 +150,26 @@ namespace ALEngine::ECS
 		evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 	}
 
-	void EventCollisionTriggerSystem::InvokeCollisionEventTriggers(EventCollisionTrigger& collisionTrigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type) {
+	void EventCollisionTriggerSystem::InvokeCollisionEventTriggers(EventCollisionTrigger& collisionTrigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type, Entity current) {
 		switch (trigger_type) {
 			case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER:		
 				for (auto it = collisionTrigger.OnCollisionEnter.m_Listeners.begin(); it != collisionTrigger.OnCollisionEnter.m_Listeners.end(); ++it) {
 					for (uint32_t i = 0; i < collisionTrigger.otherEnterColliderPtr.size(); ++i) {
-						it->second.invokeFunction((Entity&)*it, collisionTrigger.otherEnterColliderPtr[i]);
+						it->second.invokeFunction(current, collisionTrigger.otherEnterColliderPtr[i]);
 					}
 				}
 				break;
 			case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY:		
 				for (auto it = collisionTrigger.OnCollisionStay.m_Listeners.begin(); it != collisionTrigger.OnCollisionStay.m_Listeners.end(); ++it) {
 					for (uint32_t i = 0; i < collisionTrigger.otherStayColliderPtr.size(); ++i) {
-						it->second.invokeFunction((Entity&)*it, collisionTrigger.otherStayColliderPtr[i]);
+						it->second.invokeFunction(current, collisionTrigger.otherStayColliderPtr[i]);
 					}
 				}
 				break;
 			case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT:	
 				for (auto it = collisionTrigger.OnCollisionExit.m_Listeners.begin(); it != collisionTrigger.OnCollisionExit.m_Listeners.end(); ++it) {
 					for (uint32_t i = 0; i < collisionTrigger.otherExitColliderPtr.size(); ++i) {
-						it->second.invokeFunction((Entity&)*it, collisionTrigger.otherExitColliderPtr[i]);
+						it->second.invokeFunction(current, collisionTrigger.otherExitColliderPtr[i]);
 					}
 				}
 			break;

@@ -300,6 +300,10 @@ namespace ALEngine::ECS
 			Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 			Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 
+			if (!oneCollider.isEnabled) {
+				continue;
+			}
+
 			Rigidbody2D emptyRigidody{};
 			emptyRigidody.isEnabled = false;
 
@@ -317,6 +321,10 @@ namespace ALEngine::ECS
 				//Two Data
 				Collider2D& twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
 				Transform & twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
+
+				if (!twoCollider.isEnabled) {
+					continue;
+				}
 
 				Rigidbody2D& twoRigidbody = Coordinator::Instance()->HasComponent<Rigidbody2D>(*jt) ?
 					Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt) :
@@ -711,7 +719,7 @@ namespace ALEngine::ECS
 			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 
-			if (cs->isDebugDraw) {			
+			if (cs->isDebugDraw && collider.isEnabled) {
 				if (Coordinator::Instance()->HasComponent<Rigidbody2D>(*it)) {
 					Rigidbody2D& r = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 					cs->DrawCollider(ColliderType::Rectangle2D_AABB, parentTransform.position + (Vector3)r.velocity + (Vector3)r.acceleration, { parentTransform.scale.x + collider.scale[0], parentTransform.scale.y + collider.scale[1] }, { 1.f, 1.f, 1.f, 1.f });

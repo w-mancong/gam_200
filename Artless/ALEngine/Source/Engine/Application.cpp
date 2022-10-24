@@ -26,6 +26,9 @@ namespace ALEngine::Engine
 	void CollectCoint(Entity current, Entity other) {
 		if (Coordinator::Instance()->HasComponent<CharacterController>(other)) {
 			printf("Coin Collected\n");
+			//Coordinator::Instance()->GetComponent<Transform>(current).position.y += 150;
+			//Coordinator::Instance()->GetComponent<Transform>(other).position.x -= 50;
+			Coordinator::Instance()->GetComponent<Collider2D>(current).isEnabled = false;
 		}
 	}
 
