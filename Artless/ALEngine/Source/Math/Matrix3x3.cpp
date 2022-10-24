@@ -109,9 +109,24 @@ namespace ALEngine::Math
 	vec3 const& Matrix3x3::operator()(size_type row) const
 	{
 #ifdef _DEBUG
-		assert(0 <= row && 3 > row && "Rows and Columns must be a positive integer lesser than 3!");
+		assert(0 <= row && 3 > row && "Rows must be a positive integer lesser than 3!");
 #endif
 		return *(mat + row);
+	}
+
+	Matrix3x3 Matrix3x3::Inverse(void) const
+	{
+		return Inverse(*this);
+	}
+
+	Matrix3x3 Matrix3x3::Transpose(void) const
+	{
+		return Transpose(*this);
+	}
+
+	f32 Matrix3x3::Determinant(void) const
+	{
+		return Determinant(*this);
 	}
 
 	Matrix3x3 Matrix3x3::Translate(f32 x, f32 y)
@@ -150,25 +165,28 @@ namespace ALEngine::Math
 
 	Matrix3x3 Matrix3x3::Inverse(Matrix3x3 const& mat)
 	{
-		f32 const oneOverDeterminant = 1.0f / 
-		(
-			+ mat(0, 0) * (mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2))
-			- mat(1, 0) * (mat(0, 1) * mat(2, 2) - mat(2, 1) * mat(0, 2))
-			+ mat(2, 0) * (mat(0, 1) * mat(1, 2) - mat(1, 1) * mat(0, 2))
-		);
+		return mat3();
+	}
 
-		mat3 inverse{ 1.0f };
-		inverse(0, 0) = +(mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2)) * oneOverDeterminant;
-		inverse(1, 0) = -(mat(1, 0) * mat(2, 2) - mat(2, 0) * mat(1, 2)) * oneOverDeterminant;
-		inverse(2, 0) = +(mat(1, 0) * mat(2, 1) - mat(2, 0) * mat(1, 1)) * oneOverDeterminant;
-		inverse(0, 1) = -(mat(0, 1) * mat(2, 2) - mat(2, 1) * mat(0, 2)) * oneOverDeterminant;
-		inverse(1, 1) = +(mat(0, 0) * mat(2, 2) - mat(2, 0) * mat(0, 2)) * oneOverDeterminant;
-		inverse(2, 1) = -(mat(0, 0) * mat(2, 1) - mat(2, 0) * mat(0, 1)) * oneOverDeterminant;
-		inverse(0, 2) = +(mat(0, 1) * mat(1, 2) - mat(1, 1) * mat(0, 2)) * oneOverDeterminant;
-		inverse(1, 2) = -(mat(0, 0) * mat(1, 2) - mat(1, 0) * mat(0, 2)) * oneOverDeterminant;
-		inverse(2, 2) = +(mat(0, 0) * mat(1, 1) - mat(1, 0) * mat(0, 1)) * oneOverDeterminant;
+	//Matrix3x3 Matrix3x3::InverseT(Matrix3x3 const& mat)
+	//{
 
-		return inverse;
+	//}
+
+	Matrix3x3 Matrix3x3::Transpose(Matrix3x3 const& mat)
+	{
+		return mat3
+		{
+			vec3(mat(0, 0), mat(1, 0), mat(2, 0)),
+			vec3(mat(0, 1), mat(1, 1), mat(2, 1)),
+			vec3(mat(0, 2), mat(1, 2), mat(2, 2)),
+		};
+	}
+
+	f32 Matrix3x3::Determinant(Matrix3x3 const& mat)
+	{
+		vec3 const row0 = mat(0), row1 = mat(1), row2 = mat(2);
+		return row0.x * (row1.y * row2.z - row2.y * row1.z) - row0.y * (row1.x * row2.z - row2.x * row1.z) + row0.z * (row1.x * row2.y - row2.x * row1.y);
 	}
 
 	Matrix3x3 operator+(Matrix3x3 const& lhs, Matrix3x3 const& rhs)
