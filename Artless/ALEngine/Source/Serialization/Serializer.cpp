@@ -36,7 +36,7 @@ namespace ALEngine::Serializer
 
 		if (this->doc.HasParseError())
 		{
-			std::cout << "Error  : " << this->doc.GetParseError() << '\n'
+			std::cerr << "Error  : " << this->doc.GetParseError() << '\n'
 				<< "Offset : " << this->doc.GetErrorOffset() << '\n';
 			return EXIT_FAILURE;
 		}
@@ -49,8 +49,16 @@ namespace ALEngine::Serializer
 
 	}
 
+	void Serializer::SetInt(const char* pairName, int value){
 
-	int Deserializer::getInt(const char* pairName, const int defaultInt) {
+		this->doc.AddMember(rapidjson::StringRef(pairName), value, this->doc.GetAllocator());
+
+		std::cout << "GET INT OF \"" << pairName << "\" : " << this->doc[pairName].GetInt() << std::endl;
+
+	}
+
+
+	int Deserializer::GetInt(const char* pairName, const int defaultInt) {
 
 		if (this->doc.HasMember(pairName)) {
 			assert(this->doc.HasMember(pairName));
@@ -67,7 +75,7 @@ namespace ALEngine::Serializer
 		}
 	}
 
-	std::string Deserializer::getString(const char* pairName, const char* defaultString) {
+	std::string Deserializer::GetString(const char* pairName, const char* defaultString) {
 
 		//this->doc2.HasMember(pairName)
 		if (this->doc.HasMember(pairName)) {
@@ -81,10 +89,9 @@ namespace ALEngine::Serializer
 			//std::cout << "GET STRING OF \"" << pairName << "\" : " << this->doc[pairName].GetString() << std::endl;
 			return defaultString;
 		}
-
 	}
 
-	f32 Deserializer::getFloat(const char* pairName, const f32 defaultFloat) {
+	f32 Deserializer::GetFloat(const char* pairName, const f32 defaultFloat) {
 
 		//this->doc2.HasMember(pairName)
 		if (this->doc.HasMember(pairName)) {
@@ -100,7 +107,7 @@ namespace ALEngine::Serializer
 			return defaultFloat;
 		}
 	}
-	Math::Vec2 Deserializer::getVec2(const char* pairName, Math::Vec2 defaultVec2){
+	Math::Vec2 Deserializer::GetVec2(const char* pairName, Math::Vec2 defaultVec2){
 		Math::Vec2 vec2;
 
 		if (this->doc.HasMember(pairName)) {

@@ -41,17 +41,28 @@ namespace ALEngine::Serializer
 
 		b8 ReadFile(const std::string& filePath);
 
-		int getInt(const char* pairName, const int defaultInt);
+		int GetInt(const char* pairName, const int defaultInt);
 
-		std::string getString(const char* pairName, const char* defaultString);
+		std::string GetString(const char* pairName, const char* defaultString);
 
-		f32 getFloat(const char* pairName, const f32 defaultFloat);
+		f32 GetFloat(const char* pairName, const f32 defaultFloat);
 
-		Math::Vec2 getVec2(const char* pairName, Math::Vec2 defaultVec2);
+		Math::Vec2 GetVec2(const char* pairName, Math::Vec2 defaultVec2);
 
 	private:
 		rapidjson::Document doc;
 
+	};
+
+	class Serializer {
+
+		Serializer();
+		
+	public:
+		void SetInt(const char* pairName, int value);
+
+	private:
+		rapidjson::Document doc;
 	};
 
 }
