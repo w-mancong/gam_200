@@ -51,7 +51,7 @@ namespace ALEngine::Graphics
 
 		Serializer::Deserializer config{ "Assets/Dev/Objects/Config.json" };
 		title = config.getString("window title", "ALEngine");
-		Math::vec2 dimension = config.getVec2("dimensions", { 1600, 900 });
+		Math::vec2 dimension = config.getVec2("dimensions", { DEFAULT_WIDTH, DEFAULT_HEIGHT });
 		width = static_cast<u32>(dimension.x);
 		height = static_cast<u32>(dimension.y);
 

@@ -101,6 +101,19 @@ namespace ALEngine::Math
 		return *(&mat[0].x + row * 3 + col);
 	}
 
+	vec3& Matrix3x3::operator()(size_type row)
+	{
+		return const_cast<vec3&>( const_cast<Matrix3x3 const&>( (*this) )(row) );
+	}
+
+	vec3 const& Matrix3x3::operator()(size_type row) const
+	{
+#ifdef _DEBUG
+		assert(0 <= row && 3 > row && "Rows and Columns must be a positive integer lesser than 3!");
+#endif
+		return *(mat + row);
+	}
+
 	Matrix3x3 Matrix3x3::Translate(f32 x, f32 y)
 	{
 		Matrix3x3 res(Vector3(0.0f, 0.0f, x), Vector3(0.0f, 0.0f, y));
@@ -133,6 +146,29 @@ namespace ALEngine::Math
 		// setting matrix accordingly
 		Matrix3x3 res(Vector3(cos, -sin, 0.0f), Vector3(sin, cos, 0.0f));
 		return res;
+	}
+
+	Matrix3x3 Matrix3x3::Inverse(Matrix3x3 const& mat)
+	{
+		f32 const oneOverDeterminant = 1.0f / 
+		(
+			+ mat(0, 0) * (mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2))
+			- mat(1, 0) * (mat(0, 1) * mat(2, 2) - mat(2, 1) * mat(0, 2))
+			+ mat(2, 0) * (mat(0, 1) * mat(1, 2) - mat(1, 1) * mat(0, 2))
+		);
+
+		mat3 inverse{ 1.0f };
+		inverse(0, 0) = +(mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2)) * oneOverDeterminant;
+		inverse(1, 0) = -(mat(1, 0) * mat(2, 2) - mat(2, 0) * mat(1, 2)) * oneOverDeterminant;
+		inverse(2, 0) = +(mat(1, 0) * mat(2, 1) - mat(2, 0) * mat(1, 1)) * oneOverDeterminant;
+		inverse(0, 1) = -(mat(0, 1) * mat(2, 2) - mat(2, 1) * mat(0, 2)) * oneOverDeterminant;
+		inverse(1, 1) = +(mat(0, 0) * mat(2, 2) - mat(2, 0) * mat(0, 2)) * oneOverDeterminant;
+		inverse(2, 1) = -(mat(0, 0) * mat(2, 1) - mat(2, 0) * mat(0, 1)) * oneOverDeterminant;
+		inverse(0, 2) = +(mat(0, 1) * mat(1, 2) - mat(1, 1) * mat(0, 2)) * oneOverDeterminant;
+		inverse(1, 2) = -(mat(0, 0) * mat(1, 2) - mat(1, 0) * mat(0, 2)) * oneOverDeterminant;
+		inverse(2, 2) = +(mat(0, 0) * mat(1, 1) - mat(1, 0) * mat(0, 1)) * oneOverDeterminant;
+
+		return inverse;
 	}
 
 	Matrix3x3 operator+(Matrix3x3 const& lhs, Matrix3x3 const& rhs)
