@@ -122,6 +122,20 @@ namespace ALEngine::Math
 		const_reference operator()(size_type row, size_type col) const;
 
 		/*!*********************************************************************************
+			\brief return a const reference to matrix's row
+
+			\param [in] row: Row of the matrix to retrieve the data from
+		***********************************************************************************/
+		vec3& operator()(size_type row);
+
+		/*!*********************************************************************************
+			\brief return a const reference to matrix's row
+
+			\param [in] row: Row of the matrix to retrieve the data from
+		***********************************************************************************/
+		vec3 const& operator()(size_type row) const;
+
+		/*!*********************************************************************************
 			\brief
 			Turn a 3x3 matrix into a translation matrix
 
@@ -184,6 +198,13 @@ namespace ALEngine::Math
 			A rotation matrix
 		***********************************************************************************/
 		static Matrix3x3 Rotation(f32 deg);
+
+		/*!*********************************************************************************
+			\brief Construct and return an inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		static Matrix3x3 Inverse(Matrix3x3 const& mat);
 
 	private:
 		Vector3 mat[3];
