@@ -153,6 +153,7 @@
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
     <ClCompile Include="Source\Editor\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
@@ -250,8 +251,10 @@
     <ClInclude Include="Include\Common Header\MySerializer.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
     <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
+    <ClInclude Include="Include\ECS\Components\Unit.h" />
     <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
     <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />

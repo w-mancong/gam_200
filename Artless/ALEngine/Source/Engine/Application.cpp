@@ -90,6 +90,8 @@ namespace ALEngine::Engine
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
+		CreatePlayerUnit(player);
+
 		Transform targetTransform;
 		targetTransform.position = { 0, -250 };
 		targetTransform.scale = { 800,100 };
@@ -205,7 +207,8 @@ namespace ALEngine::Engine
 	void Engine::FixedUpdate(void)
 	{
 		UpdateCharacterControllerSystem();
-		
+		UpdateGameplaySystem();
+
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();

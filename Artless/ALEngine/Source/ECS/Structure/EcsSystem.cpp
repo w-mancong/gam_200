@@ -12,6 +12,7 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<CharacterController>();
 		Coordinator::Instance()->RegisterComponent<EventTrigger>();
 		Coordinator::Instance()->RegisterComponent<EventCollisionTrigger>();
+		Coordinator::Instance()->RegisterComponent<Unit>();
 	}
 
 	void RegisterSystem(void)
@@ -22,6 +23,7 @@ namespace ALEngine::ECS
 		RegisterCharacterControllerSystem();
 		RegisterEventTriggerSystem();
 		RegisterEventCollisionTriggerSystem();
+		RegisterGameplaySystem();
 	}
 
 	void InitSystem(void)

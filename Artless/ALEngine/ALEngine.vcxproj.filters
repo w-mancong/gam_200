@@ -57,6 +57,7 @@
     <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -275,6 +276,8 @@
     <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
     <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
     <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Components\Unit.h" />
+    <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
