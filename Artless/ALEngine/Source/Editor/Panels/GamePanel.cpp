@@ -14,8 +14,8 @@ namespace ALEngine::Editor
 	{
 		// Set position & size of Game Scene
 		//ImGui::SetNextWindowPos(ImVec2(0.f, 0.f));
-		ImGui::SetNextWindowSize(ImVec2(Graphics::OpenGLWindow::width, 
-			Graphics::OpenGLWindow::height));
+		ImGui::SetNextWindowSize(ImVec2(static_cast<f32>(Graphics::OpenGLWindow::width),
+			static_cast<f32>(Graphics::OpenGLWindow::height)));
 
 		// Begin ImGui Panel
 		if (!ImGui::Begin("Game"))

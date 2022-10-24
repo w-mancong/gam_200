@@ -80,6 +80,26 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		f64 GetSceneHeight(void);
 
+		/*!*********************************************************************************
+			\brief
+			Returns the cursor's world space position.
+
+			\return
+			Cursor World Space position.
+			Returns a Vec2 containing std::numeric_limits::max for x and y if the mouse
+			position was handled outside of the Scene viewport
+		***********************************************************************************/
+		Math::Vec2 GetMouseWorldPos();
+
+		/*!*********************************************************************************
+			\brief
+			Returns the Editor's Camera
+
+			\return
+			Gets the Editor's Camera
+		***********************************************************************************/
+		Engine::Camera& GetEditorCamera(void);
+
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
 		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES }; // Entity Selected in Inspector
@@ -90,6 +110,12 @@ namespace ALEngine::Editor
 
 		// Scene Size
 		f32 m_SceneWidth{ 0 }, m_SceneHeight{ 0 };		
+
+		ImVec2 m_ImGuiMousePos{};
+		ImVec2 m_ImGuiPanelPos{};
+
+		// Camera
+		Engine::Camera m_EditorCamera{ Math::Vec3(0.f, 0.f, 725.f) };
 	};
 
 	/*!*********************************************************************************

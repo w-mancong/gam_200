@@ -129,7 +129,7 @@ namespace ALEngine::Engine
 			}
 
 			// Marks the end of a frame loop, for tracy profiler
-			FrameMark;
+			//FrameMark;
 		}
 	}
 

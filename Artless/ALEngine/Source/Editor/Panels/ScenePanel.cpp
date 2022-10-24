@@ -10,6 +10,9 @@ namespace ALEngine::Editor
 	{
 		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		m_SelectedEntity = ECS::MAX_ENTITIES;
+
+		// Set camera to ortho projection
+		m_EditorCamera.ProjectionMatrix(Engine::Camera::Projection::Orthographic);
 	}
 
 	ScenePanel::~ScenePanel(void)
@@ -34,6 +37,7 @@ namespace ALEngine::Editor
 		if (m_SceneHeight != ImGui::GetContentRegionAvail().y)
 			m_SceneHeight = ImGui::GetContentRegionAvail().y;
 
+		// Draw Scene
 		ImGui::Image((void*)ECS::GetFBTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// Only render gizmos if an entity is selected
@@ -78,40 +82,24 @@ namespace ALEngine::Editor
 		// Select Entity by clicking on Scene
 		if (Input::KeyTriggered(KeyCode::MouseLeftButton))
 		{	// Left click
-			// Get Style
-			ImGuiStyle style = ImGui::GetStyle();
 
-			// Convert mouse pos from ImGui space to screen space		
-			glm::vec4 mousePos{ ImGui::GetMousePos().x - ImGui::GetCursorScreenPos().x,
-				-ImGui::GetMousePos().y + ImGui::GetCursorScreenPos().y - style.WindowPadding.y * 0.75f, 0.f, 1.f};
+			// Set mouse position
+			m_ImGuiMousePos = ImGui::GetMousePos();
 
-			// Get NDC coords of mouse pos
-			mousePos.x = 2.f * (mousePos.x / m_SceneWidth) - 1.f;
-			mousePos.y = 2.f * (mousePos.y / m_SceneHeight) - 1.f;
-
-			// Check if within range of scene
-			if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
-				mousePos.y >= -1.f && mousePos.y <= 1.f)
+			// Set panel position
+			m_ImGuiPanelPos = ImGui::GetCursorScreenPos();
+			// Get mouse pos
+			Math::Vec2 mousePos = GetMouseWorldPos();
+			
+			// Check if mouse clicked within scene
+			if(mousePos.x != std::numeric_limits<f32>::max() && 
+				mousePos.y != std::numeric_limits<f32>::max() )
 			{
-				// Convert mouse pos from screen space to world space
-				// Projection mtx
-				glm::mat4x4 inv_proj;
-				for (size_t i = 0; i < 4; ++i)
-					for (size_t j = 0; j < 4; ++j)
-						inv_proj[i][j] = ECS::GetProjection()(i, j);
-				inv_proj = glm::inverse(inv_proj);
-
-				// View matrix
-				glm::mat4x4 inv_view;
-				for (size_t i = 0; i < 4; ++i)
-					for (size_t j = 0; j < 4; ++j)
-						inv_view[i][j] = ECS::GetView()(i, j);
-				inv_view = glm::inverse(inv_view);
-
-				mousePos = inv_proj * inv_view * mousePos;
-
 				// Get list
 				ECS::EntityList list = Coordinator::Instance()->GetEntities();
+
+				// If any entities were clicked on
+				b8 entity_clicked{ false };
 
 				// Iterate List
 				for (const auto& entt : list)
@@ -122,13 +110,18 @@ namespace ALEngine::Editor
 						// Get entity Transform
 						Transform enttXform = Coordinator::Instance()->GetComponent<Transform>(entt);
 
-						if (Check_Point_To_AABB(Math::Vec2(mousePos.x, mousePos.y), enttXform.position, enttXform.scale.x, enttXform.scale.y))
+						if (Check_Point_To_AABB(mousePos, enttXform.position, enttXform.scale.x, enttXform.scale.y))
 						{
 							m_SelectedEntity = entt;
+							entity_clicked = true;
 							break;
 						}
 					}
 				}
+
+				// No entities clicked (clicked viewport)
+				if (!entity_clicked)
+					m_SelectedEntity = ECS::MAX_ENTITIES;
 			}
 		}
 
@@ -158,6 +151,50 @@ namespace ALEngine::Editor
 	f64 ScenePanel::GetSceneHeight(void)
 	{
 		return m_SceneHeight;
+	}
+
+	Math::Vec2 ScenePanel::GetMouseWorldPos()
+	{
+		ImGuiStyle style = ImGui::GetStyle();
+
+		// Convert mouse pos from ImGui space to screen space		
+		glm::vec4 mousePos{ m_ImGuiMousePos.x - m_ImGuiPanelPos.x,
+			-m_ImGuiMousePos.y + m_ImGuiPanelPos.y - style.WindowPadding.y * 0.75f, 0.f, 1.f };
+
+		// Get NDC coords of mouse pos
+		mousePos.x = 2.f * (mousePos.x / m_SceneWidth) - 1.f;
+		mousePos.y = 2.f * (mousePos.y / m_SceneHeight) - 1.f;
+
+		// Check if within range of scene
+		if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
+			mousePos.y >= -1.f && mousePos.y <= 1.f)
+		{
+			// Convert mouse pos from screen space to world space
+			// Projection mtx
+			glm::mat4x4 inv_proj;
+			for (size_t i = 0; i < 4; ++i)
+				for (size_t j = 0; j < 4; ++j)
+					inv_proj[i][j] = ECS::GetProjection()(i, j);
+			inv_proj = glm::inverse(inv_proj);
+
+			// View matrix
+			glm::mat4x4 inv_view;
+			for (size_t i = 0; i < 4; ++i)
+				for (size_t j = 0; j < 4; ++j)
+					inv_view[i][j] = ECS::GetView()(i, j);
+			inv_view = glm::inverse(inv_view);
+
+			mousePos = inv_proj * inv_view * mousePos;
+
+			return Math::Vec2(mousePos.x, mousePos.y);
+		}
+		
+		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
+	}
+
+	Engine::Camera& ScenePanel::GetEditorCamera(void)
+	{
+		return m_EditorCamera;
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

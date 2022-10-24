@@ -17,6 +17,5 @@ brief:	This file contains all the relevant Editor header files to be included in
 #include "Editor/Panels/InspectorPanel.h"
 #include "Editor/Panels/ContentBrowserPanel.h"
 #include "Editor/ALEditor.h"
-#include <Editor/Profiler/Tracy.hpp>
 
 #endif
