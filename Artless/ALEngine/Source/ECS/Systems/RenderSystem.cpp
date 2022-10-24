@@ -57,7 +57,7 @@ namespace ALEngine::ECS
 		s32 constexpr INDICES_SIZE{ 6 };
 		
 		// Viewport and editor framebuffers
-		u32 fbo, fbTexture, editorFbo, editorTexture;
+		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
 	}
 
 	void RenderSystem::RenderBatch(void)
@@ -132,13 +132,23 @@ namespace ALEngine::ECS
 
 		// Viewport frame buffer init
 		glGenFramebuffers(1, &fbo);
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
 		glGenTextures(1, &fbTexture);
 		glBindTexture(GL_TEXTURE_2D, fbTexture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		
+		// create render buffer object for depth buffer and stencil attachment
+		glGenRenderbuffers(1, &viewportRenderBuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, viewportRenderBuffer);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Input::GetScreenResX(), Input::GetScreenResY()); // Allocate buffer memory
+
+		// attatch framebuffer and render buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbTexture, 0);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, viewportRenderBuffer); // make attachment
+
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
 			std::cerr << " Frame buffer failed to initialize properly\n";
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -152,6 +162,7 @@ namespace ALEngine::ECS
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, editorTexture, 0);
+
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
 			std::cerr << " Editor frame buffer failed to initialize properly\n";
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -166,18 +177,24 @@ namespace ALEngine::ECS
 	void Render(void)
 	{
 		//------------------ Begin editor framebuffer rendering ------------------//
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin editor framebuffer
+		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
 
+		// render editor here
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
 
 		//----------------- Begin viewport framebuffer rendering -----------------//
+		glEnable(GL_DEPTH_TEST);
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
-		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//// Depth buffer settings:
+		//glDepthFunc(GL_ALWAYS);
+		//glClearDepth(1);
+		//glDepthMask(GL_TRUE);
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear viewport framebuffer
 
 		rs->RenderBatch();
 
@@ -208,8 +225,9 @@ namespace ALEngine::ECS
 		Text::RenderAllText();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
+		glDisable(GL_DEPTH_TEST);
 		//------------------ End viewport framebuffer rendering ------------------//
-
+		
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
 		{
