@@ -38,6 +38,17 @@ namespace ALEngine::Editor
 		// Check if there is an entity selected (For Gizmos)
 		b8 hasSelectedEntity = (m_SelectedEntity == ECS::MAX_ENTITIES) ? false : true;
 
+		Math::vec3 camPos = m_EditorCamera.Position();
+
+		//if (Input::KeyDown(KeyCode::W))
+		//	m_EditorCamera.Position(camPos.x, camPos.y + 0.5f, camPos.z);
+		//if (Input::KeyDown(KeyCode::A))
+		//	m_EditorCamera.Position(camPos.x - 0.5f, camPos.y, camPos.z);
+		//if (Input::KeyDown(KeyCode::S))
+		//	m_EditorCamera.Position(camPos.x, camPos.y - 0.5f, camPos.z);
+		//if (Input::KeyDown(KeyCode::D))
+		//	m_EditorCamera.Position(camPos.x + 0.5f, camPos.y, camPos.z);
+
 		// Begin ImGui
 		if (!ImGui::Begin("Editor Scene"))
 		{
@@ -196,6 +207,8 @@ namespace ALEngine::Editor
 			// View matrix
 			Mat4 inv_view = m_EditorCamera.ViewMatrix();
 			inv_view = Mat4::InverseT(inv_view);
+
+			mousePos = inv_proj * inv_view * mousePos;
 
 			return Math::Vec2(mousePos.x, mousePos.y);
 		}
