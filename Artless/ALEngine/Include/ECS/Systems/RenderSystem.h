@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong@digipen.edu
 brief:	This file contains the function declarations for RenderSystem
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	RENDER_SYSTEM_H
 #define RENDER_SYSTEM_H
@@ -24,15 +24,29 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	void Render(void);
 
+#if EDITOR
 	/*!*********************************************************************************
-		\brief
-		Gets the FB Texture ID
+		\brief Renders any entities with Sprite and Transform components, to be used
+		by ScenePanel
 
-		\return
-		FB Texture ID for rendering to ImGui space
+		\param [in] camera: Camera of the scene panel
+	***********************************************************************************/
+	void Render(Engine::Camera const& camera);
+
+	/*!*********************************************************************************
+		\brief Gets the FB Texture ID for game panel
+
+		\return FB Texture ID for rendering to ImGui space
 	***********************************************************************************/
 	u32 GetFBTexture(void);
 
+	/*!*********************************************************************************
+		\brief Get the Editor Texutre ID for scene panel
+
+		\return Editor Texture ID for rendering to ImGui space
+	***********************************************************************************/
+	u32 GetEditorTexture(void);
+#endif
 	/*!*********************************************************************************
 		\brief
 		Set the color of background
