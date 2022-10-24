@@ -141,6 +141,8 @@ namespace ALEngine::ECS
 		//vIndex = Memory::StaticMemory::New<u32>(ECS::MAX_ENTITIES);
 
 		MeshBuilder::Instance()->Init();
+
+		
 	}
 
 	void Render(void)
