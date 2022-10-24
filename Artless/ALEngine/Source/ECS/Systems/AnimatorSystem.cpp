@@ -117,6 +117,8 @@ namespace ALEngine::ECS
 		Animator animator{};
 		while (std::getline(ifs, buffer))
 		{
+			std::istringstream iss{ buffer };
+			iss >> buffer;
 			Guid id = Engine::AssetManager::Instance()->GetGuid(buffer);
 			Animation animation = Engine::AssetManager::Instance()->GetAnimation(id);
 			animation.id = id;

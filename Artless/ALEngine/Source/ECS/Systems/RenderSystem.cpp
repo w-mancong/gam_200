@@ -7,7 +7,11 @@ namespace ALEngine::ECS
 	class RenderSystem : public System
 	{
 	public:
-		void RenderBatch();
+#if EDITOR
+		void RenderBatch(std::vector<Entity> entities, Camera const& cam);
+#else
+		void RenderBatch(void);
+#endif
 	};
 
 	struct Plane
@@ -46,10 +50,66 @@ namespace ALEngine::ECS
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
 		
-		// frame buffer
-		u32 fbo, fbTexture;
+#if EDITOR
+		// Viewport and editor framebuffers
+		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
+
+		std::vector<Entity> entities;
+#endif
 	}
 
+#if EDITOR
+	void RenderSystem::RenderBatch(std::vector<Entity> entities, Camera const& cam)
+	{
+		// copy into temp vector
+		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
+		// sort entities by layer
+		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
+		{
+			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+			return sp1.layer < sp2.layer;
+		});
+
+		u64 counter{};
+		u64 const SIZE{ entities.size() };
+		for (u64 i{}; i < SIZE; ++i)
+		{
+			Entity const& en = entities[i];
+			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
+				continue;
+			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+
+			*(vMatrix + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vColor + i) = sprite.color;
+			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + i))(3, 3) = sprite.index;
+
+			++counter;
+		}
+
+		indirectShader.use();
+		indirectShader.Set("proj", cam.ProjectionMatrix());
+		indirectShader.Set("view", cam.ViewMatrix());
+
+		glBindVertexArray(GetVao());
+
+		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		GenerateDrawCall(bd);
+
+		//draw
+		glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
+			GL_UNSIGNED_INT,							//indices represented as unsigned ints
+			(void*)0,									//start with the first draw command
+			static_cast<s32>(counter),					//draw objects
+			0);											//no stride, the draw commands are tightly packed
+
+		glBindVertexArray(0);
+		indirectShader.unuse();
+	}
+#else
 	void RenderSystem::RenderBatch(void)
 	{
 		std::vector<Entity> entities; entities.reserve(mEntities.size());
@@ -99,8 +159,10 @@ namespace ALEngine::ECS
             0);											//no stride, the draw commands are tightly packed
 
         glBindVertexArray(0);
+		indirectShader.unuse();
 	}
-	
+#endif
+
 	void RegisterRenderSystem(void)
 	{
 		rs = Coordinator::Instance()->RegisterSystem<RenderSystem>();
@@ -123,37 +185,67 @@ namespace ALEngine::ECS
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 
-		// frame buffer init
+		// Viewport frame buffer init
 		glGenFramebuffers(1, &fbo);
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
 		glGenTextures(1, &fbTexture);
 		glBindTexture(GL_TEXTURE_2D, fbTexture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		
+		// create render buffer object for depth buffer and stencil attachment
+		glGenRenderbuffers(1, &viewportRenderBuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, viewportRenderBuffer);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Input::GetScreenResX(), Input::GetScreenResY()); // Allocate buffer memory
+
+		// attatch framebuffer and render buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbTexture, 0);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, viewportRenderBuffer); // make attachment
+
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
 			std::cerr << " Frame buffer failed to initialize properly\n";
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// Editor frame buffer init
+		glGenFramebuffers(1, &editorFbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo);
+		glGenTextures(1, &editorTexture);
+		glBindTexture(GL_TEXTURE_2D, editorTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, editorTexture, 0);
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
+			std::cerr << " Editor frame buffer failed to initialize properly\n";
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
-		//vIndex = Memory::StaticMemory::New<u32>(ECS::MAX_ENTITIES);
 
-		MeshBuilder::Instance()->Init();
-
-		camera.ProjectionMatrix(Camera::Projection::Orthographic);
+		MeshBuilder::Instance()->Init();	
+#if EDITOR
+		entities.reserve(ECS::MAX_ENTITIES);
+#endif
 	}
 
 	void Render(void)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);	// changes the background color
+#if EDITOR
+		//----------------- Begin viewport framebuffer rendering -----------------//
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+#endif
 		UpdateAnimatorSystem();
+#if EDITOR
+		rs->RenderBatch(entities, camera);
+#else
 		rs->RenderBatch();
-
+#endif
 		Text test;
 		SetTextFont(test, "roboto");
 		SetTextFontType(test, Font::FontType::Italic);
@@ -181,6 +273,8 @@ namespace ALEngine::ECS
 		Text::RenderAllText();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
+		glDisable(GL_DEPTH_TEST);
+		//------------------ End viewport framebuffer rendering ------------------//		
 
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
@@ -192,10 +286,39 @@ namespace ALEngine::ECS
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());
 	}
 
+#if EDITOR
+	void Render(Camera const& cam)
+	{
+		// copy into temp vector
+		std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
+		// sort entities by layer
+		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
+		{
+			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+			return sp1.layer < sp2.layer;
+		});
+		//------------------ Begin editor framebuffer rendering ------------------//
+		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
+		
+		rs->RenderBatch(entities, cam);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
+		//------------------- End editor framebuffer rendering -------------------//
+	}
+
 	u32 GetFBTexture(void)
 	{
 		return fbTexture;
 	}
+
+	u32 GetEditorTexture(void)
+	{
+		return editorTexture;
+	}
+#endif
 
 	void SetBackgroundColor(Color const& color)
 	{
