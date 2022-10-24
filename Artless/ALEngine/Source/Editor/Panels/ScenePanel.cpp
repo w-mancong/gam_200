@@ -1,5 +1,7 @@
 #include "pch.h"
 #include <glm/glm/glm.hpp>
+#include "imgui.h"
+#include "imgui_internal.h"
 
 namespace ALEngine::Editor
 {
@@ -31,6 +33,8 @@ namespace ALEngine::Editor
 			return;
 		}
 
+		ECS::Render(m_EditorCamera);
+
 		// Set Scene Width and Height
 		if (m_SceneWidth != ImGui::GetContentRegionAvail().x)
 			m_SceneWidth = ImGui::GetContentRegionAvail().x;
@@ -38,7 +42,7 @@ namespace ALEngine::Editor
 			m_SceneHeight = ImGui::GetContentRegionAvail().y;
 
 		// Draw Scene
-		ImGui::Image((void*)ECS::GetFBTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((void*)ECS::GetEditorTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// Only render gizmos if an entity is selected
 		if (hasSelectedEntity)
@@ -63,7 +67,7 @@ namespace ALEngine::Editor
 				ImGui::GetWindowPos().y + style.WindowPadding.y * 3.5f, m_SceneWidth, m_SceneHeight);
 
 			// Manipulate, used for Gizmos
-			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), ECS::GetOrthographicImgui().value_ptr(),
+			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), m_EditorCamera.ProjectionMatrix().value_ptr(),
 				m_CurrentGizmoOperation, ImGuizmo::WORLD, mtx);
 
 			// Get transform matrices
@@ -82,12 +86,6 @@ namespace ALEngine::Editor
 		// Select Entity by clicking on Scene
 		if (Input::KeyTriggered(KeyCode::MouseLeftButton))
 		{	// Left click
-
-			// Set mouse position
-			m_ImGuiMousePos = ImGui::GetMousePos();
-
-			// Set panel position
-			m_ImGuiPanelPos = ImGui::GetCursorScreenPos();
 			// Get mouse pos
 			Math::Vec2 mousePos = GetMouseWorldPos();
 			
@@ -156,6 +154,20 @@ namespace ALEngine::Editor
 	Math::Vec2 ScenePanel::GetMouseWorldPos()
 	{
 		ImGuiStyle style = ImGui::GetStyle();
+		// Set mouse position
+		m_ImGuiMousePos = ImGui::GetMousePos();
+		// Set panel position
+		m_ImGuiPanelPos = ImGui::GetCursorScreenPos();
+
+		AL_CORE_DEBUG("Win Pos: {}, {}", m_ImGuiPanelPos.x, m_ImGuiPanelPos.y);
+		
+
+		ImGuiWindow* win = ImGui::FindWindowByName("Editor");
+
+		m_ImGuiPanelPos = win->Pos;
+		AL_CORE_DEBUG("Win Pos: {}, {}", m_ImGuiPanelPos.x, m_ImGuiPanelPos.y);
+
+
 
 		// Convert mouse pos from ImGui space to screen space		
 		glm::vec4 mousePos{ m_ImGuiMousePos.x - m_ImGuiPanelPos.x,
@@ -169,22 +181,39 @@ namespace ALEngine::Editor
 		if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
 			mousePos.y >= -1.f && mousePos.y <= 1.f)
 		{
+			AL_CORE_INFO("Mouse Pos: {}, {}", mousePos.x, mousePos.y);
+			using namespace Math;
 			// Convert mouse pos from screen space to world space
 			// Projection mtx
-			glm::mat4x4 inv_proj;
-			for (size_t i = 0; i < 4; ++i)
-				for (size_t j = 0; j < 4; ++j)
-					inv_proj[i][j] = ECS::GetProjection()(i, j);
-			inv_proj = glm::inverse(inv_proj);
+			Mat4 inv_proj = m_EditorCamera.ProjectionMatrix();
+			//inv_proj = Mat4::Inverse(inv_proj);
 
 			// View matrix
-			glm::mat4x4 inv_view;
+			Mat4 inv_view = m_EditorCamera.ViewMatrix();
+			//inv_view = Mat4::Inverse(inv_view);
+
+			
+			// Use glm for proj
+			glm::mat4 glm_proj;
 			for (size_t i = 0; i < 4; ++i)
 				for (size_t j = 0; j < 4; ++j)
-					inv_view[i][j] = ECS::GetView()(i, j);
-			inv_view = glm::inverse(inv_view);
+					glm_proj[i][j] = inv_proj(i, j);
+			glm_proj = glm::inverse(glm_proj);
 
-			mousePos = inv_proj * inv_view * mousePos;
+			// Use glm for view
+			glm::mat4 glm_view;
+			for (size_t i = 0; i < 4; ++i)
+				for (size_t j = 0; j < 4; ++j)
+					glm_view[i][j] = inv_view(i, j);
+			glm_view = glm::inverse(glm_view);
+			
+
+			// Get mousepos after transform
+			//mousePos = inv_proj * inv_view * mousePos;
+			mousePos = glm_proj * glm_view * mousePos;
+
+
+			AL_CORE_CRITICAL("Mouse Pos: {}, {}", mousePos.x, mousePos.y);
 
 			return Math::Vec2(mousePos.x, mousePos.y);
 		}
