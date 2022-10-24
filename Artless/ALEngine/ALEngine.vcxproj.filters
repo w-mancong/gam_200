@@ -59,6 +59,7 @@
     <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="tracy\TracyClient.cpp" />
+    <ClCompile Include="Source\Math\Matrix2x2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -281,6 +282,7 @@
     <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
     <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
+    <ClInclude Include="Include\Math\Matrix2x2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

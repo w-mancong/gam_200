@@ -130,6 +130,34 @@ namespace ALEngine::Math
 		const_pointer value_ptr(void) const;
 
 		/*!*********************************************************************************
+			\brief Construct and return an inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		Matrix4x4 Inverse(void) const;
+
+		/*!*********************************************************************************
+			\brief Construct and return a column major inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		Matrix4x4 InverseT(void) const;
+
+		/*!*********************************************************************************
+			\brief Construct and return a transpose matrix
+
+			\param [in] matrix: Matrix to be transposed
+		***********************************************************************************/
+		Matrix4x4 Transpose(void) const;
+
+		/*!*********************************************************************************
+			\brief Calculate and return the determinant of mat
+
+			\param [in] matrix: To calculate the determinant of the matrix
+		***********************************************************************************/
+		f32 Determinant(void) const;
+
+		/*!*********************************************************************************
 			\brief
 			Turn a 4x4 matrix into a translation matrix
 			\param [in] x:
@@ -223,7 +251,6 @@ namespace ALEngine::Math
 		***********************************************************************************/
 		static Matrix4x4 Ortho(f32 left, f32 right, f32 bottom, f32 top, f32 zNear, f32 zFar);
 
-
 		/*!*********************************************************************************
 			\brief
 			Construct a Orthographics projection matrix for ImGui
@@ -304,6 +331,27 @@ namespace ALEngine::Math
 			\param [in] matrix: Matrix to be inversed
 		***********************************************************************************/
 		static Matrix4x4 Inverse(Matrix4x4 const& mat);
+
+		/*!*********************************************************************************
+			\brief Construct and return a column major inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		static Matrix4x4 InverseT(Matrix4x4 const& mat);
+
+		/*!*********************************************************************************
+			\brief Construct and return a transpose matrix
+
+			\param [in] matrix: Matrix to be transposed
+		***********************************************************************************/
+		static Matrix4x4 Transpose(Matrix4x4 const& mat);
+
+		/*!*********************************************************************************
+			\brief Calculate and return the determinant of mat
+
+			\param [in] matrix: To calculate the determinant of the matrix
+		***********************************************************************************/
+		static f32 Determinant(Matrix4x4 const& mat);
 
 		Vector4 mat[4];
 	}; using Mat4 = Matrix4x4; using Mtx4 = Matrix4x4; using Matrix4 = Matrix4x4; using mat4 = Matrix4x4;

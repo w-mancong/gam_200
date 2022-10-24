@@ -227,6 +227,7 @@
     <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
     <ClCompile Include="Source\Math\matrix.cpp" />
+    <ClCompile Include="Source\Math\Matrix2x2.cpp" />
     <ClCompile Include="Source\Math\Matrix3x3.cpp" />
     <ClCompile Include="Source\Math\Matrix4x4.cpp" />
     <ClCompile Include="Source\Math\Vector2.cpp" />
@@ -340,6 +341,7 @@
     <ClInclude Include="Include\Input\Input.h" />
     <ClInclude Include="Include\Math\Math.h" />
     <ClInclude Include="Include\Math\matrix.h" />
+    <ClInclude Include="Include\Math\Matrix2x2.h" />
     <ClInclude Include="Include\Math\Matrix3x3.h" />
     <ClInclude Include="Include\Math\Matrix4x4.h" />
     <ClInclude Include="Include\Math\Vector3.h" />
