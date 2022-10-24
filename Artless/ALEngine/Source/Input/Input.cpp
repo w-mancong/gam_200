@@ -55,7 +55,7 @@ namespace ALEngine::UserInput
 
 	Math::Vec2 Input::GetMouseWorldPos()
 	{
-		return Math::Vec2();
+		return Editor::ALEditor::Instance()->GetMouseWorldPos();
 	}
 
 	bool Input::KeyState(KeyCode key)

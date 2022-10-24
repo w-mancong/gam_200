@@ -107,6 +107,7 @@ namespace ALEngine::Editor
 
 	void ALEditor::Begin(void)
 	{
+		ZoneScopedN("Editor Update")
 		// Change ImGui Enabled or Disabled
 		if (Input::KeyTriggered(KeyCode::Key_9))
 		{
@@ -206,6 +207,16 @@ namespace ALEngine::Editor
 	f64 ALEditor::GetSceneHeight(void)
 	{
 		return m_ScenePanel.GetSceneHeight();
+	}
+
+	Engine::Camera& ALEditor::GetEditorCamera(void)
+	{
+		return m_ScenePanel.GetEditorCamera();
+	}
+
+	Math::Vec2 ALEditor::GetMouseWorldPos()
+	{
+		return m_ScenePanel.GetMouseWorldPos();
 	}
 
 	void ALEditor::Docking(void)

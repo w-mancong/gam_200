@@ -1,7 +1,19 @@
 #include "pch.h"
 #include <glm/glm/glm.hpp>
+
 #include "imgui.h"
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 #include "imgui_internal.h"
+
+#if defined(_MSC_VER) || defined(__MINGW32__)
+#include <malloc.h>
+#endif
+#if !defined(_MSC_VER) && !defined(__MINGW64_VERSION_MAJOR)
+#define _malloca(x) alloca(x)
+#define _freea(x)
+#endif
 
 namespace ALEngine::Editor
 {
@@ -27,7 +39,7 @@ namespace ALEngine::Editor
 		b8 hasSelectedEntity = (m_SelectedEntity == ECS::MAX_ENTITIES) ? false : true;
 
 		// Begin ImGui
-		if (!ImGui::Begin("Viewport"))
+		if (!ImGui::Begin("Editor Scene"))
 		{
 			ImGui::End();
 			return;
@@ -156,18 +168,12 @@ namespace ALEngine::Editor
 		ImGuiStyle style = ImGui::GetStyle();
 		// Set mouse position
 		m_ImGuiMousePos = ImGui::GetMousePos();
-		// Set panel position
-		m_ImGuiPanelPos = ImGui::GetCursorScreenPos();
 
-		AL_CORE_DEBUG("Win Pos: {}, {}", m_ImGuiPanelPos.x, m_ImGuiPanelPos.y);
-		
+		// Find the Editor panel
+		ImGuiWindow* win = ImGui::FindWindowByName("Editor Scene");
 
-		ImGuiWindow* win = ImGui::FindWindowByName("Editor");
-
-		m_ImGuiPanelPos = win->Pos;
-		AL_CORE_DEBUG("Win Pos: {}, {}", m_ImGuiPanelPos.x, m_ImGuiPanelPos.y);
-
-
+		// Get panel position
+		m_ImGuiPanelPos = win->DC.CursorPos;
 
 		// Convert mouse pos from ImGui space to screen space		
 		glm::vec4 mousePos{ m_ImGuiMousePos.x - m_ImGuiPanelPos.x,
@@ -181,7 +187,6 @@ namespace ALEngine::Editor
 		if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
 			mousePos.y >= -1.f && mousePos.y <= 1.f)
 		{
-			AL_CORE_INFO("Mouse Pos: {}, {}", mousePos.x, mousePos.y);
 			using namespace Math;
 			// Convert mouse pos from screen space to world space
 			// Projection mtx
@@ -211,9 +216,6 @@ namespace ALEngine::Editor
 			// Get mousepos after transform
 			//mousePos = inv_proj * inv_view * mousePos;
 			mousePos = glm_proj * glm_view * mousePos;
-
-
-			AL_CORE_CRITICAL("Mouse Pos: {}, {}", mousePos.x, mousePos.y);
 
 			return Math::Vec2(mousePos.x, mousePos.y);
 		}

@@ -129,7 +129,7 @@ namespace ALEngine::Engine
 			}
 
 			// Marks the end of a frame loop, for tracy profiler
-			//FrameMark;
+			FrameMark
 		}
 	}
 
@@ -150,8 +150,16 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
+		ZoneScopedN("Normal Update")
 		Input::Update();
 		AssetManager::Instance()->Update();
+
+		if (Input::KeyTriggered(KeyCode::MouseRightButton))
+		{
+			Math::vec2 john = Input::GetMouseWorldPos();
+
+			AL_CORE_DEBUG("John Pos: {}, {}", john.x, john.y);
+		}
 
 		//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 

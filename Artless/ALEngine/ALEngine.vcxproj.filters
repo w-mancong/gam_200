@@ -57,8 +57,8 @@
     <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
     <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
-    <ClCompile Include="..\tracy\TracyClient.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
+    <ClCompile Include="tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -279,8 +279,8 @@
     <ClInclude Include="Include\ECS\Components\Transition.h" />
     <ClInclude Include="Include\ECS\Systems\AnimatorSystem.h" />
     <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
-    <ClInclude Include="..\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Utility\BinaryTree.h" />
+    <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

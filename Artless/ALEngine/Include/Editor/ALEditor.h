@@ -116,6 +116,26 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		f64 GetSceneHeight(void);
 
+		/*!*********************************************************************************
+		\brief
+		Returns the Editor's Camera
+
+		\return
+		Gets the Editor's Camera
+	***********************************************************************************/
+		Engine::Camera& GetEditorCamera(void);
+
+		/*!*********************************************************************************
+			\brief
+			Returns the cursor's world space position.
+
+			\return
+			Cursor World Space position.
+			Returns a Vec2 containing std::numeric_limits::max for x and y if the mouse
+			position was handled outside of the Scene viewport
+		***********************************************************************************/
+		Math::Vec2 GetMouseWorldPos();
+
 	private:
 		/*!*********************************************************************************
 			\brief

@@ -11,13 +11,6 @@ brief:	This file contains function declarations for the ScenePanel class.
 #ifndef SCENE_PANEL_H
 #define SCENE_PANEL_H
 
-#ifdef USE_IMGUI_API
-#include "imconfig.h"
-#endif
-#ifndef IMGUI_API
-#define IMGUI_API
-#endif
-
 namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
