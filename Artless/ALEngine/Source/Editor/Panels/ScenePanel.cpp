@@ -82,6 +82,10 @@ namespace ALEngine::Editor
 				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
 				mtx_rot[3]{ 0.f, 0.f, xform.rotation };
 
+			// Add camera position
+			mtx_translate[0] -= m_EditorCamera.Position().x;
+			mtx_translate[1] -= m_EditorCamera.Position().y;
+
 			// Matrix to contain all transforms (SRT)
 			float mtx[16];
 			
@@ -101,8 +105,8 @@ namespace ALEngine::Editor
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
 
 			// Set changes
-			xform.position.x = mtx_translate[0];
-			xform.position.y = mtx_translate[1];
+			xform.position.x = mtx_translate[0] + m_EditorCamera.Position().x;
+			xform.position.y = mtx_translate[1] + m_EditorCamera.Position().y;
 
 			xform.scale.x = mtx_scale[0];
 			xform.scale.y = mtx_scale[1];
@@ -145,7 +149,7 @@ namespace ALEngine::Editor
 				}
 
 				// No entities clicked (clicked viewport)
-				if (!entity_clicked)
+				if (!entity_clicked && !ImGuizmo::IsOver())
 					m_SelectedEntity = ECS::MAX_ENTITIES;
 			}
 		}
