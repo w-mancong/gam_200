@@ -178,6 +178,18 @@ namespace ALEngine::Tree
         return childrenVect;
     }
 
+    std::vector<u32> BinaryTree::GetParents()
+    {
+        Node* node = GetHead()->right;
+        std::vector<u32> vect;
+        while (node != nullptr)
+        {
+            vect.push_back(node->id);
+            node = node->right;
+        }
+        return vect;
+    }
+
     void BinaryTree::Destruct(u32 id)
     {
         searchVect.clear();

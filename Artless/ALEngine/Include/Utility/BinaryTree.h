@@ -21,6 +21,7 @@ namespace ALEngine::Tree
         void Destruct(u32 id);
         std::vector<u32> const& GetChildren();
         Node* GetHead();
+        std::vector<u32> GetParents();
     private:
         Node* SearchRight(Node* node, u32 id);
         Node* SearchLeft(Node* node, u32 id);

@@ -12,6 +12,7 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 
 namespace ALEngine::Editor
 {
+	
 	SceneHierarchyPanel::SceneHierarchyPanel(void)
 	{
 		m_EntityList = &Coordinator::Instance()->GetEntities();
@@ -35,7 +36,7 @@ namespace ALEngine::Editor
 		if (ImGui::Button("Add Entity"))
 		{
 			// Entity Transform
-			Transform xform{ Math::Vector2( Random::Range(-300.0f, 300.f), Random::Range(-300.0f, 300.f) ), 
+			Transform xform{ Math::Vector2(Random::Range(-300.0f, 300.f), Random::Range(-300.0f, 300.f)),
 				Math::Vector2(50.f, 50.f), 0.f };
 
 			// Create Entity
@@ -81,22 +82,47 @@ namespace ALEngine::Editor
 
 		// Displaying each entity
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-		for (auto e_it = m_EntityList->begin(); e_it != m_EntityList->end(); ++e_it)
+		std::vector<ECS::Entity> parentList = sceneGraph.GetParents();
+
+		for (auto e_it = parentList.begin(); e_it != parentList.end(); ++e_it)
 		{
 			EntityData data = Coordinator::Instance()->GetComponent<EntityData>(*e_it);
 			b8 opened = ImGui::TreeNodeEx((void*)static_cast<u64>(*e_it), flags, data.tag.c_str());
-
+			
 			// If this is clicked, select this
 			if (ImGui::IsItemClicked())
 				ALEditor::Instance()->SetSelectedEntity(*e_it);
 			else if (ImGui::IsItemClicked(1))
 			{
 				ImGui::OpenPopup("remove_entity_rightclick"); 
-				e_delete = e_it;
+				ALEditor::Instance()->SetSelectedEntity(*e_it);
+				//e_delete = e_it;
 			}
 
 			if (opened)
+			{
+				sceneGraph.FindChildren(*e_it);
+				std::vector<ECS::Entity> childrenList = sceneGraph.GetChildren();
+
+				for (auto child = childrenList.begin(); child != childrenList.end(); ++child)
+				{
+					EntityData childData = Coordinator::Instance()->GetComponent<EntityData>(*child);
+					b8 childOpened = (ImGui::TreeNodeEx((void*)static_cast<u64>(*child), flags, childData.tag.c_str()));
+					// If this is clicked, select this
+					if (ImGui::IsItemClicked())
+						ALEditor::Instance()->SetSelectedEntity(*child);
+					else if (ImGui::IsItemClicked(1))
+					{
+						ImGui::OpenPopup("child_entity_rightclick");
+						ALEditor::Instance()->SetSelectedEntity(*child);
+						//e_delete = e_it;
+					}
+
+					if (childOpened)
+						ImGui::TreePop();
+				}
 				ImGui::TreePop();
+			}
 		}
 
 		// Right click to remove entity
@@ -108,10 +134,25 @@ namespace ALEngine::Editor
 				ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 				remove = true;
 			}
-			//if (ImGui::Selectable("Add child"))
-			//{
-			//	std::cerr << "child added\n";
-			//}
+			if (ImGui::Selectable("Add child") && (ALEditor::Instance()->GetSelectedEntity() != ECS::MAX_ENTITIES))
+			{
+				// Entity Transform
+				Transform xform{ Math::Vector2(Random::Range(-300.0f, 300.f), Random::Range(-300.0f, 300.f)),
+					Math::Vector2(50.f, 50.f), 0.f };
+
+				// Create Entity
+				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+				ECS::CreateSprite(GO, xform);
+
+				sceneGraph.Push(ALEditor::Instance()->GetSelectedEntity(), GO); // add child entity under parent
+
+				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
+				sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
+
+				e_delete = m_EntityList->end();
+
+				AL_CORE_INFO("Entity Created!");
+			}
 			ImGui::EndPopup();
 		}
 
