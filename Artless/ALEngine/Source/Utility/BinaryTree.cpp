@@ -14,6 +14,9 @@ namespace ALEngine::Tree
 
     BinaryTree::Node* BinaryTree::SearchLeft(Node* node, u32 id)
     {
+        if (node == nullptr)
+            return nullptr;
+
         if (node->id == id)
         {
             return node;
@@ -21,51 +24,52 @@ namespace ALEngine::Tree
 
         while (node->left != nullptr)
         {
-            searchVect.push_back(node->left);
-            if (node->left->id == id)
-            {
-                prevNode = node;
-            }
+            prevNode = node;
+            searchVect.push_back(node);
             node = node->left;
+
             if (node->id == id)
+            {
                 return node;
+            }
         }
         if (node->right != nullptr) // if have right branch
         {
-            return SearchRight(searchVect[searchVect.size() - 1], id);
+            return SearchRight(node, id);
         }
         else // if no right branch
         {
-            if (searchVect.size() > 1)
-            {
-                searchVect.pop_back();
-            }
+            searchVect.pop_back();
             return SearchRight(searchVect[searchVect.size() - 1], id);
         }
     }
 
     BinaryTree::Node* BinaryTree::SearchRight(Node* node, u32 id)
     {
-        if (node != nullptr && node->id == id) // if found
+        if (node == nullptr)
+            return nullptr;
+
+        if (node->id == id) // if found
         {
             prevNode = searchVect[searchVect.size() - 1];
             return node;
         }
 
-        while (node != nullptr && node->right != nullptr) // go down right row
+        searchVect[searchVect.size() - 1] = node;
+        while (node->right != nullptr) // go down right row
         {
             prevNode = node;
-            if (node->right->id == id)
+            node = node->right; // advance down right row
+            if (node->id == id)
             {
-                return node->right;
+                return node;
             }
+            searchVect[searchVect.size() - 1] = node;
             if (node->left != nullptr) // if got left branch
             {
                 return SearchLeft(node, id);
             }
 
-            node = node->right; // advance down right row
-            searchVect[searchVect.size() - 1] = node;
         }
         // end of right branch
         if (searchVect.size() > 1)
@@ -82,10 +86,13 @@ namespace ALEngine::Tree
     BinaryTree::Node* BinaryTree::Find(u32 id)
     {
         searchVect.clear();
-        searchVect.push_back(head->right);
-        if (GetHead()->right != nullptr && GetHead()->right->id == id)
-            prevNode = GetHead();
-        return SearchLeft(head->right, id);
+
+        if (GetHead()->right == nullptr)
+            return nullptr;
+
+        searchVect.push_back(head);
+
+        return SearchRight(head, id);
     }
 
     void BinaryTree::Push(u32 parent, u32 newchild)
@@ -97,6 +104,9 @@ namespace ALEngine::Tree
         else
         {
             Node* p = Find(parent);
+            if (p == nullptr)
+                return;
+
             if (p->left == nullptr) // first child
             {
                 p->left = Memory::DynamicMemory::New<Node>();
@@ -164,12 +174,16 @@ namespace ALEngine::Tree
         {
             return; // root cannot be parent
         }
-        Node* node = Find(parent)->left;
+        Node* node = Find(parent);
+        if (node == nullptr || node->left == nullptr)
+            return;
 
+        node = node->left;
+        childrenVect.push_back(node->id);
         while (node != nullptr && node->right != nullptr) // check if parent has children
         {
-            childrenVect.push_back(node->id);
             node = node->right;
+            childrenVect.push_back(node->id);
         }
     }
 
@@ -181,6 +195,8 @@ namespace ALEngine::Tree
             return; // root cannot be parent
         }
         Node* node = Find(parent);
+        if (node == nullptr)
+            return;
 
         if (node->left != nullptr) // check if parent has children
         {

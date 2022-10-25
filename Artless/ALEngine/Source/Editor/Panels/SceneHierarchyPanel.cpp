@@ -40,6 +40,7 @@ namespace ALEngine::Editor
 			ECS::CreateSprite(GO, xform);
 
 			sceneGraph.Push(-1, GO);
+			std::cout << "AWD\n";
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
 			sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
@@ -107,7 +108,6 @@ namespace ALEngine::Editor
 				// Create Entity
 				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
 				ECS::CreateSprite(GO, xform);
-
 				sceneGraph.Push(ALEditor::Instance()->GetSelectedEntity(), GO); // add child entity under parent
 
 				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
@@ -162,12 +162,10 @@ namespace ALEngine::Editor
 		// If tree node is open
 		if (opened)
 		{
-			sceneGraph.FindChildren(child);
+			sceneGraph.FindImmediateChildren(child);
 			std::vector<ECS::Entity> childrenList = sceneGraph.GetChildren();
-
-			for (auto child_it = childrenList.begin(); child_it != childrenList.end(); ++child_it)
-				UpdateEntitySHP(*child_it, popup_hasopen);
-
+			for (auto child_it : childrenList)
+				UpdateEntitySHP(child_it, popup_hasopen);
 			ImGui::TreePop();
 		}
 	}
