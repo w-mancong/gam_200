@@ -21,8 +21,9 @@ namespace ALEngine::Engine
 
 	namespace
 	{
-		Entity player, floor, coin;
+		Entity player, floor, coin, pathfinder;
 	}
+
 	void CollectCoint(Entity current, Entity other) {
 		if (Coordinator::Instance()->HasComponent<CharacterController>(other)) {
 			AL_CORE_INFO("Coin Collected");
@@ -75,6 +76,7 @@ namespace ALEngine::Engine
 		player = Coordinator::Instance()->CreateEntity();
 		floor= Coordinator::Instance()->CreateEntity();
 		coin = Coordinator::Instance()->CreateEntity();
+		pathfinder = Coordinator::Instance()->CreateEntity();
 
 
 		Transform trans;
@@ -84,7 +86,7 @@ namespace ALEngine::Engine
 		CreateSprite(player);
 		CreateCollider(player);
 		CreateCharacterController(player);
-		CreateEventTrigger(player);
+		//CreateEventTrigger(player);
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
 		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
@@ -103,6 +105,12 @@ namespace ALEngine::Engine
 		CreateCollider(coin);
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(coin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
 
+		trans.position = { 500, 500 };
+		trans.scale = { 50, 50 };
+		Coordinator::Instance()->AddComponent(pathfinder, trans);
+		CreateSprite(pathfinder);
+		CreateEnemyUnit(pathfinder);
+
 		//Animator animator = CreateAnimator("Test");
 		//AttachAnimator(entity, animator);
 
@@ -111,6 +119,7 @@ namespace ALEngine::Engine
 		//AddAnimationToAnimator(animator, "PlayerRunning");
 		//SaveAnimator(animator);
 
+		StartGameplaySystem();
 	}
 
 	void Application::Update(void)
@@ -186,6 +195,7 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
+		ExitGameplaySystem();
 		ALEditor::Instance()->Exit();		// Exit ImGui
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		glfwTerminate();					// clean/delete all GLFW resources
@@ -203,6 +213,7 @@ namespace ALEngine::Engine
 	{
 		UpdateCharacterControllerSystem();
 		UpdateEventTriggerSystem();
+		UpdateGameplaySystem();
 
 		ZoneScopedN("Normal Update")
 		Input::Update();

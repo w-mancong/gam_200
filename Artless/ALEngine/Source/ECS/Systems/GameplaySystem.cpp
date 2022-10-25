@@ -39,10 +39,9 @@ namespace ALEngine::ECS
 		};
 
 	public:
-		uint32_t roomWidth = 10, roomHeight = 10;
+		uint32_t roomWidth = 7, roomHeight = 7;
 		Entity *roomCellsArray;
 		
-		f32 m_countdown = 2;
 		GAMEPLAYSTATUS currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_INPUT_WAITING;
 
 		MoveOrder currentModeOrder;
@@ -75,8 +74,9 @@ namespace ALEngine::ECS
 		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {	
 			gameplaySystem->roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 			CreateCollider(gameplaySystem->roomCellsArray[i]);
+			Coordinator::Instance()->GetComponent<Collider2D>(gameplaySystem->roomCellsArray[i]).isTrigger = true;
 			Transform transform;
-			transform.scale = { 50, 50 };
+			transform.scale = { 70, 70 };
 			Coordinator::Instance()->AddComponent(gameplaySystem->roomCellsArray[i], transform);
 		}
 		
@@ -84,7 +84,7 @@ namespace ALEngine::ECS
 
 			for (uint32_t j = 0; j < gameplaySystem->roomHeight; ++j) {
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->roomCellsArray[i * gameplaySystem->roomWidth + j]);
-				transform.position = { -300.f + (f32)i * 50.f, -200 + (f32)j * 50.f };
+				transform.position = { 200 + (f32)i * 100.f, 200 + (f32)j * 100.f };
 			}
 		}
 	}
@@ -161,7 +161,6 @@ namespace ALEngine::ECS
 			Transform& targetTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getCurrentEntityCell());
 			
 			Vector2 direction = (Vector2)targetTransform.position - (Vector2)transform.position;
-
 
 			transform.position += Vector2::Normalize(direction) * Time::m_FixedDeltaTime * 100;
 			if (Vector2::Distance(transform.position, targetTransform.position) <= 10) {
