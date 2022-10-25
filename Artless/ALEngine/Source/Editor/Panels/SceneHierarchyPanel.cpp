@@ -159,8 +159,14 @@ namespace ALEngine::Editor
 		// If there is an entity to remove
 		if (remove)
 		{
+			sceneGraph.FindChildren(*e_delete);
+			std::vector<u32> childrenVect = sceneGraph.GetChildren();
+			for (u32 child : childrenVect)
+			{
+				Coordinator::Instance()->DestroyEntity(child); // delete children
+			}
 			sceneGraph.Destruct(*e_delete);
-			Coordinator::Instance()->DestroyEntity(*e_delete);
+			Coordinator::Instance()->DestroyEntity(*e_delete); // delete parent
 			
 			remove = false;
 		}
