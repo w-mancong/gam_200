@@ -216,6 +216,7 @@ namespace ALEngine::Engine::Physics
 		Vector2 bottomLeft = boxCenter - Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
 		Vector2 topRight = boxCenter + Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
 
+		//std::cout << position << std::endl;
 		//Intersection check
 		if (position.x < bottomLeft.x || position.x > topRight.x || position.y < bottomLeft.y || position.y > topRight.y) {
 			//No intersection

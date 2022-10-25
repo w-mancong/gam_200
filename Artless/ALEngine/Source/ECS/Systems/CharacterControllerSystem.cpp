@@ -58,7 +58,7 @@ namespace ALEngine::ECS
 		charControl.jumpKey = static_cast<u64>(KeyCode::Space);
 
 		//Set speed
-		charControl.speed = 25.f;
+		charControl.speed = 50.f;
 		charControl.jumpStrength = 5.f;
 
 		Coordinator::Instance()->AddComponent(entity, charControl);
@@ -81,18 +81,15 @@ namespace ALEngine::ECS
 	}
 
 	void OnCollisionEnter_Player(u32 currentEntity, u32 otherEntity) {
-		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity))
-		std::cout << "Player Collided with something that has collider commponent ON BEGIN\n";
+		AL_CORE_INFO("Player Collided with something that has collider commponent ON BEGIN");
 	}
 
 	void OnCollisionStay_Player(u32 currentEntityu32, u32 otherEntity) {
-		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
-		std::cout << "Player Collided with something that has collider commponent AND STAYING\n";
+		AL_CORE_INFO("Player Collided with something that has collider commponent AND STAYING");
 	}
 
 	void OnCollisionExit_Player(u32 currentEntityu32, u32 otherEntity) {
-		//if (Coordinator::Instance()->HasComponent<Collider2D>(otherEntity)) 
-		std::cout << "Player Collided with something that has collider commponent AND EXIT\n";
+		AL_CORE_INFO("Player Collided with something that has collider commponent AND EXIT");
 	}
 
 	void UpdateCharacterControllerSystem() {

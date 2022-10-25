@@ -51,7 +51,7 @@ namespace ALEngine::ECS
 		//Shift through each component
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
-			eventSystem->UpdatePointerStatus(*it);
+			eventSystem->UpdatePointerStatus(*it);					
 			
 			switch (event_Trigger.current_Trigger_State) {
 				case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
@@ -80,9 +80,8 @@ namespace ALEngine::ECS
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
 
 			//Check if mouse position is over the collider
-			b8 isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Vector2{ (f32)Input::GetMousePosX(), (f32)Input::GetMousePosY() }, (Vector2)transform.position + collider.m_localPosition, collider.scale[0], collider.scale[1]);
+			b8 isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)transform.position + collider.m_localPosition, collider.scale[0] + transform.scale.x, collider.scale[1] + transform.scale.y);
 			
-			isPointingOver = true;
 			//Set the state
 			UpdateEventTriggerState(eventTrigger,isPointingOver);
 		}
