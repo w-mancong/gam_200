@@ -86,7 +86,7 @@ namespace ALEngine::Engine
 		CreateSprite(player);
 		CreateCollider(player);
 		CreateCharacterController(player);
-		//CreateEventTrigger(player);
+		CreateEventTrigger(player);
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
 		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
