@@ -166,7 +166,7 @@ namespace ALEngine::Tree
         }
         Node* node = Find(parent)->left;
 
-        while (node->right != nullptr) // check if parent has children
+        while (node != nullptr && node->right != nullptr) // check if parent has children
         {
             childrenVect.push_back(node->id);
             node = node->right;
