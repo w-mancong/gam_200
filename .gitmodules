@@ -5,6 +5,6 @@
 	path = Artless/Extern/include/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo
 [submodule "Artless/Extern/include/tracy"]
-	path = Artless/ALEngine/tracy
+	path = Artless/Extern/include/tracy
 	url = https://github.com/wolfpld/tracy
 	ignore = dirty
