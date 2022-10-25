@@ -157,6 +157,22 @@ namespace ALEngine::Tree
         }
     }
 
+    void BinaryTree::FindImmediateChildren(u32 parent)
+    {
+        childrenVect.clear();
+        if (parent == -1)
+        {
+            return; // root cannot be parent
+        }
+        Node* node = Find(parent)->left;
+
+        while (node->right != nullptr) // check if parent has children
+        {
+            childrenVect.push_back(node->id);
+            node = node->right;
+        }
+    }
+
     void BinaryTree::FindChildren(u32 parent)
     {
         childrenVect.clear();
@@ -173,7 +189,7 @@ namespace ALEngine::Tree
         }
     }
 
-    std::vector<u32> const& BinaryTree::GetChildren()
+    std::vector<u32> BinaryTree::GetChildren()
     {
         return childrenVect;
     }
