@@ -29,19 +29,19 @@ namespace ALEngine::ECS::Component
 		// freetype functions return 0 if error
 		if (FT_Init_FreeType(&freeType))
 		{
-			std::cout << "FONTS ERROR: Freetype Library Init failed" << std::endl;
+			std::cerr << "FONTS ERROR: Freetype Library Init failed" << std::endl;
 		}
 
 		if (fontAddress.empty()) // find path to font
 		{
-			std::cout << "FONTS ERROR: Failed to load font: " << fontAddress << std::endl;
+			std::cerr << "FONTS ERROR: Failed to load font: " << fontAddress << std::endl;
 		}
 
 		// load font as face
 		FT_Face face;
 		if (FT_New_Face(freeType, fontAddress.c_str(), 0, &face))
 		{
-			std::cout << "FONTS ERROR: Failed to load font: " << fontAddress << std::endl;
+			std::cerr << "FONTS ERROR: Failed to load font: " << fontAddress << std::endl;
 		}
 		// set size to load glyphs as
 		FT_Set_Pixel_Sizes(face, 0, 48);
@@ -55,7 +55,7 @@ namespace ALEngine::ECS::Component
 			// Load character glyph 
 			if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 			{
-				std::cout << "FONTS ERROR: Failed to load glyph '" << c << "' from " << fontAddress << std::endl;
+				std::cerr << "FONTS ERROR: Failed to load glyph '" << c << "' from " << fontAddress << std::endl;
 				continue;
 			}
 
@@ -130,7 +130,7 @@ namespace ALEngine::ECS::Component
 			it = Font::fontCollection.find(text.currentFont);
 			if (it == Font::fontCollection.end())
 			{
-				std::cout << "FONT ERROR: Font Family Name " << text.currentFont << "not found\n";
+				std::cerr << "FONT ERROR: Font Family Name " << text.currentFont << "not found\n";
 				return;
 			}
 
@@ -139,7 +139,7 @@ namespace ALEngine::ECS::Component
 			it2 = Font::fontCollection.find(text.currentFont)->second.find(text.currentType);
 			if (it2 == Font::fontCollection.find(text.currentFont)->second.end())
 			{
-				std::cout << "FONT ERROR: Font Type not found\n";
+				std::cerr << "FONT ERROR: Font Type not found\n";
 				return;
 			}
 

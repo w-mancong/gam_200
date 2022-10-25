@@ -122,6 +122,48 @@ namespace ALEngine::Math
 		const_reference operator()(size_type row, size_type col) const;
 
 		/*!*********************************************************************************
+			\brief return a const reference to matrix's row
+
+			\param [in] row: Row of the matrix to retrieve the data from
+		***********************************************************************************/
+		vec3& operator()(size_type row);
+
+		/*!*********************************************************************************
+			\brief return a const reference to matrix's row
+
+			\param [in] row: Row of the matrix to retrieve the data from
+		***********************************************************************************/
+		vec3 const& operator()(size_type row) const;
+
+		/*!*********************************************************************************
+			\brief Construct and return an inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		Matrix3x3 Inverse(void) const;
+
+		/*!*********************************************************************************
+			\brief Construct and return a column major inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		Matrix3x3 InverseT(void) const;
+
+		/*!*********************************************************************************
+			\brief Construct and return a transpose matrix
+
+			\param [in] matrix: Matrix to be transposed
+		***********************************************************************************/
+		Matrix3x3 Transpose(void) const;
+
+		/*!*********************************************************************************
+			\brief Calculate and return the determinant of mat
+
+			\param [in] matrix: To calculate the determinant of the matrix
+		***********************************************************************************/
+		f32 Determinant(void) const;
+
+		/*!*********************************************************************************
 			\brief
 			Turn a 3x3 matrix into a translation matrix
 
@@ -184,6 +226,34 @@ namespace ALEngine::Math
 			A rotation matrix
 		***********************************************************************************/
 		static Matrix3x3 Rotation(f32 deg);
+
+		/*!*********************************************************************************
+			\brief Construct and return an inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		static Matrix3x3 Inverse(Matrix3x3 const& mat);
+
+		/*!*********************************************************************************
+			\brief Construct and return a column major inverse matrix
+
+			\param [in] matrix: Matrix to be inversed
+		***********************************************************************************/
+		static Matrix3x3 InverseT(Matrix3x3 const& mat);
+
+		/*!*********************************************************************************
+			\brief Construct and return a transpose matrix
+
+			\param [in] matrix: Matrix to be transposed
+		***********************************************************************************/
+		static Matrix3x3 Transpose(Matrix3x3 const& mat);
+
+		/*!*********************************************************************************
+			\brief Calculate and return the determinant of mat
+
+			\param [in] matrix: To calculate the determinant of the matrix
+		***********************************************************************************/
+		static f32 Determinant(Matrix3x3 const& mat);
 
 	private:
 		Vector3 mat[3];

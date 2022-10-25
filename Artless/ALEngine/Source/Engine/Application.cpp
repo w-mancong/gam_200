@@ -19,32 +19,9 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
-	Entity player;
-	Entity Target;
-	Entity PretendCoin;
-
-	void CollectCoint(Entity current, Entity other) {
-		if (Coordinator::Instance()->HasComponent<CharacterController>(other)) {
-			printf("Coin Collected\n");
-			//Coordinator::Instance()->GetComponent<Transform>(current).position.y += 150;
-			//Coordinator::Instance()->GetComponent<Transform>(other).position.x -= 50;
-			Coordinator::Instance()->GetComponent<Collider2D>(current).isEnabled = false;
-		}
-	}
-
-	void START() {
-		printf("START ");
-	}
-	void STAY() {
-		printf("STAY ");
-	}
-
-	void CLICK() {
-		printf("CLICK ");
-	}
-
-	void EXIT() {
-		printf("EXIT ");
+	namespace
+	{
+		Entity entity;
 	}
 
 	void Application::Init(void)
@@ -64,52 +41,25 @@ namespace ALEngine::Engine
 
 		Engine::AssetManager::Instance()->Init();
 
-		//AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
-		//AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
-		//AL_CORE_INFO("THIS IS A INFO MESSAGE");
-		//AL_CORE_WARN("THIS IS A WARNING MESSAGE");
-		//AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
-		//AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
-
-		player = Coordinator::Instance()->CreateEntity();
-		Target = Coordinator::Instance()->CreateEntity();
-		PretendCoin = Coordinator::Instance()->CreateEntity();
-
-		Transform playerTransform;
-		playerTransform.position = { 10, 300 };
-		playerTransform.scale = { 100, 100 };
-		Coordinator::Instance()->AddComponent(player, playerTransform);
-
-		CreateCollider(player);
-		//CreateRigidbody(player);
-		//CreateCharacterController(player);
-		
-		//CreateEventTrigger(player);
-		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
-		////Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
-		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
-		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
-
-		CreateEnemyUnit(player);
-
-		Transform targetTransform;
-		targetTransform.position = { 0, -250 };
-		targetTransform.scale = { 800,100 };
-		Coordinator::Instance()->AddComponent(Target, targetTransform);
-		CreateCollider(Target);
-
-		targetTransform.position = { 150, -170 };
-		targetTransform.scale = { 35, 35 };
-		Coordinator::Instance()->AddComponent(PretendCoin, targetTransform);
-		CreateCollider(PretendCoin);
-		Coordinator::Instance()->GetComponent<Collider2D>(PretendCoin).isTrigger = true;
-		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(PretendCoin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
-
-
-		StartGameplaySystem();
+		AL_CORE_TRACE("THIS IS A TRACE MESSAGE");
+		AL_CORE_DEBUG("THIS IS A DEBUG MESSAGE");
+		AL_CORE_INFO("THIS IS A INFO MESSAGE");
+		AL_CORE_WARN("THIS IS A WARNING MESSAGE");
+		AL_CORE_ERROR("THIS IS AN ERROR MESSAGE");
+		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 
 		appStatus = 1;
-		RunFileWatcher();
+		RunFileWatcherThread();
+
+		//Transform trans{ {}, {200.0f, 200.0f}, 0 };
+		//entity = CreateSprite(trans);
+		//Animator animator = CreateAnimator("Test");
+		//AttachAnimator(entity, animator);
+
+		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
+		//AddAnimationToAnimator(animator, "PlayingGuitar");
+		//AddAnimationToAnimator(animator, "PlayerRunning");
+		//SaveAnimator(animator);
 	}
 
 	void Application::Update(void)
@@ -120,17 +70,10 @@ namespace ALEngine::Engine
 		// should do the game loop here
 		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && appStatus)
 		{
-			Input::Update();
-			AssetManager::Instance()->Update();
 			// Get Current Time
 			Time::ClockTimeNow();
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
-
-			//if (Input::KeyTriggered(KeyCode::Space)) {
-			//	EventTrigger& new_event = Coordinator::Instance()->GetComponent<EventTrigger>(player);
-			//	new_event.OnPointEnter.isTriggered = true;
-			//}
 
 			// ImGui Editor
 			{
@@ -184,12 +127,14 @@ namespace ALEngine::Engine
 				// Wait for next frame
 				Time::WaitUntil();
 			}
+
+			// Marks the end of a frame loop, for tracy profiler
+			FrameMark
 		}
 	}
 
 	void Application::Exit(void)
 	{
-		ExitGameplaySystem();
 		ALEditor::Instance()->Exit();		// Exit ImGui
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		glfwTerminate();					// clean/delete all GLFW resources
@@ -205,23 +150,34 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
+		ZoneScopedN("Normal Update")
+		Input::Update();
+		AssetManager::Instance()->Update();
 
+		if (Input::KeyTriggered(KeyCode::MouseRightButton))
+		{
+			Math::vec2 john = Input::GetMouseWorldPos();
+
+			AL_CORE_DEBUG("John Pos: {}, {}", john.x, john.y);
+		}
+
+		//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+
+		//if (Input::KeyTriggered(KeyCode::A))
+		//	ChangeAnimation(animator, "PlayingGuitar");
+		//if (Input::KeyTriggered(KeyCode::D))
+		//	ChangeAnimation(animator, "PlayerRunning");
 	}
 
 	void Engine::FixedUpdate(void)
 	{
-		UpdateCharacterControllerSystem();
-		UpdateGameplaySystem();
-
+		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 
-		UpdateEventCollisionTriggerSystem();
-		UpdateEventTriggerSystem();
-
-		DebugDrawCollider();
 		DebugDrawRigidbody();
+		DebugDrawCollider();
 	}
 
 	int GetAppStatus(void)
