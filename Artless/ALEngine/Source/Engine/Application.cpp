@@ -81,16 +81,16 @@ namespace ALEngine::Engine
 		Coordinator::Instance()->AddComponent(player, playerTransform);
 
 		CreateCollider(player);
-		CreateRigidbody(player);
-		CreateCharacterController(player);
+		//CreateRigidbody(player);
+		//CreateCharacterController(player);
 		
-		CreateEventTrigger(player);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
-		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
+		//CreateEventTrigger(player);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
+		////Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
-		CreatePlayerUnit(player);
+		CreateEnemyUnit(player);
 
 		Transform targetTransform;
 		targetTransform.position = { 0, -250 };
@@ -104,6 +104,9 @@ namespace ALEngine::Engine
 		CreateCollider(PretendCoin);
 		Coordinator::Instance()->GetComponent<Collider2D>(PretendCoin).isTrigger = true;
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(PretendCoin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
+
+
+		StartGameplaySystem();
 
 		appStatus = 1;
 		RunFileWatcher();
@@ -186,6 +189,7 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
+		ExitGameplaySystem();
 		ALEditor::Instance()->Exit();		// Exit ImGui
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		glfwTerminate();					// clean/delete all GLFW resources

@@ -249,6 +249,7 @@
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
     <ClInclude Include="Include\Common Header\MySerializer.h" />
+    <ClInclude Include="Include\ECS\Components\Cell.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
     <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
     <ClInclude Include="Include\ECS\Components\Unit.h" />

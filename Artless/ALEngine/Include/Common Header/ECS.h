@@ -21,6 +21,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include "ECS/Components/CharacterController.h"
 #include "ECS/COmponents/EventTrigger.h"
 #include "ECS/COmponents/Unit.h"
+#include "ECS/COmponents/Cell.h"
 
 // --------------- Structure --------------------
 #include "ECS/Structure/entity.h"

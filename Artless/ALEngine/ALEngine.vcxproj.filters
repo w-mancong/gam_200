@@ -278,6 +278,7 @@
     <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
     <ClInclude Include="Include\ECS\Components\Unit.h" />
     <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
+    <ClInclude Include="Include\ECS\Components\Cell.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

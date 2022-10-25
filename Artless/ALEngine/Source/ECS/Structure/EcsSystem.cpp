@@ -13,6 +13,7 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<EventTrigger>();
 		Coordinator::Instance()->RegisterComponent<EventCollisionTrigger>();
 		Coordinator::Instance()->RegisterComponent<Unit>();
+		Coordinator::Instance()->RegisterComponent<Cell>();
 	}
 
 	void RegisterSystem(void)
