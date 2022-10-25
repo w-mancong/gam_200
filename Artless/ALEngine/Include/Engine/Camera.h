@@ -105,6 +105,8 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		Matrix4x4 OrthographicMatrixImgui(void) const;
 
+		vec3& Position(void);
+
 		/*!*********************************************************************************
 			\brief
 			Set camera position

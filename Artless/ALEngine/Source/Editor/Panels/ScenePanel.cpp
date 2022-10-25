@@ -1,5 +1,7 @@
 #include "pch.h"
 #include <glm/glm/glm.hpp>
+#include <glm/glm/gtc/matrix_transform.hpp>
+#include <glm/glm/gtc/type_ptr.hpp>
 
 #include "imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
@@ -40,14 +42,16 @@ namespace ALEngine::Editor
 
 		Math::vec3 camPos = m_EditorCamera.Position();
 
-		//if (Input::KeyDown(KeyCode::W))
-		//	m_EditorCamera.Position(camPos.x, camPos.y + 0.5f, camPos.z);
-		//if (Input::KeyDown(KeyCode::A))
-		//	m_EditorCamera.Position(camPos.x - 0.5f, camPos.y, camPos.z);
-		//if (Input::KeyDown(KeyCode::S))
-		//	m_EditorCamera.Position(camPos.x, camPos.y - 0.5f, camPos.z);
-		//if (Input::KeyDown(KeyCode::D))
-		//	m_EditorCamera.Position(camPos.x + 0.5f, camPos.y, camPos.z);
+		f32 constexpr CAM_SPEED{ 2.5f };
+
+		if (Input::KeyDown(KeyCode::W))
+			m_EditorCamera.Position().y += CAM_SPEED;
+		if (Input::KeyDown(KeyCode::A))
+			m_EditorCamera.Position().x -= CAM_SPEED;
+		if (Input::KeyDown(KeyCode::S))
+			m_EditorCamera.Position().y -= CAM_SPEED;
+		if (Input::KeyDown(KeyCode::D))
+			m_EditorCamera.Position().x += CAM_SPEED;
 
 		// Begin ImGui
 		if (!ImGui::Begin("Editor Scene"))
@@ -199,6 +203,7 @@ namespace ALEngine::Editor
 			mousePos.y >= -1.f && mousePos.y <= 1.f)
 		{
 			using namespace Math;
+
 			// Convert mouse pos from screen space to world space
 			// Projection mtx
 			Mat4 inv_proj = m_EditorCamera.ProjectionMatrix();
@@ -208,7 +213,7 @@ namespace ALEngine::Editor
 			Mat4 inv_view = m_EditorCamera.ViewMatrix();
 			inv_view = Mat4::InverseT(inv_view);
 
-			mousePos = inv_proj * inv_view * mousePos;
+			mousePos = inv_view * inv_proj * mousePos;
 
 			return Math::Vec2(mousePos.x, mousePos.y);
 		}
