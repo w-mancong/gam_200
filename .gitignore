@@ -37,5 +37,10 @@
 # ImGui
 Artless/bin/imgui.ini
 
+# Submodules
+Artless/Extern/include/tracy
+Artless/Extern/include/ImGuizmo
+Artless/Extern/include/spdlog
+
 # Logs
 Artless/bin/logs
