@@ -111,6 +111,11 @@ namespace ALEngine::Tree
             if (p == nullptr)
                 return;
 
+            if (p->left == nullptr)
+            {
+                p->parent = true;
+            }
+
             if (p->left == nullptr) // first child
             {
                 p->left = Memory::DynamicMemory::New<Node>();
@@ -303,7 +308,10 @@ namespace ALEngine::Tree
                             prevNode->right = nullptr;
                         }
                         else if (prevNode->left == parent)
+                        {
                             prevNode->left = nullptr;
+                            prevNode->parent = false;
+                        }
                     }
                     else if (parent != nullptr) // parent is sandwhiched
                     {
