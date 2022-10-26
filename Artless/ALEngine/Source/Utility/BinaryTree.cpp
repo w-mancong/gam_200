@@ -8,7 +8,6 @@ namespace ALEngine::Tree
 
     BinaryTree::~BinaryTree()
     {
-        Destruct(-1);
     }
 
     void BinaryTree::Init(void)
@@ -231,7 +230,7 @@ namespace ALEngine::Tree
     {
         searchVect.clear();
         destructVect.clear();
-        if (id == -1 && GetHead()->right != nullptr)
+        if (id == -1 && GetHead() != nullptr && GetHead()->right != nullptr)
         {
             GetHead()->left = GetHead()->right;
             GetHead()->right = nullptr;
