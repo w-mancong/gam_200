@@ -1,13 +1,13 @@
 /*!
-file:	CharacterControllerSystem.h
+file:	EventTriggerSystem.h
 author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
-brief:	This file contains the function declarations for CharacterControllerSystem.h
+brief:	This file contains the function declarations for EventTriggerSystem.h
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#ifndef	CHARACTERCONTROLLER_SYSTEM_H
-#define CHARACTERCONTROLLER_SYSTEM_H
+#ifndef	EVENT_TRIGGER_SYSTEM_H
+#define EVENT_TRIGGER_SYSTEM_H
 
 namespace ALEngine
 {
@@ -17,27 +17,26 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Register Character Controller for ECS
+			Register RigidbodySystem for ECS
 		***********************************************************************************/
-		void RegisterCharacterControllerSystem(void);
+		void RegisterEventTriggerSystem(void);
 
 		/*!*********************************************************************************
 			\brief
-			Used at end of update, runs through each Character Controller
+			Update EventTrigger System
 		***********************************************************************************/
-		void UpdateCharacterControllerSystem(void);
+		void UpdateEventTriggerSystem();
 
 		/*!*********************************************************************************
 			\brief
-			Adds Character Controller component to the entity
+			Adds rigidbody component to the entity
 		***********************************************************************************/
-		void CreateCharacterController(Entity const& entity);
+		void CreateEventTrigger(Entity const& entity);
 
-
-		void OnCollisionEnter_Player(u32 currentEntity, u32 otherEntity);
-		void OnCollisionStay_Player(u32 currentEntity, u32 otherEntity);
-		void OnCollisionExit_Player(u32 currentEntity, u32 otherEntity);
+		void Subscribe(EventCollisionTrigger& eventTrig, EVENT_COLLISION_TRIGGER_TYPE eventType, void (*fp)(u32, u32));
+		void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType, void (*fp)());
+		void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)());
+		//void Unsubscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType);
 	}
 }
-
 #endif

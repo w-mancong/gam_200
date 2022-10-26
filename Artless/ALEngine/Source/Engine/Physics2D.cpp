@@ -202,4 +202,28 @@ namespace ALEngine::Engine::Physics
 		//Return empty output
 		return hitOutput;
 	}
+
+	bool Physics2D_CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius) {
+		//Direction, used for distance 
+		Vector2 direction = position - circleCenter;
+
+		//Return Intersection
+		return (direction.x * direction.x + direction.y * direction.y) <= circleRadius * circleRadius;
+	}
+
+	bool Physics2D_CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight) {
+		//Holder for bottom left and top right
+		Vector2 bottomLeft = boxCenter - Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
+		Vector2 topRight = boxCenter + Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
+
+		//std::cout << position << std::endl;
+		//Intersection check
+		if (position.x < bottomLeft.x || position.x > topRight.x || position.y < bottomLeft.y || position.y > topRight.y) {
+			//No intersection
+			return false;
+		}
+
+		//Intersection
+		return true;
+	}
 }

@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong@digipen.edu
 brief:	This file contains the function declarations for RenderSystem
 
-		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	RENDER_SYSTEM_H
 #define RENDER_SYSTEM_H
@@ -24,29 +24,14 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	void Render(void);
 
-#if EDITOR
 	/*!*********************************************************************************
-		\brief Renders any entities with Sprite and Transform components, to be used
-		by ScenePanel
+		\brief
+		Gets the FB Texture ID
 
-		\param [in] camera: Camera of the scene panel
-	***********************************************************************************/
-	void Render(Engine::Camera const& camera);
-
-	/*!*********************************************************************************
-		\brief Gets the FB Texture ID for game panel
-
-		\return FB Texture ID for rendering to ImGui space
+		\return
+		FB Texture ID for rendering to ImGui space
 	***********************************************************************************/
 	u32 GetFBTexture(void);
-
-	/*!*********************************************************************************
-		\brief Get the Editor Texutre ID for scene panel
-
-		\return Editor Texture ID for rendering to ImGui space
-	***********************************************************************************/
-	u32 GetEditorTexture(void);
-#endif
 
 	/*!*********************************************************************************
 		\brief
@@ -125,30 +110,9 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	Math::Vector3 CameraPosition(void);
 
-	/*!*********************************************************************************
-		\brief Get the projection matrix constructed from camera
-	***********************************************************************************/
 	Math::Matrix4x4 GetProjection(void);
 
-	/*!*********************************************************************************
-		\brief Get view matrix constructed from camera
-	***********************************************************************************/
 	Math::Matrix4x4 GetView(void);
-
-	/*!*********************************************************************************
-		\brief Get the perspective matrix constructed from camera
-	***********************************************************************************/
-	Math::Matrix4x4 GetPerspective(void);
-
-	/*!*********************************************************************************
-		\brief Get the orthographic matrix constructed from camera
-	***********************************************************************************/
-	Math::Matrix4x4 GetOrthographic(void);
-
-	/*!*********************************************************************************
-		\brief Get the orthographic matrix constructed from camera for Imgui
-	***********************************************************************************/
-	Math::Matrix4x4 GetOrthographicImgui(void);
 
 	/*!*********************************************************************************
 		\brief
@@ -158,6 +122,8 @@ namespace ALEngine::ECS
 		New fov angle of camera
 	***********************************************************************************/
 	void CameraFov(f32 fov);
+
+	Tree::BinaryTree& GetSceneGraph(void);
 
 	/*!*********************************************************************************
 		\brief

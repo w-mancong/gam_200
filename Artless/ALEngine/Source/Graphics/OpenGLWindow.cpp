@@ -27,7 +27,7 @@ namespace ALEngine::Graphics
 
 	GLFWwindow* OpenGLWindow::window = nullptr;
 	u32 OpenGLWindow::width{ DEFAULT_WIDTH }, OpenGLWindow::height{ DEFAULT_HEIGHT };
-	std::string OpenGLWindow::title{ "ALEngine" };
+	std::string OpenGLWindow::title{};
 	void OpenGLWindow::InitGLFWWindow(void)
 	{
 		glfwInit();
