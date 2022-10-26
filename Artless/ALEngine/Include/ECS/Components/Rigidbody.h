@@ -23,7 +23,7 @@ namespace ALEngine::ECS::Component
 		Math::Vector2 nextPosition{ 0.f, 0.f };
 
 		//Drag, 0 for no friction, 1 for normal
-		Math::Vector2 velocity{ 0.f, 0.f }, acceleration{ 0.f,0.f }, drag{ 1.f,1.f };
+		Math::Vector2 velocity{ 0.f, 0.f }, frameVelocity{ 0.f,0.f }, acceleration{ 0.f,0.f }, drag{ 1.f,1.f };
 				
 		f32 mass{ 1.f };			//Mass
 		bool hasGravity{ true };	//Is Gravity Enabled

@@ -29,6 +29,19 @@ namespace ALEngine::Math
 		return *(value_ptr() + row * 4 + col);
 	}
 
+	vec4& Matrix4x4::operator()(size_type row)
+	{
+		return const_cast<vec4&>(const_cast<Matrix4x4 const&>((*this))(row));
+	}
+
+	vec4 const& Matrix4x4::operator()(size_type row) const
+	{
+#ifdef _DEBUG
+		assert(0 <= row && 4 > row && "Rows and Columns must be a positive integer lesser than 4!");
+#endif
+		return *(mat + row);
+	}
+
 	Matrix4x4& Matrix4x4::operator+=(Matrix4x4 const& rhs)
 	{
 		Matrix4x4 res(1.0f);  Matrix4x4 const& lhs = *this;
@@ -203,6 +216,18 @@ namespace ALEngine::Math
 		return res;
 	}
 
+	Matrix4x4 Matrix4x4::OrthoImgui(f32 left, f32 right, f32 bottom, f32 top, f32 zNear, f32 zFar)
+	{
+		Matrix4x4 res{ 1.0f };
+		res(0, 0) = 2.0f / (right - left);
+		res(1, 1) = 2.0f / (top - bottom);
+		res(2, 2) = 1.0f / (zFar - zNear);
+		res(3, 0) = (left + right) / (left - right);
+		res(3, 1) = (bottom + top) / (bottom - top);
+		res(3, 2) = zNear / (zNear - zFar);
+		return res;
+	}
+
 	Matrix4x4 Matrix4x4::Perspective(f32 fov, f32 aspect, f32 zNear, f32 zFar)
 	{
 #if _DEBUG
@@ -259,6 +284,63 @@ namespace ALEngine::Math
 			Vector4{   0.0f,		   0.0f,			1.0f,  0.0f },
 			Vector4{   pos.x,		   pos.y,			pos.z, 1.0f }
 		);
+	}
+
+	Matrix4x4 Matrix4x4::Inverse(Matrix4x4 const& mat)
+	{
+		f32 const coef00 = mat(2, 2) * mat(3, 3) - mat(3, 2) * mat(2, 3);
+		f32 const coef02 = mat(1, 2) * mat(3, 3) - mat(3, 2) * mat(1, 3);
+		f32 const coef03 = mat(1, 2) * mat(2, 3) - mat(2, 2) * mat(1, 3);
+
+		f32 const coef04 = mat(2, 1) * mat(3, 3) - mat(3, 1) * mat(2, 3);
+		f32 const coef06 = mat(1, 1) * mat(3, 3) - mat(3, 1) * mat(1, 3);
+		f32 const coef07 = mat(1, 1) * mat(2, 3) - mat(2, 1) * mat(1, 3);
+
+		f32 const coef08 = mat(2, 1) * mat(3, 2) - mat(3, 1) * mat(2, 2);
+		f32 const coef10 = mat(1, 1) * mat(3, 2) - mat(3, 1) * mat(1, 2);
+		f32 const coef11 = mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2);
+		
+		f32 const coef12 = mat(2, 0) * mat(3, 3) - mat(3, 0) * mat(2, 3);
+		f32 const coef14 = mat(1, 0) * mat(3, 3) - mat(3, 0) * mat(1, 3);
+		f32 const coef15 = mat(1, 0) * mat(2, 3) - mat(2, 0) * mat(1, 3);
+
+		f32 const coef16 = mat(2, 0) * mat(3, 2) - mat(3, 0) * mat(2, 2);
+		f32 const coef18 = mat(1, 0) * mat(3, 2) - mat(3, 0) * mat(1, 2);
+		f32 const coef19 = mat(1, 0) * mat(2, 2) - mat(2, 0) * mat(1, 2);
+		
+		f32 const coef20 = mat(2, 0) * mat(3, 1) - mat(3, 0) * mat(2, 1);
+		f32 const coef22 = mat(1, 0) * mat(3, 1) - mat(3, 0) * mat(1, 1);
+		f32 const coef23 = mat(1, 0) * mat(2, 1) - mat(2, 0) * mat(1, 1);
+
+		vec4 const fac0(coef00, coef00, coef02, coef03);
+		vec4 const fac1(coef04, coef04, coef06, coef07);
+		vec4 const fac2(coef08, coef08, coef10, coef11);
+		vec4 const fac3(coef12, coef12, coef14, coef15);
+		vec4 const fac4(coef16, coef16, coef18, coef19);
+		vec4 const fac5(coef20, coef20, coef22, coef23);
+
+		vec4 const vec0(mat(1, 0), mat(0, 0), mat(0, 0), mat(0, 0));
+		vec4 const vec1(mat(1, 1), mat(0, 1), mat(0, 1), mat(0, 1));
+		vec4 const vec2(mat(1, 2), mat(0, 2), mat(0, 2), mat(0, 2));
+		vec4 const vec3(mat(1, 3), mat(0, 3), mat(0, 3), mat(0, 3));
+
+		vec4 const inv0(vec1 * fac0 - vec2 * fac1 + vec3 * fac2);
+		vec4 const inv1(vec0 * fac0 - vec2 * fac3 + vec3 * fac4);
+		vec4 const inv2(vec0 * fac1 - vec1 * fac3 + vec3 * fac5);
+		vec4 const inv3(vec0 * fac2 - vec1 * fac4 + vec2 * fac5);
+
+		vec4 const signA(+1.0f, -1.0f, +1.0f, -1.0f);
+		vec4 const signB(-1.0f, +1.0f, -1.0f, +1.0f);
+		mat4 const inverse(inv0 * signA, inv1 * signB, inv2 * signA, inv3 * signB);
+
+		vec4 const row0(inverse(0, 0), inverse(1, 0), inverse(2, 0), inverse(3, 0));
+
+		vec4 const dot0(mat(0) * row0);
+		f32 const dot1 = (dot0.x + dot0.y) + (dot0.z + dot0.w);
+
+		f32 const oneOverDeterminant = 1.0f / dot1;
+
+		return inverse * oneOverDeterminant;
 	}
 
 	Matrix4x4 operator+(Matrix4x4 const& lhs, Matrix4x4 const& rhs)

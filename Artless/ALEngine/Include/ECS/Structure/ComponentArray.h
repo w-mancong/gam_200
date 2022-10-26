@@ -143,4 +143,5 @@ namespace ALEngine::ECS
 		u64 mSize{};
 	};
 }
+
 #endif

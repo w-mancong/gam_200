@@ -10,45 +10,34 @@ brief:	This file contains the function declaration for Physics2D.h
 *//*__________________________________________________________________________________*/
 #ifndef	PHYSICS2D_H
 #define PHYSICS2D_H
+
 namespace ALEngine::Engine::Physics
 {
-	//Representation of ray or a line
-	struct Ray2D {
-		Math::Vector2 origin{};	//Origin of ray
-		Math::Vector2 end{};	//End of ray
-	};
+		//Representation of ray or a line
+		struct Ray2D {
+			Math::Vector2 origin{};	//Origin of ray
+			Math::Vector2 end{};	//End of ray
+		};
 
-	//To encapsulate output of data for raycasting
-	struct RaycastHit2D {
-		Math::Vector2 point{};	//Point of collision
-		Math::Vector2 normal{};	//Normal of intersection
-		bool isCollided{false};	//Holder for collision
-	};
-		
-	//Raycast functions
-	/*!*********************************************************************************
-		\brief
-		Raycast line to 2D Axis Aligned Bounding Box
-	***********************************************************************************/
-	RaycastHit2D Raycast_AABB(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider);
+		//To encapsulate output of data for raycasting
+		struct RaycastHit2D {
+			Math::Vector2 point{};	//Point of collision
+			Math::Vector2 normal{};	//Normal of intersection
+			bool isCollided{false};	//Holder for collision
+		};
 
-	/*!*********************************************************************************
-		\brief
-		Raycast line to 2D circle
-	***********************************************************************************/
-	RaycastHit2D Raycast_Circle(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider);
+		//Raycast functions
+		/*!*********************************************************************************
+			\brief
+			Raycast line to 2D Axis Aligned Bounding Box
+		***********************************************************************************/
+		RaycastHit2D Raycast_AABB(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider);
 
-	/*!*********************************************************************************
-		\brief
-			Returns outcome of collision between Point -> Circle
-	***********************************************************************************/
-	bool Physics2D_CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius);
-
-	/*!*********************************************************************************
-		\brief
-			Returns outcome of collision between Point -> AABB
-	***********************************************************************************/
-	bool Physics2D_CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight);
+		/*!*********************************************************************************
+			\brief
+			Raycast line to 2D circle
+		***********************************************************************************/
+		RaycastHit2D Raycast_Circle(Ray2D const& ray, Collider2D const& collider, Transform const& parent_transform_collider);
 }
 
 #endif

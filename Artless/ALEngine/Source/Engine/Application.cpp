@@ -19,6 +19,11 @@ namespace ALEngine::Engine
 		void Exit(void);
 	};
 
+	namespace
+	{
+		Entity entity;
+	}
+
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
@@ -44,7 +49,17 @@ namespace ALEngine::Engine
 		AL_CORE_CRITICAL("THIS IS A CRITICAL MESSAGE");
 
 		appStatus = 1;
-		RunFileWatcher();
+		RunFileWatcherThread();
+
+		//Transform trans{ {}, {200.0f, 200.0f}, 0 };
+		//entity = CreateSprite(trans);
+		//Animator animator = CreateAnimator("Test");
+		//AttachAnimator(entity, animator);
+
+		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
+		//AddAnimationToAnimator(animator, "PlayingGuitar");
+		//AddAnimationToAnimator(animator, "PlayerRunning");
+		//SaveAnimator(animator);
 	}
 
 	void Application::Update(void)
@@ -55,8 +70,6 @@ namespace ALEngine::Engine
 		// should do the game loop here
 		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && appStatus)
 		{
-			Input::Update();
-			AssetManager::Instance()->Update();
 			// Get Current Time
 			Time::ClockTimeNow();
 
@@ -134,7 +147,15 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
+		Input::Update();
+		AssetManager::Instance()->Update();
 
+		//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+
+		//if (Input::KeyTriggered(KeyCode::A))
+		//	ChangeAnimation(animator, "PlayingGuitar");
+		//if (Input::KeyTriggered(KeyCode::D))
+		//	ChangeAnimation(animator, "PlayerRunning");
 	}
 
 	void Engine::FixedUpdate(void)
