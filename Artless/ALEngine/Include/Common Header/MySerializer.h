@@ -56,6 +56,9 @@ namespace ALEngine::Serializer
 		Math::Vec2 GetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_DEFAULT_VEC2);
 		void SetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_VEC2);
 
+		Math::Vector3 GetVec3(const c8* CONST_PAIRNAME, const Math::Vector3 CONST_DEFAULT_VEC3);
+		void SetVec3(const c8* CONST_PAIRNAME, const Math::Vector3 CONST_VEC3);
+
 	private:
 		rapidjson::Document m_Doc;
 
