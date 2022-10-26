@@ -37,5 +37,8 @@
 # ImGui
 Artless/bin/imgui.ini
 
+# Tracy
+Artless/Extern/include/tracy
+
 # Logs
 Artless/bin/logs
