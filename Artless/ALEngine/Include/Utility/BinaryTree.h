@@ -11,6 +11,7 @@ namespace ALEngine::Tree
             u32 id{};
             Node* right{ nullptr }; // sibling
             Node* left{ nullptr }; // child
+            b8 parent{ false }
         };
     public:
         BinaryTree();
