@@ -124,6 +124,26 @@ namespace ALEngine::ECS
 			mSystemManager->EntitySignatureChanged(entity, signature);
 		}
 
+#if EDITOR
+		/*!*********************************************************************************
+			\brief
+			To disassociate an entity to this component
+
+			\param [in] entity:
+			ID of the entity to be disassociated with this component
+			\param [in] func: Function to be called when removing this component
+		***********************************************************************************/
+		template <typename T>
+		void RemoveComponent(Entity entity, void (*func)(Entity) = nullptr)
+		{
+			mComponentManager->RemoveComponent<T>(entity);
+			auto signature = mEntityManager->GetSignature(entity);
+			signature.set(mComponentManager->GetComponentType<T>(), false);
+			mSystemManager->EntitySignatureChanged(entity, signature);
+			if(func)
+				func(entity);
+		}
+#else
 		/*!*********************************************************************************
 			\brief
 			To disassociate an entity to this component
@@ -139,7 +159,7 @@ namespace ALEngine::ECS
 			signature.set(mComponentManager->GetComponentType<T>(), false);
 			mSystemManager->EntitySignatureChanged(entity, signature);
 		}
-
+#endif
 		/*!*********************************************************************************
 			\brief
 			Retrieve the component data tagged to this entity

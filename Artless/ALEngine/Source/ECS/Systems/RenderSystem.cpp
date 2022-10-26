@@ -7,7 +7,11 @@ namespace ALEngine::ECS
 	class RenderSystem : public System
 	{
 	public:
-		void RenderBatch();
+#if EDITOR
+		void RenderBatch(Camera const& cam);
+#else
+		void RenderBatch(void);
+#endif
 	};
 
 	struct Plane
@@ -45,23 +49,69 @@ namespace ALEngine::ECS
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
-
-		vec2 const vertex_position[4] =
-		{
-			{ -0.5f,  0.5f },	// top left
-			{ -0.5f, -0.5f },	// btm left
-			{  0.5f,  0.5f },	// top right
-			{  0.5f, -0.5f }	// btm right
-		};
-
-		s32 constexpr INDICES_SIZE{ 6 };
 		
+		Tree::BinaryTree sceneGraph{};
+		
+#if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
 
-		Tree::BinaryTree sceneGraph{};
+#endif
 	}
 
+#if EDITOR
+	void RenderSystem::RenderBatch(Camera const& cam)
+	{
+		std::vector<Entity> entities; entities.reserve(mEntities.size());
+		// copy into temp vector
+		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
+		// sort entities by layer
+		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
+		{
+			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+			return sp1.layer < sp2.layer;
+		});
+
+		u64 counter{};
+		u64 const SIZE{ entities.size() };
+		for (u64 i{}; i < SIZE; ++i)
+		{
+			Entity const& en = entities[i];
+			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
+				continue;
+			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+
+			*(vMatrix + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vColor + i) = sprite.color;
+			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + i))(3, 3) = sprite.index;
+
+			++counter;
+		}
+
+		indirectShader.use();
+		indirectShader.Set("proj", cam.ProjectionMatrix());
+		indirectShader.Set("view", cam.ViewMatrix());
+
+		glBindVertexArray(GetVao());
+
+		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		GenerateDrawCall(bd);
+
+		//draw
+		glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
+			GL_UNSIGNED_INT,							//indices represented as unsigned ints
+			(void*)0,									//start with the first draw command
+			static_cast<s32>(counter),					//draw objects
+			0);											//no stride, the draw commands are tightly packed
+
+		glBindVertexArray(0);
+		indirectShader.unuse();
+	}
+#else
 	void RenderSystem::RenderBatch(void)
 	{
 		std::vector<Entity> entities; entities.reserve(mEntities.size());
@@ -76,7 +126,8 @@ namespace ALEngine::ECS
 		});
 
 		u64 counter{};
-		for (u64 i{}; i < entities.size(); ++i)
+		u64 const SIZE{ entities.size() };
+		for (u64 i{}; i < SIZE; ++i)
 		{
 			Entity const& en = entities[i];
 			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
@@ -87,6 +138,7 @@ namespace ALEngine::ECS
 			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vColor    + i) = sprite.color;
 			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + i))(3, 3) = sprite.index;
 
 			++counter;
 		}
@@ -97,7 +149,8 @@ namespace ALEngine::ECS
 
         glBindVertexArray(GetVao());
 
-		BatchData bd{ vColor, vMatrix, texHandle };
+		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
         //draw
@@ -108,8 +161,10 @@ namespace ALEngine::ECS
             0);											//no stride, the draw commands are tightly packed
 
         glBindVertexArray(0);
+		indirectShader.unuse();
 	}
-	
+#endif
+
 	void RegisterRenderSystem(void)
 	{
 		rs = Coordinator::Instance()->RegisterSystem<RenderSystem>();
@@ -122,7 +177,7 @@ namespace ALEngine::ECS
 		Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
 		Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
 		Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
-
+		
 		// Init Gizmo
 		Gizmos::Gizmo::GizmoInit();
 
@@ -180,28 +235,18 @@ namespace ALEngine::ECS
 
 	void Render(void)
 	{
-		//------------------ Begin editor framebuffer rendering ------------------//
-		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
-		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
-
-		// render editor here
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
-		//------------------- End editor framebuffer rendering -------------------//
-
+#if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//
-		glEnable(GL_DEPTH_TEST);
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
-		//// Depth buffer settings:
-		//glDepthFunc(GL_ALWAYS);
-		//glClearDepth(1);
-		//glDepthMask(GL_TRUE);
-		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear viewport framebuffer
-
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+#endif
+		UpdateAnimatorSystem();
+#if EDITOR
+		rs->RenderBatch(camera);
+#else
 		rs->RenderBatch();
-
+#endif
 		Text test;
 		SetTextFont(test, "roboto");
 		SetTextFontType(test, Font::FontType::Italic);
@@ -230,8 +275,8 @@ namespace ALEngine::ECS
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
 		glDisable(GL_DEPTH_TEST);
-		//------------------ End viewport framebuffer rendering ------------------//
-		
+		//------------------ End viewport framebuffer rendering ------------------//		
+
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
 		{
@@ -242,10 +287,40 @@ namespace ALEngine::ECS
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());
 	}
 
+#if EDITOR
+	void Render(Camera const& cam)
+	{
+		std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
+		// copy into temp vector
+		std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
+		// sort entities by layer
+		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
+		{
+			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+			return sp1.layer < sp2.layer;
+		});
+		//------------------ Begin editor framebuffer rendering ------------------//
+		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
+		
+		rs->RenderBatch(cam);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
+		//------------------- End editor framebuffer rendering -------------------//
+	}
+
 	u32 GetFBTexture(void)
 	{
 		return fbTexture;
 	}
+
+	u32 GetEditorTexture(void)
+	{
+		return editorTexture;
+	}
+#endif
 
 	void SetBackgroundColor(Color const& color)
 	{
@@ -293,6 +368,21 @@ namespace ALEngine::ECS
 		return camera.ViewMatrix();
 	}
 
+	Matrix4x4 GetPerspective(void)
+	{
+		return camera.PerspectiveMatrix();
+	}
+
+	Matrix4x4 GetOrthographic(void)
+	{
+		return camera.OrthographicMatrix();
+	}
+
+	Matrix4x4 GetOrthographicImgui(void)
+	{
+		return camera.OrthographicMatrixImgui();
+	}
+
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
@@ -305,7 +395,7 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite;
+		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
@@ -314,7 +404,7 @@ namespace ALEngine::ECS
 
 	void CreateSprite(Entity const& entity, const char* filePath, RenderLayer layer)
 	{
-		Sprite sprite;
+		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
@@ -322,7 +412,7 @@ namespace ALEngine::ECS
 
 	Entity CreateSprite(Transform const& transform, const char* filePath, const char* tag, RenderLayer layer)
 	{
-		Entity entity;
+		Entity entity{};
 		if (tag == nullptr)
 			entity = Coordinator::Instance()->CreateEntity();
 		else

@@ -167,15 +167,15 @@ namespace ALEngine::Engine
 
 	void GenerateDrawCall(BatchData const& bd)
 	{
-		u64 baseVert = 0;
-		for (u64 i{}; i < ECS::MAX_ENTITIES; ++i)
+		u32 baseVert = 0;
+		for (u64 i{}; i < bd.counter; ++i)
 		{
-			(vDrawCommand + i)->vertexCount = 6;		//4 triangles = 12 vertices
-			(vDrawCommand + i)->instanceCount = 1;		//Draw 1 instance
-			(vDrawCommand + i)->firstIndex = 0;			//Draw from index 0 for this instance
-			(vDrawCommand + i)->baseVertex = baseVert;	//Starting from baseVert
-			(vDrawCommand + i)->baseInstance = i;		//gl_InstanceID
-			baseVert += gQuad.size();
+			(vDrawCommand + i)->vertexCount		= 6;					//4 triangles = 12 vertices
+			(vDrawCommand + i)->instanceCount	= 1;					//Draw 1 instance
+			(vDrawCommand + i)->firstIndex		= 0;					//Draw from index 0 for this instance
+			(vDrawCommand + i)->baseVertex		= baseVert;				//Starting from baseVert
+			(vDrawCommand + i)->baseInstance	= i;					//gl_InstanceID
+			baseVert += static_cast<u32>(gQuad.size());
 		}
 
 		glBindBuffer(GL_DRAW_INDIRECT_BUFFER, batch.ibo);

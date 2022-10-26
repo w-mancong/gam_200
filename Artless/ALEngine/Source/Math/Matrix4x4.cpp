@@ -29,6 +29,19 @@ namespace ALEngine::Math
 		return *(value_ptr() + row * 4 + col);
 	}
 
+	vec4& Matrix4x4::operator()(size_type row)
+	{
+		return const_cast<vec4&>(const_cast<Matrix4x4 const&>((*this))(row));
+	}
+
+	vec4 const& Matrix4x4::operator()(size_type row) const
+	{
+#ifdef _DEBUG
+		assert(0 <= row && 4 > row && "Rows and must be a positive integer lesser than 4!");
+#endif
+		return *(mat + row);
+	}
+
 	Matrix4x4& Matrix4x4::operator+=(Matrix4x4 const& rhs)
 	{
 		Matrix4x4 res(1.0f);  Matrix4x4 const& lhs = *this;
@@ -137,6 +150,26 @@ namespace ALEngine::Math
 		return &mat[0].x;
 	}
 
+	Matrix4x4 Matrix4x4::Inverse(void) const
+	{
+		return Inverse(*this);
+	}
+
+	Matrix4x4 Matrix4x4::InverseT(void) const
+	{
+		return InverseT(*this);
+	}
+
+	Matrix4x4 Matrix4x4::Transpose(void) const
+	{
+		return Transpose(*this);
+	}
+
+	f32 Matrix4x4::Determinant(void) const
+	{
+		return Determinant(*this);
+	}
+
 	Matrix4x4 Matrix4x4::Translate(f32 x, f32 y, f32 z)
 	{
 		Matrix4x4 res(1.0f); res(3, 0) = x, res(3, 1) = y, res(3, 2) = z;
@@ -203,6 +236,18 @@ namespace ALEngine::Math
 		return res;
 	}
 
+	Matrix4x4 Matrix4x4::OrthoImgui(f32 left, f32 right, f32 bottom, f32 top, f32 zNear, f32 zFar)
+	{
+		Matrix4x4 res{ 1.0f };
+		res(0, 0) = 2.0f / (right - left);
+		res(1, 1) = 2.0f / (top - bottom);
+		res(2, 2) = 1.0f / (zFar - zNear);
+		res(3, 0) = (left + right) / (left - right);
+		res(3, 1) = (bottom + top) / (bottom - top);
+		res(3, 2) = zNear / (zNear - zFar);
+		return res;
+	}
+
 	Matrix4x4 Matrix4x4::Perspective(f32 fov, f32 aspect, f32 zNear, f32 zFar)
 	{
 #if _DEBUG
@@ -249,16 +294,73 @@ namespace ALEngine::Math
 
 	Matrix4x4 Matrix4x4::ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot)
 	{
-		f32 const rad = DegreeToRadian(rot);
-		f32 const cos = std::cosf(rad), sin = std::sinf(rad);
+		return Model(pos, scale, rot).Transpose();
+	}
 
-		return Matrix4x4
-		(
-			Vector4{   scale.x * cos,  scale.x * sin,	0.0f,  0.0f },
-			Vector4{ -(scale.y * sin), scale.y * cos,	0.0f,  0.0f },
-			Vector4{   0.0f,		   0.0f,			1.0f,  0.0f },
-			Vector4{   pos.x,		   pos.y,			pos.z, 1.0f }
-		);
+	Matrix4x4 Matrix4x4::Inverse(Matrix4x4 const& mat)
+	{
+#if _DEBUG
+		f32 const det = Determinant(mat);
+		assert(!Utility::IsEqual(det, 0.0f) && "Determinant is 0, unable to proceed due to division by 0!!");
+		f32 const oneOverDeterminant = 1.0f / det;
+#else
+		f32 const oneOverDeterminant = 1.0f / Determinant(mat);
+#endif
+		mat4 adj{ 1.0f }; mat4 const transposed{ mat.Transpose() };
+		vec4 const row0 = transposed(0), row1 = transposed(1), row2 = transposed(2), row3 = transposed(3);
+
+		mat3 const mat00{  vec3{ row1.y, row1.z, row1.w },  vec3{ row2.y, row2.z, row2.w },  vec3{ row3.y, row3.z, row3.w } },
+				   mat01{ -vec3{ row1.x, row1.z, row1.w }, -vec3{ row2.x, row2.z, row2.w }, -vec3{ row3.x, row3.z, row3.w } },
+				   mat02{  vec3{ row1.x, row1.y, row1.w },  vec3{ row2.x, row2.y, row2.w },  vec3{ row3.x, row3.y, row3.w } },
+				   mat03{ -vec3{ row1.x, row1.y, row1.z }, -vec3{ row2.x, row2.y, row2.z }, -vec3{ row3.x, row3.y, row3.z } };
+
+		mat3 const mat10{ -vec3{ row0.y, row0.z, row0.w }, -vec3{ row2.y, row2.z, row2.w }, -vec3{ row3.y, row3.z, row3.w } },
+				   mat11{  vec3{ row0.x, row0.z, row0.w },  vec3{ row2.x, row2.z, row2.w },  vec3{ row3.x, row3.z, row3.w } },
+				   mat12{ -vec3{ row0.x, row0.y, row0.w }, -vec3{ row2.x, row2.y, row2.w }, -vec3{ row3.x, row3.y, row3.w } },
+				   mat13{  vec3{ row0.x, row0.y, row0.z },  vec3{ row2.x, row2.y, row2.z },  vec3{ row3.x, row3.y, row3.z } };
+
+		mat3 const mat20{  vec3{ row0.y, row0.z, row0.w },  vec3{ row1.y, row1.z, row1.w },  vec3{ row3.y, row3.z, row3.w } },
+				   mat21{ -vec3{ row0.x, row0.z, row0.w }, -vec3{ row1.x, row1.z, row1.w }, -vec3{ row3.x, row3.z, row3.w } },
+				   mat22{  vec3{ row0.x, row0.y, row0.w },  vec3{ row1.x, row1.y, row1.w },  vec3{ row3.x, row3.y, row3.w } },
+				   mat23{ -vec3{ row0.x, row0.y, row0.z }, -vec3{ row1.x, row1.y, row1.z }, -vec3{ row3.x, row3.y, row3.z } };
+
+		mat3 const mat30{ -vec3{ row0.y, row0.z, row0.w }, -vec3{ row1.y, row1.z, row1.w }, -vec3{ row2.y, row2.z, row2.w } },
+				   mat31{  vec3{ row0.x, row0.z, row0.w },  vec3{ row1.x, row1.z, row1.w },  vec3{ row2.x, row2.z, row2.w } },
+				   mat32{ -vec3{ row0.x, row0.y, row0.w }, -vec3{ row1.x, row1.y, row1.w }, -vec3{ row2.x, row2.y, row2.w } },
+				   mat33{  vec3{ row0.x, row0.y, row0.z },  vec3{ row1.x, row1.y, row1.z },  vec3{ row2.x, row2.y, row2.z } };
+
+		adj(0, 0) = mat00.Determinant(), adj(0, 1) = mat01.Determinant(), adj(0, 2) = mat02.Determinant(), adj(0, 3) = mat03.Determinant();
+		adj(1, 0) = mat10.Determinant(), adj(1, 1) = mat11.Determinant(), adj(1, 2) = mat12.Determinant(), adj(1, 3) = mat13.Determinant();
+		adj(2, 0) = mat20.Determinant(), adj(2, 1) = mat21.Determinant(), adj(2, 2) = mat22.Determinant(), adj(2, 3) = mat23.Determinant();
+		adj(3, 0) = mat30.Determinant(), adj(3, 1) = mat31.Determinant(), adj(3, 2) = mat32.Determinant(), adj(3, 3) = mat33.Determinant();
+
+		return oneOverDeterminant * adj;
+	}
+
+	Matrix4x4 Matrix4x4::InverseT(Matrix4x4 const& mat)
+	{
+		return Inverse(mat).Transpose();
+	}
+
+	Matrix4x4 Matrix4x4::Transpose(Matrix4x4 const& mat)
+	{
+		return mat4
+		{
+			vec4{ mat(0, 0), mat(1, 0), mat(2, 0), mat(3, 0) },
+			vec4{ mat(0, 1), mat(1, 1), mat(2, 1), mat(3, 1) },
+			vec4{ mat(0, 2), mat(1, 2), mat(2, 2), mat(3, 2) },
+			vec4{ mat(0, 3), mat(1, 3), mat(2, 3), mat(3, 3) },
+		};
+	}
+
+	f32 Matrix4x4::Determinant(Matrix4x4 const& mat)
+	{
+		vec4 const row0 = mat(0), row1 = mat(1), row2 = mat(2), row3 = mat(3);
+		f32 const det0 = row0.x * mat3({ row1.y, row1.z, row1.w }, { row2.y, row2.z, row2.w }, { row3.y, row3.z, row3.w }).Determinant();
+		f32 const det1 = row0.y * mat3({ row1.x, row1.z, row1.w }, { row2.x, row2.z, row2.w }, { row3.x, row3.z, row3.w }).Determinant();
+		f32 const det2 = row0.z * mat3({ row1.x, row1.y, row1.w }, { row2.x, row2.y, row2.w }, { row3.x, row3.y, row3.w }).Determinant();
+		f32 const det3 = row0.w * mat3({ row1.x, row1.y, row1.z }, { row2.x, row2.y, row2.z }, { row3.x, row3.y, row3.z }).Determinant();
+		return (+det0) + (-det1) + (+det2) + (-det3);
 	}
 
 	Matrix4x4 operator+(Matrix4x4 const& lhs, Matrix4x4 const& rhs)

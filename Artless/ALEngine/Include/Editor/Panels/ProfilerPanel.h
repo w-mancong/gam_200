@@ -13,6 +13,7 @@ brief:	This file contains function declarations for the ProfilerPanel class.
 
 namespace ALEngine::Editor
 {
+#if 0
 	/*!*********************************************************************************
 		\brief
 		Class that aids in the display of the Profiler Panel for the editor
@@ -46,6 +47,7 @@ namespace ALEngine::Editor
 		std::vector<Utility::TimerData> m_TempTimerDataList;	// Temp list of TimerData
 																	// List gets cleared every 1s
 	};
+#endif
 }
 
 #endif
