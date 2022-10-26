@@ -55,20 +55,41 @@ namespace ALEngine::ECS
 		//Set controls
 		charControl.leftKey = static_cast<u64>(KeyCode::A);
 		charControl.rightKey = static_cast<u64>(KeyCode::D);
-		charControl.jumpKey= static_cast<u64>(KeyCode::Space);
+		charControl.jumpKey = static_cast<u64>(KeyCode::Space);
 
 		//Set speed
-		charControl.speed = 150.f;
-		charControl.jumpStrength = 350.f;
+		charControl.speed = 50.f;
+		charControl.jumpStrength = 5.f;
 
 		Coordinator::Instance()->AddComponent(entity, charControl);
 
 		if (!Coordinator::Instance()->HasComponent<Rigidbody2D>(entity)) {
-			Coordinator::Instance()->AddComponent(entity, Rigidbody2D{});
+			Rigidbody2D rigid;
+			rigid.mass = 10;
+			Coordinator::Instance()->AddComponent(entity, rigid);
+		}
+		else {
+			Coordinator::Instance()->GetComponent<Rigidbody2D>(entity).mass = 10;
 		}
 		if (!Coordinator::Instance()->HasComponent<Collider2D>(entity)) {
 			Coordinator::Instance()->AddComponent(entity, Collider2D{});
 		}
+
+		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, OnCollisionEnter_Player);
+		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, OnCollisionStay_Player);
+		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
+	}
+
+	void OnCollisionEnter_Player(u32 currentEntity, u32 otherEntity) {
+		AL_CORE_INFO("Player Collided with something that has collider commponent ON BEGIN");
+	}
+
+	void OnCollisionStay_Player(u32 currentEntityu32, u32 otherEntity) {
+		AL_CORE_INFO("Player Collided with something that has collider commponent AND STAYING");
+	}
+
+	void OnCollisionExit_Player(u32 currentEntityu32, u32 otherEntity) {
+		AL_CORE_INFO("Player Collided with something that has collider commponent AND EXIT");
 	}
 
 	void UpdateCharacterControllerSystem() {
@@ -85,7 +106,7 @@ namespace ALEngine::ECS
 	void CharacterControllerSystem::UpdateCharacterController(CharacterController & characControl, Rigidbody2D & rigid) {
 		//Jump
 		if (Input::Input::KeyTriggered(static_cast<KeyCode>(characControl.jumpKey))) {
-			AddForce(rigid, Vector2(0, characControl.jumpStrength), FORCEMODE::FORCE);
+			AddForce(rigid, Vector2(0, characControl.jumpStrength), FORCEMODE::VELOCITY_CHANGE);
 		}				
 
 		//Movement
@@ -106,5 +127,5 @@ namespace ALEngine::ECS
 		if (Input::Input::KeyDown(KeyCode::W)) {
 			AddForce(rigid, Vector2(0, characControl.speed * 2), FORCEMODE::FORCE);
 		}
-	}
+	}	
 }

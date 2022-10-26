@@ -60,6 +60,9 @@
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Math\Matrix2x2.cpp" />
     <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
+    <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -284,6 +287,12 @@
     <ClInclude Include="tracy\Tracy.hpp" />
     <ClInclude Include="Include\Math\Matrix2x2.h" />
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
+    <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
+    <ClInclude Include="Include\ECS\Components\Cell.h" />
+    <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
+    <ClInclude Include="Include\ECS\Components\Unit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

@@ -21,7 +21,29 @@ namespace ALEngine::Engine
 
 	namespace
 	{
-		Entity entity;
+		Entity player, floor, coin, pathfinder;
+	}
+
+	void CollectCoint(Entity current, Entity other) {
+		if (Coordinator::Instance()->HasComponent<CharacterController>(other)) {
+			AL_CORE_INFO("Coin Collected");
+			Coordinator::Instance()->GetComponent<Collider2D>(current).isEnabled = false;
+			Coordinator::Instance()->GetComponent<Transform>(current).position = { 10000,10000 };
+		}
+	}
+	void START() {
+		AL_CORE_INFO("START");
+	}
+	void STAY() {
+		AL_CORE_INFO("STAY");
+	}
+
+	void CLICK() {
+		AL_CORE_INFO("CLICK");
+	}
+
+	void EXIT() {
+		AL_CORE_INFO("EXIT");
 	}
 
 	void Application::Init(void)
@@ -51,8 +73,44 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		//Transform trans{ {}, {200.0f, 200.0f}, 0 };
-		//entity = CreateSprite(trans);
+		player = Coordinator::Instance()->CreateEntity();
+		floor= Coordinator::Instance()->CreateEntity();
+		coin = Coordinator::Instance()->CreateEntity();
+		pathfinder = Coordinator::Instance()->CreateEntity();
+
+
+		Transform trans;
+		trans.position = { 400, 500 };
+		trans.scale = { 150, 150 };
+		Coordinator::Instance()->AddComponent(player, trans);
+		CreateSprite(player);
+		CreateCollider(player);
+		CreateCharacterController(player);
+		CreateEventTrigger(player);
+		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
+		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
+		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
+
+		trans.position = { 800, 50 };
+		trans.scale = { 1300, 100 };
+		Coordinator::Instance()->AddComponent(floor, trans);
+		CreateSprite(floor);
+		CreateCollider(floor);
+		
+		trans.position = { 1100, 300 };
+		trans.scale = { 50, 50 };
+		Coordinator::Instance()->AddComponent(coin, trans);
+		CreateSprite(coin);
+		CreateCollider(coin);
+		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(coin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
+
+		trans.position = { 500, 500 };
+		trans.scale = { 50, 50 };
+		Coordinator::Instance()->AddComponent(pathfinder, trans);
+		CreateSprite(pathfinder);
+		CreateEnemyUnit(pathfinder);
+
 		//Animator animator = CreateAnimator("Test");
 		//AttachAnimator(entity, animator);
 
@@ -60,6 +118,8 @@ namespace ALEngine::Engine
 		//AddAnimationToAnimator(animator, "PlayingGuitar");
 		//AddAnimationToAnimator(animator, "PlayerRunning");
 		//SaveAnimator(animator);
+
+		StartGameplaySystem();
 	}
 
 	void Application::Update(void)
@@ -135,6 +195,7 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
+		ExitGameplaySystem();
 		ALEditor::Instance()->Exit();		// Exit ImGui
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		glfwTerminate();					// clean/delete all GLFW resources
@@ -150,6 +211,10 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
+		UpdateCharacterControllerSystem();
+		UpdateEventTriggerSystem();
+		UpdateGameplaySystem();
+
 		ZoneScopedN("Normal Update")
 		Input::Update();
 		AssetManager::Instance()->Update();
@@ -161,6 +226,7 @@ namespace ALEngine::Engine
 			AL_CORE_DEBUG("John Pos: {}, {}", john.x, john.y);
 		}
 
+
 		//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
 		//if (Input::KeyTriggered(KeyCode::A))
@@ -171,10 +237,11 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
-		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
+		
+		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();
 		DebugDrawCollider();
