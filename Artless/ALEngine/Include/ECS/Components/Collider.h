@@ -48,10 +48,13 @@ namespace ALEngine::ECS::Component
 
 		bool isCollided{ false };	//If collider encountered collision
 		bool isTrigger{ false };	//If collider is triggered (true will ignore collision response)
-		bool isDebug = false;		//If collider is debug
+		bool isDebug{ false };		//If collider is debug
+		bool isEnabled { true };
 
 		//Keep track of all collision point during simulated frame
 		std::vector<CollisionPointData> collisionPoints;
+
+		std::vector<u32> collidedCollidersPtr;
 
 		//Local position (For offsets)
 		Math::Vector2 m_localPosition{ 0.f, 0.f };

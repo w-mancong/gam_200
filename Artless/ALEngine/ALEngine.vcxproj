@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
+    <ClCompile Include="Source\AI\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
     <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp">
@@ -157,6 +158,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
     <ClCompile Include="Source\Editor\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
@@ -262,13 +266,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\AI\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
     <ClInclude Include="Include\Common Header\MySerializer.h" />
     <ClInclude Include="Include\ECS\Components\Animation.h" />
+    <ClInclude Include="Include\ECS\Components\Cell.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
+    <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
     <ClInclude Include="Include\ECS\Components\Transition.h" />
+    <ClInclude Include="Include\ECS\Components\Unit.h" />
     <ClInclude Include="Include\ECS\Systems\AnimatorSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
