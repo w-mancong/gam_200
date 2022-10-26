@@ -1,7 +1,4 @@
 #include "pch.h"
-#include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
-#include <glm/glm/gtc/type_ptr.hpp>
 
 #include "imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
