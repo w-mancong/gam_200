@@ -86,15 +86,6 @@ namespace ALEngine::UserInput
 
 		/*!*********************************************************************************
 			\brief
-			Returns the cursor's world space position.
-
-			\return
-			Cursor World Space position.
-		***********************************************************************************/
-		static Math::Vec2 GetMouseWorldPos();
-
-		/*!*********************************************************************************
-			\brief
 			Returns the screen's X axis resolution.
 
 			\return

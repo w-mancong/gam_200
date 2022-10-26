@@ -83,11 +83,6 @@ namespace ALEngine::Graphics
 		glUseProgram(id);
 	}
 
-	void Shader::unuse(void)
-	{
-		glUseProgram(0);
-	}
-
 	// Utility uniform functions
 	/*********************************************************************************
 									BOOLEAN

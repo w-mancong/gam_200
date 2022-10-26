@@ -168,5 +168,4 @@ namespace ALEngine::Editor
 	{
 		return m_CurrentGizmoOperation;
 	}
-
 }

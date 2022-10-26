@@ -101,39 +101,6 @@ namespace ALEngine::Math
 		return *(&mat[0].x + row * 3 + col);
 	}
 
-	vec3& Matrix3x3::operator()(size_type row)
-	{
-		return const_cast<vec3&>( const_cast<Matrix3x3 const&>( (*this) )(row) );
-	}
-
-	vec3 const& Matrix3x3::operator()(size_type row) const
-	{
-#ifdef _DEBUG
-		assert(0 <= row && 3 > row && "Rows must be a positive integer lesser than 3!");
-#endif
-		return *(mat + row);
-	}
-
-	Matrix3x3 Matrix3x3::Inverse(void) const
-	{
-		return Inverse(*this);
-	}
-
-	Matrix3x3 Matrix3x3::InverseT(void) const
-	{
-		return InverseT(*this);
-	}
-
-	Matrix3x3 Matrix3x3::Transpose(void) const
-	{
-		return Transpose(*this);
-	}
-
-	f32 Matrix3x3::Determinant(void) const
-	{
-		return Determinant(*this);
-	}
-
 	Matrix3x3 Matrix3x3::Translate(f32 x, f32 y)
 	{
 		Matrix3x3 res(Vector3(0.0f, 0.0f, x), Vector3(0.0f, 0.0f, y));
@@ -166,58 +133,6 @@ namespace ALEngine::Math
 		// setting matrix accordingly
 		Matrix3x3 res(Vector3(cos, -sin, 0.0f), Vector3(sin, cos, 0.0f));
 		return res;
-	}
-
-	Matrix3x3 Matrix3x3::Inverse(Matrix3x3 const& mat)
-	{
-#if _DEBUG
-		f32 const det = Determinant(mat);
-		assert(!Utility::IsEqual(det, 0.0f) && "Determinant is 0, unable to proceed due to division by 0!!");
-		f32 const oneOverDeterminant = 1.0f / det;
-#else
-		f32 const oneOverDeterminant = 1.0f / Determinant(mat);
-#endif
-		mat3 adj{ 1.0f }; mat3 const transposed{ mat.Transpose() };
-		vec4 const row0 = transposed(0), row1 = transposed(1), row2 = transposed(2);
-
-		mat2 const mat00{  vec2{ row1.y, row1.z },  vec2{ row2.y, row2.z } },
-				   mat01{ -vec2{ row1.x, row1.z }, -vec2{ row2.x, row2.z } },
-				   mat02{  vec2{ row1.x, row1.y },  vec2{ row2.x, row2.y } };
-
-		mat2 const mat10{ -vec2{ row0.y, row0.z }, -vec2{ row2.y, row2.z }},
-				   mat11{  vec2{ row0.x, row0.z },  vec2{ row2.x, row2.z }},
-				   mat12{ -vec2{ row0.x, row0.y }, -vec2{ row2.x, row2.y }};
-
-		mat2 const mat20{  vec2{ row0.y, row0.z },  vec2{ row1.y, row1.z } },
-				   mat21{ -vec2{ row0.x, row0.z }, -vec2{ row1.x, row1.z } },
-				   mat22{  vec2{ row0.x, row0.y },  vec2{ row1.x, row1.y } };
-
-		adj(0, 0) = mat00.Determinant(), adj(0, 1) = mat01.Determinant(), adj(0, 2) = mat02.Determinant();
-		adj(1, 0) = mat10.Determinant(), adj(1, 1) = mat11.Determinant(), adj(1, 2) = mat12.Determinant();
-		adj(2, 0) = mat20.Determinant(), adj(2, 1) = mat21.Determinant(), adj(2, 2) = mat22.Determinant();
-
-		return oneOverDeterminant * adj;
-	}
-
-	Matrix3x3 Matrix3x3::InverseT(Matrix3x3 const& mat)
-	{
-		return Inverse(mat).Transpose();
-	}
-
-	Matrix3x3 Matrix3x3::Transpose(Matrix3x3 const& mat)
-	{
-		return mat3
-		{
-			vec3{ mat(0, 0), mat(1, 0), mat(2, 0) },
-			vec3{ mat(0, 1), mat(1, 1), mat(2, 1) },
-			vec3{ mat(0, 2), mat(1, 2), mat(2, 2) },
-		};
-	}
-
-	f32 Matrix3x3::Determinant(Matrix3x3 const& mat)
-	{
-		vec3 const row0 = mat(0), row1 = mat(1), row2 = mat(2);
-		return row0.x * (row1.y * row2.z - row2.y * row1.z) - row0.y * (row1.x * row2.z - row2.x * row1.z) + row0.z * (row1.x * row2.y - row2.x * row1.y);
 	}
 
 	Matrix3x3 operator+(Matrix3x3 const& lhs, Matrix3x3 const& rhs)

@@ -12,12 +12,56 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 namespace
 {
 	const std::filesystem::path basePath = "Assets"; //base file path
+	// Container used to check for orphan meta files
+	std::vector<std::string> metaFiles, assetFiles;
+	u64 constexpr RESERVE_SIZE{ 100 };
+	// Function to track meta files, if got orphan .meta files must delete
+
+	void TrackMetaFiles(void)
+	{
+		const std::filesystem::path basePath = "Assets"; //base file path
+
+		for (auto& file : std::filesystem::recursive_directory_iterator(basePath))
+		{
+			if (file.path().string().find("Dev") != std::string::npos || file.is_directory())
+				continue;
+
+			std::string const& filePath = file.path().string();
+			if (filePath.find(".meta") != std::string::npos)
+				metaFiles.push_back(filePath);
+			else
+				assetFiles.push_back(filePath);
+		}
+
+		for (auto it1 = assetFiles.begin(); it1 != assetFiles.end(); ++it1)
+		{
+			std::string meta = *it1 + ".meta";
+			auto it2 = std::find(metaFiles.begin(), metaFiles.end(), meta);
+
+			if (it2 != metaFiles.end())
+				metaFiles.erase(it2);
+		}
+
+		//if orphan meta file, then delete
+		for (auto it = metaFiles.begin(); it != metaFiles.end(); ++it)
+		{
+			if (remove(it->c_str()))
+			{
+				char error[1024];
+				strerror_s(error, errno); strcat_s(error, "\n");
+				std::cerr << "Error: " << error;
+			}
+		}
+		assetFiles.clear();
+		metaFiles.clear();
+	}
 }
 
 namespace ALEngine::Engine
 {
     FileWatcher::FileWatcher()
 	{
+		metaFiles.reserve(RESERVE_SIZE); assetFiles.reserve(RESERVE_SIZE);
 		//creating a record of files from the base directory and their last modification time
 		for (auto& file : std::filesystem::recursive_directory_iterator(basePath))
 		{
@@ -88,9 +132,13 @@ namespace ALEngine::Engine
 				}
 				catch (std::exception const& e)
 				{
-					AL_CORE_WARN(e.what());
+					//std::cerr << e.what() << std::endl;
 				}
 			}
+
+			//if(should_delay)
+			//	std::this_thread::sleep_for(std::chrono::seconds(2));
+			//TrackMetaFiles();
 		}
 	}
 
@@ -109,7 +157,7 @@ namespace ALEngine::Engine
 		}
 	}
 
-	void RunFileWatcherThread(void)
+	void RunFileWatcher(void)
 	{
 		std::thread worker{ FileWatcherWorkerThread };
 		worker.detach();
