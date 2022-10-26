@@ -8,7 +8,7 @@ namespace ALEngine::ECS
 	{
 	public:
 #if EDITOR
-		void RenderBatch(std::vector<Entity> entities, Camera const& cam);
+		void RenderBatch(Camera const& cam);
 #else
 		void RenderBatch(void);
 #endif
@@ -53,14 +53,13 @@ namespace ALEngine::ECS
 #if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
-
-		std::vector<Entity> entities;
 #endif
 	}
 
 #if EDITOR
-	void RenderSystem::RenderBatch(std::vector<Entity> entities, Camera const& cam)
+	void RenderSystem::RenderBatch(Camera const& cam)
 	{
+		std::vector<Entity> entities; entities.reserve(mEntities.size());
 		// copy into temp vector
 		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
 		// sort entities by layer
@@ -226,10 +225,7 @@ namespace ALEngine::ECS
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
 
-		MeshBuilder::Instance()->Init();	
-#if EDITOR
-		entities.reserve(ECS::MAX_ENTITIES);
-#endif
+		MeshBuilder::Instance()->Init();
 	}
 
 	void Render(void)
@@ -242,7 +238,7 @@ namespace ALEngine::ECS
 #endif
 		UpdateAnimatorSystem();
 #if EDITOR
-		rs->RenderBatch(entities, camera);
+		rs->RenderBatch(camera);
 #else
 		rs->RenderBatch();
 #endif
@@ -289,6 +285,7 @@ namespace ALEngine::ECS
 #if EDITOR
 	void Render(Camera const& cam)
 	{
+		std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
 		// copy into temp vector
 		std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
 		// sort entities by layer
@@ -303,7 +300,7 @@ namespace ALEngine::ECS
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
 		
-		rs->RenderBatch(entities, cam);
+		rs->RenderBatch(cam);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
