@@ -78,7 +78,6 @@ namespace ALEngine::Engine
 		coin = Coordinator::Instance()->CreateEntity();
 		pathfinder = Coordinator::Instance()->CreateEntity();
 
-
 		Transform trans;
 		trans.position = { 400, 500 };
 		trans.scale = { 150, 150 };
@@ -194,7 +193,6 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
-		ExitGameplaySystem();
 		ALEditor::Instance()->Exit();		// Exit ImGui
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		glfwTerminate();					// clean/delete all GLFW resources
@@ -225,7 +223,6 @@ namespace ALEngine::Engine
 			AL_CORE_DEBUG("John Pos: {}, {}", john.x, john.y);
 		}
 
-
 		//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
 		//if (Input::KeyTriggered(KeyCode::A))
@@ -236,11 +233,10 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
+		// Raycast2DCollision({ -25, 25 }, { 25, 25 });
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
-		
-		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();
 		DebugDrawCollider();
