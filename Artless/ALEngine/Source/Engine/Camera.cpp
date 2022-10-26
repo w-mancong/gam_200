@@ -92,6 +92,11 @@ namespace ALEngine::Engine
 		return Matrix4x4::OrthoImgui(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
 	}
 
+	vec3& Camera::Position(void)
+	{
+		return m_Position;
+	}
+
 	void Camera::Position(f32 x, f32 y)
 	{
 		Position(Vector3(x, y, m_Position.z));

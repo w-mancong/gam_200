@@ -116,6 +116,7 @@ namespace ALEngine::Editor
 
 		// Camera
 		Engine::Camera m_EditorCamera{ Math::Vec3(0.f, 0.f, 725.f) };
+		//Engine::Camera m_EditorCamera{ Math::Vec3(-static_cast<f32>(Graphics::OpenGLWindow::width >> 1), -static_cast<f32>(Graphics::OpenGLWindow::height >> 1), 725.f) };
 	};
 
 	/*!*********************************************************************************
