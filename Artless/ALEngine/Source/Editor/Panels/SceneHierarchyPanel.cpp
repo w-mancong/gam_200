@@ -42,6 +42,7 @@ namespace ALEngine::Editor
 			ECS::CreateSprite(GO, xform);
 
 			sceneGraph.Push(-1, GO);
+			std::cout << "AWD\n";
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
 			sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
