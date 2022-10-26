@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
+    <ClCompile Include="Source\AI\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
@@ -260,6 +261,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\AI\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
     <ClInclude Include="Include\Common Header\MySerializer.h" />

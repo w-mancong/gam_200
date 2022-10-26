@@ -16,8 +16,18 @@ namespace ALEngine::ECS::Component
 			2D Circle Collider for collision detection
 	***********************************************************************************/
 	struct Cell {
+
+		float m_HCost{ 0 }, m_GCost{ 10000 }, m_FCost{ 0 };
+		bool m_isAccesible{ true };
+		Cell *m_ParentCell;
+
 		u32 unitEntity;
 		uint32_t coordinate[2];
+
+		void CalculateFCost()
+		{
+			m_FCost = m_GCost + m_HCost;
+		}
 	};
 }
 #endif
