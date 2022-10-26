@@ -2,14 +2,19 @@
 
 namespace ALEngine::Tree
 {
-    BinaryTree::BinaryTree() : head{ Memory::DynamicMemory::New<Node>() }
+    BinaryTree::BinaryTree() : head{ nullptr }
     {
-        head->id = -1;
     }
 
     BinaryTree::~BinaryTree()
     {
         Destruct(-1);
+    }
+
+    void BinaryTree::Init(void)
+    {
+        head = Memory::DynamicMemory::New<Node>();
+        head->id = -1;
     }
 
     BinaryTree::Node* BinaryTree::SearchLeft(Node* node, u32 id)

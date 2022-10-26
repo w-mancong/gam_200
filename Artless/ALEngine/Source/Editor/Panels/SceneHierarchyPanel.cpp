@@ -12,6 +12,7 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 
 namespace ALEngine::Editor
 {
+
 	SceneHierarchyPanel::SceneHierarchyPanel(void)
 	{
 		m_EntityList = &Coordinator::Instance()->GetEntities();
@@ -19,6 +20,7 @@ namespace ALEngine::Editor
 
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		// Set size constraints of inspector
 		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
@@ -139,6 +141,8 @@ namespace ALEngine::Editor
 	
 	void SceneHierarchyPanel::UpdateEntitySHP(ECS::Entity child, b8& popup_hasopen)
 	{
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
 		// Flag for Tree Node
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
 

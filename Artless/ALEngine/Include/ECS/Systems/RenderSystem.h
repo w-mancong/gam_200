@@ -123,6 +123,8 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	void CameraFov(f32 fov);
 
+	Tree::BinaryTree& GetSceneGraph(void);
+
 	/*!*********************************************************************************
 		\brief
 		Create a sprite with image loaded in

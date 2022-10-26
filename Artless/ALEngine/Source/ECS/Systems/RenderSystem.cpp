@@ -58,6 +58,8 @@ namespace ALEngine::ECS
 		
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
+
+		Tree::BinaryTree sceneGraph{};
 	}
 
 	void RenderSystem::RenderBatch(void)
@@ -170,6 +172,8 @@ namespace ALEngine::ECS
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
+
+		sceneGraph.Init();
 
 		MeshBuilder::Instance()->Init();
 	}
@@ -292,6 +296,11 @@ namespace ALEngine::ECS
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
+	}
+
+	Tree::BinaryTree& GetSceneGraph(void)
+	{
+		return sceneGraph;
 	}
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)

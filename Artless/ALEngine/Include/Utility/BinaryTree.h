@@ -15,6 +15,7 @@ namespace ALEngine::Tree
     public:
         BinaryTree();
         ~BinaryTree(); // destruct
+        void Init();
         void Push(u32 parent, u32 newchild);
         Node* Find(u32 id);
         void FindChildren(u32 parent);
