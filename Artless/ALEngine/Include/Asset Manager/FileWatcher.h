@@ -57,6 +57,6 @@ namespace ALEngine::Engine
 		bool contains(const std::string& key);
 	};
 	
-	void RunFileWatcherThread(void);
+	void RunFileWatcher(void);
 }
 #endif // !FILE_WATCHER_H

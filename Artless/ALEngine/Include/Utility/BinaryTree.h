@@ -15,12 +15,15 @@ namespace ALEngine::Tree
     public:
         BinaryTree();
         ~BinaryTree(); // destruct
+        void Init();
         void Push(u32 parent, u32 newchild);
         Node* Find(u32 id);
         void FindChildren(u32 parent);
+        void FindImmediateChildren(u32 parent);
         void Destruct(u32 id);
-        std::vector<u32> const& GetChildren();
+        std::vector<u32> GetChildren();
         Node* GetHead();
+        std::vector<u32> GetParents();
     private:
         Node* SearchRight(Node* node, u32 id);
         Node* SearchLeft(Node* node, u32 id);

@@ -55,14 +55,7 @@
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
-    <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
-    <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
-    <ClCompile Include="Source\Math\Matrix2x2.cpp" />
-    <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
-    <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
-    <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
-    <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -278,21 +271,7 @@
     <ClInclude Include="Include\Common Header\MySerializer.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
-    <ClInclude Include="Include\ECS\Components\Animation.h" />
-    <ClInclude Include="Include\ECS\Components\Animator.h" />
-    <ClInclude Include="Include\ECS\Components\Transition.h" />
-    <ClInclude Include="Include\ECS\Systems\AnimatorSystem.h" />
-    <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
     <ClInclude Include="Include\Utility\BinaryTree.h" />
-    <ClInclude Include="tracy\Tracy.hpp" />
-    <ClInclude Include="Include\Math\Matrix2x2.h" />
-    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
-    <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
-    <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
-    <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
-    <ClInclude Include="Include\ECS\Components\Cell.h" />
-    <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
-    <ClInclude Include="Include\ECS\Components\Unit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

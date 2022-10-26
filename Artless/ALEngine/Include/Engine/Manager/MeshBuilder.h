@@ -54,8 +54,6 @@ namespace ALEngine::Engine
 		Math::vec4 const* vColor{ nullptr };
 		Math::mat4 const* vMatrix{ nullptr };
 		u64 const* texHandle{ nullptr };
-		//u32 const* vIndex{ nullptr };
-		u64 const counter{};
 	};
 
 	void GenerateDrawCall(BatchData const& bd);
