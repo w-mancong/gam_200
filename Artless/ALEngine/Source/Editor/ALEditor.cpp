@@ -62,40 +62,29 @@ namespace ALEngine::Editor
 		if (!m_ImGuiEnabled)
 			return;
 
-		if (Input::KeyTriggered(KeyCode::G))
-			m_GameStart = !m_GameStart;
+		// Content Browser Panel
+		m_ContentBrowserPanel.OnImGuiRender();
 
-		//ImGui::ShowDemoWindow();
+		// Logger Panel
+		m_LoggerPanel.OnImGuiRender();
 
-		// Check if Game Mode
-		if (m_GameStart)
-			m_GamePanel.OnImGuiRender();
-		else
-		{
-			// Content Browser Panel
-			m_ContentBrowserPanel.OnImGuiRender();
+		// Check if there is a selected entity for Inspector
+		if (m_InspectorPanel.HasSelectedEntity())
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
-			// Logger Panel
-			m_LoggerPanel.OnImGuiRender();
+		// Set selected entity for Scene Panel (for Gizmos)
+		m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
+		m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
+		m_ScenePanel.OnImGuiRender();	// Scene Panel
 
-			// Check if there is a selected entity for Inspector
-			if (m_InspectorPanel.HasSelectedEntity())
-				m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+		// Update if selected entity has changed
+		m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
 
-			// Set selected entity for Scene Panel (for Gizmos)
-			m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
-			m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
-			m_ScenePanel.OnImGuiRender();	// Scene Panel
+		// Scene Hierarchy Panel
+		m_SceneHierarchyPanel.OnImGuiRender();
 
-			// Update if selected entity has changed
-			m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
-
-			// Scene Hierarchy Panel
-			m_SceneHierarchyPanel.OnImGuiRender();
-
-			// Profiler Panel
-			//m_ProfilerPanel.OnImGuiRender();
-		}
+		// Profiler Panel
+		m_ProfilerPanel.OnImGuiRender();
 	}
 
 	void ALEditor::Exit(void)
@@ -109,7 +98,6 @@ namespace ALEngine::Editor
 
 	void ALEditor::Begin(void)
 	{
-		ZoneScopedN("Editor Update")
 		// Change ImGui Enabled or Disabled
 		if (Input::KeyTriggered(KeyCode::Key_9))
 		{
@@ -199,26 +187,6 @@ namespace ALEngine::Editor
 	const ECS::Entity ALEditor::GetSelectedEntity(void)
 	{
 		return m_InspectorPanel.GetSelectedEntity();
-	}
-
-	f64 ALEditor::GetSceneWidth(void)
-	{
-		return m_ScenePanel.GetSceneWidth();
-	}
-
-	f64 ALEditor::GetSceneHeight(void)
-	{
-		return m_ScenePanel.GetSceneHeight();
-	}
-
-	Engine::Camera& ALEditor::GetEditorCamera(void)
-	{
-		return m_ScenePanel.GetEditorCamera();
-	}
-
-	Math::Vec2 ALEditor::GetMouseWorldPos()
-	{
-		return m_ScenePanel.GetMouseWorldPos();
 	}
 
 	void ALEditor::Docking(void)

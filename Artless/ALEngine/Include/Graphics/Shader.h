@@ -38,8 +38,6 @@ namespace ALEngine::Graphics
 		***********************************************************************************/
 		void use(void);
 
-		void unuse(void);
-
 		/*!*********************************************************************************
 			\brief
 			Set the uniform value of 'name' with boolean value v1

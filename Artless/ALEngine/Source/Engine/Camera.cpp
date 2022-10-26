@@ -64,37 +64,15 @@ namespace ALEngine::Engine
 
 	Matrix4x4 Camera::ProjectionMatrix(void) const
 	{
+		using namespace Graphics;
 		switch (m_Projection)
 		{
 			case Projection::Perspective:
-				return PerspectiveMatrix();
+				return Matrix4x4::Perspective(m_Fov, static_cast<f32>(OpenGLWindow::width) / static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
 			case Projection::Orthographic:
-				return OrthographicMatrix();
+				return Matrix4x4::Ortho(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
 		}
 		return Matrix4x4{ 1.0f };
-	}
-
-	Matrix4x4 Camera::PerspectiveMatrix(void) const
-	{
-		using namespace Graphics;
-		return Matrix4x4::Perspective(m_Fov, static_cast<f32>(OpenGLWindow::width) / static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
-	}
-
-	Matrix4x4 Camera::OrthographicMatrix(void) const
-	{
-		using namespace Graphics;
-		return Matrix4x4::Ortho(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
-	}
-
-	Matrix4x4 Camera::OrthographicMatrixImgui(void) const
-	{
-		using namespace Graphics;
-		return Matrix4x4::OrthoImgui(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
-	}
-
-	vec3& Camera::Position(void)
-	{
-		return m_Position;
 	}
 
 	void Camera::Position(f32 x, f32 y)

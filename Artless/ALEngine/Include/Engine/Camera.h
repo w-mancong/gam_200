@@ -91,23 +91,6 @@ namespace ALEngine::Engine
 		Matrix4x4 ProjectionMatrix(void) const;
 
 		/*!*********************************************************************************
-			\brief Calculate and return a perspective matrix
-		***********************************************************************************/
-		Matrix4x4 PerspectiveMatrix(void) const;
-		
-		/*!*********************************************************************************
-			\brief Calcualte and return an orthographic matrix
-		***********************************************************************************/
-		Matrix4x4 OrthographicMatrix(void) const;
-
-		/*!*********************************************************************************
-			\brief Calcualte and return an orthographic matrix for imgui
-		***********************************************************************************/
-		Matrix4x4 OrthographicMatrixImgui(void) const;
-
-		vec3& Position(void);
-
-		/*!*********************************************************************************
 			\brief
 			Set camera position
 

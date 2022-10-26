@@ -10,7 +10,7 @@ layout (location = 4) in uint aDrawID;
 layout (location = 5) in mat4 instanceMatrix;
 
 layout (location = 0) out vec2 vTexCoord;
-layout (location = 1) flat out uint vIndex;
+layout (location = 1) flat out uint vDrawID;
 layout (location = 2) out vec4 vColor;
 layout (location = 3) flat out uint64_t vTexHandle;
 
@@ -19,10 +19,8 @@ uniform mat4 view, proj;
 void main(void)
 {
   vTexCoord = aTexCoord;
-  vIndex = uint(instanceMatrix[3][3]);
-  mat4 model = instanceMatrix;
-  model[3][3] = 1.0;
+  vDrawID = aDrawID;
   vColor = aColor;
   vTexHandle = aTexHandle;
-  gl_Position = proj * view * model * vec4(aPosition, 1.0);
+  gl_Position = proj * view * instanceMatrix * vec4(aPosition, 1.0);
 }
