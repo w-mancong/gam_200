@@ -75,59 +75,40 @@ namespace ALEngine::Engine
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
-			// ImGui Editor
-			{
-				PROFILER_TIMER("Editor");
-				// Begin new ImGui frame
-				ALEditor::Instance()->Begin();
-			}
+			// Begin new ImGui frame
+			ALEditor::Instance()->Begin();
 
 			// Normal Update
-			{
-				PROFILER_TIMER("Update");
-				// Normal Update
-				Engine::Update();
-			}
+			Engine::Update();
 
 			// Physics
+			// Fixed Update (Physics)
+			accumulator += Time::m_DeltaTime;
+
+			// Steps to limit num times physics will run per frame
+			int currNumSteps{ 0 };
+
+			while (accumulator >= Time::m_FixedDeltaTime)
 			{
-				PROFILER_TIMER("Physics");
+				// Exit if physics happen more than limit
+				if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
+					break;
 
-				// Fixed Update (Physics)
-				accumulator += Time::m_DeltaTime;
-
-				// Steps to limit num times physics will run per frame
-				int currNumSteps{ 0 };
-
-				while (accumulator >= Time::m_FixedDeltaTime)
-				{
-					// Exit if physics happen more than limit
-					if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
-						break;
-
-					Engine::FixedUpdate();
-					accumulator -= Time::m_FixedDeltaTime;
-					// AL_CORE_DEBUG(Time::m_FPS);
-				}
+				Engine::FixedUpdate();
+				accumulator -= Time::m_FixedDeltaTime;
+				// AL_CORE_DEBUG(Time::m_FPS);
 			}
 
 			// Render
-			{
-				PROFILER_TIMER("Render");
-				Render();
+			Render();
 
-				std::ostringstream oss;
-				oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-				glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
-			}
+			std::ostringstream oss;
+			oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
+			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
 
-			// Wait Time
-			{
-				PROFILER_TIMER("FPS Wait");
-				// Wait for next frame
-				Time::WaitUntil();
-			}
-
+			// Wait for next frame
+			Time::WaitUntil();
+			
 			// Marks the end of a frame loop, for tracy profiler
 			FrameMark
 		}

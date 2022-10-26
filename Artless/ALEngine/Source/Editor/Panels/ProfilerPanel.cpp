@@ -12,6 +12,7 @@ brief:	This file contains function definitions for the ProfilerPanel class.
 
 namespace ALEngine::Editor
 {
+#if 0
 	void ProfilerPanel::OnImGuiRender(void)
 	{
 		// Counter for 
@@ -63,4 +64,5 @@ namespace ALEngine::Editor
 
 		ImGui::End();
 	}
+#endif
 }

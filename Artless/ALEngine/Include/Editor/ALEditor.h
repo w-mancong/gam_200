@@ -180,7 +180,7 @@ namespace ALEngine::Editor
 		GamePanel m_GamePanel;						// Game Panel
 		InspectorPanel m_InspectorPanel;			// Inspector Panel
 		LoggerPanel m_LoggerPanel;					// Logger Panel
-		ProfilerPanel m_ProfilerPanel;				// Profiler Panel
+		//ProfilerPanel m_ProfilerPanel;				// Profiler Panel
 		SceneHierarchyPanel m_SceneHierarchyPanel;	// Scene Hierarchy Panel
 	};
 }

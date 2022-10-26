@@ -65,6 +65,8 @@ namespace ALEngine::Editor
 		if (Input::KeyTriggered(KeyCode::G))
 			m_GameStart = !m_GameStart;
 
+		//ImGui::ShowDemoWindow();
+
 		// Check if Game Mode
 		if (m_GameStart)
 			m_GamePanel.OnImGuiRender();
@@ -92,7 +94,7 @@ namespace ALEngine::Editor
 			m_SceneHierarchyPanel.OnImGuiRender();
 
 			// Profiler Panel
-			m_ProfilerPanel.OnImGuiRender();
+			//m_ProfilerPanel.OnImGuiRender();
 		}
 	}
 

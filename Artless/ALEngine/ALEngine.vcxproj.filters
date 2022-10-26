@@ -60,6 +60,7 @@
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Math\Matrix2x2.cpp" />
     <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
