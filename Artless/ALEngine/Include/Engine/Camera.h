@@ -101,6 +101,28 @@ namespace ALEngine::Engine
 		Matrix4x4 OrthographicMatrix(void) const;
 
 		/*!*********************************************************************************
+			\brief Calcualte and return an orthographic matrix
+
+			\param [in] l: Left corner of box
+			\param [in] r: Right corner of box
+			\param [in] b: Bottom corner of box
+			\param [in] t: Top corner of box
+		***********************************************************************************/
+		Matrix4x4 OrthographicMatrix(f32 l, f32 r, f32 b, f32 t) const;
+
+		/*!*********************************************************************************
+			\brief Calcualte and return an orthographic matrix
+
+			\param [in] l: Left corner of box
+			\param [in] r: Right corner of box
+			\param [in] b: Bottom corner of box
+			\param [in] t: Top corner of box
+			\param [in] n: Near corner of box
+			\param [in] f: Far corner of box
+		***********************************************************************************/
+		Matrix4x4 OrthographicMatrix(f32 l, f32 r, f32 b, f32 t, f32 n, f32 f) const;
+
+		/*!*********************************************************************************
 			\brief Calcualte and return an orthographic matrix for imgui
 		***********************************************************************************/
 		Matrix4x4 OrthographicMatrixImgui(void) const;
