@@ -35,38 +35,32 @@ brief:	This file contains a custom serializer for the project with the help of r
 
 namespace ALEngine::Serializer
 {
-	class Deserializer {
-
-	public:
-		Deserializer(const std::string& fileName = "");
-
-		b8 ReadFile(const std::string& fileName);
-
-		int GetInt(const char* pairName, const int defaultInt);
-
-		std::string GetString(const char* pairName, const char* defaultString);
-
-		f32 GetFloat(const char* pairName, const f32 defaultFloat);
-
-		Math::Vec2 GetVec2(const char* pairName, Math::Vec2 defaultVec2);
-
-	private:
-		rapidjson::Document doc;
-
-	};
-
 	class Serializer {
 
-		Serializer();
-		
 	public:
-		void SetInt(const char* pairName, int value);
+		Serializer(const std::string& CONST_FILENAME = "");
+
+		b8 ReadFile(const std::string& CONST_FILENAME);
+
+		b8 WriteFile(const c8* CONST_FILENAMEs);
+
+		s32 GetInt(const c8* CONST_PAIRNAME, const s32 CONST_DEFAULT_INT);
+		void SetInt(const c8* CONST_PAIRNAME, const s32 CONST_VALUE);
+
+		std::string GetString(const c8* CONST_PAIRNAME, const c8* CONST_DEFAULT_STRING);
+		void SetString(const c8* CONST_PAIRNAME, const c8* CONST_STRING);
+
+		f32 GetFloat(const c8* CONST_PAIRNAME, const f32 CONST_DEFAULT_FLOAT);
+		void SetFloat(const c8* CONST_PAIRNAME, const f32 CONST_FLOAT);
+
+		Math::Vec2 GetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_DEFAULT_VEC2);
+		void SetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_VEC2);
 
 	private:
-		rapidjson::Document doc;
+		rapidjson::Document m_Doc;
+
 	};
 
 }
-
 
 #endif
