@@ -53,7 +53,7 @@ namespace ALEngine::Serializer
 		f32 GetFloat(const c8* CONST_PAIRNAME, const f32 CONST_DEFAULT_FLOAT);
 		void SetFloat(const c8* CONST_PAIRNAME, const f32 CONST_FLOAT);
 
-		Math::Vec2 GetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_DEFAULT_VEC2);
+		Math::Vec2 GetVec2(const c8* CONST_PAIRNAME, Math::Vec2 CONST_DEFAULT_VEC2);
 		void SetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_VEC2);
 
 		Math::Vector3 GetVec3(const c8* CONST_PAIRNAME, const Math::Vector3 CONST_DEFAULT_VEC3);

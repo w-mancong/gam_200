@@ -5,9 +5,13 @@ namespace ALEngine::Serializer
 {
 	Serializer::Serializer(const std::string& CONST_FILENAME)
 	{
-		ReadFile(CONST_FILENAME);
-		const c8* CONST_JSON = "{}";
-		this->m_Doc.Parse(CONST_JSON);
+		if (CONST_FILENAME == "") {
+			const c8* CONST_JSON = "{}";
+			this->m_Doc.Parse(CONST_JSON);
+		}
+		else {
+			ReadFile(CONST_FILENAME);
+		}
 	}
 
 	b8 Serializer::WriteFile(const c8* CONST_FILENAME) {
@@ -42,8 +46,8 @@ namespace ALEngine::Serializer
 
 	b8 Serializer::ReadFile(const std::string& CONST_FILENAME) {
 
-		std::ifstream ifs{CONST_FILENAME};
-		std::ifstream ifs2{CONST_FILENAME};
+		std::ifstream ifs{ CONST_FILENAME };
+		std::ifstream ifs2{ CONST_FILENAME };
 		if (!ifs2.is_open())
 		{
 			std::cerr << "Could not open file for reading!\n";
@@ -91,12 +95,10 @@ namespace ALEngine::Serializer
 		return EXIT_SUCCESS;
 	}
 
-	void Serializer::SetInt(const c8* CONST_PAIRNAME, const s32 CONST_VALUE){
+	void Serializer::SetInt(const c8* CONST_PAIRNAME, const s32 CONST_VALUE) {
 
 		if (!(this->m_Doc.IsObject())) {
 			std::cerr << "DOC IS NOT AN OBJECT!" << std::endl;
-			//const c8* json = "{}";
-			//this->m_Doc.Parse(json);
 		}
 
 		this->m_Doc.AddMember(rapidjson::StringRef(CONST_PAIRNAME), CONST_VALUE, this->m_Doc.GetAllocator());
@@ -117,6 +119,7 @@ namespace ALEngine::Serializer
 			//std::cout << "GET INT OF \"" << CONST_PAIRNAME << "\" : " << this->m_Doc[CONST_PAIRNAME].GetInt() << std::endl;
 			return this->m_Doc[CONST_PAIRNAME].GetInt();
 		}
+
 		else {
 
 			this->m_Doc.AddMember(rapidjson::StringRef(CONST_PAIRNAME), CONST_DEFAULT_INT, this->m_Doc.GetAllocator());
@@ -127,12 +130,12 @@ namespace ALEngine::Serializer
 
 	std::string Serializer::GetString(const c8* CONST_PAIRNAME, const c8* CONST_DEFAULT_STRING) {
 
-		//this->doc2.HasMember(CONST_PAIRNAME)
 		if (this->m_Doc.HasMember(CONST_PAIRNAME)) {
 			assert(this->m_Doc.HasMember(CONST_PAIRNAME));
 			//std::cout << "GET STRING OF \"" << CONST_PAIRNAME << "\" : " << this->m_Doc[CONST_PAIRNAME].GetString() << std::endl;
 			return this->m_Doc[CONST_PAIRNAME].GetString();
 		}
+
 		else {
 			this->m_Doc.AddMember(rapidjson::StringRef(CONST_PAIRNAME), rapidjson::StringRef(CONST_DEFAULT_STRING), this->m_Doc.GetAllocator());
 			//std::cout << "GET STRING OF \"" << CONST_PAIRNAME << "\" : " << this->m_Doc[CONST_PAIRNAME].GetString() << std::endl;
@@ -155,13 +158,13 @@ namespace ALEngine::Serializer
 
 	f32 Serializer::GetFloat(const c8* CONST_PAIRNAME, const f32 CONST_DEFAULT_FLOAT) {
 
-		//this->doc2.HasMember(CONST_PAIRNAME)
 		if (this->m_Doc.HasMember(CONST_PAIRNAME)) {
 			assert(this->m_Doc.HasMember(CONST_PAIRNAME));
 
 			//std::cout << "GET FLOAT OF \"" << CONST_PAIRNAME << "\" : " << this->m_Doc[CONST_PAIRNAME].GetFloat() << std::endl;
 			return this->m_Doc[CONST_PAIRNAME].GetFloat();
 		}
+
 		else {
 			this->m_Doc.AddMember(rapidjson::StringRef(CONST_PAIRNAME), CONST_DEFAULT_FLOAT, this->m_Doc.GetAllocator());
 			//std::cout << "GET INT OF \"" << CONST_PAIRNAME << "\" : " << this->m_Doc[CONST_PAIRNAME].GetFloat() << std::endl;
@@ -182,12 +185,12 @@ namespace ALEngine::Serializer
 		//std::cout << "BUFFER 2 GET STRING : " << buffer.GetString() << std::endl;
 	}
 
-	Math::Vec2 Serializer::GetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_DEFAULT_VEC2){
+	Math::Vec2 Serializer::GetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_DEFAULT_VEC2) {
 		Math::Vec2 vec2;
 
 		if (this->m_Doc.HasMember(CONST_PAIRNAME)) {
 			assert(this->m_Doc.HasMember(CONST_PAIRNAME));
-			
+
 			assert(this->m_Doc[CONST_PAIRNAME].IsArray());
 			//for (rapidjson::SizeType i = 0; i < this->m_Doc[CONST_PAIRNAME].Size(); i++) // rapidjson uses SizeType instead of size_t.
 			//	printf("a[%d] = %d\n", i, this->m_Doc[CONST_PAIRNAME][i].GetInt());
@@ -200,9 +203,10 @@ namespace ALEngine::Serializer
 
 			return vec2;
 		}
+
 		else {
 			rapidjson::Value a(rapidjson::kArrayType);
-			rapidjson::Document::AllocatorType& allocator = m_Doc.GetAllocator();
+			rapidjson::Document::AllocatorType& allocator = this->m_Doc.GetAllocator();
 			const s32 CONST_DEFAULT_VEC2X = (int)(CONST_DEFAULT_VEC2.x);
 			const s32 CONST_DEFAULT_VEC2Y = (int)(CONST_DEFAULT_VEC2.y);
 
@@ -222,7 +226,7 @@ namespace ALEngine::Serializer
 
 	void Serializer::SetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_VEC2) {
 
-		rapidjson::Document::AllocatorType& allocator = m_Doc.GetAllocator();
+		rapidjson::Document::AllocatorType& allocator = this->m_Doc.GetAllocator();
 		const s32 CONST_VEC2X = (int)(CONST_VEC2.x);
 		const s32 CONST_VEC2Y = (int)(CONST_VEC2.y);
 
@@ -238,12 +242,10 @@ namespace ALEngine::Serializer
 
 		//std::cout << "GET ARRAY OF \"" << CONST_PAIRNAME << "\" : [" << this->m_Doc[CONST_PAIRNAME][0].GetInt() << ", " << this->m_Doc[CONST_PAIRNAME][1].GetInt() << "]" << std::endl;
 
-		//	std::cout << "BUFFER GET STRING : " << buffer.GetString() << std::endl;
+		//std::cout << "BUFFER GET STRING : " << buffer.GetString() << std::endl;
 	}
 
-
-	Math::Vec3 Serializer::GetVec3(const c8* CONST_PAIRNAME, const Math::Vector3 CONST_DEFAULT_VEC3) {
-
+	Math::Vector3 Serializer::GetVec3(const c8* CONST_PAIRNAME, const Math::Vector3 CONST_DEFAULT_VEC3) {
 		Math::Vector3 vec3;
 
 		if (this->m_Doc.HasMember(CONST_PAIRNAME)) {
@@ -251,7 +253,7 @@ namespace ALEngine::Serializer
 
 			assert(this->m_Doc[CONST_PAIRNAME].IsArray());
 			//for (rapidjson::SizeType i = 0; i < this->m_Doc[CONST_PAIRNAME].Size(); i++) // rapidjson uses SizeType instead of size_t.
-			//	printf("a[%d] = %d\n", i, this->m_Doc[CONST_PAIRNAME][i].GetInt());
+			//printf("a[%d] = %d\n", i, this->m_Doc[CONST_PAIRNAME][i].GetInt());
 
 			vec3.x = this->m_Doc[CONST_PAIRNAME][0].GetFloat();
 			vec3.y = this->m_Doc[CONST_PAIRNAME][1].GetFloat();
@@ -259,13 +261,13 @@ namespace ALEngine::Serializer
 
 			//std::cout << "GET VEC3 X OF \"" << CONST_PAIRNAME << "\" : " << vec3.x << std::endl;
 			//std::cout << "GET VEC3 Y OF \"" << CONST_PAIRNAME << "\" : " << vec3.y << std::endl;
-			//std::cout << "GET VEC3 Y OF \"" << CONST_PAIRNAME << "\" : " << vec3.z << std::endl;
+			//std::cout << "GET VEC3 Z OF \"" << CONST_PAIRNAME << "\" : " << vec3.z << std::endl;
 
 			return vec3;
 		}
+
 		else {
-			rapidjson::Value a(rapidjson::kArrayType);
-			rapidjson::Document::AllocatorType& allocator = m_Doc.GetAllocator();
+			rapidjson::Document::AllocatorType& allocator = this->m_Doc.GetAllocator();
 			const s32 CONST_DEFAULT_VEC3X = (int)(CONST_DEFAULT_VEC3.x);
 			const s32 CONST_DEFAULT_VEC3Y = (int)(CONST_DEFAULT_VEC3.y);
 			const s32 CONST_DEFAULT_VEC3Z = (int)(CONST_DEFAULT_VEC3.z);
@@ -279,37 +281,33 @@ namespace ALEngine::Serializer
 
 			//this->m_Doc[CONST_PAIRNAME][0] = 5;
 
-			//std::cout << "GET ARRAY OF \"" << CONST_PAIRNAME << "\" : [" << this->m_Doc[CONST_PAIRNAME][0].GetFloat() << ", " << this->m_Doc[CONST_PAIRNAME][1].GetFloat() << "]" << std::endl;
+			//std::cout << "GET ARRAY OF \"" << CONST_PAIRNAME << "\" : [" << this->m_Doc[CONST_PAIRNAME][0].GetFloat() << ", " << this->m_Doc[CONST_PAIRNAME][1].GetFloat() << ", " << this->m_Doc[CONST_PAIRNAME][2].GetFloat() << "]" << std::endl;
 
 			return CONST_DEFAULT_VEC3;
 		}
-
-
 	}
 
 	void Serializer::SetVec3(const c8* CONST_PAIRNAME, const Math::Vector3 CONST_VEC3) {
-		rapidjson::Document::AllocatorType& allocator = m_Doc.GetAllocator();
-		const s32 CONST_VEC2X = (int)(CONST_VEC3.x);
-		const s32 CONST_VEC2Y = (int)(CONST_VEC3.y);
-		const s32 CONST_VEC2Z = (int)(CONST_VEC3.z);
+		rapidjson::Document::AllocatorType& allocator = this->m_Doc.GetAllocator();
+		const s32 CONST_VEC3X = (int)(CONST_VEC3.x);
+		const s32 CONST_VEC3Y = (int)(CONST_VEC3.y);
+		const s32 CONST_VEC3Z = (int)(CONST_VEC3.z);
 
-		this->m_Doc.AddMember(rapidjson::StringRef(CONST_PAIRNAME), CONST_VEC2X, this->m_Doc.GetAllocator());
+		this->m_Doc.AddMember(rapidjson::StringRef(CONST_PAIRNAME), CONST_VEC3X, this->m_Doc.GetAllocator());
 		this->m_Doc[CONST_PAIRNAME].SetArray();
 
-		this->m_Doc[CONST_PAIRNAME].PushBack(CONST_VEC2X, allocator);
-		this->m_Doc[CONST_PAIRNAME].PushBack(CONST_VEC2Y, allocator);
-		this->m_Doc[CONST_PAIRNAME].PushBack(CONST_VEC2Z, allocator);
+		this->m_Doc[CONST_PAIRNAME].PushBack(CONST_VEC3X, allocator);
+		this->m_Doc[CONST_PAIRNAME].PushBack(CONST_VEC3Y, allocator);
+		this->m_Doc[CONST_PAIRNAME].PushBack(CONST_VEC3Z, allocator);
 
 		rapidjson::StringBuffer buffer;
 		rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 		this->m_Doc.Accept(writer);
-		
+
 		//std::cout << "GET ARRAY OF \"" << CONST_PAIRNAME << "\" : [" << this->m_Doc[CONST_PAIRNAME][0].GetInt() << ", " << this->m_Doc[CONST_PAIRNAME][1].GetInt() << ", " << this->m_Doc[CONST_PAIRNAME][2].GetInt() << "]" << std::endl;
 
 		//	std::cout << "BUFFER GET STRING : " << buffer.GetString() << std::endl;
-
 	}
-
 }
 
 
