@@ -233,8 +233,28 @@ namespace ALEngine::ECS
 		MeshBuilder::Instance()->Init();
 	}
 
+	//void UpdateChildrenPos()
+	//{
+	//	Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+	//	for (auto x : sceneGraph.GetMap()) // for all entities
+	//	{
+	//		if (x.active == false)
+	//			continue;
+
+	//		Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(x.id);
+	//		Math::mat4 mtx = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+
+	//		for (auto child : x.children) // for all children of entities
+	//		{
+	//			Vector3 vect = parentPos - Coordinator::Instance()->GetComponent<Transform>(child).position;
+	//			Coordinator::Instance()->GetComponent<Transform>(child) *= mtx;
+	//		}
+	//	}
+	//}
+
 	void Render(void)
 	{
+		//UpdateChildrenPos();
 #if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
