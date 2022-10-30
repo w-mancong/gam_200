@@ -104,13 +104,6 @@ namespace ALEngine::Editor
 			// Get transform matrices
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
 
-			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph(); // bookmark zaf
-			for (auto x : sceneGraph.GetMap()[m_SelectedEntity].children) // for all entities
-			{
-				Coordinator::Instance()->GetComponent<Transform>(x).position.x -= xform.position.x - (mtx_translate[0] + m_EditorCamera.Position().x);
-				Coordinator::Instance()->GetComponent<Transform>(x).position.y -= xform.position.y - (mtx_translate[1] + m_EditorCamera.Position().y);
-			}
-
 			// Set changes
 			xform.position.x = mtx_translate[0] + m_EditorCamera.Position().x;
 			xform.position.y = mtx_translate[1] + m_EditorCamera.Position().y;

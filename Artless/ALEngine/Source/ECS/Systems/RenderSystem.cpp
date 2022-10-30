@@ -51,6 +51,7 @@ namespace ALEngine::ECS
 		u64* texHandle{ nullptr };
 		
 		Tree::BinaryTree sceneGraph{};
+		std::vector<Transform> prevTransform;
 		
 #if EDITOR
 		// Viewport and editor framebuffers
@@ -233,28 +234,58 @@ namespace ALEngine::ECS
 		MeshBuilder::Instance()->Init();
 	}
 
-	//void UpdateChildrenPos()
-	//{
-	//	Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-	//	for (auto x : sceneGraph.GetMap()) // for all entities
-	//	{
-	//		if (x.active == false)
-	//			continue;
+	void UpdateParentChildrenPos()
+	{
+		if (prevTransform.empty()) // for first frame
+		{
+			for (auto x : sceneGraph.GetMap())
+			{
+				if (x.active)
+					prevTransform.push_back(Coordinator::Instance()->GetComponent<Transform>(x.id));
+				else
+				{
+					prevTransform.push_back(Transform());
+				}
+			}
+		}
+	
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
-	//		Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(x.id);
-	//		Math::mat4 mtx = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+		for (auto& x : sceneGraph.GetMap())
+		{
+			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(x.id);
 
-	//		for (auto child : x.children) // for all children of entities
-	//		{
-	//			Vector3 vect = parentPos - Coordinator::Instance()->GetComponent<Transform>(child).position;
-	//			Coordinator::Instance()->GetComponent<Transform>(child) *= mtx;
-	//		}
-	//	}
-	//}
+			if (parentTransform.position.x == prevTransform[x.id].position.x
+				&& parentTransform.position.y == prevTransform[x.id].position.y)
+				continue;
+
+			for (s32 child : x.children)
+			{
+				Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child);
+
+				childTransform.position += parentTransform.position - prevTransform[x.id].position;
+				prevTransform[child].position += parentTransform.position - prevTransform[x.id].position;
+			}
+		}
+
+		prevTransform.clear();
+		for (auto& x : sceneGraph.GetMap())
+		{
+			if (x.active) // if active, store Transform
+			{
+				prevTransform.push_back(Coordinator::Instance()->GetComponent<Transform>(x.id));
+			}
+			else
+			{
+				prevTransform.push_back(Transform());
+			}
+		}
+	}
 
 	void Render(void)
 	{
-		//UpdateChildrenPos();
+		UpdateParentChildrenPos();
+		
 #if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
@@ -282,6 +313,23 @@ namespace ALEngine::ECS
 		SetTextString(FPS, ossFPS.str());
 		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
 		Text::RenderText(FPS);
+
+		if (Input::KeyDown(KeyCode::Z))
+		{
+			ParticleSys::ParticleProperties prop{};
+			ParticleSys::SetVelocity(prop, Vector2(0, 5));
+			ParticleSys::SetStartColor(prop, Vector3(0, 1, 0));
+			ParticleSys::SetEndColor(prop, Vector3(1, 0, 0.2f));
+			//Vector2 mouse{ ImGui::GetMousePos().x, ImGui::GetMousePos().y };
+			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos() - Vector2(700, 500));
+			ParticleSys::SetEndSize(prop, 0.f);
+			ParticleSys::SetVelVariation(prop, Vector2(10, 10));
+			ParticleSys::SetSizeVariation(prop, 2.f);
+			ParticleSys::SetLifeTime(prop, 3.f);
+			ParticleSys::SetStartSize(prop, 10.f);
+			for (int i{}; i < 5; ++i)
+				particleSys.Emit(prop);
+		}
 
 		// Update and render particles
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
