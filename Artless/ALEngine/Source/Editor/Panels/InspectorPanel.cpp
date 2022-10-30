@@ -10,6 +10,8 @@ brief:	This file contains function definitions for the InspectorPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#include "imgui_internal.h"
+
 namespace ALEngine::Editor 
 {
 	// Set default operation to be Translate
@@ -211,10 +213,9 @@ namespace ALEngine::Editor
 		ImGui::PopID();
 
 		// Color wheel
-		ImGui::NewLine();
 		ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
 		f32 clr[4] = { spr.color.r, spr.color.g, spr.color.b, spr.color.a };
-		ImGui::ColorPicker4("Color", clr, clr_flags);
+		ImGui::ColorEdit4("Color", clr, clr_flags);
 
 		// Set new color
 		spr.color.r = clr[0];
