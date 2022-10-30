@@ -94,6 +94,7 @@ namespace ALEngine::Editor
 
 			// Profiler Panel
 			//m_ProfilerPanel.OnImGuiRender();
+			ImGui::ShowDemoWindow();
 		}
 	}
 

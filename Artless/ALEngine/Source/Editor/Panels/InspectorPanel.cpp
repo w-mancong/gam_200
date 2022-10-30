@@ -15,6 +15,9 @@ namespace ALEngine::Editor
 	// Set default operation to be Translate
 	ImGuizmo::OPERATION InspectorPanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
 
+	// File buffer size
+	const u32 FILE_BUFFER_SIZE{ 1000 };
+
 	enum class TRANSFORM_MODE {
 		TRANSLATE = 0,
 		ROTATE,
@@ -156,6 +159,53 @@ namespace ALEngine::Editor
 		// Get Sprite
 		Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectedEntity);
 		ImGui::Text("Sprite Component");
+
+		// Image
+		Guid id = Engine::AssetManager::Instance()->GetGuid(spr.filePath.c_str());
+		u32 texture = Engine::AssetManager::Instance()->GetButtonImage(id);
+		ImVec2 winSize = ImGui::GetWindowSize();
+		ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x * 0.75f, winSize.x * 0.75f}, { 0, 1 }, { 1, 0 });
+
+		// File path
+		ImGui::NewLine();
+		c8* fp = (c8*)spr.filePath.c_str();
+		ImGui::PushID("FilePath");
+		ImGui::InputText("File Path", fp, 100);
+
+		// Drag Drop!
+		if (ImGui::BeginDragDropTarget())
+		{
+			// Get Drag and Drop Payload
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+			{
+				// Get filepath
+				size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
+				wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+				// Check if image (png or jpg)
+				std::string fileString = filePath;
+				if (fileString.find(".jpg") != std::string::npos ||
+					fileString.find(".png") != std::string::npos)
+				{
+					// Set Filepath
+					spr.filePath = filePath;
+
+					spr.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+				}
+				else
+				{
+
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+		else
+			spr.filePath = fp;
+
+		ImGui::PopID();
+
+		// Color wheel
+		ImGui::NewLine();
 		ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
 		f32 clr[4] = { spr.color.r, spr.color.g, spr.color.b, spr.color.a };
 		ImGui::ColorPicker4("Color", clr, clr_flags);
