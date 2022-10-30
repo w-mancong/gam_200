@@ -79,8 +79,7 @@ namespace ALEngine::Editor
 			m_LoggerPanel.OnImGuiRender();
 
 			// Check if there is a selected entity for Inspector
-			if (m_InspectorPanel.HasSelectedEntity())
-				m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
 			// Set selected entity for Scene Panel (for Gizmos)
 			m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());

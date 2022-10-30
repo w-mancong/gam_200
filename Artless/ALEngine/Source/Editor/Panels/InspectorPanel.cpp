@@ -33,15 +33,18 @@ namespace ALEngine::Editor
 	
 	void InspectorPanel::OnImGuiRender(void)
 	{
-		// Skip if there are no selected entities
-		if (m_SelectedEntity == ECS::MAX_ENTITIES)
-			return;
-
 		// Set size constraints of inspector
 		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
 		// Begin ImGui
 		if (!ImGui::Begin("Inspector"))
+		{
+			ImGui::End();
+			return;
+		}
+
+		// Exit if no entity
+		if (!HasSelectedEntity())
 		{
 			ImGui::End();
 			return;
