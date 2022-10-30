@@ -7,8 +7,7 @@ author: Chan Jie Ming Stanley
 email:	c.jiemingstanley\@digipen.edu
 brief:	This file contain class definition for representing a 3D vector and points using
 integers where the precision of floating-point is not required
-
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 namespace ALEngine::Math
 {
@@ -26,7 +25,7 @@ namespace ALEngine::Math
 
 		/*!*********************************************************************************
 			\brief
-			Constructor that takes in two ints for initalization
+			Constructor that takes in three ints for initalization
 
 			\param [in] x:
 			X component of the vector
@@ -39,10 +38,9 @@ namespace ALEngine::Math
 
 		/*!*********************************************************************************
 			\brief
-			Conversion constructor that converts a Vector2 into a Vector3
+			Conversion constructor that converts a Vector2Int into a Vector3Int
 		***********************************************************************************/
 		Vector3Int(Vector2Int const& rhs);
-
 
 		/*!*********************************************************************************
 			\brief
@@ -52,7 +50,7 @@ namespace ALEngine::Math
 
 		/*!*********************************************************************************
 			\brief
-			Overloaded assignment operator that converts a Vector2 into a Vector3
+			Overloaded assignment operator that converts a Vector2Int into a Vector3Int
 		***********************************************************************************/
 		Vector3Int& operator=(Vector2Int const& rhs);
 

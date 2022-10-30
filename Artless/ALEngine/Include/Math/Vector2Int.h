@@ -7,8 +7,7 @@ author: Chan Jie Ming Stanley
 email:	c.jiemingstanley\@digipen.edu
 brief:	This file contain class definition for representing a 2D vector and points using 
 integers where the precision of floating-point is not required
-
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 namespace ALEngine::Math
@@ -38,7 +37,7 @@ namespace ALEngine::Math
 
 		/*!*********************************************************************************
 			\brief
-			Conversion constructor that converts a Vector3 into a Vector2
+			Conversion constructor that converts a Vector3Int into a Vector2Int
 		***********************************************************************************/
 		Vector2Int(Vector3Int const& rhs);
 

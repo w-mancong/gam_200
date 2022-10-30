@@ -65,6 +65,11 @@
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
     <ClCompile Include="Source\AI\PathFindingManager.cpp" />
+    <ClCompile Include="Source\ECS\Components\Room.cpp" />
+    <ClCompile Include="Source\ECS\Components\RoomBuilder.cpp" />
+    <ClCompile Include="Source\ECS\Components\CellLoader.cpp" />
+    <ClCompile Include="Source\Math\Vector2Int.cpp" />
+    <ClCompile Include="Source\Math\Vector3Int.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -296,6 +301,12 @@
     <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
     <ClInclude Include="Include\ECS\Components\Unit.h" />
     <ClInclude Include="Include\AI\PathFindingManager.h" />
+    <ClInclude Include="Include\ECS\RoomBuilder.h" />
+    <ClInclude Include="Include\ECS\Components\RoomBuilder.h" />
+    <ClInclude Include="Include\ECS\Components\Room.h" />
+    <ClInclude Include="Include\ECS\Components\CellLoader.h" />
+    <ClInclude Include="Include\Math\Vector2Int.h" />
+    <ClInclude Include="Include\Math\Vector3Int.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
