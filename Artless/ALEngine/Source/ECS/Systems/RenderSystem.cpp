@@ -314,13 +314,12 @@ namespace ALEngine::ECS
 		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
 		Text::RenderText(FPS);
 
-		if (Input::KeyDown(KeyCode::Z))
+		if (Input::KeyDown(KeyCode::Z)) // particles when hold 'Z' button 
 		{
 			ParticleSys::ParticleProperties prop{};
 			ParticleSys::SetVelocity(prop, Vector2(0, 5));
 			ParticleSys::SetStartColor(prop, Vector3(0, 1, 0));
 			ParticleSys::SetEndColor(prop, Vector3(1, 0, 0.2f));
-			//Vector2 mouse{ ImGui::GetMousePos().x, ImGui::GetMousePos().y };
 			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos() - Vector2(700, 500));
 			ParticleSys::SetEndSize(prop, 0.f);
 			ParticleSys::SetVelVariation(prop, Vector2(10, 10));

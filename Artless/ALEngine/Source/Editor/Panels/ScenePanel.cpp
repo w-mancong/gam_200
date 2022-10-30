@@ -147,13 +147,11 @@ namespace ALEngine::Editor
 						}
 					}
 				}
-
 				// No entities clicked (clicked viewport)
 				if (!entity_clicked && !ImGuizmo::IsOver())
 					m_SelectedEntity = ECS::MAX_ENTITIES;
 			}
 		}
-
 		ImGui::End();
 	}
 
