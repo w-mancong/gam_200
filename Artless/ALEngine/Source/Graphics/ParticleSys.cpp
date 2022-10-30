@@ -45,8 +45,8 @@ namespace ALEngine::Graphics::ParticleSys
 	***********************************************************************************/
 	ParticleSystem::ParticleSystem()
 	{
-		// Instantiate 500 particles in the vector (Max particles)
-		particleContainer.resize(500);
+		// Instantiate 1000 particles in the vector (Max particles)
+		particleContainer.resize(1000);
 	}
 
 	/*!*********************************************************************************

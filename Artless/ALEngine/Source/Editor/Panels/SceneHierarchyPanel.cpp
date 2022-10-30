@@ -79,7 +79,7 @@ namespace ALEngine::Editor
 		}
 
 		// Displaying each entity
-		std::vector<ECS::Entity> parentList = sceneGraph.GetParents();
+		std::vector<s32> parentList = sceneGraph.GetParents();
 
 		b8 popup_hasopen{ false };
 		// Iterate through parent list
@@ -123,8 +123,8 @@ namespace ALEngine::Editor
 		{
 			ECS::Entity to_delete = ALEditor::Instance()->GetSelectedEntity();
 			sceneGraph.FindChildren(to_delete);
-			std::vector<u32> childrenVect = sceneGraph.GetChildren();
-			for (u32 child : childrenVect)
+			std::vector<s32> childrenVect = sceneGraph.GetChildren();
+			for (s32 child : childrenVect)
 			{
 				Coordinator::Instance()->DestroyEntity(child); // delete children
 			}
@@ -166,7 +166,7 @@ namespace ALEngine::Editor
 		if (opened)
 		{
 			sceneGraph.FindImmediateChildren(child);
-			std::vector<ECS::Entity> childrenList = sceneGraph.GetChildren();
+			std::vector<s32> childrenList = sceneGraph.GetChildren();
 			for (auto child_it : childrenList)
 				UpdateEntitySHP(child_it, popup_hasopen);
 			ImGui::TreePop();

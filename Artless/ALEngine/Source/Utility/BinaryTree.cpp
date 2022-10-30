@@ -16,7 +16,7 @@ namespace ALEngine::Tree
         head->id = -1;
     }
 
-    BinaryTree::Node* BinaryTree::SearchLeft(Node* node, u32 id)
+    BinaryTree::Node* BinaryTree::SearchLeft(Node* node, s32 id)
     {
         if (node == nullptr)
             return nullptr;
@@ -48,7 +48,7 @@ namespace ALEngine::Tree
         }
     }
 
-    BinaryTree::Node* BinaryTree::SearchRight(Node* node, u32 id)
+    BinaryTree::Node* BinaryTree::SearchRight(Node* node, s32 id)
     {
         if (node == nullptr)
             return nullptr;
@@ -87,7 +87,7 @@ namespace ALEngine::Tree
         }
     }
 
-    BinaryTree::Node* BinaryTree::Find(u32 id)
+    BinaryTree::Node* BinaryTree::Find(s32 id)
     {
         searchVect.clear();
 
@@ -99,7 +99,7 @@ namespace ALEngine::Tree
         return SearchRight(head, id);
     }
 
-    void BinaryTree::Push(u32 parent, u32 newchild)
+    void BinaryTree::Push(s32 parent, s32 newchild)
     {
         if (parent == -1)
         {
@@ -111,6 +111,11 @@ namespace ALEngine::Tree
             if (p == nullptr)
                 return;
 
+            if (p->left == nullptr)
+            {
+                p->parent = true;
+            }
+
             if (p->left == nullptr) // first child
             {
                 p->left = Memory::DynamicMemory::New<Node>();
@@ -121,9 +126,23 @@ namespace ALEngine::Tree
                 Insert(p->left, newchild);
             }
         }
+
+        // update map
+        for (auto &x : map)
+        {
+            if (x.active)
+            {
+                FindChildren(x.id);
+                x.children = GetChildren();
+            }
+        }
+        // new node data
+        NodeData newData;
+        newData.id = newchild;
+        map.push_back(newData);
     }
 
-    void BinaryTree::Insert(Node* node, u32 id)
+    void BinaryTree::Insert(Node* node, s32 id)
     {
         while (node->right != nullptr)
         {
@@ -171,7 +190,7 @@ namespace ALEngine::Tree
         }
     }
 
-    void BinaryTree::FindImmediateChildren(u32 parent)
+    void BinaryTree::FindImmediateChildren(s32 parent)
     {
         childrenVect.clear();
         if (parent == -1)
@@ -191,7 +210,7 @@ namespace ALEngine::Tree
         }
     }
 
-    void BinaryTree::FindChildren(u32 parent)
+    void BinaryTree::FindChildren(s32 parent)
     {
         childrenVect.clear();
         if (parent == -1)
@@ -209,15 +228,15 @@ namespace ALEngine::Tree
         }
     }
 
-    std::vector<u32> BinaryTree::GetChildren()
+    std::vector<s32> BinaryTree::GetChildren()
     {
         return childrenVect;
     }
 
-    std::vector<u32> BinaryTree::GetParents()
+    std::vector<s32> BinaryTree::GetParents()
     {
         Node* node = GetHead()->right;
-        std::vector<u32> vect;
+        std::vector<s32> vect;
         while (node != nullptr)
         {
             vect.push_back(node->id);
@@ -226,7 +245,7 @@ namespace ALEngine::Tree
         return vect;
     }
 
-    void BinaryTree::Destruct(u32 id)
+    void BinaryTree::Destruct(s32 id)
     {
         searchVect.clear();
         destructVect.clear();
@@ -250,7 +269,7 @@ namespace ALEngine::Tree
         }
     }
 
-    void BinaryTree::DestructLeft(Node* node, u32 id)
+    void BinaryTree::DestructLeft(Node* node, s32 id)
     {
         searchVect.push_back(node);
         while (node != nullptr && node->left != nullptr)
@@ -261,7 +280,7 @@ namespace ALEngine::Tree
         return DestructRight(searchVect[searchVect.size() - 1], id);
     }
 
-    void BinaryTree::DestructRight(Node* node, u32 id)
+    void BinaryTree::DestructRight(Node* node, s32 id)
     {
         if (node == nullptr)
         {
@@ -303,7 +322,10 @@ namespace ALEngine::Tree
                             prevNode->right = nullptr;
                         }
                         else if (prevNode->left == parent)
+                        {
                             prevNode->left = nullptr;
+                            prevNode->parent = false;
+                        }
                     }
                     else if (parent != nullptr) // parent is sandwhiched
                     {
@@ -320,9 +342,11 @@ namespace ALEngine::Tree
                 {
                     if (x->id == id)
                     {
-                        Memory::DynamicMemory::Delete(x);
+                        map[x->id].active = false;
+                        Memory::DynamicMemory::Delete(x); // delete parent
                         break; // stop when parent is destructed
                     }
+                    map[x->id].active = false;
                     Memory::DynamicMemory::Delete(x);
                 }
                 if (id == -1)
@@ -340,4 +364,10 @@ namespace ALEngine::Tree
     {
         return head;
     }
+
+    std::vector<BinaryTree::NodeData>const& BinaryTree::GetMap()
+    {
+        return map;
+    }
+
 } // end of namespace Tree
