@@ -13,29 +13,29 @@ namespace ALEngine::ECS::Component
 	class RoomBuilder
 	{
 	public:
+		//static RoomBuilder m_Instance;
 
-		RoomBuilder();
-		~RoomBuilder();
-
-		static RoomBuilder m_Instance;
-
-		Room *m_RoomToLoad;
-
-		ALEngine::Math::Vector2 m_RoomSize{ 10.f, 10.f };
+		ALEngine::Math::Vector2Int m_RoomSize{ 10, 10};
 		ALEngine::Math::Vector2 m_CellSize{ 1.f,1.f };
+
+	    Room *m_RoomToLoad;
 
 		Transform m_Room;
 		Cell m_CellPreFab;
 
-		Cell m_CellMap[];
+		//Cell m_CellMap[];
 
-		bool IsGridInside(ALEngine::Math::Vector2 grid);
+	public:
+		RoomBuilder();
+		~RoomBuilder();
+		bool IsGridInside(ALEngine::Math::Vector2Int grid);
+
 	private:
 		void Awake();
 
 		void Start();
 
-		void BuildRoom(Cell cellprefab, Transform room, ALEngine::Math::Vector2 roomsize, ALEngine::Math::Vector2 cellsize);
+		void BuildRoom(Cell cellprefab, Transform room, ALEngine::Math::Vector2Int roomsize, ALEngine::Math::Vector2Int cellsize);
 	};
 }
 #endif // !ROOM_BUILDER_H

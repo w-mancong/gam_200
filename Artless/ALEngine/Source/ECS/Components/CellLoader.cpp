@@ -16,5 +16,4 @@ namespace ALEngine::ECS::Component
 		}
 
 	}
-
 }

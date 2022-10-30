@@ -65,7 +65,6 @@
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
     <ClCompile Include="Source\AI\PathFindingManager.cpp" />
-    <ClCompile Include="Source\ECS\Components\Room.cpp" />
     <ClCompile Include="Source\ECS\Components\RoomBuilder.cpp" />
     <ClCompile Include="Source\ECS\Components\CellLoader.cpp" />
     <ClCompile Include="Source\Math\Vector2Int.cpp" />

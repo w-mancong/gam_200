@@ -3,12 +3,12 @@
 namespace ALEngine::Math
 {
 
-	Vector2 const Vector2::right = Vector2(1, 0);
-	Vector2 const Vector2::left = Vector2(-1, 0);
-	Vector2 const Vector2::up = Vector2(0, 1);
-	Vector2 const Vector2::down = Vector2(0, -1);
-	Vector2 const Vector2::one = Vector2(1, 1);
-	Vector2 const Vector2::zero = Vector2(0, 0);
+	Vector2Int const Vector2Int::right = Vector2Int(1, 0);
+	Vector2Int const Vector2Int::left = Vector2Int(-1, 0);
+	Vector2Int const Vector2Int::up = Vector2Int(0, 1);
+	Vector2Int const Vector2Int::down = Vector2Int(0, -1);
+	Vector2Int const Vector2Int::one = Vector2Int(1, 1);
+	Vector2Int const Vector2Int::zero = Vector2Int(0, 0);
 
 	Vector2Int::Vector2Int(void) : x{ 0 }, y{ 0 } {}
 
@@ -62,7 +62,7 @@ namespace ALEngine::Math
 
 	s32 Vector2Int::Magnitude(void) const
 	{
-		return sqrt(MagnitudeSq());
+		return static_cast<s32>(sqrt(MagnitudeSq()));
 	}
 
 	s32 Vector2Int::MagnitudeSq(void) const

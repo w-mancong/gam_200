@@ -21,6 +21,4 @@ namespace ALEngine::ECS::Component
 		void SpawnUnit();
 	};
 }
-
-
 #endif

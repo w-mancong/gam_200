@@ -3,13 +3,15 @@
 
 namespace ALEngine::ECS
 {
-    std::list<Cell> PathFindingManager::FindPath(Cell roomMap[], int roomMapSize  , Cell& startCell, Cell& endCell)
+    std::list<Cell> PathFindingManager::FindPath(Cell roomMap[], int roomMapSize  , Cell& startCell, Cell& endCell, bool defaultAstar)
     {
         Cell startNode{ startCell };
         Cell endNode{ endCell };
 
         //add start node to open list
-        std::list<Cell> openList{startNode}, closedList, pathList;
+        std::list<Cell> openList, closedList, pathList;
+
+        openList.push_back(startNode);
 
         for (int i{ 0 }; i < roomMapSize; ++i)
         {
@@ -32,11 +34,11 @@ namespace ALEngine::ECS
                 pathList = CalculatePath(endCell);
                 return pathList;
             }
+      
+             openList.remove(currentNode);
+             closedList.push_back(currentNode);
 
-            openList.remove(currentNode);
-            closedList.push_back(currentNode);
-
-            for (auto neighbourNode : GetNeighbourList(currentNode))
+            for (auto neighbourNode : GetNeighbourList(currentNode, defaultAstar))
             {
                 if (CellListContain(closedList, neighbourNode))
                 {
@@ -62,15 +64,24 @@ namespace ALEngine::ECS
         return pathList;
     }
 
-    std::list<Cell> PathFindingManager::GetNeighbourList(Cell currentNode)
+    std::list<Cell> PathFindingManager::GetNeighbourList(Cell currentNode, bool defaultAstar)
     {
         std::list<Cell> neighbourList;
         //need to find out how to check grid or map
 
+        ALEngine::Math::Vector2Int grid = currentNode.m_Grid;
 
-        ALEngine::Math::Vector2 grid = currentNode.m_Grid;
+        //if default astar pathfinding mode then do diagonal neighbour checks 
+        if (defaultAstar)
+        {
+            //diagonal neighbour checks 
 
-       
+        }
+
+        //astar without diagonal check for no diagonal paths
+        
+
+
 
         return neighbourList;
     }

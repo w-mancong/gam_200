@@ -16,9 +16,9 @@ namespace ALEngine::ECS
 	{
 	public:
 
-		std::list<Cell> FindPath(Cell roomMap[], int roomMapSize, Cell& startCell, Cell& endCell);
+		std::list<Cell> FindPath(Cell roomMap[], int roomMapSize, Cell& startCell, Cell& endCell, bool defaultAstar);
 	private:
-		std::list<Cell> GetNeighbourList(Cell currentNode);
+		std::list<Cell> GetNeighbourList(Cell currentNode, bool defaultAstar);
 
 		std::list<Cell> CalculatePath(Cell endNode);
 

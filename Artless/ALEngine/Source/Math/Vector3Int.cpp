@@ -61,7 +61,7 @@ namespace ALEngine::Math
 
 	s32 Vector3Int::Magnitude(void) const
 	{
-		return sqrt(MagnitudeSq());
+		return static_cast<s32>(sqrt(MagnitudeSq()));
 	}
 
 	s32 Vector3Int::MagnitudeSq(void) const

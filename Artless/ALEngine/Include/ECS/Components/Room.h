@@ -13,9 +13,15 @@ namespace ALEngine::ECS::Component
 {
 	struct Room
 	{
-		Cell cellMap[];
+		//Cell cellMap[];
 
-		void LoadMap(int cellMapSize);
+		void LoadMap(s32 cellMapSize)
+		{
+			for (s32 i = 0; i < cellMapSize; ++i)
+			{
+
+			}
+		}
 	};
 }
 #endif // !ROOM_H
