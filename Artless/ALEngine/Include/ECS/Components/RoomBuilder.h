@@ -19,12 +19,17 @@ namespace ALEngine::ECS::Component
 
 		static RoomBuilder m_Instance;
 
+		Room *m_RoomToLoad;
+
 		ALEngine::Math::Vector2 m_RoomSize{ 10.f, 10.f };
 		ALEngine::Math::Vector2 m_CellSize{ 1.f,1.f };
 
+		Transform m_Room;
+		Cell m_CellPreFab;
+
 		Cell m_CellMap[];
 
-		bool isGridInside(ALEngine::Math::Vector2 grid);
+		bool IsGridInside(ALEngine::Math::Vector2 grid);
 	private:
 		void Awake();
 

@@ -11,7 +11,7 @@ namespace ALEngine::ECS::Component
 	{
 	}
 
-	bool RoomBuilder::isGridInside(ALEngine::Math::Vector2 grid)
+	bool RoomBuilder::IsGridInside(ALEngine::Math::Vector2 grid)
 	{
 		return grid.x >= 0 && grid.x < m_Instance.m_RoomSize.x&& grid.y >= 0 && grid.y < m_Instance.m_RoomSize.y;
 	}
@@ -23,6 +23,14 @@ namespace ALEngine::ECS::Component
 
 	void RoomBuilder::Start()
 	{
+		if (m_RoomToLoad)
+		{
+
+		}
+		else
+		{
+			
+		}
 
 	}
 

@@ -62,6 +62,18 @@ namespace ALEngine::ECS
         return pathList;
     }
 
+    std::list<Cell> PathFindingManager::GetNeighbourList(Cell currentNode)
+    {
+        std::list<Cell> neighbourList;
+        //need to find out how to check grid or map
+
+        ALEngine::Math::Vector2 grid = currentNode.m_Grid;
+
+       
+
+        return neighbourList;
+    }
+
     std::list<Cell> PathFindingManager::CalculatePath(Cell endNode)
     {
         std::list<Cell> path;
@@ -101,16 +113,6 @@ namespace ALEngine::ECS
         }
 
         return lowestFCostNode;
-    }
-
-    std::list<Cell> PathFindingManager::GetNeighbourList(Cell currentNode)
-    {
-        std::list<Cell> neighbourList;
-        //need to find out how to check grid or map
-
-        //ALEngine::Math::Vector2
-
-        return neighbourList;
     }
 
     bool PathFindingManager::CellListContain(std::list<Cell> cellList, Cell cellSearchNode)

@@ -18,14 +18,13 @@ namespace ALEngine::ECS
 
 		std::list<Cell> FindPath(Cell roomMap[], int roomMapSize, Cell& startCell, Cell& endCell);
 	private:
+		std::list<Cell> GetNeighbourList(Cell currentNode);
 
 		std::list<Cell> CalculatePath(Cell endNode);
 
 		float CalculateDistanceCost(Cell a, Cell b);
 
 		Cell GetLowestFCostNode(std::list<Cell> pathFindingCellNodeList);
-
-		std::list<Cell> GetNeighbourList(Cell currentNode);
 
 		bool CellListContain(std::list<Cell> cellList, Cell cellSearchNode);
 	};
