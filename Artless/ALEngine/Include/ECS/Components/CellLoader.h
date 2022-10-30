@@ -1,22 +1,26 @@
-#ifndef	ROOM_H
-#define ROOM_H
+#ifndef	CELL_LOADER_H
+#define CELL_LOADER_H
 
 /*!
-file: Room.h
+file: CellLoader.h
 author: Chan Jie Ming Stanley
 email: c.jiemingstanley\@digipen.edu
-brief: This file contains function defination for PathFindingManager
+brief: This file contains function declaration for CellLoader
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 namespace ALEngine::ECS::Component
 {
-	struct Room
+	struct CellLoader
 	{
-		Cell cellMap[];
+		Unit *m_Unit;
+		bool m_IsHole{ false };
 
-		void LoadMap(int cellMapSize);
+		void SetUpCell();
+
+		void SpawnUnit();
 	};
 }
-#endif // !ROOM_H
 
+
+#endif
