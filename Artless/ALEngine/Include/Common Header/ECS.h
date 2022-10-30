@@ -25,6 +25,8 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Components/Unit.h>
 #include <ECS/Components/EventTrigger.h>
 #include <ECS/Components/Cell.h>
+#include <ECS/Components/RoomBuilder.h>
+#include <ECS/Components/Room.h>
 
 // --------------- Structure --------------------
 #include <ECS/Structure/entity.h>

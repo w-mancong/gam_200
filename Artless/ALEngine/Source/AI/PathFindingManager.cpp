@@ -84,7 +84,7 @@ namespace ALEngine::ECS
     float PathFindingManager::CalculateDistanceCost(Cell a, Cell b)
     {
         //need to find out how to calculate distance
-       
+        //ALEngine::Math::Vector3().Distance(a, b);
         return 0.0f;
     }
 
