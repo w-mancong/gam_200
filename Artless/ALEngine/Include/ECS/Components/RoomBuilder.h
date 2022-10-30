@@ -17,7 +17,7 @@ namespace ALEngine::ECS::Component
 		RoomBuilder();
 		~RoomBuilder();
 
-		static RoomBuilder instance;
+		static RoomBuilder m_Instance;
 
 		ALEngine::Math::Vector2 m_RoomSize{ 10.f, 10.f };
 		ALEngine::Math::Vector2 m_CellSize{ 1.f,1.f };

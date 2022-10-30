@@ -13,16 +13,17 @@ namespace ALEngine::ECS::Component
 
 	bool RoomBuilder::isGridInside(ALEngine::Math::Vector2 grid)
 	{
-		return grid.x >= 0 && grid.x < instance.m_RoomSize.x&& grid.y >= 0 && grid.y < instance.m_RoomSize.y;
+		return grid.x >= 0 && grid.x < m_Instance.m_RoomSize.x&& grid.y >= 0 && grid.y < m_Instance.m_RoomSize.y;
 	}
 
 	void RoomBuilder::Awake()
 	{
-		instance = *this;
+		m_Instance = *this;
 	}
 
 	void RoomBuilder::Start()
 	{
+
 	}
 
 	void RoomBuilder::BuildRoom(Cell cellprefab, Transform room, ALEngine::Math::Vector2 roomsize, ALEngine::Math::Vector2 cellsize)
