@@ -28,7 +28,7 @@ namespace ALEngine::ECS::Component
 	public:
 		RoomBuilder();
 		~RoomBuilder();
-		bool IsGridInside(ALEngine::Math::Vector2Int grid);
+		static bool IsGridInside(ALEngine::Math::Vector2Int grid);
 
 	private:
 		void Awake();

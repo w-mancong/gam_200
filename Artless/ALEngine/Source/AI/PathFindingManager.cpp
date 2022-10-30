@@ -61,6 +61,7 @@ namespace ALEngine::ECS
             }
         }
 
+        //out of nodes on open list or no path
         return pathList;
     }
 
@@ -75,13 +76,43 @@ namespace ALEngine::ECS
         if (defaultAstar)
         {
             //diagonal neighbour checks 
+            if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, 1)))
+            {
 
+            }
+            if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, -1)))
+            {
+
+            }
+
+            if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, 1)))
+            {
+
+            }
+            if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, -1)))
+            {
+
+            }
         }
 
-        //astar without diagonal check for no diagonal paths
-        
+        //astar without diagonal path, check for all neighbours except diagonal neighbours
+        if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, 0))) //right
+        {
 
 
+        }
+        if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, 0))) //left
+        {
+
+        }
+        if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(0, 1))) //up
+        {
+
+        }
+        if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(0, -1))) //down
+        {
+
+        }
 
         return neighbourList;
     }
