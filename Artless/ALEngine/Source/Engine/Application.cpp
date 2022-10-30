@@ -73,10 +73,16 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
 		player = Coordinator::Instance()->CreateEntity();
+		sceneGraph.Push(-1, player);
 		floor= Coordinator::Instance()->CreateEntity();
+		sceneGraph.Push(-1, floor);
 		coin = Coordinator::Instance()->CreateEntity();
+		sceneGraph.Push(-1, coin);
 		pathfinder = Coordinator::Instance()->CreateEntity();
+		sceneGraph.Push(-1, pathfinder);
 
 
 		Transform trans;
