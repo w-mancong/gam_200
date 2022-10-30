@@ -320,7 +320,7 @@ namespace ALEngine::ECS
 			ParticleSys::SetVelocity(prop, Vector2(0, 5));
 			ParticleSys::SetStartColor(prop, Vector3(0, 1, 0));
 			ParticleSys::SetEndColor(prop, Vector3(1, 0, 0.2f));
-			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos() - Vector2(700, 500));
+			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos());
 			ParticleSys::SetEndSize(prop, 0.f);
 			ParticleSys::SetVelVariation(prop, Vector2(10, 10));
 			ParticleSys::SetSizeVariation(prop, 2.f);

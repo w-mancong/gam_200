@@ -52,7 +52,7 @@ namespace ALEngine::Editor
 			ImGui::End();
 			return;
 		}
-
+		
 		// Window size
 		ImVec2 winSize = ImGui::GetWindowSize();
 
@@ -161,22 +161,28 @@ namespace ALEngine::Editor
 		ImGui::Text("Sprite Component");
 
 		// Image
-		Guid id = Engine::AssetManager::Instance()->GetGuid(spr.filePath.c_str());
-		u32 texture = Engine::AssetManager::Instance()->GetButtonImage(id);
-		ImVec2 winSize = ImGui::GetWindowSize();
-		ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x * 0.75f, winSize.x * 0.75f}, { 0, 1 }, { 1, 0 });
+		if (spr.filePath != "")
+		{
+			Guid id = Engine::AssetManager::Instance()->GetGuid(spr.filePath.c_str());
+			u32 texture = Engine::AssetManager::Instance()->GetButtonImage(id);
+			ImVec2 winSize = ImGui::GetWindowSize();
+			ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x * 0.5f, winSize.x * 0.5f }, { 0, 1 }, { 1, 0 });
+		}
 
 		// File path
-		ImGui::NewLine();
 		c8* fp = (c8*)spr.filePath.c_str();
 		ImGui::PushID("FilePath");
-		ImGui::InputText("File Path", fp, 100);
+		ImGui::InputText("File Path", fp, FILE_BUFFER_SIZE);
 
 		// Drag Drop!
 		if (ImGui::BeginDragDropTarget())
 		{
+			// Payload flag
+			ImGuiDragDropFlags payload_flag{ 0 };
+			payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
 			// Get Drag and Drop Payload
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
 			{
 				// Get filepath
 				size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
@@ -194,7 +200,7 @@ namespace ALEngine::Editor
 				}
 				else
 				{
-
+					AL_CORE_ERROR("A .jpg or .png file is required!");
 				}
 			}
 			ImGui::EndDragDropTarget();

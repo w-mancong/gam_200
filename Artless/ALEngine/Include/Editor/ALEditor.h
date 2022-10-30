@@ -54,6 +54,12 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Updates the Menu Bar for the Editor
+		***********************************************************************************/
+		void MainMenuBar(void);
+
+		/*!*********************************************************************************
+			\brief
 			Sets ImGui to be enabled or disabled.
 
 			\param [in] isEnabled
