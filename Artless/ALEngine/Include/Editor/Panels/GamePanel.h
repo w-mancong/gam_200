@@ -38,10 +38,27 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void OnImGuiRender(void);
 
+		/*!*********************************************************************************
+			\brief
+			Returns the cursor's world space position.
+
+			\return
+			Cursor World Space position.
+			Returns a Vec2 containing std::numeric_limits::max for x and y if the mouse
+			position was handled outside of the Scene viewport
+		***********************************************************************************/
+		Math::Vec2 GetMouseWorldPos();
+
 	private:		
 		// Panel size
 		const ImVec2 PANEL_MIN{ 320, 350 };
 		const ImVec2 PANEL_MAX{ 1920, 1080 };
+
+		// Scene Size
+		f32 m_SceneWidth{ 0 }, m_SceneHeight{ 0 };
+
+		ImVec2 m_ImGuiMousePos{};
+		ImVec2 m_ImGuiPanelPos{};
 	};
 }
 

@@ -1,4 +1,4 @@
-/*!
+ï»¿/*!
 file:		OpenGLWindow.cpp
 author:		Wong Man Cong
 co-author:	Lucas Nguyen
@@ -7,7 +7,7 @@ email:		w.mancong@digipen.edu
 brief:		This file contains function to initialise the GLFW Window and provides
 			interface to interact with it
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
@@ -42,16 +42,16 @@ namespace ALEngine::Graphics
 
 #ifdef _DEBUG
 		// Enable OPENGL Debug Context if on debug mode
-		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true); 
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif
 
 #ifdef __APPLE__
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		Serializer::Deserializer config{ "Assets/Dev/Objects/Config.json" };
-		title = config.getString("window title", "ALEngine");
-		Math::vec2 dimension = config.getVec2("dimensions", { DEFAULT_WIDTH, DEFAULT_HEIGHT });
+		Serializer::Serializer config{ "Assets/Dev/Objects/Config.json" };
+		title = config.GetString("window title", "ALEngine");
+		Math::vec2 dimension = config.GetVec2("dimensions", { DEFAULT_WIDTH, DEFAULT_HEIGHT });
 		width = static_cast<u32>(dimension.x);
 		height = static_cast<u32>(dimension.y);
 
@@ -88,9 +88,9 @@ namespace ALEngine::Graphics
 		glGetIntegerv(GL_MINOR_VERSION, &minor);
 		std::cout << "Version: " << major << "." << minor << std::endl;
 
-		char* vendor	= (char*)glGetString(GL_VENDOR);
-		char* device	= (char*)glGetString(GL_RENDERER);
-		char* version	= (char*)glGetString(GL_VERSION);
+		char* vendor = (char*)glGetString(GL_VENDOR);
+		char* device = (char*)glGetString(GL_RENDERER);
+		char* version = (char*)glGetString(GL_VERSION);
 
 		s32 n;
 		glGetIntegerv(GL_NUM_EXTENSIONS, &n);

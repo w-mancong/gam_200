@@ -17,6 +17,8 @@ brief:	This file contain all the common math header files and function declarati
 #include <Math/Matrix2x2.h>
 #include <Math/Matrix3x3.h>
 #include <Math/Matrix4x4.h>
+#include <Math/Vector2Int.h>
+#include <Math/Vector3Int.h>
 
 namespace ALEngine::Math
 {

@@ -69,10 +69,21 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		gameplaySystem->roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
 
 		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {	
 			gameplaySystem->roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
+
+			if (i == 0)
+			{
+				sceneGraph.Push(-1, gameplaySystem->roomCellsArray[i]); // first cell is parent
+			}
+			else
+			{
+				sceneGraph.Push(gameplaySystem->roomCellsArray[0], gameplaySystem->roomCellsArray[i]); // other cells are children of the parent
+			}
+
 			CreateCollider(gameplaySystem->roomCellsArray[i]);
 			Coordinator::Instance()->GetComponent<Collider2D>(gameplaySystem->roomCellsArray[i]).isTrigger = true;
 			Transform transform;

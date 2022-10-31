@@ -51,6 +51,7 @@ namespace ALEngine::ECS
 		u64* texHandle{ nullptr };
 		
 		Tree::BinaryTree sceneGraph{};
+		std::vector<Transform> prevTransform;
 		
 #if EDITOR
 		// Viewport and editor framebuffers
@@ -233,8 +234,60 @@ namespace ALEngine::ECS
 		MeshBuilder::Instance()->Init();
 	}
 
+	void UpdateParentChildrenPos()
+	{
+		if (prevTransform.empty()) // for first frame
+		{
+			for (auto x : sceneGraph.GetMap())
+			{
+				if (x.active)
+					prevTransform.push_back(Coordinator::Instance()->GetComponent<Transform>(x.id));
+				else
+				{
+					prevTransform.push_back(Transform());
+				}
+			}
+		}
+		else
+		{
+			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+			for (auto& x : sceneGraph.GetMap())
+			{
+				Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(x.id);
+
+				if (x.id < prevTransform.size() && parentTransform.position.x == prevTransform[x.id].position.x
+					&& parentTransform.position.y == prevTransform[x.id].position.y)
+					continue;
+
+				for (s32 child : x.children)
+				{
+					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child);
+
+					childTransform.position += parentTransform.position - prevTransform[x.id].position;
+					prevTransform[child].position += parentTransform.position - prevTransform[x.id].position;
+				}
+			}
+
+			prevTransform.clear();
+			for (auto& x : sceneGraph.GetMap())
+			{
+				if (x.active) // if active, store Transform
+				{
+					prevTransform.push_back(Coordinator::Instance()->GetComponent<Transform>(x.id));
+				}
+				else
+				{
+					prevTransform.push_back(Transform());
+				}
+			}
+		}
+	}
+
 	void Render(void)
 	{
+		UpdateParentChildrenPos();
+		
 #if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
@@ -262,6 +315,22 @@ namespace ALEngine::ECS
 		SetTextString(FPS, ossFPS.str());
 		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
 		Text::RenderText(FPS);
+
+		if (Input::KeyDown(KeyCode::Z)) // particles when hold 'Z' button 
+		{
+			ParticleSys::ParticleProperties prop{};
+			ParticleSys::SetVelocity(prop, Vector2(0, 5));
+			ParticleSys::SetStartColor(prop, Vector3(0, 1, 0));
+			ParticleSys::SetEndColor(prop, Vector3(1, 0, 0.2f));
+			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos());
+			ParticleSys::SetEndSize(prop, 0.f);
+			ParticleSys::SetVelVariation(prop, Vector2(10, 10));
+			ParticleSys::SetSizeVariation(prop, 2.f);
+			ParticleSys::SetLifeTime(prop, 3.f);
+			ParticleSys::SetStartSize(prop, 10.f);
+			for (int i{}; i < 5; ++i)
+				particleSys.Emit(prop);
+		}
 
 		// Update and render particles
 		particleSys.ParticleUpdate(Time::m_DeltaTime);

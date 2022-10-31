@@ -24,9 +24,15 @@ namespace ALEngine::ECS::Component
 		u32 unitEntity;
 		uint32_t coordinate[2];
 
+		ALEngine::Math::Vector2Int m_Grid;
 		void CalculateFCost()
 		{
 			m_FCost = m_GCost + m_HCost;
+		}
+
+		bool operator==(const Cell& lhs) const
+		{
+			return (lhs.m_Grid == m_Grid);
 		}
 	};
 }

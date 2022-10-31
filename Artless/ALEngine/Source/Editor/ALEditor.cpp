@@ -72,6 +72,9 @@ namespace ALEngine::Editor
 			m_GamePanel.OnImGuiRender();
 		else
 		{
+			// Main Menu Bar
+			MainMenuBar();
+
 			// Content Browser Panel
 			m_ContentBrowserPanel.OnImGuiRender();
 
@@ -79,8 +82,7 @@ namespace ALEngine::Editor
 			m_LoggerPanel.OnImGuiRender();
 
 			// Check if there is a selected entity for Inspector
-			if (m_InspectorPanel.HasSelectedEntity())
-				m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
 			// Set selected entity for Scene Panel (for Gizmos)
 			m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
@@ -95,6 +97,7 @@ namespace ALEngine::Editor
 
 			// Profiler Panel
 			//m_ProfilerPanel.OnImGuiRender();
+			//ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -175,6 +178,26 @@ namespace ALEngine::Editor
 			glfwMakeContextCurrent(curr_context);
 		}
 	}
+
+	void ALEditor::MainMenuBar(void)
+	{
+		if (ImGui::BeginMainMenuBar())
+		{
+			// File
+			if (ImGui::BeginMenu("File"))
+			{
+				ImGui::EndMenu();
+			}
+
+			// Edit
+			if (ImGui::BeginMenu("Edit"))
+			{
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+		}
+	}
 	
 	void ALEditor::SetImGuiEnabled(b8 isEnabled)
 	{
@@ -218,20 +241,22 @@ namespace ALEngine::Editor
 
 	Math::Vec2 ALEditor::GetMouseWorldPos()
 	{
+		if (m_GameStart)
+			return m_GamePanel.GetMouseWorldPos();
 		return m_ScenePanel.GetMouseWorldPos();
 	}
 
 	void ALEditor::Docking(void)
 	{
 		// Ensure the parent window is not dockable into
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
 		
 		// Get main viewport
 		const ImGuiViewport* vp = ImGui::GetMainViewport();
 
 		// Set next window info
 		ImGui::SetNextWindowPos(vp->WorkPos);
-		ImGui::SetNextWindowSize(vp->WorkSize);
+		ImGui::SetNextWindowSize(ImVec2(vp->WorkSize));
 		ImGui::SetNextWindowViewport(vp->ID);
 
 		// Window style
