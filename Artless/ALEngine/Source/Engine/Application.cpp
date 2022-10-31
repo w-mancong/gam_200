@@ -88,7 +88,7 @@ namespace ALEngine::Engine
 		trans.position = { 400, 500 };
 		trans.scale = { 150, 150 };
 		Coordinator::Instance()->AddComponent(player, trans);
-		CreateSprite(player, "./Assets/Images/button1.png");
+		CreateSprite(player);
 		CreateCollider(player);
 		CreateCharacterController(player);
 		CreateEventTrigger(player);

@@ -103,8 +103,8 @@ namespace ALEngine::Editor
 			if (ImGui::Selectable("Add child") && (ALEditor::Instance()->GetSelectedEntity() != ECS::MAX_ENTITIES))
 			{
 				// Entity Transform
-				Transform xform{ Math::Vector2(0.f, 0.f),
-					Math::Vector2(1.f, 1.f), 0.f, Math::mat4(1.f) };
+				Transform xform{ Math::Vector2(2.f, 2.f),
+					Math::Vector2(1.f, 1.f), 0.f };
 
 				// Create Entity
 				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
