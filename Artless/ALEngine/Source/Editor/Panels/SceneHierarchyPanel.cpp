@@ -143,7 +143,16 @@ namespace ALEngine::Editor
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
 		// Flag for Tree Node
-		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+		ImGuiTreeNodeFlags flags = 0;
+
+		// Check if has children
+		sceneGraph.FindImmediateChildren(child);
+		std::vector<s32> childrenList = sceneGraph.GetChildren();
+
+		if (childrenList.empty())
+			flags |= ImGuiTreeNodeFlags_Leaf;
+		else
+			flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 
 		// Get entity data
 		EntityData data = Coordinator::Instance()->GetComponent<EntityData>(child);
@@ -165,8 +174,6 @@ namespace ALEngine::Editor
 		// If tree node is open
 		if (opened)
 		{
-			sceneGraph.FindImmediateChildren(child);
-			std::vector<s32> childrenList = sceneGraph.GetChildren();
 			for (auto child_it : childrenList)
 				UpdateEntitySHP(child_it, popup_hasopen);
 			ImGui::TreePop();
