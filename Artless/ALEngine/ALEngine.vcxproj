@@ -152,7 +152,6 @@
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\AI\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
-    <ClCompile Include="Source\ECS\Components\CellLoader.cpp" />
     <ClCompile Include="Source\ECS\Components\RoomBuilder.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
     <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp">

@@ -3,7 +3,7 @@
 
 namespace ALEngine::ECS
 {
-    std::list<Cell> PathFindingManager::FindPath(Cell roomMap[], int roomMapSize  , Cell& startCell, Cell& endCell, bool defaultAstar)
+    std::list<Cell> PathFindingManager::FindPath(std::vector<Cell> roomMap, int roomMapSize  , Cell& startCell, Cell& endCell, bool defaultAstar)
     {
         Cell startNode{ startCell };
         Cell endNode{ endCell };
@@ -78,7 +78,7 @@ namespace ALEngine::ECS
             //diagonal neighbour checks 
             if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, 1)))
             {
-
+                
             }
             if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, -1)))
             {

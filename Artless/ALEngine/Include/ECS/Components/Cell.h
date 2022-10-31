@@ -19,12 +19,14 @@ namespace ALEngine::ECS::Component
 
 		float m_HCost{ 0 }, m_GCost{ 10000 }, m_FCost{ 0 };
 		bool m_isAccesible{ true };
-		Cell *m_ParentCell;
+		//the came from cell or parent cell
+		Cell* m_ParentCell {nullptr};
 
 		u32 unitEntity;
-		uint32_t coordinate[2];
+		u32 coordinate[2];
 
 		ALEngine::Math::Vector2Int m_Grid;
+
 		void CalculateFCost()
 		{
 			m_FCost = m_GCost + m_HCost;
