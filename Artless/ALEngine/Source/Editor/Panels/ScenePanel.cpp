@@ -1,18 +1,7 @@
 #include "pch.h"
 
 #include "imgui.h"
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include "imgui_internal.h"
-
-#if defined(_MSC_VER) || defined(__MINGW32__)
-#include <malloc.h>
-#endif
-#if !defined(_MSC_VER) && !defined(__MINGW64_VERSION_MAJOR)
-#define _malloca(x) alloca(x)
-#define _freea(x)
-#endif
 
 namespace ALEngine::Editor
 {
@@ -66,7 +55,8 @@ namespace ALEngine::Editor
 			m_SceneHeight = ImGui::GetContentRegionAvail().y;
 
 		// Draw Scene
-		ImGui::Image((void*)ECS::GetEditorTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+		u64 tex = (u64)ECS::GetEditorTexture();
+		ImGui::Image((void*)tex, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// Only render gizmos if an entity is selected
 		if (hasSelectedEntity)

@@ -54,6 +54,12 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Updates the Menu Bar for the Editor
+		***********************************************************************************/
+		void MainMenuBar(void);
+
+		/*!*********************************************************************************
+			\brief
 			Sets ImGui to be enabled or disabled.
 
 			\param [in] isEnabled
@@ -135,6 +141,8 @@ namespace ALEngine::Editor
 			position was handled outside of the Scene viewport
 		***********************************************************************************/
 		Math::Vec2 GetMouseWorldPos();
+
+		bool GetGameActive(void) { return m_GameStart; }
 
 	private:
 		/*!*********************************************************************************
