@@ -32,7 +32,8 @@ namespace ALEngine::Editor
 		if (m_SceneHeight != ImGui::GetContentRegionAvail().y)
 			m_SceneHeight = ImGui::GetContentRegionAvail().y;
 
-		ImGui::Image((void*)ECS::GetFBTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+		u64 tex = (u64)ECS::GetFBTexture();
+		ImGui::Image((void*)tex, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// End ImGui Panel
 		ImGui::End();
@@ -57,7 +58,7 @@ namespace ALEngine::Editor
 		// Get NDC coords of mouse pos
 		mousePos.x = 2.f * (mousePos.x / m_SceneWidth) - 1.f;
 		mousePos.y = 2.f * (mousePos.y / m_SceneHeight) - 1.f;
-
+		AL_CORE_CRITICAL("Mouse NDC: {}, {}", mousePos.x, mousePos.y);
 		// Check if within range of scene
 		if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
 			mousePos.y >= -1.f && mousePos.y <= 1.f)

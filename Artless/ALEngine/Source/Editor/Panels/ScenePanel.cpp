@@ -55,7 +55,8 @@ namespace ALEngine::Editor
 			m_SceneHeight = ImGui::GetContentRegionAvail().y;
 
 		// Draw Scene
-		ImGui::Image((void*)ECS::GetEditorTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+		u64 tex = (u64)ECS::GetEditorTexture();
+		ImGui::Image((void*)tex, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// Only render gizmos if an entity is selected
 		if (hasSelectedEntity)
