@@ -66,6 +66,12 @@ namespace ALEngine::Editor
 			Returns true if there is a selected entity, else returns false
 		***********************************************************************************/
 		bool HasSelectedEntity(void);
+		
+		/*!*********************************************************************************
+			\brief
+			Displays the Inspector Menu on the panel
+		***********************************************************************************/
+		void InspectorMenu(void);
 
 		/*!*********************************************************************************
 			\brief

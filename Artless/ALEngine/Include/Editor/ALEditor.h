@@ -142,6 +142,8 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		Math::Vec2 GetMouseWorldPos();
 
+		bool GetGameActive(void) { return m_GameStart; }
+
 	private:
 		/*!*********************************************************************************
 			\brief

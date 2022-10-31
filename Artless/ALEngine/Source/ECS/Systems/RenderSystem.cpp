@@ -376,6 +376,10 @@ namespace ALEngine::ECS
 		
 		rs->RenderBatch(cam);
 
+		// Update and render particles
+		particleSys.ParticleUpdate(Time::m_DeltaTime);
+		particleSys.ParticleRender();
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
 	}

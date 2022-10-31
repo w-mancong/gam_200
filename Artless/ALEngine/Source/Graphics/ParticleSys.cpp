@@ -127,8 +127,17 @@ namespace ALEngine::Graphics::ParticleSys
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		particleShader.use();
-		particleShader.Set("view", camera.ViewMatrix());
-		particleShader.Set("proj", camera.ProjectionMatrix());
+		if (Editor::ALEditor::Instance()->GetGameActive())
+		{
+			particleShader.Set("view", camera.ViewMatrix());
+			particleShader.Set("proj", camera.ProjectionMatrix());
+		}
+		else
+		{
+			Engine::Camera& cam = Editor::ALEditor::Instance()->GetEditorCamera();
+			particleShader.Set("view", cam.ViewMatrix());
+			particleShader.Set("proj", cam.ProjectionMatrix());
+		}
 
 		for (auto& particle : particleContainer)
 		{
