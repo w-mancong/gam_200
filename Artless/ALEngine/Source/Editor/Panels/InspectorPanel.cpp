@@ -45,6 +45,7 @@ namespace ALEngine::Editor
 		// Begin ImGui
 		if (!ImGui::Begin("Inspector"))
 		{
+			ImGui::End();
 			return;
 		}
 
@@ -52,10 +53,15 @@ namespace ALEngine::Editor
 		if (!HasSelectedEntity())
 		{
 			ImGui::NewLine();
-			ImGui::Text("Click on an Entity to view it's components");
+			ImVec2 textSize = ImGui::CalcTextSize("Click on an Entity to view it's components");
+			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));
+			ImGui::TextWrapped("Click on an Entity to view it's components");
 			ImGui::End();
 			return;
 		}
+
+		// Inspector Menu
+		InspectorMenu();
 		
 		// Window size
 		ImVec2 winSize = ImGui::GetWindowSize();
@@ -71,6 +77,9 @@ namespace ALEngine::Editor
 		// Check if there is sprite component
 		if (Coordinator::Instance()->HasComponent<Sprite>(m_SelectedEntity))
 			DisplaySprite();
+
+		// Add component button
+		AddComponentButton();
 
 		ImGui::End();
 	}	
@@ -90,6 +99,26 @@ namespace ALEngine::Editor
 		return !(m_SelectedEntity == ECS::MAX_ENTITIES);
 	}
 
+	void InspectorPanel::InspectorMenu(void)
+	{
+		if (ImGui::BeginMenuBar())
+		{
+			// File
+			if (ImGui::BeginMenu("Add"))
+			{
+				ImGui::EndMenu();
+			}
+
+			// Edit
+			if (ImGui::BeginMenu("Remove"))
+			{
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+		}
+	}
+
 	void InspectorPanel::DisplayEntityData(void)
 	{
 		ImGui::Text("Entity Data");
@@ -98,7 +127,7 @@ namespace ALEngine::Editor
 		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_SelectedEntity);
 
 		// Entity active
-		ImGui::Checkbox(" ", &data.active);
+		ImGui::Checkbox("##active", &data.active);
 
 		ImGui::SameLine();
 
@@ -160,21 +189,6 @@ namespace ALEngine::Editor
 
 			ImGui::Separator();
 		}
-
-
-		if (Input::KeyTriggered(KeyCode::MouseRightButton))
-		{
-			ImGui::OpenPopup("component_rightclick");
-		}
-
-		if (ImGui::BeginPopup("component_rightclick"))
-		{
-			if (ImGui::Selectable("Remove"))
-			{
-
-			}
-			ImGui::EndPopup();
-		}
 	}
 
 	void InspectorPanel::DisplaySprite(void)
@@ -187,7 +201,7 @@ namespace ALEngine::Editor
 			if (spr.filePath != "")
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid(spr.filePath.c_str());
-				u32 texture = Engine::AssetManager::Instance()->GetButtonImage(id);
+				u64 texture = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
 				ImVec2 winSize = ImGui::GetWindowSize();
 				ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x * 0.5f, winSize.x * 0.5f }, { 0, 1 }, { 1, 0 });
 			}
@@ -249,11 +263,90 @@ namespace ALEngine::Editor
 
 			ImGui::Separator();
 		}
+
+		// Right click!
+		if (ImGui::IsItemClicked(1))
+		{
+			ImGui::OpenPopup("spritecomp_rightclick");
+		}
+
+		if (ImGui::BeginPopup("spritecomp_rightclick"))
+		{
+			if (ImGui::Selectable("Remove Component"))
+			{
+				ECS::Coordinator::Instance()->RemoveComponent<Sprite>(m_SelectedEntity);
+			}
+			ImGui::EndPopup();
+		}
 	}
 
 	ImGuizmo::OPERATION InspectorPanel::GetCurrGizmoOperation(void) const
 	{
 		return m_CurrentGizmoOperation;
+	}
+
+	void InspectorPanel::AddComponentButton(void)
+	{
+		// Get Window size
+		ImVec2 winsize = ImGui::GetWindowSize();
+		if (ImGui::Button("Add Component", ImVec2(winsize.x * 0.8f, 20.f)))
+		{
+			ImGui::OpenPopup("addcomponent_popup");
+		}
+
+		ImGui::SetNextWindowSize(ImVec2(winsize.x * 0.75f, 100.f));
+		// Popup for component
+		if (ImGui::BeginPopup("addcomponent_popup"))
+		{
+			ImVec2 textSize = ImGui::CalcTextSize("Available Components");
+			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));
+			ImGui::Text("Available Components"); ImGui::Separator();
+			u32 count = 0;
+			for (u32 i = 1; i < (u32)InspectorComponents::InComp_Total; ++i)
+			{
+				// Check which component
+				switch ((InspectorComponents)i)
+				{
+				case InspectorComponents::InComp_Transform:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<Transform>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Transform Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Transform Component
+							ECS::Coordinator::Instance()->AddComponent<Transform>(m_SelectedEntity, Transform());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_Sprite:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<Sprite>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Sprite Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Transform Component
+							ECS::Coordinator::Instance()->AddComponent<Sprite>(m_SelectedEntity, Sprite());
+						}
+						++count;
+					}
+					break;
+				}
+			}
+
+			// Check how many
+			if (count == 0)
+			{	// Print no components
+				ImGui::NewLine();
+				textSize = ImGui::CalcTextSize("No Components to Add!");
+				ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));
+				ImGui::Text("No Components to Add!");
+			}
+
+			ImGui::EndPopup();
+		}
 	}
 
 }

@@ -13,6 +13,7 @@ brief:	This file contains function declarations for the InspectorPanel class.
 
 namespace ALEngine::Editor
 {
+	// Predeclarations
 	enum class InspectorComponents;
 
 	/*!*********************************************************************************
@@ -99,6 +100,15 @@ namespace ALEngine::Editor
 			Current Gizmo Operation
 		***********************************************************************************/
 		ImGuizmo::OPERATION GetCurrGizmoOperation(void) const;
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Sprite component info on the panel
+
+			\return
+			Current Gizmo Operation
+		***********************************************************************************/
+		void AddComponentButton(void);
 
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo

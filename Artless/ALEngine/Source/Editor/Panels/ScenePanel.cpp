@@ -59,7 +59,7 @@ namespace ALEngine::Editor
 		ImGui::Image((void*)tex, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// Only render gizmos if an entity is selected
-		if (hasSelectedEntity)
+		if (hasSelectedEntity && Coordinator::Instance()->HasComponent<Transform>(m_SelectedEntity))
 		{
 			// Get transform
 			Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
