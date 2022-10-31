@@ -84,10 +84,11 @@ namespace ALEngine::ECS
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			*(vMatrix + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
-			*(vColor + i) = sprite.color;
-			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = sprite.index;
+			//*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vMatrix + counter) = trans.modelMatrix.Transpose();
+			*(vColor + counter) = sprite.color;
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + counter))(3, 3) = sprite.index;
 
 			++counter;
 		}
@@ -234,59 +235,31 @@ namespace ALEngine::ECS
 		MeshBuilder::Instance()->Init();
 	}
 
-	void UpdateParentChildrenPos()
+	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
 	{
-		if (prevTransform.empty()) // for first frame
+		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity.id);
+		if (entity.parent >= 0) // if entity has parent
 		{
-			for (auto x : sceneGraph.GetMap())
-			{
-				if (x.active)
-					prevTransform.push_back(Coordinator::Instance()->GetComponent<Transform>(x.id));
-				else
-				{
-					prevTransform.push_back(Transform());
-				}
-			}
+			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
+			transform.modelMatrix = parentTransform.modelMatrix * Math::mat4::Model(transform);
 		}
 		else
 		{
-			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+			transform.modelMatrix = Math::mat4::Model(transform);
+		}
 
-			for (auto& x : sceneGraph.GetMap())
-			{
-				Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(x.id);
-
-				if (x.id < prevTransform.size() && parentTransform.position.x == prevTransform[x.id].position.x
-					&& parentTransform.position.y == prevTransform[x.id].position.y)
-					continue;
-
-				for (s32 child : x.children)
-				{
-					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child);
-
-					childTransform.position += parentTransform.position - prevTransform[x.id].position;
-					prevTransform[child].position += parentTransform.position - prevTransform[x.id].position;
-				}
-			}
-
-			prevTransform.clear();
-			for (auto& x : sceneGraph.GetMap())
-			{
-				if (x.active) // if active, store Transform
-				{
-					prevTransform.push_back(Coordinator::Instance()->GetComponent<Transform>(x.id));
-				}
-				else
-				{
-					prevTransform.push_back(Transform());
-				}
-			}
+		for (auto& child : sceneGraph.GetMap()[entity.id].children)
+		{ 
+			UpdateParentChildrenPos(sceneGraph.GetMap()[child]);
 		}
 	}
 
 	void Render(void)
 	{
-		UpdateParentChildrenPos();
+		for (auto& entity : sceneGraph.GetParents())
+		{
+			UpdateParentChildrenPos(sceneGraph.GetMap()[entity]);
+		}
 		
 #if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//
@@ -456,7 +429,6 @@ namespace ALEngine::ECS
 	{
 		camera.Fov(fov);
 	}
-
 	Tree::BinaryTree& GetSceneGraph(void)
 	{
 		return sceneGraph;
