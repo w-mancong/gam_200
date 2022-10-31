@@ -292,9 +292,19 @@ namespace ALEngine::Math
 		);
 	}
 
+	Matrix4x4 Matrix4x4::Model(Transform const& trans)
+	{
+		return Model(trans.position, trans.scale, trans.rotation);
+	}
+
 	Matrix4x4 Matrix4x4::ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot)
 	{
 		return Model(pos, scale, rot).Transpose();
+	}
+
+	Matrix4x4 Matrix4x4::ModelT(Transform const& trans)
+	{
+		return Model(trans).Transpose();
 	}
 
 	Matrix4x4 Matrix4x4::Inverse(Matrix4x4 const& mat)

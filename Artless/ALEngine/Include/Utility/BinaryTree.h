@@ -18,6 +18,7 @@ namespace ALEngine::Tree
             u32 id{};
             std::vector<s32> children{};
             b8 active{ true };
+            s32 parent{-1};
         };
     public:
         BinaryTree();

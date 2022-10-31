@@ -9,6 +9,11 @@ brief:	This file contain a 4x4 Matrix that is inherited from a base matrix class
 #ifndef	MATRIX_4X4_H
 #define MATRIX_4X4_H
 
+namespace ALEngine::ECS::Component
+{
+	struct Transform;
+}
+
 namespace ALEngine::Math
 {
 	class Matrix4x4
@@ -314,6 +319,16 @@ namespace ALEngine::Math
 
 		/*!*********************************************************************************
 			\brief
+			Construct a row major model matrix
+
+			\param [in] trans: Transform component of entity
+
+			\return Model matrix for a 2d object
+		***********************************************************************************/
+		static Matrix4x4 Model(ECS::Component::Transform const& trans);
+
+		/*!*********************************************************************************
+			\brief
 			Construct a col major model matrix
 
 			\param [in] pos:
@@ -324,6 +339,16 @@ namespace ALEngine::Math
 			Angle of rotation in degrees
 		***********************************************************************************/
 		static Matrix4x4 ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot);
+
+		/*!*********************************************************************************
+			\brief
+			Construct a col major model matrix
+
+			\param [in] trans: Transform component of entity
+
+			\return Model matrix for a 2d object
+		***********************************************************************************/
+		static Matrix4x4 ModelT(ECS::Component::Transform const& trans);
 
 		/*!*********************************************************************************
 			\brief Construct and return an inverse matrix

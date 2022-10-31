@@ -139,6 +139,7 @@ namespace ALEngine::Tree
         // new node data
         NodeData newData;
         newData.id = newchild;
+        newData.parent = parent;
         map.push_back(newData);
     }
 
@@ -255,7 +256,6 @@ namespace ALEngine::Tree
             GetHead()->right = nullptr;
 
             return DestructLeft(GetHead(), id);
-
         }
         else if (GetHead()->right != nullptr)
         {
@@ -353,6 +353,16 @@ namespace ALEngine::Tree
                 {
                     Node* ptr = GetHead();
                     Memory::DynamicMemory::Delete(ptr); // delete root
+                }
+
+                //update map
+                for (auto& x : map)
+                {
+                    if (x.active)
+                    {
+                        FindChildren(x.id);
+                        x.children = GetChildren();
+                    }
                 }
                 return;
             }
