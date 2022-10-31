@@ -13,6 +13,8 @@ brief:	This file contains function declarations for the InspectorPanel class.
 
 namespace ALEngine::Editor
 {
+	enum class InspectorComponents;
+
 	/*!*********************************************************************************
 		\brief
 		Class that aids in the display of the Inspector Panel for the editor
@@ -99,6 +101,18 @@ namespace ALEngine::Editor
 		// Panel size
 		const ImVec2 PANEL_MIN{ 320, 350 };
 		const ImVec2 PANEL_MAX{ 1920, 1080 };
+
+		// Selected Inspector
+		InspectorComponents m_SelectedComponent{};
+	};
+
+	// Enum for different Components
+	enum class InspectorComponents
+	{
+		InComp_EntityData = 0,
+		InComp_Transform,
+		InComp_Sprite,
+		InComp_Total
 	};
 }
 
