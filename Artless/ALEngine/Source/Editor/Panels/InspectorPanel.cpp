@@ -97,14 +97,15 @@ namespace ALEngine::Editor
 		// Get entity data
 		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_SelectedEntity);
 
+		// Entity active
+		ImGui::Checkbox(" ", &data.active);
+
+		ImGui::SameLine();
+
 		// Tag
 		c8* tag = (c8*)data.tag.c_str();
-
 		// Entity Tag
-		ImGui::InputText("Entity Tag", tag, 20);
-
-		// Entity active
-		ImGui::Checkbox("Entity Active", &data.active);
+		ImGui::InputText("Tag", tag, 20);
 
 		ImGui::Separator();
 

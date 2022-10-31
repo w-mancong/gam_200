@@ -84,10 +84,10 @@ namespace ALEngine::ECS
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			*(vMatrix + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
-			*(vColor + i) = sprite.color;
-			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = sprite.index;
+			*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vColor + counter) = sprite.color;
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + counter))(3, 3) = sprite.index;
 
 			++counter;
 		}
