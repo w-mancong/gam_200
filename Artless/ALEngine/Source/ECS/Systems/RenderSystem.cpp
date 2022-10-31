@@ -248,36 +248,38 @@ namespace ALEngine::ECS
 				}
 			}
 		}
-	
-		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-
-		for (auto& x : sceneGraph.GetMap())
+		else
 		{
-			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(x.id);
+			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
-			if (parentTransform.position.x == prevTransform[x.id].position.x
-				&& parentTransform.position.y == prevTransform[x.id].position.y)
-				continue;
-
-			for (s32 child : x.children)
+			for (auto& x : sceneGraph.GetMap())
 			{
-				Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child);
+				Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(x.id);
 
-				childTransform.position += parentTransform.position - prevTransform[x.id].position;
-				prevTransform[child].position += parentTransform.position - prevTransform[x.id].position;
+				if (x.id < prevTransform.size() && parentTransform.position.x == prevTransform[x.id].position.x
+					&& parentTransform.position.y == prevTransform[x.id].position.y)
+					continue;
+
+				for (s32 child : x.children)
+				{
+					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child);
+
+					childTransform.position += parentTransform.position - prevTransform[x.id].position;
+					prevTransform[child].position += parentTransform.position - prevTransform[x.id].position;
+				}
 			}
-		}
 
-		prevTransform.clear();
-		for (auto& x : sceneGraph.GetMap())
-		{
-			if (x.active) // if active, store Transform
+			prevTransform.clear();
+			for (auto& x : sceneGraph.GetMap())
 			{
-				prevTransform.push_back(Coordinator::Instance()->GetComponent<Transform>(x.id));
-			}
-			else
-			{
-				prevTransform.push_back(Transform());
+				if (x.active) // if active, store Transform
+				{
+					prevTransform.push_back(Coordinator::Instance()->GetComponent<Transform>(x.id));
+				}
+				else
+				{
+					prevTransform.push_back(Transform());
+				}
 			}
 		}
 	}
