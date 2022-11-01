@@ -11,7 +11,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 namespace ALEngine::Engine::AI
 {
 	
-	std::vector<ECS::Entity> FindPath(ECS::Entity &roomMap, ECS::Entity startCell, ECS::Entity endCell, bool defaultAstar);
+	std::vector<ECS::Entity> FindPath(ECS::Entity *roomMap, uint32_t size[], ECS::Entity startCell, ECS::Entity endCell, bool defaultAstar = false);
 
 	std::list<ECS::Cell> GetNeighbourList(ECS::Cell currentNode, bool defaultAstar);
 

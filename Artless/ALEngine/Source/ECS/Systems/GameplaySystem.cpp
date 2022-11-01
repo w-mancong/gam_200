@@ -40,9 +40,12 @@ namespace ALEngine::ECS
 		};
 
 	public:
-		uint32_t roomWidth = 7, roomHeight = 7;
+		uint32_t roomSize[2]{ 7, 7 };
 		Entity *roomCellsArray;
-		
+
+		Entity playerEntity, startCellEntity, targetCellEntity;
+		std::vector<Entity> pathEntityVector;
+
 		GAMEPLAYSTATUS currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_INPUT_WAITING;
 
 		MoveOrder currentModeOrder;
@@ -91,14 +94,26 @@ namespace ALEngine::ECS
 			transform.scale = { 70, 70 };
 			Coordinator::Instance()->AddComponent(gameplaySystem->roomCellsArray[i], transform);
 		}
-		
-		for (uint32_t i = 0; i < gameplaySystem->roomWidth; ++i) {
 
-			for (uint32_t j = 0; j < gameplaySystem->roomHeight; ++j) {
-				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->roomCellsArray[i * gameplaySystem->roomWidth + j]);
+		for (uint32_t i = 0; i < gameplaySystem->roomSize[0]; ++i) {
+			for (uint32_t j = 0; j < gameplaySystem->roomSize[1]; ++j) {
+				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->roomCellsArray[i * gameplaySystem->roomSize[0] + j]);
 				transform.position = { 200 + (f32)i * 100.f, 200 + (f32)j * 100.f };
+				Cell cell;
+				cell.coordinate[0] = i;
+				cell.coordinate[1] = j;
+				
+				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i,j), cell);
 			}
 		}
+
+		for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
+			if (unit.unitType == UNIT_TYPE::PLAYER) {
+				gameplaySystem->playerEntity = *it;
+				break;
+			}
+		}			
 	}
 
 	void UpdateGameplaySystem(void)
@@ -117,11 +132,11 @@ namespace ALEngine::ECS
 	}
 
 	uint32_t GameplaySystem::getRoomSize() {
-		return gameplaySystem->roomWidth * gameplaySystem->roomHeight;
+		return gameplaySystem->roomSize[0] * gameplaySystem->roomSize[1];
 	}
 
 	Entity GameplaySystem::getEntityCell(uint32_t x, uint32_t y) {
-		return gameplaySystem->roomCellsArray[y * gameplaySystem->roomWidth + x];
+		return gameplaySystem->roomCellsArray[y * gameplaySystem->roomSize[0] + x];
 	}
 
 	bool GameplaySystem::StepUpModeOrderPath(MoveOrder& order) {
@@ -132,77 +147,50 @@ namespace ALEngine::ECS
 			return true;
 		}
 		else {
-			return false;				
+			return false;
 		}
 	}
 
+
 	void GameplaySystem::RunGameState() {
-		Entity targetCell{};
 		switch (gameplaySystem->currentGameplayStatus)
 		{
 		case GAMEPLAYSTATUS::PLAYER_INPUT_WAITING:
-			//check for event trigger for player
-		
+			gameplaySystem->pathEntityVector.clear();
+
+			gameplaySystem->targetCellEntity = gameplaySystem->getEntityCell(2, 2);
+			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+			gameplaySystem->startCellEntity = gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]);
+
+
+			gameplaySystem->pathEntityVector = Engine::AI::FindPath(gameplaySystem->roomCellsArray, gameplaySystem->roomSize, gameplaySystem->startCellEntity, gameplaySystem->targetCellEntity);
+
+			std::cout << "Path Size | " <<  gameplaySystem->pathEntityVector.size() << std::endl;
+			for (int i = 0; i < gameplaySystem->pathEntityVector.size(); ++i) {
+				Cell c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->pathEntityVector[i]);
+
+				std::cout << c.m_Grid << " : ";
+			}
+
+			std::cout << std::endl;
+
 			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
-			//for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
-			//	Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
-			//	if (unit.unitType == UNIT_TYPE::PLAYER) {
-			//		gameplaySystem->currentModeOrder.entity = *it;
-
-			//		gameplaySystem->currentModeOrder.path.clear();
-			//		//find path and set the path
-
-			//		//gameplaySystem->currentModeOrder.path =std::move(Engine::AI::FindPath(*gameplaySystem->roomCellsArray, gameplaySystem->getCurrentEntityCell(), gameplaySystem->getEntityCell(3, 3) , false) );
-			//		for (int i = 0; i < gameplaySystem->currentModeOrder.path.size(); ++i)
-			//		{
-			//			Cell& c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->currentModeOrder.path[i]);
-			//			std::cout << c.m_Grid<<std::endl;
-			//		}
-
-			//		//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
-			//		break;
-			//	}
-			//}			
 			break;
+
 		case GAMEPLAYSTATUS::PLAYER_MOVING:
 			//movement of player
 
-			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
+			//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
 			break;
 
 		case GAMEPLAYSTATUS::ENEMY_PLANNING:
-			//Shift through each component
-			for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
-				if (unit.unitType == UNIT_TYPE::ENEMY) {
-					gameplaySystem->currentModeOrder.entity = *it;
+			
 
-					gameplaySystem->currentModeOrder.path.clear();
-
-					gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(0,0));
-					gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(0,1));
-					gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(1,1));
-					gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(1,2));
-					gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(2,2));
-					gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(2,3));
-					gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_MOVING;
-					break;
-				}
-			}
+			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_MOVING;
 			break;
 
 		case GAMEPLAYSTATUS::ENEMY_MOVING:
-			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->currentModeOrder.entity);
-			Transform& targetTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getCurrentEntityCell());
-			
-			Vector2 direction = (Vector2)targetTransform.position - (Vector2)transform.position;
-
-			transform.position += Vector2::Normalize(direction) * Time::m_FixedDeltaTime * 100;
-			if (Vector2::Distance(transform.position, targetTransform.position) <= 10) {
-				if (gameplaySystem->StepUpModeOrderPath(gameplaySystem->currentModeOrder)) {
-					gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_INPUT_WAITING;
-				}
-			}
+			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_INPUT_WAITING;
 			break;
 		}
 	}
@@ -221,3 +209,44 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(entity, unit);
 	}
 }
+//for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
+//	Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
+//	if (unit.unitType == UNIT_TYPE::PLAYER) {
+//		gameplaySystem->currentModeOrder.entity = *it;
+
+//		gameplaySystem->currentModeOrder.path.clear();
+//		//find path and set the path
+
+//		//gameplaySystem->currentModeOrder.path =std::move(Engine::AI::FindPath(*gameplaySystem->roomCellsArray, gameplaySystem->getCurrentEntityCell(), gameplaySystem->getEntityCell(3, 3) , false) );
+//		for (int i = 0; i < gameplaySystem->currentModeOrder.path.size(); ++i)
+//		{
+//			Cell& c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->currentModeOrder.path[i]);
+//			std::cout << c.m_Grid<<std::endl;
+//		}
+
+//		//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
+//		break;
+//	}
+//}	
+
+
+
+//
+////Shift through each component
+//for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
+//	Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
+//	if (unit.unitType == UNIT_TYPE::ENEMY) {
+//		gameplaySystem->currentModeOrder.entity = *it;
+//
+//		gameplaySystem->currentModeOrder.path.clear();
+//
+//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(0, 0));
+//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(0, 1));
+//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(1, 1));
+//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(1, 2));
+//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(2, 2));
+//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(2, 3));
+//		gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_MOVING;
+//		break;
+//	}
+//}

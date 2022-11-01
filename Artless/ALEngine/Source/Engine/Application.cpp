@@ -116,8 +116,8 @@ namespace ALEngine::Engine
 		trans.scale = { 50, 50 };
 		Coordinator::Instance()->AddComponent(pathfinder, trans);
 		CreateSprite(pathfinder);
-		CreateEnemyUnit(pathfinder);
-		//CreatePlayerUnit(pathfinder);
+		//CreateEnemyUnit(pathfinder);
+		CreatePlayerUnit(pathfinder);
 
 		//Animator animator = CreateAnimator("Test");
 		//AttachAnimator(entity, animator);
