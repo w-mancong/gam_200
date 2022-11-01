@@ -64,7 +64,7 @@ namespace ALEngine::Graphics::ParticleSys
 		\brief
 			Renders all active particles in the particle container.
 		***********************************************************************************/
-		void ParticleRender();
+		void ParticleRender(Engine::Camera const& camera);
 
 		/*!*********************************************************************************
 		\brief
