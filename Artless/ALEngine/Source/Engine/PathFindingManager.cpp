@@ -1,9 +1,9 @@
 #include "pch.h"
+#include <Engine/PathFindingManager.h>
 
-
-namespace ALEngine::ECS
+namespace  ALEngine::Engine::AI
 {
-    std::vector<Entity> PathFindingManager::FindPath(Entity &roomMap  , Entity startCell, Entity endCell, bool defaultAstar)
+    std::vector<ECS::Entity> FindPath(ECS::Entity&roomMap  , ECS::Entity startCell, ECS::Entity endCell, bool defaultAstar)
     {
         Cell startNode;
         startNode.unitEntity = startCell;
@@ -12,12 +12,11 @@ namespace ALEngine::ECS
 
         //add start node to open list
         std::list<Cell> openList, closedList;
-        std::vector<Entity> pathList;
+        std::vector<u32> pathList;
         openList.push_back(startNode);
 
-        std::vector<Cell> cellRoomMap;
-
-        //for (int i{ 0 }; i < roomMap.size(); ++i)
+        //std::vector<Cell> cellRoomMap;
+        //for (int i{ 0 }; i < cellRoomMap.size(); ++i)
         //{
         //    cellRoomMap[i].m_GCost = 99;
         //    cellRoomMap[i].m_HCost = 0;
@@ -25,51 +24,51 @@ namespace ALEngine::ECS
         //    cellRoomMap[i].m_ParentCell = NULL;
         //}
 
-        startNode.m_GCost = 0;
-        startNode.m_FCost;
-        startNode.CalculateFCost();
+        //startNode.m_GCost = 0;
+        //startNode.m_FCost;
+        //startNode.CalculateFCost();
 
-        while (!openList.empty())
-        {
-            Cell currentNode = GetLowestFCostNode(openList);
+        //while (!openList.empty())
+        //{
+        //    Cell currentNode = GetLowestFCostNode(openList);
 
-            if (&currentNode == &endNode)
-            {
-                //pathList = CalculatePath(endCell);
-                return pathList;
-            }
+        //    if (&currentNode == &endNode)
+        //    {
+        //        //pathList = CalculatePath(endCell);
+        //        return pathList;
+        //    }
       
-             openList.remove(currentNode);
-             closedList.push_back(currentNode);
+        //     openList.remove(currentNode);
+        //     closedList.push_back(currentNode);
 
-            for (auto neighbourNode : GetNeighbourList(currentNode, defaultAstar))
-            {
-                if (CellListContain(closedList, neighbourNode))
-                {
-                    continue;
-                }
+        //    for (auto neighbourNode : GetNeighbourList(currentNode, defaultAstar))
+        //    {
+        //        if (CellListContain(closedList, neighbourNode))
+        //        {
+        //            continue;
+        //        }
 
-                float tentativeGCost = currentNode.m_GCost + CalculateDistanceCost(currentNode, neighbourNode);
-                if (tentativeGCost < neighbourNode.m_GCost)
-                {
-                    neighbourNode.m_ParentCell = &currentNode;
-                    neighbourNode.m_GCost = tentativeGCost;
-                    neighbourNode.m_HCost = CalculateDistanceCost(neighbourNode, endNode);
-                    neighbourNode.CalculateFCost();
+        //        float tentativeGCost = currentNode.m_GCost + CalculateDistanceCost(currentNode, neighbourNode);
+        //        if (tentativeGCost < neighbourNode.m_GCost)
+        //        {
+        //            neighbourNode.m_ParentCell = &currentNode;
+        //            neighbourNode.m_GCost = tentativeGCost;
+        //            neighbourNode.m_HCost = CalculateDistanceCost(neighbourNode, endNode);
+        //            neighbourNode.CalculateFCost();
 
-                    if (!CellListContain(openList, neighbourNode))
-                    {
-                        openList.push_back(neighbourNode);
-                    }
-                }
-            }
-        }
+        //            if (!CellListContain(openList, neighbourNode))
+        //            {
+        //                openList.push_back(neighbourNode);
+        //            }
+        //        }
+        //    }
+        //}
 
         //out of nodes on open list or no path
         return pathList;
     }
 
-    std::list<Cell> PathFindingManager::GetNeighbourList(Cell currentNode, bool defaultAstar)
+    std::list<ECS::Cell> GetNeighbourList(ECS::Cell currentNode, bool defaultAstar)
     {
         std::list<Cell> neighbourList;
         //need to find out how to check grid or map
@@ -121,26 +120,26 @@ namespace ALEngine::ECS
         return neighbourList;
     }
 
-    std::list<Cell> PathFindingManager::CalculatePath(Cell endNode)
+    std::list<Cell> CalculatePath(Cell endNode)
     {
-        std::list<Cell> path;
-
-        path.push_back(endNode);
+        std::list<Cell> pathlist;
+        std::vector<u32> Path;
+        pathlist.push_back(endNode);
 
         Cell currentNode{ endNode };
 
         while (currentNode.m_ParentCell != NULL)
         {
-            path.push_back(*currentNode.m_ParentCell);
+            pathlist.push_back(*currentNode.m_ParentCell);
             currentNode = *currentNode.m_ParentCell;
         }
 
-        std::reverse(path.begin(), path.end());
+        std::reverse(pathlist.begin(), pathlist.end());
 
-        return path;
+        return pathlist;
     }
 
-    float PathFindingManager::CalculateDistanceCost(Cell a, Cell b)
+    float CalculateDistanceCost(Cell a, Cell b)
     {
         //need to find out how to calculate distance
         //ALEngine::Math::Vector3().Distance(a, b);
@@ -148,7 +147,7 @@ namespace ALEngine::ECS
         return 0.0f;
     }
 
-    Cell PathFindingManager::GetLowestFCostNode(std::list<Cell> pathFindingCellNodeList)
+    Cell GetLowestFCostNode(std::list<Cell> pathFindingCellNodeList)
     {
         Cell lowestFCostNode = pathFindingCellNodeList.front();
 
@@ -163,7 +162,7 @@ namespace ALEngine::ECS
         return lowestFCostNode;
     }
 
-    bool PathFindingManager::CellListContain(std::list<Cell> cellList, Cell cellSearchNode)
+    bool CellListContain(std::list<Cell> cellList, Cell cellSearchNode)
     {
         return (std::find(cellList.begin(), cellList.end(), cellSearchNode) != cellList.end());
     }
@@ -171,3 +170,4 @@ namespace ALEngine::ECS
 
 
 }
+

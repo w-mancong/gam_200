@@ -108,6 +108,7 @@ namespace ALEngine::Engine
 		Coordinator::Instance()->AddComponent(pathfinder, trans);
 		CreateSprite(pathfinder);
 		CreateEnemyUnit(pathfinder);
+		//CreatePlayerUnit(pathfinder);
 
 		//Animator animator = CreateAnimator("Test");
 		//AttachAnimator(entity, animator);

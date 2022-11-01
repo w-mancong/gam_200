@@ -9,12 +9,13 @@ brief:	This file contains the function definition for CharacterControllerSystem.
 
 #include "pch.h"
 #include "Engine/Physics2D.h"
+#include "Engine/PathFindingManager.h"
 
 namespace ALEngine::ECS
 {
 	//Ease of use for ray
 	using Engine::Physics::Ray2D;
-
+	//using Engine::AI;
 	//Ease of use
 	using namespace Math; using namespace Engine; using namespace Graphics;
 
@@ -141,27 +142,32 @@ namespace ALEngine::ECS
 		{
 		case GAMEPLAYSTATUS::PLAYER_INPUT_WAITING:
 			//check for event trigger for player
+		
+			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
+			//for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
+			//	Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
+			//	if (unit.unitType == UNIT_TYPE::PLAYER) {
+			//		gameplaySystem->currentModeOrder.entity = *it;
 
+			//		gameplaySystem->currentModeOrder.path.clear();
+			//		//find path and set the path
 
-			for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
-				if (unit.unitType == UNIT_TYPE::PLAYER) {
-					gameplaySystem->currentModeOrder.entity = *it;
+			//		//gameplaySystem->currentModeOrder.path =std::move(Engine::AI::FindPath(*gameplaySystem->roomCellsArray, gameplaySystem->getCurrentEntityCell(), gameplaySystem->getEntityCell(3, 3) , false) );
+			//		for (int i = 0; i < gameplaySystem->currentModeOrder.path.size(); ++i)
+			//		{
+			//			Cell& c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->currentModeOrder.path[i]);
+			//			std::cout << c.m_Grid<<std::endl;
+			//		}
 
-					gameplaySystem->currentModeOrder.path.clear();
-					//find path
-					gameplaySystem->currentModeOrder.path = PathFindingManager::FindPath(*gameplaySystem->roomCellsArray, gameplaySystem->getCurrentEntityCell(), targetCell, false);
-
-					gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
-					break;
-				}
-			}			
+			//		//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
+			//		break;
+			//	}
+			//}			
 			break;
-
 		case GAMEPLAYSTATUS::PLAYER_MOVING:
 			//movement of player
 
-			//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
+			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
 			break;
 
 		case GAMEPLAYSTATUS::ENEMY_PLANNING:
