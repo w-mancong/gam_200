@@ -2,11 +2,44 @@
 
 namespace ALEngine::Engine
 {
+	class AudioManager
+	{
+	public:
+		void Init(void);
+		void Update(void);
+		void Exit(void);
+
+		void PlayAudio(Audio& audio);
+
+		fmod::System*& GetSystem(void);
+
+	private:
+		void PlaySfx(Audio& audio);
+		void PlayBgm(Audio& audio);
+
+		fmod::System* system{ nullptr };
+		fmod::ChannelGroup* channelGroup[static_cast<s64>(Channel::Total)]{};
+
+		// My own channel info which will be used to check if channel is for bgm/sfx
+		struct ChannelInfo
+		{
+			fmod::Channel* ch{ nullptr };
+			Channel audioChannel{ Channel::Invalid };
+		};
+
+		using ChannelQueue = std::queue<ChannelInfo>;
+		using UsedChannels = std::vector<ChannelInfo>;
+
+		ChannelQueue sfxChannels{}, bgmChannels{};	// To store all the avaliable channels for sfx, bgm
+		UsedChannels usedChannels{};				// To store all the channels that are currently in used
+
+		AudioManager(void) = default;
+		~AudioManager(void) = default;
+	};
+
 	namespace
 	{
-		s32 constexpr MAX_CHANNELS{ 128 };
-
-		AudioChannel& operator++(AudioChannel& ch)
+		Channel& operator++(Channel& ch)
 		{
 			/*
 				Explicitly convert channel into an integral type,
@@ -14,13 +47,13 @@ namespace ALEngine::Engine
 			*/
 			s64 res = static_cast<s64>(ch); ++res;
 			// To wrap the value of ch
-			if (res >= static_cast<s64>(AudioChannel::Total))
-				res = static_cast<s64>(AudioChannel::Invalid) + 1;
+			if (res >= static_cast<s64>(Channel::Total))
+				res = static_cast<s64>(Channel::Invalid) + 1;
 			// converting ch to the next value then returning it
-			return (ch = static_cast<AudioChannel>(res));
+			return (ch = static_cast<Channel>(res));
 		}
 
-		AudioChannel operator++(AudioChannel& ch, int)
+		Channel operator++(Channel& ch, int)
 		{
 			/*
 				Explicitly convert channel into an integral type,
@@ -28,15 +61,15 @@ namespace ALEngine::Engine
 			*/
 			s64 res = static_cast<s64>(ch); ++res;
 			// To wrap the value of ch
-			if (res >= static_cast<s64>(AudioChannel::Total))
-				res = static_cast<s64>(AudioChannel::Invalid) + 1;
-			AudioChannel temp = ch;
+			if (res >= static_cast<s64>(Channel::Total))
+				res = static_cast<s64>(Channel::Invalid) + 1;
+			Channel temp = ch;
 			// converting ch to the next value
-			ch = static_cast<AudioChannel>(res);	
+			ch = static_cast<Channel>(res);
 			return temp;
 		}
 
-		AudioChannel operator--(AudioChannel ch)
+		Channel operator--(Channel ch)
 		{
 			/*
 				Explicitly convert channel into an integral type,
@@ -44,13 +77,13 @@ namespace ALEngine::Engine
 			*/
 			s64 res = static_cast<s64>(ch); --res;
 			// To wrap the value of ch
-			if (res <= static_cast<s64>(AudioChannel::Invalid))
-				res = static_cast<s64>(AudioChannel::Total) - 1;
+			if (res <= static_cast<s64>(Channel::Invalid))
+				res = static_cast<s64>(Channel::Total) - 1;
 			// converting ch to the previous value then returning it
-			return (ch = static_cast<AudioChannel>(res));
+			return (ch = static_cast<Channel>(res));
 		}
 
-		AudioChannel operator--(AudioChannel ch, int)
+		Channel operator--(Channel ch, int)
 		{
 			/*
 				Explicitly convert channel into an integral type,
@@ -58,13 +91,16 @@ namespace ALEngine::Engine
 			*/
 			s64 res = static_cast<s64>(ch); ++res;
 			// To wrap the value of ch
-			if (res >= static_cast<s64>(AudioChannel::Invalid))
-				res = static_cast<s64>(AudioChannel::Total) - 1;
-			AudioChannel temp = ch;
+			if (res >= static_cast<s64>(Channel::Invalid))
+				res = static_cast<s64>(Channel::Total) - 1;
+			Channel temp = ch;
 			// converting ch to the next value
-			ch = static_cast<AudioChannel>(res);
+			ch = static_cast<Channel>(res);
 			return temp;
 		}
+
+		s32 constexpr MAX_CHANNELS{ 128 };
+		AudioManager* audioManager{ nullptr };
 	}
 
 	void AudioManager::Init(void)
@@ -74,7 +110,7 @@ namespace ALEngine::Engine
 		system->init(MAX_CHANNELS, FMOD_INIT_NORMAL, reinterpret_cast<void*>(FMOD_OUTPUTTYPE::FMOD_OUTPUTTYPE_AUTODETECT));
 
 		// Create channel groups
-		s64 const TOTAL_CHANNELS{ static_cast<s64>(AudioChannel::Total) };
+		s64 const TOTAL_CHANNELS{ static_cast<s64>(Channel::Total) };
 		c8 const* channelNames[TOTAL_CHANNELS] { "BGM", "SFX", "Master" };
 		for (s64 i{}; i < TOTAL_CHANNELS; ++i)
 		{
@@ -82,17 +118,23 @@ namespace ALEngine::Engine
 			assert(res == FMOD_RESULT::FMOD_OK && "Unable to create channel groups!");
 		}
 
-		u64 const HALF_CHANNELS = MAX_CHANNELS >> 1;
+		fmod::ChannelGroup  *sfx{ channelGroup[static_cast<s64>(Channel::Master)] }, 
+							*bgm{ channelGroup[static_cast<s64>(Channel::Master)] }, 
+							*master{ channelGroup[static_cast<s64>(Channel::Master)] };		
+
+		// adding channel group bgm and sfx into master
+		master->addGroup(bgm);
+		master->addGroup(sfx);
+
 		// filling my channels queue
-		for (u64 i{}; i < HALF_CHANNELS; ++i)
-		{
-			/*
-				all the channels stored inside these queues are definitely
-				channels that are available for use
-			*/ 
-			sfxChannels.push({ nullptr, AudioChannel::SFX });
-			bgmChannels.push({ nullptr, AudioChannel::BGM });
-		}
+		u64 const SFX_CHANNELS = MAX_CHANNELS - 1;
+		bgmChannels.push({ nullptr, Channel::BGM });
+		/*
+			all the channels stored inside these queues are definitely
+			channels that are available for use
+		*/ 
+		for (u64 i{}; i < SFX_CHANNELS; ++i)
+			sfxChannels.push({ nullptr, Channel::SFX });
 	}
 
 	void AudioManager::Update(void)
@@ -110,12 +152,12 @@ namespace ALEngine::Engine
 			// If audio is no longer playing, add it to the appropriate queue
 			switch (it.audioChannel)
 			{
-				case AudioChannel::BGM:
+				case Channel::BGM:
 				{
 					bgmChannels.push(it);
 					break;
 				}
-				case AudioChannel::SFX:
+				case Channel::SFX:
 				{
 					sfxChannels.push(it);
 					break;
@@ -134,5 +176,45 @@ namespace ALEngine::Engine
 	fmod::System*& AudioManager::GetSystem(void)
 	{
 		return system;
+	}
+
+	void PlaySfx(Audio& audio)
+	{
+
+	}
+
+	void PlayBgm(Audio& audio)
+	{
+
+	}
+
+	void AudioManager::PlayAudio(Audio& audio)
+	{
+
+	}
+
+	/***************************************************************************************************
+							User interface for users to interact with audio manager						
+	****************************************************************************************************/
+	void AudioManagerInit(void)
+	{
+		audioManager = Memory::StaticMemory::New<AudioManager>();
+		audioManager->Init();
+	}
+
+	void AudioManagerUpdate(void)
+	{
+		audioManager->Update();
+	}
+
+	void AudioManagerExit(void)
+	{
+		audioManager->Exit();
+		Memory::StaticMemory::Delete(audioManager);
+	}
+
+	void PlayAudio(Audio& audio)
+	{
+		audioManager->PlayAudio(audio);
 	}
 }
