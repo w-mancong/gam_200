@@ -20,6 +20,9 @@ namespace ALEngine::Engine
 	void AudioManagerInit(void);
 	void AudioManagerUpdate(void);
 	void AudioManagerExit(void);
+
+	fmod::System* const& GetAudioSystem(void);
+
 	void PlayAudio(Audio& audio);
 }
 

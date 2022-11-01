@@ -11,7 +11,7 @@ namespace ALEngine::Engine
 
 		void PlayAudio(Audio& audio);
 
-		fmod::System*& GetSystem(void);
+		fmod::System* const& GetSystem(void) const;
 
 	private:
 		void PlaySfx(Audio& audio);
@@ -173,24 +173,64 @@ namespace ALEngine::Engine
 		system->release();
 	}
 
-	fmod::System*& AudioManager::GetSystem(void)
+	fmod::System* const& AudioManager::GetSystem(void) const
 	{
 		return system;
 	}
 
-	void PlaySfx(Audio& audio)
+	void AudioManager::PlaySfx(Audio& audio)
 	{
-
+		// if channel size == 0, means no avaliable channel to play audio
+		if (!sfxChannels.size())
+			return;
+		// Get the first avaliable channel, then remove it from the queue
+		ChannelInfo& channelInfo = sfxChannels.front(); sfxChannels.pop();
+		fmod::Channel*& ch = channelInfo.ch;
+		system->playSound(audio.sound, channelGroup[static_cast<s64>(Channel::SFX)], false, &ch);
+		ch->setVolume(audio.volume);
+		if (audio.loop)
+			ch->setMode(FMOD_LOOP_NORMAL);
+		else
+			ch->setMode(FMOD_LOOP_OFF);
+		ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::SFX)]);
+		usedChannels.push_back(channelInfo);
 	}
 
-	void PlayBgm(Audio& audio)
+	void AudioManager::PlayBgm(Audio& audio)
 	{
-
+		// if channel size == 0, means no avaliable channel to play audio
+		if (!bgmChannels.size())
+			return;
+		// Get the first avaliable channel, then remove it from the queue
+		ChannelInfo& channelInfo = bgmChannels.front(); bgmChannels.pop();
+		fmod::Channel*& ch = channelInfo.ch;
+		system->playSound(audio.sound, channelGroup[static_cast<s64>(Channel::BGM)], false, &ch);
+		ch->setVolume(audio.volume);
+		if (audio.loop)
+			ch->setMode(FMOD_LOOP_NORMAL);
+		else
+			ch->setMode(FMOD_LOOP_OFF);
+		ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::BGM)]);
+		usedChannels.push_back(channelInfo);
 	}
 
 	void AudioManager::PlayAudio(Audio& audio)
 	{
-
+		switch (audio.channel)
+		{
+			case Channel::BGM:
+			{
+				PlayBgm(audio);
+				break;
+			}
+			case Channel::SFX:
+			{
+				PlaySfx(audio);
+				break;
+			}
+			default:
+				break;
+		}
 	}
 
 	/***************************************************************************************************
@@ -211,6 +251,11 @@ namespace ALEngine::Engine
 	{
 		audioManager->Exit();
 		Memory::StaticMemory::Delete(audioManager);
+	}
+
+	fmod::System* const& GetAudioSystem(void)
+	{
+		return audioManager->GetSystem();
 	}
 
 	void PlayAudio(Audio& audio)

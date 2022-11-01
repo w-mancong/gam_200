@@ -3,8 +3,11 @@
 
 namespace ALEngine::Engine
 {
-	struct Audio
+	class Audio
 	{
+	public:
+
+
 		fmod::Sound* sound{ nullptr };
 		f32 volume{ 1.0f };
 		b8 loop{ false };
