@@ -4,5 +4,6 @@
 #include <fmod/fmod.hpp>
 
 #include <Engine/Audio/AudioManager.h>
+#include <Engine/Audio/Audio.h>
 
 #endif
