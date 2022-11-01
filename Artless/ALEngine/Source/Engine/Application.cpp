@@ -139,22 +139,26 @@ namespace ALEngine::Engine
 			// Normal Update
 			Engine::Update();
 
-			// Physics
-			// Fixed Update (Physics)
-			accumulator += Time::m_DeltaTime;
 
-			// Steps to limit num times physics will run per frame
-			int currNumSteps{ 0 };
-
-			while (accumulator >= Time::m_FixedDeltaTime)
+			if (ALEditor::Instance()->GetGameActive())
 			{
-				// Exit if physics happen more than limit
-				if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
-					break;
+				// Physics
+				// Fixed Update (Physics)
+				accumulator += Time::m_DeltaTime;
 
-				Engine::FixedUpdate();
-				accumulator -= Time::m_FixedDeltaTime;
-			}			
+				// Steps to limit num times physics will run per frame
+				int currNumSteps{ 0 };
+
+				while (accumulator >= Time::m_FixedDeltaTime)
+				{
+					// Exit if physics happen more than limit
+					if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
+						break;
+
+					Engine::FixedUpdate();
+					accumulator -= Time::m_FixedDeltaTime;
+				}
+			}
 
 			// Render
 			Render();
@@ -189,9 +193,12 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-		UpdateCharacterControllerSystem();
-		UpdateEventTriggerSystem();
-		UpdateGameplaySystem();
+		if (ALEditor::Instance()->GetGameActive())
+		{
+			UpdateCharacterControllerSystem();
+			UpdateEventTriggerSystem();
+			UpdateGameplaySystem();
+		}
 
 		ZoneScopedN("Normal Update")
 		Input::Update();
@@ -201,7 +208,7 @@ namespace ALEngine::Engine
 		{
 			Math::vec2 john = Input::GetMouseWorldPos();
 
-			AL_CORE_DEBUG("John Pos: {}, {}", john.x, john.y);
+			AL_CORE_DEBUG("Mouse Pos: {}, {}", john.x, john.y);
 		}
 
 

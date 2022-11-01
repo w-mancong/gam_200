@@ -256,9 +256,6 @@ namespace ALEngine::Editor
 				// Selectable flag
 				ImGuiSelectableFlags flag = 0;
 
-				if (!m_GameIsActive)
-					flag |= ImGuiSelectableFlags_Disabled;
-
 				// Set to fullscreen or normal
 				ImGui::Selectable("Fullscreen", &m_FullScreen, flag);
 

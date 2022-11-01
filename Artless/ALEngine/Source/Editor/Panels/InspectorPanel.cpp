@@ -150,11 +150,11 @@ namespace ALEngine::Editor
 		if (ImGui::TreeNodeEx("Transform Component"))
 		{
 			// Select between the 3 Gizmos Operations by keypress
-			if (Input::KeyTriggered(KeyCode::T))
+			if (Input::KeyTriggered(KeyCode::W))
 				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-			if (Input::KeyTriggered(KeyCode::S))
-				m_CurrentGizmoOperation = ImGuizmo::SCALE;
 			if (Input::KeyTriggered(KeyCode::R))
+				m_CurrentGizmoOperation = ImGuizmo::SCALE;
+			if (Input::KeyTriggered(KeyCode::E))
 				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
 
 			// Rotate
