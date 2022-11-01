@@ -3,23 +3,27 @@
 
 namespace ALEngine::ECS
 {
-    std::list<Cell> PathFindingManager::FindPath(std::vector<Cell> roomMap, int roomMapSize  , Cell& startCell, Cell& endCell, bool defaultAstar)
+    std::vector<Entity> PathFindingManager::FindPath(Entity &roomMap  , Entity startCell, Entity endCell, bool defaultAstar)
     {
-        Cell startNode{ startCell };
-        Cell endNode{ endCell };
+        Cell startNode;
+        startNode.unitEntity = startCell;
+        Cell endNode;
+        endNode.unitEntity = endCell;
 
         //add start node to open list
-        std::list<Cell> openList, closedList, pathList;
-
+        std::list<Cell> openList, closedList;
+        std::vector<Entity> pathList;
         openList.push_back(startNode);
 
-        for (int i{ 0 }; i < roomMapSize; ++i)
-        {
-            roomMap[i].m_GCost = 99;
-            roomMap[i].m_HCost = 0;
-            roomMap[i].CalculateFCost();
-            roomMap[i].m_ParentCell = NULL;
-        }
+        std::vector<Cell> cellRoomMap;
+
+        //for (int i{ 0 }; i < roomMap.size(); ++i)
+        //{
+        //    cellRoomMap[i].m_GCost = 99;
+        //    cellRoomMap[i].m_HCost = 0;
+        //    cellRoomMap[i].CalculateFCost();
+        //    cellRoomMap[i].m_ParentCell = NULL;
+        //}
 
         startNode.m_GCost = 0;
         startNode.m_FCost;
@@ -31,7 +35,7 @@ namespace ALEngine::ECS
 
             if (&currentNode == &endNode)
             {
-                pathList = CalculatePath(endCell);
+                //pathList = CalculatePath(endCell);
                 return pathList;
             }
       
@@ -76,43 +80,43 @@ namespace ALEngine::ECS
         if (defaultAstar)
         {
             //diagonal neighbour checks 
-            if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, 1)))
-            {
-                
-            }
-            if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, -1)))
-            {
 
-            }
+            //if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, 1)))
+            //{
+            //    
+            //}
+            //if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, -1)))
+            //{
 
-            if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, 1)))
-            {
+            //}
 
-            }
-            if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, -1)))
-            {
+            //if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, 1)))
+            //{
 
-            }
+            //}
+            //if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, -1)))
+            //{
+
+            //}
         }
 
         //astar without diagonal path, check for all neighbours except diagonal neighbours
-        if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, 0))) //right
-        {
+        //if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(1, 0))) //right
+        //{
 
+        //}
+        //if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, 0))) //left
+        //{
 
-        }
-        if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(-1, 0))) //left
-        {
+        //}
+        //if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(0, 1))) //up
+        //{
 
-        }
-        if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(0, 1))) //up
-        {
+        //}
+        //if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(0, -1))) //down
+        //{
 
-        }
-        if (ALEngine::ECS::Component::RoomBuilder::IsGridInside(grid + ALEngine::Math::Vector2Int(0, -1))) //down
-        {
-
-        }
+        //}
 
         return neighbourList;
     }
@@ -140,6 +144,7 @@ namespace ALEngine::ECS
     {
         //need to find out how to calculate distance
         //ALEngine::Math::Vector3().Distance(a, b);
+        
         return 0.0f;
     }
 

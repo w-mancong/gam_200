@@ -10,36 +10,36 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 
 namespace ALEngine::ECS::Component
 {
-	class RoomBuilder
-	{
-	public:
-		RoomBuilder* m_Instance{nullptr};
+	//class RoomBuilder
+	//{
+	//public:
+	//	RoomBuilder *m_Instance;
 
-		ALEngine::Math::Vector2Int m_RoomSize{ 10, 10};
-		ALEngine::Math::Vector2 m_CellSize{ 1.f,1.f };
+	//	ALEngine::Math::Vector2Int m_RoomSize{ 10, 10};
+	//	ALEngine::Math::Vector2 m_CellSize{ 1.f,1.f };
 
-	    Room *m_RoomToLoad{ nullptr };
+	//	Room* m_RoomToLoad{nullptr};
 
-		Transform m_Room;
-		Cell m_CellPreFab;
+	//	Transform m_Room;
+	//	Cell m_CellPreFab;
 
-		std::vector<Cell> m_CellMap;
+	//	std::vector<Cell> m_CellMap;
 
-	public:
-		RoomBuilder();
+	//public:
+	//	RoomBuilder();
 
-		RoomBuilder(s32 roomSizeX, s32 roomSizeY, f32 cellSizeX, f32 cellSizeY);
+	//	RoomBuilder(s32 roomSizeX, s32 roomSizeY, f32 cellSizeX, f32 cellSizeY);
 
-		~RoomBuilder();
-		static bool IsGridInside(ALEngine::Math::Vector2Int grid);
-		Cell GetCell(ALEngine::Math::Vector2Int cellPos);
+	//	~RoomBuilder();
+	//	static bool IsGridInside(ALEngine::Math::Vector2Int grid);
+	//	Cell GetCell(ALEngine::Math::Vector2Int cellPos);
 
-	private:
-		void Awake();
+	//private:
+	//	void Awake();
 
-		void Start();
+	//	void Start();
 
-		void BuildRoom(Cell cellprefab, Transform room, ALEngine::Math::Vector2Int currentSize, ALEngine::Math::Vector2Int cellsize);
-	};
+	//	void BuildRoom(Cell cellprefab, Transform room, ALEngine::Math::Vector2Int currentSize, ALEngine::Math::Vector2Int cellsize);
+	//};
 }
 #endif // !ROOM_BUILDER_H

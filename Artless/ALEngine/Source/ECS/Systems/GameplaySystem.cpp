@@ -139,11 +139,28 @@ namespace ALEngine::ECS
 		switch (gameplaySystem->currentGameplayStatus)
 		{
 		case GAMEPLAYSTATUS::PLAYER_INPUT_WAITING:
-			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
+			//check for event trigger for player
+			Entity targetCell;
+
+			for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
+				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
+				if (unit.unitType == UNIT_TYPE::PLAYER) {
+					gameplaySystem->currentModeOrder.entity = *it;
+
+					gameplaySystem->currentModeOrder.path.clear();
+					//find path
+					gameplaySystem->currentModeOrder.path = PathFindingManager::FindPath(*gameplaySystem->roomCellsArray, gameplaySystem->getCurrentEntityCell(), targetCell, false);
+
+					gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
+					break;
+				}
+			}			
 			break;
 
 		case GAMEPLAYSTATUS::PLAYER_MOVING:
-			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
+			//movement of player
+
+			//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
 			break;
 
 		case GAMEPLAYSTATUS::ENEMY_PLANNING:

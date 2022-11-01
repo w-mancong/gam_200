@@ -64,7 +64,7 @@
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
-    <ClCompile Include="Source\AI\PathFindingManager.cpp" />
+    <ClCompile Include="Source\ECS\Systems\PathFindingManager.cpp" />
     <ClCompile Include="Source\ECS\Components\RoomBuilder.cpp" />
     <ClCompile Include="Source\Math\Vector2Int.cpp" />
     <ClCompile Include="Source\Math\Vector3Int.cpp" />
@@ -298,7 +298,7 @@
     <ClInclude Include="Include\ECS\Components\Cell.h" />
     <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
     <ClInclude Include="Include\ECS\Components\Unit.h" />
-    <ClInclude Include="Include\AI\PathFindingManager.h" />
+    <ClInclude Include="Include\ECS\Systems\PathFindingManager.h" />
     <ClInclude Include="Include\ECS\RoomBuilder.h" />
     <ClInclude Include="Include\ECS\Components\RoomBuilder.h" />
     <ClInclude Include="Include\ECS\Components\Room.h" />
