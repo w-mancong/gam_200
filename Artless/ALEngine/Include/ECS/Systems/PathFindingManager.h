@@ -17,8 +17,6 @@ namespace ALEngine::ECS
 	private:
 		static std::list<Cell> GetNeighbourList(Cell currentNode, bool defaultAstar);
 
-		static std::list<Cell> GetNeighbourList(Cell currentNode, bool defaultAstar);
-
 		static std::list<Cell> CalculatePath(Cell endNode);
 
 		static float CalculateDistanceCost(Cell a, Cell b);

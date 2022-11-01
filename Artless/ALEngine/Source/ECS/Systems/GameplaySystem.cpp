@@ -136,11 +136,12 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::RunGameState() {
+		Entity targetCell{};
 		switch (gameplaySystem->currentGameplayStatus)
 		{
 		case GAMEPLAYSTATUS::PLAYER_INPUT_WAITING:
 			//check for event trigger for player
-			Entity targetCell;
+
 
 			for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
