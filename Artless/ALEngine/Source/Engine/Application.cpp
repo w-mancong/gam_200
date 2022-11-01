@@ -21,7 +21,7 @@ namespace ALEngine::Engine
 
 	namespace
 	{
-		Entity player, floor, coin, pathfinder;
+		Entity player, floor, coin, pathfinder, button;
 	}
 
 	void CollectCoint(Entity current, Entity other) {
@@ -76,7 +76,6 @@ namespace ALEngine::Engine
 		sceneGraph.Push(-1, coin);
 		pathfinder = Coordinator::Instance()->CreateEntity();
 		sceneGraph.Push(-1, pathfinder);
-
 
 		Transform trans;
 		trans.position = { 400, 500 };
