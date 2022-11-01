@@ -233,6 +233,7 @@ namespace ALEngine::ECS
 		sceneGraph.Init();
 
 		MeshBuilder::Instance()->Init();
+		camera.ProjectionMatrix(Camera::Projection::Orthographic);
 	}
 
 	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
@@ -307,7 +308,7 @@ namespace ALEngine::ECS
 
 		// Update and render particles
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender();
+		particleSys.ParticleRender(camera);
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
@@ -351,7 +352,7 @@ namespace ALEngine::ECS
 
 		// Update and render particles
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender();
+		particleSys.ParticleRender(cam);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
