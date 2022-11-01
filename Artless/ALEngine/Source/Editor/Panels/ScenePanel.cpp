@@ -169,6 +169,7 @@ namespace ALEngine::Editor
 
 	Math::Vec2 ScenePanel::GetMouseWorldPos()
 	{
+		// Get style
 		ImGuiStyle style = ImGui::GetStyle();
 		// Set mouse position
 		m_ImGuiMousePos = ImGui::GetMousePos();
