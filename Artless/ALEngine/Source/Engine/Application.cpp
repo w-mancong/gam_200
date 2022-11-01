@@ -135,7 +135,7 @@ namespace ALEngine::Engine
 
 			// Begin new ImGui frame
 			ALEditor::Instance()->Begin();
-
+			
 			// Normal Update
 			Engine::Update();
 
@@ -154,7 +154,7 @@ namespace ALEngine::Engine
 
 				Engine::FixedUpdate();
 				accumulator -= Time::m_FixedDeltaTime;
-			}
+			}			
 
 			// Render
 			Render();

@@ -17,8 +17,6 @@ namespace ALEngine::Editor
 	{
 		// Set position & size of Game Scene
 		//ImGui::SetNextWindowPos(ImVec2(0.f, 0.f));
-		ImGui::SetNextWindowSize(ImVec2(static_cast<f32>(Graphics::OpenGLWindow::width),
-			static_cast<f32>(Graphics::OpenGLWindow::height)));
 
 		// Begin ImGui Panel
 		if (!ImGui::Begin("Game"))
@@ -58,7 +56,7 @@ namespace ALEngine::Editor
 		// Get NDC coords of mouse pos
 		mousePos.x = 2.f * (mousePos.x / m_SceneWidth) - 1.f;
 		mousePos.y = 2.f * (mousePos.y / m_SceneHeight) - 1.f;
-		AL_CORE_CRITICAL("Mouse NDC: {}, {}", mousePos.x, mousePos.y);
+		
 		// Check if within range of scene
 		if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
 			mousePos.y >= -1.f && mousePos.y <= 1.f)
