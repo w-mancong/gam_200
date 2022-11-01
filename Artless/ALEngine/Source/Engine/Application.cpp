@@ -77,7 +77,7 @@ namespace ALEngine::Engine
 
 		player = Coordinator::Instance()->CreateEntity();
 		sceneGraph.Push(-1, player);
-		floor= Coordinator::Instance()->CreateEntity();
+		floor = Coordinator::Instance()->CreateEntity();
 		sceneGraph.Push(-1, floor);
 		coin = Coordinator::Instance()->CreateEntity();
 		sceneGraph.Push(-1, coin);
@@ -85,6 +85,14 @@ namespace ALEngine::Engine
 		sceneGraph.Push(-1, pathfinder);
 
 		Transform trans;
+		trans.position = { 0, 0 };
+		trans.scale = { 150, 200 };
+		button = CreateSprite(trans, "Assets\\Images\\circlebutton.png");
+		sceneGraph.Push(-1, button);
+		CreateCollider(button);
+		CreateEventTrigger(button);
+		Subscribe(button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
+
 		trans.position = { 400, 500 };
 		trans.scale = { 150, 150 };
 		Coordinator::Instance()->AddComponent(player, trans);
