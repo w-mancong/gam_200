@@ -136,29 +136,26 @@ namespace ALEngine::Engine
 
 			// Begin new ImGui frame
 			ALEditor::Instance()->Begin();
+			
+			// Normal Update
+			Engine::Update();
 
-			if (ALEditor::Instance()->GetGameActive())
+			// Physics
+			// Fixed Update (Physics)
+			accumulator += Time::m_DeltaTime;
+
+			// Steps to limit num times physics will run per frame
+			int currNumSteps{ 0 };
+
+			while (accumulator >= Time::m_FixedDeltaTime)
 			{
-				// Normal Update
-				Engine::Update();
+				// Exit if physics happen more than limit
+				if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
+					break;
 
-				// Physics
-				// Fixed Update (Physics)
-				accumulator += Time::m_DeltaTime;
-
-				// Steps to limit num times physics will run per frame
-				int currNumSteps{ 0 };
-
-				while (accumulator >= Time::m_FixedDeltaTime)
-				{
-					// Exit if physics happen more than limit
-					if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
-						break;
-
-					Engine::FixedUpdate();
-					accumulator -= Time::m_FixedDeltaTime;
-				}
-			}
+				Engine::FixedUpdate();
+				accumulator -= Time::m_FixedDeltaTime;
+			}			
 
 			// Render
 			Render();
