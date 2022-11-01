@@ -83,7 +83,7 @@ namespace ALEngine::ECS
 			*(vMatrix + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vColor + i) = sprite.color;
 			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = sprite.index;
+			(*(vMatrix + i))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
 
 			++counter;
 		}

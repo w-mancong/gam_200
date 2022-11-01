@@ -35,6 +35,8 @@ namespace ALEngine::Engine
 
 		AudioManager(void) = default;
 		~AudioManager(void) = default;
+
+		friend Memory::StaticMemory;
 	};
 
 	namespace
@@ -99,15 +101,15 @@ namespace ALEngine::Engine
 			return temp;
 		}
 
-		s32 constexpr MAX_CHANNELS{ 128 };
+		s32 constexpr MAX_CHANNELS{ 128 }, BGM_CHANNELS{ 32 };
 		AudioManager* audioManager{ nullptr };
 	}
 
 	void AudioManager::Init(void)
 	{
 		FMOD_RESULT res = System_Create(&system);
-		assert(res == FMOD_RESULT::FMOD_OK && "Fmod system not created properly!");
-		system->init(MAX_CHANNELS, FMOD_INIT_NORMAL, reinterpret_cast<void*>(FMOD_OUTPUTTYPE::FMOD_OUTPUTTYPE_AUTODETECT));
+		assert(res == FMOD_OK && "Fmod system not created properly!");
+		system->init(MAX_CHANNELS, FMOD_INIT_NORMAL, reinterpret_cast<void*>(FMOD_OUTPUTTYPE_AUTODETECT));
 
 		// Create channel groups
 		s64 const TOTAL_CHANNELS{ static_cast<s64>(Channel::Total) };
@@ -115,24 +117,25 @@ namespace ALEngine::Engine
 		for (s64 i{}; i < TOTAL_CHANNELS; ++i)
 		{
 			res = system->createChannelGroup(channelNames[i], &channelGroup[i]);
-			assert(res == FMOD_RESULT::FMOD_OK && "Unable to create channel groups!");
+			assert(res == FMOD_OK && "Unable to create channel groups!");
 		}
 
-		fmod::ChannelGroup  *sfx{ channelGroup[static_cast<s64>(Channel::Master)] }, 
-							*bgm{ channelGroup[static_cast<s64>(Channel::Master)] }, 
+		fmod::ChannelGroup  *sfx{ channelGroup[static_cast<s64>(Channel::SFX)] }, 
+							*bgm{ channelGroup[static_cast<s64>(Channel::BGM)] }, 
 							*master{ channelGroup[static_cast<s64>(Channel::Master)] };		
 
 		// adding channel group bgm and sfx into master
 		master->addGroup(bgm);
 		master->addGroup(sfx);
 
+		u64 const SFX_CHANNELS = MAX_CHANNELS - BGM_CHANNELS;
 		// filling my channels queue
-		u64 const SFX_CHANNELS = MAX_CHANNELS - 1;
-		bgmChannels.push({ nullptr, Channel::BGM });
 		/*
 			all the channels stored inside these queues are definitely
 			channels that are available for use
-		*/ 
+		*/
+		for (u64 i{}; i < BGM_CHANNELS; ++i)
+			bgmChannels.push({ nullptr, Channel::BGM });
 		for (u64 i{}; i < SFX_CHANNELS; ++i)
 			sfxChannels.push({ nullptr, Channel::SFX });
 	}
@@ -187,11 +190,11 @@ namespace ALEngine::Engine
 		ChannelInfo& channelInfo = sfxChannels.front(); sfxChannels.pop();
 		fmod::Channel*& ch = channelInfo.ch;
 		system->playSound(audio.sound, channelGroup[static_cast<s64>(Channel::SFX)], false, &ch);
+		// Set audio's channel
+		audio.ch = &ch;
 		ch->setVolume(audio.volume);
-		if (audio.loop)
-			ch->setMode(FMOD_LOOP_NORMAL);
-		else
-			ch->setMode(FMOD_LOOP_OFF);
+		u32 const LOOP = audio.loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		ch->setMode(LOOP);
 		ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::SFX)]);
 		usedChannels.push_back(channelInfo);
 	}
@@ -205,11 +208,11 @@ namespace ALEngine::Engine
 		ChannelInfo& channelInfo = bgmChannels.front(); bgmChannels.pop();
 		fmod::Channel*& ch = channelInfo.ch;
 		system->playSound(audio.sound, channelGroup[static_cast<s64>(Channel::BGM)], false, &ch);
+		// Set audio's channel
+		audio.ch = &ch;
 		ch->setVolume(audio.volume);
-		if (audio.loop)
-			ch->setMode(FMOD_LOOP_NORMAL);
-		else
-			ch->setMode(FMOD_LOOP_OFF);
+		u32 const LOOP = audio.loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		ch->setMode(LOOP);
 		ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::BGM)]);
 		usedChannels.push_back(channelInfo);
 	}
@@ -261,5 +264,63 @@ namespace ALEngine::Engine
 	void PlayAudio(Audio& audio)
 	{
 		audioManager->PlayAudio(audio);
+	}
+
+	void StopAudio(Audio const& audio)
+	{
+		if (!audio.ch)
+			return;
+		(*audio.ch)->stop();
+	}
+
+	void PauseAudio(Audio const& audio)
+	{
+		if (!audio.ch)
+			return;
+		(*audio.ch)->setPaused(true);
+	}
+
+	void UnpauseAudio(Audio const& audio)
+	{
+		if (!audio.ch)
+			return;
+		(*audio.ch)->setPaused(false);
+	}
+
+	void ToggleAudioPause(Audio const& audio)
+	{
+		if (!audio.ch)
+			return;
+		b8 isPlaying{}; (*audio.ch)->getPaused(&isPlaying);
+		(*audio.ch)->setPaused(!isPlaying);
+	}
+
+	void MuteAudio(Audio const& audio)
+	{
+		if (!audio.ch)
+			return;
+		(*audio.ch)->setVolume(0.0f);
+	}
+
+	void UnmuteAudio(Audio const& audio)
+	{
+		if (!audio.ch)
+			return;
+		SetAudioVolume(audio);
+	}
+
+	void SetAudioVolume(Audio const& audio)
+	{
+		if (!audio.ch)
+			return;
+		(*audio.ch)->setVolume(audio.volume);
+	}
+
+	void SetAudioLoop(Audio const& audio)
+	{
+		if (!audio.ch)
+			return;
+		u32 const LOOP = audio.loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		(*audio.ch)->setMode(LOOP);
 	}
 }
