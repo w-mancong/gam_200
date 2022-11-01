@@ -40,7 +40,7 @@ namespace ALEngine::Editor
 	void InspectorPanel::OnImGuiRender(void)
 	{
 		// Set size constraints of inspector
-		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+		//ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
 		// Begin ImGui
 		if (!ImGui::Begin("Inspector"))
@@ -347,6 +347,17 @@ namespace ALEngine::Editor
 
 			ImGui::EndPopup();
 		}
+	}
+
+	void InspectorPanel::SetPanelMin(ImVec2 min)
+	{
+		m_PanelMin = min;
+	}
+
+	void InspectorPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	{
+		m_DefaultPos = pos;
+		m_DefaultSize = size;
 	}
 
 }

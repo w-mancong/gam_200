@@ -1,0 +1,39 @@
+{
+  "PanelMin": [ 350, 350 ],
+  "ToolbarMin":  [ 800, 26 ],
+
+  "ScenePos": [ 425, 47 ],
+  "SceneSize": [ 835, 501 ],
+
+  "GamePos": [ 425, 47 ],
+  "GameSize": [ 835, 501 ],
+
+  "SceneHierarchyPos": [ 1262, 19 ],
+  "SceneHierarchySize": [ 338, 441 ],
+
+  "InspectorPos": [ 1262, 462 ],
+  "InspectorSize": [ 338, 438 ],
+
+  "LoggerPos": [ 0, 19 ],
+  "LoggerSize": [ 423, 529 ],
+
+  "ContentBrowserPos": [ 0, 550 ],
+  "ContentBrowserSize": [ 300, 350 ],
+
+  "AssetPos": [ 302, 550 ],
+  "AssetSize": [ 958, 350 ],
+
+  "ToolbarPos": [ 425, 19 ],
+  "ToolbarSize": [ 835, 26 ],
+
+  "ColorTitleBg": [ 0.25, 0.0, 0.45 ],
+  "ColorTitleActiveBg": [ 0.5, 0.2, 0.7 ],
+  "ColorWindowBg": [ 0.05, 0.0, 0.1 ],
+  "ColorNormal": [ 0.05, 0.2, 0.05 ],
+  "ColorActive": [ 0.1, 0.4, 0.1 ],
+  "ColorActive2": [ 0.1, 0.35, 0.1 ],
+  "ColorActive3": [ 0.1, 0.75, 0.1 ],
+  "ColorHovered": [ 0.08, 0.3, 0.08 ],
+  "ColorInteractive": [ 0.1, 0.8, 0.1 ]
+}
+

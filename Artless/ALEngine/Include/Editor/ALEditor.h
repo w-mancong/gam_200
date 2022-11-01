@@ -73,6 +73,17 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Load Data from file (Window Pos, Colors, etc.)
+		***********************************************************************************/
+		void LoadData(void);
+
+
+		/*!*********************************************************************************
+			Getters and Setters
+		***********************************************************************************/
+	public:
+		/*!*********************************************************************************
+			\brief
 			Sets ImGui to be enabled or disabled.
 
 			\param [in] isEnabled
@@ -205,13 +216,24 @@ namespace ALEngine::Editor
 		b8 m_FullScreen{ false };		// Set to true if game mode full screen
 
 		// Panels
-		ContentBrowserPanel m_ContentBrowserPanel;	// Content Browser Panel
-		ScenePanel m_ScenePanel;					// Scene Panel (Editor)
-		GamePanel m_GamePanel;						// Game Panel
-		InspectorPanel m_InspectorPanel;			// Inspector Panel
-		LoggerPanel m_LoggerPanel;					// Logger Panel
+		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel
+		ScenePanel m_ScenePanel;						// Scene Panel (Editor)
+		GamePanel m_GamePanel;							// Game Panel
+		InspectorPanel m_InspectorPanel;				// Inspector Panel
+		LoggerPanel m_LoggerPanel;						// Logger Panel
 		//ProfilerPanel m_ProfilerPanel;				// Profiler Panel
-		SceneHierarchyPanel m_SceneHierarchyPanel;	// Scene Hierarchy Panel
+		SceneHierarchyPanel m_SceneHierarchyPanel;		// Scene Hierarchy Panel
+
+		// Editor Colors
+		ImVec4 m_ColorTitleBg{};			// Color of Title Background
+		ImVec4 m_ColorTitleActiveBg{};		// Color of Title Active Background
+		ImVec4 m_ColorWindowBg{};			// Color of Window Background
+		ImVec4 m_ColorNormal{};				// Color of Normal
+		ImVec4 m_ColorActive{};				// Color of Active
+		ImVec4 m_ColorActive2{};			// Color of Active 2
+		ImVec4 m_ColorActive3{};			// Color of Active 3
+		ImVec4 m_ColorHovered{};			// Color of Hovered
+		ImVec4 m_ColorInteractive{};		// Color of Interactive
 	};
 }
 

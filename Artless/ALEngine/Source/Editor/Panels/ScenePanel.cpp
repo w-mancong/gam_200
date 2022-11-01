@@ -216,6 +216,17 @@ namespace ALEngine::Editor
 		return m_EditorCamera;
 	}
 
+	void ScenePanel::SetPanelMin(ImVec2 min)
+	{
+		m_PanelMin = min;
+	}
+
+	void ScenePanel::SetDefault(ImVec2 pos, ImVec2 size)
+	{
+		m_DefaultPos = pos;
+		m_DefaultSize = size;
+	}
+
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,
 		float width, float height) 
 	{

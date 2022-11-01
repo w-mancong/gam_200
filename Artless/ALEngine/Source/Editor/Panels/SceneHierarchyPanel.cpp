@@ -22,7 +22,7 @@ namespace ALEngine::Editor
 	{
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		// Set size constraints of inspector
-		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+		//ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
 		if (!ImGui::Begin("Scene Hierarchy"))
 		{
@@ -178,6 +178,17 @@ namespace ALEngine::Editor
 				UpdateEntitySHP(child_it, popup_hasopen);
 			ImGui::TreePop();
 		}
+	}
+
+	void SceneHierarchyPanel::SetPanelMin(ImVec2 min)
+	{
+		m_PanelMin = min;
+	}
+
+	void SceneHierarchyPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	{
+		m_DefaultPos = pos;
+		m_DefaultSize = size;
 	}
 
 }
