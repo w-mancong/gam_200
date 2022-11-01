@@ -293,16 +293,16 @@ namespace ALEngine::ECS
 		if (Input::KeyDown(KeyCode::Z)) // particles when hold 'Z' button 
 		{
 			ParticleSys::ParticleProperties prop{};
-			ParticleSys::SetVelocity(prop, Vector2(0, 5));
-			ParticleSys::SetStartColor(prop, Vector3(0, 1, 0));
-			ParticleSys::SetEndColor(prop, Vector3(1, 0, 0.2f));
+			ParticleSys::SetVelocity(prop, Vector2(2, 6));
+			ParticleSys::SetStartColor(prop, Vector3(1.f, 0.f, 0.f));
+			ParticleSys::SetEndColor(prop, Vector3(0.f, 0.f, 1.f));
 			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos());
-			ParticleSys::SetEndSize(prop, 0.f);
+			ParticleSys::SetEndSize(prop, 1.f);
 			ParticleSys::SetVelVariation(prop, Vector2(10, 10));
-			ParticleSys::SetSizeVariation(prop, 2.f);
-			ParticleSys::SetLifeTime(prop, 3.f);
-			ParticleSys::SetStartSize(prop, 10.f);
-			for (int i{}; i < 5; ++i)
+			ParticleSys::SetSizeVariation(prop, 4.f);
+			ParticleSys::SetLifeTime(prop, 4.f);
+			ParticleSys::SetStartSize(prop, 14.f);
+			for (int i{}; i < 4; ++i)
 				particleSys.Emit(prop);
 		}
 
