@@ -18,7 +18,7 @@ namespace ALEngine::Graphics::ParticleSys
 		std::default_random_engine generator;
 		std::uniform_real_distribution<f32> distribution(-1.f,
 			static_cast<f32>(std::nextafter(1.0, 1.1))); // number generation interval: [-1, 1]
-		ALEngine::Engine::Camera camera{ Math::Vector3(0.0f, 0.0f, 725.0f) };
+		//ALEngine::Engine::Camera camera{ Math::Vector3(0.0f, 0.0f, 725.0f) };
 	}
 	/*!*********************************************************************************
 		\brief
@@ -123,12 +123,21 @@ namespace ALEngine::Graphics::ParticleSys
 	\brief
 		Renders all active particles in the particle container.
 	***********************************************************************************/
-	void ParticleSystem::ParticleRender()
+	void ParticleSystem::ParticleRender(Engine::Camera const& camera)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		particleShader.use();
-		particleShader.Set("view", camera.ViewMatrix());
-		particleShader.Set("proj", camera.ProjectionMatrix());
+		//if (Editor::ALEditor::Instance()->GetGameActive())
+		//{
+			particleShader.Set("view", camera.ViewMatrix());
+			particleShader.Set("proj", camera.ProjectionMatrix());
+		//}
+		//else
+		//{
+		//	Engine::Camera& cam = Editor::ALEditor::Instance()->GetEditorCamera();
+		//	particleShader.Set("view", cam.ViewMatrix());
+		//	particleShader.Set("proj", cam.ProjectionMatrix());
+		//}
 
 		for (auto& particle : particleContainer)
 		{

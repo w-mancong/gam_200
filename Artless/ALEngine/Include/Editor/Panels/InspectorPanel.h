@@ -13,6 +13,9 @@ brief:	This file contains function declarations for the InspectorPanel class.
 
 namespace ALEngine::Editor
 {
+	// Predeclarations
+	enum class InspectorComponents;
+
 	/*!*********************************************************************************
 		\brief
 		Class that aids in the display of the Inspector Panel for the editor
@@ -64,6 +67,12 @@ namespace ALEngine::Editor
 			Returns true if there is a selected entity, else returns false
 		***********************************************************************************/
 		bool HasSelectedEntity(void);
+		
+		/*!*********************************************************************************
+			\brief
+			Displays the Inspector Menu on the panel
+		***********************************************************************************/
+		void InspectorMenu(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -92,6 +101,15 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		ImGuizmo::OPERATION GetCurrGizmoOperation(void) const;
 
+		/*!*********************************************************************************
+			\brief
+			Displays the Sprite component info on the panel
+
+			\return
+			Current Gizmo Operation
+		***********************************************************************************/
+		void AddComponentButton(void);
+
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
 		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES };	// Entity Selected in Inspector
@@ -99,6 +117,18 @@ namespace ALEngine::Editor
 		// Panel size
 		const ImVec2 PANEL_MIN{ 320, 350 };
 		const ImVec2 PANEL_MAX{ 1920, 1080 };
+
+		// Selected Inspector
+		InspectorComponents m_SelectedComponent{};
+	};
+
+	// Enum for different Components
+	enum class InspectorComponents
+	{
+		InComp_EntityData = 0,
+		InComp_Transform,
+		InComp_Sprite,
+		InComp_Total
 	};
 }
 

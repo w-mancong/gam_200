@@ -10,6 +10,9 @@ brief:	This file contains the function definitions for the ALEditor class.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
+#include "imgui.h"
+#include "imgui_internal.h"
+
 namespace ALEngine::Editor
 {
 	ALEditor::ALEditor(void)
@@ -54,6 +57,9 @@ namespace ALEngine::Editor
 
 		// Set docking enabled or disabled
 		m_DockingEnabled = true;
+
+		// Initialize style of the Editor
+		InitializeStyle();
 	}
 
 	void ALEditor::Update(void)
@@ -62,14 +68,24 @@ namespace ALEngine::Editor
 		if (!m_ImGuiEnabled)
 			return;
 
-		if (Input::KeyTriggered(KeyCode::G))
-			m_GameStart = !m_GameStart;
+		// Main Menu Bar
+		EditorMenuBar();
 
-		//ImGui::ShowDemoWindow();
+		// Editor toolbar
+		EditorToolbar();
 
 		// Check if Game Mode
-		if (m_GameStart)
+		if (m_FullScreen && m_GameIsActive)
+		{
+			// Set window size to be full screen
+			ImVec2 vpSize = ImVec2(ImGui::GetMainViewport()->WorkSize.x, 
+							ImGui::GetMainViewport()->WorkSize.y - ImGui::FindWindowByName("##toolbar")->Size.y);
+			ImVec2 vpPos = ImVec2(ImGui::GetMainViewport()->WorkPos.x,
+							ImGui::GetMainViewport()->WorkPos.y + ImGui::FindWindowByName("##toolbar")->Size.y);
+			ImGui::SetNextWindowSize(vpSize);
+			ImGui::SetNextWindowPos(vpPos);
 			m_GamePanel.OnImGuiRender();
+		}
 		else
 		{
 			// Content Browser Panel
@@ -79,13 +95,26 @@ namespace ALEngine::Editor
 			m_LoggerPanel.OnImGuiRender();
 
 			// Check if there is a selected entity for Inspector
-			if (m_InspectorPanel.HasSelectedEntity())
-				m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
-			// Set selected entity for Scene Panel (for Gizmos)
-			m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
-			m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
-			m_ScenePanel.OnImGuiRender();	// Scene Panel
+			// Check if game is running
+			if (m_GameIsActive)
+			{
+				// Set to be editor scene panel size and pos
+				ImVec2 sceneSize = ImGui::FindWindowByName("Editor Scene")->Size;
+				ImVec2 scenePos = ImGui::FindWindowByName("Editor Scene")->Pos;
+				ImGui::SetNextWindowSize(sceneSize);
+				ImGui::SetNextWindowPos(scenePos);
+				// Run game panel
+				m_GamePanel.OnImGuiRender();
+			}
+			else
+			{	// Run editor scene panel
+				// Set selected entity for Scene Panel (for Gizmos)
+				m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
+				m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
+				m_ScenePanel.OnImGuiRender();	// Scene Panel
+			}
 
 			// Update if selected entity has changed
 			m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
@@ -95,6 +124,7 @@ namespace ALEngine::Editor
 
 			// Profiler Panel
 			//m_ProfilerPanel.OnImGuiRender();
+			ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -175,6 +205,112 @@ namespace ALEngine::Editor
 			glfwMakeContextCurrent(curr_context);
 		}
 	}
+
+	void ALEditor::InitializeStyle(void)
+	{
+		// Get the style
+		ImGuiStyle& style = ImGui::GetStyle();
+
+		// Title Colors
+		style.Colors[ImGuiCol_TitleBg]				= ImVec4(0.25f, 0.f, 0.45f, 1.f);
+		style.Colors[ImGuiCol_TitleBgActive]		= ImVec4(0.5f, 0.2f, 0.7f, 1.f);
+
+		// Window Colors
+		style.Colors[ImGuiCol_WindowBg]				= ImVec4(0.05f, 0.f, 0.1f, 1.f);
+
+		// Frame Backgrounds
+		style.Colors[ImGuiCol_FrameBg]				= ImVec4(0.05f, 0.2f, 0.05f, 1.f);
+		style.Colors[ImGuiCol_FrameBgActive]		= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_FrameBgHovered]		= ImVec4(0.08f, 0.3f, 0.08f, 1.f);
+
+		// Tab Colors
+		style.Colors[ImGuiCol_Tab]					= ImVec4(0.05f, 0.2f, 0.05f, 1.f);
+		style.Colors[ImGuiCol_TabHovered]			= ImVec4(0.08f, 0.3f, 0.08f, 1.f);
+		style.Colors[ImGuiCol_TabActive]			= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_TabUnfocusedActive]	= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
+
+		// Button Colors
+		style.Colors[ImGuiCol_Button]				= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_ButtonActive]			= ImVec4(0.1f, 0.35f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_ButtonHovered]		= ImVec4(0.08f, 0.3f, 0.08f, 1.f);
+
+		// Header Colors
+		style.Colors[ImGuiCol_Header]				= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_HeaderActive]			= ImVec4(0.1f, 0.35f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_HeaderHovered]		= ImVec4(0.08f, 0.3f, 0.08f, 1.f);
+
+		// Misc.
+		style.Colors[ImGuiCol_CheckMark]			= ImVec4(0.1f, 0.8f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_SliderGrab]			= ImVec4(0.1f, 0.8f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_SliderGrabActive]		= ImVec4(0.1f, 0.75f, 0.1f, 1.f);
+
+	}
+
+	void ALEditor::EditorMenuBar(void)
+	{
+		if (ImGui::BeginMainMenuBar())
+		{
+			// Settings
+			if (ImGui::BeginMenu("Settings"))
+			{
+				// Selectable flag
+				ImGuiSelectableFlags flag = 0;
+
+				if (!m_GameIsActive)
+					flag |= ImGuiSelectableFlags_Disabled;
+
+				// Set to fullscreen or normal
+				ImGui::Selectable("Fullscreen", &m_FullScreen, flag);
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+		}
+	}
+
+	void ALEditor::EditorToolbar(void)
+	{
+		// Filepaths for play button
+		static const std::string play_button_fp{ "Assets/Images/button play.png" };
+		static const std::string stop_button_fp{ "Assets/Images/button stop.png" };
+		static const f32 btn_size{ 20.f };
+
+		ImGui::SetNextWindowSizeConstraints(ImVec2(25.f, 25.f), ImVec2(1000.f, 25.f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+
+		// Window flags
+		ImGuiWindowFlags flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoTitleBar;
+
+		// Toolbar!!
+		if (ImGui::Begin("##toolbar", nullptr, flags))
+		{
+			// Texture GuID
+			Guid id{ 0 };
+
+			// Get texture Guid
+			if(m_GameIsActive)
+				id = Engine::AssetManager::Instance()->GetGuid(stop_button_fp);
+			else
+				id = Engine::AssetManager::Instance()->GetGuid(play_button_fp);
+
+			// Get texture
+			u64 tex = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
+
+			// Make button centered
+			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (btn_size * 0.5f));
+
+			// Play/Stop button
+			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(tex), ImVec2(btn_size, btn_size)))
+			{
+				m_GameIsActive = !m_GameIsActive;
+			}
+			ImGui::End();
+		}
+
+		// Pop style variable
+		ImGui::PopStyleVar();
+	}
 	
 	void ALEditor::SetImGuiEnabled(b8 isEnabled)
 	{
@@ -218,20 +354,27 @@ namespace ALEngine::Editor
 
 	Math::Vec2 ALEditor::GetMouseWorldPos()
 	{
+		if (m_GameIsActive)
+			return m_GamePanel.GetMouseWorldPos();
 		return m_ScenePanel.GetMouseWorldPos();
+	}
+
+	b8 ALEditor::GetGameActive(void)
+	{
+		return m_GameIsActive;
 	}
 
 	void ALEditor::Docking(void)
 	{
 		// Ensure the parent window is not dockable into
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
 		
 		// Get main viewport
 		const ImGuiViewport* vp = ImGui::GetMainViewport();
 
 		// Set next window info
 		ImGui::SetNextWindowPos(vp->WorkPos);
-		ImGui::SetNextWindowSize(vp->WorkSize);
+		ImGui::SetNextWindowSize(ImVec2(vp->WorkSize));
 		ImGui::SetNextWindowViewport(vp->ID);
 
 		// Window style

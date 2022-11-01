@@ -54,6 +54,25 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Initializes the Style of the editor
+		***********************************************************************************/
+		void InitializeStyle(void);
+
+		/*!*********************************************************************************
+			\brief
+			Updates the Menu Bar for the Editor
+		***********************************************************************************/
+		void EditorMenuBar(void);
+
+		/*!*********************************************************************************
+			\brief
+			Updates the Toolbar for the Editor
+			Toolbar contains play/stop functionality
+		***********************************************************************************/
+		void EditorToolbar(void);
+
+		/*!*********************************************************************************
+			\brief
 			Sets ImGui to be enabled or disabled.
 
 			\param [in] isEnabled
@@ -117,12 +136,12 @@ namespace ALEngine::Editor
 		f64 GetSceneHeight(void);
 
 		/*!*********************************************************************************
-		\brief
-		Returns the Editor's Camera
+			\brief
+			Returns the Editor's Camera
 
-		\return
-		Gets the Editor's Camera
-	***********************************************************************************/
+			\return
+			Gets the Editor's Camera
+		***********************************************************************************/
 		Engine::Camera& GetEditorCamera(void);
 
 		/*!*********************************************************************************
@@ -135,6 +154,16 @@ namespace ALEngine::Editor
 			position was handled outside of the Scene viewport
 		***********************************************************************************/
 		Math::Vec2 GetMouseWorldPos();
+
+		/*!*********************************************************************************
+			\brief
+			Returns if the game panel is active or not
+
+			\return
+			Returns true if game panel is active,
+			else returns false
+		***********************************************************************************/
+		b8 GetGameActive(void);
 
 	private:
 		/*!*********************************************************************************
@@ -167,12 +196,13 @@ namespace ALEngine::Editor
 		friend class Memory::StaticMemory;
 
 		// Window Min Size
-		ImVec2 m_WinMinSize{ 320, 350 };
+		ImVec2 m_WinMinSize{ 300.f, 25.f };
 
 		// Variables
 		b8 m_ImGuiEnabled{ false };		// Set to true if ImGui is enabled
 		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
-		b8 m_GameStart{ false };		// Set to true if in Game Mode
+		b8 m_GameIsActive{ false };		// Set to true if in Game Mode
+		b8 m_FullScreen{ false };		// Set to true if game mode full screen
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;	// Content Browser Panel

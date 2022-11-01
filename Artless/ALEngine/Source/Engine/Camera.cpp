@@ -86,6 +86,18 @@ namespace ALEngine::Engine
 		return Matrix4x4::Ortho(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
 	}
 
+	Matrix4x4 Camera::OrthographicMatrix(f32 l, f32 r, f32 b, f32 t) const
+	{
+		using namespace Graphics;
+		return Matrix4x4::Ortho(l, r, b, t, m_Near, m_Far);
+	}
+
+	Matrix4x4 Camera::OrthographicMatrix(f32 l, f32 r, f32 b, f32 t, f32 n, f32 f) const
+	{
+		using namespace Graphics;
+		return Matrix4x4::Ortho(l, r, b, t, n, f);
+	}
+
 	Matrix4x4 Camera::OrthographicMatrixImgui(void) const
 	{
 		using namespace Graphics;

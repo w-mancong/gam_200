@@ -233,6 +233,7 @@ namespace ALEngine::ECS
 		sceneGraph.Init();
 
 		MeshBuilder::Instance()->Init();
+		camera.ProjectionMatrix(Camera::Projection::Orthographic);
 	}
 
 	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
@@ -295,7 +296,7 @@ namespace ALEngine::ECS
 			ParticleSys::SetVelocity(prop, Vector2(0, 5));
 			ParticleSys::SetStartColor(prop, Vector3(0, 1, 0));
 			ParticleSys::SetEndColor(prop, Vector3(1, 0, 0.2f));
-			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos() - Vector2(700, 500));
+			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos());
 			ParticleSys::SetEndSize(prop, 0.f);
 			ParticleSys::SetVelVariation(prop, Vector2(10, 10));
 			ParticleSys::SetSizeVariation(prop, 2.f);
@@ -307,7 +308,7 @@ namespace ALEngine::ECS
 
 		// Update and render particles
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender();
+		particleSys.ParticleRender(camera);
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
@@ -348,6 +349,10 @@ namespace ALEngine::ECS
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
 		
 		rs->RenderBatch(cam);
+
+		// Update and render particles
+		particleSys.ParticleUpdate(Time::m_DeltaTime);
+		particleSys.ParticleRender(cam);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
