@@ -80,14 +80,14 @@ namespace ALEngine::Editor
 		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
 	}
 	
-	void GamePanel::SetPanelMin(ImVec2 min)
+	void GamePanel::SetPanelMin(Math::Vec2 min)
 	{
-		m_PanelMin = min;
+		m_PanelMin = ImVec2(min.x, min.y);
 	}
 	
-	void GamePanel::SetDefault(ImVec2 pos, ImVec2 size)
+	void GamePanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
 	{
-		m_DefaultPos = pos;
-		m_DefaultSize = size;
+		m_DefaultPos = ImVec2(pos.x, pos.y);
+		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 }

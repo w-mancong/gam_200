@@ -358,10 +358,43 @@ ImGui::PopStyleVar();
 		// Load Panel Values
 		//=========================================================
 		Vec2 panel_min = editor_data.GetVec2("PanelMin", Vec2());		// Panel Min Size
-		ImVec2 panel_min_im(panel_min.x, panel_min.y);
 
 		// Content Browser Panel
-		m_ContentBrowserPanel.SetPanelMin(panel_min_im);
+		m_ContentBrowserPanel.SetPanelMin(panel_min);
+		m_ContentBrowserPanel.SetDefault(editor_data.GetVec2("ContentBrowserPos", Math::Vec2()),
+			editor_data.GetVec2("ContentBrowserSize", panel_min));
+
+		// Scene Panel
+		m_ScenePanel.SetPanelMin(panel_min);
+		m_ScenePanel.SetDefault(editor_data.GetVec2("ScenePos", Math::Vec2()),
+			editor_data.GetVec2("SceneSize", panel_min));
+
+		// Game Panel
+		m_GamePanel.SetPanelMin(panel_min);
+		m_GamePanel.SetDefault(editor_data.GetVec2("GamePos", Math::Vec2()),
+			editor_data.GetVec2("GameSize", panel_min));
+
+		// Scene Hierarchy Panel
+		m_SceneHierarchyPanel.SetPanelMin(panel_min);
+		m_SceneHierarchyPanel.SetDefault(editor_data.GetVec2("SceneHierarchyPos", Math::Vec2()),
+			editor_data.GetVec2("SceneHierarchySize", panel_min));
+
+		// Logger Panel
+		m_LoggerPanel.SetPanelMin(panel_min);
+		m_LoggerPanel.SetDefault(editor_data.GetVec2("LoggerPos", Math::Vec2()),
+			editor_data.GetVec2("LoggerSize", panel_min));
+
+		// Inspector Panel
+		m_InspectorPanel.SetPanelMin(panel_min);
+		m_InspectorPanel.SetDefault(editor_data.GetVec2("InspectorPos", Math::Vec2()),
+			editor_data.GetVec2("InspectorSize", panel_min));
+
+	}
+
+	void ALEditor::SetDefaultPanel(void)
+	{
+		// Set default sizes and positions
+		
 	}
 
 	void ALEditor::Docking(void)

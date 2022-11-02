@@ -140,15 +140,15 @@ namespace ALEngine::Editor
 		ImGui::End();
 	}
 	
-	void LoggerPanel::SetPanelMin(ImVec2 min)
+	void LoggerPanel::SetPanelMin(Math::Vec2 min)
 	{
-		m_PanelMin = min;
+		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void LoggerPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	void LoggerPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
 	{
-		m_DefaultPos = pos;
-		m_DefaultSize = size;
+		m_DefaultPos = ImVec2(pos.x, pos.y);
+		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 
 }

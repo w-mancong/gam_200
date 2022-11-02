@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include "imgui.h"
+#include "imgui_internal.h"
 /*!
 file: ContentBrowserPanel.cpp
 author: Chan Jie Ming Stanley
@@ -204,15 +207,20 @@ namespace ALEngine::Editor
 		//------------------------------------------------------------------------------------
 	}
 	
-	void ContentBrowserPanel::SetPanelMin(ImVec2 min)
+	void ContentBrowserPanel::SetPanelMin(Math::Vec2 min)
 	{
-		m_PanelMin = min;
+		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void ContentBrowserPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	void ContentBrowserPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
 	{
-		m_DefaultPos = pos;
-		m_DefaultSize = size;
+		m_DefaultPos = ImVec2(pos.x, pos.y);
+		m_DefaultSize = ImVec2(size.x, size.y);
+	}
+
+	void ContentBrowserPanel::Default(void)
+	{
+		
 	}
 
 }	

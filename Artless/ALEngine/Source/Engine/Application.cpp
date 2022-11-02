@@ -78,17 +78,19 @@ namespace ALEngine::Engine
 		sceneGraph.Push(-1, pathfinder);
 
 		Transform trans;
+		Serializer::Serializer level{ "Assets/Dev/Objects/Level.json" };
 
-		trans.position = { -50.f, 50.f };
-		trans.scale = { 150, 200 };
-		button = CreateSprite(trans, "Assets\\Images\\circlebutton.png");
+		trans.position = level.GetVec2("btn_pos", Math::Vec2());
+		trans.scale = level.GetVec2("btn_size", Math::Vec2(1.f, 1.f));
+		button = CreateSprite(trans, level.GetString("btn_image", "").c_str());
 		sceneGraph.Push(-1, button);
 		CreateCollider(button);
 		CreateEventTrigger(button);
 		Subscribe(button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
-		trans.position = { 400, 500 };
-		trans.scale = { 150, 150 };
+		// Initialize player
+		trans.position = level.GetVec2("player_pos", Math::Vec2());
+		trans.scale = level.GetVec2("player_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(player, trans);
 		CreateSprite(player);
 		CreateCollider(player);
@@ -99,14 +101,14 @@ namespace ALEngine::Engine
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
-		trans.position = { 800, 50 };
-		trans.scale = { 1300, 100 };
+		trans.position = level.GetVec2("floor_pos", Math::Vec2());
+		trans.scale = level.GetVec2("floor_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(floor, trans);
 		CreateSprite(floor);
 		CreateCollider(floor);
 		
-		trans.position = { 1100, 300 };
-		trans.scale = { 50, 50 };
+		trans.position = level.GetVec2("coin_pos", Math::Vec2());
+		trans.scale = level.GetVec2("coin_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(coin, trans);
 		CreateSprite(coin);
 		CreateCollider(coin);
