@@ -182,6 +182,8 @@ namespace ALEngine::Editor
 
 				}
 			}
+
+			ImGui::EndDragDropTarget();
 		}
 		
 		// If this is clicked, select this
