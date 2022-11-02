@@ -149,7 +149,15 @@ namespace ALEngine::Tree
         NodeData newData;
         newData.id = newChild;
         newData.parent = parent;
-        map.push_back(newData);
+
+        if (newChild < map.size())
+        {
+            map[newChild] = newData;
+        }
+        else
+        {
+            map.push_back(newData);
+        }
     }
 
     void BinaryTree::Insert(Node* node, s32 id)
@@ -312,7 +320,6 @@ namespace ALEngine::Tree
             searchVect.pop_back();
             if (searchVect.size() == 1)
             {
-
                 if (id != -1)
                 {
                     Node* parent{ nullptr };
