@@ -268,6 +268,38 @@ namespace ALEngine::Editor
 			ImGui::Separator();
 		}
 
+		// Drag Drop for Selectable
+		if (ImGui::BeginDragDropTarget())
+		{
+			// Payload flag
+			ImGuiDragDropFlags payload_flag{ 0 };
+			payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+			// Get Drag and Drop Payload
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
+			{
+				// Get filepath
+				size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
+				wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+				// Check if image (png or jpg)
+				std::string fileString = filePath;
+				if (fileString.find(".jpg") != std::string::npos ||
+					fileString.find(".png") != std::string::npos)
+				{
+					// Set Filepath
+					spr.filePath = filePath;
+
+					spr.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+				}
+				else
+				{
+					AL_CORE_ERROR("A .jpg or .png file is required!");
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 		// Right click!
 		if (ImGui::IsItemClicked(1))
 		{
@@ -353,15 +385,15 @@ namespace ALEngine::Editor
 		}
 	}
 
-	void InspectorPanel::SetPanelMin(ImVec2 min)
+	void InspectorPanel::SetPanelMin(Math::Vec2 min)
 	{
-		m_PanelMin = min;
+		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void InspectorPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	void InspectorPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
 	{
-		m_DefaultPos = pos;
-		m_DefaultSize = size;
+		m_DefaultPos = ImVec2(pos.x, pos.y);
+		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 
 }

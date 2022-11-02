@@ -35,7 +35,7 @@ namespace ALEngine::Editor
 		\param min
 		Panel's min size
 		***********************************************************************************/
-		void SetPanelMin(ImVec2 min);
+		void SetPanelMin(Math::Vec2 min);
 
 		/*!*********************************************************************************
 		\brief
@@ -45,7 +45,13 @@ namespace ALEngine::Editor
 		\param size
 		Panel's Size
 		***********************************************************************************/
-		void SetDefault(ImVec2 pos, ImVec2 size);
+		void SetDefault(Math::Vec2 pos, Math::Vec2 size);
+
+		/*!*********************************************************************************
+		\brief
+		Sets the panel to default position and size
+		***********************************************************************************/
+		void Default(void);
 
 	private:
 		// Panel sizes
