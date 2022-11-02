@@ -29,7 +29,7 @@ namespace  ALEngine::Engine::AI
             {
                 Cell& c = Coordinator::Instance()->GetComponent<Cell>(currentRoom.roomCellsArray[i + j]);
 
-                c.m_GCost = 99999999;
+                c.m_GCost = 99999999.f;
                 c.m_HCost = 0;
                 c.CalculateFCost();
                 c.m_ParentCell = NULL;
@@ -122,6 +122,11 @@ namespace  ALEngine::Engine::AI
         {
             Cell& c = Coordinator::Instance()->GetComponent<Cell>(Engine::GameplayInterface::getEntityCell(currentRoom, currentCoordinate[0], currentCoordinate[1] -1));
             neighbourList.push_back(&c);
+        }
+
+        if (defaultAstar)// for diagonal checks
+        {
+
         }
 
         return neighbourList;
