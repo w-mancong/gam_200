@@ -202,5 +202,17 @@ namespace ALEngine::Editor
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
-	}	
+	}
+	
+	void ContentBrowserPanel::SetPanelMin(ImVec2 min)
+	{
+		m_PanelMin = min;
+	}
+
+	void ContentBrowserPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	{
+		m_DefaultPos = pos;
+		m_DefaultSize = size;
+	}
+
 }	

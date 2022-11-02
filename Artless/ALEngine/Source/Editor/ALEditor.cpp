@@ -55,6 +55,9 @@ namespace ALEngine::Editor
 		// Set GLSL version
 		ImGui_ImplOpenGL3_Init("#version 450");
 
+		// Load Editor Data
+		LoadData();
+
 		// Set docking enabled or disabled
 		m_DockingEnabled = true;
 
@@ -124,7 +127,7 @@ namespace ALEngine::Editor
 
 			// Profiler Panel
 			//m_ProfilerPanel.OnImGuiRender();
-			ImGui::ShowDemoWindow();
+			//ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -212,37 +215,37 @@ namespace ALEngine::Editor
 		ImGuiStyle& style = ImGui::GetStyle();
 
 		// Title Colors
-		style.Colors[ImGuiCol_TitleBg]				= ImVec4(0.25f, 0.f, 0.45f, 1.f);
-		style.Colors[ImGuiCol_TitleBgActive]		= ImVec4(0.5f, 0.2f, 0.7f, 1.f);
+		style.Colors[ImGuiCol_TitleBg]				= m_ColorTitleBg;			// Title Background
+		style.Colors[ImGuiCol_TitleBgActive]		= m_ColorTitleActiveBg;		// Title Active Background	
 
 		// Window Colors
-		style.Colors[ImGuiCol_WindowBg]				= ImVec4(0.05f, 0.f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_WindowBg]				= m_ColorWindowBg;			// Window Background
 
 		// Frame Backgrounds
-		style.Colors[ImGuiCol_FrameBg]				= ImVec4(0.05f, 0.2f, 0.05f, 1.f);
-		style.Colors[ImGuiCol_FrameBgActive]		= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
-		style.Colors[ImGuiCol_FrameBgHovered]		= ImVec4(0.08f, 0.3f, 0.08f, 1.f);
+		style.Colors[ImGuiCol_FrameBg]				= m_ColorNormal;			// Normal Color
+		style.Colors[ImGuiCol_FrameBgActive]		= m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_FrameBgHovered]		= m_ColorHovered;			// Hovered Color
 
 		// Tab Colors
-		style.Colors[ImGuiCol_Tab]					= ImVec4(0.05f, 0.2f, 0.05f, 1.f);
-		style.Colors[ImGuiCol_TabHovered]			= ImVec4(0.08f, 0.3f, 0.08f, 1.f);
-		style.Colors[ImGuiCol_TabActive]			= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
-		style.Colors[ImGuiCol_TabUnfocusedActive]	= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_Tab]					= m_ColorNormal;			// Normal Color
+		style.Colors[ImGuiCol_TabHovered]			= m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_TabActive]			= m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_TabUnfocusedActive]	= m_ColorActive;			// Active Color
 
 		// Button Colors
-		style.Colors[ImGuiCol_Button]				= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
-		style.Colors[ImGuiCol_ButtonActive]			= ImVec4(0.1f, 0.35f, 0.1f, 1.f);
-		style.Colors[ImGuiCol_ButtonHovered]		= ImVec4(0.08f, 0.3f, 0.08f, 1.f);
+		style.Colors[ImGuiCol_Button]				= m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_ButtonActive]			= m_ColorActive2;			// Active Color 2
+		style.Colors[ImGuiCol_ButtonHovered]		= m_ColorHovered;			// Hovered Color
 
 		// Header Colors
-		style.Colors[ImGuiCol_Header]				= ImVec4(0.1f, 0.4f, 0.1f, 1.f);
-		style.Colors[ImGuiCol_HeaderActive]			= ImVec4(0.1f, 0.35f, 0.1f, 1.f);
-		style.Colors[ImGuiCol_HeaderHovered]		= ImVec4(0.08f, 0.3f, 0.08f, 1.f);
+		style.Colors[ImGuiCol_Header]				= m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_HeaderActive]			= m_ColorActive2;			// Active Color 2
+		style.Colors[ImGuiCol_HeaderHovered]		= m_ColorHovered;			// Hovered Color
 
 		// Misc.
-		style.Colors[ImGuiCol_CheckMark]			= ImVec4(0.1f, 0.8f, 0.1f, 1.f);
-		style.Colors[ImGuiCol_SliderGrab]			= ImVec4(0.1f, 0.8f, 0.1f, 1.f);
-		style.Colors[ImGuiCol_SliderGrabActive]		= ImVec4(0.1f, 0.75f, 0.1f, 1.f);
+		style.Colors[ImGuiCol_CheckMark]			= m_ColorInteractive;		// Interactive Color
+		style.Colors[ImGuiCol_SliderGrab]			= m_ColorInteractive;		// Interactive Color
+		style.Colors[ImGuiCol_SliderGrabActive]		= m_ColorActive3;			// Active Color 3
 
 	}
 
@@ -255,9 +258,6 @@ namespace ALEngine::Editor
 			{
 				// Selectable flag
 				ImGuiSelectableFlags flag = 0;
-
-				if (!m_GameIsActive)
-					flag |= ImGuiSelectableFlags_Disabled;
 
 				// Set to fullscreen or normal
 				ImGui::Selectable("Fullscreen", &m_FullScreen, flag);
@@ -309,9 +309,101 @@ namespace ALEngine::Editor
 		}
 
 		// Pop style variable
-		ImGui::PopStyleVar();
+ImGui::PopStyleVar();
 	}
-	
+
+	void ALEditor::LoadData(void)
+	{
+		// Math namespace
+		using namespace Math;
+
+		// Get data
+		Serializer::Serializer editor_data{ "Assets/Dev/Objects/EditorDefaults.json" };
+
+		//=========================================================
+		// Load editor style values
+		//=========================================================
+		// Store Colors
+		Vec3 col{};
+
+		// Title Bg
+		col = editor_data.GetVec3("ColorTitleBg", Vec3());
+		m_ColorTitleBg = ImVec4(col.x, col.y, col.z, 1.f);
+		// Title Active Bg
+		col = editor_data.GetVec3("ColorTitleActiveBg", Vec3());
+		m_ColorTitleActiveBg = ImVec4(col.x, col.y, col.z, 1.f);
+		// Window Bg
+		col = editor_data.GetVec3("ColorWindowBg", Vec3());
+		m_ColorWindowBg = ImVec4(col.x, col.y, col.z, 1.f);
+		// Normal Color
+		col = editor_data.GetVec3("ColorNormal", Vec3());
+		m_ColorNormal = ImVec4(col.x, col.y, col.z, 1.f);
+		// Active
+		col = editor_data.GetVec3("ColorActive", Vec3());
+		m_ColorActive = ImVec4(col.x, col.y, col.z, 1.f);
+		// Active 2
+		col = editor_data.GetVec3("ColorActive2",Vec3());
+		m_ColorActive2 = ImVec4(col.x, col.y, col.z, 1.f);
+		// Active 3
+		col = editor_data.GetVec3("ColorActive3", Vec3());
+		m_ColorActive3 = ImVec4(col.x, col.y, col.z, 1.f);
+		// Hovered
+		col = editor_data.GetVec3("ColorHovered", Vec3());
+		m_ColorHovered = ImVec4(col.x, col.y, col.z, 1.f);
+		// Interactive
+		col = editor_data.GetVec3("ColorInteractive", Vec3());
+		m_ColorInteractive = ImVec4(col.x, col.y, col.z, 1.f);
+
+		//=========================================================
+		// Load Panel Values
+		//=========================================================
+		Vec2 panel_min = editor_data.GetVec2("PanelMin", Vec2());		// Panel Min Size
+		ImVec2 panel_min_im(panel_min.x, panel_min.y);
+
+		// Content Browser Panel
+		m_ContentBrowserPanel.SetPanelMin(panel_min_im);
+	}
+
+	void ALEditor::Docking(void)
+	{
+		// Ensure the parent window is not dockable into
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
+
+		// Get main viewport
+		const ImGuiViewport* vp = ImGui::GetMainViewport();
+
+		// Set next window info
+		ImGui::SetNextWindowPos(vp->WorkPos);
+		ImGui::SetNextWindowSize(ImVec2(vp->WorkSize));
+		ImGui::SetNextWindowViewport(vp->ID);
+
+		// Window style
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+		// Set window flags
+		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
+			| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+		// Make Dockspace active
+		static bool show{ true };
+		ImGui::Begin("ALEditor!", &show, window_flags);
+		// Pop window styles out
+		ImGui::PopStyleVar(3);
+
+		// Enable dockspace
+		ImGui::DockSpace(ImGui::GetID("DockSpace"));
+
+		// Make Dockspace inactive
+		ImGui::End();
+	}
+}
+
+// Getters and Setters
+namespace ALEngine::Editor
+{
 	void ALEditor::SetImGuiEnabled(b8 isEnabled)
 	{
 		m_ImGuiEnabled = isEnabled;
@@ -362,41 +454,5 @@ namespace ALEngine::Editor
 	b8 ALEditor::GetGameActive(void)
 	{
 		return m_GameIsActive;
-	}
-
-	void ALEditor::Docking(void)
-	{
-		// Ensure the parent window is not dockable into
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
-		
-		// Get main viewport
-		const ImGuiViewport* vp = ImGui::GetMainViewport();
-
-		// Set next window info
-		ImGui::SetNextWindowPos(vp->WorkPos);
-		ImGui::SetNextWindowSize(ImVec2(vp->WorkSize));
-		ImGui::SetNextWindowViewport(vp->ID);
-
-		// Window style
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f); 
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-
-		// Set window flags
-		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse 
-			| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
-			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-
-		// Make Dockspace active
-		static bool show{ true };
-		ImGui::Begin("ALEditor!", &show, window_flags);
-		// Pop window styles out
-		ImGui::PopStyleVar(3);
-
-		// Enable dockspace
-		ImGui::DockSpace(ImGui::GetID("DockSpace"));
-
-		// Make Dockspace inactive
-		ImGui::End();
 	}
 }

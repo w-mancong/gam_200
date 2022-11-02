@@ -30,13 +30,13 @@ namespace ALEngine::Editor
 
 		f32 constexpr CAM_SPEED{ 2.5f };
 
-		if (Input::KeyDown(KeyCode::W))
+		if (Input::KeyDown(KeyCode::Up))
 			m_EditorCamera.Position().y += CAM_SPEED;
-		if (Input::KeyDown(KeyCode::A))
+		if (Input::KeyDown(KeyCode::Left))
 			m_EditorCamera.Position().x -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::S))
+		if (Input::KeyDown(KeyCode::Down))
 			m_EditorCamera.Position().y -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::D))
+		if (Input::KeyDown(KeyCode::Right))
 			m_EditorCamera.Position().x += CAM_SPEED;
 
 		// Begin ImGui
@@ -214,6 +214,17 @@ namespace ALEngine::Editor
 	Engine::Camera& ScenePanel::GetEditorCamera(void)
 	{
 		return m_EditorCamera;
+	}
+
+	void ScenePanel::SetPanelMin(ImVec2 min)
+	{
+		m_PanelMin = min;
+	}
+
+	void ScenePanel::SetDefault(ImVec2 pos, ImVec2 size)
+	{
+		m_DefaultPos = pos;
+		m_DefaultSize = size;
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

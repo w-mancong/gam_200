@@ -40,7 +40,7 @@ namespace ALEngine::Editor
 	void InspectorPanel::OnImGuiRender(void)
 	{
 		// Set size constraints of inspector
-		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+		//ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
 		// Begin ImGui
 		if (!ImGui::Begin("Inspector"))
@@ -150,11 +150,11 @@ namespace ALEngine::Editor
 		if (ImGui::TreeNodeEx("Transform Component"))
 		{
 			// Select between the 3 Gizmos Operations by keypress
-			if (Input::KeyTriggered(KeyCode::T))
+			if (Input::KeyTriggered(KeyCode::W))
 				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-			if (Input::KeyTriggered(KeyCode::S))
-				m_CurrentGizmoOperation = ImGuizmo::SCALE;
 			if (Input::KeyTriggered(KeyCode::R))
+				m_CurrentGizmoOperation = ImGuizmo::SCALE;
+			if (Input::KeyTriggered(KeyCode::E))
 				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
 
 			// Rotate
@@ -347,6 +347,17 @@ namespace ALEngine::Editor
 
 			ImGui::EndPopup();
 		}
+	}
+
+	void InspectorPanel::SetPanelMin(ImVec2 min)
+	{
+		m_PanelMin = min;
+	}
+
+	void InspectorPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	{
+		m_DefaultPos = pos;
+		m_DefaultSize = size;
 	}
 
 }

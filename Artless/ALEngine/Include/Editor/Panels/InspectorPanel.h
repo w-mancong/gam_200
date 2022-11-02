@@ -110,13 +110,34 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void AddComponentButton(void);
 
+		/*!*********************************************************************************
+			\brief
+			Set the panel's minimum size
+			\param min
+			Panel's min size
+		***********************************************************************************/
+		void SetPanelMin(ImVec2 min);
+
+		/*!*********************************************************************************
+			\brief
+			Set the panel's default pos and size
+			\param pos
+			Panel's Pos
+			\param size
+			Panel's Size
+		***********************************************************************************/
+		void SetDefault(ImVec2 pos, ImVec2 size);
+
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
 		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES };	// Entity Selected in Inspector
 
-		// Panel size
-		const ImVec2 PANEL_MIN{ 320, 350 };
-		const ImVec2 PANEL_MAX{ 1920, 1080 };
+		// Panel sizes
+		ImVec2 m_PanelMin{};	// Min Size
+
+		// Panel Defaults
+		ImVec2 m_DefaultPos{};	// Default Position
+		ImVec2 m_DefaultSize{};	// Default Size
 
 		// Selected Inspector
 		InspectorComponents m_SelectedComponent{};
