@@ -1,11 +1,6 @@
 #ifndef	AUDIO_MANAGER_H
 #define AUDIO_MANAGER_H
 
-namespace FMOD
-{
-	class System;
-}
-
 namespace ALEngine::Engine
 {
 	namespace fmod = FMOD;
@@ -25,6 +20,7 @@ namespace ALEngine::Engine
 	/***************************************************************************************************
 							User interface for users to interact with audio manager
 	****************************************************************************************************/
+
 	void AudioManagerInit(void);
 	void AudioManagerUpdate(void);
 	void AudioManagerExit(void);
@@ -41,6 +37,7 @@ namespace ALEngine::Engine
 	void ToggleAudioPause(Audio const& audio);
 	void MuteAudio(Audio const& audio);
 	void UnmuteAudio(Audio const& audio);
+	void ToggleMuteAudio(Audio const& audio);
 	void SetAudioVolume(Audio const& audio);
 	void SetAudioLoop(Audio const& audio);
 
@@ -53,6 +50,7 @@ namespace ALEngine::Engine
 	void TogglePauseChannel(Channel channel);
 	void MuteChannel(Channel channel);
 	void UnmuteChannel(Channel channel);
+	void ToggleMuteChannel(Channel channel);
 	void SetChannelVolume(Channel channel, f32 volume);
 }
 

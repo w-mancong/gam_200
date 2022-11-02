@@ -13,12 +13,13 @@ namespace ALEngine::Engine
 
 		// interacting with the channels
 		void StopChannel(Channel channel);
-		void SetChannelVolume(Channel channel, f32 volume);
 		void PauseChannel(Channel channel);
 		void UnpauseChannel(Channel channel);
 		void TogglePauseChannel(Channel channel);
 		void MuteChannel(Channel channel);
 		void UnmuteChannel(Channel channel);
+		void ToggleMuteChannel(Channel channel);
+		void SetChannelVolume(Channel channel, f32 volume);
 
 		fmod::System* const& GetSystem(void) const;
 
@@ -28,7 +29,6 @@ namespace ALEngine::Engine
 
 		fmod::System* system{ nullptr };
 		fmod::ChannelGroup* channelGroup[static_cast<s64>(Channel::Total)]{};
-		f32 channelOriginalVolume[static_cast<s64>(Channel::Total)]{};
 
 		// My own channel info which will be used to check if channel is for bgm/sfx
 		struct ChannelInfo
@@ -39,9 +39,11 @@ namespace ALEngine::Engine
 
 		using ChannelQueue = std::queue<ChannelInfo>;
 		using UsedChannels = std::vector<ChannelInfo>;
+		using ChannelIterator = std::vector<std::vector<ChannelInfo>::iterator>;
 
 		ChannelQueue sfxChannels{}, bgmChannels{};	// To store all the avaliable channels for sfx, bgm
-		UsedChannels usedChannels{};				// To store all the channels that are currently in used
+		UsedChannels usedChannels{};				// To store all the channels that are currently in used		
+		ChannelIterator iterators{};				// To store all the iterator of used channels
 
 		AudioManager(void) = default;
 		~AudioManager(void) = default;
@@ -111,7 +113,7 @@ namespace ALEngine::Engine
 			return temp;
 		}
 
-		s32 constexpr MAX_CHANNELS{ 128 }, BGM_CHANNELS{ 32 };
+		s32 constexpr MAX_CHANNELS{ 256 }, BGM_CHANNELS{ 32 };
 		AudioManager* audioManager{ nullptr };
 	}
 
@@ -135,8 +137,8 @@ namespace ALEngine::Engine
 							*master{ channelGroup[static_cast<s64>(Channel::Master)] };		
 
 		// adding master channel as an input group to bgm and sfx
-		bgm->addGroup(master);
-		sfx->addGroup(master);
+		master->addGroup(bgm);
+		master->addGroup(sfx);
 
 		u64 const SFX_CHANNELS = MAX_CHANNELS - BGM_CHANNELS;
 		// filling my channels queue
@@ -148,6 +150,8 @@ namespace ALEngine::Engine
 			bgmChannels.push({ nullptr, Channel::BGM });
 		for (u64 i{}; i < SFX_CHANNELS; ++i)
 			sfxChannels.push({ nullptr, Channel::SFX });
+		// Reserving a size of iterators to be max_channels
+		iterators.reserve(MAX_CHANNELS);
 	}
 
 	void AudioManager::Update(void)
@@ -156,28 +160,37 @@ namespace ALEngine::Engine
 		system->update();
 
 		// To remove any used channels and add them into the appropriate queue
-		for (auto const& it : usedChannels)
+		for (auto it{ usedChannels.begin() }; it != usedChannels.end(); ++it)
 		{
-			bool audioPlaying{ true }; // Assume that all audio is playing
-			it.ch->isPlaying(&audioPlaying);
-			if (audioPlaying)
+			fmod::Channel* const& ch = (*it).ch;
+			b8 isPlaying{ true }; // Assume that all audio is playing
+			ch->isPlaying(&isPlaying);
+			if (isPlaying)
 				continue;
 			// If audio is no longer playing, add it to the appropriate queue
-			switch (it.audioChannel)
+			switch ((*it).audioChannel)
 			{
-				case Channel::BGM:
-				{
-					bgmChannels.push(it);
-					break;
-				}
-				case Channel::SFX:
-				{
-					sfxChannels.push(it);
-					break;
-				}
-				default:
-					break;
+			case Channel::BGM:
+			{
+				bgmChannels.push(*it);
+				break;
 			}
+			case Channel::SFX:
+			{
+				sfxChannels.push(*it);
+				break;
+			}
+			default:
+				break;
+			}
+			iterators.push_back(it);
+		}
+
+		// To remove all the iterators from usedChannels, have to do this here has it might crash if I were to iterator and removing the same vector
+		while (iterators.size())
+		{
+			usedChannels.erase(iterators.back());
+			iterators.pop_back();
 		}
 	}
 
@@ -252,12 +265,6 @@ namespace ALEngine::Engine
 		channelGroup[ch]->stop();
 	}
 
-	void AudioManager::SetChannelVolume(Channel channel, f32 volume)
-	{
-		s64 const ch{ static_cast<s64>(channel) };
-		channelGroup[ch]->setVolume(volume);
-	}
-
 	void AudioManager::PauseChannel(Channel channel)
 	{
 		s64 const ch{ static_cast<s64>(channel) };
@@ -281,19 +288,27 @@ namespace ALEngine::Engine
 	void AudioManager::MuteChannel(Channel channel)
 	{
 		s64 const ch{ static_cast<s64>(channel) };
-		f32 volume{ 0.0f };
-		channelGroup[ch]->getVolume(&volume);
-
-		if (volume > 0.0f)
-			channelOriginalVolume[ch] = volume;
-
-		channelGroup[ch]->setVolume(0.0f);
+		channelGroup[ch]->setVolume(true);
 	}
 
 	void AudioManager::UnmuteChannel(Channel channel)
 	{
 		s64 const ch{ static_cast<s64>(channel) };
-		channelGroup[ch]->setVolume(channelOriginalVolume[ch]);
+		channelGroup[ch]->setMute(false);
+	}
+
+	void AudioManager::ToggleMuteChannel(Channel channel)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		b8 isMuted{};
+		channelGroup[ch]->getMute(&isMuted);
+		channelGroup[ch]->setMute(!isMuted);
+	}
+
+	void AudioManager::SetChannelVolume(Channel channel, f32 volume)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		channelGroup[ch]->setVolume(volume);
 	}
 
 	/***************************************************************************************************
@@ -359,14 +374,23 @@ namespace ALEngine::Engine
 	{
 		if (!audio.ch)
 			return;
-		(*audio.ch)->setVolume(0.0f);
+		(*audio.ch)->setMute(true);
 	}
 
 	void UnmuteAudio(Audio const& audio)
 	{
 		if (!audio.ch)
 			return;
-		SetAudioVolume(audio);
+		(*audio.ch)->setMute(true);
+	}
+
+	void ToggleMuteAudio(Audio& audio)
+	{
+		if (!audio.ch)
+			return;
+		b8 isMuted{}; 
+		(*audio.ch)->getMute(&isMuted);
+		(*audio.ch)->setMute(!isMuted);
 	}
 
 	void SetAudioVolume(Audio const& audio)
@@ -412,6 +436,11 @@ namespace ALEngine::Engine
 	void UnmuteChannel(Channel channel)
 	{
 		audioManager->UnmuteChannel(channel);
+	}
+
+	void ToggleMuteChannel(Channel channel)
+	{
+		audioManager->ToggleMuteChannel(channel);
 	}
 
 	void SetChannelVolume(Channel channel, f32 volume)

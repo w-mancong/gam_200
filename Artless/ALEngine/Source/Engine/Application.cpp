@@ -22,6 +22,8 @@ namespace ALEngine::Engine
 	namespace
 	{
 		Entity entity;
+		Audio bgm{}, sfx{};
+		f32 masterVolume{ 1.0f };
 	}
 
 	void Application::Init(void)
@@ -51,11 +53,24 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		//Transform trans{ {}, {200.0f, 200.0f}, 0 };
-		//entity = CreateSprite(trans);
-		//Animator animator = CreateAnimator("Test");
-		//AttachAnimator(entity, animator);
+		Transform trans{ {}, { 200.0f, 200.0f }, 0 };
+		entity = CreateSprite(trans);
+		Animator animator = CreateAnimator("Test");
+		AttachAnimator(entity, animator);
 
+		AudioManagerInit();
+
+		fmod::System* const& system = GetAudioSystem();
+		system->createSound("Assets/Audio/bgm.wav", FMOD_DEFAULT, nullptr, &bgm.sound);
+		system->createSound("Assets/Audio/sfx.wav", FMOD_DEFAULT, nullptr, &sfx.sound);
+
+		bgm.loop = true;
+		bgm.channel = Channel::BGM;
+		bgm.Play();
+
+		sfx.channel = Channel::SFX;
+
+		// Using c++ code to create animation, will be porting it over to allow editor to create clips
 		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
 		//AddAnimationToAnimator(animator, "PlayingGuitar");
 		//AddAnimationToAnimator(animator, "PlayerRunning");
@@ -137,6 +152,7 @@ namespace ALEngine::Engine
 	{
 		ALEditor::Instance()->Exit();		// Exit ImGui
 		AssetManager::Instance()->Exit();	// Clean up all Assets
+		AudioManagerExit();
 		glfwTerminate();					// clean/delete all GLFW resources
 	}
 
@@ -153,6 +169,7 @@ namespace ALEngine::Engine
 		ZoneScopedN("Normal Update")
 		Input::Update();
 		AssetManager::Instance()->Update();
+		AudioManagerUpdate();
 
 		if (Input::KeyTriggered(KeyCode::MouseRightButton))
 		{
@@ -161,12 +178,33 @@ namespace ALEngine::Engine
 			AL_CORE_DEBUG("John Pos: {}, {}", john.x, john.y);
 		}
 
-		//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+		Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
-		//if (Input::KeyTriggered(KeyCode::A))
-		//	ChangeAnimation(animator, "PlayingGuitar");
-		//if (Input::KeyTriggered(KeyCode::D))
-		//	ChangeAnimation(animator, "PlayerRunning");
+		if (Input::KeyTriggered(KeyCode::A))
+			ChangeAnimation(animator, "PlayingGuitar");
+		if (Input::KeyTriggered(KeyCode::D))
+			ChangeAnimation(animator, "PlayerRunning");
+		if (Input::KeyTriggered(KeyCode::X))
+			sfx.Play();
+		if (Input::KeyDown(KeyCode::Z))
+		{
+			masterVolume -= 0.1f;
+			if (masterVolume <= 0.0f)
+				masterVolume = 0.0f;	
+			SetChannelVolume(Channel::Master, masterVolume);
+		}
+		if (Input::KeyDown(KeyCode::C))
+		{
+			masterVolume += 0.1f;
+			if (masterVolume <= 1.0f)
+				masterVolume = 1.0f;
+			SetChannelVolume(Channel::Master, masterVolume);
+		}
+		if (Input::KeyTriggered(KeyCode::P))
+			TogglePauseChannel(Channel::Master);
+		if (Input::KeyTriggered(KeyCode::M))
+			ToggleMuteChannel(Channel::Master);
+		
 	}
 
 	void Engine::FixedUpdate(void)

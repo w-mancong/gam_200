@@ -13,6 +13,7 @@ namespace ALEngine::Engine
 		void TogglePause(void);
 		void Mute(void);
 		void Unmute(void);
+		void ToggleMute(void);
 		void SetVolume(f32 volume);
 		void SetLoop(b8 loop);
 		void SetSound(fmod::Sound* sound);
@@ -20,6 +21,7 @@ namespace ALEngine::Engine
 		fmod::Sound* sound{ nullptr };
 		f32 volume{ 1.0f };
 		b8 loop{ false };
+		b8 mute{ false };
 		Channel channel{ Channel::Invalid };
 		fmod::Channel** ch{ nullptr };	// reference to fmod's channel
 	};
