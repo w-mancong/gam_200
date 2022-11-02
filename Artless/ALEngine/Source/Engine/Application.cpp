@@ -64,6 +64,13 @@ namespace ALEngine::Engine
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(true);
 
+		AL_CORE_CRITICAL("CRITICAL");
+		AL_CORE_ERROR("ERROR");
+		AL_CORE_WARN("WARN");
+		AL_CORE_INFO("INFO");
+		AL_CORE_DEBUG("DEBUG");
+		AL_CORE_TRACE("TRACE");
+
 		Engine::AssetManager::Instance()->Init();
 
 		appStatus = 1;
