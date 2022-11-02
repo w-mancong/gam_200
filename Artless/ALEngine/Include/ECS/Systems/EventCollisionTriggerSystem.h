@@ -13,8 +13,6 @@ namespace ALEngine
 {
 	namespace ECS
 	{
-		using namespace Component;
-
 		/*!*********************************************************************************
 			\brief
 			Register RigidbodySystem for ECS

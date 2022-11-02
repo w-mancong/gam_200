@@ -21,10 +21,6 @@ namespace ALEngine::ECS
 	//Ease of use
 	using namespace Math; using namespace Engine; using namespace Graphics;
 
-	/*!*********************************************************************************
-		\brief
-			Character Controller System, contains functions needed to run components for CharacterController
-	***********************************************************************************/
 	class GameplaySystem : public System
 	{
 		enum class GAMEPLAYSTATUS
@@ -67,10 +63,6 @@ namespace ALEngine::ECS
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 	}
 
-	/*!*********************************************************************************
-		\brief
-		Register RigidbodySystem for ECS
-	***********************************************************************************/
 	void RegisterGameplaySystem(void)
 	{
 		gameplaySystem = Coordinator::Instance()->RegisterSystem<GameplaySystem>();
@@ -79,11 +71,6 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->SetSystemSignature<GameplaySystem>(signature);
 	}
 
-
-	/*!*********************************************************************************
-		\brief
-		Start GamePlay System to initialize variables for gameplay logic
-	***********************************************************************************/
 	void StartGameplaySystem(void) {
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
@@ -133,44 +120,24 @@ namespace ALEngine::ECS
 		}			
 	}
 
-	/*!*********************************************************************************
-		\brief
-		Update GamePlay System to update gameplay logic
-	***********************************************************************************/
 	void UpdateGameplaySystem(void)
 	{
 		gameplaySystem->RunGameState();
 	}
 
-	/*!*********************************************************************************
-	\brief
-	Exit GamePlay System to clean up
-    ***********************************************************************************/
 	void ExitGameplaySystem(void)
 	{
 		delete[] gameplaySystem->m_Room.roomCellsArray;
 	}
 
-	/*!*********************************************************************************
-	\brief
-	returns the current cell entity
-    ***********************************************************************************/
 	Entity GameplaySystem::getCurrentEntityCell() {
 		return gameplaySystem->currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
 	}
 
-	/*!*********************************************************************************
-	\brief
-	returns the cell room size
-    ***********************************************************************************/
 	uint32_t GameplaySystem::getRoomSize() {
 		return gameplaySystem->roomSize[0] * gameplaySystem->roomSize[1];
 	}
 
-	/*!*********************************************************************************
-	\brief
-	returns the cell entity based on specified position 
-    ***********************************************************************************/
 	Entity GameplaySystem::getEntityCell(uint32_t x, uint32_t y) {
 		return gameplaySystem->m_Room.roomCellsArray[y * gameplaySystem->roomSize[0] + x];
 	}
@@ -187,10 +154,6 @@ namespace ALEngine::ECS
 		}
 	}
 
-	/*!*********************************************************************************
-	\brief
-	run GamePlay state to run gameplay logic
-    ***********************************************************************************/
 	void GameplaySystem::RunGameState() {
 		switch (gameplaySystem->currentGameplayStatus)
 		{
@@ -235,10 +198,6 @@ namespace ALEngine::ECS
 		}
 	}
 
-	/*!*********************************************************************************
-		\brief
-		create player unit entity
-	***********************************************************************************/
 	void CreatePlayerUnit(Entity const& entity) {
 		//Setup rigidbody for custom stats
 		Unit unit{};
@@ -246,10 +205,6 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(entity, unit);
 	}
 
-	/*!*********************************************************************************
-	\brief
-	create enemy unit entity
-    ***********************************************************************************/
 	void CreateEnemyUnit(Entity const& entity) {
 		//Setup rigidbody for custom stats
 		Unit unit{};
@@ -258,46 +213,3 @@ namespace ALEngine::ECS
 	}
 
 }
-
-
-//for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
-//	Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
-//	if (unit.unitType == UNIT_TYPE::PLAYER) {
-//		gameplaySystem->currentModeOrder.entity = *it;
-
-//		gameplaySystem->currentModeOrder.path.clear();
-//		//find path and set the path
-
-//		//gameplaySystem->currentModeOrder.path =std::move(Engine::AI::FindPath(*gameplaySystem->roomCellsArray, gameplaySystem->getCurrentEntityCell(), gameplaySystem->getEntityCell(3, 3) , false) );
-//		for (int i = 0; i < gameplaySystem->currentModeOrder.path.size(); ++i)
-//		{
-//			Cell& c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->currentModeOrder.path[i]);
-//			std::cout << c.m_Grid<<std::endl;
-//		}
-
-//		//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
-//		break;
-//	}
-//}	
-
-
-
-//
-////Shift through each component
-//for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
-//	Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
-//	if (unit.unitType == UNIT_TYPE::ENEMY) {
-//		gameplaySystem->currentModeOrder.entity = *it;
-//
-//		gameplaySystem->currentModeOrder.path.clear();
-//
-//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(0, 0));
-//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(0, 1));
-//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(1, 1));
-//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(1, 2));
-//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(2, 2));
-//		gameplaySystem->currentModeOrder.path.push_back(gameplaySystem->getEntityCell(2, 3));
-//		gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_MOVING;
-//		break;
-//	}
-//}

@@ -106,12 +106,7 @@ namespace ALEngine::ECS
 			for (uint32_t i = 0; i < eventTrigger.otherCurrentCollidingPtr.size(); ++i) {
 				eventTrigger.otherPreviousColliderPtr.push_back(eventTrigger.otherCurrentCollidingPtr[i]);
 			}
-
-			//for (uint32_t i = 0; i < eventTrigger.otherCurrentCollidingPtr.size(); ++i) {
-			//	std::cout << *it << " : " << eventTrigger.otherCurrentCollidingPtr[i] << " A ";
-			//}
-			//std::cout << "\n";
-
+			
 			//Invoke all colliders
 			eventCollisionSystem->InvokeCollisionEventTriggers(eventTrigger, EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, *it);
 			eventCollisionSystem->InvokeCollisionEventTriggers(eventTrigger, EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_STAY, *it);

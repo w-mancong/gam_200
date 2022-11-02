@@ -20,7 +20,7 @@ namespace ALEngine::ECS
 
 	/*!*********************************************************************************
 		\brief
-			Character Controller System, contains functions needed to run components for CharacterController
+			Event Trigger System, contains functions needed to run components for EventTrigger System
 	***********************************************************************************/
 	class EventTriggerSystem : public System
 	{
@@ -48,6 +48,7 @@ namespace ALEngine::ECS
 	}
 
 	void UpdateEventTriggerSystem() {
+		//Get if triggered
 		bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
 
 		//Shift through each component
@@ -55,6 +56,7 @@ namespace ALEngine::ECS
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
 			eventSystem->UpdatePointerStatus(*it);					
 			
+			//Invoke listeners based on trigger type
 			switch (event_Trigger.current_Trigger_State) {
 				case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
 					eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER);

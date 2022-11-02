@@ -13,8 +13,6 @@ namespace ALEngine
 {
 	namespace ECS
 	{
-		using namespace Component;
-
 		/*!*********************************************************************************
 			\brief
 			Register RigidbodySystem for ECS
@@ -29,12 +27,35 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Adds rigidbody component to the entity
+			Adds Event Trigger component to the entity
 		***********************************************************************************/
 		void CreateEventTrigger(Entity const& entity);
 
+		/*!*********************************************************************************
+			\brief Subscribe a function to listen to a Collision based trigger
+
+			\param [out] eventTrig: The Collision Event Trigger component
+			\param [in] eventType: Type of Trigger for the function to listen to
+			\param [in] fp: function that will be subscribed to the trigger
+		***********************************************************************************/
 		void Subscribe(EventCollisionTrigger& eventTrig, EVENT_COLLISION_TRIGGER_TYPE eventType, void (*fp)(u32, u32));
+
+		/*!*********************************************************************************
+			\brief Subscribe a function to listen to a Pointer based trigger
+
+			\param [out] eventTrig: The Event Trigger component
+			\param [in] eventType: Type of Trigger for the function to listen to
+			\param [in] fp: function that will be subscribed to the trigger
+		***********************************************************************************/
 		void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType, void (*fp)());
+
+		/*!*********************************************************************************
+			\brief Subscribe a function to listen to a Pointer based trigger via passing of entity instead of EventTrigger Component
+
+			\param [out] eventTrig: Entity with the Event Trigger component (must have Event Trigger Component)
+			\param [in] eventType: Type of Trigger for the function to listen to
+			\param [in] fp: function that will be subscribed to the trigger
+		***********************************************************************************/
 		void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)());
 		//void Unsubscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType);
 	}
