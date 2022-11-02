@@ -1,0 +1,20 @@
+{
+  "player_pos": [ 400, 500 ],
+  "player_size": [ 150, 150 ],
+
+  "floor_pos": [ 800, 50 ],
+  "floor_size": [ 1300, 100 ],
+
+  "coin_pos": [ 1100, 300 ],
+  "coin_size": [ 50, 50 ],
+
+  "btn_pos": [ 250, 250 ],
+  "btn_size": [ 150, 200 ],
+  "btn_image": "Assets\\Images\\circlebutton.png",
+
+  "pathfinder_pos": [ 500, 500 ],
+  "pathfinder_size": [ 50, 50 ],
+
+  "anim_pos":  [ 1200, 600 ],
+  "anim_size": [ 775, 335 ]
+}

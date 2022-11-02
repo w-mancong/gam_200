@@ -126,7 +126,7 @@ namespace ALEngine::Editor
 			m_SceneHierarchyPanel.OnImGuiRender();
 
 			// Profiler Panel
-			//m_ProfilerPanel.OnImGuiRender();
+			m_ProfilerPanel.OnImGuiRender();
 			//ImGui::ShowDemoWindow();
 		}
 	}
@@ -282,6 +282,9 @@ namespace ALEngine::Editor
 		// Window flags
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoTitleBar;
 
+		// Set constraints
+		ImGui::SetNextWindowSizeConstraints(m_ToolbarMinSize, ImGui::GetMainViewport()->WorkSize);
+
 		// Toolbar!!
 		if (ImGui::Begin("##toolbar", nullptr, flags))
 		{
@@ -309,7 +312,7 @@ namespace ALEngine::Editor
 		}
 
 		// Pop style variable
-ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
 	}
 
 	void ALEditor::LoadData(void)
@@ -357,11 +360,48 @@ ImGui::PopStyleVar();
 		//=========================================================
 		// Load Panel Values
 		//=========================================================
-		Vec2 panel_min = editor_data.GetVec2("PanelMin", Vec2());		// Panel Min Size
-		ImVec2 panel_min_im(panel_min.x, panel_min.y);
+		// Toolbar Min
+		Math::Vec2 toolbarMin = editor_data.GetVec2("ToolbarMin", Math::Vec2());
+		m_ToolbarMinSize = ImVec2(toolbarMin.x, toolbarMin.y);
+
+		// Panel Min Size
+		Vec2 panel_min = editor_data.GetVec2("PanelMin", Vec2());		
 
 		// Content Browser Panel
-		m_ContentBrowserPanel.SetPanelMin(panel_min_im);
+		m_ContentBrowserPanel.SetPanelMin(panel_min);
+		m_ContentBrowserPanel.SetDefaults(editor_data.GetVec2("ContentBrowserPos", Math::Vec2()),
+			editor_data.GetVec2("ContentBrowserSize", panel_min));
+
+		// Scene Panel
+		m_ScenePanel.SetPanelMin(panel_min);
+		m_ScenePanel.SetDefaults(editor_data.GetVec2("ScenePos", Math::Vec2()),
+			editor_data.GetVec2("SceneSize", panel_min));
+
+		// Game Panel
+		m_GamePanel.SetPanelMin(panel_min);
+		m_GamePanel.SetDefaults(editor_data.GetVec2("GamePos", Math::Vec2()),
+			editor_data.GetVec2("GameSize", panel_min));
+
+		// Scene Hierarchy Panel
+		m_SceneHierarchyPanel.SetPanelMin(panel_min);
+		m_SceneHierarchyPanel.SetDefaults(editor_data.GetVec2("SceneHierarchyPos", Math::Vec2()),
+			editor_data.GetVec2("SceneHierarchySize", panel_min));
+
+		// Logger Panel
+		m_LoggerPanel.SetPanelMin(panel_min);
+		m_LoggerPanel.SetDefaults(editor_data.GetVec2("LoggerPos", Math::Vec2()),
+			editor_data.GetVec2("LoggerSize", panel_min));
+
+		// Inspector Panel
+		m_InspectorPanel.SetPanelMin(panel_min);
+		m_InspectorPanel.SetDefaults(editor_data.GetVec2("InspectorPos", Math::Vec2()),
+			editor_data.GetVec2("InspectorSize", panel_min));
+	}
+
+	void ALEditor::SetDefaultPanel(void)
+	{
+		// Set default sizes and positions
+		
 	}
 
 	void ALEditor::Docking(void)

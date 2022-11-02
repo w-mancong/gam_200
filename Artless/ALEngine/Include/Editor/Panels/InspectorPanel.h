@@ -116,7 +116,7 @@ namespace ALEngine::Editor
 			\param min
 			Panel's min size
 		***********************************************************************************/
-		void SetPanelMin(ImVec2 min);
+		void SetPanelMin(Math::Vec2 min);
 
 		/*!*********************************************************************************
 			\brief
@@ -126,7 +126,7 @@ namespace ALEngine::Editor
 			\param size
 			Panel's Size
 		***********************************************************************************/
-		void SetDefault(ImVec2 pos, ImVec2 size);
+		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo

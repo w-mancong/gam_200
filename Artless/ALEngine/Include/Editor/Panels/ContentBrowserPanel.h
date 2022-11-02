@@ -20,9 +20,9 @@ namespace ALEngine::Editor
 		~ContentBrowserPanel();
 
 		/*!*********************************************************************************
-		\brief
-		renders out the panel displaying the loaded assets in specified
-		asset filepath and update the panel based on panel buttons.
+			\brief
+			renders out the panel displaying the loaded assets in specified
+			asset filepath and update the panel based on panel buttons.
 		***********************************************************************************/
 		void OnImGuiRender(void);
 
@@ -30,22 +30,28 @@ namespace ALEngine::Editor
 		//void SetAssetDirectory();
 
 		/*!*********************************************************************************
-		\brief
-		Set the panel's minimum size
-		\param min
-		Panel's min size
+			\brief
+			Set the panel's minimum size
+			\param min
+			Panel's min size
 		***********************************************************************************/
-		void SetPanelMin(ImVec2 min);
+		void SetPanelMin(Math::Vec2 min);
 
 		/*!*********************************************************************************
-		\brief
-		Set the panel's default pos and size
-		\param pos
-		Panel's Pos
-		\param size
-		Panel's Size
+			\brief
+			Set the panel's default pos and size
+			\param pos
+			Panel's Pos
+			\param size
+			Panel's Size
 		***********************************************************************************/
-		void SetDefault(ImVec2 pos, ImVec2 size);
+		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
+
+		/*!*********************************************************************************
+			\brief
+			Sets the panel to default position and size
+		***********************************************************************************/
+		void Default(void);
 
 	private:
 		// Panel sizes

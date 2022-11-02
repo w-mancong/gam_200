@@ -68,6 +68,7 @@
     <ClCompile Include="Source\Math\Vector2Int.cpp" />
     <ClCompile Include="Source\Math\Vector3Int.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -307,6 +308,7 @@
     <ClInclude Include="Include\Math\Vector2Int.h" />
     <ClInclude Include="Include\Math\Vector3Int.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
+    <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

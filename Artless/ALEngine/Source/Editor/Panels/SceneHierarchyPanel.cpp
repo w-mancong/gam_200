@@ -6,7 +6,7 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 		The SceneHierarchyPanel class contains information and functions necessary for
 		the Scene Hierarchy Panel of the editor to be displayed.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
@@ -21,8 +21,9 @@ namespace ALEngine::Editor
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-		// Set size constraints of inspector
-		//ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+
+		// Set constraints
+		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
 		if (!ImGui::Begin("Scene Hierarchy"))
 		{
@@ -159,6 +160,42 @@ namespace ALEngine::Editor
 
 		// Begin Tree Node
 		b8 opened = ImGui::TreeNodeEx((void*)static_cast<u64>(child), flags, data.tag.c_str());
+
+		// Check if hovered on entity
+		ImGuiHoveredFlags hover_flag = ImGuiHoveredFlags_AllowWhenBlockedByActiveItem;
+		if (ImGui::IsItemHovered(hover_flag))
+		{
+			AL_CORE_CRITICAL("Hovering Over: {}", child);
+			m_EntityHover = child;
+		}
+
+		// Drag object from here
+		if (ImGui::BeginDragDropSource())
+		{
+			ECS::Entity dragged = ALEditor::Instance()->GetSelectedEntity();
+			ImGui::SetDragDropPayload("HIERARCHY_ENTITY", &dragged, sizeof(ECS::Entity));
+			ImGui::EndDragDropSource();
+		}
+
+		// Drop object here
+		if (ImGui::BeginDragDropTarget())
+		{
+			// Set payload
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
+			{
+				assert(payload->DataSize == sizeof(ECS::Entity));
+				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
+
+				// Check payload is not own Entity
+				if (m_EntityHover != child_pl)
+				{
+					sceneGraph.Destruct(child_pl);
+					sceneGraph.Push(m_EntityHover, child_pl);
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
 		
 		// If this is clicked, select this
 		if (ImGui::IsItemClicked())
@@ -180,15 +217,15 @@ namespace ALEngine::Editor
 		}
 	}
 
-	void SceneHierarchyPanel::SetPanelMin(ImVec2 min)
+	void SceneHierarchyPanel::SetPanelMin(Math::Vec2 min)
 	{
-		m_PanelMin = min;
+		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void SceneHierarchyPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	void SceneHierarchyPanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
-		m_DefaultPos = pos;
-		m_DefaultSize = size;
+		m_DefaultPos = ImVec2(pos.x, pos.y);
+		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 
 }

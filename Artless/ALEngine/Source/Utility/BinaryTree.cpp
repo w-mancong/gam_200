@@ -1,3 +1,12 @@
+/*!
+file: BinaryTree.cpp
+author: Mohamed Zafir
+email: m.zafir@digipen.edu
+brief: This file contains the function definitions for class BinaryTree. Which is a data
+       structure to store parent-child relationships.
+
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*________________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::Tree
@@ -99,11 +108,11 @@ namespace ALEngine::Tree
         return SearchRight(head, id);
     }
 
-    void BinaryTree::Push(s32 parent, s32 newchild)
+    void BinaryTree::Push(s32 parent, s32 newChild)
     {
         if (parent == -1)
         {
-            Insert(head, newchild);
+            Insert(head, newChild);
         }
         else
         {
@@ -119,11 +128,11 @@ namespace ALEngine::Tree
             if (p->left == nullptr) // first child
             {
                 p->left = Memory::DynamicMemory::New<Node>();
-                p->left->id = newchild;
+                p->left->id = newChild;
             }
             else // already have child
             {
-                Insert(p->left, newchild);
+                Insert(p->left, newChild);
             }
         }
 
@@ -138,9 +147,17 @@ namespace ALEngine::Tree
         }
         // new node data
         NodeData newData;
-        newData.id = newchild;
+        newData.id = newChild;
         newData.parent = parent;
-        map.push_back(newData);
+
+        if (newChild < map.size())
+        {
+            map[newChild] = newData;
+        }
+        else
+        {
+            map.push_back(newData);
+        }
     }
 
     void BinaryTree::Insert(Node* node, s32 id)
@@ -303,7 +320,6 @@ namespace ALEngine::Tree
             searchVect.pop_back();
             if (searchVect.size() == 1)
             {
-
                 if (id != -1)
                 {
                     Node* parent{ nullptr };

@@ -81,17 +81,19 @@ namespace ALEngine::Engine
 		sceneGraph.Push(-1, pathfinder);
 
 		Transform trans;
+		Serializer::Serializer level{ "Assets/Dev/Objects/Level.json" };
 
-		trans.position = { -50.f, 50.f };
-		trans.scale = { 150, 200 };
-		button = CreateSprite(trans, "Assets\\Images\\circlebutton.png");
+		trans.position = level.GetVec2("btn_pos", Math::Vec2());
+		trans.scale = level.GetVec2("btn_size", Math::Vec2(1.f, 1.f));
+		button = CreateSprite(trans, level.GetString("btn_image", "").c_str());
 		sceneGraph.Push(-1, button);
 		CreateCollider(button);
 		CreateEventTrigger(button);
 		Subscribe(button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
-		trans.position = { 400, 500 };
-		trans.scale = { 150, 150 };
+		// Initialize player
+		trans.position = level.GetVec2("player_pos", Math::Vec2());
+		trans.scale = level.GetVec2("player_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(player, trans);
 		CreateSprite(player);
 		CreateCollider(player);
@@ -102,21 +104,23 @@ namespace ALEngine::Engine
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
 		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
-		trans.position = { 800, 50 };
-		trans.scale = { 1300, 100 };
+		trans.position = level.GetVec2("floor_pos", Math::Vec2());
+		trans.scale = level.GetVec2("floor_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(floor, trans);
 		CreateSprite(floor);
 		CreateCollider(floor);
 		
-		trans.position = { 1100, 300 };
-		trans.scale = { 50, 50 };
+		trans.position = level.GetVec2("coin_pos", Math::Vec2());
+		trans.scale = level.GetVec2("coin_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(coin, trans);
 		CreateSprite(coin);
+		Sprite& coinSprite = Coordinator::Instance()->GetComponent<Sprite>(coin);
+		coinSprite.color = Color{ 1.0f, 1.0f, 0.0f, 1.0f };
 		CreateCollider(coin);
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(coin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
 
-		trans.position = { 500, 500 };
-		trans.scale = { 50, 50 };
+		trans.position = level.GetVec2("pathfinder_pos", Math::Vec2());
+		trans.scale = level.GetVec2("pathfinder_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(pathfinder, trans);
 		CreateSprite(pathfinder);
 		//CreateEnemyUnit(pathfinder);
@@ -134,7 +138,8 @@ namespace ALEngine::Engine
 
 		sfx.channel = Channel::SFX;
 
-		Transform t1{ {}, { 775.0f, 335.0f }, 0 };
+		Math::Vec2 anim_pos = level.GetVec2("anim_pos", Math::Vec2());
+		Transform t1{ { anim_pos.x, anim_pos.y, 0.f }, level.GetVec2("anim_size", Math::Vec2()), 0 };
 		entity = CreateSprite(t1);
 		Animator animator = CreateAnimator("Test");
 		AttachAnimator(entity, animator);
@@ -162,15 +167,21 @@ namespace ALEngine::Engine
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
-			// Begin new ImGui frame
-			ALEditor::Instance()->Begin();
+			{
+				PROFILER_TIMER("Editor UI Update")
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
+			}
 			
-			// Normal Update
-			Engine::Update();
-
+			{
+				PROFILER_TIMER("Normal Update")
+				// Normal Update
+				Engine::Update();
+			}
 
 			if (ALEditor::Instance()->GetGameActive())
 			{
+				PROFILER_TIMER("Fixed Update")
 				// Physics
 				// Fixed Update (Physics)
 				accumulator += Time::m_DeltaTime;
@@ -189,15 +200,23 @@ namespace ALEngine::Engine
 				}
 			}
 
-			// Render
-			Render();
+			{
+				PROFILER_TIMER("Render Update")
 
-			std::ostringstream oss;
-			oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
+				// Render
+				Render();
 
-			// Wait for next frame
-			Time::WaitUntil();
+				std::ostringstream oss;
+				oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
+				glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
+			}
+
+			{
+				PROFILER_TIMER("FPS Wait")
+
+				// Wait for next frame
+				Time::WaitUntil();
+			}
 			
 			// Marks the end of a frame loop, for tracy profiler
 			FrameMark
@@ -223,17 +242,16 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-		if (ALEditor::Instance()->GetGameActive())
-		{
-			UpdateCharacterControllerSystem();
-			UpdateEventTriggerSystem();
-			UpdateGameplaySystem();
-		}
-
 		ZoneScopedN("Normal Update")
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
+
+		if (!ALEditor::Instance()->GetGameActive())
+			return;
+		UpdateCharacterControllerSystem();
+		UpdateEventTriggerSystem();
+		UpdateGameplaySystem();
 
 		if (Input::KeyTriggered(KeyCode::MouseRightButton))
 		{
@@ -242,32 +260,35 @@ namespace ALEngine::Engine
 			AL_CORE_DEBUG("Mouse Pos: {}, {}", john.x, john.y);
 		}
 
-		Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+		if (ALEditor::Instance()->GetGameActive())
+		{
+			Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
-		if (Input::KeyTriggered(KeyCode::A))
-			ChangeAnimation(animator, "PlayingGuitar");
-		if (Input::KeyTriggered(KeyCode::D))
-			ChangeAnimation(animator, "PlayerRunning");
-		if (Input::KeyTriggered(KeyCode::X))
-			sfx.Play();
-		if (Input::KeyDown(KeyCode::Z))
-		{
-			masterVolume -= 0.1f;
-			if (masterVolume <= 0.0f)
-				masterVolume = 0.0f;	
-			SetChannelVolume(Channel::Master, masterVolume);
+			if (Input::KeyTriggered(KeyCode::A))
+				ChangeAnimation(animator, "PlayingGuitar");
+			if (Input::KeyTriggered(KeyCode::D))
+				ChangeAnimation(animator, "PlayerRunning");
+			if (Input::KeyTriggered(KeyCode::X))
+				sfx.Play();
+			if (Input::KeyDown(KeyCode::Z))
+			{
+				masterVolume -= 0.1f;
+				if (masterVolume <= 0.0f)
+					masterVolume = 0.0f;
+				SetChannelVolume(Channel::Master, masterVolume);
+			}
+			if (Input::KeyDown(KeyCode::C))
+			{
+				masterVolume += 0.1f;
+				if (masterVolume <= 1.0f)
+					masterVolume = 1.0f;
+				SetChannelVolume(Channel::Master, masterVolume);
+			}
+			if (Input::KeyTriggered(KeyCode::P))
+				TogglePauseChannel(Channel::Master);
+			if (Input::KeyTriggered(KeyCode::M))
+				ToggleMuteChannel(Channel::Master);
 		}
-		if (Input::KeyDown(KeyCode::C))
-		{
-			masterVolume += 0.1f;
-			if (masterVolume <= 1.0f)
-				masterVolume = 1.0f;
-			SetChannelVolume(Channel::Master, masterVolume);
-		}
-		if (Input::KeyTriggered(KeyCode::P))
-			TogglePauseChannel(Channel::Master);
-		if (Input::KeyTriggered(KeyCode::M))
-			ToggleMuteChannel(Channel::Master);
 		
 	}
 
