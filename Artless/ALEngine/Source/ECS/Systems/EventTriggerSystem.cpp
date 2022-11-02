@@ -48,6 +48,8 @@ namespace ALEngine::ECS
 	}
 
 	void UpdateEventTriggerSystem() {
+		bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
+
 		//Shift through each component
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
@@ -58,7 +60,7 @@ namespace ALEngine::ECS
 					eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER);
 					break;
 				case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
-					if (Input::KeyTriggered(KeyCode::MouseLeftButton)) {
+					if (isClickTriggered) {
 						eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK);
 					}
 					else {
