@@ -19,6 +19,7 @@ namespace ALEngine::ECS::Component
 
 		float m_HCost{ 0 }, m_GCost{ 10000 }, m_FCost{ 0 };
 		bool m_isAccesible{ true };
+
 		//the came from cell or parent cell
 		Cell* m_ParentCell {nullptr};
 
