@@ -10,11 +10,13 @@ brief:	This file contains the function definition for CharacterControllerSystem.
 #include "pch.h"
 #include "Engine/Physics2D.h"
 #include "Engine/PathFindingManager.h"
+#include "Engine/GamePlayInterface.h"
 
 namespace ALEngine::ECS
 {
 	//Ease of use for ray
 	using Engine::Physics::Ray2D;
+	using Engine::GameplayInterface::Room;
 	//using Engine::AI;
 	//Ease of use
 	using namespace Math; using namespace Engine; using namespace Graphics;
@@ -41,7 +43,8 @@ namespace ALEngine::ECS
 
 	public:
 		uint32_t roomSize[2]{ 7, 7 };
-		Entity *roomCellsArray;
+		//Entity *roomCellsArray;
+		Room m_Room;
 
 		Entity playerEntity, startCellEntity, targetCellEntity;
 		std::vector<Entity> pathEntityVector;
@@ -74,30 +77,33 @@ namespace ALEngine::ECS
 
 	void StartGameplaySystem(void) {
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-		gameplaySystem->roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
+		gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
+		gameplaySystem->m_Room.height = gameplaySystem->roomSize[1];
+		gameplaySystem->m_Room.roomSize = gameplaySystem->getRoomSize();
+		gameplaySystem->m_Room.roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
 
 		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {	
-			gameplaySystem->roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
+			gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
 			if (i == 0)
 			{
-				sceneGraph.Push(-1, gameplaySystem->roomCellsArray[i]); // first cell is parent
+				sceneGraph.Push(-1, gameplaySystem->m_Room.roomCellsArray[i]); // first cell is parent
 			}
 			else
 			{
-				sceneGraph.Push(gameplaySystem->roomCellsArray[0], gameplaySystem->roomCellsArray[i]); // other cells are children of the parent
+				sceneGraph.Push(gameplaySystem->m_Room.roomCellsArray[0], gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
 			}
 
-			CreateCollider(gameplaySystem->roomCellsArray[i]);
-			Coordinator::Instance()->GetComponent<Collider2D>(gameplaySystem->roomCellsArray[i]).isTrigger = true;
+			CreateCollider(gameplaySystem->m_Room.roomCellsArray[i]);
+			Coordinator::Instance()->GetComponent<Collider2D>(gameplaySystem->m_Room.roomCellsArray[i]).isTrigger = true;
 			Transform transform;
 			transform.scale = { 70, 70 };
-			Coordinator::Instance()->AddComponent(gameplaySystem->roomCellsArray[i], transform);
+			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
 		}
 
 		for (uint32_t i = 0; i < gameplaySystem->roomSize[0]; ++i) {
 			for (uint32_t j = 0; j < gameplaySystem->roomSize[1]; ++j) {
-				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->roomCellsArray[i * gameplaySystem->roomSize[0] + j]);
+				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[i * gameplaySystem->roomSize[0] + j]);
 				transform.position = { 200 + (f32)i * 100.f, 200 + (f32)j * 100.f };
 				Cell cell;
 				cell.coordinate[0] = i;
@@ -111,6 +117,8 @@ namespace ALEngine::ECS
 			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				gameplaySystem->playerEntity = *it;
+				unit.coordinate[0] = 0;
+				unit.coordinate[1] = 0;
 				break;
 			}
 		}			
@@ -123,9 +131,8 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
-		delete[] gameplaySystem->roomCellsArray;
+		delete[] gameplaySystem->m_Room.roomCellsArray;
 	}
-
 
 	Entity GameplaySystem::getCurrentEntityCell() {
 		return gameplaySystem->currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
@@ -136,7 +143,7 @@ namespace ALEngine::ECS
 	}
 
 	Entity GameplaySystem::getEntityCell(uint32_t x, uint32_t y) {
-		return gameplaySystem->roomCellsArray[y * gameplaySystem->roomSize[0] + x];
+		return gameplaySystem->m_Room.roomCellsArray[y * gameplaySystem->roomSize[0] + x];
 	}
 
 	bool GameplaySystem::StepUpModeOrderPath(MoveOrder& order) {
@@ -162,9 +169,10 @@ namespace ALEngine::ECS
 			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 			gameplaySystem->startCellEntity = gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]);
 
+			std::cout << playerUnit.coordinate[0] << "," << playerUnit.coordinate[1] << std::endl;
 
-			gameplaySystem->pathEntityVector = Engine::AI::FindPath(gameplaySystem->roomCellsArray, gameplaySystem->roomSize, gameplaySystem->startCellEntity, gameplaySystem->targetCellEntity);
-
+			gameplaySystem->pathEntityVector = Engine::AI::FindPath(gameplaySystem->m_Room, gameplaySystem->startCellEntity, gameplaySystem->targetCellEntity);
+			
 			std::cout << "Path Size | " <<  gameplaySystem->pathEntityVector.size() << std::endl;
 			for (int i = 0; i < gameplaySystem->pathEntityVector.size(); ++i) {
 				Cell c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->pathEntityVector[i]);
@@ -208,7 +216,10 @@ namespace ALEngine::ECS
 		unit.unitType = UNIT_TYPE::ENEMY;
 		Coordinator::Instance()->AddComponent(entity, unit);
 	}
+
 }
+
+
 //for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
 //	Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
 //	if (unit.unitType == UNIT_TYPE::PLAYER) {

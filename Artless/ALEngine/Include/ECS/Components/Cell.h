@@ -34,7 +34,7 @@ namespace ALEngine::ECS::Component
 
 		bool operator==(const Cell& lhs) const
 		{
-			return (lhs.m_Grid == m_Grid);
+			return ((lhs.coordinate[0] == coordinate[0]) && (lhs.coordinate[1] == coordinate[1]));
 		}
 	};
 }

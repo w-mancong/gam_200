@@ -50,6 +50,7 @@ namespace ALEngine
 			Adds rigidbody component to the entity
 		***********************************************************************************/
 		void CreateEnemyUnit(Entity const& entity);
+
 	}
 }
 #endif
