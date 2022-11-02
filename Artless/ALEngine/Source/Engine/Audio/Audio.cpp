@@ -37,18 +37,18 @@ namespace ALEngine::Engine
 		UnmuteAudio(*this);
 	}
 
-	void Audio::SetVolume(f32 volume)
+	void Audio::SetVolume(f32 _volume)
 	{
-		this->volume = volume;
+		volume = _volume;
 	}
 
-	void Audio::SetLoop(b8 loop)
+	void Audio::SetLoop(b8 _loop)
 	{
-		this->loop = loop;
+		loop = _loop;
 	}
 
-	void Audio::SetSound(fmod::Sound* sound)
+	void Audio::SetSound(fmod::Sound* _sound)
 	{
-		this->sound = sound;
+		sound = _sound;
 	}
 }

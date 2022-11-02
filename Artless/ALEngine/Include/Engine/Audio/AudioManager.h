@@ -47,7 +47,13 @@ namespace ALEngine::Engine
 	/***************************************************************************************************
 									Interface for adjusting channel group								
 	****************************************************************************************************/
-
+	void StopChannel(Channel channel);
+	void PauseChannel(Channel channel);
+	void UnpauseChannel(Channel channel);
+	void TogglePauseChannel(Channel channel);
+	void MuteChannel(Channel channel);
+	void UnmuteChannel(Channel channel);
+	void SetChannelVolume(Channel channel, f32 volume);
 }
 
 #endif

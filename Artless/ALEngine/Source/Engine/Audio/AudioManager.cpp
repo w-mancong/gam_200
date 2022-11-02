@@ -11,6 +11,15 @@ namespace ALEngine::Engine
 
 		void PlayAudio(Audio& audio);
 
+		// interacting with the channels
+		void StopChannel(Channel channel);
+		void SetChannelVolume(Channel channel, f32 volume);
+		void PauseChannel(Channel channel);
+		void UnpauseChannel(Channel channel);
+		void TogglePauseChannel(Channel channel);
+		void MuteChannel(Channel channel);
+		void UnmuteChannel(Channel channel);
+
 		fmod::System* const& GetSystem(void) const;
 
 	private:
@@ -19,6 +28,7 @@ namespace ALEngine::Engine
 
 		fmod::System* system{ nullptr };
 		fmod::ChannelGroup* channelGroup[static_cast<s64>(Channel::Total)]{};
+		f32 channelOriginalVolume[static_cast<s64>(Channel::Total)]{};
 
 		// My own channel info which will be used to check if channel is for bgm/sfx
 		struct ChannelInfo
@@ -108,8 +118,8 @@ namespace ALEngine::Engine
 	void AudioManager::Init(void)
 	{
 		FMOD_RESULT res = System_Create(&system);
-		assert(res == FMOD_OK && "Fmod system not created properly!");
-		system->init(MAX_CHANNELS, FMOD_INIT_NORMAL, reinterpret_cast<void*>(FMOD_OUTPUTTYPE_AUTODETECT));
+		assert(res == FMOD_RESULT::FMOD_OK && "Fmod system not created properly!");
+		system->init(MAX_CHANNELS, FMOD_INIT_NORMAL, reinterpret_cast<void*>(FMOD_OUTPUTTYPE::FMOD_OUTPUTTYPE_AUTODETECT));
 
 		// Create channel groups
 		s64 const TOTAL_CHANNELS{ static_cast<s64>(Channel::Total) };
@@ -117,16 +127,16 @@ namespace ALEngine::Engine
 		for (s64 i{}; i < TOTAL_CHANNELS; ++i)
 		{
 			res = system->createChannelGroup(channelNames[i], &channelGroup[i]);
-			assert(res == FMOD_OK && "Unable to create channel groups!");
+			assert(res == FMOD_RESULT::FMOD_OK && "Unable to create channel groups!");
 		}
 
-		fmod::ChannelGroup  *sfx{ channelGroup[static_cast<s64>(Channel::SFX)] }, 
-							*bgm{ channelGroup[static_cast<s64>(Channel::BGM)] }, 
+		fmod::ChannelGroup	*bgm{ channelGroup[static_cast<s64>(Channel::BGM)] },
+							*sfx{ channelGroup[static_cast<s64>(Channel::SFX)] }, 
 							*master{ channelGroup[static_cast<s64>(Channel::Master)] };		
 
-		// adding channel group bgm and sfx into master
-		master->addGroup(bgm);
-		master->addGroup(sfx);
+		// adding master channel as an input group to bgm and sfx
+		bgm->addGroup(master);
+		sfx->addGroup(master);
 
 		u64 const SFX_CHANNELS = MAX_CHANNELS - BGM_CHANNELS;
 		// filling my channels queue
@@ -236,6 +246,56 @@ namespace ALEngine::Engine
 		}
 	}
 
+	void AudioManager::StopChannel(Channel channel)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		channelGroup[ch]->stop();
+	}
+
+	void AudioManager::SetChannelVolume(Channel channel, f32 volume)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		channelGroup[ch]->setVolume(volume);
+	}
+
+	void AudioManager::PauseChannel(Channel channel)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		channelGroup[ch]->setPaused(true);
+	}
+
+	void AudioManager::UnpauseChannel(Channel channel)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		channelGroup[ch]->setPaused(false);
+	}
+
+	void AudioManager::TogglePauseChannel(Channel channel)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		b8 isPaused{};
+		channelGroup[ch]->getPaused(&isPaused);
+		channelGroup[ch]->setPaused(!isPaused);
+	}
+
+	void AudioManager::MuteChannel(Channel channel)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		f32 volume{ 0.0f };
+		channelGroup[ch]->getVolume(&volume);
+
+		if (volume > 0.0f)
+			channelOriginalVolume[ch] = volume;
+
+		channelGroup[ch]->setVolume(0.0f);
+	}
+
+	void AudioManager::UnmuteChannel(Channel channel)
+	{
+		s64 const ch{ static_cast<s64>(channel) };
+		channelGroup[ch]->setVolume(channelOriginalVolume[ch]);
+	}
+
 	/***************************************************************************************************
 							User interface for users to interact with audio manager						
 	****************************************************************************************************/
@@ -322,5 +382,40 @@ namespace ALEngine::Engine
 			return;
 		u32 const LOOP = audio.loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
 		(*audio.ch)->setMode(LOOP);
+	}
+
+	void StopChannel(Channel channel)
+	{
+		audioManager->StopChannel(channel);
+	}
+
+	void PauseChannel(Channel channel)
+	{
+		audioManager->PauseChannel(channel);
+	}
+
+	void UnpauseChannel(Channel channel)
+	{
+		audioManager->UnpauseChannel(channel);
+	}
+
+	void TogglePauseChannel(Channel channel)
+	{
+		audioManager->TogglePauseChannel(channel);
+	}
+
+	void MuteChannel(Channel channel)
+	{
+		audioManager->MuteChannel(channel);
+	}
+
+	void UnmuteChannel(Channel channel)
+	{
+		audioManager->UnmuteChannel(channel);
+	}
+
+	void SetChannelVolume(Channel channel, f32 volume)
+	{
+		audioManager->SetChannelVolume(channel, volume);
 	}
 }

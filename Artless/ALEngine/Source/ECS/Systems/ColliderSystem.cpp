@@ -562,7 +562,7 @@ namespace ALEngine::ECS
 	}
 		
 	using Physics::RaycastHit2D;
-	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
+	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, [[maybe_unused]] Rigidbody2D& rigidbody_other) {
 		//If the velocity is zero
 		//Just calculate static
 		if (rigidbody_moving.velocity.Magnitude() == 0) {
