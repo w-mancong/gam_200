@@ -145,7 +145,7 @@ namespace ALEngine::ECS
 		CollisionEvent& evnt = eventCollisionSystem->GetEventFromTrigger(eventTrig, eventType);
 
 		EventCollisionListener listener; 
-		listener.m_position = evnt.m_Listeners.size();
+		listener.m_position = static_cast<u32>(evnt.m_Listeners.size());
 		listener.invokeFunction = fp;
 		evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 	}

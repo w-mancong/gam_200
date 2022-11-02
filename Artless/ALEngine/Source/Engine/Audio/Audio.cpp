@@ -1,3 +1,11 @@
+﻿/*!
+file:	Audio.cpp
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	Wrapper function definition that contains all the data for playing an audio
+
+		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 
 namespace ALEngine::Engine
@@ -41,21 +49,9 @@ namespace ALEngine::Engine
 
 	void Audio::ToggleMute(void)
 	{
-		
-	}
-
-	void Audio::SetVolume(f32 _volume)
-	{
-		volume = _volume;
-	}
-
-	void Audio::SetLoop(b8 _loop)
-	{
-		loop = _loop;
-	}
-
-	void Audio::SetSound(fmod::Sound* _sound)
-	{
-		sound = _sound;
+		if (mute)
+			Unmute();
+		else
+			Mute();
 	}
 }

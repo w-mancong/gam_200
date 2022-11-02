@@ -80,15 +80,15 @@ namespace ALEngine::ECS
 		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
 	}
 
-	void OnCollisionEnter_Player(u32 currentEntity, u32 otherEntity) {
+	void OnCollisionEnter_Player([[maybe_unused]] u32 currentEntity, [[maybe_unused]] u32 otherEntity) {
 		AL_CORE_INFO("Player Collided with something that has collider commponent ON BEGIN");
 	}
 
-	void OnCollisionStay_Player(u32 currentEntityu32, u32 otherEntity) {
+	void OnCollisionStay_Player([[maybe_unused]] u32 currentEntityu32, [[maybe_unused]] u32 otherEntity) {
 		AL_CORE_INFO("Player Collided with something that has collider commponent AND STAYING");
 	}
 
-	void OnCollisionExit_Player(u32 currentEntityu32, u32 otherEntity) {
+	void OnCollisionExit_Player([[maybe_unused]] u32 currentEntityu32, [[maybe_unused]] u32 otherEntity) {
 		AL_CORE_INFO("Player Collided with something that has collider commponent AND EXIT");
 	}
 

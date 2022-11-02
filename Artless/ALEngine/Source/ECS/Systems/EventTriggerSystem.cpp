@@ -165,7 +165,7 @@ namespace ALEngine::ECS
 		Event& evnt = eventSystem->GetEventFromTrigger(eventTrig, eventType);
 
 		EventListener listener;
-		listener.m_position = evnt.m_Listeners.size();
+		listener.m_position = static_cast<u32>(evnt.m_Listeners.size());
 		listener.invokeFunction = fp;
 		evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 	}
@@ -176,7 +176,7 @@ namespace ALEngine::ECS
 			Event& evnt = eventSystem->GetEventFromTrigger(tempEventTrig, eventType);
 
 			EventListener listener;
-			listener.m_position = evnt.m_Listeners.size();
+			listener.m_position = static_cast<u32>(evnt.m_Listeners.size());
 			listener.invokeFunction = fp;
 			evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 		}

@@ -59,7 +59,11 @@ namespace ALEngine::ECS
 
 	void UpdateAnimatorSystem(void)
 	{
-		as->Update();
+#if EDITOR
+		if (!Editor::ALEditor::Instance()->GetGameActive())
+			return;
+#endif
+			as->Update();
 	}
 
 	void RemovedAnimator(Entity en)
@@ -70,9 +74,16 @@ namespace ALEngine::ECS
 		sprite.id = Engine::AssetManager::Instance()->GetGuid(sprite.filePath);
 	}
 
-	void AttachAnimator(Entity entity, Animator const& animator)
+	void AttachAnimator(Entity entity, Animator& animator)
 	{
 		Coordinator::Instance()->AddComponent(entity, animator);
+#if EDITOR
+		if (!Coordinator::Instance()->HasComponent<Sprite>(entity))
+			return;
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(entity);
+		Animation const& animation = animator.animations[animator.currClip];
+		sprite.id = animation.id;
+#endif
 	}
 
 	void AddAnimationToAnimator(Animator& animator, c8 const* clipName)
