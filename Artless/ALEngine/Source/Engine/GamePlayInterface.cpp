@@ -17,9 +17,14 @@ namespace ALEngine::Engine::GameplayInterface
 		return currentRoom.roomCellsArray[y * currentRoom.width + x];
 	}
 
-	bool CheckListContainsCell(std::list<ECS::Cell> cellList, ECS::Cell cellSearchNode)
+	bool CheckListContainsCell(std::list<ECS::Cell*> cellList, ECS::Cell& cellSearchNode)
 	{
-		return (std::find(cellList.begin(), cellList.end(), cellSearchNode) != cellList.end());
+		for (auto it = cellList.begin(); it != cellList.end(); ++it) {
+			if (*it == &cellSearchNode) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY)

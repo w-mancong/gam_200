@@ -177,7 +177,7 @@ namespace ALEngine::ECS
 			for (int i = 0; i < gameplaySystem->pathEntityVector.size(); ++i) {
 				Cell c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->pathEntityVector[i]);
 
-				std::cout << c.m_Grid << " : ";
+				std::cout << c.m_Grid << "\n";
 			}
 
 			std::cout << std::endl;

@@ -15,13 +15,13 @@ namespace ALEngine::Engine::AI
 {
 	std::vector<ECS::Entity> FindPath(Engine::GameplayInterface::Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, bool defaultAstar = false);
 
-	std::list<ECS::Cell> GetNeighbourList(ECS::Cell currentNode, Engine::GameplayInterface::Room& currentRoom, bool defaultAstar = false);
+	std::list<ECS::Cell*> GetNeighbourList(ECS::Cell& currentNode, Engine::GameplayInterface::Room& currentRoom, bool defaultAstar = false);
 
-	std::vector<ECS::Entity> CalculatePath(ECS::Cell endNode, Engine::GameplayInterface::Room& currentRoom);
+	std::vector<ECS::Entity> CalculatePath(ECS::Cell& endNode, Engine::GameplayInterface::Room& currentRoom);
 
     f32 CalculateDistanceCost(ECS::Entity a, ECS::Entity b);
 
-	ECS::Cell GetLowestFCostNode(std::list<ECS::Cell> pathFindingCellNodeList);
+	ECS::Cell& GetLowestFCostNode(std::list<ECS::Cell*> pathFindingCellNodeList);
 }
 
 #endif // !PATH_FINDING_MANAGER_H

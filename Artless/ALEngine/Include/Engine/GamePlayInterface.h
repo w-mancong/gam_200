@@ -11,7 +11,7 @@ namespace ALEngine::Engine::GameplayInterface
 	};
 	u32 getEntityCell(Room& currentRoom, u32 x, u32 y);
 
-	bool CheckListContainsCell(std::list<ECS::Cell> cellList, ECS::Cell cellSearchNode);
+	bool CheckListContainsCell(std::list<ECS::Cell*> cellList, ECS::Cell& cellSearchNode);
 
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
 }
