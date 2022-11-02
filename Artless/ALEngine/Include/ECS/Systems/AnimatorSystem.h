@@ -34,7 +34,7 @@ namespace ALEngine::ECS
 		\param [in] entity: Entity to have the animator component attached
 		\param [in] animator: Animator to be attached to the entity
 	***********************************************************************************/
-	void AttachAnimator(Entity entity, Animator const& animator);
+	void AttachAnimator(Entity entity, Animator& animator);
 
 	/*!*********************************************************************************
 		\brief Adding animation to animator

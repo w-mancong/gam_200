@@ -169,7 +169,6 @@ namespace ALEngine::Engine
 			// Normal Update
 			Engine::Update();
 
-
 			if (ALEditor::Instance()->GetGameActive())
 			{
 				// Physics
@@ -224,17 +223,16 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-		if (ALEditor::Instance()->GetGameActive())
-		{
-			UpdateCharacterControllerSystem();
-			UpdateEventTriggerSystem();
-			UpdateGameplaySystem();
-		}
-
 		ZoneScopedN("Normal Update")
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
+
+		if (!ALEditor::Instance()->GetGameActive())
+			return;
+		UpdateCharacterControllerSystem();
+		UpdateEventTriggerSystem();
+		UpdateGameplaySystem();
 
 		if (Input::KeyTriggered(KeyCode::MouseRightButton))
 		{

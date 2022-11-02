@@ -11,7 +11,7 @@ namespace ALEngine::ECS::Component
 	{
 	}
 
-	bool RoomBuilder::IsGridInside(ALEngine::Math::Vector2Int grid)
+	bool RoomBuilder::IsGridInside([[maybe_unused]] ALEngine::Math::Vector2Int grid)
 	{
 		//return grid.x >= 0 && grid.x < m_Instance.m_RoomSize.x&& grid.y >= 0 && grid.y < m_Instance.m_RoomSize.y;
 		return false;

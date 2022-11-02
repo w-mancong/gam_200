@@ -136,7 +136,7 @@ namespace ALEngine::ECS
         return path;
     }
 
-    float PathFindingManager::CalculateDistanceCost(Cell a, Cell b)
+    float PathFindingManager::CalculateDistanceCost([[maybe_unused]] Cell a, [[maybe_unused]] Cell b)
     {
         //need to find out how to calculate distance
         //ALEngine::Math::Vector3().Distance(a, b);

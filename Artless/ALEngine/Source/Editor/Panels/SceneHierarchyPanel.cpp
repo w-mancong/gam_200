@@ -174,10 +174,10 @@ namespace ALEngine::Editor
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
 			{
 				assert(payload->DataSize != sizeof(ECS::Entity));
-				ECS::Entity child = *(ECS::Entity*)payload->Data;
+				ECS::Entity _child = *(ECS::Entity*)payload->Data;
 
 				// Check payload is not own Entity
-				if (ALEditor::Instance()->GetSelectedEntity() != child)
+				if (ALEditor::Instance()->GetSelectedEntity() != _child)
 				{
 
 				}
