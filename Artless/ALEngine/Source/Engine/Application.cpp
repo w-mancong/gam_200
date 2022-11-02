@@ -114,6 +114,8 @@ namespace ALEngine::Engine
 		trans.scale = level.GetVec2("coin_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(coin, trans);
 		CreateSprite(coin);
+		Sprite& coinSprite = Coordinator::Instance()->GetComponent<Sprite>(coin);
+		coinSprite.color = Color{ 1.0f, 1.0f, 0.0f, 1.0f };
 		CreateCollider(coin);
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(coin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
 
@@ -121,7 +123,8 @@ namespace ALEngine::Engine
 		trans.scale = level.GetVec2("pathfinder_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(pathfinder, trans);
 		CreateSprite(pathfinder);
-		CreateEnemyUnit(pathfinder);
+		//CreateEnemyUnit(pathfinder);
+		CreatePlayerUnit(pathfinder);
 
 		AudioManagerInit();
 

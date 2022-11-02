@@ -57,12 +57,12 @@ namespace ALEngine::Serializer
 		std::string line;
 		if (ifs2.is_open())
 		{
-			u32 i = 0;
-			while (std::getline(ifs2, line))
-			{
-				i++;
-				std::cout << "LINE " << i << ":" << line << std::endl;
-			}
+			//u32 i = 0;
+			//while (std::getline(ifs2, line))
+			//{
+			//	i++;
+			//	std::cout << "LINE " << i << ":" << line << std::endl;
+			//}
 			ifs2.close();
 		}
 		//END OF DEBUGGING
@@ -87,7 +87,7 @@ namespace ALEngine::Serializer
 			buffer.GetString()
 		};
 
-		std::cout << "ORIGINAL STRING :" << jsonStr << std::endl;
+		//std::cout << "ORIGINAL STRING :" << jsonStr << std::endl;
 		//DEBUGGING
 		return EXIT_SUCCESS;
 	}

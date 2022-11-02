@@ -27,9 +27,12 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Unit
 	{
-		int32_t health;
+		s32 health;
 		UNIT_TYPE unitType;
-		uint32_t coordinate[2];
+		u32 coordinate[2];
+
+		//Cell m_CurrentCell;// current cell
+		//std::list<Cell> m_CellPath;// list of cells for path found by A* pathfinding
 	};
 }
 #endif

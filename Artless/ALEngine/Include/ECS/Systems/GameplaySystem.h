@@ -1,8 +1,8 @@
 /*!
-file:	EventTriggerSystem.h
+file:	GameplaySystem.h
 author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
-brief:	This file contains the function declarations for EventTriggerSystem.h
+brief:	This file contains the function declarations for GameplaySystem.h
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -23,33 +23,34 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Update EventTrigger System
+			Start GamePlay System to initialize variables for gameplay logic
 		***********************************************************************************/
 		void StartGameplaySystem();
 
 		/*!*********************************************************************************
 			\brief
-			Update EventTrigger System
+			Update GamePlay System to update gameplay logic
 		***********************************************************************************/
 		void UpdateGameplaySystem();
 
 		/*!*********************************************************************************
 			\brief
-			Update EventTrigger System
+			Exit GamePlay System to clean up
 		***********************************************************************************/
 		void ExitGameplaySystem();
 
 		/*!*********************************************************************************
 			\brief
-			Adds rigidbody component to the entity
+			create player unit entity
 		***********************************************************************************/
 		void CreatePlayerUnit(Entity const& entity);
 
 		/*!*********************************************************************************
 			\brief
-			Adds rigidbody component to the entity
+	        create enemy unit entity
 		***********************************************************************************/
 		void CreateEnemyUnit(Entity const& entity);
+
 	}
 }
 #endif
