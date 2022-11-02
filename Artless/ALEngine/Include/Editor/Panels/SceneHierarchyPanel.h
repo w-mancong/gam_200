@@ -78,7 +78,7 @@ namespace ALEngine::Editor
 		const ECS::EntityList *m_EntityList;
 
 		// Entity Selected by Hover
-		ECS::Entity m_EntityHover;
+		ECS::Entity m_EntityHover{ ECS::MAX_ENTITIES };
 	};
 }
 
