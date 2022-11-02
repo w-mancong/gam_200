@@ -76,6 +76,9 @@ namespace ALEngine::Editor
 
 		// Pointer to the list of entities
 		const ECS::EntityList *m_EntityList;
+
+		// Entity Selected by Hover
+		ECS::Entity m_EntityHover;
 	};
 }
 

@@ -161,6 +161,14 @@ namespace ALEngine::Editor
 		// Begin Tree Node
 		b8 opened = ImGui::TreeNodeEx((void*)static_cast<u64>(child), flags, data.tag.c_str());
 
+		// Check if hovered on entity
+		ImGuiHoveredFlags hover_flag = ImGuiHoveredFlags_AllowWhenBlockedByActiveItem;
+		if (ImGui::IsItemHovered(hover_flag))
+		{
+			AL_CORE_CRITICAL("Hovering Over: {}", child);
+			m_EntityHover = child;
+		}
+
 		// Drag object from here
 		if (ImGui::BeginDragDropSource())
 		{
@@ -168,19 +176,21 @@ namespace ALEngine::Editor
 			ImGui::SetDragDropPayload("HIERARCHY_ENTITY", &dragged, sizeof(ECS::Entity));
 			ImGui::EndDragDropSource();
 		}
+
 		// Drop object here
 		if (ImGui::BeginDragDropTarget())
 		{
 			// Set payload
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
 			{
-				assert(payload->DataSize != sizeof(ECS::Entity));
-				ECS::Entity child = *(ECS::Entity*)payload->Data;
+				assert(payload->DataSize == sizeof(ECS::Entity));
+				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
 
 				// Check payload is not own Entity
-				if (ALEditor::Instance()->GetSelectedEntity() != child)
+				if (m_EntityHover != child_pl)
 				{
-
+					sceneGraph.Destruct(child_pl);
+					sceneGraph.Push(m_EntityHover, child_pl);
 				}
 			}
 
