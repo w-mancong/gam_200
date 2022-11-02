@@ -15,11 +15,12 @@ namespace ALEngine::Editor
 
 	void GamePanel::OnImGuiRender(void)
 	{
-		// Set position & size of Game Scene
-		//ImGui::SetNextWindowPos(ImVec2(0.f, 0.f));
-
+		// Set flags 
+		ImGuiWindowFlags flag = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+		b8 pOpen = false;
+		
 		// Begin ImGui Panel
-		if (!ImGui::Begin("Game"))
+		if (!ImGui::Begin("Game", &pOpen, flag))
 		{
 			ImGui::End();
 			return;
@@ -85,7 +86,7 @@ namespace ALEngine::Editor
 		m_PanelMin = ImVec2(min.x, min.y);
 	}
 	
-	void GamePanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	void GamePanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);

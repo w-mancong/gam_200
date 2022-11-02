@@ -79,6 +79,6 @@ namespace ALEngine::Utility
 			\param [in] name
 			The name of the process being recorded
 		***********************************************************************************/
-#define PROFILER_TIMER(name) Timer ProfilerTimer##__LINE__(name)
+#define PROFILER_TIMER(name) Timer ProfilerTimer##__LINE__(name);
 
 #endif

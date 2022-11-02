@@ -39,8 +39,8 @@ namespace ALEngine::Editor
 	
 	void InspectorPanel::OnImGuiRender(void)
 	{
-		// Set size constraints of inspector
-		//ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+		// Set constraints
+		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
 		// Begin ImGui
 		if (!ImGui::Begin("Inspector"))
@@ -220,7 +220,7 @@ namespace ALEngine::Editor
 			{
 				// Payload flag
 				ImGuiDragDropFlags payload_flag{ 0 };
-				payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+				//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
 
 				// Get Drag and Drop Payload
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
@@ -273,7 +273,7 @@ namespace ALEngine::Editor
 		{
 			// Payload flag
 			ImGuiDragDropFlags payload_flag{ 0 };
-			payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+			//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
 
 			// Get Drag and Drop Payload
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
@@ -390,7 +390,7 @@ namespace ALEngine::Editor
 		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void InspectorPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	void InspectorPanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);

@@ -10,5 +10,11 @@
 
   "btn_pos": [ 50, 50 ],
   "btn_size": [ 150, 200 ],
-  "btn_image": "Assets\\Images\\circlebutton.png"
+  "btn_image": "Assets\\Images\\circlebutton.png",
+
+  "pathfinder_pos": [ 500, 500 ],
+  "pathfinder_size": [ 50, 50 ],
+
+  "anim_pos":  [ 1200, 600 ],
+  "anim_size": [ 775, 335 ]
 }

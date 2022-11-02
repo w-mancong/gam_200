@@ -299,7 +299,8 @@ namespace ALEngine::ECS
 		Text::RenderText(FPS);
 
 		// Update and render particles
-		particleSystemPanel.OnImGuiRender(particleSys);
+		if(!Editor::ALEditor::Instance()->GetGameActive())
+			particleSystemPanel.OnImGuiRender(particleSys);
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
 		particleSys.ParticleRender(camera);
 
