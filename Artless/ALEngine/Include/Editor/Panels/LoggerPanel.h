@@ -37,13 +37,34 @@ namespace ALEngine::Editor
 			Updates the Logger Panel
 		***********************************************************************************/
 		void OnImGuiRender(void);
+
+		/*!*********************************************************************************
+			\brief
+			Set the panel's minimum size
+			\param min
+			Panel's min size
+		***********************************************************************************/
+		void SetPanelMin(Math::Vec2 min);
+
+		/*!*********************************************************************************
+			\brief
+			Set the panel's default pos and size
+			\param pos
+			Panel's Pos
+			\param size
+			Panel's Size
+		***********************************************************************************/
+		void SetDefault(Math::Vec2 pos, Math::Vec2 size);
 	private:
 		std::ostringstream m_LoggerOSS;		// Logger's ostringtream
 		u32 m_LogFlags{ 0 };				// Flag for which level to display
 
-		// Panel size
-		const ImVec2 PANEL_MIN{ 500, 350 };
-		const ImVec2 PANEL_MAX{ 1920, 1080 };
+		// Panel sizes
+		ImVec2 m_PanelMin{};	// Min Size
+
+		// Panel Defaults
+		ImVec2 m_DefaultPos{};	// Default Position
+		ImVec2 m_DefaultSize{};	// Default Size
 	};
 
 	/*!*********************************************************************************

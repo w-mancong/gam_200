@@ -56,7 +56,20 @@
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
+    <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
+    <ClCompile Include="Source\Math\Matrix2x2.cpp" />
+    <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
+    <ClCompile Include="Source\AI\PathFindingManager.cpp" />
+    <ClCompile Include="Source\ECS\Components\RoomBuilder.cpp" />
+    <ClCompile Include="Source\ECS\Components\CellLoader.cpp" />
+    <ClCompile Include="Source\Math\Vector2Int.cpp" />
+    <ClCompile Include="Source\Math\Vector3Int.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -276,7 +289,28 @@
     <ClInclude Include="Include\ECS\Components\Animator.h" />
     <ClInclude Include="Include\ECS\Components\Transition.h" />
     <ClInclude Include="Include\ECS\Systems\AnimatorSystem.h" />
+    <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
     <ClInclude Include="Include\Utility\BinaryTree.h" />
+    <ClInclude Include="tracy\Tracy.hpp" />
+    <ClInclude Include="Include\Math\Matrix2x2.h" />
+    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
+    <ClInclude Include="Include\Common Header\MyAudio.h" />
+    <ClInclude Include="Include\Engine\Audio\AudioManager.h" />
+    <ClInclude Include="Include\Engine\Audio\Audio.h" />
+    <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
+    <ClInclude Include="Include\ECS\Components\Cell.h" />
+    <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
+    <ClInclude Include="Include\ECS\Components\Unit.h" />
+    <ClInclude Include="Include\AI\PathFindingManager.h" />
+    <ClInclude Include="Include\ECS\RoomBuilder.h" />
+    <ClInclude Include="Include\ECS\Components\RoomBuilder.h" />
+    <ClInclude Include="Include\ECS\Components\Room.h" />
+    <ClInclude Include="Include\ECS\Components\CellLoader.h" />
+    <ClInclude Include="Include\Math\Vector2Int.h" />
+    <ClInclude Include="Include\Math\Vector3Int.h" />
+    <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

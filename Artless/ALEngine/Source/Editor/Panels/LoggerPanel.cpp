@@ -34,7 +34,7 @@ namespace ALEngine::Editor
 	void LoggerPanel::OnImGuiRender()
 	{
 		// Set size constraints of inspector
-		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+		//ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
 		// Start ImGui Window
 		if (!ImGui::Begin("Logger"))
@@ -138,5 +138,17 @@ namespace ALEngine::Editor
 		ImGui::EndChild();
 		//End ImGui Window
 		ImGui::End();
-	}	
+	}
+	
+	void LoggerPanel::SetPanelMin(Math::Vec2 min)
+	{
+		m_PanelMin = ImVec2(min.x, min.y);
+	}
+
+	void LoggerPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	{
+		m_DefaultPos = ImVec2(pos.x, pos.y);
+		m_DefaultSize = ImVec2(size.x, size.y);
+	}
+
 }

@@ -272,6 +272,11 @@ namespace ALEngine::Math
 		);
 	}
 
+	Matrix4x4 Matrix4x4::Model(Transform const& trans)
+	{
+		return Model(trans.position, trans.scale, trans.rotation);
+	}
+
 	Matrix4x4 Matrix4x4::ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot)
 	{
 		f32 const rad = DegreeToRadian(rot);
@@ -284,6 +289,11 @@ namespace ALEngine::Math
 			Vector4{   0.0f,		   0.0f,			1.0f,  0.0f },
 			Vector4{   pos.x,		   pos.y,			pos.z, 1.0f }
 		);
+	}
+
+	Matrix4x4 Matrix4x4::ModelT(Transform const& trans)
+	{
+		return Model(trans).Transpose();
 	}
 
 	Matrix4x4 Matrix4x4::Inverse(Matrix4x4 const& mat)

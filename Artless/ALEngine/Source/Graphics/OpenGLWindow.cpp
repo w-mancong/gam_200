@@ -1,4 +1,4 @@
-/*!
+﻿/*!
 file:		OpenGLWindow.cpp
 author:		Wong Man Cong
 co-author:	Lucas Nguyen
@@ -42,7 +42,7 @@ namespace ALEngine::Graphics
 
 #ifdef _DEBUG
 		// Enable OPENGL Debug Context if on debug mode
-		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true); 
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif
 
 #ifdef __APPLE__
@@ -88,9 +88,9 @@ namespace ALEngine::Graphics
 		glGetIntegerv(GL_MINOR_VERSION, &minor);
 		std::cout << "Version: " << major << "." << minor << std::endl;
 
-		char* vendor	= (char*)glGetString(GL_VENDOR);
-		char* device	= (char*)glGetString(GL_RENDERER);
-		char* version	= (char*)glGetString(GL_VERSION);
+		char* vendor = (char*)glGetString(GL_VENDOR);
+		char* device = (char*)glGetString(GL_RENDERER);
+		char* version = (char*)glGetString(GL_VERSION);
 
 		s32 n;
 		glGetIntegerv(GL_NUM_EXTENSIONS, &n);

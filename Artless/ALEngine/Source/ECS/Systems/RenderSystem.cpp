@@ -8,7 +8,7 @@ namespace ALEngine::ECS
 	{
 	public:
 #if EDITOR
-		void RenderBatch(std::vector<Entity> entities, Camera const& cam);
+		void RenderBatch(Camera const& cam);
 #else
 		void RenderBatch(void);
 #endif
@@ -45,22 +45,26 @@ namespace ALEngine::ECS
 		Frustum fstm;
 
 		ParticleSys::ParticleSystem particleSys;
+		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
 		
+		Tree::BinaryTree sceneGraph{};
+		std::vector<Transform> prevTransform;
+		
 #if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
 
-		std::vector<Entity> entities;
 #endif
 	}
 
 #if EDITOR
-	void RenderSystem::RenderBatch(std::vector<Entity> entities, Camera const& cam)
+	void RenderSystem::RenderBatch(Camera const& cam)
 	{
+		std::vector<Entity> entities; entities.reserve(mEntities.size());
 		// copy into temp vector
 		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
 		// sort entities by layer
@@ -81,10 +85,11 @@ namespace ALEngine::ECS
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			*(vMatrix + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
-			*(vColor + i) = sprite.color;
-			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = sprite.index;
+			//*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vMatrix + counter) = trans.modelMatrix.Transpose();
+			*(vColor + counter) = sprite.color;
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
 
 			++counter;
 		}
@@ -136,7 +141,7 @@ namespace ALEngine::ECS
 			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vColor    + i) = sprite.color;
 			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = sprite.index;
+			(*(vMatrix + i))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
 
 			++counter;
 		}
@@ -175,7 +180,7 @@ namespace ALEngine::ECS
 		Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
 		Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
 		Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
-
+		
 		// Init Gizmo
 		Gizmos::Gizmo::GizmoInit();
 
@@ -226,14 +231,45 @@ namespace ALEngine::ECS
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
 
-		MeshBuilder::Instance()->Init();	
-#if EDITOR
-		entities.reserve(ECS::MAX_ENTITIES);
-#endif
+		sceneGraph.Init();
+
+		MeshBuilder::Instance()->Init();
+		camera.ProjectionMatrix(Camera::Projection::Orthographic);
+	}
+
+	/*!*********************************************************************************
+		\brief
+		Updates the transform matrix of parent and its children
+
+		\param [in] entity
+		Entity to apply parent-child transform
+	***********************************************************************************/
+	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
+	{
+		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity.id);
+		if (entity.parent >= 0) // if entity has parent
+		{
+			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
+			transform.modelMatrix = parentTransform.modelMatrix * Math::mat4::Model(transform);
+		}
+		else
+		{
+			transform.modelMatrix = Math::mat4::Model(transform);
+		}
+
+		for (auto& child : sceneGraph.GetMap()[entity.id].children)
+		{ 
+			UpdateParentChildrenPos(sceneGraph.GetMap()[child]);
+		}
 	}
 
 	void Render(void)
 	{
+		for (auto& entity : sceneGraph.GetParents())
+		{
+			UpdateParentChildrenPos(sceneGraph.GetMap()[entity]);
+		}
+		
 #if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
@@ -242,7 +278,7 @@ namespace ALEngine::ECS
 #endif
 		UpdateAnimatorSystem();
 #if EDITOR
-		rs->RenderBatch(entities, camera);
+		rs->RenderBatch(camera);
 #else
 		rs->RenderBatch();
 #endif
@@ -263,8 +299,9 @@ namespace ALEngine::ECS
 		Text::RenderText(FPS);
 
 		// Update and render particles
+		particleSystemPanel.OnImGuiRender(particleSys);
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender();
+		particleSys.ParticleRender(camera);
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
@@ -289,6 +326,7 @@ namespace ALEngine::ECS
 #if EDITOR
 	void Render(Camera const& cam)
 	{
+		std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
 		// copy into temp vector
 		std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
 		// sort entities by layer
@@ -303,7 +341,11 @@ namespace ALEngine::ECS
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
 		
-		rs->RenderBatch(entities, cam);
+		rs->RenderBatch(cam);
+
+		// Update and render particles
+		particleSys.ParticleUpdate(Time::m_DeltaTime);
+		particleSys.ParticleRender(cam);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
@@ -384,6 +426,10 @@ namespace ALEngine::ECS
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
+	}
+	Tree::BinaryTree& GetSceneGraph(void)
+	{
+		return sceneGraph;
 	}
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)

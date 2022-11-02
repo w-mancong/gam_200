@@ -1,4 +1,3 @@
-
 #include "pch.h"
 
 namespace ALEngine::Serializer
@@ -83,15 +82,13 @@ namespace ALEngine::Serializer
 			return EXIT_FAILURE;
 		}
 
-		//JUST FOR DEBUGGING
-		/*
+		//DEBUGGING
 		const std::string jsonStr{
 			buffer.GetString()
 		};
 
 		std::cout << "ORIGINAL STRING :" << jsonStr << std::endl;
-		*/
-		//END OF DEBUGGING
+		//DEBUGGING
 		return EXIT_SUCCESS;
 	}
 

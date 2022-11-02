@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include "imgui.h"
+#include "imgui_internal.h"
 /*!
 file: ContentBrowserPanel.cpp
 author: Chan Jie Ming Stanley
@@ -173,7 +176,7 @@ namespace ALEngine::Editor
 			if (ImGui::BeginDragDropSource())
 			{
 				const wchar_t* itemPath = path.c_str();
-				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				ImGui::SetDragDropPayload("ASSET_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();
 			}
 
@@ -202,5 +205,22 @@ namespace ALEngine::Editor
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
-	}	
+	}
+	
+	void ContentBrowserPanel::SetPanelMin(Math::Vec2 min)
+	{
+		m_PanelMin = ImVec2(min.x, min.y);
+	}
+
+	void ContentBrowserPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	{
+		m_DefaultPos = ImVec2(pos.x, pos.y);
+		m_DefaultSize = ImVec2(size.x, size.y);
+	}
+
+	void ContentBrowserPanel::Default(void)
+	{
+		
+	}
+
 }	

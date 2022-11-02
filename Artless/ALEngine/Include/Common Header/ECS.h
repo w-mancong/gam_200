@@ -22,6 +22,12 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Components/Animation.h>
 #include <ECS/Components/Transition.h>
 #include <ECS/Components/Animator.h>
+#include <ECS/Components/Unit.h>
+#include <ECS/Components/EventTrigger.h>
+#include <ECS/Components/Cell.h>
+#include <ECS/Components/Room.h>
+#include <ECS/Components/RoomBuilder.h>
+#include <ECS/Components/CellLoader.h>
 
 // --------------- Structure --------------------
 #include <ECS/Structure/entity.h>
@@ -39,6 +45,9 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Systems/ColliderSystem.h>
 #include <ECS/Systems/RigidbodySystem.h>
 #include <ECS/Systems/CharacterControllerSystem.h>
+#include <ECS/Systems/EventCollisionTriggerSystem.h>
+#include <ECS/Systems/EventTriggerSystem.h>
+#include <ECS/Systems/GameplaySystem.h>
 
 using ALEngine::ECS::Coordinator;
 using namespace ALEngine::ECS::Component;
