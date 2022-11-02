@@ -50,9 +50,13 @@ namespace ALEngine::ECS
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
 		
+		Tree::BinaryTree sceneGraph{};
+		std::vector<Transform> prevTransform;
+		
 #if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
+
 #endif
 	}
 
@@ -80,10 +84,11 @@ namespace ALEngine::ECS
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			*(vMatrix + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
-			*(vColor + i) = sprite.color;
-			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			//*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vMatrix + counter) = trans.modelMatrix.Transpose();
+			*(vColor + counter) = sprite.color;
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
 
 			++counter;
 		}
@@ -135,7 +140,7 @@ namespace ALEngine::ECS
 			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vColor    + i) = sprite.color;
 			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = sprite.index;
+			(*(vMatrix + i))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
 
 			++counter;
 		}
@@ -225,11 +230,38 @@ namespace ALEngine::ECS
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
 
+		sceneGraph.Init();
+
 		MeshBuilder::Instance()->Init();
+		camera.ProjectionMatrix(Camera::Projection::Orthographic);
+	}
+
+	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
+	{
+		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity.id);
+		if (entity.parent >= 0) // if entity has parent
+		{
+			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
+			transform.modelMatrix = parentTransform.modelMatrix * Math::mat4::Model(transform);
+		}
+		else
+		{
+			transform.modelMatrix = Math::mat4::Model(transform);
+		}
+
+		for (auto& child : sceneGraph.GetMap()[entity.id].children)
+		{ 
+			UpdateParentChildrenPos(sceneGraph.GetMap()[child]);
+		}
 	}
 
 	void Render(void)
 	{
+		for (auto& entity : sceneGraph.GetParents())
+		{
+			UpdateParentChildrenPos(sceneGraph.GetMap()[entity]);
+		}
+		
 #if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
@@ -258,9 +290,25 @@ namespace ALEngine::ECS
 		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
 		Text::RenderText(FPS);
 
+		if (Input::KeyDown(KeyCode::Z)) // particles when hold 'Z' button 
+		{
+			ParticleSys::ParticleProperties prop{};
+			ParticleSys::SetVelocity(prop, Vector2(2, 6));
+			ParticleSys::SetStartColor(prop, Vector3(1.f, 0.f, 0.f));
+			ParticleSys::SetEndColor(prop, Vector3(0.f, 0.f, 1.f));
+			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos());
+			ParticleSys::SetEndSize(prop, 1.f);
+			ParticleSys::SetVelVariation(prop, Vector2(10, 10));
+			ParticleSys::SetSizeVariation(prop, 4.f);
+			ParticleSys::SetLifeTime(prop, 4.f);
+			ParticleSys::SetStartSize(prop, 14.f);
+			for (int i{}; i < 4; ++i)
+				particleSys.Emit(prop);
+		}
+
 		// Update and render particles
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender();
+		particleSys.ParticleRender(camera);
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
@@ -301,6 +349,10 @@ namespace ALEngine::ECS
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
 		
 		rs->RenderBatch(cam);
+
+		// Update and render particles
+		particleSys.ParticleUpdate(Time::m_DeltaTime);
+		particleSys.ParticleRender(cam);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
@@ -381,6 +433,10 @@ namespace ALEngine::ECS
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
+	}
+	Tree::BinaryTree& GetSceneGraph(void)
+	{
+		return sceneGraph;
 	}
 
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)

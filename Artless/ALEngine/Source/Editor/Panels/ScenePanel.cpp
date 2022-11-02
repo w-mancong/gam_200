@@ -1,21 +1,7 @@
 #include "pch.h"
-#include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
-#include <glm/glm/gtc/type_ptr.hpp>
 
 #include "imgui.h"
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include "imgui_internal.h"
-
-#if defined(_MSC_VER) || defined(__MINGW32__)
-#include <malloc.h>
-#endif
-#if !defined(_MSC_VER) && !defined(__MINGW64_VERSION_MAJOR)
-#define _malloca(x) alloca(x)
-#define _freea(x)
-#endif
 
 namespace ALEngine::Editor
 {
@@ -44,13 +30,13 @@ namespace ALEngine::Editor
 
 		f32 constexpr CAM_SPEED{ 2.5f };
 
-		if (Input::KeyDown(KeyCode::W))
+		if (Input::KeyDown(KeyCode::Up))
 			m_EditorCamera.Position().y += CAM_SPEED;
-		if (Input::KeyDown(KeyCode::A))
+		if (Input::KeyDown(KeyCode::Left))
 			m_EditorCamera.Position().x -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::S))
+		if (Input::KeyDown(KeyCode::Down))
 			m_EditorCamera.Position().y -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::D))
+		if (Input::KeyDown(KeyCode::Right))
 			m_EditorCamera.Position().x += CAM_SPEED;
 
 		// Begin ImGui
@@ -69,10 +55,11 @@ namespace ALEngine::Editor
 			m_SceneHeight = ImGui::GetContentRegionAvail().y;
 
 		// Draw Scene
-		ImGui::Image((void*)ECS::GetEditorTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+		u64 tex = (u64)ECS::GetEditorTexture();
+		ImGui::Image((void*)tex, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// Only render gizmos if an entity is selected
-		if (hasSelectedEntity)
+		if (hasSelectedEntity && Coordinator::Instance()->HasComponent<Transform>(m_SelectedEntity))
 		{
 			// Get transform
 			Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
@@ -147,13 +134,11 @@ namespace ALEngine::Editor
 						}
 					}
 				}
-
 				// No entities clicked (clicked viewport)
 				if (!entity_clicked && !ImGuizmo::IsOver())
 					m_SelectedEntity = ECS::MAX_ENTITIES;
 			}
 		}
-
 		ImGui::End();
 	}
 
@@ -184,6 +169,7 @@ namespace ALEngine::Editor
 
 	Math::Vec2 ScenePanel::GetMouseWorldPos()
 	{
+		// Get style
 		ImGuiStyle style = ImGui::GetStyle();
 		// Set mouse position
 		m_ImGuiMousePos = ImGui::GetMousePos();
@@ -228,6 +214,17 @@ namespace ALEngine::Editor
 	Engine::Camera& ScenePanel::GetEditorCamera(void)
 	{
 		return m_EditorCamera;
+	}
+
+	void ScenePanel::SetPanelMin(ImVec2 min)
+	{
+		m_PanelMin = min;
+	}
+
+	void ScenePanel::SetDefault(ImVec2 pos, ImVec2 size)
+	{
+		m_DefaultPos = pos;
+		m_DefaultSize = size;
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

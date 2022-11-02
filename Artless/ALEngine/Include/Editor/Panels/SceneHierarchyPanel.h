@@ -38,15 +38,44 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void OnImGuiRender(void);
 
+		/*!*********************************************************************************
+			\brief
+			Updates the entity for the Scene Hierarchy Panel
+			\param child
+			Child entity to be updated onto the Scene Hierarchy Panel
+			\param popup_hasopen
+			Boolean for whether there is a popup
+		***********************************************************************************/
+		void UpdateEntitySHP(ECS::Entity child, b8& popup_hasopen);
+
+		/*!*********************************************************************************
+			\brief
+			Set the panel's minimum size
+			\param min
+			Panel's min size
+		***********************************************************************************/
+		void SetPanelMin(ImVec2 min);
+
+		/*!*********************************************************************************
+			\brief
+			Set the panel's default pos and size
+			\param pos
+			Panel's Pos
+			\param size
+			Panel's Size
+		***********************************************************************************/
+		void SetDefault(ImVec2 pos, ImVec2 size);
+
 	private:
 		// Panel sizes
-		const ImVec2 PANEL_MIN{ 320, 350 };		// Min Size
-		const ImVec2 PANEL_MAX{ 1920, 1080 };	// Max Size
+		ImVec2 m_PanelMin{};	// Min Size
+
+		// Panel Defaults
+		ImVec2 m_DefaultPos{};	// Default Position
+		ImVec2 m_DefaultSize{};	// Default Size
 
 		// Pointer to the list of entities
 		const ECS::EntityList *m_EntityList;
-
-		Tree::BinaryTree sceneGraph{};
 	};
 }
 

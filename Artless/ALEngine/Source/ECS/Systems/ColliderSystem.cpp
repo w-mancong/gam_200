@@ -4,7 +4,7 @@ author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
 brief:	This file contains the function definition for ColliderSystem.cpp
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
@@ -29,13 +29,13 @@ namespace ALEngine::ECS
 				\brief
 					Updates colliders, checks between the type of the 2 colliders and calls a collision check that fits the two type
 			***********************************************************************************/
-			bool UpdateCollider(Collider2D & collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
+			bool UpdateCollider(Collider2D & collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
 
 			/*!*********************************************************************************
 				\brief
 					Returns outcome of collision between AABB -> AABB
 			***********************************************************************************/
-			bool CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two);
+			bool CheckCollision_AABB_To_AABB(Vector2 const& position_one, Vector2 const& position_two, Vector2 const& size_one, Vector2 const& size_two);
 
 			/*!*********************************************************************************
 				\brief
@@ -63,22 +63,10 @@ namespace ALEngine::ECS
 
 			/*!*********************************************************************************
 				\brief
-					Returns outcome of collision between Point -> Circle
-			***********************************************************************************/
-			bool CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius);
-
-			/*!*********************************************************************************
-				\brief
-					Returns outcome of collision between Point -> AABB
-			***********************************************************************************/
-			bool CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight);
-
-			/*!*********************************************************************************
-				\brief
 					Returns outcome of collision between Moving AABB to static AABB 
 					Also checks if the rigidbody of moving is active, calculate the response here if collision is true
 			***********************************************************************************/
-			bool SweptCollision_AABB_ABBB(Collider2D& collider_one, Collider2D const& collider_two, Transform & parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two);
+			bool SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D& collider_other, Transform& parent_transform_moving, Transform& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other);
 			
 			/*!*********************************************************************************
 				\brief
@@ -118,10 +106,10 @@ namespace ALEngine::ECS
 				\brief
 				Draws a collider's shape using position
 			***********************************************************************************/
-			void DrawCollider(const Vector2 position, const Collider2D& collider, const Vector3 color);
+			void DrawCollider(ColliderType type, Vector2 position, Vector2 size, Vector4 color);
 
 			//Debug setting
-			bool isDebugDraw = false;
+			bool isDebugDraw = true, isDebugStep = true;
 
 		private:
 			//World axis
@@ -135,7 +123,7 @@ namespace ALEngine::ECS
 		std::shared_ptr<ColliderSystem> cs;
 
 		//Input Settings
-		u64 debugDrawKey = (u64)KeyCode::Key_2;
+		u64 debugDrawKey = (u64)KeyCode::Key_2, debugStepKeyToggle = (u64)KeyCode::Tab, debugStepKey = (u64)KeyCode::Key_0;
 	}
 
 	void RegisterColliderSystem(void)
@@ -151,39 +139,6 @@ namespace ALEngine::ECS
 		//Setup both collider and rigidbody for physics and collision simulation
 		CreateCollider(entity, shape);
 		CreateRigidbody(entity);
-	}
-
-	void DebugDrawCollider()
-	{
-		//**************** Run through all colliders again ************//
-		//**************** Update the position to after all the response ************//
-		for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
-		{
-			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
-			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-
-			//If rigidbody is disabled or collider is trigger, no need to update position
-			if (!Coordinator::Instance()->HasComponent<Rigidbody2D>(*it) || collider.isTrigger) {
-				if (cs->isDebugDraw) {
-					if (collider.isCollided) {
-						cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
-					}
-					else {
-						cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
-					}
-				}
-				continue;
-			}
-
-			if (cs->isDebugDraw) {
-				if (collider.isCollided) {
-					cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
-				}
-				else {
-					cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
-				}
-			}
-		}
 	}
 
 	void CreateCollider(Entity const& entity, ColliderType shape)
@@ -217,6 +172,8 @@ namespace ALEngine::ECS
 			}
 		}
 		Coordinator::Instance()->AddComponent(entity, collider);
+
+		CreateEventCollisionTrigger(entity);
 	}
 
 	void ColliderSystem::UpdateWorldAxis(Collider2D& collider, Transform const& parentTransform) {
@@ -233,7 +190,7 @@ namespace ALEngine::ECS
 		collider.m_globalUp = rotationTransform * worldYAxis;
 	}
 
-	bool ColliderSystem::UpdateCollider(Collider2D& collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform const& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two)
+	bool ColliderSystem::UpdateCollider(Collider2D& collider_one, Collider2D & collider_two, Transform& parent_transform_one, Transform& parent_transform_two, Rigidbody2D& rigidbody_one, Rigidbody2D& rigidbody_two)
 	{
 		//Keep track of collision status
 		bool collision = false;
@@ -247,7 +204,9 @@ namespace ALEngine::ECS
 			}
 			else{
 				//Else static based collision
-				collision = CheckCollision_AABB_To_AABB(collider_one, collider_two, parent_transform_one, parent_transform_two);
+				collision = CheckCollision_AABB_To_AABB(collider_one.m_localPosition + (Vector2)parent_transform_one.position, collider_two.m_localPosition + (Vector2)parent_transform_two.position,
+														{ collider_one.scale[0] + parent_transform_one.scale.x, collider_one.scale[1] + parent_transform_one.scale.y },
+														{ collider_two.scale[0] + parent_transform_two.scale.x, collider_two.scale[1] + parent_transform_two.scale.y });
 			}
 		}
 		//Circle-Circle
@@ -292,11 +251,29 @@ namespace ALEngine::ECS
 		
 	void UpdateColliderSystem() {
 		//Toggle debug draw on input
+		//Toggle debug step on input
+		if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKeyToggle)))
+		{
+			cs->isDebugStep = !cs->isDebugStep;
+		}
+
 		if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugDrawKey)))
 		{
 			cs->isDebugDraw = !cs->isDebugDraw;
 		}
-			
+
+		//If debug step is on
+		if (cs->isDebugStep) {
+			//And the step key insn't return
+			//Return the function (Skip the rigidbody system update)
+			if (!Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKey)))
+			{
+				return;
+			}
+
+			//Otherwise if input is read, continue the simulation
+		}
+
 		//Keep track of collision status
 		bool collision = false;
 
@@ -310,6 +287,7 @@ namespace ALEngine::ECS
 
 			//Clear collision points
 			Collider.collisionPoints.clear();
+			Collider.collidedCollidersPtr.clear();
 
 			//Update the world axis of OOBB
 			cs->UpdateWorldAxis(Coordinator::Instance()->GetComponent<Collider2D>(*it), trans);
@@ -321,6 +299,10 @@ namespace ALEngine::ECS
 			//One data (Treated as moving if rigidbody is enabled)
 			Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 			Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+
+			if (!oneCollider.isEnabled) {
+				continue;
+			}
 
 			Rigidbody2D emptyRigidody{};
 			emptyRigidody.isEnabled = false;
@@ -338,7 +320,11 @@ namespace ALEngine::ECS
 
 				//Two Data
 				Collider2D& twoCollider = Coordinator::Instance()->GetComponent<Collider2D>(*jt);
-				Transform const& twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
+				Transform & twoParentTransform = Coordinator::Instance()->GetComponent<Transform>(*jt);
+
+				if (!twoCollider.isEnabled) {
+					continue;
+				}
 
 				Rigidbody2D& twoRigidbody = Coordinator::Instance()->HasComponent<Rigidbody2D>(*jt) ?
 					Coordinator::Instance()->GetComponent<Rigidbody2D>(*jt) :
@@ -351,17 +337,20 @@ namespace ALEngine::ECS
 				if (collision) {
 					oneCollider.isCollided = collision;
 					twoCollider.isCollided = collision;
+
+					oneCollider.collidedCollidersPtr.push_back(*jt);
+					twoCollider.collidedCollidersPtr.push_back(*it);
 				}
 			}
 		}
 	}
 
-	bool ColliderSystem::CheckCollision_AABB_To_AABB(Collider2D const& collider_one, Collider2D const& collider_two, Transform const& parent_transform_one, Transform const& parent_transform_two) {
+	bool ColliderSystem::CheckCollision_AABB_To_AABB(Vector2 const& position_one, Vector2 const& position_two, Vector2 const& size_one, Vector2 const& size_two) {
 		//Set up the bottom left and top right of both box
-		Vector2 oneBottomLeft = { parent_transform_one.position.x + collider_one.m_localPosition.x - collider_one.scale[0] * 0.5f, parent_transform_one.position.y + collider_one.m_localPosition.y - collider_one.scale[1] * 0.5f } ;
-		Vector2 oneTopRight = { parent_transform_one.position.x + collider_one.m_localPosition.x + collider_one.scale[0] * 0.5f, parent_transform_one.position.y + collider_one.m_localPosition.y + collider_one.scale[1] * 0.5f };
-		Vector2 twoBottomLeft = { parent_transform_two.position.x + collider_two.m_localPosition.x - collider_two.scale[0] * 0.5f, parent_transform_two.position.y + collider_two.m_localPosition.y - collider_two.scale[1] * 0.5f };
-		Vector2 twoTopRight = { parent_transform_two.position.x + collider_two.m_localPosition.x + collider_two.scale[0] * 0.5f, parent_transform_two.position.y + collider_two.m_localPosition.y + collider_two.scale[1] * 0.5f };
+		Vector2 oneBottomLeft = { position_one.x - size_one.x * 0.5f, position_one.y - size_one.y * 0.5f };
+		Vector2 oneTopRight = { position_one.x + size_one.x * 0.5f, position_one.y + size_one.y * 0.5f };
+		Vector2 twoBottomLeft = { position_two.x - size_two.x * 0.5f, position_two.y - size_two.y * 0.5f };
+		Vector2 twoTopRight = { position_two.x + size_two.x * 0.5f, position_two.y + size_two.y * 0.5f };
 
 		//Check for intersection
 		if (!(twoBottomLeft.x > oneTopRight.x || twoTopRight.x < oneBottomLeft.x || twoBottomLeft.y > oneTopRight.y || twoTopRight.y < oneBottomLeft.y))
@@ -562,11 +551,13 @@ namespace ALEngine::ECS
 	}
 		
 	using Physics::RaycastHit2D;
-	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D const& collider_other, Transform & parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, [[maybe_unused]] Rigidbody2D& rigidbody_other) {
+	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D& collider_other, Transform& parent_transform_moving, Transform& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
 		//If the velocity is zero
 		//Just calculate static
 		if (rigidbody_moving.velocity.Magnitude() == 0) {
-			return CheckCollision_AABB_To_AABB(collider_moving, collider_other, parent_transform_moving, parent_transform_other);;
+			return CheckCollision_AABB_To_AABB(collider_moving.m_localPosition + (Vector2)parent_transform_moving.position, collider_other.m_localPosition + (Vector2)parent_transform_other.position,
+				{ collider_moving.scale[0] + parent_transform_moving.scale.x, collider_moving.scale[1] + parent_transform_moving.scale.y },
+				{ collider_other.scale[0] + parent_transform_other.scale.x, collider_other.scale[1] + parent_transform_other.scale.y });
 		}
 
 		//Holder for global positions
@@ -575,8 +566,8 @@ namespace ALEngine::ECS
 
 		//For raycasting the combined size of box
 		Collider2D tempBox = collider_other;			
-		tempBox.scale[0] += collider_moving.scale[0];
-		tempBox.scale[1] += collider_moving.scale[1];
+		tempBox.scale[0] += collider_moving.scale[0] + parent_transform_moving.scale.x + parent_transform_other.scale.x;
+		tempBox.scale[1] += collider_moving.scale[1] + parent_transform_moving.scale.y + parent_transform_other.scale.y;
 
 		//Raycast
 		Ray2D ray = { movingGlobalPosition, rigidbody_moving.nextPosition };
@@ -586,6 +577,10 @@ namespace ALEngine::ECS
 		//Means collision will happen
 		if (rayHit.isCollided)
 		{
+			if (collider_other.isTrigger) {
+				return true;
+			}
+
 			//From the output normal
 			//Determine which velocity part is affected
 			if (rayHit.normal.y != 0) {
@@ -593,7 +588,6 @@ namespace ALEngine::ECS
 				//collision is vertical
 
 				//Stop vertical velocity
-				rigidbody_moving.frameVelocity.y = 0;
 				rigidbody_moving.velocity.y = 0;
 			}
 			else if (rayHit.normal.x != 0) {
@@ -601,7 +595,6 @@ namespace ALEngine::ECS
 				//collision is horizontal
 					
 				//Stop horizontal velocity
-				rigidbody_moving.frameVelocity.x = 0;
 				rigidbody_moving.velocity.x = 0;
 			}
 
@@ -629,33 +622,30 @@ namespace ALEngine::ECS
 			//If can move horizontally
 			if (canMoveX) {
 				//Update next position to follow velocity
-				rigidbody_moving.nextPosition.x = rayHit.point.x + rigidbody_moving.frameVelocity.x;
+				rigidbody_moving.nextPosition.x = rayHit.point.x + rigidbody_moving.velocity.x;
 			}
 			else {
 				//if the collision is horizontal
 				if (rayHit.normal.x != 0) {
 					//revert movement of x and stop velocity
-					rigidbody_moving.nextPosition.x = rayHit.point.x - rigidbody_moving.frameVelocity.x;
+					rigidbody_moving.nextPosition.x = rayHit.point.x - rigidbody_moving.velocity.x;
 					rigidbody_moving.velocity.x = 0;
-					rigidbody_moving.frameVelocity.x = 0;
 				}
 			}
 
 			//If can move vertically
 			if (canMoveY) {
 				//Update next position to follow velocity
-				rigidbody_moving.nextPosition.y = rayHit.point.y + rigidbody_moving.frameVelocity.y;
+				rigidbody_moving.nextPosition.y = rayHit.point.y + rigidbody_moving.velocity.y;
 			}
 			else {
 				//if the collision is horizontal
 				if (rayHit.normal.y != 0) {
 					//revert movement of y and stop velocity
-					rigidbody_moving.nextPosition.y = rayHit.point.y - rigidbody_moving.frameVelocity.y;
+					rigidbody_moving.nextPosition.y = rayHit.point.y - rigidbody_moving.velocity.y;
 					rigidbody_moving.velocity.y = 0;
-					rigidbody_moving.frameVelocity.y = 0;
 				}
 			}
-
 			//Collision Happen
 			return true;
 		}//End raycast check
@@ -663,30 +653,6 @@ namespace ALEngine::ECS
 		//No collision
 		return false;
 	}
-
-	bool ColliderSystem::CheckCollision_Point_To_Circle(Vector2 position, Vector2 circleCenter, float circleRadius) {
-		//Direction, used for distance 
-		Vector2 direction = position - circleCenter;
-
-		//Return Intersection
-		return (direction.x * direction.x + direction.y * direction.y) <= circleRadius * circleRadius;
-	}
-
-	bool ColliderSystem::CheckCollision_Point_To_AABBBox(Vector2 position, Vector2 boxCenter, float boxWidth, float boxHeight) {
-		//Holder for bottom left and top right
-		Vector2 bottomLeft = boxCenter - Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
-		Vector2 topRight = boxCenter + Vector2(boxWidth * 0.5f, boxHeight * 0.5f);
-
-		//Intersection check
-		if (position.x < bottomLeft.x || position.x > topRight.x || position.y < bottomLeft.y || position.y > topRight.y) {
-			//No intersection
-			return false;
-		}
-
-		//Intersection
-		return true;
-	}
-
 
 	bool ColliderSystem::SweptCollision_Circle_Circle(Collider2D& collider_moving, Collider2D const& collider_other, Transform& parent_transform_moving, Transform const& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbodyother) {
 		(void)rigidbodyother;
@@ -705,7 +671,7 @@ namespace ALEngine::ECS
 		tempCircle.scale[0] += collider_moving.scale[0];
 
 		//Raycast
-		Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.frameVelocity };
+		Ray2D ray = { movingGlobalPosition, movingGlobalPosition + rigidbody_moving.velocity };
 		RaycastHit2D rayHit = Physics::Raycast_Circle(ray, tempCircle, parent_transform_other);
 
 		//If ray hit
@@ -713,8 +679,8 @@ namespace ALEngine::ECS
 		if (rayHit.isCollided)
 		{
 			//holder for velocity
-			Vector2 x_direction = { rigidbody_moving.frameVelocity.x, 0 };
-			Vector2 y_direction = { 0, rigidbody_moving.frameVelocity.y };
+			Vector2 x_direction = { rigidbody_moving.velocity.x, 0 };
+			Vector2 y_direction = { 0, rigidbody_moving.velocity.y };
 
 			//Keep track of output velocity
 			Vector2 direction{ 0,0 };
@@ -744,6 +710,31 @@ namespace ALEngine::ECS
 		return false;
 	}
 
+	void DebugDrawCollider()
+	{
+		//**************** Run through all colliders again ************//
+		//**************** Update the position to after all the response ************//
+		for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
+		{
+			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
+			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+
+			if (cs->isDebugDraw && collider.isEnabled) {
+				if (Coordinator::Instance()->HasComponent<Rigidbody2D>(*it)) {
+					Rigidbody2D& r = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+					cs->DrawCollider(ColliderType::Rectangle2D_AABB, parentTransform.position + (Vector3)r.velocity + (Vector3)r.acceleration, { parentTransform.scale.x + collider.scale[0], parentTransform.scale.y + collider.scale[1] }, { 1.f, 1.f, 1.f, 1.f });
+				}
+
+				if (collider.isCollided) {
+					cs->DrawCollider(parentTransform, collider, { 1.f, 0.f, 0.f, 1.f });
+				}
+				else {
+					cs->DrawCollider(parentTransform, collider, { 0.f, 1.f, 0.f, 1.f });
+				}
+			}
+		}
+	}
+
 	void ColliderSystem::DrawCollider(const Transform& parentTransform, const Collider2D& collider, const Vector4& color) {
 		//Draw colliders based on their type
 		switch (collider.colliderType) {
@@ -751,8 +742,8 @@ namespace ALEngine::ECS
 			{
 				//Box holder
 				Vector2 globalPosition = vec2(parentTransform.position) + collider.m_localPosition;
-				Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
-				Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
+				Vector2 bottomleft = { globalPosition.x - (collider.scale[0] + parentTransform.scale.x) * 0.5f, globalPosition.y - (collider.scale[1] + parentTransform.scale.y) * 0.5f };
+				Vector2 topright = { globalPosition.x + (collider.scale[0] + parentTransform.scale.x) * 0.5f, globalPosition.y + (collider.scale[1] + parentTransform.scale.y) * 0.5f };
 
 				//Draw 4 lines
 				Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);		//Bottom
@@ -769,17 +760,15 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void ColliderSystem::DrawCollider(const Vector2 position, const Collider2D& collider, const Vector3 color) {			
+	void ColliderSystem::DrawCollider(ColliderType type, Vector2 position, Vector2 size, Vector4 color) {
 		//Draw colliders based on their type
-		switch (collider.colliderType) {
-
+		switch (type) {
 		//Draw colliders based on their type
 		case ColliderType::Rectangle2D_AABB:
 		{
 			//Box holder
-			Vector2 globalPosition = position + collider.m_localPosition;
-			Vector2 bottomleft = { globalPosition.x - collider.scale[0] * 0.5f, globalPosition.y - collider.scale[1] * 0.5f };
-			Vector2 topright = { globalPosition.x + collider.scale[0] * 0.5f, globalPosition.y + collider.scale[1] * 0.5f };
+			Vector2 bottomleft = { position.x - size.x * 0.5f, position.y - size.y * 0.5f };
+			Vector2 topright = { position.x + size.x * 0.5f, position.y + size.y * 0.5f };
 
 			//Draw 4 lines
 			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom

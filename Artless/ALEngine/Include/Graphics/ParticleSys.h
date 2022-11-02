@@ -64,7 +64,7 @@ namespace ALEngine::Graphics::ParticleSys
 		\brief
 			Renders all active particles in the particle container.
 		***********************************************************************************/
-		void ParticleRender();
+		void ParticleRender(Engine::Camera const& camera);
 
 		/*!*********************************************************************************
 		\brief
@@ -86,7 +86,7 @@ namespace ALEngine::Graphics::ParticleSys
 			bool active{ false };
 		};
 		std::vector<Particle> particleContainer;
-		u32 particleIndex = 499; // max index of particles container
+		u32 particleIndex = 999; // max index of particles container
 		u32 particleVAO{ 0 }, particleVBO{}, particleEBO{};
 		Shader particleShader;
 	};

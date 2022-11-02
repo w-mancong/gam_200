@@ -1,10 +1,10 @@
-/*!
+ï»¿/*!
 file:	MySerializer.h
 author:	Darrion Aw Wei Ting
 email:	weitingdarrion.aw@digipen.edu
 brief:	This file contains a custom serializer for the project with the help of rapidJSON
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #ifndef	MY_SERIALIZER_H
@@ -35,27 +35,35 @@ brief:	This file contains a custom serializer for the project with the help of r
 
 namespace ALEngine::Serializer
 {
-	class Deserializer {
+	class Serializer {
 
 	public:
-		Deserializer(const std::string& fileName = "");
+		Serializer(const std::string& CONST_FILENAME = "");
 
-		b8 ReadFile(const std::string& fileName);
+		b8 ReadFile(const std::string& CONST_FILENAME);
 
-		int getInt(const char* pairName, const int defaultInt);
+		b8 WriteFile(const c8* CONST_FILENAMEs);
 
-		std::string getString(const char* pairName, const char* defaultString);
+		s32 GetInt(const c8* CONST_PAIRNAME, const s32 CONST_DEFAULT_INT);
+		void SetInt(const c8* CONST_PAIRNAME, const s32 CONST_VALUE);
 
-		f32 getFloat(const char* pairName, const f32 defaultFloat);
+		std::string GetString(const c8* CONST_PAIRNAME, const c8* CONST_DEFAULT_STRING);
+		void SetString(const c8* CONST_PAIRNAME, const c8* CONST_STRING);
 
-		Math::Vec2 getVec2(const char* pairName, Math::Vec2 defaultVec2);
+		f32 GetFloat(const c8* CONST_PAIRNAME, const f32 CONST_DEFAULT_FLOAT);
+		void SetFloat(const c8* CONST_PAIRNAME, const f32 CONST_FLOAT);
+
+		Math::Vec2 GetVec2(const c8* CONST_PAIRNAME, Math::Vec2 CONST_DEFAULT_VEC2);
+		void SetVec2(const c8* CONST_PAIRNAME, const Math::Vec2 CONST_VEC2);
+
+		Math::Vector3 GetVec3(const c8* CONST_PAIRNAME, const Math::Vector3 CONST_DEFAULT_VEC3);
+		void SetVec3(const c8* CONST_PAIRNAME, const Math::Vector3 CONST_VEC3);
 
 	private:
-		rapidjson::Document doc;
+		rapidjson::Document m_Doc;
 
 	};
 
 }
-
 
 #endif

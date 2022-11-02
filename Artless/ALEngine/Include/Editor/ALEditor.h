@@ -54,6 +54,36 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Initializes the Style of the editor
+		***********************************************************************************/
+		void InitializeStyle(void);
+
+		/*!*********************************************************************************
+			\brief
+			Updates the Menu Bar for the Editor
+		***********************************************************************************/
+		void EditorMenuBar(void);
+
+		/*!*********************************************************************************
+			\brief
+			Updates the Toolbar for the Editor
+			Toolbar contains play/stop functionality
+		***********************************************************************************/
+		void EditorToolbar(void);
+
+		/*!*********************************************************************************
+			\brief
+			Load Data from file (Window Pos, Colors, etc.)
+		***********************************************************************************/
+		void LoadData(void);
+
+
+		/*!*********************************************************************************
+			Getters and Setters
+		***********************************************************************************/
+	public:
+		/*!*********************************************************************************
+			\brief
 			Sets ImGui to be enabled or disabled.
 
 			\param [in] isEnabled
@@ -117,12 +147,12 @@ namespace ALEngine::Editor
 		f64 GetSceneHeight(void);
 
 		/*!*********************************************************************************
-		\brief
-		Returns the Editor's Camera
+			\brief
+			Returns the Editor's Camera
 
-		\return
-		Gets the Editor's Camera
-	***********************************************************************************/
+			\return
+			Gets the Editor's Camera
+		***********************************************************************************/
 		Engine::Camera& GetEditorCamera(void);
 
 		/*!*********************************************************************************
@@ -135,6 +165,16 @@ namespace ALEngine::Editor
 			position was handled outside of the Scene viewport
 		***********************************************************************************/
 		Math::Vec2 GetMouseWorldPos();
+
+		/*!*********************************************************************************
+			\brief
+			Returns if the game panel is active or not
+
+			\return
+			Returns true if game panel is active,
+			else returns false
+		***********************************************************************************/
+		b8 GetGameActive(void);
 
 	private:
 		/*!*********************************************************************************
@@ -167,21 +207,33 @@ namespace ALEngine::Editor
 		friend class Memory::StaticMemory;
 
 		// Window Min Size
-		ImVec2 m_WinMinSize{ 320, 350 };
+		ImVec2 m_WinMinSize{ 300.f, 25.f };
 
 		// Variables
 		b8 m_ImGuiEnabled{ false };		// Set to true if ImGui is enabled
 		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
-		b8 m_GameStart{ false };		// Set to true if in Game Mode
+		b8 m_GameIsActive{ false };		// Set to true if in Game Mode
+		b8 m_FullScreen{ false };		// Set to true if game mode full screen
 
 		// Panels
-		ContentBrowserPanel m_ContentBrowserPanel;	// Content Browser Panel
-		ScenePanel m_ScenePanel;					// Scene Panel (Editor)
-		GamePanel m_GamePanel;						// Game Panel
-		InspectorPanel m_InspectorPanel;			// Inspector Panel
-		LoggerPanel m_LoggerPanel;					// Logger Panel
-		ProfilerPanel m_ProfilerPanel;				// Profiler Panel
-		SceneHierarchyPanel m_SceneHierarchyPanel;	// Scene Hierarchy Panel
+		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel
+		ScenePanel m_ScenePanel;						// Scene Panel (Editor)
+		GamePanel m_GamePanel;							// Game Panel
+		InspectorPanel m_InspectorPanel;				// Inspector Panel
+		LoggerPanel m_LoggerPanel;						// Logger Panel
+		//ProfilerPanel m_ProfilerPanel;				// Profiler Panel
+		SceneHierarchyPanel m_SceneHierarchyPanel;		// Scene Hierarchy Panel
+
+		// Editor Colors
+		ImVec4 m_ColorTitleBg{};			// Color of Title Background
+		ImVec4 m_ColorTitleActiveBg{};		// Color of Title Active Background
+		ImVec4 m_ColorWindowBg{};			// Color of Window Background
+		ImVec4 m_ColorNormal{};				// Color of Normal
+		ImVec4 m_ColorActive{};				// Color of Active
+		ImVec4 m_ColorActive2{};			// Color of Active 2
+		ImVec4 m_ColorActive3{};			// Color of Active 3
+		ImVec4 m_ColorHovered{};			// Color of Hovered
+		ImVec4 m_ColorInteractive{};		// Color of Interactive
 	};
 }
 

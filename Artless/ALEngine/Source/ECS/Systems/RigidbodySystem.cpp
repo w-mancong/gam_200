@@ -47,7 +47,7 @@ namespace ALEngine::ECS
 		void DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid);
 
 		//Debug settings
-		bool isDebugStep = false, isDebugDraw = false;
+		bool isDebugStep = true, isDebugDraw = true;
 	};
 
 	namespace
@@ -76,6 +76,7 @@ namespace ALEngine::ECS
 	void CreateRigidbody(Entity const& entity) {
 		//Setup rigidbody in the case of wanting custom stats
 		Rigidbody2D rigidbody;
+		//rigidbody.nextPosition = Coordinator::Instance()->GetComponent<Transform>(entity).position;
 		Coordinator::Instance()->AddComponent(entity, rigidbody);
 	}
 
@@ -98,10 +99,15 @@ namespace ALEngine::ECS
 			//And the step key insn't return
 			//Return the function (Skip the rigidbody system update)
 			if (!Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKey)))
-			{
+			{		
+				//Shift through each component
+				for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+					Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
+					Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+					rigid.nextPosition = transform.position;
+				}
 				return;
 			}
-
 			//Otherwise if input is read, continue the simulation
 		}
 		//*******End Debugging*******//
@@ -120,7 +126,7 @@ namespace ALEngine::ECS
 			AddForce(rigid, Vector2(0,-earthGravity * rigid.mass), FORCEMODE::FORCE);
 				
 			//Friction
-			Vector2 friction = { -rigid.velocity.x * globalDrag * rigid.drag.x, 0 };
+			Vector2 friction = { -rigid.velocity.x * globalDrag * rigid.drag.x * rigid.mass, 0 };
 			AddForce(rigid, friction, FORCEMODE::FORCE);
 
 			//Update rigidbody from all forces
@@ -130,6 +136,64 @@ namespace ALEngine::ECS
 			else {
 				rigidS->UpdateRigidbody(transform, rigid);
 			}
+		}
+	}
+
+	void UpdatePostRigidbodySystem() {
+		//*******Debugging*******//
+		//Shift through each component
+		for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
+			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+
+			//If rigidbody isn't enabled, skip
+			if (!rigid.isEnabled) {
+				continue;
+			}
+			
+			transform.position = rigid.nextPosition;
+		}
+	}
+
+	void RigidbodySystem::UpdateRigidbody(Transform& t, Collider2D& collider, Rigidbody2D& rigid) {
+		//Update velocity
+		rigid.velocity += rigid.acceleration;
+
+		//Calculate next position
+		rigid.nextPosition = vec2(t.position) + collider.m_localPosition + rigid.velocity;
+
+		//Refresh acceleration
+		rigid.acceleration *= 0;
+	}
+
+	void RigidbodySystem::UpdateRigidbody(Transform& t, Rigidbody2D& rigid) {
+		//Update velocity
+		rigid.velocity += (rigid.acceleration) * Time::m_FixedDeltaTime;
+
+		//Calculate next position
+		rigid.nextPosition = vec2(t.position) + rigid.velocity;
+
+		//Refresh acceleration
+		rigid.acceleration *= 0;
+	}
+
+	void AddForce(Rigidbody2D& rigidbody, Math::Vec2 forceVelocity, FORCEMODE mode) {
+		//Force modes
+		switch (mode) {
+		//A=F/M
+		case FORCEMODE::FORCE:
+			rigidbody.acceleration += (forceVelocity / rigidbody.mass) * Time::m_FixedDeltaTime;
+			break;
+
+		//Direct addition to the acceleration
+		case FORCEMODE::ACCELERATION:
+			rigidbody.acceleration += forceVelocity * Time::m_FixedDeltaTime;
+			break;
+
+		//Direct addition to velocity
+		case FORCEMODE::VELOCITY_CHANGE:
+			rigidbody.velocity += forceVelocity;
+			break;
 		}
 	}
 
@@ -151,83 +215,20 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void UpdatePostRigidbodySystem() {
-		//*******Debugging*******//
-		//Shift through each component
-		for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
-			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
-			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-
-			//If rigidbody isn't enabled, skip
-			if (!rigid.isEnabled) {
-				continue;
-			}
-
-			transform.position = rigid.nextPosition;
-		}
-	}
-	void RigidbodySystem::UpdateRigidbody(Transform& t, Collider2D& collider, Rigidbody2D& rigid) {
-		//Update velocity
-		rigid.velocity += rigid.acceleration;
-
-		//Update frame's velocity
-		rigid.frameVelocity = rigid.velocity * Time::m_FixedDeltaTime;
-
-		//Calculate next position
-		rigid.nextPosition = vec2(t.position) + collider.m_localPosition + rigid.frameVelocity;
-
-		//Refresh acceleration
-		rigid.acceleration *= 0;
-	}
-
-	void RigidbodySystem::UpdateRigidbody(Transform& t, Rigidbody2D& rigid) {
-		//Update velocity
-		rigid.velocity += rigid.acceleration;
-
-		//Update frame's velocity
-		rigid.frameVelocity = rigid.velocity * Time::m_FixedDeltaTime;
-
-		//Calculate next position
-		rigid.nextPosition = vec2(t.position) + rigid.frameVelocity;
-
-		//Refresh acceleration
-		rigid.acceleration *= 0;
-	}
-
-	void AddForce(Rigidbody2D& rigidbody, Math::Vec2 forceVelocity, FORCEMODE mode) {
-		//Force modes
-		switch (mode) {
-		//A=F/M
-		case FORCEMODE::FORCE:
-			rigidbody.acceleration += forceVelocity / rigidbody.mass;
-			break;
-
-		//Direct addition to the acceleration
-		case FORCEMODE::ACCELERATION:
-			rigidbody.acceleration += forceVelocity;
-			break;
-
-		//Direct addition to velocity
-		case FORCEMODE::VELOCITY_CHANGE:
-			rigidbody.velocity += forceVelocity;
-			break;
-		}
-	}
-
 	void RigidbodySystem::DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid) {
 		if (isDebugStep) {
 			//Draw velocity
-			Gizmos::Gizmo::RenderLine(transform.position, vec2(transform.position) + rigid.frameVelocity, { 1.f,0.f,0.f,1.f }, 10.0f);
+			Gizmos::Gizmo::RenderLine(transform.position, vec2(transform.position) + rigid.velocity, { 1.f,0.f,0.f,1.f }, 10.0f);
 
 			//Draw acceleration
-			Gizmos::Gizmo::RenderLine(vec2(transform.position), vec2(transform.position) + rigid.acceleration * Time::m_FixedDeltaTime, { 1.f, 0.f, 1.f,1.f }, 10.0f);
+			Gizmos::Gizmo::RenderLine(vec2(transform.position), vec2(transform.position) + rigid.acceleration, { 1.f, 0.f, 1.f,1.f }, 10.0f);
 		}
 		else {
 			//Draw velocity
-			Gizmos::Gizmo::RenderLine(vec2(transform.position) + rigid.frameVelocity, vec2(transform.position) + rigid.frameVelocity * 2, { 1.f,0.f,0.f,1.f }, 10.0f);
+			Gizmos::Gizmo::RenderLine(vec2(transform.position) + rigid.velocity, vec2(transform.position) + rigid.velocity * 2, { 1.f,0.f,0.f,1.f }, 10.0f);
 
 			//Draw acceleration
-			Gizmos::Gizmo::RenderLine(vec2(transform.position) + rigid.frameVelocity, vec2(transform.position) + rigid.acceleration * Time::m_FixedDeltaTime * 2, { 1.f, 0.f, 1.f,1.f }, 10.0f);
+			Gizmos::Gizmo::RenderLine(vec2(transform.position) + rigid.velocity, vec2(transform.position) + rigid.acceleration * 2, { 1.f, 0.f, 1.f,1.f }, 10.0f);
 		}
 	}
 }

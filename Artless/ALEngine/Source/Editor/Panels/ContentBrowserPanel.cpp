@@ -173,7 +173,7 @@ namespace ALEngine::Editor
 			if (ImGui::BeginDragDropSource())
 			{
 				const wchar_t* itemPath = path.c_str();
-				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				ImGui::SetDragDropPayload("ASSET_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();
 			}
 
@@ -202,5 +202,17 @@ namespace ALEngine::Editor
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
-	}	
+	}
+	
+	void ContentBrowserPanel::SetPanelMin(ImVec2 min)
+	{
+		m_PanelMin = min;
+	}
+
+	void ContentBrowserPanel::SetDefault(ImVec2 pos, ImVec2 size)
+	{
+		m_DefaultPos = pos;
+		m_DefaultSize = size;
+	}
+
 }	
