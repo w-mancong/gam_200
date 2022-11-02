@@ -54,7 +54,8 @@ namespace ALEngine::Editor
 			\param size
 			Panel's Size
 		***********************************************************************************/
-		void SetDefault(Math::Vec2 pos, Math::Vec2 size);
+		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
+
 	private:
 		std::ostringstream m_LoggerOSS;		// Logger's ostringtream
 		u32 m_LogFlags{ 0 };				// Flag for which level to display

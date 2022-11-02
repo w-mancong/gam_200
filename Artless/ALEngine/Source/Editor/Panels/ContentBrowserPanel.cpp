@@ -212,7 +212,7 @@ namespace ALEngine::Editor
 		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void ContentBrowserPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	void ContentBrowserPanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);

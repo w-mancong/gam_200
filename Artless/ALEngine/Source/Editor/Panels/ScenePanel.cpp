@@ -39,6 +39,9 @@ namespace ALEngine::Editor
 		if (Input::KeyDown(KeyCode::Right))
 			m_EditorCamera.Position().x += CAM_SPEED;
 
+		// Set constraints
+		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
+
 		// Begin ImGui
 		if (!ImGui::Begin("Editor Scene"))
 		{
@@ -221,7 +224,7 @@ namespace ALEngine::Editor
 		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void ScenePanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	void ScenePanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);

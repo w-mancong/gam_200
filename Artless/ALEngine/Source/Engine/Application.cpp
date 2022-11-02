@@ -117,8 +117,8 @@ namespace ALEngine::Engine
 		CreateCollider(coin);
 		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(coin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
 
-		trans.position = { 500, 500 };
-		trans.scale = { 50, 50 };
+		trans.position = level.GetVec2("pathfinder_pos", Math::Vec2());
+		trans.scale = level.GetVec2("pathfinder_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(pathfinder, trans);
 		CreateSprite(pathfinder);
 		CreateEnemyUnit(pathfinder);
@@ -135,7 +135,8 @@ namespace ALEngine::Engine
 
 		sfx.channel = Channel::SFX;
 
-		Transform t1{ {}, { 775.0f, 335.0f }, 0 };
+		Math::Vec2 anim_pos = level.GetVec2("anim_pos", Math::Vec2());
+		Transform t1{ { anim_pos.x, anim_pos.y, 0.f }, level.GetVec2("anim_size", Math::Vec2()), 0 };
 		entity = CreateSprite(t1);
 		Animator animator = CreateAnimator("Test");
 		AttachAnimator(entity, animator);
@@ -163,14 +164,21 @@ namespace ALEngine::Engine
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
-			// Begin new ImGui frame
-			ALEditor::Instance()->Begin();
+			{
+				PROFILER_TIMER("Editor UI Update")
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
+			}
 			
-			// Normal Update
-			Engine::Update();
+			{
+				PROFILER_TIMER("Normal Update")
+				// Normal Update
+				Engine::Update();
+			}
 
 			if (ALEditor::Instance()->GetGameActive())
 			{
+				PROFILER_TIMER("Fixed Update")
 				// Physics
 				// Fixed Update (Physics)
 				accumulator += Time::m_DeltaTime;
@@ -189,15 +197,23 @@ namespace ALEngine::Engine
 				}
 			}
 
-			// Render
-			Render();
+			{
+				PROFILER_TIMER("Render Update")
 
-			std::ostringstream oss;
-			oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
+				// Render
+				Render();
 
-			// Wait for next frame
-			Time::WaitUntil();
+				std::ostringstream oss;
+				oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
+				glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
+			}
+
+			{
+				PROFILER_TIMER("FPS Wait")
+
+				// Wait for next frame
+				Time::WaitUntil();
+			}
 			
 			// Marks the end of a frame loop, for tracy profiler
 			FrameMark
@@ -241,32 +257,35 @@ namespace ALEngine::Engine
 			AL_CORE_DEBUG("Mouse Pos: {}, {}", john.x, john.y);
 		}
 
-		Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+		if (ALEditor::Instance()->GetGameActive())
+		{
+			Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
-		if (Input::KeyTriggered(KeyCode::A))
-			ChangeAnimation(animator, "PlayingGuitar");
-		if (Input::KeyTriggered(KeyCode::D))
-			ChangeAnimation(animator, "PlayerRunning");
-		if (Input::KeyTriggered(KeyCode::X))
-			sfx.Play();
-		if (Input::KeyDown(KeyCode::Z))
-		{
-			masterVolume -= 0.1f;
-			if (masterVolume <= 0.0f)
-				masterVolume = 0.0f;	
-			SetChannelVolume(Channel::Master, masterVolume);
+			if (Input::KeyTriggered(KeyCode::A))
+				ChangeAnimation(animator, "PlayingGuitar");
+			if (Input::KeyTriggered(KeyCode::D))
+				ChangeAnimation(animator, "PlayerRunning");
+			if (Input::KeyTriggered(KeyCode::X))
+				sfx.Play();
+			if (Input::KeyDown(KeyCode::Z))
+			{
+				masterVolume -= 0.1f;
+				if (masterVolume <= 0.0f)
+					masterVolume = 0.0f;
+				SetChannelVolume(Channel::Master, masterVolume);
+			}
+			if (Input::KeyDown(KeyCode::C))
+			{
+				masterVolume += 0.1f;
+				if (masterVolume <= 1.0f)
+					masterVolume = 1.0f;
+				SetChannelVolume(Channel::Master, masterVolume);
+			}
+			if (Input::KeyTriggered(KeyCode::P))
+				TogglePauseChannel(Channel::Master);
+			if (Input::KeyTriggered(KeyCode::M))
+				ToggleMuteChannel(Channel::Master);
 		}
-		if (Input::KeyDown(KeyCode::C))
-		{
-			masterVolume += 0.1f;
-			if (masterVolume <= 1.0f)
-				masterVolume = 1.0f;
-			SetChannelVolume(Channel::Master, masterVolume);
-		}
-		if (Input::KeyTriggered(KeyCode::P))
-			TogglePauseChannel(Channel::Master);
-		if (Input::KeyTriggered(KeyCode::M))
-			ToggleMuteChannel(Channel::Master);
 		
 	}
 

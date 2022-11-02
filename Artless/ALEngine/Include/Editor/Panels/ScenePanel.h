@@ -116,7 +116,7 @@ namespace ALEngine::Editor
 			\param size
 			Panel's Size
 		***********************************************************************************/
-		void SetDefault(Math::Vec2 pos, Math::Vec2 size);
+		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo

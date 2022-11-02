@@ -21,8 +21,9 @@ namespace ALEngine::Editor
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-		// Set size constraints of inspector
-		//ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+
+		// Set constraints
+		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
 		if (!ImGui::Begin("Scene Hierarchy"))
 		{
@@ -211,7 +212,7 @@ namespace ALEngine::Editor
 		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void SceneHierarchyPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	void SceneHierarchyPanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);
