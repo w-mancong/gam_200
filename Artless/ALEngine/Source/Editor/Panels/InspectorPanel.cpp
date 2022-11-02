@@ -170,11 +170,15 @@ namespace ALEngine::Editor
 				m_CurrentGizmoOperation = ImGuizmo::SCALE;
 
 			// Translate and Scale matrix
+			// 1) Get parent global
+			// 2) Temp Variable "offset" = xform.position.x * parent Global Scale
+			// 3) Display this offset in inspector
+			// 4) Calculate new Local (Parent Inverse Global Scale * offset
 			f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
 				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f };
 
 			// FLoat inputs
-			ImGui::DragFloat2("Tr", mtx_translate);						// Traslate
+			ImGui::DragFloat2("Tr", mtx_translate); // Traslate
 			ImGui::DragFloat("Rt", &xform.rotation, 1.f, 0.f, 360.f);	// Rotate
 			ImGui::DragFloat2("Sc", mtx_scale);							// Scale
 

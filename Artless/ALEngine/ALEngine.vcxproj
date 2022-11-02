@@ -176,6 +176,7 @@
     <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\InspectorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp">
@@ -333,6 +334,7 @@
     <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
     <ClInclude Include="Include\Editor\Panels\InspectorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
