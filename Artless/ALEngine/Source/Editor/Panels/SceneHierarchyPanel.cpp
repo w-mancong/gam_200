@@ -136,6 +136,22 @@ namespace ALEngine::Editor
 			ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 		}
 
+		// Drop object here
+		if (ImGui::BeginDragDropTarget())
+		{
+			// Set payload
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
+			{
+				assert(payload->DataSize == sizeof(ECS::Entity));
+				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
+
+				sceneGraph.Destruct(child_pl);
+				sceneGraph.Push(-1, child_pl);
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
 		ImGui::End();
 	}
 	
