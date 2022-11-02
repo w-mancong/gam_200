@@ -1,5 +1,14 @@
 #ifndef	GAMEPLAY_INTERFACE_H
 #define GAMEPLAY_INTERFACE_H
+/*!
+file:	GamePlayInterface.h
+author:	Tan Zhen Xiong
+email:	t.zhenxiong@digipen.edu
+brief:	This file contains the function definition for GamePlayInterface.h
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 
 namespace ALEngine::Engine::GameplayInterface
 {
@@ -28,8 +37,4 @@ namespace ALEngine::Engine::GameplayInterface
     ***********************************************************************************/
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
 }
-
-
-
-
 #endif

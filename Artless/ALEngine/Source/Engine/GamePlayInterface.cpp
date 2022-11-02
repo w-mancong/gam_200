@@ -1,8 +1,8 @@
 /*!
-file:	Physics2D.cpp
+file:	GamePlayInterface.cpp
 author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
-brief:	This file contains the function definition for Physics2D.h
+brief:	This file contains the function definition for GamePlayInterface.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
