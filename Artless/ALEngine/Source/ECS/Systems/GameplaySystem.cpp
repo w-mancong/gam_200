@@ -169,7 +169,7 @@ namespace ALEngine::ECS
 			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 			gameplaySystem->startCellEntity = gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]);
 
-			std::cout << playerUnit.coordinate[0] << "," << playerUnit.coordinate[1] << std::endl;
+			//std::cout << playerUnit.coordinate[0] << "," << playerUnit.coordinate[1] << std::endl;
 
 			gameplaySystem->pathEntityVector = Engine::AI::FindPath(gameplaySystem->m_Room, gameplaySystem->startCellEntity, gameplaySystem->targetCellEntity);
 			

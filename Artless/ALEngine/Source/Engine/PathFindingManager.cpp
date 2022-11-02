@@ -20,16 +20,23 @@ namespace  ALEngine::Engine::AI
 
         std::vector<Cell> cellRoomMap;// vector of room cells
 
-        for (int i{ 0 }; i < currentRoom.roomSize; ++i)
+        for (u32 i{ 0 }; i < currentRoom.width; ++i)
         {
-            Cell c = Coordinator::Instance()->GetComponent<Cell>(currentRoom.roomCellsArray[i]);
+            for (u32 j{ 0 }; j < currentRoom.height; ++j)
+            {
+                Cell c = Coordinator::Instance()->GetComponent<Cell>(currentRoom.roomCellsArray[i + j]);
 
-            c.m_GCost = 99;
-            c.m_HCost = 0;
-            c.CalculateFCost();
-            c.m_ParentCell = NULL;
+                c.m_GCost = 99;
+                c.m_HCost = 0;
+                c.CalculateFCost();
+                c.m_ParentCell = NULL;
 
-            cellRoomMap.push_back(c);
+                c.coordinate[0] = i;
+                c.coordinate[1] = j;
+
+                cellRoomMap.push_back(c);
+            }
+
         }
 
         startNode.m_GCost = 0;
@@ -148,7 +155,7 @@ namespace  ALEngine::Engine::AI
             currentNode = *currentNode.m_ParentCell;
         }
 
-        std::reverse(pathlist.begin(), pathlist.end());
+        //std::reverse(pathlist.begin(), pathlist.end());
 
         for (auto it = pathlist.begin(); it != pathlist.end(); ++it)
         {
