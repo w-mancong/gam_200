@@ -1,9 +1,7 @@
 /*!
 file:	EventTriggerSystem.h
 author:	Tan Zhen Xiong
-co-author: Chan Jie Ming Stanley
 email:	t.zhenxiong@digipen.edu
-email: c.jiemingstanley\@digipen.edu
 brief:	This file contains the function declarations for EventTriggerSystem.h
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
