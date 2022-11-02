@@ -16,8 +16,25 @@ namespace ALEngine::Editor
 	class ParticleSystemPanel
 	{
 	public:
+		/*!*********************************************************************************
+			\brief
+			Constructor for ParticleSystemPanel
+		***********************************************************************************/
 		ParticleSystemPanel();
+
+		/*!*********************************************************************************
+			\brief
+			Destructor for ParticleSystemPanel
+		***********************************************************************************/
 		~ParticleSystemPanel();
+
+		/*!*********************************************************************************
+			\brief
+			Update and render the imgui ParticleSystemPanel
+
+			\param [in] system
+			ParticleSystem
+		***********************************************************************************/
 		void OnImGuiRender(ALEngine::Graphics::ParticleSys::ParticleSystem& system);
 
 	private:

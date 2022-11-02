@@ -237,6 +237,13 @@ namespace ALEngine::ECS
 		camera.ProjectionMatrix(Camera::Projection::Orthographic);
 	}
 
+	/*!*********************************************************************************
+		\brief
+		Updates the transform matrix of parent and its children
+
+		\param [in] entity
+		Entity to apply parent-child transform
+	***********************************************************************************/
 	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
 	{
 		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity.id);
