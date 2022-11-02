@@ -23,31 +23,31 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
-			Update EventTrigger System
+			Start GamePlay System to initialize variables for gameplay logic
 		***********************************************************************************/
 		void StartGameplaySystem();
 
 		/*!*********************************************************************************
 			\brief
-			Update EventTrigger System
+			Update GamePlay System to update gameplay logic
 		***********************************************************************************/
 		void UpdateGameplaySystem();
 
 		/*!*********************************************************************************
 			\brief
-			Update EventTrigger System
+			Exit GamePlay System to clean up
 		***********************************************************************************/
 		void ExitGameplaySystem();
 
 		/*!*********************************************************************************
 			\brief
-			Adds rigidbody component to the entity
+			create player unit entity
 		***********************************************************************************/
 		void CreatePlayerUnit(Entity const& entity);
 
 		/*!*********************************************************************************
 			\brief
-			Adds rigidbody component to the entity
+	        create enemy unit entity
 		***********************************************************************************/
 		void CreateEnemyUnit(Entity const& entity);
 

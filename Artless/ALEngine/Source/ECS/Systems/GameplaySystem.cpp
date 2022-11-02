@@ -67,6 +67,10 @@ namespace ALEngine::ECS
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 	}
 
+	/*!*********************************************************************************
+		\brief
+		Register RigidbodySystem for ECS
+	***********************************************************************************/
 	void RegisterGameplaySystem(void)
 	{
 		gameplaySystem = Coordinator::Instance()->RegisterSystem<GameplaySystem>();
@@ -75,6 +79,11 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->SetSystemSignature<GameplaySystem>(signature);
 	}
 
+
+	/*!*********************************************************************************
+		\brief
+		Start GamePlay System to initialize variables for gameplay logic
+	***********************************************************************************/
 	void StartGameplaySystem(void) {
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
@@ -124,24 +133,44 @@ namespace ALEngine::ECS
 		}			
 	}
 
+	/*!*********************************************************************************
+		\brief
+		Update GamePlay System to update gameplay logic
+	***********************************************************************************/
 	void UpdateGameplaySystem(void)
 	{
 		gameplaySystem->RunGameState();
 	}
 
+	/*!*********************************************************************************
+	\brief
+	Exit GamePlay System to clean up
+    ***********************************************************************************/
 	void ExitGameplaySystem(void)
 	{
 		delete[] gameplaySystem->m_Room.roomCellsArray;
 	}
 
+	/*!*********************************************************************************
+	\brief
+	returns the current cell entity
+    ***********************************************************************************/
 	Entity GameplaySystem::getCurrentEntityCell() {
 		return gameplaySystem->currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
 	}
 
+	/*!*********************************************************************************
+	\brief
+	returns the cell room size
+    ***********************************************************************************/
 	uint32_t GameplaySystem::getRoomSize() {
 		return gameplaySystem->roomSize[0] * gameplaySystem->roomSize[1];
 	}
 
+	/*!*********************************************************************************
+	\brief
+	returns the cell entity based on specified position 
+    ***********************************************************************************/
 	Entity GameplaySystem::getEntityCell(uint32_t x, uint32_t y) {
 		return gameplaySystem->m_Room.roomCellsArray[y * gameplaySystem->roomSize[0] + x];
 	}
@@ -158,7 +187,10 @@ namespace ALEngine::ECS
 		}
 	}
 
-
+	/*!*********************************************************************************
+	\brief
+	run GamePlay state to run gameplay logic
+    ***********************************************************************************/
 	void GameplaySystem::RunGameState() {
 		switch (gameplaySystem->currentGameplayStatus)
 		{
@@ -203,6 +235,10 @@ namespace ALEngine::ECS
 		}
 	}
 
+	/*!*********************************************************************************
+		\brief
+		create player unit entity
+	***********************************************************************************/
 	void CreatePlayerUnit(Entity const& entity) {
 		//Setup rigidbody for custom stats
 		Unit unit{};
@@ -210,6 +246,10 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(entity, unit);
 	}
 
+	/*!*********************************************************************************
+	\brief
+	create enemy unit entity
+    ***********************************************************************************/
 	void CreateEnemyUnit(Entity const& entity) {
 		//Setup rigidbody for custom stats
 		Unit unit{};

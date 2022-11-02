@@ -6,6 +6,11 @@ namespace  ALEngine::Engine::AI
 {
  
     using Engine::GameplayInterface::Room;
+
+    /*!*********************************************************************************
+	\brief
+	The Astar pathfinding main logic function
+	***********************************************************************************/
     std::vector<ECS::Entity> FindPath(Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, bool defaultAstar)
     {
         Cell& startNode = Coordinator::Instance()->GetComponent<Cell>(startCell);
@@ -37,10 +42,12 @@ namespace  ALEngine::Engine::AI
 
         }
 
+        //set start cell costs
         startNode.m_GCost = 0;
         startNode.m_HCost = CalculateDistanceCost(Engine::GameplayInterface::getEntityCell(currentRoom, startNode.coordinate[0], startNode.coordinate[1]), Engine::GameplayInterface::getEntityCell(currentRoom, endNode.coordinate[0], endNode.coordinate[1]));
         startNode.CalculateFCost();
 
+        //well openlist not empty
         while (!openList.empty())
         {
             Cell& currentNode = GetLowestFCostNode(openList);
@@ -50,13 +57,14 @@ namespace  ALEngine::Engine::AI
                 pathList = std::move(CalculatePath(endNode, currentRoom));
                 return pathList;
             }
-      
+
+             //remove from openlist
              openList.remove(&currentNode);
+             //insert into closedlist
              closedList.push_back(&currentNode);
 
             for (auto neighbourNode : GetNeighbourList(currentNode, currentRoom, defaultAstar))
             {
-
                 if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode))
                 {
                     continue;
@@ -82,6 +90,10 @@ namespace  ALEngine::Engine::AI
         return pathList;
     }
 
+    /*!*********************************************************************************
+    \brief
+    The function to get neighbouring cells
+    ***********************************************************************************/
     std::list<ECS::Cell*> GetNeighbourList(ECS::Cell& currentNode, Engine::GameplayInterface::Room& currentRoom, bool defaultAstar)
     {
         std::list<Cell*> neighbourList;
@@ -115,6 +127,10 @@ namespace  ALEngine::Engine::AI
         return neighbourList;
     }
 
+    /*!*********************************************************************************
+    \brief
+    The function to calculate and slot the number of cells
+    ***********************************************************************************/
     std::vector<ECS::Entity> CalculatePath(Cell& endNode, Engine::GameplayInterface::Room& currentRoom)
     {
         std::list<Cell> pathlist;
@@ -139,6 +155,10 @@ namespace  ALEngine::Engine::AI
         return Path;
     }
 
+    /*!*********************************************************************************
+	\brief
+	The function to calculate huriestic distance cost between two cells
+	***********************************************************************************/
     f32 CalculateDistanceCost(ECS::Entity a, ECS::Entity b)
     {
         //need to find out how to calculate distance
@@ -147,6 +167,10 @@ namespace  ALEngine::Engine::AI
         return Vector3::Distance(a_Tranform.position, b_Tranform.position);
     }
 
+    /*!*********************************************************************************
+    \brief
+    The function to get the lowest fcost cells
+    ***********************************************************************************/
     Cell& GetLowestFCostNode(std::list<Cell*> pathFindingCellNodeList)
     {
         Cell* lowestFCostNode = pathFindingCellNodeList.front();
