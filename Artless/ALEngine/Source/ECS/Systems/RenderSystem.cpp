@@ -45,6 +45,7 @@ namespace ALEngine::ECS
 		Frustum fstm;
 
 		ParticleSys::ParticleSystem particleSys;
+		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
@@ -290,23 +291,8 @@ namespace ALEngine::ECS
 		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
 		Text::RenderText(FPS);
 
-		if (Input::KeyDown(KeyCode::Z)) // particles when hold 'Z' button 
-		{
-			ParticleSys::ParticleProperties prop{};
-			ParticleSys::SetVelocity(prop, Vector2(2, 6));
-			ParticleSys::SetStartColor(prop, Vector3(1.f, 0.f, 0.f));
-			ParticleSys::SetEndColor(prop, Vector3(0.f, 0.f, 1.f));
-			ParticleSys::SetPosition(prop, Input::GetMouseWorldPos());
-			ParticleSys::SetEndSize(prop, 1.f);
-			ParticleSys::SetVelVariation(prop, Vector2(10, 10));
-			ParticleSys::SetSizeVariation(prop, 4.f);
-			ParticleSys::SetLifeTime(prop, 4.f);
-			ParticleSys::SetStartSize(prop, 14.f);
-			for (int i{}; i < 4; ++i)
-				particleSys.Emit(prop);
-		}
-
 		// Update and render particles
+		particleSystemPanel.OnImGuiRender(particleSys);
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
 		particleSys.ParticleRender(camera);
 
