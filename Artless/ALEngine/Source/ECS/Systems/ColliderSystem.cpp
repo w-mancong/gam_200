@@ -4,7 +4,7 @@ author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
 brief:	This file contains the function definition for ColliderSystem.cpp
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
@@ -551,7 +551,7 @@ namespace ALEngine::ECS
 	}
 		
 	using Physics::RaycastHit2D;
-	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D& collider_other, Transform & parent_transform_moving, Transform& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
+	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D& collider_other, Transform& parent_transform_moving, Transform& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
 		//If the velocity is zero
 		//Just calculate static
 		if (rigidbody_moving.velocity.Magnitude() == 0) {
