@@ -109,12 +109,11 @@ namespace ALEngine::ECS
 			void DrawCollider(ColliderType type, Vector2 position, Vector2 size, Vector4 color);
 
 			//Debug setting
-			bool isDebugDraw = true, isDebugStep = true;
+			bool isDebugDraw = true, isDebugStep = false;
 
 		private:
 			//World axis
-			const Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };
-				
+			const Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };				
 	};
 
 	namespace
