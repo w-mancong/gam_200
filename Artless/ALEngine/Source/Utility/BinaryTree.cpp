@@ -440,6 +440,8 @@ namespace ALEngine::Tree
             newParentNode->right = branchNode;
         }
 
+        map[branch].parent = newParent; // assign new parent
+
         // update map
         for (auto& x : map)
         {
