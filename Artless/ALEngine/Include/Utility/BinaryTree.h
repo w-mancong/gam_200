@@ -128,6 +128,8 @@ namespace ALEngine::Tree
         ***********************************************************************************/
         std::vector<NodeData>const& GetMap();
 
+        void MoveBranch(s32 branch, s32 newParent);
+
     private:
         /*!*********************************************************************************
             \brief

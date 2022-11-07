@@ -396,4 +396,59 @@ namespace ALEngine::Tree
         return map;
     }
 
+    void BinaryTree::MoveBranch(s32 branch, s32 newParent)
+    {
+        searchVect.clear();
+        Node* branchNode = Find(branch);
+
+        if (prevNode->left == branchNode) // if branchNode is the first child of PrevNode
+        {
+            if (branchNode->right != nullptr)
+            {
+                prevNode->left = branchNode->right;
+            }
+            else
+            {
+                prevNode->left = nullptr;
+            }
+        }
+        else
+        {
+            if (branchNode->right != nullptr) // if sandwhiched
+            {
+                prevNode->right = branchNode->right;
+            }
+            else // if leaf
+            {
+                prevNode->right = nullptr;
+            }
+        }
+
+        searchVect.clear();
+        Node* newParentNode = Find(newParent);
+
+        if (newParentNode->left == nullptr)
+        {
+            newParentNode->left = branchNode;
+        }
+        else
+        {
+            newParentNode = newParentNode->left;
+            while (newParentNode->right != nullptr)
+                newParentNode = newParentNode->right;
+
+            newParentNode->right = branchNode;
+        }
+
+        // update map
+        for (auto& x : map)
+        {
+            if (x.active)
+            {
+                FindChildren(x.id);
+                x.children = GetChildren();
+            }
+        }
+    }
+
 } // end of namespace Tree

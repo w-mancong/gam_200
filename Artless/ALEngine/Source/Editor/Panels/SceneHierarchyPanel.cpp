@@ -165,7 +165,7 @@ namespace ALEngine::Editor
 		ImGuiHoveredFlags hover_flag = ImGuiHoveredFlags_AllowWhenBlockedByActiveItem;
 		if (ImGui::IsItemHovered(hover_flag))
 		{
-			AL_CORE_CRITICAL("Hovering Over: {}", child);
+			//AL_CORE_CRITICAL("Hovering Over: {}", child);
 			m_EntityHover = child;
 		}
 
@@ -189,8 +189,10 @@ namespace ALEngine::Editor
 				// Check payload is not own Entity
 				if (m_EntityHover != child_pl)
 				{
-					sceneGraph.Destruct(child_pl);
-					sceneGraph.Push(m_EntityHover, child_pl);
+					sceneGraph.MoveBranch(child_pl, m_EntityHover);
+
+					//sceneGraph.Destruct(child_pl);
+					//sceneGraph.Push(m_EntityHover, child_pl);
 				}
 			}
 
