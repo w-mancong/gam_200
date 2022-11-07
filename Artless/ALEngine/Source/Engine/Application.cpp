@@ -159,8 +159,6 @@ namespace ALEngine::Engine
 		//SaveAnimator(animator);
 
 		StartGameplaySystem();
-
-		Scene::SaveScene("test");
 	}
 
 	void Application::Update(void)

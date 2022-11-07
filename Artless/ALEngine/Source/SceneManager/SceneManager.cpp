@@ -2,7 +2,11 @@
 
 namespace ALEngine::Engine::Scene
 {
-	using TWriter = rapidjson::PrettyWriter<rapidjson::StringBuffer>;
+	namespace
+	{
+		namespace rjs = rapidjson;
+		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
+	}
 
 	void WriteSprite(TWriter& writer, ECS::Entity en)
 	{
@@ -13,7 +17,7 @@ namespace ALEngine::Engine::Scene
 		Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		// filePath
 		writer.Key("filePath");
-		writer.String( sprite.filePath.c_str(), static_cast<rapidjson::SizeType>( sprite.filePath.length() ) );
+		writer.String( sprite.filePath.c_str(), static_cast<rjs::SizeType>( sprite.filePath.length() ) );
 
 		// Colors
 		writer.Key("color");
@@ -30,6 +34,30 @@ namespace ALEngine::Engine::Scene
 
 		writer.EndObject();
 		writer.EndArray();
+	}
+
+	void ReadSprite(rjs::Value const& v, ECS::Entity en)
+	{
+		Sprite sprite;
+
+		// Getting filePath
+		sprite.filePath = v[0]["filePath"].GetString();
+
+		// Getting colors
+		rjs::Value const& c = v[0]["color"];
+		sprite.color.r = c[0].GetFloat();
+		sprite.color.g = c[1].GetFloat();
+		sprite.color.b = c[2].GetFloat();
+		sprite.color.a = c[3].GetFloat();
+
+		// Getting layers
+		sprite.layer = static_cast<RenderLayer>(v[0]["layer"].GetUint64());
+
+		// Initialising value
+		sprite.id = AssetManager::Instance()->GetGuid(sprite.filePath);
+		sprite.index = 0;
+
+		Coordinator::Instance()->AddComponent(en, sprite);
 	}
 
 	void WriteAnimator(TWriter& writer, ECS::Entity en)
@@ -85,7 +113,7 @@ namespace ALEngine::Engine::Scene
 	void SaveScene(c8 const* sceneName)
 	{
 		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
-		rapidjson::StringBuffer sb{};
+		rjs::StringBuffer sb{};
 		TWriter writer(sb);
 
 		ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
@@ -134,5 +162,31 @@ namespace ALEngine::Engine::Scene
 			return;
 		}
 		ofs.write(sb.GetString(), sb.GetLength());
+	}
+
+	void LoadScene(c8 const* sceneName)
+	{
+		std::ifstream ifs{ sceneName, std::ios::ate };
+		if (!ifs)
+		{
+			AL_CORE_WARN("Unable to open scene: {}", sceneName);
+			return;
+		}
+		u64 const size = ifs.tellg();
+		ifs.seekg(ifs.beg);
+		c8* buffer = Memory::DynamicMemory::New<c8>(size);
+		ifs.read(buffer, size);
+
+		rjs::Document doc;
+		doc.Parse(buffer);
+		Memory::DynamicMemory::Delete(buffer);
+
+		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)
+		{
+			ECS::Entity en = Coordinator::Instance()->CreateEntity();
+			rjs::Value const& v{ *it };
+			if (v.HasMember("Sprite"))
+				ReadSprite(v["Sprite"], en);
+		}
 	}
 }
