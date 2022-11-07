@@ -437,6 +437,7 @@ namespace ALEngine::ECS
 	{
 		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
+		sprite.filePath = filePath;
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 		Coordinator::Instance()->AddComponent(entity, transform);
@@ -446,6 +447,7 @@ namespace ALEngine::ECS
 	{
 		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
+		sprite.filePath = filePath;
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}

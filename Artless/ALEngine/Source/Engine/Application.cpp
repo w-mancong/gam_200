@@ -102,7 +102,7 @@ namespace ALEngine::Engine
 		trans.position = level.GetVec2("player_pos", Math::Vec2());
 		trans.scale = level.GetVec2("player_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(player, trans);
-		CreateSprite(player);
+		CreateSprite(player, "Assets/Images/awesomeface.png");
 		CreateCollider(player);
 		CreateCharacterController(player);
 		CreateEventTrigger(player);
@@ -159,6 +159,8 @@ namespace ALEngine::Engine
 		//SaveAnimator(animator);
 
 		StartGameplaySystem();
+
+		Scene::SaveScene("test");
 	}
 
 	void Application::Update(void)
