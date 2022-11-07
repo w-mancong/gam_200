@@ -38,12 +38,24 @@ namespace ALEngine::Engine
 
 		TextureHandle GetTextureHandle(Guid id);
 
+		/*!*********************************************************************************
+		\brief
+	     function for get texture for imgui image button to display
+		***********************************************************************************/
 		u32 GetButtonImage(Guid id);
 
 		Animation GetAnimation(Guid id);
 
+	    /*!*********************************************************************************
+		\brief
+	     function for get guid for file specified
+		***********************************************************************************/
 		Guid GetGuid(std::string fileName);
 
+		/*!*********************************************************************************
+		\brief
+	     function for filewatcher to alert assetmanager of file changers
+		***********************************************************************************/
 		void Alert(std::string const& filePath, FileStatus status);
 
 		void Reset(void);

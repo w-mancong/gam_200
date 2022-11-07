@@ -146,17 +146,17 @@ namespace ALEngine::Editor
 		// Get transform
 		Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
 
+		// Select between the 3 Gizmos Operations by keypress
+		if (Input::KeyTriggered(KeyCode::W))
+			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		if (Input::KeyTriggered(KeyCode::R))
+			m_CurrentGizmoOperation = ImGuizmo::SCALE;
+		if (Input::KeyTriggered(KeyCode::E))
+			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+
 		// Transform
 		if (ImGui::TreeNodeEx("Transform Component"))
 		{
-			// Select between the 3 Gizmos Operations by keypress
-			if (Input::KeyTriggered(KeyCode::W))
-				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-			if (Input::KeyTriggered(KeyCode::R))
-				m_CurrentGizmoOperation = ImGuizmo::SCALE;
-			if (Input::KeyTriggered(KeyCode::E))
-				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
-
 			// Rotate
 			if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
 				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;

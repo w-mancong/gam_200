@@ -1,0 +1,49 @@
+Things showcase in this demo:
+Animation
+- Sprite animation can be changed by using 'A' and 'D' keys
+Audio
+- Audio is able to be played through different channels
+Physics
+- Player object is able to be moved around with forces
+Particle System
+- Show casing of particle system, able to change the properties of it on the editor
+Fonts
+- Two different fonts are rendered onto the screen
+Event System
+- OnCollideEnter, OnCollideStay, OnCollideExit, OnPointerEnter, OnPointerClick, OnPointerStay, OnPointerExit
+Button
+- A button is shown onto the screen, 
+Parent children relationship (Scene Graph)
+- Adding children to a parent, children will follow wherever parent goes
+AI
+- Currently there is a room that is constructed with grids and cells that will be used by AIs and units for
+ pathfinding that the pathfinding system is fully implemented.
+- Currently there is an entity that makes use of the room that will act as a sample for our pathfinding.
+Editor
+-More details on editorGuide.txt
+
+Character Controller
+-2D platforming controls W, A, S, D to move up, left, down, right by addforce
+-Spacbar to jump
+
+Things to do in demo
+-There is a yellow coin on the right, touching it will make the coin disappear and print out "Coin Collected" in logger
+-Bottom on bottom, can left click on it and it will print "Click" onto logger.
+-There is a an bunch of green boxes, these are the objects that will be used for our pathfinding system in the near future.
+-A entity is making use of the cells, to imitate what we will achieve.
+
+Build Settings
+10.1. Debug 
+When building the project in debug mode, there will be no optimization of the code at all. 
+Warning Level will be set to 4. This build will be the slowest among the two other build. 
+This build is to be used for the development of the engine and will be used to debug the codes. 
+
+10.2. Development 
+Like debug mode, Warning Level will also be set to 4. A low-level optimization of the code 
+will be applied to this build. This build will be used for alpha testing where optimization 
+is wanted but we still want to be able to catch some errors. 
+
+10.3. Distribution 
+This build is mainly for the distribution of our game engine. Codes are compiled in the most
+optimized way possible, very prone to breaking if there are underlying bugs in the build. Hence 
+this is only used at the end when distributing to our “customers”.  

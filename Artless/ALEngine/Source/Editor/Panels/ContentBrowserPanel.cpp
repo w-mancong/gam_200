@@ -59,7 +59,8 @@ namespace ALEngine::Editor
 
 			//selectable files
 		   // ImGui::MenuItem(fileNamestring.c_str());
-			
+
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
 			if (ImGui::TreeNode(fileNamestring.c_str()))
 			{
 				//for dragging file, need to fix window crash when moving window

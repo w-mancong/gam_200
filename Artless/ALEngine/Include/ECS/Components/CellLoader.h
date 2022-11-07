@@ -16,9 +16,18 @@ namespace ALEngine::ECS::Component
 		Unit *m_Unit;
 		bool m_IsHole{ false };
 
-		void SetUpCell();
+		void SetUpCell()
+		{
 
-		void SpawnUnit();
+		}
+
+		void SpawnUnit()
+		{
+			if (m_Unit == NULL)
+			{
+				return;
+			}
+		}
 	};
 }
 #endif
