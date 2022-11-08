@@ -412,15 +412,15 @@ namespace ALEngine::Tree
                 prevNode->left = nullptr;
             }
         }
-        else
+        else // branchNode is sibling of prevNode
         {
-            if (branchNode->right != nullptr) // if sandwhiched
-            {
-                prevNode->right = branchNode->right;
-            }
-            else // if leaf
+            if (branchNode->right == nullptr) // if leaf
             {
                 prevNode->right = nullptr;
+            }
+            else // sandwhiched
+            {
+                prevNode->right = branchNode->right;
             }
         }
 
@@ -440,6 +440,7 @@ namespace ALEngine::Tree
             newParentNode->right = branchNode;
         }
 
+        branchNode->right = nullptr;
         map[branch].parent = newParent; // assign new parent
 
         // update map
