@@ -63,11 +63,8 @@
 #include FT_FREETYPE_H
 #define STB_IMAGE_IMPLEMENTATION
 
-// Serializations
-
 // Self declared header file
 #include <Common Header/MySerializer.h>
-
 #include <Common Header/Utility.h>
 #include <Common Header/MyMemory.h>
 #include <Common Header/TemplateClasses.h>
@@ -82,4 +79,8 @@
 #include <Common Header/MyEditor.h>
 #include <Common Header/MyAssetManager.h>
 #include <Common Header/MyAi.h>
+
+// Serializations
+#include <Serialization/Serializer.h>
+
 #endif

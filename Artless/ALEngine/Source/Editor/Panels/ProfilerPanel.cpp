@@ -32,9 +32,6 @@ namespace ALEngine::Editor
 			Utility::Profiler::ClearTimerData();
 		}
 
-		if (m_TempTimerDataList.empty())
-			return;
-
 		// Set size constraints of inspector
 		ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
 
@@ -53,11 +50,22 @@ namespace ALEngine::Editor
 
 			ImGui::SameLine((winWidth - textSize.x) * 0.5f);
 			ImGui::Text(head);
-			for (auto i : m_TempTimerDataList)
+
+
+			if (m_TempTimerDataList.empty())
 			{
-				f32 percent = i.m_Time / total_time * 100.f;
-				std::string timer_data = i.m_Name + ": %.3fms (%.2f%%)";
-				ImGui::Text(timer_data.c_str(), i.m_Time, percent);
+				textSize = ImGui::CalcTextSize("Loading");
+				ImGui::SameLine((winWidth - textSize.x) * 0.5f);
+				ImGui::Text("Loading");
+			}
+			else
+			{
+				for (auto i : m_TempTimerDataList)
+				{
+					f32 percent = i.m_Time / total_time * 100.f;
+					std::string timer_data = i.m_Name + ": %.3fms (%.2f%%)";
+					ImGui::Text(timer_data.c_str(), i.m_Time, percent);
+				}
 			}
 		}
 

@@ -214,6 +214,7 @@ namespace ALEngine::Editor
 
 		// Window Min Size
 		ImVec2 m_WinMinSize{ 300.f, 25.f };
+		ImVec2 m_ToolbarMinSize{};
 
 		// Variables
 		b8 m_ImGuiEnabled{ false };		// Set to true if ImGui is enabled
@@ -227,7 +228,7 @@ namespace ALEngine::Editor
 		GamePanel m_GamePanel;							// Game Panel
 		InspectorPanel m_InspectorPanel;				// Inspector Panel
 		LoggerPanel m_LoggerPanel;						// Logger Panel
-		//ProfilerPanel m_ProfilerPanel;				// Profiler Panel
+		ProfilerPanel m_ProfilerPanel;					// Profiler Panel
 		SceneHierarchyPanel m_SceneHierarchyPanel;		// Scene Hierarchy Panel
 
 		// Editor Colors

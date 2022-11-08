@@ -200,7 +200,7 @@ namespace
 		u32 texture{};
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, texture);
-		glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, format[0], animation.width, animation.height, TOTAL_TILES);
+		glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, format[0], animation.width, animation.height, static_cast<s32>(TOTAL_TILES));
 
 		s64 const DATA_SIZE = static_cast<s64>(width) * static_cast<s64>(height) * static_cast<s64>(nrChannels);
 		u32 pbo{};

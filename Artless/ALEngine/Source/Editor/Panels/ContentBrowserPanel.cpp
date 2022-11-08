@@ -59,7 +59,8 @@ namespace ALEngine::Editor
 
 			//selectable files
 		   // ImGui::MenuItem(fileNamestring.c_str());
-			
+
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
 			if (ImGui::TreeNode(fileNamestring.c_str()))
 			{
 				//for dragging file, need to fix window crash when moving window
@@ -164,7 +165,7 @@ namespace ALEngine::Editor
 			if (fileNamestring.find(".jpg")!= std::string::npos || fileNamestring.find(".png") != std::string::npos)
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid(directoryEntry.path().string());
-				u32 texture = Engine::AssetManager::Instance()->GetButtonImage(id);
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
 				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}
 			else
@@ -212,7 +213,7 @@ namespace ALEngine::Editor
 		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void ContentBrowserPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	void ContentBrowserPanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);

@@ -1,3 +1,11 @@
+﻿/*!
+file:	AudioManager.cpp
+author:	Wong Man Cong
+email:	w.mancong@digipen.edu
+brief:	Function declaration for interacting with AudioManager
+
+		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 
 namespace ALEngine::Engine

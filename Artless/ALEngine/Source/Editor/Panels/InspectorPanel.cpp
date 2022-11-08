@@ -39,8 +39,8 @@ namespace ALEngine::Editor
 	
 	void InspectorPanel::OnImGuiRender(void)
 	{
-		// Set size constraints of inspector
-		//ImGui::SetNextWindowSizeConstraints(PANEL_MIN, PANEL_MAX);
+		// Set constraints
+		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
 		// Begin ImGui
 		if (!ImGui::Begin("Inspector"))
@@ -146,17 +146,17 @@ namespace ALEngine::Editor
 		// Get transform
 		Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
 
+		// Select between the 3 Gizmos Operations by keypress
+		if (Input::KeyTriggered(KeyCode::W))
+			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		if (Input::KeyTriggered(KeyCode::R))
+			m_CurrentGizmoOperation = ImGuizmo::SCALE;
+		if (Input::KeyTriggered(KeyCode::E))
+			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+
 		// Transform
 		if (ImGui::TreeNodeEx("Transform Component"))
 		{
-			// Select between the 3 Gizmos Operations by keypress
-			if (Input::KeyTriggered(KeyCode::W))
-				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-			if (Input::KeyTriggered(KeyCode::R))
-				m_CurrentGizmoOperation = ImGuizmo::SCALE;
-			if (Input::KeyTriggered(KeyCode::E))
-				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
-
 			// Rotate
 			if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
 				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
@@ -220,7 +220,7 @@ namespace ALEngine::Editor
 			{
 				// Payload flag
 				ImGuiDragDropFlags payload_flag{ 0 };
-				payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+				//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
 
 				// Get Drag and Drop Payload
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
@@ -273,7 +273,7 @@ namespace ALEngine::Editor
 		{
 			// Payload flag
 			ImGuiDragDropFlags payload_flag{ 0 };
-			payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+			//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
 
 			// Get Drag and Drop Payload
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
@@ -390,7 +390,7 @@ namespace ALEngine::Editor
 		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
-	void InspectorPanel::SetDefault(Math::Vec2 pos, Math::Vec2 size)
+	void InspectorPanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);

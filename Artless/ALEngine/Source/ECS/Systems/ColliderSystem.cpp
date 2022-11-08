@@ -109,12 +109,11 @@ namespace ALEngine::ECS
 			void DrawCollider(ColliderType type, Vector2 position, Vector2 size, Vector4 color);
 
 			//Debug setting
-			bool isDebugDraw = true, isDebugStep = true;
+			bool isDebugDraw = true, isDebugStep = false;
 
 		private:
 			//World axis
-			const Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };
-				
+			const Vector2 worldXAxis{ 1,0 }, worldYAxis{ 0,1 };				
 	};
 
 	namespace
@@ -551,7 +550,7 @@ namespace ALEngine::ECS
 	}
 		
 	using Physics::RaycastHit2D;
-	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D& collider_other, Transform& parent_transform_moving, Transform& parent_transform_other, Rigidbody2D& rigidbody_moving, Rigidbody2D& rigidbody_other) {
+	bool ColliderSystem::SweptCollision_AABB_ABBB(Collider2D& collider_moving, Collider2D& collider_other, Transform& parent_transform_moving, Transform& parent_transform_other, Rigidbody2D& rigidbody_moving, [[maybe_unused]] Rigidbody2D& rigidbody_other) {
 		//If the velocity is zero
 		//Just calculate static
 		if (rigidbody_moving.velocity.Magnitude() == 0) {

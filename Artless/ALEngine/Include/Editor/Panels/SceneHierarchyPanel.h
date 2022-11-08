@@ -64,7 +64,7 @@ namespace ALEngine::Editor
 			\param size
 			Panel's Size
 		***********************************************************************************/
-		void SetDefault(Math::Vec2 pos, Math::Vec2 size);
+		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
 		// Panel sizes
@@ -76,6 +76,9 @@ namespace ALEngine::Editor
 
 		// Pointer to the list of entities
 		const ECS::EntityList *m_EntityList;
+
+		// Entity Selected by Hover
+		ECS::Entity m_EntityHover{ ECS::MAX_ENTITIES };
 	};
 }
 

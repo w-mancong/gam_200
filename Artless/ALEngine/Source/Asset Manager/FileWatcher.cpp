@@ -1,7 +1,9 @@
 /*!
 file: FileWatcher.cpp
-author: Chan Jie Ming Stanley
-email: c.jiemingstanley\@digipen.edu
+author	 :	Chan Jie Ming Stanley
+co-author:	Wong Man Cong
+email:	c.jiemingstanley\@digipen.edu
+		w.mancong\@digipen.edu
 brief: This file contains function definition for FileWatcher. FileWatcher handles the
 	   detection of changes in files using files' last write time.
 
