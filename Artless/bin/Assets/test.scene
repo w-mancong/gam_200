@@ -33,6 +33,35 @@
                 "active": true,
                 "id": 0
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": false,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "Rigidbody2D": [
+            {
+                "drag": [
+                    1.0,
+                    1.0
+                ],
+                "mass": 10.0,
+                "hasGravity": true,
+                "isEnabled": true
+            }
         ]
     },
     {
@@ -69,6 +98,24 @@
                 "active": true,
                 "id": 1
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": false,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -104,6 +151,24 @@
                 "tag": "entity #2",
                 "active": true,
                 "id": 2
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": false,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -177,6 +242,24 @@
                 "active": true,
                 "id": 4
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": false,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -242,6 +325,24 @@
                 "active": true,
                 "id": 6
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -265,6 +366,24 @@
                 "tag": "entity #7",
                 "active": true,
                 "id": 7
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -290,6 +409,24 @@
                 "active": true,
                 "id": 8
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -313,6 +450,24 @@
                 "tag": "entity #9",
                 "active": true,
                 "id": 9
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -338,6 +493,24 @@
                 "active": true,
                 "id": 10
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -361,6 +534,24 @@
                 "tag": "entity #11",
                 "active": true,
                 "id": 11
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -386,6 +577,24 @@
                 "active": true,
                 "id": 12
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -409,6 +618,24 @@
                 "tag": "entity #13",
                 "active": true,
                 "id": 13
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -434,6 +661,24 @@
                 "active": true,
                 "id": 14
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -457,6 +702,24 @@
                 "tag": "entity #15",
                 "active": true,
                 "id": 15
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -482,6 +745,24 @@
                 "active": true,
                 "id": 16
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -505,6 +786,24 @@
                 "tag": "entity #17",
                 "active": true,
                 "id": 17
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -530,6 +829,24 @@
                 "active": true,
                 "id": 18
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -553,6 +870,24 @@
                 "tag": "entity #19",
                 "active": true,
                 "id": 19
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -578,6 +913,24 @@
                 "active": true,
                 "id": 20
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -601,6 +954,24 @@
                 "tag": "entity #21",
                 "active": true,
                 "id": 21
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -626,6 +997,24 @@
                 "active": true,
                 "id": 22
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -649,6 +1038,24 @@
                 "tag": "entity #23",
                 "active": true,
                 "id": 23
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -674,6 +1081,24 @@
                 "active": true,
                 "id": 24
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -697,6 +1122,24 @@
                 "tag": "entity #25",
                 "active": true,
                 "id": 25
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -722,6 +1165,24 @@
                 "active": true,
                 "id": 26
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -745,6 +1206,24 @@
                 "tag": "entity #27",
                 "active": true,
                 "id": 27
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -770,6 +1249,24 @@
                 "active": true,
                 "id": 28
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -793,6 +1290,24 @@
                 "tag": "entity #29",
                 "active": true,
                 "id": 29
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -818,6 +1333,24 @@
                 "active": true,
                 "id": 30
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -841,6 +1374,24 @@
                 "tag": "entity #31",
                 "active": true,
                 "id": 31
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -866,6 +1417,24 @@
                 "active": true,
                 "id": 32
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -889,6 +1458,24 @@
                 "tag": "entity #33",
                 "active": true,
                 "id": 33
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -914,6 +1501,24 @@
                 "active": true,
                 "id": 34
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -937,6 +1542,24 @@
                 "tag": "entity #35",
                 "active": true,
                 "id": 35
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -962,6 +1585,24 @@
                 "active": true,
                 "id": 36
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -985,6 +1626,24 @@
                 "tag": "entity #37",
                 "active": true,
                 "id": 37
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -1010,6 +1669,24 @@
                 "active": true,
                 "id": 38
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1033,6 +1710,24 @@
                 "tag": "entity #39",
                 "active": true,
                 "id": 39
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -1058,6 +1753,24 @@
                 "active": true,
                 "id": 40
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1081,6 +1794,24 @@
                 "tag": "entity #41",
                 "active": true,
                 "id": 41
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -1106,6 +1837,24 @@
                 "active": true,
                 "id": 42
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1129,6 +1878,24 @@
                 "tag": "entity #43",
                 "active": true,
                 "id": 43
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -1154,6 +1921,24 @@
                 "active": true,
                 "id": 44
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1177,6 +1962,24 @@
                 "tag": "entity #45",
                 "active": true,
                 "id": 45
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -1202,6 +2005,24 @@
                 "active": true,
                 "id": 46
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1225,6 +2046,24 @@
                 "tag": "entity #47",
                 "active": true,
                 "id": 47
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -1250,6 +2089,24 @@
                 "active": true,
                 "id": 48
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1273,6 +2130,24 @@
                 "tag": "entity #49",
                 "active": true,
                 "id": 49
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -1298,6 +2173,24 @@
                 "active": true,
                 "id": 50
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1321,6 +2214,24 @@
                 "tag": "entity #51",
                 "active": true,
                 "id": 51
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     },
@@ -1346,6 +2257,24 @@
                 "active": true,
                 "id": 52
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1370,6 +2299,24 @@
                 "active": true,
                 "id": 53
             }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
+            }
         ]
     },
     {
@@ -1393,6 +2340,24 @@
                 "tag": "entity #54",
                 "active": true,
                 "id": 54
+            }
+        ],
+        "Collider2D": [
+            {
+                "colliderType": 0,
+                "rotation": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "isCollided": false,
+                "isTrigger": true,
+                "isDebug": false,
+                "isEnabled": true,
+                "m_localPosition": [
+                    0.0,
+                    0.0
+                ]
             }
         ]
     }

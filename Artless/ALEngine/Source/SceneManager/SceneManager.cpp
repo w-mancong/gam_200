@@ -38,7 +38,7 @@ namespace ALEngine::Engine::Scene
 
 	void ReadSprite(rjs::Value const& v, ECS::Entity en)
 	{
-		Sprite sprite;
+		Sprite sprite{};
 
 		// Getting filePath
 		sprite.filePath = v[0]["filePath"].GetString();
@@ -116,7 +116,7 @@ namespace ALEngine::Engine::Scene
 
 	void ReadTransform(rjs::Value const& v, ECS::Entity en)
 	{
-		Transform transform;
+		Transform transform{};
 
 		// Getting position
 		rjs::Value const& p  = v[0]["position"];
@@ -161,27 +161,148 @@ namespace ALEngine::Engine::Scene
 
 	void ReadEntityData(rjs::Value const& v, ECS::Entity en)
 	{
+		EntityData& entityData = Coordinator::Instance()->GetComponent<EntityData>(en);
 
+		// Getting tag
+		entityData.tag = v[0]["tag"].GetString();
+		// Getting active status
+		entityData.active = v[0]["active"].GetBool();
+		// Getting id
+		entityData.id = v[0]["id"].GetUint();
 	}
 
 	void WriteCollider2D(TWriter& writer, ECS::Entity en)
 	{
+		writer.Key("Collider2D");
+		writer.StartArray();
+		writer.StartObject();
 
+		Collider2D const& collider = Coordinator::Instance()->GetComponent<Collider2D>(en);
+		// Collider's type
+		writer.Key("colliderType");
+		writer.Uint64(static_cast<u64>(collider.colliderType));
+
+		// Rotation
+		writer.Key("rotation");
+		writer.Double(static_cast<f64>(collider.rotation));
+
+		// Scale
+		writer.Key("scale");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(collider.scale[0]));
+		writer.Double(static_cast<f64>(collider.scale[1]));
+		writer.EndArray();
+
+		// IsCollided
+		writer.Key("isCollided");
+		writer.Bool(collider.isCollided);
+
+		// IsTrigger
+		writer.Key("isTrigger");
+		writer.Bool(collider.isTrigger);
+
+		// IsDebug
+		writer.Key("isDebug");
+		writer.Bool(collider.isDebug);
+
+		// IsEnabled
+		writer.Key("isEnabled");
+		writer.Bool(collider.isEnabled);
+
+		// Local position
+		writer.Key("m_localPosition");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(collider.m_localPosition.x));
+		writer.Double(static_cast<f64>(collider.m_localPosition.y));
+		writer.EndArray();
+
+		writer.EndObject();
+		writer.EndArray();
 	}
 
 	void ReadCollider2D(rjs::Value const& v, ECS::Entity en)
 	{
+		Collider2D collider{};
 
+		// Getting Collider Type
+		collider.colliderType = static_cast<ColliderType>(v[0]["colliderType"].GetUint64());
+
+		// Getting rotation
+		collider.rotation = v[0]["rotation"].GetFloat();
+
+		// Getting scale
+		rjs::Value const& s = v[0]["scale"];
+		collider.scale[0] = s[0].GetFloat();
+		collider.scale[1] = s[1].GetFloat();
+
+		// Getting IsCollided
+		collider.isCollided = v[0]["isCollided"].GetBool();
+
+		// Getting IsTrigger
+		collider.isTrigger = v[0]["isTrigger"].GetBool();
+
+		// Getting IsDebug
+		collider.isDebug = v[0]["isDebug"].GetBool();
+
+		// Getting IsEnabled
+		collider.isEnabled = v[0]["isEnabled"].GetBool();
+
+		// Getting local position
+		rjs::Value const& p = v[0]["m_localPosition"];
+		collider.m_localPosition.x = p[0].GetFloat();
+		collider.m_localPosition.y = p[1].GetFloat();
+
+		Coordinator::Instance()->AddComponent(en, collider);
 	}
 
 	void WriteRigidbody2D(TWriter& writer, ECS::Entity en)
 	{
+		writer.Key("Rigidbody2D");
+		writer.StartArray();
+		writer.StartObject();
 
+		Rigidbody2D const& rb = Coordinator::Instance()->GetComponent<Rigidbody2D>(en);
+
+		// Drag
+		writer.Key("drag");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(rb.drag.x));
+		writer.Double(static_cast<f64>(rb.drag.y));
+		writer.EndArray();
+
+		// Mass
+		writer.Key("mass");
+		writer.Double(static_cast<f64>(rb.mass));
+
+		// Has Gravity
+		writer.Key("hasGravity");
+		writer.Bool(rb.hasGravity);
+
+		// Is enabled
+		writer.Key("isEnabled");
+		writer.Bool(rb.isEnabled);
+
+		writer.EndObject();
+		writer.EndArray();
 	}
 
 	void ReadRigidbody2D(rjs::Value const& v, ECS::Entity en)
 	{
+		Rigidbody2D rb{};
 
+		// Getting drag
+		rjs::Value const& d = v[0]["drag"];
+		rb.drag.x = d[0].GetFloat();
+		rb.drag.y = d[1].GetFloat();
+
+		// Getting mass
+		rb.mass = v[0]["mass"].GetFloat();
+
+		// Getting hasGravity
+		rb.hasGravity = v[0]["hasGravity"].GetBool();
+
+		// Getting is enabled
+		rb.isEnabled = v[0]["isEnabled"].GetBool();
 	}
 
 	void WriteCharacterController(TWriter& writer, ECS::Entity en)
