@@ -189,10 +189,17 @@ namespace ALEngine::Editor
 				// Check payload is not own Entity
 				if (m_EntityHover != child_pl)
 				{
+					// move child_pl to be child under m_EntityHover
 					sceneGraph.MoveBranch(child_pl, m_EntityHover);
 
-					//sceneGraph.Destruct(child_pl);
-					//sceneGraph.Push(m_EntityHover, child_pl);
+					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child_pl);
+					Transform& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(m_EntityHover);
+
+					childTransform.scale.x = childTransform.scale.x / ParentTransform.scale.x;
+					childTransform.scale.y = childTransform.scale.y / ParentTransform.scale.y;
+
+					childTransform.position.x = (childTransform.position.x - ParentTransform.position.x) / ParentTransform.scale.x;
+					childTransform.position.y = (childTransform.position.y - ParentTransform.position.y) / ParentTransform.scale.y;
 				}
 			}
 
