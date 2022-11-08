@@ -301,6 +301,11 @@ namespace ALEngine::Math
 		return Model(trans).Transpose();
 	}
 
+	Matrix4x4 Matrix4x4::ModelT(Transform const& trans)
+	{
+		return Model(trans).Transpose();
+	}
+
 	Matrix4x4 Matrix4x4::Inverse(Matrix4x4 const& mat)
 	{
 		f32 const coef00 = mat(2, 2) * mat(3, 3) - mat(3, 2) * mat(2, 3);
