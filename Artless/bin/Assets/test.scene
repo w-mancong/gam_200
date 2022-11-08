@@ -62,6 +62,18 @@
                 "hasGravity": true,
                 "isEnabled": true
             }
+        ],
+        "CharacterController": [
+            {
+                "speed": 50.0,
+                "jumpStrength": 5.0,
+                "leftKey": 65,
+                "rightKey": 68,
+                "jumpKey": 32
+            }
+        ],
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -260,6 +272,9 @@
                     0.0
                 ]
             }
+        ],
+        "EventTrigger": [
+            {}
         ]
     },
     {

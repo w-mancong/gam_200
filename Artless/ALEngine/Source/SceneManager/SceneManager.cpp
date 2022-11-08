@@ -307,17 +307,76 @@ namespace ALEngine::Engine::Scene
 
 	void WriteCharacterController(TWriter& writer, ECS::Entity en)
 	{
+		writer.Key("CharacterController");
+		writer.StartArray();
+		writer.StartObject();
 
+		CharacterController const& cc = Coordinator::Instance()->GetComponent<CharacterController>(en);
+		
+		// Speed
+		writer.Key("speed");
+		writer.Double(static_cast<f64>(cc.speed));
+
+		// Jump Strength
+		writer.Key("jumpStrength");
+		writer.Double(static_cast<f64>(cc.jumpStrength));
+
+		// Left key
+		writer.Key("leftKey");
+		writer.Uint64(cc.leftKey);
+
+		// Right key
+		writer.Key("rightKey");
+		writer.Uint64(cc.rightKey);
+
+		// Jumpy key
+		writer.Key("jumpKey");
+		writer.Uint64(cc.jumpKey);
+
+		writer.EndObject();
+		writer.EndArray();
 	}
 
 	void ReadCharacterController(rjs::Value const& v, ECS::Entity en)
 	{
+		CharacterController cc{};
 
+		// Getting Speed
+		cc.speed = v[0]["speed"].GetFloat();
+
+		// Getting jump strength
+		cc.jumpStrength = v[0]["jumpStrength"].GetFloat();
+
+		// Getting left key
+		cc.leftKey = v[0]["leftKey"].GetUint64();
+
+		// Getting right key
+		cc.rightKey = v[0]["rightKey"].GetUint64();
+
+		// Getting jump key
+		cc.jumpKey = v[0]["jumpKey"].GetUint64();
 	}
 
 	void WriteEventTrigger(TWriter& writer, ECS::Entity en)
 	{
+		/*
+			Event Trigger
 
+			OnPointerEnter
+			OnPointerStay
+			OnPointerExit
+			OnPointerClick
+		*/
+		writer.Key("EventTrigger");
+		writer.StartArray();
+		writer.StartObject();
+
+		EventTrigger const& et = Coordinator::Instance()->GetComponent<EventTrigger>(en);
+
+		// OnPointerEnter	
+
+		writer.EndObject();
+		writer.EndArray();
 	}
 
 	void ReadEventTrigger(rjs::Value const& v, ECS::Entity en)
