@@ -62,15 +62,104 @@ namespace ALEngine::Engine::Scene
 
 	void WriteAnimator(TWriter& writer, ECS::Entity en)
 	{
+		writer.Key("Animator");
+		writer.StartArray();
+		writer.StartObject();
 
+		Animator const& animator = Coordinator::Instance()->GetComponent<Animator>(en);
+		// Saving animatorName
+		writer.Key("animatorName");
+		writer.String( animator.animatorName.c_str(), static_cast<rjs::SizeType>(animator.animatorName.length() ) );
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadAnimator(rjs::Value const& v, ECS::Entity en)
+	{
+		// Getting animatorName
+		c8 const * animatorName = v[0]["animatorName"].GetString();
+		Animator animator = ECS::CreateAnimator(animatorName);
+		ECS::AttachAnimator(en, animator);
 	}
 
 	void WriteTransform(TWriter& writer, ECS::Entity en)
 	{
+		writer.Key("Transform");
+		writer.StartArray();
+		writer.StartObject();
 
+		Transform const& transform = Coordinator::Instance()->GetComponent<Transform>(en);
+
+		// Position
+		writer.Key("position");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(transform.position.x));
+		writer.Double(static_cast<f64>(transform.position.y));
+		writer.Double(static_cast<f64>(transform.position.z));
+		writer.EndArray();
+
+		// Scale
+		writer.Key("scale");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(transform.scale.x));
+		writer.Double(static_cast<f64>(transform.scale.y));
+		writer.EndArray();
+
+		// Rotation
+		writer.Key("rotation");
+		writer.Double(static_cast<f64>(transform.rotation));
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadTransform(rjs::Value const& v, ECS::Entity en)
+	{
+		Transform transform;
+
+		// Getting position
+		rjs::Value const& p  = v[0]["position"];
+		transform.position.x = p[0].GetFloat();
+		transform.position.y = p[1].GetFloat();
+		transform.position.z = p[2].GetFloat();
+
+		// Getting scale
+		rjs::Value const& s = v[0]["scale"];
+		transform.scale.x = s[0].GetFloat();
+		transform.scale.y = s[1].GetFloat();
+
+		// Getting rotation
+		transform.rotation = v[0]["rotation"].GetFloat();
+
+		Coordinator::Instance()->AddComponent(en, transform);
 	}
 
 	void WriteEntityData(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("EntityData");
+		writer.StartArray();
+		writer.StartObject();
+
+		EntityData const& entityData = Coordinator::Instance()->GetComponent<EntityData>(en);
+
+		// Tag
+		writer.Key("tag");
+		writer.String( entityData.tag.c_str(), static_cast<rjs::SizeType>(entityData.tag.length() ) );
+
+		// Active status
+		writer.Key("active");
+		writer.Bool(entityData.active);
+
+		// Entity ID
+		writer.Key("id");
+		writer.Uint(entityData.id);
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadEntityData(rjs::Value const& v, ECS::Entity en)
 	{
 
 	}
@@ -80,7 +169,17 @@ namespace ALEngine::Engine::Scene
 
 	}
 
+	void ReadCollider2D(rjs::Value const& v, ECS::Entity en)
+	{
+
+	}
+
 	void WriteRigidbody2D(TWriter& writer, ECS::Entity en)
+	{
+
+	}
+
+	void ReadRigidbody2D(rjs::Value const& v, ECS::Entity en)
 	{
 
 	}
@@ -90,7 +189,17 @@ namespace ALEngine::Engine::Scene
 
 	}
 
+	void ReadCharacterController(rjs::Value const& v, ECS::Entity en)
+	{
+
+	}
+
 	void WriteEventTrigger(TWriter& writer, ECS::Entity en)
+	{
+
+	}
+
+	void ReadEventTrigger(rjs::Value const& v, ECS::Entity en)
 	{
 
 	}
@@ -100,12 +209,27 @@ namespace ALEngine::Engine::Scene
 
 	}
 
+	void ReadEventCollisionTrigger(rjs::Value const& v, ECS::Entity en)
+	{
+
+	}
+
 	void WriteUnit(TWriter& writer, ECS::Entity en)
 	{
 
 	}
 
+	void ReadUnit(rjs::Value const& v, ECS::Entity en)
+	{
+
+	}
+
 	void WriteCell(TWriter& writer, ECS::Entity en)
+	{
+
+	}
+
+	void ReadCell(rjs::Value const& v, ECS::Entity en)
 	{
 
 	}
@@ -187,6 +311,26 @@ namespace ALEngine::Engine::Scene
 			rjs::Value const& v{ *it };
 			if (v.HasMember("Sprite"))
 				ReadSprite(v["Sprite"], en);
+			if (v.HasMember("Animator"))
+				ReadAnimator(v["Animator"], en);
+			if (v.HasMember("Transform"))
+				ReadTransform(v["Transform"], en);
+			if (v.HasMember("EntityData"))
+				ReadEntityData(v["EntityData"], en);
+			if (v.HasMember("Collider2D"))
+				ReadCollider2D(v["Collider2D"], en);
+			if (v.HasMember("Rigidbody2D"))
+				ReadRigidbody2D(v["Rigidbody2D"], en);
+			if (v.HasMember("CharacterController"))
+				ReadCharacterController(v["CharacterController"], en);
+			if (v.HasMember("EventTrigger"))
+				ReadEventTrigger(v["EventTrigger"], en);
+			if (v.HasMember("EventCollisionTrigger"))
+				ReadEventCollisionTrigger(v["EventCollisionTrigger"], en);
+			if (v.HasMember("Unit"))
+				ReadUnit(v["Unit"], en);
+			if (v.HasMember("Cell"))
+				ReadCell(v["Cell"], en);
 		}
 	}
 }
