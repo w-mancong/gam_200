@@ -193,13 +193,26 @@ namespace ALEngine::Editor
 					sceneGraph.MoveBranch(child_pl, m_EntityHover);
 
 					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child_pl);
-					Transform& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(m_EntityHover);
 
-					childTransform.scale.x = childTransform.scale.x / ParentTransform.scale.x;
-					childTransform.scale.y = childTransform.scale.y / ParentTransform.scale.y;
 
-					childTransform.position.x = (childTransform.position.x - ParentTransform.position.x) / ParentTransform.scale.x;
-					childTransform.position.y = (childTransform.position.y - ParentTransform.position.y) / ParentTransform.scale.y;
+					s32 node{ static_cast<s32>(child_pl) }, parentNode{};
+					while (1)
+					{
+						parentNode = sceneGraph.GetMap()[node].parent;
+						if (parentNode == -1)
+						{
+							break;
+						}
+						Transform& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(parentNode); // get parent transform
+
+						childTransform.scale.x = childTransform.scale.x / ParentTransform.scale.x;
+						childTransform.scale.y = childTransform.scale.y / ParentTransform.scale.y;
+
+						childTransform.position.x = (childTransform.position.x - ParentTransform.position.x) / ParentTransform.scale.x;
+						childTransform.position.y = (childTransform.position.y - ParentTransform.position.y) / ParentTransform.scale.y;
+
+						node = parentNode;
+					}
 				}
 			}
 
