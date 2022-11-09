@@ -30,10 +30,19 @@ namespace ALEngine::Engine
 	void FixedUpdate(void);
 
 	/*!*********************************************************************************
-		\brief
-		Return the status of the application
+		\brief Return the status of the application
 	***********************************************************************************/
 	int GetAppStatus(void);
+
+	/*!*********************************************************************************
+		\brief Set the status of the application
+	***********************************************************************************/
+	void SetAppStatus(int appStatus);
+
+	/*!*********************************************************************************
+		\brief Set the focus status of the window
+	***********************************************************************************/
+	void SetWindowFocus(bool _focus);
 }
 
 #endif

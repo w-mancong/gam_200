@@ -9,6 +9,7 @@ namespace ALEngine::Engine
 	namespace
 	{
 		std::atomic<int> appStatus;
+		bool focus;
 	}
 
 	class Application
@@ -52,6 +53,7 @@ namespace ALEngine::Engine
 	void Application::Init(void)
 	{
 		OpenGLWindow::InitGLFWWindow();
+		focus = glfwGetWindowAttrib(OpenGLWindow::Window(), GLFW_VISIBLE);
 		ECS::InitSystem();
 
 		// Initialize Time (Framerate Controller)
@@ -173,6 +175,11 @@ namespace ALEngine::Engine
 		{
 			// Get Current Time
 			Time::ClockTimeNow();
+			if (!focus)
+			{
+				glfwPollEvents();
+				continue;
+			}
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
@@ -316,5 +323,15 @@ namespace ALEngine::Engine
 	int GetAppStatus(void)
 	{
 		return appStatus;
+	}
+
+	void SetAppStatus(int _appStatus)
+	{
+		appStatus = _appStatus;
+	}
+
+	void SetWindowFocus(bool _focus)
+	{
+		focus = _focus;
 	}
 }
