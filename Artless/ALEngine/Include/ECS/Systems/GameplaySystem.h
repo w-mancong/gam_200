@@ -41,6 +41,12 @@ namespace ALEngine
 
 		/*!*********************************************************************************
 			\brief
+			Draws the gameplay's grid and pathfinder
+		***********************************************************************************/
+		void DrawGameplaySystem();
+
+		/*!*********************************************************************************
+			\brief
 			create player unit entity
 		***********************************************************************************/
 		void CreatePlayerUnit(Entity const& entity);
@@ -50,7 +56,6 @@ namespace ALEngine
 	        create enemy unit entity
 		***********************************************************************************/
 		void CreateEnemyUnit(Entity const& entity);
-
 	}
 }
 #endif
