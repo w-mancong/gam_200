@@ -26,8 +26,6 @@ namespace ALEngine::ECS::Component
 		u32 unitEntity;
 		u32 coordinate[2];
 
-		ALEngine::Math::Vector2Int m_Grid;
-
 		void CalculateFCost()
 		{
 			m_FCost = m_GCost + m_HCost;

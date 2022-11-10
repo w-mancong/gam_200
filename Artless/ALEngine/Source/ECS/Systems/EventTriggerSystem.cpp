@@ -25,8 +25,8 @@ namespace ALEngine::ECS
 	class EventTriggerSystem : public System
 	{
 	public:
-		void InvokeTriggerListeners(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type);
-		void InvokeEvent(Event& event_trigger);
+		void InvokeTriggerListeners(Entity invokerEntity, EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type);
+		void InvokeEvent(Entity invokerEntity, Event& event_trigger);
 		void UpdateEventTriggerState(EventTrigger& event_trigger, b8 isCurrentlyPointingOn);
 		Event& GetEventFromTrigger(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type);
 
@@ -37,6 +37,8 @@ namespace ALEngine::ECS
 	{
 		//Character Controller System to be accessed locally
 		std::shared_ptr<EventTriggerSystem> eventSystem;
+
+		std::unordered_map <std::string, void (*)()> allSubscribedFunction;
 	}
 
 	void RegisterEventTriggerSystem(void)
@@ -59,57 +61,63 @@ namespace ALEngine::ECS
 			//Invoke listeners based on trigger type
 			switch (event_Trigger.current_Trigger_State) {
 				case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
-					eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER);
+					eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER);
 					break;
 				case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
 					if (isClickTriggered) {
-						eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK);
+						eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK);
 					}
 					else {
-						eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_STAY);
+						eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_STAY);
 					}
 					break;
 				case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
-					eventSystem->InvokeTriggerListeners(event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT);
+					eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT);
 					break;
 			}
 		}
 	}
 
 	void EventTriggerSystem::UpdatePointerStatus(Entity entity) {
+		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
+
+		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
+
+		//Check if mouse position is over the collider
+		b8 isPointingOver = false;
+
 		if (Coordinator::Instance()->HasComponent<Collider2D>(entity)) {
 			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(entity);
-			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
-
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
-
-			//Check if mouse position is over the collider
-			b8 isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)transform.position + collider.m_localPosition, collider.scale[0] + transform.scale.x, collider.scale[1] + transform.scale.y);
-			
-			//Set the state
-			UpdateEventTriggerState(eventTrigger,isPointingOver);
+			isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)transform.position + collider.m_localPosition, collider.scale[0] + transform.scale.x, collider.scale[1] + transform.scale.y);
 		}
+		else {
+
+			isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)transform.position, transform.scale.x, transform.scale.y);
+		}
+	
+		//Set the state
+		UpdateEventTriggerState(eventTrigger, isPointingOver);
 	}
 
-	void EventTriggerSystem::InvokeEvent(Event& evnt) {
+	void EventTriggerSystem::InvokeEvent(Entity invokerEntity, Event& evnt) {
 		for (auto it = evnt.m_Listeners.begin(); it != evnt.m_Listeners.end(); ++it) {
-			it->second.invokeFunction();
+			it->second.invokeFunction(invokerEntity);
 		}
 	}
 
-	void EventTriggerSystem::InvokeTriggerListeners(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type) {
+	void EventTriggerSystem::InvokeTriggerListeners(Entity invokerEntity, EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type) {
 		switch (trigger_type) {
 		case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
-			eventSystem->InvokeEvent(event_trigger.OnPointEnter);
+			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointEnter);
 			break;
 		case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
-			eventSystem->InvokeEvent(event_trigger.OnPointStay);
+			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointStay);
 			break;
 		case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
-			eventSystem->InvokeEvent(event_trigger.OnPointExit);
+			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointExit);
 			break;
 		case EVENT_TRIGGER_TYPE::ON_POINTER_CLICK:
-			eventSystem->InvokeEvent(event_trigger.OnPointClick);
+			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointClick);
 			break;
 		}
 	}
@@ -165,7 +173,7 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(entity, charControl);
 	}
 
-	void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType, void (*fp)()) {
+	void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType, void (*fp)(u32)) {
 		Event& evnt = eventSystem->GetEventFromTrigger(eventTrig, eventType);
 
 		EventListener listener;
@@ -174,7 +182,7 @@ namespace ALEngine::ECS
 		evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 	}
 
-	void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)()) {
+	void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)(u32)) {
 		if (Coordinator::Instance()->HasComponent<EventTrigger>(entity)) {
 			EventTrigger& tempEventTrig = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
 			Event& evnt = eventSystem->GetEventFromTrigger(tempEventTrig, eventType);
