@@ -11,6 +11,8 @@ brief:	This file contains the function declarations for the ALEditor class.
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
+#ifdef EDITOR
+
 #include  <Editor/Panels/ContentBrowserPanel.h>
 namespace ALEngine::Editor
 {
@@ -243,5 +245,7 @@ namespace ALEngine::Editor
 		ImVec4 m_ColorInteractive{};		// Color of Interactive
 	};
 }
+
+#endif
 
 #endif

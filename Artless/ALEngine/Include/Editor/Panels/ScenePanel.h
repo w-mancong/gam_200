@@ -11,6 +11,8 @@ brief:	This file contains function declarations for the ScenePanel class.
 #ifndef SCENE_PANEL_H
 #define SCENE_PANEL_H
 
+#ifdef EDITOR
+
 namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
@@ -156,4 +158,6 @@ namespace ALEngine::Editor
 	***********************************************************************************/
 	bool Check_Point_To_AABB(Math::Vec2 pointPos, Math::Vec2 aabbPos, float width, float height);
 }
+#endif
+
 #endif

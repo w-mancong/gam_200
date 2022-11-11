@@ -314,11 +314,13 @@ namespace ALEngine::ECS
 		glDisable(GL_DEPTH_TEST);
 		//------------------ End viewport framebuffer rendering ------------------//		
 
+#ifdef EDITOR
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
 		{
 			Editor::ALEditor::Instance()->End();
 		}
+#endif
 
 		glfwPollEvents();
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());

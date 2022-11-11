@@ -10,6 +10,8 @@ brief:	This file contains function definitions for the InspectorPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#ifdef EDITOR
+
 #include "imgui_internal.h"
 
 namespace ALEngine::Editor 
@@ -397,3 +399,5 @@ namespace ALEngine::Editor
 	}
 
 }
+
+#endif

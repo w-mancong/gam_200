@@ -11,6 +11,8 @@ brief:	This file contains function declarations for the InspectorPanel class.
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
 
+#ifdef EDITOR
+
 namespace ALEngine::Editor
 {
 	// Predeclarations
@@ -152,5 +154,7 @@ namespace ALEngine::Editor
 		InComp_Total
 	};
 }
+
+#endif
 
 #endif

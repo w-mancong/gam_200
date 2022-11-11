@@ -11,6 +11,8 @@ brief:	This file contains function declarations for the SceneHierarchPanel class
 #ifndef SCENE_HIERARCHY_PANEL_H
 #define SCENE_HIERARCHY_PANEL_H
 
+#ifdef EDITOR
+
 namespace ALEngine::Editor
 {	
 	/*!*********************************************************************************
@@ -81,5 +83,7 @@ namespace ALEngine::Editor
 		ECS::Entity m_EntityHover{ ECS::MAX_ENTITIES };
 	};
 }
+
+#endif
 
 #endif

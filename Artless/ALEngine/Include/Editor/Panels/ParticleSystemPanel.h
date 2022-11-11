@@ -6,10 +6,11 @@ brief: This file contains the function declaration for ParticleSystemPanel.
 	   ParticleSystemPanel handles the panel that manages the properties of particles.
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#include <Graphics/ParticleSys.h>
-
 #ifndef	PARTICLE_SYSTEM_PANEL_H
 #define PARTICLE_SYSTEM_PANEL_H
+
+#ifdef EDITOR
+#include <Graphics/ParticleSys.h>
 
 namespace ALEngine::Editor
 {
@@ -43,5 +44,7 @@ namespace ALEngine::Editor
 		s32 particleSpawnRate{ 4 };
 	};
 }
+
+#endif
 
 #endif
