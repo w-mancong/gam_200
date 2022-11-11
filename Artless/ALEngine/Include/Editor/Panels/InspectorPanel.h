@@ -11,6 +11,8 @@ brief:	This file contains function declarations for the InspectorPanel class.
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
 
+#ifdef EDITOR
+
 namespace ALEngine::Editor
 {
 	// Predeclarations
@@ -94,6 +96,30 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Displays the RigidBody component info on the panel
+		***********************************************************************************/
+		void DisplayRigidBody(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Collider component info on the panel
+		***********************************************************************************/
+		void DisplayCollider(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Audio component info on the panel
+		***********************************************************************************/
+		void DisplayAudio(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Animator component info on the panel
+		***********************************************************************************/
+		void DisplayAnimator(void);
+
+		/*!*********************************************************************************
+			\brief
 			Displays the Sprite component info on the panel
 
 			\return
@@ -152,5 +178,7 @@ namespace ALEngine::Editor
 		InComp_Total
 	};
 }
+
+#endif
 
 #endif

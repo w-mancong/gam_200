@@ -19,7 +19,8 @@ namespace ALEngine::ECS::Component
 	{
 		Rectangle2D_AABB,
 		Rectangle2D_OOBB,
-		Circle2D
+		Circle2D,
+		ColliderType_Final
 	};
 
 	/*!*********************************************************************************

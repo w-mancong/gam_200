@@ -10,6 +10,8 @@ brief:	This file contains the function definitions for the ALEditor class.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
+#ifdef EDITOR
+
 #include "imgui.h"
 #include "imgui_internal.h"
 
@@ -49,6 +51,12 @@ namespace ALEngine::Editor
 			style.WindowRounding = 0.f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.f;
 		}
+
+		// Scale of ImGui stuff
+		style.ScaleAllSizes(1.2f);
+
+		// Font Loading for ImGui
+		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial Italic.ttf", 20.f);
 
 		// Init GLFW
 		ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window() , true);
@@ -127,7 +135,7 @@ namespace ALEngine::Editor
 
 			// Profiler Panel
 			m_ProfilerPanel.OnImGuiRender();
-			//ImGui::ShowDemoWindow();
+			ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -496,3 +504,5 @@ namespace ALEngine::Editor
 		return m_GameIsActive;
 	}
 }
+
+#endif

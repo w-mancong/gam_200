@@ -11,6 +11,8 @@ brief:	This file contains function declarations for the GamePanel class.
 #ifndef GAME_PANEL_H
 #define GAME_PANEL_H
 
+#ifdef EDITOR
+
 namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
@@ -82,5 +84,7 @@ namespace ALEngine::Editor
 		ImVec2 m_ImGuiPanelPos{};
 	};
 }
+
+#endif
 
 #endif

@@ -63,8 +63,10 @@ namespace ALEngine::Engine
 		ALEngine::Exceptions::Logger::Init();
 
 		//// Init ImGui
+#ifdef EDITOR
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(true);
+#endif
 
 		AL_CORE_CRITICAL("CRITICAL");
 		AL_CORE_ERROR("ERROR");
@@ -182,11 +184,13 @@ namespace ALEngine::Engine
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
+#ifdef EDITOR
 			{
 				PROFILER_TIMER("Editor UI Update")
 				// Begin new ImGui frame
 				ALEditor::Instance()->Begin();
 			}
+#endif
 			
 			{
 				PROFILER_TIMER("Normal Update")
@@ -194,8 +198,10 @@ namespace ALEngine::Engine
 				Engine::Update();
 			}
 
+#ifdef EDITOR
 			if (ALEditor::Instance()->GetGameActive())
 			{
+#endif
 				PROFILER_TIMER("Fixed Update")
 				// Physics
 				// Fixed Update (Physics)
@@ -213,7 +219,9 @@ namespace ALEngine::Engine
 					Engine::FixedUpdate();
 					accumulator -= Time::m_FixedDeltaTime;
 				}
+#ifdef EDITOR
 			}
+#endif
 
 			{
 				PROFILER_TIMER("Render Update")
@@ -241,7 +249,9 @@ namespace ALEngine::Engine
 	void Application::Exit(void)
 	{
 		ExitGameplaySystem();
+#ifdef EDITOR
 		ALEditor::Instance()->Exit();		// Exit ImGui
+#endif
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		AudioManagerExit();
 		glfwTerminate();					// clean/delete all GLFW resources
@@ -261,9 +271,10 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
-
+#ifdef EDITOR
 		if (!ALEditor::Instance()->GetGameActive())
 			return;
+#endif
 		UpdateCharacterControllerSystem();
 		UpdateEventTriggerSystem();
 		UpdateGameplaySystem();
@@ -275,8 +286,10 @@ namespace ALEngine::Engine
 			AL_CORE_DEBUG("Mouse Pos: {}, {}", john.x, john.y);
 		}
 
+#ifdef EDITOR
 		if (ALEditor::Instance()->GetGameActive())
 		{
+#endif
 			Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
 			if (Input::KeyTriggered(KeyCode::A))
@@ -303,8 +316,9 @@ namespace ALEngine::Engine
 				TogglePauseChannel(Channel::Master);
 			if (Input::KeyTriggered(KeyCode::M))
 				ToggleMuteChannel(Channel::Master);
+#ifdef EDITOR
 		}
-		
+#endif
 	}
 
 	void Engine::FixedUpdate(void)

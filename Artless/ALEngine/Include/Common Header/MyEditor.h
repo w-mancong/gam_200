@@ -8,6 +8,7 @@ brief:	This file contains all the relevant Editor header files to be included in
 *//*__________________________________________________________________________________*/
 #ifndef	MY_EDITOR_H
 #define MY_EDITOR_H
+#ifdef EDITOR
 
 #include "Editor/Panels/ScenePanel.h"
 #include "Editor/Panels/GamePanel.h"
@@ -20,4 +21,5 @@ brief:	This file contains all the relevant Editor header files to be included in
 #include "Editor/ALEditor.h"
 #include "Editor/tracy/Tracy.hpp"
 
+#endif
 #endif

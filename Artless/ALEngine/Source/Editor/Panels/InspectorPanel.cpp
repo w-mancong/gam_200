@@ -10,7 +10,10 @@ brief:	This file contains function definitions for the InspectorPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#ifdef EDITOR
+
 #include "imgui_internal.h"
+#define make_string(str) #str
 
 namespace ALEngine::Editor 
 {
@@ -77,6 +80,22 @@ namespace ALEngine::Editor
 		// Check if there is sprite component
 		if (Coordinator::Instance()->HasComponent<Sprite>(m_SelectedEntity))
 			DisplaySprite();
+
+		// Check if there is sprite component
+		if (Coordinator::Instance()->HasComponent<Rigidbody2D>(m_SelectedEntity))
+			DisplayRigidBody();
+
+		// Check if there is sprite component
+		if (Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
+			DisplayCollider();
+
+		//// Check if there is Audio component
+		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
+		//	DisplayAudio();
+
+		//// Check if there is Animator component
+		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
+		//	DisplayAnimator();
 
 		// Add component button
 		AddComponentButton();
@@ -177,7 +196,7 @@ namespace ALEngine::Editor
 			f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
 				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f };
 
-			// FLoat inputs
+			// Float inputs
 			ImGui::DragFloat2("Tr", mtx_translate); // Traslate
 			ImGui::DragFloat("Rt", &xform.rotation, 1.f, 0.f, 360.f);	// Rotate
 			ImGui::DragFloat2("Sc", mtx_scale);							// Scale
@@ -316,6 +335,82 @@ namespace ALEngine::Editor
 		}
 	}
 
+	void InspectorPanel::DisplayRigidBody(void)
+	{
+		// Mass, HasGravity, IsEnabled
+		if (ImGui::TreeNodeEx("RigidBody Component"))
+		{
+			Rigidbody2D& rb = ECS::Coordinator::Instance()->GetComponent<Rigidbody2D>(m_SelectedEntity);
+
+			ImGui::DragFloat("Mass", &rb.mass, 1.f, 1.f, 100.f);
+
+			ImGui::Checkbox("Has Gravity", &rb.hasGravity);
+
+			ImGui::Checkbox("Is Enabled", &rb.isEnabled);
+
+			ImGui::TreePop();
+
+			ImGui::Separator();
+		}
+	}
+
+	void InspectorPanel::DisplayCollider(void)
+	{
+		// Enum ColliderType, Rotation, Array2 F32 Scale, IsTriggered, IsDebug, IsEnabled, Vec2 LocalPos, 
+		if (ImGui::TreeNodeEx("Collider Component"))
+		{
+			Collider2D& collider = ECS::Coordinator::Instance()->GetComponent<Collider2D>(m_SelectedEntity);
+			
+			const char* typeList[1] = {"Rectangle2D_AABB"};
+			s32 index = (s32)collider.colliderType;
+			// Enum ColliderType
+			ImGui::Combo("Collider Type##Collider", &index, typeList, IM_ARRAYSIZE(typeList));
+
+			switch (index)
+			{
+			case (s32)ColliderType::Rectangle2D_AABB:
+				collider.colliderType = ColliderType::Rectangle2D_AABB;
+				break;
+			case (s32)ColliderType::Rectangle2D_OOBB:
+				collider.colliderType = ColliderType::Rectangle2D_OOBB;
+				break;
+			case (s32)ColliderType::Circle2D:
+				collider.colliderType = ColliderType::Circle2D;
+				break;
+			}
+
+			ImGui::DragFloat("Rotation##Collider", &collider.rotation, 1.f, 0.f, 360.f);
+
+			ImGui::DragFloat2("Scale##Collider", collider.scale);
+
+			ImGui::Checkbox("Is Triggered##Collider", &collider.isTrigger);
+
+			ImGui::Checkbox("Is Enabled##Collider", &collider.isEnabled);
+
+			f32 pos[2]{ collider.m_localPosition.x, collider.m_localPosition.y };
+			ImGui::DragFloat("Local Position##Collider", pos);
+			collider.m_localPosition = Math::Vec2(pos[0], pos[1]);
+
+			ImGui::TreePop();
+		}
+	}
+
+	void InspectorPanel::DisplayAudio(void)
+	{
+		if (ImGui::TreeNodeEx("Audio Component"))
+		{
+			ImGui::TreePop();
+		}
+	}
+
+	void InspectorPanel::DisplayAnimator(void)
+	{
+		if (ImGui::TreeNodeEx("Animator Component"))
+		{
+			ImGui::TreePop();
+		}
+	}
+
 	ImGuizmo::OPERATION InspectorPanel::GetCurrGizmoOperation(void) const
 	{
 		return m_CurrentGizmoOperation;
@@ -397,3 +492,5 @@ namespace ALEngine::Editor
 	}
 
 }
+
+#endif
