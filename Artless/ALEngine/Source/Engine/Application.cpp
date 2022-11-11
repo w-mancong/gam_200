@@ -35,18 +35,18 @@ namespace ALEngine::Engine
 			Coordinator::Instance()->GetComponent<Transform>(current).position = { 10000,10000 };
 		}
 	}
-	void START() {
+	void START(Entity invokingEntity) {
 		AL_CORE_INFO("START");
 	}
-	void STAY() {
+	void STAY(Entity invokingEntity) {
 		AL_CORE_INFO("STAY");
 	}
 
-	void CLICK() {
+	void CLICK(Entity invokingEntity) {
 		AL_CORE_INFO("CLICK");
 	}
 
-	void EXIT() {
+	void EXIT(Entity invokingEntity) {
 		AL_CORE_INFO("EXIT");
 	}
 
@@ -132,7 +132,6 @@ namespace ALEngine::Engine
 		trans.scale = level.GetVec2("pathfinder_size", Math::Vec2());
 		Coordinator::Instance()->AddComponent(pathfinder, trans);
 		CreateSprite(pathfinder);
-		//CreateEnemyUnit(pathfinder);
 		CreatePlayerUnit(pathfinder);
 
 		AudioManagerInit();
@@ -318,6 +317,7 @@ namespace ALEngine::Engine
 
 		DebugDrawRigidbody();
 		DebugDrawCollider();
+		DrawGameplaySystem();
 	}
 
 	int GetAppStatus(void)
