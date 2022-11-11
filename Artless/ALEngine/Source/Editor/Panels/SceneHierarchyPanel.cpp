@@ -6,7 +6,7 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 		The SceneHierarchyPanel class contains information and functions necessary for
 		the Scene Hierarchy Panel of the editor to be displayed.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 

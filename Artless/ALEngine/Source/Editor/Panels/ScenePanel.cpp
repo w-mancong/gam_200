@@ -1,3 +1,13 @@
+/*!
+file:	ScenePanel.cpp
+author: Lucas Nguyen
+email:	l.nguyen@digipen.edu
+brief:	This file contains function definitions for the ScenePanel class.
+		The ScenePanel class contains information and functions necessary for
+		the Scene Panel of the editor to be displayed.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 #ifdef EDITOR
 

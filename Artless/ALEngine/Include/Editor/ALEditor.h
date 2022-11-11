@@ -6,14 +6,13 @@ brief:	This file contains the function declarations for the ALEditor class.
 		The ALEditor class essentially manages the Dear ImGui functions, as well as the
 		different editor panels generated with the help of Dear ImGui.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
 #ifdef EDITOR
 
-#include  <Editor/Panels/ContentBrowserPanel.h>
 namespace ALEngine::Editor
 {
 	/*!*********************************************************************************

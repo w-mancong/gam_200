@@ -7,7 +7,7 @@ email:		w.mancong@digipen.edu
 brief:		This file contains function to initialise the GLFW Window and provides
 			interface to interact with it
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
