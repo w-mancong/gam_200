@@ -454,4 +454,52 @@ namespace ALEngine::Tree
         }
     }
 
+    std::vector<BinaryTree::Serial> BinaryTree::SerializeTree()
+    {
+        std::vector<Serial> serialVect;
+        std::vector<s32> conversionTable{};
+        s32 newID{};
+        for (u32 i{}; i < map.size(); ++i)
+        {
+            if (map[i].active)
+            {
+                Serial newSerial{};
+                newSerial.serialID = newID;
+                conversionTable.push_back(newID);
+                newSerial.parentSerialID = map[i].parent; // old parent
+                serialVect.push_back(newSerial);
+                ++newID;
+            }
+            else
+            {
+                conversionTable.push_back(-1);
+            }
+        }
+        for (auto x : serialVect) // update old parent IDs to new IDs
+        {
+            if (x.parentSerialID != -1)
+            {
+                x.parentSerialID = conversionTable[x.parentSerialID];
+            }
+        }
+        return serialVect;
+    }
+
+    void BinaryTree::DeserializeTree(std::vector<Serial> serialVect)
+    {
+            std::cout << "--------------------------------------------------\n";
+        for (auto& x : serialVect)
+        {
+            //Push(x.parentSerialID, x.serialID);
+            if(x.parentSerialID == -1)
+                std::cout << x.parentSerialID << " " << x.serialID << "\n";
+        }
+
+        for (auto& x : serialVect)
+        {
+            if (x.parentSerialID != -1)
+                std::cout << x.parentSerialID << " " << x.serialID << "\n";
+        }
+    }
+
 } // end of namespace Tree
