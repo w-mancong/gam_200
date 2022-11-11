@@ -15,7 +15,7 @@ namespace ALEngine::ECS::Component
 	enum class EVENT_COLLISION_TRIGGER_TYPE { NOTHING, ON_COLLISION_ENTER, ON_COLLISION_STAY, ON_COLLISION_EXIT };
 
 	struct EventListener {
-		void (*invokeFunction)();
+		void (*invokeFunction)(u32 EntityInvoking);
 		uint32_t m_position = 0;
 	};
 

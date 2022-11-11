@@ -38,29 +38,43 @@ namespace ALEngine::ECS
 		};
 
 	public:
-		uint32_t roomSize[2]{ 7, 7 };
-		//Entity *roomCellsArray;
+		uint32_t roomSize[2]{ 6, 6 };
 		Room m_Room;
 
 		Entity playerEntity, startCellEntity, targetCellEntity;
-		std::vector<Entity> pathEntityVector;
 
 		GAMEPLAYSTATUS currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_INPUT_WAITING;
 
 		MoveOrder currentModeOrder;
+		void ClearMoveOrder();
 		Entity getCurrentEntityCell();
+		void SetMoveOrder(std::vector<Entity> path);
 
 		//Return if reached end
 		bool StepUpModeOrderPath(MoveOrder& order);
 		uint32_t getRoomSize();
 		Entity getEntityCell(uint32_t x, uint32_t y);
+		void ToggleCellToInaccessible(uint32_t x, uint32_t y, b8 istrue);
 		void RunGameState();
+
+		void MovePlayerEntityToCell(Entity cellEntity);
+
+		void RunGameStateWaitPlayerInput();
+		void RunGameStateMoving();
 	};
 
 	namespace
 	{
 		//Character Controller System to be accessed locally
 		std::shared_ptr<GameplaySystem> gameplaySystem;
+
+	}
+
+	void ClickSelectCell(Entity invokerCell) {
+		//When click on cell, Move the player unit to the selected cell
+		gameplaySystem->MovePlayerEntityToCell(invokerCell);
+
+		AL_CORE_INFO("Select Cell");
 	}
 
 	void RegisterGameplaySystem(void)
@@ -90,8 +104,6 @@ namespace ALEngine::ECS
 				sceneGraph.Push(gameplaySystem->m_Room.roomCellsArray[0], gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
 			}
 
-			CreateCollider(gameplaySystem->m_Room.roomCellsArray[i]);
-			Coordinator::Instance()->GetComponent<Collider2D>(gameplaySystem->m_Room.roomCellsArray[i]).isTrigger = true;
 			Transform transform;
 			transform.scale = { 70, 70 };
 			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
@@ -99,11 +111,17 @@ namespace ALEngine::ECS
 
 		for (uint32_t i = 0; i < gameplaySystem->roomSize[0]; ++i) {
 			for (uint32_t j = 0; j < gameplaySystem->roomSize[1]; ++j) {
-				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[i * gameplaySystem->roomSize[0] + j]);
-				transform.position = { 200 + (f32)i * 100.f, 200 + (f32)j * 100.f };
+				int cellIndex = i * gameplaySystem->roomSize[0] + j;
+
+				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
+				transform.position = { 200 + (f32)j * 100.f, 200 + (f32)i * 100.f };
 				Cell cell;
 				cell.coordinate[0] = i;
 				cell.coordinate[1] = j;
+
+				CreateEventTrigger(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
+
+				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, ClickSelectCell);
 				
 				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i,j), cell);
 			}
@@ -115,9 +133,22 @@ namespace ALEngine::ECS
 				gameplaySystem->playerEntity = *it;
 				unit.coordinate[0] = 0;
 				unit.coordinate[1] = 0;
+
+				Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(unit.coordinate[0], unit.coordinate[1]));
+				Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				playertransform.position = SpawnCellTransform.position;
 				break;
 			}
-		}			
+		}	
+
+		//Set a few blocks to be inaccessible
+		gameplaySystem->ToggleCellToInaccessible(1, 0, false);
+		gameplaySystem->ToggleCellToInaccessible(1, 1, false);
+		gameplaySystem->ToggleCellToInaccessible(1, 2, false);
+		gameplaySystem->ToggleCellToInaccessible(2, 1, false);
+		gameplaySystem->ToggleCellToInaccessible(3, 1, false);
+		gameplaySystem->ToggleCellToInaccessible(3, 2, false);
+
 	}
 
 	void UpdateGameplaySystem(void)
@@ -134,12 +165,32 @@ namespace ALEngine::ECS
 		return gameplaySystem->currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
 	}
 
+	void GameplaySystem::ClearMoveOrder() {
+		currentModeOrder.path.clear();
+		currentModeOrder.path_step = 0;
+	}
+
+	void GameplaySystem::SetMoveOrder(std::vector<Entity> path) {
+		currentModeOrder.path.clear();
+		currentModeOrder.path_step = 0;
+
+		for (int i = path.size() - 1; i >= 0; --i) {
+			currentModeOrder.path.push_back(path[i]);
+		}
+		//currentModeOrder.path = std::move(path);
+	}
+
 	uint32_t GameplaySystem::getRoomSize() {
 		return gameplaySystem->roomSize[0] * gameplaySystem->roomSize[1];
 	}
 
 	Entity GameplaySystem::getEntityCell(uint32_t x, uint32_t y) {
 		return gameplaySystem->m_Room.roomCellsArray[y * gameplaySystem->roomSize[0] + x];
+	}
+
+	void GameplaySystem::ToggleCellToInaccessible(uint32_t x, uint32_t y, b8 istrue) {
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(x, y));
+		cell.m_isAccesible = istrue;
 	}
 
 	bool GameplaySystem::StepUpModeOrderPath(MoveOrder& order) {
@@ -155,41 +206,19 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::RunGameState() {
-		switch (gameplaySystem->currentGameplayStatus)
-		{
+		switch (gameplaySystem->currentGameplayStatus){
 		case GAMEPLAYSTATUS::PLAYER_INPUT_WAITING:
-			gameplaySystem->pathEntityVector.clear();
-
-			gameplaySystem->targetCellEntity = gameplaySystem->getEntityCell(2, 2);
-			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
-			gameplaySystem->startCellEntity = gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]);
-
-			//std::cout << playerUnit.coordinate[0] << "," << playerUnit.coordinate[1] << std::endl;
-
-			gameplaySystem->pathEntityVector = Engine::AI::FindPath(gameplaySystem->m_Room, gameplaySystem->startCellEntity, gameplaySystem->targetCellEntity);
-			
-			std::cout << "Path Size | " <<  gameplaySystem->pathEntityVector.size() << std::endl;
-			for (int i = 0; i < gameplaySystem->pathEntityVector.size(); ++i) {
-				Cell c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->pathEntityVector[i]);
-
-				std::cout << c.m_Grid << "\n";
-			}
-
-			std::cout << std::endl;
-
-			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
+			RunGameStateWaitPlayerInput();
 			break;
 
 		case GAMEPLAYSTATUS::PLAYER_MOVING:
-			//movement of player
-
-			//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
+			RunGameStateMoving();
 			break;
 
 		case GAMEPLAYSTATUS::ENEMY_PLANNING:
 			
 
-			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_MOVING;
+			//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_MOVING;
 			break;
 
 		case GAMEPLAYSTATUS::ENEMY_MOVING:
@@ -212,4 +241,105 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(entity, unit);
 	}
 
+	void GameplaySystem::MovePlayerEntityToCell(Entity cellEntity) {
+		gameplaySystem->ClearMoveOrder();
+
+		gameplaySystem->targetCellEntity = cellEntity;
+
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		gameplaySystem->startCellEntity = gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]);
+		
+		std::vector<ECS::Entity> pathList;
+		bool isPathFound = Engine::AI::FindPath(gameplaySystem->m_Room, gameplaySystem->startCellEntity, gameplaySystem->targetCellEntity, pathList);
+		
+		if (!isPathFound) {
+			AL_CORE_INFO("No Path Found");
+			return;
+		}
+
+		gameplaySystem->SetMoveOrder(pathList);
+
+		gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
+	}
+
+	void GameplaySystem::RunGameStateWaitPlayerInput() {
+		
+	}
+
+	void GameplaySystem::RunGameStateMoving() {
+		//DirectionTomove
+		Entity nextPathEtity = currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
+
+		//Keep track of next cell destination
+		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
+
+		//Keep track of player transform
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+		
+		//Move player transform to it's iterated waypoint
+		Vector2 direction = Vector3::Normalize(cellTransform.position - playerTransform.position);
+
+		playerTransform.position += direction * 100.0f * Time::m_DeltaTime;
+
+		if (Vector3::Distance(playerTransform.position, cellTransform.position) < 1.0f) {
+			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell()); 
+
+			playerTransform.position = cellTransform.position;
+			playerUnit.coordinate[0] = cell.coordinate[0];
+			playerUnit.coordinate[1] = cell.coordinate[1];
+
+			bool isEndOfPath = StepUpModeOrderPath(currentModeOrder);
+
+			if (isEndOfPath) {
+				currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
+				return;
+			}
+		}
+	}
+
+
+	void DrawGameplaySystem() {
+		//Box holder
+		Vector2 bottomleft;
+		Vector2 topright;
+
+		Color color = { 0.f,0.f ,0.f ,0.f };
+
+		//Draw all cells
+		for (int i = 0; i < gameplaySystem->m_Room.roomSize; ++i) {
+			Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[i]);
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->m_Room.roomCellsArray[i]);
+
+			if (cell.m_isAccesible) {
+				color = { 0.f, 1.f, 0.f, 1.f };
+			}
+			else {
+				color = { 1.f, 0.f, 0.f, 1.f };
+			}
+	
+			bottomleft = { cellTransform.position.x - cellTransform.scale.x * 0.5f, cellTransform.position.y - cellTransform.scale.y * 0.5f };
+			topright = { cellTransform.position.x + cellTransform.scale.x * 0.5f, cellTransform.position.y + cellTransform.scale.y * 0.5f };
+
+			//Draw 4 lines
+			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+		}
+
+		//Draw the pathfinder 
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+		bottomleft = { playerTransform.position.x - playerTransform.scale.x * 0.5f, playerTransform.position.y - playerTransform.scale.y * 0.5f };
+		topright = { playerTransform.position.x + playerTransform.scale.x * 0.5f, playerTransform.position.y + playerTransform.scale.y * 0.5f };
+
+		color = { 1.f, 1.f, 0.f, 1.f };
+
+		Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+		Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+		Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+		Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+	}
 }
