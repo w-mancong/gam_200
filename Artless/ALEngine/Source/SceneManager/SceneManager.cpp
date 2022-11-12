@@ -357,62 +357,90 @@ namespace ALEngine::Engine::Scene
 		cc.jumpKey = v[0]["jumpKey"].GetUint64();
 	}
 
-	void WriteEventTrigger(TWriter& writer, ECS::Entity en)
-	{
-		/*
-			Event Trigger
+	//void WriteEventTrigger(TWriter& writer, ECS::Entity en)
+	//{
+	//	/*
+	//		Event Trigger
 
-			OnPointerEnter
-			OnPointerStay
-			OnPointerExit
-			OnPointerClick
-		*/
-		writer.Key("EventTrigger");
+	//		OnPointerEnter
+	//		OnPointerStay
+	//		OnPointerExit
+	//		OnPointerClick
+	//	*/
+	//	writer.Key("EventTrigger");
+	//	writer.StartArray();
+	//	writer.StartObject();
+
+	//	EventTrigger const& et = Coordinator::Instance()->GetComponent<EventTrigger>(en);
+
+	//	// OnPointerEnter	
+
+	//	writer.EndObject();
+	//	writer.EndArray();
+	//}
+
+	//void ReadEventTrigger(rjs::Value const& v, ECS::Entity en)
+	//{
+
+	//}
+
+	//void WriteEventCollisionTrigger(TWriter& writer, ECS::Entity en)
+	//{
+
+	//}
+
+	//void ReadEventCollisionTrigger(rjs::Value const& v, ECS::Entity en)
+	//{
+
+	//}
+
+	void WriteUnit(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("Unit");
 		writer.StartArray();
 		writer.StartObject();
 
-		EventTrigger const& et = Coordinator::Instance()->GetComponent<EventTrigger>(en);
+		Unit const& unit = Coordinator::Instance()->GetComponent<Unit>(en);
 
-		// OnPointerEnter	
+		// Max health
+		writer.Key("maxHealth");
+		writer.Int(unit.maxHealth);
+
+		// Max movement points
+		writer.Key("maxMovementPoints");
+		writer.Int(unit.maxMovementPoints);
+
+		// Unit type
+		writer.Key("unitType");
+		writer.Uint64(static_cast<u64>(unit.unitType));
 
 		writer.EndObject();
 		writer.EndArray();
 	}
 
-	void ReadEventTrigger(rjs::Value const& v, ECS::Entity en)
-	{
-
-	}
-
-	void WriteEventCollisionTrigger(TWriter& writer, ECS::Entity en)
-	{
-
-	}
-
-	void ReadEventCollisionTrigger(rjs::Value const& v, ECS::Entity en)
-	{
-
-	}
-
-	void WriteUnit(TWriter& writer, ECS::Entity en)
-	{
-
-	}
-
 	void ReadUnit(rjs::Value const& v, ECS::Entity en)
 	{
+		Unit unit;
 
+		// Getting max health
+		unit.maxHealth = v[0]["maxHealth"].GetInt();
+
+		// Getting max movement points
+		unit.maxMovementPoints = v[0]["maxMovementPoints"].GetInt();
+
+		// Getting unit type
+		unit.unitType = static_cast<UNIT_TYPE>(v[0]["unitType"].GetUint64());
 	}
 
-	void WriteCell(TWriter& writer, ECS::Entity en)
-	{
+	//void WriteCell(TWriter& writer, ECS::Entity en)
+	//{
 
-	}
+	//}
 
-	void ReadCell(rjs::Value const& v, ECS::Entity en)
-	{
+	//void ReadCell(rjs::Value const& v, ECS::Entity en)
+	//{
 
-	}
+	//}
 
 	void SaveScene(c8 const* sceneName)
 	{
@@ -445,14 +473,14 @@ namespace ALEngine::Engine::Scene
 				WriteRigidbody2D(writer, en);
 			if (Coordinator::Instance()->HasComponent<CharacterController>(en))
 				WriteCharacterController(writer, en);
-			if (Coordinator::Instance()->HasComponent<EventTrigger>(en))
-				WriteEventTrigger(writer, en);
-			if (Coordinator::Instance()->HasComponent<EventCollisionTrigger>(en))
-				WriteEventCollisionTrigger(writer, en);
+			//if (Coordinator::Instance()->HasComponent<EventTrigger>(en))
+			//	WriteEventTrigger(writer, en);
+			//if (Coordinator::Instance()->HasComponent<EventCollisionTrigger>(en))
+			//	WriteEventCollisionTrigger(writer, en);
 			if (Coordinator::Instance()->HasComponent<Unit>(en))
 				WriteUnit(writer, en);
-			if (Coordinator::Instance()->HasComponent<Cell>(en))
-				WriteCell(writer, en);
+			//if (Coordinator::Instance()->HasComponent<Cell>(en))
+			//	WriteCell(writer, en);
 
 			writer.EndObject();
 		}
@@ -503,14 +531,14 @@ namespace ALEngine::Engine::Scene
 				ReadRigidbody2D(v["Rigidbody2D"], en);
 			if (v.HasMember("CharacterController"))
 				ReadCharacterController(v["CharacterController"], en);
-			if (v.HasMember("EventTrigger"))
-				ReadEventTrigger(v["EventTrigger"], en);
-			if (v.HasMember("EventCollisionTrigger"))
-				ReadEventCollisionTrigger(v["EventCollisionTrigger"], en);
+			//if (v.HasMember("EventTrigger"))
+			//	ReadEventTrigger(v["EventTrigger"], en);
+			//if (v.HasMember("EventCollisionTrigger"))
+			//	ReadEventCollisionTrigger(v["EventCollisionTrigger"], en);
 			if (v.HasMember("Unit"))
 				ReadUnit(v["Unit"], en);
-			if (v.HasMember("Cell"))
-				ReadCell(v["Cell"], en);
+			//if (v.HasMember("Cell"))
+			//	ReadCell(v["Cell"], en);
 		}
 	}
 }
