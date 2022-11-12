@@ -34,6 +34,7 @@ namespace ALEngine::Tree
         {
             s32 serialID, parentSerialID;
             s32 ogID;
+            b8 flag{ false }; // for deserialization
         };
     public:
         /*!*********************************************************************************
@@ -136,6 +137,7 @@ namespace ALEngine::Tree
         void MoveBranch(s32 branch, s32 newParent);
         std::vector<Serial> SerializeTree();
         void DeserializeTree(std::vector<Serial> serialVect);
+        void DeserializeHelper(std::vector<BinaryTree::Serial>& serialVect);
 
     private:
         /*!*********************************************************************************

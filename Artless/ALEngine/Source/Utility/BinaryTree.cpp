@@ -485,21 +485,39 @@ namespace ALEngine::Tree
         return serialVect;
     }
 
+    void BinaryTree::DeserializeHelper(std::vector<BinaryTree::Serial>& serialVect)
+    {
+        u32 count{};
+        for (auto& x : serialVect)
+        {
+            if (x.flag == false && x.parentSerialID < map.size())
+            {
+                x.flag = true;
+                Push(x.parentSerialID, x.serialID);
+            }
+            
+            if(x.flag == true)
+            {
+                ++count;
+            }
+        }
+        if (count != serialVect.size())
+        {
+            return DeserializeHelper(serialVect);
+        }
+    }
+
     void BinaryTree::DeserializeTree(std::vector<Serial> serialVect)
     {
-            std::cout << "--------------------------------------------------\n";
         for (auto& x : serialVect)
         {
-            //Push(x.parentSerialID, x.serialID);
-            if(x.parentSerialID == -1)
-                std::cout << x.parentSerialID << " " << x.serialID << "\n";
+            if (x.parentSerialID == -1)
+            {
+                x.flag = true;
+                Push(x.parentSerialID, x.serialID);
+            }
         }
-
-        for (auto& x : serialVect)
-        {
-            if (x.parentSerialID != -1)
-                std::cout << x.parentSerialID << " " << x.serialID << "\n";
-        }
+        DeserializeHelper(serialVect);
     }
 
 } // end of namespace Tree
