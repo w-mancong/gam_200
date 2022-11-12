@@ -27,7 +27,8 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Unit
 	{
-		s32 health;
+		s32 health, maxHealth;
+		s32 movementPoints, maxMovementPoints;
 		UNIT_TYPE unitType;
 		u32 coordinate[2];
 

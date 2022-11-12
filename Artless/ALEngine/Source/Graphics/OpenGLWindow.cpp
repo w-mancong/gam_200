@@ -22,6 +22,17 @@ namespace ALEngine::Graphics
 			glViewport(0, 0, width, height);
 		}
 
+		void window_close_callback(GLFWwindow* _window)
+		{
+			Engine::SetAppStatus(0);
+		}
+
+		void window_focus_callback(GLFWwindow* window, int focused)
+		{
+			Engine::SetWindowFocus(focused);
+			Engine::ToggleMuteChannel(Engine::Channel::Master);
+		}
+
 		u32 constexpr DEFAULT_WIDTH{ 1200 }, DEFAULT_HEIGHT{ 600 };
 	}
 
@@ -118,6 +129,10 @@ namespace ALEngine::Graphics
 		glViewport(0, 0, width, height);
 		// tell glfw to call this function whenever window resizes
 		glfwSetFramebufferSizeCallback(window, ResizeWindow);
+		// tell glfw to call this function whenever window closes
+		glfwSetWindowCloseCallback(window, window_close_callback);
+		// tell glfw to call tihs function whenever window focus/not focusing
+		glfwSetWindowFocusCallback(window, window_focus_callback);
 		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

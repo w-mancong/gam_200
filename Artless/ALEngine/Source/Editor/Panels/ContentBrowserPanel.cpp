@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#ifdef EDITOR
+
 #include "imgui.h"
 #include "imgui_internal.h"
 /*!
@@ -61,7 +63,7 @@ namespace ALEngine::Editor
 		   // ImGui::MenuItem(fileNamestring.c_str());
 
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
-			if (ImGui::TreeNode(fileNamestring.c_str()))
+			if (ImGui::TreeNodeEx(fileNamestring.c_str(), flags))
 			{
 				//for dragging file, need to fix window crash when moving window
 				if (ImGui::BeginDragDropSource())
@@ -225,3 +227,5 @@ namespace ALEngine::Editor
 	}
 
 }	
+
+#endif

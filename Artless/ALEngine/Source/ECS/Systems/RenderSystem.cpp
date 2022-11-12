@@ -314,11 +314,13 @@ namespace ALEngine::ECS
 		glDisable(GL_DEPTH_TEST);
 		//------------------ End viewport framebuffer rendering ------------------//		
 
+#ifdef EDITOR
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
 		{
 			Editor::ALEditor::Instance()->End();
 		}
+#endif
 
 		glfwPollEvents();
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());
@@ -437,6 +439,7 @@ namespace ALEngine::ECS
 	{
 		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
+		sprite.filePath = filePath;
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 		Coordinator::Instance()->AddComponent(entity, transform);
@@ -446,6 +449,7 @@ namespace ALEngine::ECS
 	{
 		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
+		sprite.filePath = filePath;
 		sprite.layer = layer;
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}

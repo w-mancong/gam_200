@@ -69,6 +69,9 @@
     <ClCompile Include="Source\Math\Vector3Int.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
     <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
+    <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
+    <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
+    <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -309,6 +312,8 @@
     <ClInclude Include="Include\Math\Vector3Int.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
+    <ClInclude Include="Include\SceneManager\SceneManager.h" />
+    <ClInclude Include="Include\Common Header\MyScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
