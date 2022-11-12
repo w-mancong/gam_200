@@ -269,6 +269,15 @@ namespace ALEngine::ECS
 		{
 			UpdateParentChildrenPos(sceneGraph.GetMap()[entity]);
 		}
+
+		if (Input::KeyTriggered(KeyCode::Z))
+		{
+			Scene::SaveScene("test1");
+		}
+		//if (Input::KeyTriggered(KeyCode::X))
+		//{
+		//	Scene::LoadScene("test1");
+		//}
 		
 #if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//

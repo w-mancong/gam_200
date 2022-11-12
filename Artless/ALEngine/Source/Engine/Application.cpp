@@ -82,59 +82,59 @@ namespace ALEngine::Engine
 
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
-		player = Coordinator::Instance()->CreateEntity();
+		/*player = Coordinator::Instance()->CreateEntity();
 		sceneGraph.Push(-1, player);
 		floor= Coordinator::Instance()->CreateEntity();
 		sceneGraph.Push(-1, floor);
 		coin = Coordinator::Instance()->CreateEntity();
 		sceneGraph.Push(-1, coin);
 		pathfinder = Coordinator::Instance()->CreateEntity();
-		sceneGraph.Push(-1, pathfinder);
+		sceneGraph.Push(-1, pathfinder);*/
 
 		Transform trans;
 		Serializer::Serializer level{ "Assets/Dev/Objects/Level.json" };
 
-		trans.position = level.GetVec2("btn_pos", Math::Vec2());
-		trans.scale = level.GetVec2("btn_size", Math::Vec2(1.f, 1.f));
-		button = CreateSprite(trans, level.GetString("btn_image", "").c_str());
-		sceneGraph.Push(-1, button);
-		CreateCollider(button);
-		CreateEventTrigger(button);
-		Subscribe(button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
+		//trans.position = level.GetVec2("btn_pos", Math::Vec2());
+		//trans.scale = level.GetVec2("btn_size", Math::Vec2(1.f, 1.f));
+		//button = CreateSprite(trans, level.GetString("btn_image", "").c_str());
+		//sceneGraph.Push(-1, button);
+		//CreateCollider(button);
+		//CreateEventTrigger(button);
+		//Subscribe(button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
-		// Initialize player
-		trans.position = level.GetVec2("player_pos", Math::Vec2());
-		trans.scale = level.GetVec2("player_size", Math::Vec2());
-		Coordinator::Instance()->AddComponent(player, trans);
-		CreateSprite(player, "Assets/Images/awesomeface.png");
-		CreateCollider(player);
-		CreateCharacterController(player);
-		CreateEventTrigger(player);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
-		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
+		//// Initialize player
+		//trans.position = level.GetVec2("player_pos", Math::Vec2());
+		//trans.scale = level.GetVec2("player_size", Math::Vec2());
+		//Coordinator::Instance()->AddComponent(player, trans);
+		//CreateSprite(player, "Assets/Images/awesomeface.png");
+		//CreateCollider(player);
+		//CreateCharacterController(player);
+		//CreateEventTrigger(player);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
+		////Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
+		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
 
-		trans.position = level.GetVec2("floor_pos", Math::Vec2());
-		trans.scale = level.GetVec2("floor_size", Math::Vec2());
-		Coordinator::Instance()->AddComponent(floor, trans);
-		CreateSprite(floor);
-		CreateCollider(floor);
-		
-		trans.position = level.GetVec2("coin_pos", Math::Vec2());
-		trans.scale = level.GetVec2("coin_size", Math::Vec2());
-		Coordinator::Instance()->AddComponent(coin, trans);
-		CreateSprite(coin);
-		Sprite& coinSprite = Coordinator::Instance()->GetComponent<Sprite>(coin);
-		coinSprite.color = Color{ 1.0f, 1.0f, 0.0f, 1.0f };
-		CreateCollider(coin);
-		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(coin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
+		//trans.position = level.GetVec2("floor_pos", Math::Vec2());
+		//trans.scale = level.GetVec2("floor_size", Math::Vec2());
+		//Coordinator::Instance()->AddComponent(floor, trans);
+		//CreateSprite(floor);
+		//CreateCollider(floor);
+		//
+		//trans.position = level.GetVec2("coin_pos", Math::Vec2());
+		//trans.scale = level.GetVec2("coin_size", Math::Vec2());
+		//Coordinator::Instance()->AddComponent(coin, trans);
+		//CreateSprite(coin);
+		//Sprite& coinSprite = Coordinator::Instance()->GetComponent<Sprite>(coin);
+		//coinSprite.color = Color{ 1.0f, 1.0f, 0.0f, 1.0f };
+		//CreateCollider(coin);
+		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(coin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
 
-		trans.position = level.GetVec2("pathfinder_pos", Math::Vec2());
-		trans.scale = level.GetVec2("pathfinder_size", Math::Vec2());
-		Coordinator::Instance()->AddComponent(pathfinder, trans);
-		CreateSprite(pathfinder);
-		CreatePlayerUnit(pathfinder);
+		//trans.position = level.GetVec2("pathfinder_pos", Math::Vec2());
+		//trans.scale = level.GetVec2("pathfinder_size", Math::Vec2());
+		//Coordinator::Instance()->AddComponent(pathfinder, trans);
+		//CreateSprite(pathfinder);
+		//CreatePlayerUnit(pathfinder);
 
 		AudioManagerInit();
 
@@ -148,12 +148,12 @@ namespace ALEngine::Engine
 
 		sfx.channel = Channel::SFX;
 
-		Math::Vec2 anim_pos = level.GetVec2("anim_pos", Math::Vec2());
-		Transform t1{ { anim_pos.x, anim_pos.y, 0.f }, level.GetVec2("anim_size", Math::Vec2()), 0 };
-		entity = CreateSprite(t1);
-		Animator animator = CreateAnimator("Test");
-		AttachAnimator(entity, animator);
-		sceneGraph.Push(-1, entity);
+		//Math::Vec2 anim_pos = level.GetVec2("anim_pos", Math::Vec2());
+		//Transform t1{ { anim_pos.x, anim_pos.y, 0.f }, level.GetVec2("anim_size", Math::Vec2()), 0 };
+		//entity = CreateSprite(t1);
+		//Animator animator = CreateAnimator("Test");
+		//AttachAnimator(entity, animator);
+		//sceneGraph.Push(-1, entity);
 
 		// Using c++ code to create animation, will be porting it over to allow editor to create clips
 		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
@@ -161,7 +161,7 @@ namespace ALEngine::Engine
 		//AddAnimationToAnimator(animator, "PlayerRunning");
 		//SaveAnimator(animator);
 
-		StartGameplaySystem();
+	    //StartGameplaySystem();
 		Scene::SaveScene("test");
 		//Scene::LoadScene("Assets\\test.scene");
 	}
@@ -248,7 +248,7 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
-		ExitGameplaySystem();
+		//ExitGameplaySystem();
 #ifdef EDITOR
 		ALEditor::Instance()->Exit();		// Exit ImGui
 #endif
@@ -275,9 +275,9 @@ namespace ALEngine::Engine
 		if (!ALEditor::Instance()->GetGameActive())
 			return;
 #endif
-		UpdateCharacterControllerSystem();
-		UpdateEventTriggerSystem();
-		UpdateGameplaySystem();
+		//UpdateCharacterControllerSystem();
+		//UpdateEventTriggerSystem();
+		//UpdateGameplaySystem();
 
 		if (Input::KeyTriggered(KeyCode::MouseRightButton))
 		{
@@ -290,32 +290,32 @@ namespace ALEngine::Engine
 		if (ALEditor::Instance()->GetGameActive())
 		{
 #endif
-			Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+			//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
-			if (Input::KeyTriggered(KeyCode::A))
-				ChangeAnimation(animator, "PlayingGuitar");
-			if (Input::KeyTriggered(KeyCode::D))
-				ChangeAnimation(animator, "PlayerRunning");
-			if (Input::KeyTriggered(KeyCode::X))
-				sfx.Play();
-			if (Input::KeyDown(KeyCode::Z))
-			{
-				masterVolume -= 0.1f;
-				if (masterVolume <= 0.0f)
-					masterVolume = 0.0f;
-				SetChannelVolume(Channel::Master, masterVolume);
-			}
-			if (Input::KeyDown(KeyCode::C))
-			{
-				masterVolume += 0.1f;
-				if (masterVolume <= 1.0f)
-					masterVolume = 1.0f;
-				SetChannelVolume(Channel::Master, masterVolume);
-			}
-			if (Input::KeyTriggered(KeyCode::P))
-				TogglePauseChannel(Channel::Master);
-			if (Input::KeyTriggered(KeyCode::M))
-				ToggleMuteChannel(Channel::Master);
+			//if (Input::KeyTriggered(KeyCode::A))
+			//	ChangeAnimation(animator, "PlayingGuitar");
+			//if (Input::KeyTriggered(KeyCode::D))
+			//	ChangeAnimation(animator, "PlayerRunning");
+			//if (Input::KeyTriggered(KeyCode::X))
+			//	sfx.Play();
+			//if (Input::KeyDown(KeyCode::Z))
+			//{
+			//	masterVolume -= 0.1f;
+			//	if (masterVolume <= 0.0f)
+			//		masterVolume = 0.0f;
+			//	SetChannelVolume(Channel::Master, masterVolume);
+			//}
+			//if (Input::KeyDown(KeyCode::C))
+			//{
+			//	masterVolume += 0.1f;
+			//	if (masterVolume <= 1.0f)
+			//		masterVolume = 1.0f;
+			//	SetChannelVolume(Channel::Master, masterVolume);
+			//}
+			//if (Input::KeyTriggered(KeyCode::P))
+			//	TogglePauseChannel(Channel::Master);
+			//if (Input::KeyTriggered(KeyCode::M))
+			//	ToggleMuteChannel(Channel::Master);
 #ifdef EDITOR
 		}
 #endif
@@ -323,15 +323,15 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
-		UpdateRigidbodySystem();
-		UpdateColliderSystem();
-		UpdatePostRigidbodySystem();
+		//UpdateRigidbodySystem();
+		//UpdateColliderSystem();
+		//UpdatePostRigidbodySystem();
 		
-		UpdateEventCollisionTriggerSystem();
+		//UpdateEventCollisionTriggerSystem();
 
-		DebugDrawRigidbody();
-		DebugDrawCollider();
-		DrawGameplaySystem();
+		//DebugDrawRigidbody();
+		//DebugDrawCollider();
+		//DrawGameplaySystem();
 	}
 
 	int GetAppStatus(void)

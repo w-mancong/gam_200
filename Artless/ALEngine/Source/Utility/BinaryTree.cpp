@@ -454,7 +454,7 @@ namespace ALEngine::Tree
         }
     }
 
-    std::vector<BinaryTree::Serial> BinaryTree::SerializeTree()
+    void BinaryTree::SerializeTree()
     {
         std::vector<Serial> serialVect;
         std::vector<s32> conversionTable{};
@@ -463,11 +463,17 @@ namespace ALEngine::Tree
         {
             if (map[i].active)
             {
+                EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(map[i].id);
                 Serial newSerial{};
                 newSerial.serialID = newID;
                 conversionTable.push_back(newID);
                 newSerial.parentSerialID = map[i].parent; // old parent
                 serialVect.push_back(newSerial);
+
+                //std::cout << map[i].id << " " << newSerial.serialID << "\n";
+                en.id = newSerial.serialID;
+                en.parentID = newSerial.parentSerialID;
+
                 ++newID;
             }
             else
@@ -475,14 +481,29 @@ namespace ALEngine::Tree
                 conversionTable.push_back(-1);
             }
         }
+
+ //       ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
+ //for (auto it{ entities.begin() }; it != entities.end(); ++it)
+ //{
+ //    EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*it);
+ //    std::cout << data.parentID;
+ //}
+
         for (auto x : serialVect) // update old parent IDs to new IDs
         {
             if (x.parentSerialID != -1)
             {
-                x.parentSerialID = conversionTable[x.parentSerialID];
+                EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(x.parentSerialID);
+                x.parentSerialID = conversionTable[x.parentSerialID]; // convert old parent id to new
+                en.parentID = x.parentSerialID;
             }
         }
-        return serialVect;
+        //ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
+        //for (auto it{ entities.begin() }; it != entities.end(); ++it)
+        //{
+        //    EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*it);
+        //    std::cout << data.parentID;
+        //}
     }
 
     void BinaryTree::DeserializeHelper(std::vector<BinaryTree::Serial>& serialVect)
@@ -507,8 +528,20 @@ namespace ALEngine::Tree
         }
     }
 
-    void BinaryTree::DeserializeTree(std::vector<Serial> serialVect)
+    void BinaryTree::DeserializeTree()
     {
+        //auto& it = Coordinator::Instance()->GetEntities();
+        ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
+        std::vector<Serial> serialVect;
+        for (auto it{ entities.begin() }; it != entities.end(); ++it)
+        {
+            EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(*it);
+            Serial serial; // { en.id, en.parentID, false };
+            serial.serialID = en.id;
+            serial.parentSerialID = en.parentID;
+            serialVect.push_back(serial);
+        }
+
         for (auto& x : serialVect)
         {
             if (x.parentSerialID == -1)

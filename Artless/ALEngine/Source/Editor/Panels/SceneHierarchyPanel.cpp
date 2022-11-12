@@ -68,7 +68,7 @@ namespace ALEngine::Editor
 			for (auto e_it = m_EntityList->begin(); 
 				e_it != Coordinator::Instance()->GetEntities().end(); ++e_it)
 			{
-				EntityData data = Coordinator::Instance()->GetComponent<EntityData>(*e_it);
+				EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*e_it);
 
 				// Each selectable
 				if (ImGui::Selectable(data.tag.c_str()))

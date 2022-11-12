@@ -33,7 +33,6 @@ namespace ALEngine::Tree
         struct Serial
         {
             s32 serialID, parentSerialID;
-            s32 ogID;
             b8 flag{ false }; // for deserialization
         };
     public:
@@ -135,8 +134,8 @@ namespace ALEngine::Tree
         std::vector<NodeData>const& GetMap();
 
         void MoveBranch(s32 branch, s32 newParent);
-        std::vector<Serial> SerializeTree();
-        void DeserializeTree(std::vector<Serial> serialVect);
+        void SerializeTree();
+        void DeserializeTree();
         void DeserializeHelper(std::vector<BinaryTree::Serial>& serialVect);
 
     private:

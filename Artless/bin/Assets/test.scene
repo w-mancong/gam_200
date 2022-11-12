@@ -1,325 +1,6 @@
 [
     {
         "id": 0,
-        "Sprite": [
-            {
-                "filePath": "Assets/Images/awesomeface.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    400.0,
-                    500.0,
-                    0.0
-                ],
-                "scale": [
-                    150.0,
-                    150.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #0",
-                "active": true,
-                "id": 0
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": false,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "Rigidbody2D": [
-            {
-                "drag": [
-                    1.0,
-                    1.0
-                ],
-                "mass": 10.0,
-                "hasGravity": true,
-                "isEnabled": true
-            }
-        ],
-        "CharacterController": [
-            {
-                "speed": 50.0,
-                "jumpStrength": 5.0,
-                "leftKey": 65,
-                "rightKey": 68,
-                "jumpKey": 32
-            }
-        ],
-        "EventTrigger": [
-            {}
-        ]
-    },
-    {
-        "id": 1,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    50.0,
-                    0.0
-                ],
-                "scale": [
-                    1300.0,
-                    100.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #1",
-                "active": true,
-                "id": 1
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": false,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    0.0,
-                    1.0
-                ],
-                "layer": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    1100.0,
-                    300.0,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #2",
-                "active": true,
-                "id": 2
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": false,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    500.0,
-                    500.0,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #3",
-                "active": true,
-                "id": 3
-            }
-        ]
-    },
-    {
-        "id": 4,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\circlebutton.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    250.0,
-                    250.0,
-                    0.0
-                ],
-                "scale": [
-                    150.0,
-                    200.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #4",
-                "active": true,
-                "id": 4
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": false,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EventTrigger": [
-            {}
-        ]
-    },
-    {
-        "id": 5,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0
-            }
-        ],
-        "Animator": [
-            {
-                "animatorName": "Test"
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    1200.0,
-                    600.0,
-                    0.0
-                ],
-                "scale": [
-                    775.0,
-                    335.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #5",
-                "active": true,
-                "id": 5
-            }
-        ]
-    },
-    {
-        "id": 6,
         "Transform": [
             {
                 "position": [
@@ -336,28 +17,182 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #6",
+                "tag": "entity #0",
                 "active": true,
-                "id": 6
+                "id": 0,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 1,
+        "Transform": [
             {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
+                "position": [
+                    300.0,
+                    200.0,
                     0.0
-                ]
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
             }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #1",
+                "active": true,
+                "id": 1,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 2,
+        "Transform": [
+            {
+                "position": [
+                    400.0,
+                    200.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #2",
+                "active": true,
+                "id": 2,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 3,
+        "Transform": [
+            {
+                "position": [
+                    500.0,
+                    200.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #3",
+                "active": true,
+                "id": 3,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 4,
+        "Transform": [
+            {
+                "position": [
+                    600.0,
+                    200.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #4",
+                "active": true,
+                "id": 4,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 5,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    200.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #5",
+                "active": true,
+                "id": 5,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 6,
+        "Transform": [
+            {
+                "position": [
+                    200.0,
+                    300.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #6",
+                "active": true,
+                "id": 6,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -365,7 +200,7 @@
         "Transform": [
             {
                 "position": [
-                    200.0,
+                    300.0,
                     300.0,
                     0.0
                 ],
@@ -380,30 +215,128 @@
             {
                 "tag": "entity #7",
                 "active": true,
-                "id": 7
+                "id": 7,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
         "id": 8,
+        "Transform": [
+            {
+                "position": [
+                    400.0,
+                    300.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #8",
+                "active": true,
+                "id": 8,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 9,
+        "Transform": [
+            {
+                "position": [
+                    500.0,
+                    300.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #9",
+                "active": true,
+                "id": 9,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 10,
+        "Transform": [
+            {
+                "position": [
+                    600.0,
+                    300.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #10",
+                "active": true,
+                "id": 10,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 11,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    300.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #11",
+                "active": true,
+                "id": 11,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 12,
         "Transform": [
             {
                 "position": [
@@ -420,196 +353,14 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #8",
-                "active": true,
-                "id": 8
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 9,
-        "Transform": [
-            {
-                "position": [
-                    200.0,
-                    500.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #9",
-                "active": true,
-                "id": 9
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 10,
-        "Transform": [
-            {
-                "position": [
-                    200.0,
-                    600.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #10",
-                "active": true,
-                "id": 10
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 11,
-        "Transform": [
-            {
-                "position": [
-                    200.0,
-                    700.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #11",
-                "active": true,
-                "id": 11
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 12,
-        "Transform": [
-            {
-                "position": [
-                    200.0,
-                    800.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
                 "tag": "entity #12",
                 "active": true,
-                "id": 12
+                "id": 12,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -618,7 +369,7 @@
             {
                 "position": [
                     300.0,
-                    200.0,
+                    400.0,
                     0.0
                 ],
                 "scale": [
@@ -632,26 +383,12 @@
             {
                 "tag": "entity #13",
                 "active": true,
-                "id": 13
+                "id": 13,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -659,8 +396,8 @@
         "Transform": [
             {
                 "position": [
-                    300.0,
-                    300.0,
+                    400.0,
+                    400.0,
                     0.0
                 ],
                 "scale": [
@@ -674,26 +411,12 @@
             {
                 "tag": "entity #14",
                 "active": true,
-                "id": 14
+                "id": 14,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -701,7 +424,7 @@
         "Transform": [
             {
                 "position": [
-                    300.0,
+                    500.0,
                     400.0,
                     0.0
                 ],
@@ -716,30 +439,100 @@
             {
                 "tag": "entity #15",
                 "active": true,
-                "id": 15
+                "id": 15,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
         "id": 16,
+        "Transform": [
+            {
+                "position": [
+                    600.0,
+                    400.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #16",
+                "active": true,
+                "id": 16,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 17,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    400.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #17",
+                "active": true,
+                "id": 17,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 18,
+        "Transform": [
+            {
+                "position": [
+                    200.0,
+                    500.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #18",
+                "active": true,
+                "id": 18,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 19,
         "Transform": [
             {
                 "position": [
@@ -756,154 +549,14 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #16",
-                "active": true,
-                "id": 16
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 17,
-        "Transform": [
-            {
-                "position": [
-                    300.0,
-                    600.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #17",
-                "active": true,
-                "id": 17
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 18,
-        "Transform": [
-            {
-                "position": [
-                    300.0,
-                    700.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #18",
-                "active": true,
-                "id": 18
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 19,
-        "Transform": [
-            {
-                "position": [
-                    300.0,
-                    800.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
                 "tag": "entity #19",
                 "active": true,
-                "id": 19
+                "id": 19,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -912,7 +565,7 @@
             {
                 "position": [
                     400.0,
-                    200.0,
+                    500.0,
                     0.0
                 ],
                 "scale": [
@@ -926,26 +579,12 @@
             {
                 "tag": "entity #20",
                 "active": true,
-                "id": 20
+                "id": 20,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -953,8 +592,8 @@
         "Transform": [
             {
                 "position": [
-                    400.0,
-                    300.0,
+                    500.0,
+                    500.0,
                     0.0
                 ],
                 "scale": [
@@ -968,26 +607,12 @@
             {
                 "tag": "entity #21",
                 "active": true,
-                "id": 21
+                "id": 21,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -995,8 +620,8 @@
         "Transform": [
             {
                 "position": [
-                    400.0,
-                    400.0,
+                    600.0,
+                    500.0,
                     0.0
                 ],
                 "scale": [
@@ -1010,26 +635,12 @@
             {
                 "tag": "entity #22",
                 "active": true,
-                "id": 22
+                "id": 22,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -1037,7 +648,7 @@
         "Transform": [
             {
                 "position": [
-                    400.0,
+                    700.0,
                     500.0,
                     0.0
                 ],
@@ -1052,26 +663,12 @@
             {
                 "tag": "entity #23",
                 "active": true,
-                "id": 23
+                "id": 23,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -1079,7 +676,7 @@
         "Transform": [
             {
                 "position": [
-                    400.0,
+                    200.0,
                     600.0,
                     0.0
                 ],
@@ -1094,26 +691,12 @@
             {
                 "tag": "entity #24",
                 "active": true,
-                "id": 24
+                "id": 24,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -1121,8 +704,8 @@
         "Transform": [
             {
                 "position": [
-                    400.0,
-                    700.0,
+                    300.0,
+                    600.0,
                     0.0
                 ],
                 "scale": [
@@ -1136,26 +719,12 @@
             {
                 "tag": "entity #25",
                 "active": true,
-                "id": 25
+                "id": 25,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -1164,7 +733,7 @@
             {
                 "position": [
                     400.0,
-                    800.0,
+                    600.0,
                     0.0
                 ],
                 "scale": [
@@ -1178,198 +747,16 @@
             {
                 "tag": "entity #26",
                 "active": true,
-                "id": 26
+                "id": 26,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
         "id": 27,
-        "Transform": [
-            {
-                "position": [
-                    500.0,
-                    200.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #27",
-                "active": true,
-                "id": 27
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 28,
-        "Transform": [
-            {
-                "position": [
-                    500.0,
-                    300.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #28",
-                "active": true,
-                "id": 28
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 29,
-        "Transform": [
-            {
-                "position": [
-                    500.0,
-                    400.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #29",
-                "active": true,
-                "id": 29
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 30,
-        "Transform": [
-            {
-                "position": [
-                    500.0,
-                    500.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #30",
-                "active": true,
-                "id": 30
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 31,
         "Transform": [
             {
                 "position": [
@@ -1386,28 +773,126 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #31",
+                "tag": "entity #27",
                 "active": true,
-                "id": 31
+                "id": 27,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 28,
+        "Transform": [
             {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
+                "position": [
+                    600.0,
+                    600.0,
                     0.0
-                ]
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
             }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #28",
+                "active": true,
+                "id": 28,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 29,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    600.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #29",
+                "active": true,
+                "id": 29,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 30,
+        "Transform": [
+            {
+                "position": [
+                    200.0,
+                    700.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #30",
+                "active": true,
+                "id": 30,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
+        ]
+    },
+    {
+        "id": 31,
+        "Transform": [
+            {
+                "position": [
+                    300.0,
+                    700.0,
+                    0.0
+                ],
+                "scale": [
+                    70.0,
+                    70.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #31",
+                "active": true,
+                "id": 31,
+                "parentID": 0
+            }
+        ],
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -1415,7 +900,7 @@
         "Transform": [
             {
                 "position": [
-                    500.0,
+                    400.0,
                     700.0,
                     0.0
                 ],
@@ -1430,26 +915,12 @@
             {
                 "tag": "entity #32",
                 "active": true,
-                "id": 32
+                "id": 32,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -1458,7 +929,7 @@
             {
                 "position": [
                     500.0,
-                    800.0,
+                    700.0,
                     0.0
                 ],
                 "scale": [
@@ -1472,26 +943,12 @@
             {
                 "tag": "entity #33",
                 "active": true,
-                "id": 33
+                "id": 33,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -1500,7 +957,7 @@
             {
                 "position": [
                     600.0,
-                    200.0,
+                    700.0,
                     0.0
                 ],
                 "scale": [
@@ -1514,26 +971,12 @@
             {
                 "tag": "entity #34",
                 "active": true,
-                "id": 34
+                "id": 34,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     },
     {
@@ -1541,8 +984,8 @@
         "Transform": [
             {
                 "position": [
-                    600.0,
-                    300.0,
+                    700.0,
+                    700.0,
                     0.0
                 ],
                 "scale": [
@@ -1556,824 +999,12 @@
             {
                 "tag": "entity #35",
                 "active": true,
-                "id": 35
+                "id": 35,
+                "parentID": 0
             }
         ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 36,
-        "Transform": [
-            {
-                "position": [
-                    600.0,
-                    400.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #36",
-                "active": true,
-                "id": 36
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 37,
-        "Transform": [
-            {
-                "position": [
-                    600.0,
-                    500.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #37",
-                "active": true,
-                "id": 37
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 38,
-        "Transform": [
-            {
-                "position": [
-                    600.0,
-                    600.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #38",
-                "active": true,
-                "id": 38
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 39,
-        "Transform": [
-            {
-                "position": [
-                    600.0,
-                    700.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #39",
-                "active": true,
-                "id": 39
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 40,
-        "Transform": [
-            {
-                "position": [
-                    600.0,
-                    800.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #40",
-                "active": true,
-                "id": 40
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 41,
-        "Transform": [
-            {
-                "position": [
-                    700.0,
-                    200.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #41",
-                "active": true,
-                "id": 41
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 42,
-        "Transform": [
-            {
-                "position": [
-                    700.0,
-                    300.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #42",
-                "active": true,
-                "id": 42
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 43,
-        "Transform": [
-            {
-                "position": [
-                    700.0,
-                    400.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #43",
-                "active": true,
-                "id": 43
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 44,
-        "Transform": [
-            {
-                "position": [
-                    700.0,
-                    500.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #44",
-                "active": true,
-                "id": 44
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 45,
-        "Transform": [
-            {
-                "position": [
-                    700.0,
-                    600.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #45",
-                "active": true,
-                "id": 45
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 46,
-        "Transform": [
-            {
-                "position": [
-                    700.0,
-                    700.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #46",
-                "active": true,
-                "id": 46
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 47,
-        "Transform": [
-            {
-                "position": [
-                    700.0,
-                    800.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #47",
-                "active": true,
-                "id": 47
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 48,
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    200.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #48",
-                "active": true,
-                "id": 48
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 49,
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    300.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #49",
-                "active": true,
-                "id": 49
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 50,
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    400.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #50",
-                "active": true,
-                "id": 50
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 51,
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    500.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #51",
-                "active": true,
-                "id": 51
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 52,
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    600.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #52",
-                "active": true,
-                "id": 52
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 53,
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    700.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #53",
-                "active": true,
-                "id": 53
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 54,
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    800.0,
-                    0.0
-                ],
-                "scale": [
-                    70.0,
-                    70.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #54",
-                "active": true,
-                "id": 54
-            }
-        ],
-        "Collider2D": [
-            {
-                "colliderType": 0,
-                "rotation": 0.0,
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "isCollided": false,
-                "isTrigger": true,
-                "isDebug": false,
-                "isEnabled": true,
-                "m_localPosition": [
-                    0.0,
-                    0.0
-                ]
-            }
+        "EventTrigger": [
+            {}
         ]
     }
 ]
