@@ -11,6 +11,8 @@ brief:	This file contains function declarations for the ProfilerPanel class.
 #ifndef PROFILER_PANEL_H
 #define PROFILER_PANEL_H
 
+#ifdef EDITOR
+
 namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
@@ -47,5 +49,7 @@ namespace ALEngine::Editor
 																	// List gets cleared every 1s
 	};
 }
+
+#endif
 
 #endif

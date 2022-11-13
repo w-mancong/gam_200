@@ -1,4 +1,5 @@
 #include "pch.h"
+#ifdef EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -92,3 +93,5 @@ namespace ALEngine::Editor
 		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 }
+
+#endif

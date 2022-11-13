@@ -10,6 +10,8 @@ brief:	This file contains function definitions for the ProfilerPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#ifdef EDITOR
+
 namespace ALEngine::Editor
 {
 	void ProfilerPanel::OnImGuiRender(void)
@@ -72,3 +74,5 @@ namespace ALEngine::Editor
 		ImGui::End();
 	}
 }
+
+#endif

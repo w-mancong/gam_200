@@ -72,6 +72,7 @@
     <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
     <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
+    <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -314,6 +315,8 @@
     <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
+    <ClInclude Include="Include\SceneManager\SceneManager.h" />
+    <ClInclude Include="Include\Common Header\MyScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

@@ -381,6 +381,9 @@ namespace ALEngine::Engine
 				continue;
 			}
 
+			if (path.filename().string().find(".") != std::string::npos)
+				continue;
+
 			currentCheckPath /= path.filename();
 			FolderEntry(currentCheckPath, metaFiles, fileNames);
 		}
