@@ -153,11 +153,16 @@ namespace ALEngine::Tree
         if (newChild < map.size())
         {
             map[newChild] = newData;
+            return;
         }
-        else
+        else if (newChild > map.size())
         {
-            map.push_back(newData);
+            map.resize(++newChild);
+            map[--newChild] = newData;
+            return;
         }
+        else if(newChild == map.size())
+            map.push_back(newData);
     }
 
     void BinaryTree::Insert(Node* node, s32 id)
@@ -470,7 +475,6 @@ namespace ALEngine::Tree
                 newSerial.parentSerialID = map[i].parent; // old parent
                 serialVect.push_back(newSerial);
 
-                //std::cout << map[i].id << " " << newSerial.serialID << "\n";
                 en.id = newSerial.serialID;
                 en.parentID = newSerial.parentSerialID;
 
@@ -482,61 +486,24 @@ namespace ALEngine::Tree
             }
         }
 
- //       ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
- //for (auto it{ entities.begin() }; it != entities.end(); ++it)
- //{
- //    EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*it);
- //    std::cout << data.parentID;
- //}
-
-        for (auto x : serialVect) // update old parent IDs to new IDs
+        ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
+        for (auto it{ entities.begin() }; it != entities.end(); ++it)
         {
-            if (x.parentSerialID != -1)
-            {
-                EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(x.parentSerialID);
-                x.parentSerialID = conversionTable[x.parentSerialID]; // convert old parent id to new
-                en.parentID = x.parentSerialID;
-            }
-        }
-        //ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
-        //for (auto it{ entities.begin() }; it != entities.end(); ++it)
-        //{
-        //    EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*it);
-        //    std::cout << data.parentID;
-        //}
-    }
-
-    void BinaryTree::DeserializeHelper(std::vector<BinaryTree::Serial>& serialVect)
-    {
-        u32 count{};
-        for (auto& x : serialVect)
-        {
-            if (x.flag == false && x.parentSerialID < map.size())
-            {
-                x.flag = true;
-                Push(x.parentSerialID, x.serialID);
-            }
-            
-            if(x.flag == true)
-            {
-                ++count;
-            }
-        }
-        if (count != serialVect.size())
-        {
-            return DeserializeHelper(serialVect);
+            EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*it);
+            if(data.parentID != -1)
+                data.parentID = conversionTable[data.parentID];
         }
     }
 
     void BinaryTree::DeserializeTree()
     {
-        //auto& it = Coordinator::Instance()->GetEntities();
         ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
         std::vector<Serial> serialVect;
+        std::vector<s32> insertedVect;
         for (auto it{ entities.begin() }; it != entities.end(); ++it)
         {
             EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(*it);
-            Serial serial; // { en.id, en.parentID, false };
+            Serial serial;
             serial.serialID = en.id;
             serial.parentSerialID = en.parentID;
             serialVect.push_back(serial);
@@ -547,10 +514,33 @@ namespace ALEngine::Tree
             if (x.parentSerialID == -1)
             {
                 x.flag = true;
+                insertedVect.push_back(x.serialID);
                 Push(x.parentSerialID, x.serialID);
             }
         }
-        DeserializeHelper(serialVect);
+
+        s32 done{ true };
+        do
+        {
+            done = true;
+            for (std::vector<Serial>::iterator it{ serialVect.begin() }; it != serialVect.end(); ++it)
+            {
+                if (it->flag == true) // if already inserted
+                    continue;
+
+                done = false;
+                for (auto& x : insertedVect)
+                {
+                    if (it->parentSerialID == x)
+                    {
+                        it->flag = true;
+                        Push(it->parentSerialID, it->serialID);
+                        insertedVect.push_back(it->serialID);
+                        break;
+                    }
+                }
+            }
+        } while (done == false);
     }
 
 } // end of namespace Tree

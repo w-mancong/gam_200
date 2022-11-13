@@ -162,8 +162,8 @@ namespace ALEngine::Engine
 		//SaveAnimator(animator);
 
 	    //StartGameplaySystem();
-		Scene::SaveScene("test");
-		//Scene::LoadScene("Assets\\test.scene");
+		//Scene::SaveScene("test");
+		//Scene::LoadScene("test");
 	}
 
 	void Application::Update(void)
@@ -290,32 +290,32 @@ namespace ALEngine::Engine
 		if (ALEditor::Instance()->GetGameActive())
 		{
 #endif
-			//Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
+			Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
 
-			//if (Input::KeyTriggered(KeyCode::A))
-			//	ChangeAnimation(animator, "PlayingGuitar");
-			//if (Input::KeyTriggered(KeyCode::D))
-			//	ChangeAnimation(animator, "PlayerRunning");
-			//if (Input::KeyTriggered(KeyCode::X))
-			//	sfx.Play();
-			//if (Input::KeyDown(KeyCode::Z))
-			//{
-			//	masterVolume -= 0.1f;
-			//	if (masterVolume <= 0.0f)
-			//		masterVolume = 0.0f;
-			//	SetChannelVolume(Channel::Master, masterVolume);
-			//}
-			//if (Input::KeyDown(KeyCode::C))
-			//{
-			//	masterVolume += 0.1f;
-			//	if (masterVolume <= 1.0f)
-			//		masterVolume = 1.0f;
-			//	SetChannelVolume(Channel::Master, masterVolume);
-			//}
-			//if (Input::KeyTriggered(KeyCode::P))
-			//	TogglePauseChannel(Channel::Master);
-			//if (Input::KeyTriggered(KeyCode::M))
-			//	ToggleMuteChannel(Channel::Master);
+			if (Input::KeyTriggered(KeyCode::A))
+				ChangeAnimation(animator, "PlayingGuitar");
+			if (Input::KeyTriggered(KeyCode::D))
+				ChangeAnimation(animator, "PlayerRunning");
+			if (Input::KeyTriggered(KeyCode::X))
+				sfx.Play();
+			if (Input::KeyDown(KeyCode::Z))
+			{
+				masterVolume -= 0.1f;
+				if (masterVolume <= 0.0f)
+					masterVolume = 0.0f;
+				SetChannelVolume(Channel::Master, masterVolume);
+			}
+			if (Input::KeyDown(KeyCode::C))
+			{
+				masterVolume += 0.1f;
+				if (masterVolume <= 1.0f)
+					masterVolume = 1.0f;
+				SetChannelVolume(Channel::Master, masterVolume);
+			}
+			if (Input::KeyTriggered(KeyCode::P))
+				TogglePauseChannel(Channel::Master);
+			if (Input::KeyTriggered(KeyCode::M))
+				ToggleMuteChannel(Channel::Master);
 #ifdef EDITOR
 		}
 #endif

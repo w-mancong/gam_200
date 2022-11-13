@@ -136,7 +136,6 @@ namespace ALEngine::Tree
         void MoveBranch(s32 branch, s32 newParent);
         void SerializeTree();
         void DeserializeTree();
-        void DeserializeHelper(std::vector<BinaryTree::Serial>& serialVect);
 
     private:
         /*!*********************************************************************************

@@ -146,9 +146,6 @@ namespace ALEngine::Editor
 			{
 				assert(payload->DataSize == sizeof(ECS::Entity));
 				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
-
-				sceneGraph.Destruct(child_pl);
-				sceneGraph.Push(-1, child_pl);
 			}
 
 			ImGui::EndDragDropTarget();
@@ -212,7 +209,6 @@ namespace ALEngine::Editor
 
 					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child_pl);
 
-
 					s32 node{ static_cast<s32>(child_pl) }, parentNode{};
 					while (1)
 					{
@@ -233,7 +229,6 @@ namespace ALEngine::Editor
 					}
 				}
 			}
-
 			ImGui::EndDragDropTarget();
 		}
 		
@@ -267,7 +262,6 @@ namespace ALEngine::Editor
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);
 	}
-
 }
 
 #endif

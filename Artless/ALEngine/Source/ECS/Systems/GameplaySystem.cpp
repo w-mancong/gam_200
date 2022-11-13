@@ -67,7 +67,6 @@ namespace ALEngine::ECS
 	{
 		//Character Controller System to be accessed locally
 		std::shared_ptr<GameplaySystem> gameplaySystem;
-
 	}
 
 	void ClickSelectCell(Entity invokerCell) {
@@ -79,76 +78,75 @@ namespace ALEngine::ECS
 
 	void RegisterGameplaySystem(void)
 	{
-		//gameplaySystem = Coordinator::Instance()->RegisterSystem<GameplaySystem>();
-		//Signature signature;
-		//signature.set(Coordinator::Instance()->GetComponentType<Unit>());
-		//Coordinator::Instance()->SetSystemSignature<GameplaySystem>(signature);
+		gameplaySystem = Coordinator::Instance()->RegisterSystem<GameplaySystem>();
+		Signature signature;
+		signature.set(Coordinator::Instance()->GetComponentType<Unit>());
+		Coordinator::Instance()->SetSystemSignature<GameplaySystem>(signature);
 	}
 
 	void StartGameplaySystem(void) {
-		//Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-		//gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
-		//gameplaySystem->m_Room.height = gameplaySystem->roomSize[1];
-		//gameplaySystem->m_Room.roomSize = gameplaySystem->getRoomSize();
-		//gameplaySystem->m_Room.roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+		gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
+		gameplaySystem->m_Room.height = gameplaySystem->roomSize[1];
+		gameplaySystem->m_Room.roomSize = gameplaySystem->getRoomSize();
+		gameplaySystem->m_Room.roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
 
-		//for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {	
-		//	gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
+		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {	
+			gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
-		//	if (i == 0)
-		//	{
-		//		sceneGraph.Push(-1, gameplaySystem->m_Room.roomCellsArray[i]); // first cell is parent
-		//	}
-		//	else
-		//	{
-		//		sceneGraph.Push(gameplaySystem->m_Room.roomCellsArray[0], gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
-		//	}
+			if (i == 0)
+			{
+				sceneGraph.Push(-1, gameplaySystem->m_Room.roomCellsArray[i]); // first cell is parent
+			}
+			else
+			{
+				sceneGraph.Push(gameplaySystem->m_Room.roomCellsArray[0], gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
+			}
 
-		//	Transform transform;
-		//	transform.scale = { 70, 70 };
-		//	Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
-		//}
+			Transform transform;
+			transform.scale = { 70, 70 };
+			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
+		}
 
-		//for (uint32_t i = 0; i < gameplaySystem->roomSize[0]; ++i) {
-		//	for (uint32_t j = 0; j < gameplaySystem->roomSize[1]; ++j) {
-		//		int cellIndex = i * gameplaySystem->roomSize[0] + j;
+		for (uint32_t i = 0; i < gameplaySystem->roomSize[0]; ++i) {
+			for (uint32_t j = 0; j < gameplaySystem->roomSize[1]; ++j) {
+				int cellIndex = i * gameplaySystem->roomSize[0] + j;
 
-		//		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
-		//		transform.position = { 200 + (f32)j * 100.f, 200 + (f32)i * 100.f };
-		//		Cell cell;
-		//		cell.coordinate[0] = i;
-		//		cell.coordinate[1] = j;
+				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
+				transform.position = { 200 + (f32)j * 100.f, 200 + (f32)i * 100.f };
+				Cell cell;
+				cell.coordinate[0] = i;
+				cell.coordinate[1] = j;
 
-		//		CreateEventTrigger(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
+				CreateEventTrigger(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
 
-		//		Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, ClickSelectCell);
-		//		
-		//		Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i,j), cell);
-		//	}
-		//}
+				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, ClickSelectCell);
+				
+				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i,j), cell);
+			}
+		}
 
-		//for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
-		//	Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
-		//	if (unit.unitType == UNIT_TYPE::PLAYER) {
-		//		gameplaySystem->playerEntity = *it;
-		//		unit.coordinate[0] = 0;
-		//		unit.coordinate[1] = 0;
+		for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
+			if (unit.unitType == UNIT_TYPE::PLAYER) {
+				gameplaySystem->playerEntity = *it;
+				unit.coordinate[0] = 0;
+				unit.coordinate[1] = 0;
 
-		//		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(unit.coordinate[0], unit.coordinate[1]));
-		//		Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-		//		playertransform.position = SpawnCellTransform.position;
-		//		break;
-		//	}
-		//}	
+				Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(unit.coordinate[0], unit.coordinate[1]));
+				Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(*it);
+				playertransform.position = SpawnCellTransform.position;
+				break;
+			}
+		}	
 
-		////Set a few blocks to be inaccessible
-		//gameplaySystem->ToggleCellToInaccessible(1, 0, false);
-		//gameplaySystem->ToggleCellToInaccessible(1, 1, false);
-		//gameplaySystem->ToggleCellToInaccessible(1, 2, false);
-		//gameplaySystem->ToggleCellToInaccessible(2, 1, false);
-		//gameplaySystem->ToggleCellToInaccessible(3, 1, false);
-		//gameplaySystem->ToggleCellToInaccessible(3, 2, false);
-
+		//Set a few blocks to be inaccessible
+		gameplaySystem->ToggleCellToInaccessible(1, 0, false);
+		gameplaySystem->ToggleCellToInaccessible(1, 1, false);
+		gameplaySystem->ToggleCellToInaccessible(1, 2, false);
+		gameplaySystem->ToggleCellToInaccessible(2, 1, false);
+		gameplaySystem->ToggleCellToInaccessible(3, 1, false);
+		gameplaySystem->ToggleCellToInaccessible(3, 2, false);
 	}
 
 	void UpdateGameplaySystem(void)

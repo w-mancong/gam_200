@@ -173,7 +173,7 @@ namespace ALEngine::Engine::Scene
 		// Getting id
 		entityData.id = v[0]["id"].GetUint();
 		// Getting parent id
-		entityData.parentID = v[0]["parentID"].GetUint();
+		entityData.parentID = v[0]["parentID"].GetInt();
 	}
 
 	void WriteCollider2D(TWriter& writer, ECS::Entity en)
@@ -428,15 +428,7 @@ namespace ALEngine::Engine::Scene
 		ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
 		u32 id{ 0 };
 
-
-		EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(0);
-		//std::cout << en.parentID;
 		ECS::GetSceneGraph().SerializeTree();
-		//for (auto it{ entities.begin() }; it != entities.end(); ++it)
-		//{
-		//	EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*it);
-		//	std::cout << data.parentID;
-		//}
 
 		writer.StartArray();
 		for (auto it{ entities.begin() }; it != entities.end(); ++it)
@@ -486,10 +478,11 @@ namespace ALEngine::Engine::Scene
 
 	void LoadScene(c8 const* sceneName)
 	{
-		std::ifstream ifs{ sceneName, std::ios::ate };
+		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
+		std::ifstream ifs{ filePath, std::ios::ate };
 		if (!ifs)
 		{
-			AL_CORE_WARN("Unable to open scene: {}", sceneName);
+			AL_CORE_WARN("Unable to open scene: {}", filePath);
 			return;
 		}
 		u64 const size = ifs.tellg();
