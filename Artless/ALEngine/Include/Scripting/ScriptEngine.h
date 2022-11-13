@@ -1,7 +1,7 @@
 #ifndef	SCRIPT_ENGINE_H
 #define SCRIPT_ENGINE_H
 
-namespace ALEngine::Scripting
+namespace ALEngine::Engine
 {
 	class ScriptEngine
 	{

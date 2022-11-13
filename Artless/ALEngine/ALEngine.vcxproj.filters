@@ -316,6 +316,7 @@
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
     <ClInclude Include="Include\Common Header\MyScene.h" />
     <ClInclude Include="Include\Scripting\ScriptEngine.h" />
+    <ClInclude Include="Include\Common Header\MyScripting.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

@@ -275,6 +275,7 @@
   <ItemGroup>
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
     <ClInclude Include="Include\Common Header\MyScene.h" />
+    <ClInclude Include="Include\Common Header\MyScripting.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
