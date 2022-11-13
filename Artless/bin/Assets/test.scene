@@ -31,7 +31,8 @@
             {
                 "tag": "entity #0",
                 "active": true,
-                "id": 0
+                "id": 0,
+                "parentID": -1
             }
         ],
         "Collider2D": [
@@ -105,7 +106,8 @@
             {
                 "tag": "entity #1",
                 "active": true,
-                "id": 1
+                "id": 1,
+                "parentID": -1
             }
         ],
         "Collider2D": [
@@ -159,7 +161,8 @@
             {
                 "tag": "entity #2",
                 "active": true,
-                "id": 2
+                "id": 2,
+                "parentID": -1
             }
         ],
         "Collider2D": [
@@ -213,7 +216,8 @@
             {
                 "tag": "entity #3",
                 "active": true,
-                "id": 3
+                "id": 3,
+                "parentID": -1
             }
         ],
         "Unit": [
@@ -256,7 +260,8 @@
             {
                 "tag": "entity #4",
                 "active": true,
-                "id": 4
+                "id": 4,
+                "parentID": -1
             }
         ],
         "Collider2D": [
@@ -315,7 +320,8 @@
             {
                 "tag": "entity #5",
                 "active": true,
-                "id": 5
+                "id": 5,
+                "parentID": -1
             }
         ]
     },
@@ -339,7 +345,8 @@
             {
                 "tag": "entity #6",
                 "active": true,
-                "id": 6
+                "id": 6,
+                "parentID": -1
             }
         ]
     },
@@ -363,7 +370,8 @@
             {
                 "tag": "entity #7",
                 "active": true,
-                "id": 7
+                "id": 7,
+                "parentID": 6
             }
         ]
     },
@@ -387,7 +395,8 @@
             {
                 "tag": "entity #8",
                 "active": true,
-                "id": 8
+                "id": 8,
+                "parentID": 6
             }
         ]
     },
@@ -411,7 +420,8 @@
             {
                 "tag": "entity #9",
                 "active": true,
-                "id": 9
+                "id": 9,
+                "parentID": 6
             }
         ]
     },
@@ -435,7 +445,8 @@
             {
                 "tag": "entity #10",
                 "active": true,
-                "id": 10
+                "id": 10,
+                "parentID": 6
             }
         ]
     },
@@ -459,7 +470,8 @@
             {
                 "tag": "entity #11",
                 "active": true,
-                "id": 11
+                "id": 11,
+                "parentID": 6
             }
         ]
     },
@@ -483,7 +495,8 @@
             {
                 "tag": "entity #12",
                 "active": true,
-                "id": 12
+                "id": 12,
+                "parentID": 6
             }
         ]
     },
@@ -507,7 +520,8 @@
             {
                 "tag": "entity #13",
                 "active": true,
-                "id": 13
+                "id": 13,
+                "parentID": 6
             }
         ]
     },
@@ -531,7 +545,8 @@
             {
                 "tag": "entity #14",
                 "active": true,
-                "id": 14
+                "id": 14,
+                "parentID": 6
             }
         ]
     },
@@ -555,7 +570,8 @@
             {
                 "tag": "entity #15",
                 "active": true,
-                "id": 15
+                "id": 15,
+                "parentID": 6
             }
         ]
     },
@@ -579,7 +595,8 @@
             {
                 "tag": "entity #16",
                 "active": true,
-                "id": 16
+                "id": 16,
+                "parentID": 6
             }
         ]
     },
@@ -603,7 +620,8 @@
             {
                 "tag": "entity #17",
                 "active": true,
-                "id": 17
+                "id": 17,
+                "parentID": 6
             }
         ]
     },
@@ -627,7 +645,8 @@
             {
                 "tag": "entity #18",
                 "active": true,
-                "id": 18
+                "id": 18,
+                "parentID": 6
             }
         ]
     },
@@ -651,7 +670,8 @@
             {
                 "tag": "entity #19",
                 "active": true,
-                "id": 19
+                "id": 19,
+                "parentID": 6
             }
         ]
     },
@@ -675,7 +695,8 @@
             {
                 "tag": "entity #20",
                 "active": true,
-                "id": 20
+                "id": 20,
+                "parentID": 6
             }
         ]
     },
@@ -699,7 +720,8 @@
             {
                 "tag": "entity #21",
                 "active": true,
-                "id": 21
+                "id": 21,
+                "parentID": 6
             }
         ]
     },
@@ -723,7 +745,8 @@
             {
                 "tag": "entity #22",
                 "active": true,
-                "id": 22
+                "id": 22,
+                "parentID": 6
             }
         ]
     },
@@ -747,7 +770,8 @@
             {
                 "tag": "entity #23",
                 "active": true,
-                "id": 23
+                "id": 23,
+                "parentID": 6
             }
         ]
     },
@@ -771,7 +795,8 @@
             {
                 "tag": "entity #24",
                 "active": true,
-                "id": 24
+                "id": 24,
+                "parentID": 6
             }
         ]
     },
@@ -795,7 +820,8 @@
             {
                 "tag": "entity #25",
                 "active": true,
-                "id": 25
+                "id": 25,
+                "parentID": 6
             }
         ]
     },
@@ -819,7 +845,8 @@
             {
                 "tag": "entity #26",
                 "active": true,
-                "id": 26
+                "id": 26,
+                "parentID": 6
             }
         ]
     },
@@ -843,7 +870,8 @@
             {
                 "tag": "entity #27",
                 "active": true,
-                "id": 27
+                "id": 27,
+                "parentID": 6
             }
         ]
     },
@@ -867,7 +895,8 @@
             {
                 "tag": "entity #28",
                 "active": true,
-                "id": 28
+                "id": 28,
+                "parentID": 6
             }
         ]
     },
@@ -891,7 +920,8 @@
             {
                 "tag": "entity #29",
                 "active": true,
-                "id": 29
+                "id": 29,
+                "parentID": 6
             }
         ]
     },
@@ -915,7 +945,8 @@
             {
                 "tag": "entity #30",
                 "active": true,
-                "id": 30
+                "id": 30,
+                "parentID": 6
             }
         ]
     },
@@ -939,7 +970,8 @@
             {
                 "tag": "entity #31",
                 "active": true,
-                "id": 31
+                "id": 31,
+                "parentID": 6
             }
         ]
     },
@@ -963,7 +995,8 @@
             {
                 "tag": "entity #32",
                 "active": true,
-                "id": 32
+                "id": 32,
+                "parentID": 6
             }
         ]
     },
@@ -987,7 +1020,8 @@
             {
                 "tag": "entity #33",
                 "active": true,
-                "id": 33
+                "id": 33,
+                "parentID": 6
             }
         ]
     },
@@ -1011,7 +1045,8 @@
             {
                 "tag": "entity #34",
                 "active": true,
-                "id": 34
+                "id": 34,
+                "parentID": 6
             }
         ]
     },
@@ -1035,7 +1070,8 @@
             {
                 "tag": "entity #35",
                 "active": true,
-                "id": 35
+                "id": 35,
+                "parentID": 6
             }
         ]
     },
@@ -1059,7 +1095,8 @@
             {
                 "tag": "entity #36",
                 "active": true,
-                "id": 36
+                "id": 36,
+                "parentID": 6
             }
         ]
     },
@@ -1083,7 +1120,8 @@
             {
                 "tag": "entity #37",
                 "active": true,
-                "id": 37
+                "id": 37,
+                "parentID": 6
             }
         ]
     },
@@ -1107,7 +1145,8 @@
             {
                 "tag": "entity #38",
                 "active": true,
-                "id": 38
+                "id": 38,
+                "parentID": 6
             }
         ]
     },
@@ -1131,7 +1170,8 @@
             {
                 "tag": "entity #39",
                 "active": true,
-                "id": 39
+                "id": 39,
+                "parentID": 6
             }
         ]
     },
@@ -1155,7 +1195,8 @@
             {
                 "tag": "entity #40",
                 "active": true,
-                "id": 40
+                "id": 40,
+                "parentID": 6
             }
         ]
     },
@@ -1179,7 +1220,8 @@
             {
                 "tag": "entity #41",
                 "active": true,
-                "id": 41
+                "id": 41,
+                "parentID": 6
             }
         ]
     }
