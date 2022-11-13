@@ -478,11 +478,10 @@ namespace ALEngine::Engine::Scene
 
 	void LoadScene(c8 const* sceneName)
 	{
-		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
-		std::ifstream ifs{ filePath, std::ios::ate };
+		std::ifstream ifs{ sceneName, std::ios::ate };
 		if (!ifs)
 		{
-			AL_CORE_WARN("Unable to open scene: {}", filePath);
+			AL_CORE_WARN("Unable to open scene: {}", sceneName);
 			return;
 		}
 		u64 const size = ifs.tellg();
