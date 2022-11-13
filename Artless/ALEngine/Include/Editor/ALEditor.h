@@ -230,6 +230,7 @@ namespace ALEngine::Editor
 		LoggerPanel m_LoggerPanel;						// Logger Panel
 		ProfilerPanel m_ProfilerPanel;					// Profiler Panel
 		SceneHierarchyPanel m_SceneHierarchyPanel;		// Scene Hierarchy Panel
+		AudioEditorPanel m_AudioEditorPanel;            // Audio Editor Panel
 
 		// Editor Colors
 		ImVec4 m_ColorTitleBg{};			// Color of Title Background
