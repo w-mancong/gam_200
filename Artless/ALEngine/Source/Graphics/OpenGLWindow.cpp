@@ -22,12 +22,12 @@ namespace ALEngine::Graphics
 			glViewport(0, 0, width, height);
 		}
 
-		void window_close_callback(GLFWwindow* _window)
+		void window_close_callback([[maybe_unused]] GLFWwindow* _window)
 		{
 			Engine::SetAppStatus(0);
 		}
 
-		void window_focus_callback(GLFWwindow* window, int focused)
+		void window_focus_callback([[maybe_unused]] GLFWwindow* window, int focused)
 		{
 			Engine::SetWindowFocus(focused);
 			Engine::ToggleMuteChannel(Engine::Channel::Master);

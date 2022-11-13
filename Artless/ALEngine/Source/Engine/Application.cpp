@@ -35,18 +35,18 @@ namespace ALEngine::Engine
 			Coordinator::Instance()->GetComponent<Transform>(current).position = { 10000,10000 };
 		}
 	}
-	void START(Entity invokingEntity) {
+	void START([[maybe_unused]] Entity invokingEntity) {
 		AL_CORE_INFO("START");
 	}
-	void STAY(Entity invokingEntity) {
+	void STAY([[maybe_unused]] Entity invokingEntity) {
 		AL_CORE_INFO("STAY");
 	}
 
-	void CLICK(Entity invokingEntity) {
+	void CLICK([[maybe_unused]] Entity invokingEntity) {
 		AL_CORE_INFO("CLICK");
 	}
 
-	void EXIT(Entity invokingEntity) {
+	void EXIT([[maybe_unused]] Entity invokingEntity) {
 		AL_CORE_INFO("EXIT");
 	}
 
@@ -162,7 +162,7 @@ namespace ALEngine::Engine
 		//SaveAnimator(animator);
 
 		StartGameplaySystem();
-		Scene::SaveScene("test");
+		//Scene::SaveScene("test");
 		//Scene::LoadScene("Assets\\test.scene");
 	}
 

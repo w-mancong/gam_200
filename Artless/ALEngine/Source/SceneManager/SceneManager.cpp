@@ -303,6 +303,8 @@ namespace ALEngine::Engine::Scene
 
 		// Getting is enabled
 		rb.isEnabled = v[0]["isEnabled"].GetBool();
+
+		Coordinator::Instance()->AddComponent(en, rb);
 	}
 
 	void WriteCharacterController(TWriter& writer, ECS::Entity en)
@@ -355,6 +357,8 @@ namespace ALEngine::Engine::Scene
 
 		// Getting jump key
 		cc.jumpKey = v[0]["jumpKey"].GetUint64();
+
+		Coordinator::Instance()->AddComponent(en, cc);
 	}
 
 	//void WriteEventTrigger(TWriter& writer, ECS::Entity en)
@@ -430,6 +434,8 @@ namespace ALEngine::Engine::Scene
 
 		// Getting unit type
 		unit.unitType = static_cast<UNIT_TYPE>(v[0]["unitType"].GetUint64());
+
+		Coordinator::Instance()->AddComponent(en, unit);
 	}
 
 	//void WriteCell(TWriter& writer, ECS::Entity en)

@@ -170,13 +170,13 @@ namespace ALEngine::Engine
 		// To remove any used channels and add them into the appropriate queue
 		for (auto it{ usedChannels.begin() }; it != usedChannels.end(); ++it)
 		{
-			fmod::Channel* const& ch = (*it).ch;
+			fmod::Channel* const& ch = it->ch;
 			b8 isPlaying{ true }; // Assume that all audio is playing
 			ch->isPlaying(&isPlaying);
 			if (isPlaying)
 				continue;
 			// If audio is no longer playing, add it to the appropriate queue
-			switch ((*it).audioChannel)
+			switch (it->audioChannel)
 			{
 			case Channel::BGM:
 			{
