@@ -135,9 +135,7 @@ namespace ALEngine::Editor
 
 			// Profiler Panel
 			m_ProfilerPanel.OnImGuiRender();
-	
-			//Audio Panel
-			m_AudioEditorPanel.OnImGuiRender();
+
 			ImGui::ShowDemoWindow();
 		}
 	}
@@ -407,11 +405,6 @@ namespace ALEngine::Editor
 		m_InspectorPanel.SetPanelMin(panel_min);
 		m_InspectorPanel.SetDefaults(editor_data.GetVec2("InspectorPos", Math::Vec2()),
 			editor_data.GetVec2("InspectorSize", panel_min));
-
-		// Audio Editor
-		m_AudioEditorPanel.SetPanelMin(panel_min);
-		m_AudioEditorPanel.SetDefaults(editor_data.GetVec2("AudioEditorPos", Math::Vec2()),
-			editor_data.GetVec2("AudioEditorSize", panel_min));
 
 	}
 
