@@ -33,6 +33,9 @@ namespace ALEngine::Editor
 			return;
 		}
 
+		// Make Panel Child so panel can have Drag & Drop
+		ImGui::BeginChild("SceneHierarchyPanel##PanelChild", ImGui::GetContentRegionAvail());
+
 		// Add Entity Button
 		if (ImGui::Button("Add Entity"))
 		{
@@ -138,6 +141,8 @@ namespace ALEngine::Editor
 			ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 		}
 
+		ImGui::EndChild();
+
 		// Drop object here
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -146,6 +151,9 @@ namespace ALEngine::Editor
 			{
 				assert(payload->DataSize == sizeof(ECS::Entity));
 				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
+				// Insert remove parent code here
+				sceneGraph.MoveBranch(child_pl, 0);
+				
 			}
 
 			ImGui::EndDragDropTarget();

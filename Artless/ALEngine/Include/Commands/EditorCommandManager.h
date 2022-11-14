@@ -48,8 +48,9 @@ namespace ALEngine::Commands
 		static void Update(void);
 
 	private:
-		static COMMAND m_Commands[10];		// List of Commands
-		static s32 m_CommandSize;			// Number of Commands in List
+		static const s32 MAX_COMMANDS{ 10 };
+		static COMMAND m_Commands[MAX_COMMANDS];		// List of Commands
+		static s32 m_NumOfCommands;			// Number of Commands in List
 		static s32 m_CommandIndex;			// Index of the Current Command
 		static f32 m_TimeSinceLastCommand;	// Time since the last Command
 	};

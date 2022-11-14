@@ -10,41 +10,51 @@ brief:	Contains definitions for the Command Manager for the Editor
 
 namespace ALEngine::Commands
 {
-	COMMAND EditorCommandManager::m_Commands[10]{};
+	COMMAND EditorCommandManager::m_Commands[MAX_COMMANDS]{};
 	s32 EditorCommandManager::m_CommandIndex{ 0 };
-	s32 EditorCommandManager::m_CommandSize{ 0 };
+	s32 EditorCommandManager::m_NumOfCommands{ 0 };
 	f32 EditorCommandManager::m_TimeSinceLastCommand{ 0.f };
 
 	void EditorCommandManager::AddCommand(COMMAND cmd)
 	{
-		if (m_CommandSize < 10)
-		{
-			cmd->Execute();
-
-			// Remove commands after current index
-			if ((m_CommandSize > 0) && (m_CommandIndex < m_CommandSize - 1))
+		// Check if within max number of commands
+		if (m_NumOfCommands >= MAX_COMMANDS)
+		{	// Forget oldest Command
+			for (s32 i{ 0 }; i < MAX_COMMANDS - 1; ++i)
 			{
-				for (s32 i{ m_CommandSize - 1 }; i > m_CommandIndex; --i)
-					m_Commands[i] = nullptr;
-
-				m_CommandSize = m_CommandIndex + 1;
+				m_Commands[i] = m_Commands[i + 1];
 			}
-			
-			m_Commands[m_CommandSize] = std::move(cmd);
-			++m_CommandSize;
-
-			if ((m_CommandSize > 1) && (m_TimeSinceLastCommand <= Time::m_DeltaTime))
-			{
-				if (m_Commands[m_CommandSize - 1]->MergeWith(m_Commands[m_CommandSize - 2]))
-				{
-					m_Commands[m_CommandSize - 1] = nullptr;
-					--m_CommandSize;
-				}
-			}
-
-			m_TimeSinceLastCommand = 0.f;
-			m_CommandIndex = m_CommandSize - 1;
+			m_Commands[MAX_COMMANDS - 1] = nullptr;
+			m_NumOfCommands = MAX_COMMANDS - 1;
 		}
+		
+		// Execute Command
+		cmd->Execute();
+
+		// Remove commands after current index
+		if ((m_NumOfCommands > 0) && (m_CommandIndex < m_NumOfCommands - 1))
+		{
+			for (s32 i{ m_NumOfCommands - 1 }; i > m_CommandIndex; --i)
+				m_Commands[i] = nullptr;
+
+			m_NumOfCommands = m_CommandIndex + 1;
+		}
+		
+		m_Commands[m_NumOfCommands] = std::move(cmd);
+		++m_NumOfCommands;
+
+		if ((m_NumOfCommands > 1) && (m_TimeSinceLastCommand <= Time::m_DeltaTime))
+		{
+			if (m_Commands[m_NumOfCommands - 1]->MergeWith(m_Commands[m_NumOfCommands - 2]))
+			{
+				m_Commands[m_NumOfCommands - 1] = nullptr;
+				--m_NumOfCommands;
+			}
+		}
+
+		m_TimeSinceLastCommand = 0.f;
+		m_CommandIndex = m_NumOfCommands - 1;
+		
 	}
 
 	void EditorCommandManager::Undo(void)
@@ -60,7 +70,7 @@ namespace ALEngine::Commands
 	void EditorCommandManager::Redo(void)
 	{
 		s32 redoIndex = m_CommandIndex + 1;
-		if (redoIndex < m_CommandSize && redoIndex >= 0)
+		if (redoIndex < m_NumOfCommands && redoIndex >= 0)
 		{
 			m_Commands[redoIndex]->Execute();
 			++m_CommandIndex;
@@ -86,7 +96,7 @@ namespace ALEngine::Commands
 
 
 		// Timer
-		if (m_CommandSize > 0)
+		if (m_NumOfCommands > 0)
 			m_TimeSinceLastCommand += Time::m_DeltaTime;
 		else
 			m_TimeSinceLastCommand = 0.f;
