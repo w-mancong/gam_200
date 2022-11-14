@@ -17,8 +17,9 @@ brief:	This file contains all the relevant Utility header files to be included i
 #include "Utility/Profiler.h"
 #include "Utility/BinaryTree.h"
 
-
 using ALEngine::Utility::Time;
 using ALEngine::Utility::Timer;
+
+namespace utils = ALEngine::Utility;
 
 #endif

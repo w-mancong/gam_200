@@ -25,6 +25,16 @@ namespace ALEngine::Utility
 		True if both a and b are equal within the epsilon range, else false
 	***********************************************************************************/
 	bool IsEqual(f32 a, f32 b);
+
+	/*!*********************************************************************************
+		\brief Generic function to read in bytes from binary file
+
+		\param [in] filePath: Path to the file to be read
+		\param [out] outSize: Used to store the byte size of the file read
+
+		\return Buffer to the bytes read from file
+	***********************************************************************************/
+	c8* ReadBytes(std::filesystem::path const& filePath, u32* outSize = nullptr);
 }
 
 #endif

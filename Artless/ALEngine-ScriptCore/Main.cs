@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace ALEngine
 {
@@ -20,5 +21,11 @@ namespace ALEngine
         {
             Console.WriteLine($"C# says: {msg}");
         }
+
+        //[MethodImplAttribute(MethodImplOptions.InternalCall)]
+        //extern static void NativeLog(string str, int v);
+
+        //[MethodImplAttribute(MethodImplOptions.InternalCall)]
+        //extern static void NativeLog();
     }
 }
