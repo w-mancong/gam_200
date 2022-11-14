@@ -67,7 +67,6 @@ namespace ALEngine::ECS
 	{
 		//Character Controller System to be accessed locally
 		std::shared_ptr<GameplaySystem> gameplaySystem;
-
 	}
 
 	void ClickSelectCell(Entity invokerCell) {
@@ -148,7 +147,6 @@ namespace ALEngine::ECS
 		gameplaySystem->ToggleCellToInaccessible(2, 1, false);
 		gameplaySystem->ToggleCellToInaccessible(3, 1, false);
 		gameplaySystem->ToggleCellToInaccessible(3, 2, false);
-
 	}
 
 	void UpdateGameplaySystem(void)

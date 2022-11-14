@@ -153,11 +153,16 @@ namespace ALEngine::Tree
         if (newChild < map.size())
         {
             map[newChild] = newData;
+            return;
         }
-        else
+        else if (newChild > map.size())
         {
-            map.push_back(newData);
+            map.resize(++newChild);
+            map[--newChild] = newData;
+            return;
         }
+        else if(newChild == map.size())
+            map.push_back(newData);
     }
 
     void BinaryTree::Insert(Node* node, s32 id)
@@ -394,6 +399,148 @@ namespace ALEngine::Tree
     std::vector<BinaryTree::NodeData>const& BinaryTree::GetMap()
     {
         return map;
+    }
+
+    void BinaryTree::MoveBranch(s32 branch, s32 newParent)
+    {
+        searchVect.clear();
+        Node* branchNode = Find(branch);
+
+        if (prevNode->left == branchNode) // if branchNode is the first child of PrevNode
+        {
+            if (branchNode->right != nullptr)
+            {
+                prevNode->left = branchNode->right;
+            }
+            else
+            {
+                prevNode->left = nullptr;
+            }
+        }
+        else // branchNode is sibling of prevNode
+        {
+            if (branchNode->right == nullptr) // if leaf
+            {
+                prevNode->right = nullptr;
+            }
+            else // sandwhiched
+            {
+                prevNode->right = branchNode->right;
+            }
+        }
+
+        searchVect.clear();
+        Node* newParentNode = Find(newParent);
+
+        if (newParentNode->left == nullptr)
+        {
+            newParentNode->left = branchNode;
+        }
+        else
+        {
+            newParentNode = newParentNode->left;
+            while (newParentNode->right != nullptr)
+                newParentNode = newParentNode->right;
+
+            newParentNode->right = branchNode;
+        }
+
+        branchNode->right = nullptr;
+        map[branch].parent = newParent; // assign new parent
+
+        // update map
+        for (auto& x : map)
+        {
+            if (x.active)
+            {
+                FindChildren(x.id);
+                x.children = GetChildren();
+            }
+        }
+    }
+
+    void BinaryTree::SerializeTree()
+    {
+        std::vector<Serial> serialVect;
+        std::vector<s32> conversionTable{};
+        s32 newID{};
+        for (u32 i{}; i < map.size(); ++i)
+        {
+            if (map[i].active)
+            {
+                EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(map[i].id);
+                Serial newSerial{};
+                newSerial.serialID = newID;
+                conversionTable.push_back(newID);
+                newSerial.parentSerialID = map[i].parent; // old parent
+                serialVect.push_back(newSerial);
+
+                en.id = newSerial.serialID;
+                en.parentID = newSerial.parentSerialID;
+
+                ++newID;
+            }
+            else
+            {
+                conversionTable.push_back(-1);
+            }
+        }
+
+        ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
+        for (auto it{ entities.begin() }; it != entities.end(); ++it)
+        {
+            EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*it);
+            if(data.parentID != -1)
+                data.parentID = conversionTable[data.parentID];
+        }
+    }
+
+    void BinaryTree::DeserializeTree()
+    {
+        ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
+        std::vector<Serial> serialVect;
+        std::vector<s32> insertedVect;
+        for (auto it{ entities.begin() }; it != entities.end(); ++it)
+        {
+            EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(*it);
+            Serial serial;
+            serial.serialID = en.id;
+            serial.parentSerialID = en.parentID;
+            serialVect.push_back(serial);
+        }
+
+        for (auto& x : serialVect)
+        {
+            if (x.parentSerialID == -1)
+            {
+                x.flag = true;
+                insertedVect.push_back(x.serialID);
+                Push(x.parentSerialID, x.serialID);
+            }
+        }
+
+        s32 done{ true };
+        do
+        {
+            done = true;
+            for (std::vector<Serial>::iterator it{ serialVect.begin() }; it != serialVect.end(); ++it)
+            {
+                if (it->flag == true) // if already inserted
+                    continue;
+
+                done = false;
+                for (auto& x : insertedVect)
+                {
+                    if (it->parentSerialID == x)
+                    {
+                        it->flag = true;
+                        Push(it->parentSerialID, it->serialID);
+                        insertedVect.push_back(it->serialID);
+                        break;
+                    }
+                }
+            }
+        } while (done == false);
     }
 
 } // end of namespace Tree

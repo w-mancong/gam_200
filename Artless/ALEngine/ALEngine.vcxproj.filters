@@ -75,6 +75,8 @@
     <ClCompile Include="Source\Commands\Command.cpp" />
     <ClCompile Include="Source\Commands\UpdateComponentCommand.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
+    <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
+    <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -321,6 +323,9 @@
     <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
     <ClInclude Include="Include\Commands\UpdateComponentCommand.h" />
     <ClInclude Include="Include\Commands\EditorCommandManager.h" />
+    <ClInclude Include="Include\Scripting\ScriptEngine.h" />
+    <ClInclude Include="Include\Common Header\MyScripting.h" />
+    <ClInclude Include="Include\Scripting\ScriptGlue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

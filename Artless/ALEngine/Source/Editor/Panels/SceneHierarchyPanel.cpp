@@ -68,7 +68,7 @@ namespace ALEngine::Editor
 			for (auto e_it = m_EntityList->begin(); 
 				e_it != Coordinator::Instance()->GetEntities().end(); ++e_it)
 			{
-				EntityData data = Coordinator::Instance()->GetComponent<EntityData>(*e_it);
+				EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(*e_it);
 
 				// Each selectable
 				if (ImGui::Selectable(data.tag.c_str()))
@@ -146,9 +146,6 @@ namespace ALEngine::Editor
 			{
 				assert(payload->DataSize == sizeof(ECS::Entity));
 				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
-
-				sceneGraph.Destruct(child_pl);
-				sceneGraph.Push(-1, child_pl);
 			}
 
 			ImGui::EndDragDropTarget();
@@ -183,7 +180,7 @@ namespace ALEngine::Editor
 		ImGuiHoveredFlags hover_flag = ImGuiHoveredFlags_AllowWhenBlockedByActiveItem;
 		if (ImGui::IsItemHovered(hover_flag))
 		{
-			AL_CORE_CRITICAL("Hovering Over: {}", child);
+			//AL_CORE_CRITICAL("Hovering Over: {}", child);
 			m_EntityHover = child;
 		}
 
@@ -207,11 +204,31 @@ namespace ALEngine::Editor
 				// Check payload is not own Entity
 				if (m_EntityHover != child_pl)
 				{
-					sceneGraph.Destruct(child_pl);
-					sceneGraph.Push(m_EntityHover, child_pl);
+					// move child_pl to be child under m_EntityHover
+					sceneGraph.MoveBranch(child_pl, m_EntityHover);
+
+					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child_pl);
+
+					s32 node{ static_cast<s32>(child_pl) }, parentNode{};
+					while (1)
+					{
+						parentNode = sceneGraph.GetMap()[node].parent;
+						if (parentNode == -1)
+						{
+							break;
+						}
+						Transform& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(parentNode); // get parent transform
+
+						childTransform.scale.x = childTransform.scale.x / ParentTransform.scale.x;
+						childTransform.scale.y = childTransform.scale.y / ParentTransform.scale.y;
+
+						childTransform.position.x = (childTransform.position.x - ParentTransform.position.x) / ParentTransform.scale.x;
+						childTransform.position.y = (childTransform.position.y - ParentTransform.position.y) / ParentTransform.scale.y;
+
+						node = parentNode;
+					}
 				}
 			}
-
 			ImGui::EndDragDropTarget();
 		}
 		
@@ -245,7 +262,6 @@ namespace ALEngine::Editor
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);
 	}
-
 }
 
 #endif
