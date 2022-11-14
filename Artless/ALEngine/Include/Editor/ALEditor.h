@@ -183,6 +183,25 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		b8 GetGameActive(void);
 
+		/*!*********************************************************************************
+			\brief
+			Returns if the editor is receiving keyboard input
+
+			\return
+			Returns true if editor is receiving keyboard input,
+			else returns false
+		***********************************************************************************/
+		b8 GetReceivingKBInput(void);
+
+		/*!*********************************************************************************
+			\brief
+			Sets if the editor is receiving keyboard input
+
+			\param receivingInput
+			Variable to set if the editor is receiving keyboard input
+		***********************************************************************************/
+		void SetReceivingKBInput(b8 receivingInput);
+
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -217,6 +236,9 @@ namespace ALEngine::Editor
 		ImVec2 m_WinMinSize{ 300.f, 25.f };
 		ImVec2 m_ToolbarMinSize{};
 
+		// Booleans
+		b8 m_IsReceivingKBInput{ false };
+
 		// Variables
 		b8 m_ImGuiEnabled{ false };		// Set to true if ImGui is enabled
 		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
@@ -243,6 +265,8 @@ namespace ALEngine::Editor
 		ImVec4 m_ColorHovered{};			// Color of Hovered
 		ImVec4 m_ColorInteractive{};		// Color of Interactive
 	};
+
+#define EDITOR_KEYBOARD_CHECK if (ImGui::IsItemActivated()) { ALEditor::Instance()->SetReceivingKBInput(true); } else if (ImGui::IsItemDeactivated()) { ALEditor::Instance()->SetReceivingKBInput(false); }
 }
 
 #endif

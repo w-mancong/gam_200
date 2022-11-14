@@ -132,10 +132,10 @@ namespace ALEngine::Editor
 
 			// Scene Hierarchy Panel
 			m_SceneHierarchyPanel.OnImGuiRender();
-
+			
 			// Profiler Panel
 			m_ProfilerPanel.OnImGuiRender();
-			ImGui::ShowDemoWindow();
+			//ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -502,6 +502,16 @@ namespace ALEngine::Editor
 	b8 ALEditor::GetGameActive(void)
 	{
 		return m_GameIsActive;
+	}
+	
+	b8 ALEditor::GetReceivingKBInput(void)
+	{
+		return m_IsReceivingKBInput;
+	}
+
+	void ALEditor::SetReceivingKBInput(b8 receivingInput)
+	{
+		m_IsReceivingKBInput = receivingInput;
 	}
 }
 

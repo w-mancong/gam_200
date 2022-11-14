@@ -148,12 +148,12 @@ namespace ALEngine::Engine
 
 		sfx.channel = Channel::SFX;
 
-		Math::Vec2 anim_pos = level.GetVec2("anim_pos", Math::Vec2());
-		Transform t1{ { anim_pos.x, anim_pos.y, 0.f }, level.GetVec2("anim_size", Math::Vec2()), 0 };
-		entity = CreateSprite(t1);
-		Animator animator = CreateAnimator("Test");
-		AttachAnimator(entity, animator);
-		sceneGraph.Push(-1, entity);
+		//Math::Vec2 anim_pos = level.GetVec2("anim_pos", Math::Vec2());
+		//Transform t1{ { anim_pos.x, anim_pos.y, 0.f }, level.GetVec2("anim_size", Math::Vec2()), 0 };
+		//entity = CreateSprite(t1);
+		//Animator animator = CreateAnimator("Test");
+		//AttachAnimator(entity, animator);
+		//sceneGraph.Push(-1, entity);
 
 		// Using c++ code to create animation, will be porting it over to allow editor to create clips
 		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
@@ -178,6 +178,20 @@ namespace ALEngine::Engine
 			Time::ClockTimeNow();
 			if (!focus)
 			{
+#ifdef EDITOR
+				{
+					PROFILER_TIMER("Editor UI Update")
+						// Editor Command Manager Update
+						Commands::EditorCommandManager::Update();
+					// Begin new ImGui frame
+					ALEditor::Instance()->Begin();
+					// End of ImGui frame, render ImGui!
+					if (Editor::ALEditor::Instance()->GetImGuiEnabled())
+					{
+						Editor::ALEditor::Instance()->End();
+					}
+				}
+#endif
 				glfwPollEvents();
 				continue;
 			}
@@ -187,6 +201,8 @@ namespace ALEngine::Engine
 #ifdef EDITOR
 			{
 				PROFILER_TIMER("Editor UI Update")
+				// Editor Command Manager Update
+				Commands::EditorCommandManager::Update();
 				// Begin new ImGui frame
 				ALEditor::Instance()->Begin();
 			}

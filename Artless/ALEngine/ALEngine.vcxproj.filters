@@ -72,6 +72,9 @@
     <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
     <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Source\Commands\Command.cpp" />
+    <ClCompile Include="Source\Commands\UpdateComponentCommand.cpp" />
+    <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -314,7 +317,10 @@
     <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
     <ClInclude Include="Include\Common Header\MyScene.h" />
-    <ClInclude Include="Include\Editor\UndoRedo\Command.h" />
+    <ClInclude Include="Include\Commands\Command.h" />
+    <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
+    <ClInclude Include="Include\Commands\UpdateComponentCommand.h" />
+    <ClInclude Include="Include\Commands\EditorCommandManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -554,5 +560,6 @@
     <None Include="Resources\Objects Files\wall1.json" />
     <None Include="Resources\Objects Files\wall2.json" />
     <None Include="Resources\Objects Files\wall3.json" />
+    <None Include="Source\Commands\UpdateComponentCommand.tpp" />
   </ItemGroup>
 </Project>

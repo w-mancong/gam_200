@@ -167,6 +167,7 @@ namespace ALEngine::Editor
 
 		// Select between the 3 Gizmos Operations by keypress
 		if (Input::KeyTriggered(KeyCode::W))
+			if(!ALEditor::Instance()->GetReceivingKBInput())
 			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		if (Input::KeyTriggered(KeyCode::R))
 			m_CurrentGizmoOperation = ImGuizmo::SCALE;
@@ -197,16 +198,31 @@ namespace ALEngine::Editor
 				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f };
 
 			// Float inputs
-			ImGui::DragFloat2("Tr", mtx_translate); // Traslate
+			ImGui::DragFloat2("Tr", mtx_translate);						// Traslate
+			//EDITOR_KEYBOARD_CHECK
+
 			ImGui::DragFloat("Rt", &xform.rotation, 1.f, 0.f, 360.f);	// Rotate
+			//EDITOR_KEYBOARD_CHECK
+
 			ImGui::DragFloat2("Sc", mtx_scale);							// Scale
+			EDITOR_KEYBOARD_CHECK
 
 			// Set changes
-			xform.position.x = mtx_translate[0];
-			xform.position.y = mtx_translate[1];
+			Transform a(xform);
+			a.position.x = mtx_translate[0];
+			a.position.y = mtx_translate[1];
+			
+			a.scale.x = mtx_scale[0];
+			a.scale.y = mtx_scale[1];
 
-			xform.scale.x = mtx_scale[0];
-			xform.scale.y = mtx_scale[1];
+			// If there are any differences in transform, run command
+			if (xform.position.x != a.position.x || xform.position.y != a.position.y ||
+				xform.rotation != a.rotation ||
+				xform.scale.x != a.scale.x || xform.scale.y != a.scale.y)
+			{
+				std::shared_ptr<Commands::UpdateComponentCommand<Transform>> cmd = std::make_shared<Commands::UpdateComponentCommand<Transform>>(xform, a);
+				Commands::EditorCommandManager::AddCommand(cmd);
+			}
 
 			ImGui::TreePop();
 
@@ -273,8 +289,8 @@ namespace ALEngine::Editor
 			// Color wheel
 			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
 			f32 clr[4] = { spr.color.r, spr.color.g, spr.color.b, spr.color.a };
-			ImGui::ColorEdit4("Color", clr, clr_flags);
-
+			//ImGui::ColorEdit4("Color", clr, clr_flags);
+			ImGui::ColorPicker4("Color", clr, clr_flags);
 			// Set new color
 			spr.color.r = clr[0];
 			spr.color.g = clr[1];

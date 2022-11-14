@@ -37,7 +37,7 @@ namespace ALEngine::Editor
 		if (ImGui::Button("Add Entity"))
 		{
 			// Entity Transform
-			Transform xform{ Math::Vector2(Random::Range(-300.0f, 300.f), Random::Range(-300.0f, 300.f)),
+			Transform xform = Transform{ Math::Vector2(Random::Range(-300.0f, 300.f), Random::Range(-300.0f, 300.f)),
 				Math::Vector2(50.f, 50.f), 0.f };
 
 			// Create Entity
@@ -106,7 +106,7 @@ namespace ALEngine::Editor
 			if (ImGui::Selectable("Add child") && (ALEditor::Instance()->GetSelectedEntity() != ECS::MAX_ENTITIES))
 			{
 				// Entity Transform
-				Transform xform{ Math::Vector2(2.f, 2.f),
+				Transform xform = Transform{ Math::Vector2(2.f, 2.f),
 					Math::Vector2(1.f, 1.f), 0.f };
 
 				// Create Entity

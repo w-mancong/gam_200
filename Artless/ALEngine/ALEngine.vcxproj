@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
+    <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
@@ -263,6 +264,8 @@
     <ClCompile Include="Source\misc\Random.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
+    <ClCompile Include="Source\Commands\Command.cpp" />
+    <ClCompile Include="Source\Commands\UpdateComponentCommand.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
@@ -273,8 +276,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\Commands\EditorCommandManager.h" />
     <ClInclude Include="Include\Common Header\MyScene.h" />
-    <ClInclude Include="Include\Editor\UndoRedo\Command.h" />
+    <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
+    <ClInclude Include="Include\Commands\Command.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
@@ -391,6 +396,7 @@
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
+    <ClInclude Include="Include\Commands\UpdateComponentCommand.h" />
     <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
@@ -409,6 +415,7 @@
     <None Include="Resources\Objects Files\wall1.json" />
     <None Include="Resources\Objects Files\wall2.json" />
     <None Include="Resources\Objects Files\wall3.json" />
+    <None Include="Source\Commands\UpdateComponentCommand.tpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
