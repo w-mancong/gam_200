@@ -22,6 +22,9 @@ namespace ALEngine::Engine
 
 	void Application::Init(void)
 	{
+		// Init Logger
+		ALEngine::Exceptions::Logger::Init();
+
 		OpenGLWindow::InitGLFWWindow();
 		focus = glfwGetWindowAttrib(OpenGLWindow::Window(), GLFW_VISIBLE);
 		ECS::InitSystem();
@@ -30,9 +33,6 @@ namespace ALEngine::Engine
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
-
-		// Init Logger
-		ALEngine::Exceptions::Logger::Init();
 
 		// Init ImGui
 #ifdef EDITOR

@@ -11,6 +11,7 @@ namespace ALEngine::Engine
 
 	private:
 		static void InitMono(void);
+		static void ShutdownMono(void);
 	};
 }
 
