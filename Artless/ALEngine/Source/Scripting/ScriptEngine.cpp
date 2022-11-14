@@ -90,11 +90,11 @@ namespace ALEngine::Engine
 		data->appDomain = mono_domain_create_appdomain(const_cast<char*>("ALEngineScriptRuntime"), nullptr);
 		mono_domain_set(data->appDomain, true);
 
-		data->coreAssemblyImage = mono_assembly_get_image(data->coreAssembly);
-
 		// Move this maybe
 		data->coreAssembly = LoadMonoAssembly(filePath);
 		//PrintAssemblyTypes(data->coreAssembly);
+
+		data->coreAssemblyImage = mono_assembly_get_image(data->coreAssembly);
 	}
 
 	void ScriptEngine::InitMono(void)

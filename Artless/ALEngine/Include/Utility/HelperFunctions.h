@@ -35,6 +35,22 @@ namespace ALEngine::Utility
 		\return Buffer to the bytes read from file
 	***********************************************************************************/
 	c8* ReadBytes(std::filesystem::path const& filePath, u32* outSize = nullptr);
+
+	template <typename T>
+	using Ref = std::shared_ptr<T>;
+
+	/*!*********************************************************************************
+		\brief To create a share pointer of type T
+		
+		\param [in] args: to construct T with variadic arguments
+
+		\return A shared pointer of type T
+	***********************************************************************************/
+	template <typename T, typename... Args>
+	constexpr Ref<T> CreateRef(Args&& ... args)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
 }
 
 #endif
