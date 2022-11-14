@@ -32,38 +32,25 @@ namespace ALEngine::Commands
 			\param value
 			Value for the component to be set to
 		***********************************************************************************/
-		UpdateComponentCommand(T& componentAddr, T& value)
-			: m_ComponentData(componentAddr), m_UpdatedComponentData(value), m_ComponentDataBefore(T())
-		{
-		}
+		UpdateComponentCommand(T& componentAddr, T& value);
 
 		/*!*********************************************************************************
 			\brief
 			Default destructor for the Update Component Command class.
 		***********************************************************************************/
-		~UpdateComponentCommand(void) {}
+		~UpdateComponentCommand(void);
 
 		/*!*********************************************************************************
 			\brief
 			Executes the given command or action.
 		***********************************************************************************/
-		virtual void Execute(void)
-		{
-			// Set previous
-			m_ComponentDataBefore = m_ComponentData;
-
-			// Set next
-			m_ComponentData = m_UpdatedComponentData;
-		}
+		virtual void Execute(void);
 
 		/*!*********************************************************************************
 			\brief
 			Undoes the given command or action.
 		***********************************************************************************/
-		virtual void Undo(void)
-		{
-			m_ComponentData = m_ComponentDataBefore;
-		}
+		virtual void Undo(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -74,26 +61,16 @@ namespace ALEngine::Commands
 			Returns true if can merge
 			Else returns false
 		***********************************************************************************/
-		virtual b8 MergeWith(COMMAND cmd)
-		{
-			std::shared_ptr<UpdateComponentCommand> comp_cmd = std::dynamic_pointer_cast<UpdateComponentCommand>(cmd);
-			if (comp_cmd != nullptr)
-			{
-				if (&comp_cmd->m_ComponentData == &this->m_ComponentData)
-				{
-					comp_cmd->m_UpdatedComponentData = this->m_UpdatedComponentData;
-					return true;
-				}
-			}
-
-			return false;
-		}
+		virtual b8 MergeWith(COMMAND cmd);
 
 	private:
 		T& m_ComponentData;			// Address to where the Component Data is
 		T m_ComponentDataBefore;	// Previous value of the Component Data
 		T m_UpdatedComponentData;		// Value for the Component Data to be set to
 	};
+
+	template<typename T>
+	using COMP_CMD = UpdateComponentCommand<T>;
 }
 
 #include <../Source/Commands/UpdateComponentCommand.tpp>

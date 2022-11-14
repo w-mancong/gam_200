@@ -17,6 +17,9 @@ brief:	This file contains function definitions for the InspectorPanel class.
 
 namespace ALEngine::Editor 
 {
+	// Commands namespace
+	using namespace Commands;
+
 	// Set default operation to be Translate
 	ImGuizmo::OPERATION InspectorPanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
 
@@ -195,13 +198,14 @@ namespace ALEngine::Editor
 			// 3) Display this offset in inspector
 			// 4) Calculate new Local (Parent Inverse Global Scale * offset
 			f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
-				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f };
+				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
+				mtx_rotation{ xform.rotation };
 
 			// Float inputs
 			ImGui::DragFloat2("Tr", mtx_translate);						// Traslate
 			//EDITOR_KEYBOARD_CHECK
 
-			ImGui::DragFloat("Rt", &xform.rotation, 1.f, 0.f, 360.f);	// Rotate
+			ImGui::DragFloat("Rt", &mtx_rotation, 1.f, 0.f, 360.f);	// Rotate
 			//EDITOR_KEYBOARD_CHECK
 
 			ImGui::DragFloat2("Sc", mtx_scale);							// Scale
@@ -212,6 +216,8 @@ namespace ALEngine::Editor
 			a.position.x = mtx_translate[0];
 			a.position.y = mtx_translate[1];
 			
+			a.rotation = mtx_rotation;
+
 			a.scale.x = mtx_scale[0];
 			a.scale.y = mtx_scale[1];
 
@@ -220,8 +226,8 @@ namespace ALEngine::Editor
 				xform.rotation != a.rotation ||
 				xform.scale.x != a.scale.x || xform.scale.y != a.scale.y)
 			{
-				std::shared_ptr<Commands::UpdateComponentCommand<Transform>> cmd = std::make_shared<Commands::UpdateComponentCommand<Transform>>(xform, a);
-				Commands::EditorCommandManager::AddCommand(cmd);
+				utils::Ref<COMP_CMD<Transform>> cmd = utils::CreateRef<COMP_CMD<Transform>>(xform, a);
+				EditorCommandManager::AddCommand(cmd);
 			}
 
 			ImGui::TreePop();

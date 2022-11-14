@@ -61,20 +61,6 @@ namespace ALEngine::Engine
 			Time::ClockTimeNow();
 			if (!focus)
 			{
-#ifdef EDITOR
-				{
-					PROFILER_TIMER("Editor UI Update")
-						// Editor Command Manager Update
-						Commands::EditorCommandManager::Update();
-					// Begin new ImGui frame
-					ALEditor::Instance()->Begin();
-					// End of ImGui frame, render ImGui!
-					if (Editor::ALEditor::Instance()->GetImGuiEnabled())
-					{
-						Editor::ALEditor::Instance()->End();
-					}
-				}
-#endif
 				glfwPollEvents();
 				continue;
 			}
