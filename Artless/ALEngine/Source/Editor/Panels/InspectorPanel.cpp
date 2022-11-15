@@ -277,10 +277,17 @@ namespace ALEngine::Editor
 					if (fileString.find(".jpg") != std::string::npos ||
 						fileString.find(".png") != std::string::npos)
 					{
-						// Set Filepath
-						spr.filePath = filePath;
+						// Sprite copy
+						Sprite cpy{ spr };
 
-						spr.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+						// Set Filepath
+						cpy.filePath = filePath;
+
+						cpy.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+
+						// Run Command
+						utils::Ref<COMP_CMD<Sprite>> cmd = utils::CreateRef<COMP_CMD<Sprite>>(spr, cpy);
+						EditorCommandManager::AddCommand(cmd);
 					}
 					else
 					{
@@ -300,10 +307,21 @@ namespace ALEngine::Editor
 			//ImGui::ColorEdit4("Color", clr, clr_flags);
 			ImGui::ColorPicker4("Color", clr, clr_flags);
 			// Set new color
-			spr.color.r = clr[0];
-			spr.color.g = clr[1];
-			spr.color.b = clr[2];
-			spr.color.a = clr[3];
+			Sprite cpy{ spr };
+			cpy.color.r = clr[0];
+			cpy.color.g = clr[1];
+			cpy.color.b = clr[2];
+			cpy.color.a = clr[3];
+
+			if (cpy.color.r != spr.color.r || cpy.color.g != spr.color.g || 
+				cpy.color.b != spr.color.b || cpy.color.a != spr.color.a)
+			{
+				if (Commands::EditorCommandManager::CanAddCommand())
+				{
+					utils::Ref<COMP_CMD<Sprite>> cmd = utils::CreateRef<COMP_CMD<Sprite>>(spr, cpy);
+					EditorCommandManager::AddCommand(cmd);
+				}
+			}
 
 			// Pop TreeNodeEx
 			ImGui::TreePop();
