@@ -3,7 +3,7 @@
 
 namespace ALEngine::ECS
 {
-	using namespace Math; using namespace Engine; using namespace Graphics;
+	using namespace Math; using namespace Engine; using namespace Graphics; using namespace utils;
 	class RenderSystem : public System
 	{
 	public:
@@ -38,7 +38,7 @@ namespace ALEngine::ECS
 
 	namespace
 	{
-		std::shared_ptr<RenderSystem> rs;
+		Ref<RenderSystem> rs;
 		Shader indirectShader;
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
