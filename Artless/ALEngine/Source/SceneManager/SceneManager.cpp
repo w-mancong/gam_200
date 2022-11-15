@@ -154,6 +154,9 @@ namespace ALEngine::Engine::Scene
 		// Entity ID
 		writer.Key("id");
 		writer.Uint(entityData.id);
+		
+		writer.Key("parentID");
+		writer.Int(entityData.parentID);
 
 		writer.EndObject();
 		writer.EndArray();
@@ -169,6 +172,8 @@ namespace ALEngine::Engine::Scene
 		entityData.active = v[0]["active"].GetBool();
 		// Getting id
 		entityData.id = v[0]["id"].GetUint();
+		// Getting parent id
+		entityData.parentID = v[0]["parentID"].GetInt();
 	}
 
 	void WriteCollider2D(TWriter& writer, ECS::Entity en)
@@ -422,6 +427,9 @@ namespace ALEngine::Engine::Scene
 
 		ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
 		u32 id{ 0 };
+
+		ECS::GetSceneGraph().SerializeTree();
+
 		writer.StartArray();
 		for (auto it{ entities.begin() }; it != entities.end(); ++it)
 		{
@@ -512,5 +520,6 @@ namespace ALEngine::Engine::Scene
 			if (v.HasMember("Cell"))
 				ReadCell(v["Cell"], en);
 		}
+		ECS::GetSceneGraph().DeserializeTree();
 	}
 }

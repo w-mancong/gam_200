@@ -30,6 +30,11 @@ namespace ALEngine::Tree
             b8 active{ true };
             s32 parent{-1};
         };
+        struct Serial
+        {
+            s32 serialID, parentSerialID;
+            b8 flag{ false }; // for deserialization
+        };
     public:
         /*!*********************************************************************************
             \brief
@@ -127,6 +132,10 @@ namespace ALEngine::Tree
             Vector of NodeData
         ***********************************************************************************/
         std::vector<NodeData>const& GetMap();
+
+        void MoveBranch(s32 branch, s32 newParent);
+        void SerializeTree();
+        void DeserializeTree();
 
     private:
         /*!*********************************************************************************
