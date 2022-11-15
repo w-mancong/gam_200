@@ -223,6 +223,8 @@ namespace ALEngine::Editor
 		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
 		b8 m_GameIsActive{ false };		// Set to true if in Game Mode
 		b8 m_FullScreen{ false };		// Set to true if game mode full screen
+		b8 m_AnimatorPanel{ false };	// Set to true if game mode full screen
+		b8 m_AudioPanel{ false };		// Set to true if game mode full screen
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel

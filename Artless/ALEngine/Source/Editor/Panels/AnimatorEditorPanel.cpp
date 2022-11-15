@@ -7,11 +7,6 @@
 namespace ALEngine::Editor
 {
 
-
-
-
-
-
 	AnimatorEditorPanel::AnimatorEditorPanel()
 	{
 	}
@@ -22,6 +17,9 @@ namespace ALEngine::Editor
 
 	void AnimatorEditorPanel::OnImGuiRender(void)
 	{
+
+
+
 	}
 
 	void AnimatorEditorPanel::SetPanelMin(Math::Vec2 min)

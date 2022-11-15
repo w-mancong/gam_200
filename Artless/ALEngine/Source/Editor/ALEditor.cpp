@@ -274,6 +274,20 @@ namespace ALEngine::Editor
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Tools"))
+			{
+				// Selectable flag
+				ImGuiSelectableFlags flag = 0;
+
+				// Set to fullscreen or normal
+				ImGui::Selectable("CreateClips/Animation", &m_AnimatorPanel, flag);
+
+				// Set to fullscreen or normal
+				ImGui::Selectable("CreateAudio", &m_AudioPanel, flag);
+
+				ImGui::EndMenu();
+			}
+
 			ImGui::EndMainMenuBar();
 		}
 	}
