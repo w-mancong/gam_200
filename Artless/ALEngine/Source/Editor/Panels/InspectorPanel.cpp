@@ -482,8 +482,34 @@ namespace ALEngine::Editor
 						if (ImGui::Selectable("Sprite Component") &&
 							m_SelectedEntity != ECS::MAX_ENTITIES)
 						{
-							// Add Transform Component
+							// Add Sprite Component
 							ECS::Coordinator::Instance()->AddComponent<Sprite>(m_SelectedEntity, Sprite());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_RigidBody:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<Rigidbody2D>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("RigidBody Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add RigidBody Component
+							ECS::Coordinator::Instance()->AddComponent<Rigidbody2D>(m_SelectedEntity, Rigidbody2D());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_Collider:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Collider Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<Collider2D>(m_SelectedEntity, Collider2D());
 						}
 						++count;
 					}

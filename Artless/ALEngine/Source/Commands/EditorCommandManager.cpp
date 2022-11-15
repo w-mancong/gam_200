@@ -54,8 +54,7 @@ namespace ALEngine::Commands
 		}
 
 		m_CommandIndex = m_NumOfCommands - 1;
-		AL_CORE_DEBUG("Do Command: {}", m_CommandIndex);
-		
+
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
 			m_CommandInputType = CommandInputType::MOUSE_COMMAND;
 		else if(Editor::ALEditor::Instance()->GetReceivingKBInput())

@@ -118,11 +118,11 @@ namespace ALEngine::Editor
 			updated.rotation = mtx_rot[2];
 
 			// If there are any differences in transform, run command
-			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			if (xform.position.x != updated.position.x || xform.position.y != updated.position.y ||
+				xform.rotation != updated.rotation ||
+				xform.scale.x != updated.scale.x || xform.scale.y != updated.scale.y)
 			{
-				if (xform.position.x != updated.position.x || xform.position.y != updated.position.y ||
-					xform.rotation != updated.rotation ||
-					xform.scale.x != updated.scale.x || xform.scale.y != updated.scale.y)
+				if (Commands::EditorCommandManager::CanAddCommand())
 				{
 					utils::Ref<COMP_CMD<Transform>> cmd = utils::CreateRef<COMP_CMD<Transform>>(xform, updated);
 					EditorCommandManager::AddCommand(cmd);
