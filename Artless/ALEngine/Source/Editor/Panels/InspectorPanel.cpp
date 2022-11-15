@@ -348,10 +348,17 @@ namespace ALEngine::Editor
 				if (fileString.find(".jpg") != std::string::npos ||
 					fileString.find(".png") != std::string::npos)
 				{
-					// Set Filepath
-					spr.filePath = filePath;
+					// Sprite copy
+					Sprite cpy{ spr };
 
-					spr.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+					// Set Filepath
+					cpy.filePath = filePath;
+
+					cpy.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+
+					// Run Command
+					utils::Ref<COMP_CMD<Sprite>> cmd = utils::CreateRef<COMP_CMD<Sprite>>(spr, cpy);
+					EditorCommandManager::AddCommand(cmd);
 				}
 				else
 				{
