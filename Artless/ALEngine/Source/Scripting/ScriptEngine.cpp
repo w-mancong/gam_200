@@ -3,6 +3,7 @@
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/object.h>
+#include <mono/metadata/mono-gc.h>
 
 namespace ALEngine::Engine
 {
@@ -73,7 +74,7 @@ namespace ALEngine::Engine
 		data = Memory::DynamicMemory::New<ScriptEngineData>();
 
 		InitMono();
-		LoadAssembly("mono\\ALEngine-ScriptCore.dll");
+		//LoadAssembly("mono\\ALEngine-ScriptCore.dll");
 
 		ScriptGlue::RegisterFunctions();
 	}
@@ -114,10 +115,12 @@ namespace ALEngine::Engine
 
 	void ScriptEngine::ShutdownMono(void)
 	{
-		mono_domain_set(mono_get_root_domain(), false);
+		mono_domain_set(mono_get_root_domain(), true);
+		mono_domain_finalize(data->appDomain, 2000);
 
 		mono_domain_unload(data->appDomain);
 		data->appDomain = nullptr;
+		mono_gc_collect(mono_gc_max_generation());
 
 		mono_jit_cleanup(data->rootDomain);
 		data->rootDomain = nullptr;
