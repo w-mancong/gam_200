@@ -13,7 +13,7 @@ brief:	Contains declarations for the Command Manager for the Editor
 
 namespace ALEngine::Commands
 {
-	enum class InCommand
+	enum class CommandInputType
 	{
 		NO_COMMAND = 0,
 		MOUSE_COMMAND,
@@ -54,13 +54,29 @@ namespace ALEngine::Commands
 		***********************************************************************************/
 		static void Update(void);
 
+		/*!*********************************************************************************
+			\brief
+			Gets the Command's Input Type
+			\return
+			Returns the Command's Input Type
+		***********************************************************************************/
+		static CommandInputType GetCommandInputType(void);
+
+		/*!*********************************************************************************
+			\brief
+			Gets if Command can be added
+			\return
+			Returns true if command can be added
+			Else returns false
+		***********************************************************************************/
+		static b8 CanAddCommand(void);
+
 	private:
 		static const s32 MAX_COMMANDS{ 10 };
 		static COMMAND m_Commands[MAX_COMMANDS];		// List of Commands
 		static s32 m_NumOfCommands;						// Number of Commands in List
 		static s32 m_CommandIndex;						// Index of the Current Command
-		static f32 m_TimeSinceLastCommand;				// Time since the last Command
-		static InCommand m_InCommand;
+		static CommandInputType m_CommandInputType;
 	};
 }
 

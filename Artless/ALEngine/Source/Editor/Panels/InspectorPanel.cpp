@@ -170,7 +170,6 @@ namespace ALEngine::Editor
 
 		// Select between the 3 Gizmos Operations by keypress
 		if (Input::KeyTriggered(KeyCode::W))
-			if(!ALEditor::Instance()->GetReceivingKBInput())
 			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		if (Input::KeyTriggered(KeyCode::R))
 			m_CurrentGizmoOperation = ImGuizmo::SCALE;
@@ -226,8 +225,11 @@ namespace ALEngine::Editor
 				xform.rotation != a.rotation ||
 				xform.scale.x != a.scale.x || xform.scale.y != a.scale.y)
 			{
-				utils::Ref<COMP_CMD<Transform>> cmd = utils::CreateRef<COMP_CMD<Transform>>(xform, a);
-				EditorCommandManager::AddCommand(cmd);
+				if (Commands::EditorCommandManager::CanAddCommand())
+				{
+					utils::Ref<COMP_CMD<Transform>> cmd = utils::CreateRef<COMP_CMD<Transform>>(xform, a);
+					EditorCommandManager::AddCommand(cmd);
+				}
 			}
 
 			ImGui::TreePop();
@@ -442,7 +444,7 @@ namespace ALEngine::Editor
 	{
 		// Get Window size
 		ImVec2 winsize = ImGui::GetWindowSize();
-		if (ImGui::Button("Add Component", ImVec2(winsize.x * 0.8f, 20.f)))
+		if (ImGui::Button("Add Component"))
 		{
 			ImGui::OpenPopup("addcomponent_popup");
 		}
