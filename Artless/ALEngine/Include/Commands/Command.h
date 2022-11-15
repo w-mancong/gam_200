@@ -57,6 +57,25 @@ namespace ALEngine
 			Else returns false
 		***********************************************************************************/
 		virtual b8 MergeWith(COMMAND cmd) = 0;
+
+		/*!*********************************************************************************
+			\brief
+			Returns if the Command can be merged
+			\return
+			Returns true if can be merged,
+			Else returns false
+		***********************************************************************************/
+		b8 GetCanMerge(void);
+
+		/*!*********************************************************************************
+			\brief
+			Set if the Command can be merged
+			\param can_merge
+			Value for whether the Command can or cannot be merged
+		***********************************************************************************/
+		void SetCanMerge(b8 can_merge);
+	private:
+		b8 m_CanMerge{ true };
 	};
 }
 

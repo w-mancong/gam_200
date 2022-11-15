@@ -13,7 +13,7 @@ namespace ALEngine::Commands
 	COMMAND EditorCommandManager::m_Commands[MAX_COMMANDS]{};
 	s32 EditorCommandManager::m_CommandIndex{ 0 };
 	s32 EditorCommandManager::m_NumOfCommands{ 0 };
-	f32 EditorCommandManager::m_TimeSinceLastCommand{ 0.f };
+	InCommand EditorCommandManager::m_InCommand{ InCommand::NO_COMMAND };
 
 	void EditorCommandManager::AddCommand(COMMAND cmd)
 	{
@@ -43,7 +43,8 @@ namespace ALEngine::Commands
 		m_Commands[m_NumOfCommands] = std::move(cmd);
 		++m_NumOfCommands;
 
-		if ((m_NumOfCommands > 1) && (m_TimeSinceLastCommand <= Time::m_DeltaTime))
+		if ((m_NumOfCommands > 1) && (m_InCommand != InCommand::NO_COMMAND) && 
+			m_Commands[m_NumOfCommands - 2]->GetCanMerge())
 		{
 			if (m_Commands[m_NumOfCommands - 1]->MergeWith(m_Commands[m_NumOfCommands - 2]))
 			{
@@ -52,9 +53,12 @@ namespace ALEngine::Commands
 			}
 		}
 
-		m_TimeSinceLastCommand = 0.f;
 		m_CommandIndex = m_NumOfCommands - 1;
 		
+		if (Input::KeyDown(KeyCode::MouseLeftButton))
+			m_InCommand = InCommand::MOUSE_COMMAND;
+		else
+			m_InCommand = InCommand::KEYBOARD_COMMAND;
 	}
 
 	void EditorCommandManager::Undo(void)
@@ -81,7 +85,7 @@ namespace ALEngine::Commands
 	{
 		static b8 keyDown{ false };
 		if (keyDown == false && Input::KeyDown(KeyCode::Ctrl) &&
-			Input::KeyDown(KeyCode::Z) && Input::KeyDown(KeyCode::Shift))
+			((Input::KeyDown(KeyCode::Z) && Input::KeyDown(KeyCode::Shift)) || Input::KeyDown(KeyCode::Y)))
 		{
 			Commands::EditorCommandManager::Redo();
 			keyDown = true;
@@ -91,14 +95,19 @@ namespace ALEngine::Commands
 			Commands::EditorCommandManager::Undo();
 			keyDown = true;
 		}
-		else if (Input::KeyReleased(KeyCode::Z) || Input::KeyReleased(KeyCode::Ctrl))
+		else if (Input::KeyReleased(KeyCode::Z) || Input::KeyReleased(KeyCode::Ctrl) ||
+			Input::KeyReleased(KeyCode::Y) || Input::KeyReleased(KeyCode::Shift))
 			keyDown = false;
 
-
-		// Timer
-		if (m_NumOfCommands > 0)
-			m_TimeSinceLastCommand += Time::m_DeltaTime;
-		else
-			m_TimeSinceLastCommand = 0.f;
+		if (m_InCommand != InCommand::NO_COMMAND)
+		{
+			if ((m_InCommand == InCommand::MOUSE_COMMAND && Input::KeyReleased(KeyCode::MouseLeftButton)) ||
+				(m_InCommand == InCommand::KEYBOARD_COMMAND && !Editor::ALEditor::Instance()->GetReceivingKBInput()))
+			{
+				m_InCommand = InCommand::NO_COMMAND;
+				if ((m_NumOfCommands - 1) < MAX_COMMANDS && (m_NumOfCommands - 1) >= 0)
+					m_Commands[m_NumOfCommands - 1]->SetCanMerge(false);
+			}
+		}
 	}
 }

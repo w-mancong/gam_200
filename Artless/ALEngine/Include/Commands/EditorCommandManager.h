@@ -13,6 +13,13 @@ brief:	Contains declarations for the Command Manager for the Editor
 
 namespace ALEngine::Commands
 {
+	enum class InCommand
+	{
+		NO_COMMAND = 0,
+		MOUSE_COMMAND,
+		KEYBOARD_COMMAND
+	};
+
 	/*!*********************************************************************************
 		\brief
 		This is the base class for a Command or Action a user can make while using the
@@ -50,9 +57,10 @@ namespace ALEngine::Commands
 	private:
 		static const s32 MAX_COMMANDS{ 10 };
 		static COMMAND m_Commands[MAX_COMMANDS];		// List of Commands
-		static s32 m_NumOfCommands;			// Number of Commands in List
-		static s32 m_CommandIndex;			// Index of the Current Command
-		static f32 m_TimeSinceLastCommand;	// Time since the last Command
+		static s32 m_NumOfCommands;						// Number of Commands in List
+		static s32 m_CommandIndex;						// Index of the Current Command
+		static f32 m_TimeSinceLastCommand;				// Time since the last Command
+		static InCommand m_InCommand;
 	};
 }
 
