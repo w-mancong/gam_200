@@ -17,9 +17,11 @@ namespace ALEngine::Editor
 
 	void AnimatorEditorPanel::OnImGuiRender(void)
 	{
+		ImGui::Begin("Animator Panel");
 
 
 
+		ImGui::End();
 	}
 
 	void AnimatorEditorPanel::SetPanelMin(Math::Vec2 min)

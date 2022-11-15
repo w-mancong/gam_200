@@ -7,12 +7,6 @@
 
 namespace ALEngine::Editor
 {
-
-
-
-
-
-
 	AudioEditorPanel::AudioEditorPanel()
 	{
 	}
@@ -23,6 +17,9 @@ namespace ALEngine::Editor
 
 	void AudioEditorPanel::OnImGuiRender(void)
 	{
+		ImGui::Begin("Animator Panel");
+
+		ImGui::End();
 	}
 
 	void AudioEditorPanel::SetPanelMin(Math::Vec2 min)

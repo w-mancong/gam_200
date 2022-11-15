@@ -279,10 +279,10 @@ namespace ALEngine::Editor
 				// Selectable flag
 				ImGuiSelectableFlags flag = 0;
 
-				// Set to fullscreen or normal
+				// Set active for animator panel
 				ImGui::Selectable("CreateClips/Animation", &m_AnimatorPanel, flag);
-
-				// Set to fullscreen or normal
+	
+				//  Set active for audio panel
 				ImGui::Selectable("CreateAudio", &m_AudioPanel, flag);
 
 				ImGui::EndMenu();
