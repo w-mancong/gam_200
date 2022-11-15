@@ -5,7 +5,7 @@ email:	m.zafir@digipen.edu
 brief:	This file contains the declarations relating to the engine's particle 
 		system.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #ifndef	PARTICLESYSTEM_H

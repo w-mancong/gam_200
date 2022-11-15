@@ -5,7 +5,7 @@ email:	l.nguyen@digipen.edu
 brief:	This file contains the function definitions for the Profiler class.
 		The Profiler keeps track of the engine's performance data.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 

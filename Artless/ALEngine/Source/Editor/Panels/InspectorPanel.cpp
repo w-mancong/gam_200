@@ -17,6 +17,9 @@ brief:	This file contains function definitions for the InspectorPanel class.
 
 namespace ALEngine::Editor 
 {
+	// Commands namespace
+	using namespace Commands;
+
 	// Set default operation to be Translate
 	ImGuizmo::OPERATION InspectorPanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
 
@@ -194,19 +197,40 @@ namespace ALEngine::Editor
 			// 3) Display this offset in inspector
 			// 4) Calculate new Local (Parent Inverse Global Scale * offset
 			f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
-				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f };
+				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
+				mtx_rotation{ xform.rotation };
 
 			// Float inputs
-			ImGui::DragFloat2("Tr", mtx_translate); // Traslate
-			ImGui::DragFloat("Rt", &xform.rotation, 1.f, 0.f, 360.f);	// Rotate
+			ImGui::DragFloat2("Tr", mtx_translate);						// Traslate
+			//EDITOR_KEYBOARD_CHECK
+
+			ImGui::DragFloat("Rt", &mtx_rotation, 1.f, 0.f, 360.f);	// Rotate
+			//EDITOR_KEYBOARD_CHECK
+
 			ImGui::DragFloat2("Sc", mtx_scale);							// Scale
+			EDITOR_KEYBOARD_CHECK
 
 			// Set changes
-			xform.position.x = mtx_translate[0];
-			xform.position.y = mtx_translate[1];
+			Transform a(xform);
+			a.position.x = mtx_translate[0];
+			a.position.y = mtx_translate[1];
+			
+			a.rotation = mtx_rotation;
 
-			xform.scale.x = mtx_scale[0];
-			xform.scale.y = mtx_scale[1];
+			a.scale.x = mtx_scale[0];
+			a.scale.y = mtx_scale[1];
+
+			// If there are any differences in transform, run command
+			if (xform.position.x != a.position.x || xform.position.y != a.position.y ||
+				xform.rotation != a.rotation ||
+				xform.scale.x != a.scale.x || xform.scale.y != a.scale.y)
+			{
+				if (Commands::EditorCommandManager::CanAddCommand())
+				{
+					utils::Ref<COMP_CMD<Transform>> cmd = utils::CreateRef<COMP_CMD<Transform>>(xform, a);
+					EditorCommandManager::AddCommand(cmd);
+				}
+			}
 
 			ImGui::TreePop();
 
@@ -273,8 +297,8 @@ namespace ALEngine::Editor
 			// Color wheel
 			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
 			f32 clr[4] = { spr.color.r, spr.color.g, spr.color.b, spr.color.a };
-			ImGui::ColorEdit4("Color", clr, clr_flags);
-
+			//ImGui::ColorEdit4("Color", clr, clr_flags);
+			ImGui::ColorPicker4("Color", clr, clr_flags);
 			// Set new color
 			spr.color.r = clr[0];
 			spr.color.g = clr[1];
@@ -420,7 +444,7 @@ namespace ALEngine::Editor
 	{
 		// Get Window size
 		ImVec2 winsize = ImGui::GetWindowSize();
-		if (ImGui::Button("Add Component", ImVec2(winsize.x * 0.8f, 20.f)))
+		if (ImGui::Button("Add Component"))
 		{
 			ImGui::OpenPopup("addcomponent_popup");
 		}
@@ -458,8 +482,34 @@ namespace ALEngine::Editor
 						if (ImGui::Selectable("Sprite Component") &&
 							m_SelectedEntity != ECS::MAX_ENTITIES)
 						{
-							// Add Transform Component
+							// Add Sprite Component
 							ECS::Coordinator::Instance()->AddComponent<Sprite>(m_SelectedEntity, Sprite());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_RigidBody:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<Rigidbody2D>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("RigidBody Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add RigidBody Component
+							ECS::Coordinator::Instance()->AddComponent<Rigidbody2D>(m_SelectedEntity, Rigidbody2D());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_Collider:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Collider Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<Collider2D>(m_SelectedEntity, Collider2D());
 						}
 						++count;
 					}

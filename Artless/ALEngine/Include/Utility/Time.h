@@ -5,7 +5,7 @@ email:		l.nguyen@digipen.edu
 brief:		This file contains a class "Time" that acts as the framerate controller.
 			The delta time and FPS are calculated here.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	TIME_H
 #define TIME_H

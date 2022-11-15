@@ -71,6 +71,8 @@ namespace ALEngine::Engine
 #ifdef EDITOR
 			{
 				PROFILER_TIMER("Editor UI Update")
+				// Editor Command Manager Update
+				Commands::EditorCommandManager::Update();
 				// Begin new ImGui frame
 				ALEditor::Instance()->Begin();
 			}

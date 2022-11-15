@@ -1,84 +1,82 @@
 ﻿/*!
-file:	Profiler.h
+file:	Command.h
 author:	Lucas Nguyen
 email:	l.nguyen@digipen.edu
-brief:	This file contains the function declarations for the Profiler class.
-		The Profiler keeps track of the engine's performance data.
+brief:	This file contains the function declarations for the Command class.
+		The Command class is what is used for tracking the commands or actions that are
+		run on the engine.
+		This can be helpful for features such as undo/redo and possibly for debugging
+		as well, i.e. if something crashes to see which command or action had caused
+		the crash.
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#ifndef PROFILER_H
-#define PROFILER_H
+#ifndef AL_COMMAND_H
+#define AL_COMMAND_H
 
-namespace ALEngine::Utility
+namespace ALEngine
 {
+	class Command;
+	using COMMAND = std::shared_ptr<Command>;
 	/*!*********************************************************************************
 		\brief
-		Struct that contains the Timer Data for the engine's performance for each 
-		process
+		This is the base class for a Command or Action a user can make while using the
+		Engine
 	***********************************************************************************/
-	struct TimerData
-	{
-		std::string m_Name;	// Process Name
-		f32 m_Time;			// Time taken for process to be completed
-	};
-
-	/*!*********************************************************************************
-		\brief
-		Class that keeps track of the engine's performance data
-	***********************************************************************************/
-	class Profiler
+	class Command
 	{
 	public:
 		/*!*********************************************************************************
 			\brief
-			Gets the list of TimerData from the profiler
+			Default destructor for the Command class.
+			Meant to be overwritten by its derived class if any.
+		***********************************************************************************/
+		virtual ~Command(void);
 
+		/*!*********************************************************************************
+			\brief
+			Executes the given command or action.
+			Must be overwritten by its derived class.
+		***********************************************************************************/
+		virtual void Execute(void) = 0;
+
+		/*!*********************************************************************************
+			\brief
+			Undoes the given command.
+			Must be overwritten by its derived class.
+		***********************************************************************************/
+		virtual void Undo(void) = 0;
+		
+		/*!*********************************************************************************
+			\brief
+			Merges the command with the previous command.
+			\param cmd
+			Command to merge into this
 			\return
-			Returns the list of TimerData
+			Returns true if can merge
+			Else returns false
 		***********************************************************************************/
-		static const std::vector<TimerData>& GetTimerDataList(void);
+		virtual b8 MergeWith(COMMAND cmd) = 0;
 
 		/*!*********************************************************************************
 			\brief
-			Adds a TimerData info to the list of TimeData
-
-			\param [in] data
-			The TimerData info to be added to the profiler's list
+			Returns if the Command can be merged
+			\return
+			Returns true if can be merged,
+			Else returns false
 		***********************************************************************************/
-		static void AddTimerData(TimerData data);
+		b8 GetCanMerge(void);
 
 		/*!*********************************************************************************
 			\brief
-			Clears the TimerData list
+			Set if the Command can be merged
+			\param can_merge
+			Value for whether the Command can or cannot be merged
 		***********************************************************************************/
-		static void ClearTimerData(void);
-
+		void SetCanMerge(b8 can_merge);
 	private:
-		/*!*********************************************************************************
-			\brief
-			Default constructor for the profiler
-		***********************************************************************************/
-		Profiler(void) {};
-
-		/*!*********************************************************************************
-			\brief
-			Default destructor for the profiler
-		***********************************************************************************/
-		~Profiler(void) = default;
-
-		// List of timer data
-		static std::vector<TimerData> m_TimerDataList;
+		b8 m_CanMerge{ true };
 	};
 }
-
-		/*!*********************************************************************************
-			\brief
-			Macro function for profiler timer per process
-
-			\param [in] name
-			The name of the process being recorded
-		***********************************************************************************/
-#define PROFILER_TIMER(name) Timer ProfilerTimer##__LINE__(name);
 
 #endif

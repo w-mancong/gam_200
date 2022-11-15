@@ -6,7 +6,7 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 		The SceneHierarchyPanel class contains information and functions necessary for
 		the Scene Hierarchy Panel of the editor to be displayed.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
@@ -33,11 +33,14 @@ namespace ALEngine::Editor
 			return;
 		}
 
+		// Make Panel Child so panel can have Drag & Drop
+		ImGui::BeginChild("SceneHierarchyPanel##PanelChild", ImGui::GetContentRegionAvail());
+
 		// Add Entity Button
 		if (ImGui::Button("Add Entity"))
 		{
 			// Entity Transform
-			Transform xform{ Math::Vector2(Random::Range(-300.0f, 300.f), Random::Range(-300.0f, 300.f)),
+			Transform xform = Transform{ Math::Vector2(0.f, 0.f),
 				Math::Vector2(50.f, 50.f), 0.f };
 
 			// Create Entity
@@ -106,7 +109,7 @@ namespace ALEngine::Editor
 			if (ImGui::Selectable("Add child") && (ALEditor::Instance()->GetSelectedEntity() != ECS::MAX_ENTITIES))
 			{
 				// Entity Transform
-				Transform xform{ Math::Vector2(2.f, 2.f),
+				Transform xform = Transform{ Math::Vector2(2.f, 2.f),
 					Math::Vector2(1.f, 1.f), 0.f };
 
 				// Create Entity
@@ -138,6 +141,8 @@ namespace ALEngine::Editor
 			ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 		}
 
+		ImGui::EndChild();
+
 		// Drop object here
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -146,6 +151,9 @@ namespace ALEngine::Editor
 			{
 				assert(payload->DataSize == sizeof(ECS::Entity));
 				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
+				// Insert remove parent code here
+				sceneGraph.MoveBranch(child_pl, -1);
+				
 			}
 
 			ImGui::EndDragDropTarget();
