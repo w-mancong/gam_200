@@ -35,7 +35,7 @@ namespace ALEngine::Engine
 		Time::Init();
 
 		// Init ImGui
-#ifdef EDITOR
+#if EDITOR
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(true);
 #endif
@@ -68,7 +68,7 @@ namespace ALEngine::Engine
 
 			appStatus = !Input::KeyTriggered(KeyCode::Escape);
 
-#ifdef EDITOR
+#if EDITOR
 			{
 				PROFILER_TIMER("Editor UI Update")
 				// Editor Command Manager Update
@@ -84,7 +84,7 @@ namespace ALEngine::Engine
 				Engine::Update();
 			}
 
-#ifdef EDITOR
+#if EDITOR
 			if (ALEditor::Instance()->GetGameActive())
 #endif
 			{
@@ -133,7 +133,7 @@ namespace ALEngine::Engine
 	void Application::Exit(void)
 	{
 		ExitGameplaySystem();
-#ifdef EDITOR
+#if EDITOR
 		ALEditor::Instance()->Exit();		// Exit ImGui
 #endif
 		AssetManager::Instance()->Exit();	// Clean up all Assets
@@ -156,13 +156,14 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
-#ifdef EDITOR
+#if EDITOR
 		if (!ALEditor::Instance()->GetGameActive())
 			return;
 #endif
 		//UpdateCharacterControllerSystem();
 		//UpdateEventTriggerSystem();
 		//UpdateGameplaySystem();
+
 	}
 
 	void Engine::FixedUpdate(void)

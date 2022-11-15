@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#ifdef EDITOR
+#if EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"

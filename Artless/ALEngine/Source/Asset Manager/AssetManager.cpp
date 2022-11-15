@@ -285,7 +285,7 @@ namespace
 
 		return { texture, handle };
 	}
-#ifdef EDITOR
+#if EDITOR
 	u32 LoadButtonImage(char const* filePath)
 	{
 		s32 width, height, nrChannels;
@@ -515,7 +515,7 @@ namespace ALEngine::Engine
 			Texture const& texture{ it.second };
 			glDeleteTextures(1, &texture.texture);
 		}
-#ifdef EDITOR
+#if EDITOR
 		for (auto const& it : buttonImageList)
 			glDeleteTextures(1, &it.second );
 #endif

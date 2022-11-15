@@ -10,7 +10,7 @@ brief:	This file contains the function definitions for the ALEditor class.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
-#ifdef EDITOR
+#if EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -162,10 +162,10 @@ namespace ALEngine::Editor
 			if (m_ImGuiEnabled)
 			{
 				io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-				ImGui::UpdatePlatformWindows();
 			}
 			else
 				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+			ImGui::UpdatePlatformWindows();
 		}
 
 		// New ImGui Frame
@@ -193,6 +193,10 @@ namespace ALEngine::Editor
 
 	void ALEditor::End(void)
 	{
+		// Exit if not enabled
+		if (!m_ImGuiEnabled)
+			return;
+
 		// Get the ImGui IO
 		ImGuiIO& io = ImGui::GetIO();
 

@@ -10,7 +10,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
-#ifdef EDITOR
+#if EDITOR
 
 #include "imgui_internal.h"
 #define make_string(str) #str
@@ -100,6 +100,10 @@ namespace ALEngine::Editor
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
 		//	DisplayAnimator();
 
+		// Check if there is Script component
+		if (Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+			DisplayEntityScript();
+
 		// Add component button
 		AddComponentButton();
 
@@ -177,7 +181,7 @@ namespace ALEngine::Editor
 			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
 
 		// Transform
-		if (ImGui::TreeNodeEx("Transform Component"))
+		if (ImGui::TreeNodeEx("Transform Component##Inspector"))
 		{
 			// Rotate
 			if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
@@ -242,7 +246,7 @@ namespace ALEngine::Editor
 	{
 		// Get Sprite
 		Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectedEntity);
-		if (ImGui::TreeNodeEx("Sprite Component"))
+		if (ImGui::TreeNodeEx("Sprite Component##Inspector"))
 		{
 			// Image
 			if (spr.filePath != "")
@@ -387,7 +391,7 @@ namespace ALEngine::Editor
 	void InspectorPanel::DisplayRigidBody(void)
 	{
 		// Mass, HasGravity, IsEnabled
-		if (ImGui::TreeNodeEx("RigidBody Component"))
+		if (ImGui::TreeNodeEx("RigidBody Component##Inspector"))
 		{
 			Rigidbody2D& rb = ECS::Coordinator::Instance()->GetComponent<Rigidbody2D>(m_SelectedEntity);
 
@@ -406,11 +410,11 @@ namespace ALEngine::Editor
 	void InspectorPanel::DisplayCollider(void)
 	{
 		// Enum ColliderType, Rotation, Array2 F32 Scale, IsTriggered, IsDebug, IsEnabled, Vec2 LocalPos, 
-		if (ImGui::TreeNodeEx("Collider Component"))
+		if (ImGui::TreeNodeEx("Collider Component##Inspector"))
 		{
 			Collider2D& collider = ECS::Coordinator::Instance()->GetComponent<Collider2D>(m_SelectedEntity);
 			
-			const char* typeList[1] = {"Rectangle2D_AABB"};
+			const c8* typeList[1] = {"Rectangle2D_AABB"};
 			s32 index = (s32)collider.colliderType;
 			// Enum ColliderType
 			ImGui::Combo("Collider Type##Collider", &index, typeList, IM_ARRAYSIZE(typeList));
@@ -446,7 +450,7 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayAudio(void)
 	{
-		if (ImGui::TreeNodeEx("Audio Component"))
+		if (ImGui::TreeNodeEx("Audio Component##Inspector"))
 		{
 			ImGui::TreePop();
 		}
@@ -454,8 +458,29 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayAnimator(void)
 	{
-		if (ImGui::TreeNodeEx("Animator Component"))
+		if (ImGui::TreeNodeEx("Animator Component##Inspector"))
 		{
+			ImGui::TreePop();
+		}
+	}
+
+	void InspectorPanel::DisplayEntityScript(void)
+	{
+		if (ImGui::TreeNodeEx("Script Component##Inspector"))
+		{
+			EntityScript& es = ECS::Coordinator::Instance()->GetComponent<EntityScript>(m_SelectedEntity);
+
+			u64 sizeInit{ es.Init.size() }, sizeUpdate{ es.Update.size() }, sizeExit{ es.Exit.size() };
+			std::string init_stuff{ "" };
+			for (auto x : es.Init)
+			{
+				init_stuff += x.first;
+				init_stuff += '\0';
+			}
+			init_stuff += '\0';
+
+			
+
 			ImGui::TreePop();
 		}
 	}

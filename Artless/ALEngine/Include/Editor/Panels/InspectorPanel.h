@@ -11,7 +11,7 @@ brief:	This file contains function declarations for the InspectorPanel class.
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
 
-#ifdef EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {
@@ -117,6 +117,12 @@ namespace ALEngine::Editor
 			Displays the Animator component info on the panel
 		***********************************************************************************/
 		void DisplayAnimator(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Script component info on the panel
+		***********************************************************************************/
+		void DisplayEntityScript(void);
 
 		/*!*********************************************************************************
 			\brief
