@@ -315,6 +315,16 @@ namespace ALEngine::Editor
 			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(tex), ImVec2(btn_size, btn_size)))
 			{
 				m_GameIsActive = !m_GameIsActive;
+				// Go into game scene, save state
+				if (m_GameIsActive)
+				{
+					Engine::Scene::SaveState();
+				}
+				else
+				{
+					Coordinator::Instance()->DestroyEntities();
+					Engine::Scene::LoadState();
+				}
 			}
 			ImGui::End();
 		}

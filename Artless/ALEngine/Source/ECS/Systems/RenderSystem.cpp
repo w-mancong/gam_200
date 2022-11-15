@@ -175,11 +175,6 @@ namespace ALEngine::ECS
 		signature.set(Coordinator::Instance()->GetComponentType<Transform>());
 		signature.set(Coordinator::Instance()->GetComponentType<Sprite>());
 		Coordinator::Instance()->SetSystemSignature<RenderSystem>(signature);
-
-		// Load and initialise fonts
-		Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
-		Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
-		Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
 		
 		// Init Gizmo
 		Gizmos::Gizmo::GizmoInit();
@@ -282,21 +277,6 @@ namespace ALEngine::ECS
 #else
 		rs->RenderBatch();
 #endif
-		Text test;
-		SetTextFont(test, "roboto");
-		SetTextFontType(test, Font::FontType::Italic);
-		SetTextString(test, "Hello World!!");
-		SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-		Text::RenderText(test);
-
-		std::ostringstream ossFPS;
-		ossFPS << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-		Text FPS;
-		SetTextPos(FPS, Vector2(500.f, Input::GetScreenResY() - 50.f));
-		SetTextFont(FPS, "roboto");
-		SetTextString(FPS, ossFPS.str());
-		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
-		Text::RenderText(FPS);
 
 		// Update and render particles
 		if(!Editor::ALEditor::Instance()->GetGameActive())
@@ -321,6 +301,9 @@ namespace ALEngine::ECS
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+
+		// Render all text
+		Text::RenderAllText();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//

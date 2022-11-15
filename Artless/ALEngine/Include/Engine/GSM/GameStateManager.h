@@ -17,7 +17,7 @@ namespace ALEngine::Engine
 	public:
 
 	private:
-		static GameState current{}, previous{}, next{};
+		static GameState current, previous, next;
 	};
 }
 

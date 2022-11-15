@@ -41,6 +41,7 @@ namespace
 	std::unordered_map<Guid, Texture> textureList{};
 	std::unordered_map<Guid, Animation> animationList{};
 	std::unordered_map<Guid, Audio> audioList{};
+	std::unordered_map<Guid, Font> fontList{};
 #if EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList{};
 #endif
@@ -426,7 +427,7 @@ namespace ALEngine::Engine
 				metaFiles.erase(it2);
 			}
 
-			std::string guidKey{};
+			std::string guidKey{ *it };
 			switch (fileType)
 			{
 				case FileType::Image:
@@ -443,7 +444,6 @@ namespace ALEngine::Engine
 					if (button)
 						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
-					guidKey = *it;
 					break;
 				}
 				case FileType::Audio:
@@ -455,7 +455,6 @@ namespace ALEngine::Engine
 #endif
 						audioList.insert(std::pair<Guid, Audio>{id, audio});
 
-					guidKey = *it;
 					break;
 				}
 				case FileType::Animation:
@@ -467,7 +466,7 @@ namespace ALEngine::Engine
 					animationList.insert(std::pair<Guid, Animation>{ id, animation });
 
 					Texture texture = LoadAnimation(animation);
-#ifdef _DEBUG
+#if	EDITOR
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
