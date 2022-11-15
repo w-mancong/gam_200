@@ -4,4 +4,8 @@
 #include <Scripting/ScriptEngine.h>
 #include <Scripting/ScriptGlue.h>
 
+// to be deleted after m3
+#include <Scripting/Cpp Scripts/CppScriptInterface.h>
+#include <Scripting/Cpp Scripts/EntityScript.h>
+
 #endif
