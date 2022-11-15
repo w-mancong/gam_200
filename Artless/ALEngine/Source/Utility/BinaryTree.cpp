@@ -429,16 +429,25 @@ namespace ALEngine::Tree
             }
         }
 
-        searchVect.clear();
-        Node* newParentNode = Find(newParent);
+        Node* newParentNode;
+        if (newParent == -1)
+        {
+            newParentNode = head->right;
+        }
+        else
+        {
+            searchVect.clear();
+            newParentNode = Find(newParent);
+        }
 
-        if (newParentNode->left == nullptr)
+        if (newParentNode->left == nullptr && newParent != -1)
         {
             newParentNode->left = branchNode;
         }
         else
         {
-            newParentNode = newParentNode->left;
+            if(newParent != -1)
+                newParentNode = newParentNode->left;
             while (newParentNode->right != nullptr)
                 newParentNode = newParentNode->right;
 

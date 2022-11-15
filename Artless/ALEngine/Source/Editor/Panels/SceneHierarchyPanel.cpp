@@ -152,7 +152,7 @@ namespace ALEngine::Editor
 				assert(payload->DataSize == sizeof(ECS::Entity));
 				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
 				// Insert remove parent code here
-				sceneGraph.MoveBranch(child_pl, 0);
+				sceneGraph.MoveBranch(child_pl, -1);
 				
 			}
 
