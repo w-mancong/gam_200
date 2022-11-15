@@ -34,8 +34,22 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		u16 GetCurrentAssetCount(void);
 
+		/*!*********************************************************************************
+			\brief Get texture id based on guid
+
+			\param [in] id: Unique id of texture to retrieve
+
+			\return Texture id based on the unique id
+		***********************************************************************************/
 		u32 GetTexture(Guid id);
 
+		/*!*********************************************************************************
+			\brief Get texture handle based on guid
+
+			\param [in] id: Unique id of texture handle to retrieve
+
+			\return Texture handle based on the unique id
+		***********************************************************************************/
 		TextureHandle GetTextureHandle(Guid id);
 
 		/*!*********************************************************************************
@@ -44,11 +58,23 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		u32 GetButtonImage(Guid id);
 
+		/*!*********************************************************************************
+			\brief Retrieve animation based on guid
+		 
+			\param [in] id: Unique id for animation
+		***********************************************************************************/
 		Animation GetAnimation(Guid id);
 
+		/*!*********************************************************************************
+			\brief Retrieve audio based on guid
+
+			\param [in] id: Unique id for audio
+		***********************************************************************************/
+		Audio GetAudio(Guid id);
+
 	    /*!*********************************************************************************
-		\brief
-	     function for get guid for file specified
+			\brief function for get guid for file specified. Animation clips guid are retrieved
+			based on their clipNames instead
 		***********************************************************************************/
 		Guid GetGuid(std::string fileName);
 
