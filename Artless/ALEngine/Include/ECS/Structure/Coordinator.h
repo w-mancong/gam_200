@@ -81,23 +81,34 @@ namespace ALEngine::ECS
 		}
 
 		/*!*********************************************************************************
-			\brief
-			Get list of active entities
+			\brief Get list of active entities
 			
-			\return
-			List of entities
+			\return List of entities
 		***********************************************************************************/
 		EntityList const& GetEntities()
 		{
 			return mEntityManager->GetActiveEntities();
 		}
 
+		/*!*********************************************************************************
+			\brief Destroy all active entities
+		***********************************************************************************/
+		void DestroyEntities(void)
+		{
+			EntityList const& entities = mEntityManager->GetActiveEntities();
+			// Store all active entities into a temporary container
+			std::vector<Entity> temp; temp.reserve(entities.size());
+			std::copy(entities.begin(), entities.end(), std::back_inserter(temp));
+			for (Entity en : temp)
+				DestroyEntity(en);
+		}
+
 		/*********************************************************************************
 										COMPONENT METHODS
 		*********************************************************************************/
+
 		/*!*********************************************************************************
-			\brief
-			Adds the component into the component manager
+			\brief Adds the component into the component manager
 		***********************************************************************************/
 		template <typename T>
 		void RegisterComponent(void)
@@ -106,13 +117,10 @@ namespace ALEngine::ECS
 		}
 
 		/*!*********************************************************************************
-			\brief
-			To associate an entity to this component
+			\brief To associate an entity to this component
 
-			\param [in] entity:
-			ID of the entity to have an association to this component
-			\param [in] component:
-			Component data to be associated with this entity
+			\param [in] entity: ID of the entity to have an association to this component
+			\param [in] component: Component data to be associated with this entity
 		***********************************************************************************/
 		template <typename T>
 		void AddComponent(Entity entity, T component)
@@ -126,8 +134,7 @@ namespace ALEngine::ECS
 
 #if EDITOR
 		/*!*********************************************************************************
-			\brief
-			To disassociate an entity to this component
+			\brief To disassociate an entity to this component
 
 			\param [in] entity:
 			ID of the entity to be disassociated with this component

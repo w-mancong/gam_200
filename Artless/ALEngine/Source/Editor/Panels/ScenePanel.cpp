@@ -50,7 +50,7 @@ namespace ALEngine::Editor
 			return;
 		}
 
-		ECS::Render(m_EditorCamera);
+		//ECS::Render(m_EditorCamera);
 
 		// Set Scene Width and Height
 		if (m_SceneWidth != ImGui::GetContentRegionAvail().x)

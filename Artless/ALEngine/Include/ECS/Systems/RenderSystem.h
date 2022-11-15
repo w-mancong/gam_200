@@ -31,7 +31,7 @@ namespace ALEngine::ECS
 
 		\param [in] camera: Camera of the scene panel
 	***********************************************************************************/
-	void Render(Engine::Camera const& camera);
+	//void Render(Engine::Camera const& camera);
 
 	/*!*********************************************************************************
 		\brief Gets the FB Texture ID for game panel

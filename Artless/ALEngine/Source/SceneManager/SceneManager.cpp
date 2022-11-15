@@ -6,6 +6,8 @@ namespace ALEngine::Engine::Scene
 	{
 		namespace rjs = rapidjson;
 		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
+
+		std::string state;
 	}
 
 	void WriteSprite(TWriter& writer, ECS::Entity en)
@@ -453,10 +455,8 @@ namespace ALEngine::Engine::Scene
 
 	//}
 
-	void SaveScene(c8 const* sceneName)
+	void SerializeScene(rjs::StringBuffer& sb)
 	{
-		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
-		rjs::StringBuffer sb{};
 		TWriter writer(sb);
 
 		ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
@@ -499,34 +499,10 @@ namespace ALEngine::Engine::Scene
 			writer.EndObject();
 		}
 		writer.EndArray();
-
-		// save into a file
-		std::ofstream ofs{ filePath };
-		if (!ofs)
-		{
-			AL_CORE_WARN("Unable to save into file!");
-			return;
-		}
-		ofs.write(sb.GetString(), sb.GetLength());
 	}
 
-	void LoadScene(c8 const* sceneName)
+	void DeserializeScene(rjs::Document& doc)
 	{
-		std::ifstream ifs{ sceneName, std::ios::ate };
-		if (!ifs)
-		{
-			AL_CORE_WARN("Unable to open scene: {}", sceneName);
-			return;
-		}
-		u64 const size = ifs.tellg();
-		ifs.seekg(ifs.beg);
-		c8* buffer = Memory::DynamicMemory::New<c8>(size);
-		ifs.read(buffer, size);
-
-		rjs::Document doc;
-		doc.Parse(buffer);
-		Memory::DynamicMemory::Delete(buffer);
-
 		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)
 		{
 			ECS::Entity en = Coordinator::Instance()->CreateEntity();
@@ -555,5 +531,53 @@ namespace ALEngine::Engine::Scene
 			//	ReadCell(v["Cell"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
+	}
+
+	void SaveScene(c8 const* sceneName)
+	{
+		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
+		rjs::StringBuffer sb{};
+
+		SerializeScene(sb);
+
+		// save into a file
+		std::ofstream ofs{ filePath };
+		if (!ofs)
+		{
+			AL_CORE_WARN("Unable to save into file!");
+			return;
+		}
+		ofs.write(sb.GetString(), sb.GetLength());
+	}
+
+	void LoadScene(c8 const* sceneName)
+	{
+		c8* buffer = utils::ReadBytes(sceneName);
+
+		if (!buffer)
+		{
+			AL_CORE_CRITICAL("Error: Unable to load scene: {}", sceneName);
+			return;
+		}
+
+		rjs::Document doc;
+		doc.Parse(buffer);
+		Memory::DynamicMemory::Delete(buffer);
+
+		DeserializeScene(doc);
+	}
+
+	void SaveState(void)
+	{
+		rjs::StringBuffer sb{};
+		SerializeScene(sb);
+		state = sb.GetString();
+	}
+
+	void LoadState(void)
+	{
+		rjs::Document doc;
+		doc.Parse(state.c_str());
+		DeserializeScene(doc);
 	}
 }
