@@ -320,15 +320,15 @@ namespace ALEngine::Editor
 				// Go into game scene, save state
 				if (m_GameIsActive)
 				{
-					//Engine::Scene::SaveState();
+					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
 				}
 				else
 				{
-					// will call function to "destroy" scene graph here
-					//Coordinator::Instance()->DestroyEntities();
-					//Engine::Scene::LoadState();
+					ECS::GetSceneGraph().Destruct(-1); // destroy scene graph
+					Coordinator::Instance()->DestroyEntities();
+					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
 				}
 			}
