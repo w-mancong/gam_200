@@ -183,6 +183,7 @@ namespace ALEngine::Editor
 		InComp_Sprite,
 		InComp_RigidBody,
 		InComp_Collider,
+		InComp_Script,
 		InComp_Total
 	};
 }

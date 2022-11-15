@@ -469,18 +469,58 @@ namespace ALEngine::Editor
 		if (ImGui::TreeNodeEx("Script Component##Inspector"))
 		{
 			EntityScript& es = ECS::Coordinator::Instance()->GetComponent<EntityScript>(m_SelectedEntity);
+			/*u64 sizeInit{ es.Init.size() }, sizeUpdate{ es.Update.size() }, sizeExit{ es.Free.size() },
+				sizeLoad{ es.Load.size() }, sizeUnload{ es.Unload.size() };*/
+			std::string init_list{ "" }, update_list{ "" }, free_list{ "" },
+				load_list{ "" }, unload_list{ "" };
+			s32 init_select{ 0 }, update_select{ 0 }, free_select{ 0 }, 
+				load_select{ 0 }, unload_select{ 0 };
 
-			u64 sizeInit{ es.Init.size() }, sizeUpdate{ es.Update.size() }, sizeExit{ es.Exit.size() };
-			std::string init_stuff{ "" };
+			// Get list of Init Functions
 			for (auto x : es.Init)
 			{
-				init_stuff += x.first;
-				init_stuff += '\0';
+				init_list += x.first;
+				init_list += '\0';
 			}
-			init_stuff += '\0';
+			init_list += '\0';
 
-			
+			ImGui::Combo("Init##Script", &init_select, init_list.c_str());
 
+			// Get list of Init Functions
+			for (auto x : es.Update)
+			{
+				update_list += x.first;
+				update_list += '\0';
+			}
+			update_list += '\0';
+			ImGui::Combo("Update##Script", &update_select, update_list.c_str());
+
+			// Get list of Init Functions
+			for (auto x : es.Free)
+			{
+				free_list += x.first;
+				free_list += '\0';
+			}
+			update_list += '\0';
+			ImGui::Combo("Free##Script", &free_select, free_list.c_str());
+
+			// Get list of Init Functions
+			for (auto x : es.Load)
+			{
+				load_list += x.first;
+				load_list += '\0';
+			}
+			load_list += '\0';
+			ImGui::Combo("Load##Script", &load_select, load_list.c_str());
+
+			// Get list of Init Functions
+			for (auto x : es.Unload)
+			{
+				unload_list += x.first;
+				unload_list += '\0';
+			}
+			unload_list += '\0';
+			ImGui::Combo("Unload##Script", &unload_select, unload_list.c_str());
 			ImGui::TreePop();
 		}
 	}
@@ -560,6 +600,19 @@ namespace ALEngine::Editor
 						{
 							// Add Collider Component
 							ECS::Coordinator::Instance()->AddComponent<Collider2D>(m_SelectedEntity, Collider2D());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_Script:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Script Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Script Component
+							ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
 						}
 						++count;
 					}
