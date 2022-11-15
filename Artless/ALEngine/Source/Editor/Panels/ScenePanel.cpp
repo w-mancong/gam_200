@@ -1,3 +1,13 @@
+/*!
+file:	ScenePanel.cpp
+author: Lucas Nguyen
+email:	l.nguyen@digipen.edu
+brief:	This file contains function definitions for the ScenePanel class.
+		The ScenePanel class contains information and functions necessary for
+		the Scene Panel of the editor to be displayed.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 #ifdef EDITOR
 
@@ -24,6 +34,8 @@ namespace ALEngine::Editor
 
 	void ScenePanel::OnImGuiRender(void)
 	{
+		using namespace Commands;
+
 		// Check if there is an entity selected (For Gizmos)
 		b8 hasSelectedEntity = (m_SelectedEntity == ECS::MAX_ENTITIES) ? false : true;
 
@@ -96,13 +108,26 @@ namespace ALEngine::Editor
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
 
 			// Set changes
-			xform.position.x = mtx_translate[0] + m_EditorCamera.Position().x;
-			xform.position.y = mtx_translate[1] + m_EditorCamera.Position().y;
+			Transform updated;
+			updated.position.x = mtx_translate[0] + m_EditorCamera.Position().x;
+			updated.position.y = mtx_translate[1] + m_EditorCamera.Position().y;
 
-			xform.scale.x = mtx_scale[0];
-			xform.scale.y = mtx_scale[1];
+			updated.scale.x = mtx_scale[0];
+			updated.scale.y = mtx_scale[1];
 
-			xform.rotation = mtx_rot[2];			
+			updated.rotation = mtx_rot[2];
+
+			// If there are any differences in transform, run command
+			if (xform.position.x != updated.position.x || xform.position.y != updated.position.y ||
+				xform.rotation != updated.rotation ||
+				xform.scale.x != updated.scale.x || xform.scale.y != updated.scale.y)
+			{
+				if (Commands::EditorCommandManager::CanAddCommand())
+				{
+					utils::Ref<COMP_CMD<Transform>> cmd = utils::CreateRef<COMP_CMD<Transform>>(xform, updated);
+					EditorCommandManager::AddCommand(cmd);
+				}
+			}
 		}
 
 		// Select Entity by clicking on Scene

@@ -4,7 +4,7 @@ author:	Mohamed Zafir
 email:	m.zafir@digipen.edu
 brief:	This file contains function definitions for the engine's particle system.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"

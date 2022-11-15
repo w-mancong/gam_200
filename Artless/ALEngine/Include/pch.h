@@ -80,6 +80,8 @@
 #include <Common Header/MyAssetManager.h>
 #include <Common Header/MyAi.h>
 #include <Common Header/MyScene.h>
+#include <Common Header//MyUndoRedo.h>
+#include <Common Header/MyScripting.h>
 
 // Serializations
 #include <Serialization/Serializer.h>

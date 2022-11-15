@@ -5,7 +5,7 @@ email:	m.zafir@digipen.edu
 brief:	This file contains the class definition for classes Font and Text to load and
 		render text fonts.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 

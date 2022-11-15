@@ -5,7 +5,7 @@ email:	w.mancong@digipen.edu
 brief:	This file contains the function declaration for MeshBuilder.
 		MeshBuilder is a singleton pattern class combined with the concept of a factory.
 		It builds and returns sprites according to the type of Mesh that is tasked to create
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	MESH_BUILDER_H
 #define MESH_BUILDER_H

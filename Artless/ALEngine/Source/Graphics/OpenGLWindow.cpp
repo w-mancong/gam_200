@@ -7,7 +7,7 @@ email:		w.mancong@digipen.edu
 brief:		This file contains function to initialise the GLFW Window and provides
 			interface to interact with it
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
@@ -22,12 +22,12 @@ namespace ALEngine::Graphics
 			glViewport(0, 0, width, height);
 		}
 
-		void window_close_callback(GLFWwindow* _window)
+		void window_close_callback([[maybe_unused]] GLFWwindow* _window)
 		{
 			Engine::SetAppStatus(0);
 		}
 
-		void window_focus_callback(GLFWwindow* window, int focused)
+		void window_focus_callback([[maybe_unused]] GLFWwindow* window, int focused)
 		{
 			Engine::SetWindowFocus(focused);
 			Engine::ToggleMuteChannel(Engine::Channel::Master);
