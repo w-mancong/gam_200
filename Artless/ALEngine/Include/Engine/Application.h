@@ -43,6 +43,13 @@ namespace ALEngine::Engine
 		\brief Set the focus status of the window
 	***********************************************************************************/
 	void SetWindowFocus(bool _focus);
+
+#if EDITOR
+	/*!*********************************************************************************
+		\brief Toggle between editor mode and game mode
+	***********************************************************************************/
+	void ToggleApplicationMode(void);
+#endif
 }
 
 #endif

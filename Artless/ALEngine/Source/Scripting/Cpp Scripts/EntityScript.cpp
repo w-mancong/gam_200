@@ -2,19 +2,34 @@
 
 namespace ALEngine
 {
-	void EntityScript::AddInitFunction(std::string const& funcName, EntityFunc func)
+	void EntityScript::AddLoadFunction(std::string const& funcName)
 	{
-		Init[funcName] = func;
+		Load[funcName] = GetLoadFunction(funcName);
 	}
 
-	void EntityScript::AddUpdateFunction(std::string const& funcName, EntityFunc func)
+	void EntityScript::AddInitFunction(std::string const& funcName)
 	{
-		Update[funcName] = func;
+		Init[funcName] = GetInitFunction(funcName);
 	}
 
-	void EntityScript::AddExitFunction(std::string const& funcName, EntityFunc func)
+	void EntityScript::AddUpdateFunction(std::string const& funcName)
 	{
-		Exit[funcName] = func;
+		Update[funcName] = GetUpdateFunction(funcName);
+	}
+
+	void EntityScript::AddFreeFunction(std::string const& funcName)
+	{
+		Free[funcName] = GetFreeFunction(funcName);
+	}
+
+	void EntityScript::AddUnloadFunction(std::string const& funcName)
+	{
+		Unload[funcName] = GetUnloadFunction(funcName);
+	}
+
+	void EntityScript::RemoveLoadFunction(std::string const& funcName)
+	{
+		Load.erase(funcName);
 	}
 
 	void EntityScript::RemoveInitFunction(std::string const& funcName)
@@ -27,8 +42,13 @@ namespace ALEngine
 		Update.erase(funcName);
 	}
 
-	void EntityScript::RemoveExitFunction(std::string const& funcName)
+	void EntityScript::RemoveFreeFunction(std::string const& funcName)
 	{
-		Exit.erase(funcName);
+		Free.erase(funcName);
+	}
+
+	void EntityScript::RemoveUnloadFunction(std::string const& funcName)
+	{
+		Unload.erase(funcName);
 	}
 }

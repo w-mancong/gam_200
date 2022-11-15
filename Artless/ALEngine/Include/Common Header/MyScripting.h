@@ -7,5 +7,6 @@
 // to be deleted after m3
 #include <Scripting/Cpp Scripts/CppScriptInterface.h>
 #include <Scripting/Cpp Scripts/EntityScript.h>
+#include <Scripting/Cpp Scripts/CppScriptSystem.h>
 
 #endif
