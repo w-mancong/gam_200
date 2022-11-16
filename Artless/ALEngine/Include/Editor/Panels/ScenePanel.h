@@ -121,6 +121,11 @@ namespace ALEngine::Editor
 		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
+		/*!*********************************************************************************
+			\brief To control the camera movements
+		***********************************************************************************/
+		void CameraControls(void);
+
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
 		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES }; // Entity Selected in Inspector
 

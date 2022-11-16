@@ -114,6 +114,10 @@ namespace ALEngine::Gizmos
 				glLineWidth(1.f); // reset line thickness
 			}
 		}
+	}
+
+	void Gizmo::ClearContainer(void)
+	{
 		linesContainer.clear();
 	}
 }

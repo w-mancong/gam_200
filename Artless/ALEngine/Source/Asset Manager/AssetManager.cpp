@@ -32,12 +32,16 @@ namespace
 		Not_A_File = -1,
 		Image,
 		Audio,
-		Animation
+		Animation,
+		Font,
+		Scene,
 	};
 
 	std::unordered_map<std::string, Guid> guidList{};
 	std::unordered_map<Guid, Texture> textureList{};
 	std::unordered_map<Guid, Animation> animationList{};
+	std::unordered_map<Guid, Audio> audioList{};
+	std::unordered_map<Guid, Font> fontList{};
 #if EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList{};
 #endif
@@ -336,6 +340,15 @@ namespace
 		return texture;
 	}
 #endif
+
+	Audio LoadAudio(c8 const* filePath)
+	{
+		fmod::Sound* sound;
+		fmod::System* const& system = GetAudioSystem();
+		system->createSound(filePath, FMOD_DEFAULT, nullptr, &sound);
+		return { sound };
+	}
+
 	FileType GetFileType(std::string const& fileName)
 	{
 		if (fileName.find(".png") != std::string::npos || fileName.find(".jpg") != std::string::npos)
@@ -344,6 +357,10 @@ namespace
 			return FileType::Audio;
 		if (fileName.find(".anim") != std::string::npos)
 			return FileType::Animation;
+		if (fileName.find(".ttf") != std::string::npos)
+			return FileType::Font;
+		if (fileName.find(".scene") != std::string::npos)
+			return FileType::Scene;
 		return FileType::Not_A_File;
 	};
 }
@@ -377,9 +394,7 @@ namespace ALEngine::Engine
 			std::string const& fileNamestring = relativePath.filename().string();
 
 			if (fileNamestring == "Dev")
-			{
 				continue;
-			}
 
 			if (path.filename().string().find(".") != std::string::npos)
 				continue;
@@ -395,10 +410,13 @@ namespace ALEngine::Engine
 
 			Guid id{};
 
+			FileType fileType = GetFileType(*it);
+
 			if (it2 == metaFiles.end())// no meta file, generate meta file 
 			{
 				id = PrepareGuid();
-				GenerateMetaFile(it->c_str(), id);
+				if(fileType != FileType::Scene)
+					GenerateMetaFile(it->c_str(), id);
 			}
 			else
 			{
@@ -409,31 +427,33 @@ namespace ALEngine::Engine
 				metaFiles.erase(it2);
 			}
 
-			std::string guidKey{};
-			switch (GetFileType(*it))
+			std::string guidKey{ *it };
+			switch (fileType)
 			{
 				case FileType::Image:
 				{
 					//into memory/stream
 					Texture texture = LoadTexture(it->c_str());
 					// Insert into texture list
-#ifdef _DEBUG
+#if		EDITOR
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
 #if		EDITOR
 					u32 button = LoadButtonImage(it->c_str());
-
-#ifdef _DEBUG
 					if (button)
-#endif
 						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
-					guidKey = *it;
 					break;
 				}
 				case FileType::Audio:
 				{
+					// load into memory stream
+					Audio audio = LoadAudio(it->c_str());
+#if EDITOR
+					if (audio.sound)
+#endif
+						audioList.insert(std::pair<Guid, Audio>{id, audio});
 
 					break;
 				}
@@ -446,11 +466,15 @@ namespace ALEngine::Engine
 					animationList.insert(std::pair<Guid, Animation>{ id, animation });
 
 					Texture texture = LoadAnimation(animation);
-#ifdef _DEBUG
+#if	EDITOR
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
 					guidKey = animation.clipName;
+					break;
+				}
+				case FileType::Font:
+				{
 					break;
 				}
 				default:
@@ -526,12 +550,17 @@ namespace ALEngine::Engine
 		return animationList[id];
 	}
 
+	Audio AssetManager::GetAudio(Guid id)
+	{
+		return audioList[id];
+	}
+
 	Guid AssetManager::GetGuid(std::string fileName)
 	{
 		if (!fileName.size())
 			return std::numeric_limits<Guid>::max();
 		std::replace(fileName.begin(), fileName.end(), '/', '\\');	// Change all the '/' to '\\'
-#ifdef _DEBUG // In release mode, files should already exist and thus this check is not needed
+#if	 EDITOR	// In release mode, files should already exist and thus this check is not needed
 		if (guidList.find(fileName) == guidList.end())
 			return 0;
 #endif
@@ -730,15 +759,13 @@ namespace ALEngine::Engine
 			{
 				//into memory/stream
 				Texture texture = LoadTexture(filePath.c_str());
-#ifdef _DEBUG
+#if		EDITOR
 				if (texture.handle)
 #endif
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 #if		EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
-#ifdef _DEBUG
 				if (button)
-#endif
 					buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
 				guidKey = filePath;
@@ -749,9 +776,16 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Audio:
 			{
+				// load into memory stream
+				Audio audio = LoadAudio(filePath.c_str());
+#if		EDITOR
+				if (audio.sound)
+#endif
+					audioList.insert(std::pair<Guid, Audio>{id, audio});
+
+				guidKey = filePath;
 				break;
 			}
-
 			/******************************************************************************
 												Animation
 			******************************************************************************/
@@ -771,6 +805,20 @@ namespace ALEngine::Engine
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 				break;
 			}
+			/******************************************************************************
+												 Font
+			******************************************************************************/
+			case FileType::Font:
+			{
+				break;
+			}
+			/******************************************************************************
+												 Scene
+			******************************************************************************/
+			//case FileType::Scene:
+			//{
+			//	break;
+			//}
 			default:
 				break;
 			}
@@ -801,15 +849,13 @@ namespace ALEngine::Engine
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
-#ifdef _DEBUG
+#if		EDITOR
 				if (newTexture.handle)
 #endif
 					textureList[id] = newTexture;
 #if		EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
-#ifdef _DEBUG
 				if (button)
-#endif
 					buttonImageList[id] = button;
 #endif
 				break;
@@ -819,6 +865,17 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Audio:
 			{
+				//Audio const& oldAudio = audioList[id];
+				// I can't find a function to unload audio memory from stream
+
+				// Load in new audio file
+				Audio newAudio = LoadAudio(filePath.c_str());
+
+#if		EDITOR
+				if (newAudio.sound)
+#endif
+					audioList[id] = newAudio;
+
 				break;
 			}
 			/******************************************************************************
@@ -838,10 +895,17 @@ namespace ALEngine::Engine
 				animationList[id] = animation;
 
 				Texture newTexture = LoadAnimation(animation);
-#ifdef _DEBUG
+#if		EDITOR
 				if (newTexture.handle)
 #endif 
 					textureList[id] = newTexture;
+				break;
+			}
+			/******************************************************************************
+												 Font
+			******************************************************************************/
+			case FileType::Font:
+			{
 				break;
 			}
 			default:
@@ -886,6 +950,10 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Audio:
 			{
+				// Do not keep track of this guid anymore
+				audioList.erase(id);
+
+				guidKey = filePath;
 				break;
 			}
 			/******************************************************************************
@@ -905,6 +973,13 @@ namespace ALEngine::Engine
 
 				guidKey = animation.clipName;
 
+				break;
+			}
+			/******************************************************************************
+												 Font
+			******************************************************************************/
+			case FileType::Font:
+			{
 				break;
 			}
 			default:

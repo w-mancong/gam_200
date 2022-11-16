@@ -148,6 +148,7 @@ namespace ALEngine::Tree
         // new node data
         NodeData newData;
         newData.id = newChild;
+        newData.active = true;
         newData.parent = parent;
 
         if (newChild < map.size())
@@ -370,11 +371,11 @@ namespace ALEngine::Tree
                     map[x->id].active = false;
                     Memory::DynamicMemory::Delete(x);
                 }
-                if (id == -1)
-                {
-                    Node* ptr = GetHead();
-                    Memory::DynamicMemory::Delete(ptr); // delete root
-                }
+                //if (id == -1)
+                //{
+                //    Node* ptr = GetHead();
+                //    Memory::DynamicMemory::Delete(ptr); // delete root
+                //}
 
                 //update map
                 for (auto& x : map)
@@ -429,16 +430,25 @@ namespace ALEngine::Tree
             }
         }
 
-        searchVect.clear();
-        Node* newParentNode = Find(newParent);
+        Node* newParentNode;
+        if (newParent == -1)
+        {
+            newParentNode = head->right;
+        }
+        else
+        {
+            searchVect.clear();
+            newParentNode = Find(newParent);
+        }
 
-        if (newParentNode->left == nullptr)
+        if (newParentNode->left == nullptr && newParent != -1)
         {
             newParentNode->left = branchNode;
         }
         else
         {
-            newParentNode = newParentNode->left;
+            if(newParent != -1)
+                newParentNode = newParentNode->left;
             while (newParentNode->right != nullptr)
                 newParentNode = newParentNode->right;
 
@@ -504,7 +514,7 @@ namespace ALEngine::Tree
         {
             EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(*it);
             Serial serial;
-            serial.serialID = en.id;
+            serial.serialID = *it;
             serial.parentSerialID = en.parentID;
             serialVect.push_back(serial);
         }
