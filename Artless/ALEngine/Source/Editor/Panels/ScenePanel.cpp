@@ -9,7 +9,7 @@ brief:	This file contains function definitions for the ScenePanel class.
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
-#ifdef EDITOR
+#if EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -258,7 +258,26 @@ namespace ALEngine::Editor
 		if (Input::KeyDown(KeyCode::Right))
 			m_EditorCamera.Position().x += CAM_SPEED;
 
-		
+		// Right Mouse Button Move Camera
+		static Math::Vec2 mousePosBegin{};
+		if (Input::KeyTriggered(KeyCode::MouseRightButton))
+		{
+			Math::Vec2 pos = GetMouseWorldPos();
+			if (pos.x != std::numeric_limits<f32>::max() && pos.y != std::numeric_limits<f32>::max())
+			{
+				mousePosBegin = pos;
+			}
+		}
+		else if (Input::KeyDown(KeyCode::MouseRightButton))
+		{
+			Math::Vec2 pos = GetMouseWorldPos();
+
+			if (pos.x != std::numeric_limits<f32>::max() && pos.y != std::numeric_limits<f32>::max())
+			{
+				Math::Vec2 change = mousePosBegin - pos;
+				m_EditorCamera.Position() += Math::Vec3(change.x, change.y, 0.f);
+			}
+		}
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,
