@@ -49,11 +49,12 @@ namespace ALEngine::Editor
 		void Default(void);
 
 	private:
+		// Panel sizes
+		ImVec2 m_PanelMin{};	// Min Size
 
-
-
-
-
+		// Panel Defaults
+		ImVec2 m_DefaultPos{};	// Default Position
+		ImVec2 m_DefaultSize{};	// Default Size
 	};
 }
 #endif

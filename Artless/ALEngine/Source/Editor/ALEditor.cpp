@@ -113,6 +113,11 @@ namespace ALEngine::Editor
 				m_AnimatorEditorPanel.OnImGuiRender();
 			}
 
+			if (m_AudioPanelEnabled)
+			{
+				m_AudioEditorPanel.OnImGuiRender();
+			}
+
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -426,8 +431,13 @@ namespace ALEngine::Editor
 
 		// Create Clip animator panel
 		m_AnimatorEditorPanel.SetPanelMin(panel_min);
-		m_AnimatorEditorPanel.SetDefaults(editor_data.GetVec2("InspectorPos", Math::Vec2()),
-			editor_data.GetVec2("InspectorSize", panel_min));
+		m_AnimatorEditorPanel.SetDefaults(editor_data.GetVec2("AnimatorPos", Math::Vec2()),
+			editor_data.GetVec2("AnimatorSize", panel_min));
+
+		// Create Clip audio panel
+		m_AudioEditorPanel.SetPanelMin(panel_min);
+		m_AudioEditorPanel.SetDefaults(editor_data.GetVec2("AudioPos", Math::Vec2()),
+			editor_data.GetVec2("AudioSize", panel_min));
 
 	}
 

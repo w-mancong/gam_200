@@ -17,17 +17,20 @@ namespace ALEngine::Editor
 
 	void AudioEditorPanel::OnImGuiRender(void)
 	{
-		ImGui::Begin("Animator Panel");
+		ImGui::Begin("Audio Panel");
 
 		ImGui::End();
 	}
 
 	void AudioEditorPanel::SetPanelMin(Math::Vec2 min)
 	{
+		m_PanelMin = ImVec2(min.x, min.y);
 	}
 
 	void AudioEditorPanel::SetDefaults(Math::Vec2 pos, Math::Vec2 size)
 	{
+		m_DefaultPos = ImVec2(pos.x, pos.y);
+		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 
 	void AudioEditorPanel::Default(void)

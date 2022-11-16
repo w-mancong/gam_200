@@ -18,7 +18,7 @@ namespace ALEngine::Editor
 	void AnimatorEditorPanel::OnImGuiRender(void)
 	{
 		ImGui::Begin("Animator Panel");
-
+		
 		static int item_type = 4;
 		const char* items[] = { "Item1", "Item2", "AAAA", "AAAB", "AABB", "ABBB", "ABBB" };
 
