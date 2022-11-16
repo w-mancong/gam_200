@@ -108,6 +108,11 @@ namespace ALEngine::Editor
 			// Check if there is a selected entity for Inspector
 			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
+			if (m_AnimatorPanelEnabled)
+			{
+				m_AnimatorEditorPanel.OnImGuiRender();
+			}
+
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -279,10 +284,10 @@ namespace ALEngine::Editor
 				ImGuiSelectableFlags flag = 0;
 
 				// Set active for animator panel
-				ImGui::Selectable("CreateClips/Animation", &m_AnimatorPanel, flag);
+				ImGui::Selectable("CreateClips/Animation", &m_AnimatorPanelEnabled, flag);
 	
 				//  Set active for audio panel
-				ImGui::Selectable("CreateAudio", &m_AudioPanel, flag);
+				ImGui::Selectable("CreateAudio", &m_AudioPanelEnabled, flag);
 
 				ImGui::EndMenu();
 			}
@@ -417,6 +422,11 @@ namespace ALEngine::Editor
 		// Inspector Panel
 		m_InspectorPanel.SetPanelMin(panel_min);
 		m_InspectorPanel.SetDefaults(editor_data.GetVec2("InspectorPos", Math::Vec2()),
+			editor_data.GetVec2("InspectorSize", panel_min));
+
+		// Create Clip animator panel
+		m_AnimatorEditorPanel.SetPanelMin(panel_min);
+		m_AnimatorEditorPanel.SetDefaults(editor_data.GetVec2("InspectorPos", Math::Vec2()),
 			editor_data.GetVec2("InspectorSize", panel_min));
 
 	}

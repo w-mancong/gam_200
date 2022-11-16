@@ -244,8 +244,8 @@ namespace ALEngine::Editor
 		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
 		b8 m_GameIsActive{ false };		// Set to true if in Game Mode
 		b8 m_FullScreen{ false };		// Set to true if game mode full screen
-		b8 m_AnimatorPanel{ false };	// Set to true if game mode full screen
-		b8 m_AudioPanel{ false };		// Set to true if game mode full screen
+		b8 m_AnimatorPanelEnabled{ false };	// Set to true if game mode full screen
+		b8 m_AudioPanelEnabled{ false };		// Set to true if game mode full screen
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel
@@ -255,6 +255,7 @@ namespace ALEngine::Editor
 		LoggerPanel m_LoggerPanel;						// Logger Panel
 		ProfilerPanel m_ProfilerPanel;					// Profiler Panel
 		SceneHierarchyPanel m_SceneHierarchyPanel;		// Scene Hierarchy Panel
+		AnimatorEditorPanel m_AnimatorEditorPanel;            // Audio Editor Panel
 		AudioEditorPanel m_AudioEditorPanel;            // Audio Editor Panel
 
 		// Editor Colors
