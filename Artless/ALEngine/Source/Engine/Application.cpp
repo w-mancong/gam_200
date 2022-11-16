@@ -29,7 +29,7 @@ namespace ALEngine::Engine
 		focus = glfwGetWindowAttrib(OpenGLWindow::Window(), GLFW_VISIBLE);
 		ECS::InitSystem();
 		AudioManagerInit();
-		ScriptEngine::Init();
+		//ScriptEngine::Init();
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
@@ -139,7 +139,7 @@ namespace ALEngine::Engine
 #endif
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		AudioManagerExit();
-		ScriptEngine::Shutdown();
+		//ScriptEngine::Shutdown();
 		glfwTerminate();					// clean/delete all GLFW resources
 	}
 
