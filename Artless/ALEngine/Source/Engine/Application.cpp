@@ -31,6 +31,7 @@ namespace ALEngine::Engine
 				ALEditor::Instance()->Begin();
 			}
 
+			Input::Update();
 			AssetManager::Instance()->Update();
 
 			{
