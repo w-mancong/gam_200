@@ -638,7 +638,9 @@ namespace ALEngine::Engine::Scene
 
 	void SaveScene(c8 const* sceneName)
 	{
-		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
+		std::string filePath{ sceneName };
+		if(filePath.find(".scene") == std::string::npos)
+			filePath = "Assets\\" + std::string(sceneName) + ".scene";
 		rjs::StringBuffer sb{};
 
 		SerializeScene(sb);
