@@ -323,6 +323,7 @@ namespace ALEngine::Editor
 					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
+					//ECS::StartGameplaySystem();
 				}
 				else
 				{
@@ -330,6 +331,8 @@ namespace ALEngine::Editor
 					Coordinator::Instance()->DestroyEntities();
 					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
+				
+					//ECS::ExitGameplaySystem();
 				}
 			}
 			ImGui::End();

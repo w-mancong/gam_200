@@ -36,5 +36,7 @@ namespace ALEngine::Engine::GameplayInterface
 	Global function to check cell is inside room of cells
     ***********************************************************************************/
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
+
+
 }
 #endif

@@ -87,7 +87,11 @@ namespace ALEngine::ECS
 		gameplaySystem->EndTurn();
 	}
 
-	void ClickSelectCell(Entity invokerCell) {
+	void Event_HoverCell(Entity invoker) {
+		AL_CORE_INFO("Hover Cell");
+	}
+
+	void Event_ClickCell(Entity invokerCell) {
 		AL_CORE_INFO("Select Cell");
 
 		if (gameplaySystem->currentGameplayStatus != GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
@@ -141,7 +145,7 @@ namespace ALEngine::ECS
 
 				CreateEventTrigger(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
 
-				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, ClickSelectCell);
+				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
 
 				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i, j), cell);
 			}
@@ -179,7 +183,12 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
-		delete[] gameplaySystem->m_Room.roomCellsArray;
+		if (gameplaySystem->m_Room.roomCellsArray != nullptr) {
+			delete[] gameplaySystem->m_Room.roomCellsArray;
+			gameplaySystem->m_Room.roomCellsArray = nullptr;
+		}
+		gameplaySystem->roomSize[0] = 0;
+		gameplaySystem->roomSize[1] = 0;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {
@@ -372,6 +381,8 @@ namespace ALEngine::ECS
 
 
 	void DrawGameplaySystem() {
+		if (!Editor::ALEditor::Instance()->GetGameActive())
+			return;
 		//Box holder
 		Vector2 bottomleft;
 		Vector2 topright;

@@ -278,6 +278,9 @@ namespace ALEngine::ECS
 		rs->RenderBatch();
 #endif
 
+		// This needs to be at the end
+		Gizmos::Gizmo::RenderAllLines();
+
 		// Update and render particles
 		if(!Editor::ALEditor::Instance()->GetGameActive())
 			particleSystemPanel.OnImGuiRender(particleSys);
@@ -314,6 +317,8 @@ namespace ALEngine::ECS
 			Editor::ALEditor::Instance()->End();
 		}
 #endif
+
+		Gizmos::Gizmo::ClearContainer();
 
 		glfwPollEvents();
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());
