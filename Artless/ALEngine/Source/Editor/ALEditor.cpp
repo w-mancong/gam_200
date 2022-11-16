@@ -112,6 +112,8 @@ namespace ALEngine::Editor
 			// Check if game is running
 			if (m_GameIsActive)
 			{
+				SetSelectedEntity(ECS::MAX_ENTITIES);
+				m_ScenePanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 				// Set to be editor scene panel size and pos
 				ImVec2 sceneSize = ImGui::FindWindowByName("Editor Scene")->Size;
 				ImVec2 scenePos = ImGui::FindWindowByName("Editor Scene")->Pos;
@@ -327,6 +329,7 @@ namespace ALEngine::Editor
 					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
+					ECS::StartGameplaySystem();
 				}
 				else
 				{
@@ -334,6 +337,8 @@ namespace ALEngine::Editor
 					Coordinator::Instance()->DestroyEntities();
 					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
+				
+					ECS::ExitGameplaySystem();
 				}
 			}
 			ImGui::End();

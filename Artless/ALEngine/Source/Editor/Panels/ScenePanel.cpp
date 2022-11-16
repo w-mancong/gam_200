@@ -39,18 +39,7 @@ namespace ALEngine::Editor
 		// Check if there is an entity selected (For Gizmos)
 		b8 hasSelectedEntity = (m_SelectedEntity == ECS::MAX_ENTITIES) ? false : true;
 
-		Math::vec3 camPos = m_EditorCamera.Position();
-
-		f32 constexpr CAM_SPEED{ 2.5f };
-
-		if (Input::KeyDown(KeyCode::Up))
-			m_EditorCamera.Position().y += CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Left))
-			m_EditorCamera.Position().x -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Down))
-			m_EditorCamera.Position().y -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Right))
-			m_EditorCamera.Position().x += CAM_SPEED;
+		CameraControls();
 
 		// Set constraints
 		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
@@ -254,6 +243,22 @@ namespace ALEngine::Editor
 	{
 		m_DefaultPos = ImVec2(pos.x, pos.y);
 		m_DefaultSize = ImVec2(size.x, size.y);
+	}
+
+	void ScenePanel::CameraControls(void)
+	{
+		f32 constexpr CAM_SPEED{ 7.5f };
+
+		if (Input::KeyDown(KeyCode::Up))
+			m_EditorCamera.Position().y += CAM_SPEED;
+		if (Input::KeyDown(KeyCode::Left))
+			m_EditorCamera.Position().x -= CAM_SPEED;
+		if (Input::KeyDown(KeyCode::Down))
+			m_EditorCamera.Position().y -= CAM_SPEED;
+		if (Input::KeyDown(KeyCode::Right))
+			m_EditorCamera.Position().x += CAM_SPEED;
+
+		
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

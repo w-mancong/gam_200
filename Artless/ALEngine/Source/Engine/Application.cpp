@@ -31,6 +31,7 @@ namespace ALEngine::Engine
 				ALEditor::Instance()->Begin();
 			}
 
+			Input::Update();
 			AssetManager::Instance()->Update();
 
 			{
@@ -221,15 +222,15 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
-		//UpdateRigidbodySystem();
-		//UpdateColliderSystem();
-		//UpdatePostRigidbodySystem();
+		UpdateRigidbodySystem();
+		UpdateColliderSystem();
+		UpdatePostRigidbodySystem();
 		
-		//UpdateEventCollisionTriggerSystem();
+		UpdateEventCollisionTriggerSystem();
 
-		//DebugDrawRigidbody();
-		//DebugDrawCollider();
-		//DrawGameplaySystem();
+		DebugDrawRigidbody();
+		DebugDrawCollider();
+		DrawGameplaySystem();
 	}
 
 	int GetAppStatus(void)
