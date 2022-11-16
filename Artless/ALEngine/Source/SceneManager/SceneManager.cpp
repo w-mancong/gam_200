@@ -6,6 +6,8 @@ namespace ALEngine::Engine::Scene
 	{
 		namespace rjs = rapidjson;
 		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
+
+		std::string state;
 	}
 
 	void WriteSprite(TWriter& writer, ECS::Entity en)
@@ -429,7 +431,7 @@ namespace ALEngine::Engine::Scene
 
 	void ReadUnit(rjs::Value const& v, ECS::Entity en)
 	{
-		Unit unit;
+		Unit unit{};
 
 		// Getting max health
 		unit.maxHealth = v[0]["maxHealth"].GetInt();
@@ -453,10 +455,107 @@ namespace ALEngine::Engine::Scene
 
 	//}
 
-	void SaveScene(c8 const* sceneName)
+	void WriteEntityScript(TWriter& writer, ECS::Entity en)
 	{
-		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
-		rjs::StringBuffer sb{};
+		writer.Key("EntityScript");
+		writer.StartArray();
+		writer.StartObject();
+
+		EntityScript const& es = Coordinator::Instance()->GetComponent<EntityScript>(en);
+
+		// load function names
+		writer.Key("Load");
+		writer.StartArray();
+		for (auto const& v : es.Load)
+		{
+			std::string const& funcName = v.first;
+			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
+		}
+		writer.EndArray();
+
+		// init function names
+		writer.Key("Init");
+		writer.StartArray();
+		for (auto const& v : es.Init)
+		{
+			std::string const& funcName = v.first;
+			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
+		}
+		writer.EndArray();
+
+		// load function names
+		writer.Key("Update");
+		writer.StartArray();
+		for (auto const& v : es.Update)
+		{
+			std::string const& funcName = v.first;
+			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
+		}
+		writer.EndArray();
+
+		// load function names
+		writer.Key("Free");
+		writer.StartArray();
+		for (auto const& v : es.Free)
+		{
+			std::string const& funcName = v.first;
+			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
+		}
+		writer.EndArray();
+
+		// load function names
+		writer.Key("Unload");
+		writer.StartArray();
+		for (auto const& v : es.Unload)
+		{
+			std::string const& funcName = v.first;
+			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
+		}
+		writer.EndArray();
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadEntityScript(rjs::Value const& v, ECS::Entity en)
+	{
+		EntityScript es{};
+
+		// Load
+		u64 index = 0;
+		rjs::Value const& load = v[0]["Load"];
+		for (auto it = load.Begin(); it != load.End(); ++it, ++index)
+			es.AddLoadFunction(load[index].GetString());
+
+		// Init
+		index = 0;
+		rjs::Value const& init = v[0]["Init"];
+		for (auto it = init.Begin(); it != init.End(); ++it, ++index)
+			es.AddInitFunction(init[index].GetString());
+
+		// Update
+		index = 0;
+		rjs::Value const& update = v[0]["Update"];
+		for (auto it = update.Begin(); it != update.End(); ++it, ++index)
+			es.AddUpdateFunction(update[index].GetString());
+
+		// Free
+		index = 0;
+		rjs::Value const& free = v[0]["Free"];
+		for (auto it = free.Begin(); it != free.End(); ++it, ++index)
+			es.AddFreeFunction(free[index].GetString());
+
+		// Unload
+		index = 0;
+		rjs::Value const& unload = v[0]["Unload"];
+		for (auto it = unload.Begin(); it != unload.End(); ++it, ++index)
+			es.AddUnloadFunction(unload[index].GetString());
+
+		Coordinator::Instance()->AddComponent(en, es);
+	}
+
+	void SerializeScene(rjs::StringBuffer& sb)
+	{
 		TWriter writer(sb);
 
 		ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
@@ -495,38 +594,16 @@ namespace ALEngine::Engine::Scene
 				WriteUnit(writer, en);
 			//if (Coordinator::Instance()->HasComponent<Cell>(en))
 			//	WriteCell(writer, en);
+			if (Coordinator::Instance()->HasComponent<EntityScript>(en))
+				WriteEntityScript(writer, en);
 
 			writer.EndObject();
 		}
 		writer.EndArray();
-
-		// save into a file
-		std::ofstream ofs{ filePath };
-		if (!ofs)
-		{
-			AL_CORE_WARN("Unable to save into file!");
-			return;
-		}
-		ofs.write(sb.GetString(), sb.GetLength());
 	}
 
-	void LoadScene(c8 const* sceneName)
+	void DeserializeScene(rjs::Document& doc)
 	{
-		std::ifstream ifs{ sceneName, std::ios::ate };
-		if (!ifs)
-		{
-			AL_CORE_WARN("Unable to open scene: {}", sceneName);
-			return;
-		}
-		u64 const size = ifs.tellg();
-		ifs.seekg(ifs.beg);
-		c8* buffer = Memory::DynamicMemory::New<c8>(size);
-		ifs.read(buffer, size);
-
-		rjs::Document doc;
-		doc.Parse(buffer);
-		Memory::DynamicMemory::Delete(buffer);
-
 		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)
 		{
 			ECS::Entity en = Coordinator::Instance()->CreateEntity();
@@ -553,7 +630,57 @@ namespace ALEngine::Engine::Scene
 				ReadUnit(v["Unit"], en);
 			//if (v.HasMember("Cell"))
 			//	ReadCell(v["Cell"], en);
+			if (v.HasMember("EntityScript"))
+				ReadEntityScript(v["EntityScript"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
+	}
+
+	void SaveScene(c8 const* sceneName)
+	{
+		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
+		rjs::StringBuffer sb{};
+
+		SerializeScene(sb);
+
+		// save into a file
+		std::ofstream ofs{ filePath };
+		if (!ofs)
+		{
+			AL_CORE_WARN("Unable to save into file!");
+			return;
+		}
+		ofs.write(sb.GetString(), sb.GetLength());
+	}
+
+	void LoadScene(c8 const* sceneName)
+	{
+		c8* buffer = utils::ReadBytes(sceneName);
+
+		if (!buffer)
+		{
+			AL_CORE_CRITICAL("Error: Unable to load scene: {}", sceneName);
+			return;
+		}
+
+		rjs::Document doc;
+		doc.Parse(buffer);
+		Memory::DynamicMemory::Delete(buffer);
+
+		DeserializeScene(doc);
+	}
+
+	void SaveState(void)
+	{
+		rjs::StringBuffer sb{};
+		SerializeScene(sb);
+		state = sb.GetString();
+	}
+
+	void LoadState(void)
+	{
+		rjs::Document doc;
+		doc.Parse(state.c_str());
+		DeserializeScene(doc);
 	}
 }

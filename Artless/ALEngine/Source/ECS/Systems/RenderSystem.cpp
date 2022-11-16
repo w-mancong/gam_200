@@ -3,7 +3,7 @@
 
 namespace ALEngine::ECS
 {
-	using namespace Math; using namespace Engine; using namespace Graphics;
+	using namespace Math; using namespace Engine; using namespace Graphics; using namespace utils;
 	class RenderSystem : public System
 	{
 	public:
@@ -38,7 +38,7 @@ namespace ALEngine::ECS
 
 	namespace
 	{
-		std::shared_ptr<RenderSystem> rs;
+		Ref<RenderSystem> rs;
 		Shader indirectShader;
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
@@ -175,11 +175,6 @@ namespace ALEngine::ECS
 		signature.set(Coordinator::Instance()->GetComponentType<Transform>());
 		signature.set(Coordinator::Instance()->GetComponentType<Sprite>());
 		Coordinator::Instance()->SetSystemSignature<RenderSystem>(signature);
-
-		// Load and initialise fonts
-		Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
-		Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
-		Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
 		
 		// Init Gizmo
 		Gizmos::Gizmo::GizmoInit();
@@ -282,21 +277,6 @@ namespace ALEngine::ECS
 #else
 		rs->RenderBatch();
 #endif
-		Text test;
-		SetTextFont(test, "roboto");
-		SetTextFontType(test, Font::FontType::Italic);
-		SetTextString(test, "Hello World!!");
-		SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-		Text::RenderText(test);
-
-		std::ostringstream ossFPS;
-		ossFPS << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-		Text FPS;
-		SetTextPos(FPS, Vector2(500.f, Input::GetScreenResY() - 50.f));
-		SetTextFont(FPS, "roboto");
-		SetTextString(FPS, ossFPS.str());
-		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
-		Text::RenderText(FPS);
 
 		// Update and render particles
 		if(!Editor::ALEditor::Instance()->GetGameActive())
@@ -304,17 +284,30 @@ namespace ALEngine::ECS
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
 		particleSys.ParticleRender(camera);
 
-		// This needs to be at the end
-		Gizmos::Gizmo::RenderAllLines();
-
 		// Render all text
 		Text::RenderAllText();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
 		glDisable(GL_DEPTH_TEST);
 		//------------------ End viewport framebuffer rendering ------------------//		
+		
+#if EDITOR
+		//------------------ Begin editor framebuffer rendering ------------------//
+		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
 
-#ifdef EDITOR
+		rs->RenderBatch(Editor::ALEditor::Instance()->GetEditorCamera());
+
+		// This needs to be at the end
+		Gizmos::Gizmo::RenderAllLines();
+
+		// Render all text
+		Text::RenderAllText();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
+		//------------------- End editor framebuffer rendering -------------------//
+
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
 		{
@@ -327,32 +320,32 @@ namespace ALEngine::ECS
 	}
 
 #if EDITOR
-	void Render(Camera const& cam)
-	{
-		std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
-		// copy into temp vector
-		std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
-		// sort entities by layer
-		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-		{
-			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-			return sp1.layer < sp2.layer;
-		});
-		//------------------ Begin editor framebuffer rendering ------------------//
-		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
-		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
-		
-		rs->RenderBatch(cam);
+	//void Render(Camera const& cam)
+	//{
+	//	std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
+	//	// copy into temp vector
+	//	std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
+	//	// sort entities by layer
+	//	std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
+	//	{
+	//		Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+	//		Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+	//		return sp1.layer < sp2.layer;
+	//	});
+	//	//------------------ Begin editor framebuffer rendering ------------------//
+	//	glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
+	//	glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
+	//	
+	//	rs->RenderBatch(cam);
 
-		// Update and render particles
-		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender(cam);
+	//	// Update and render particles
+	//	particleSys.ParticleUpdate(Time::m_DeltaTime);
+	//	particleSys.ParticleRender(cam);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
-		//------------------- End editor framebuffer rendering -------------------//
-	}
+	//	glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
+	//	//------------------- End editor framebuffer rendering -------------------//
+	//}
 
 	u32 GetFBTexture(void)
 	{

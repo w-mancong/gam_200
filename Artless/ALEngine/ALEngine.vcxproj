@@ -152,6 +152,7 @@
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
+    <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
@@ -263,6 +264,9 @@
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptInterface.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
     <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
     <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
@@ -284,6 +288,8 @@
     <ClInclude Include="Include\Commands\Command.h" />
     <ClInclude Include="Include\Common Header\MyScripting.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
+    <ClInclude Include="Include\Engine\GameStateManager.h" />
+    <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
     <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
@@ -397,6 +403,9 @@
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptInterface.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptSystem.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\EntityScript.h" />
     <ClInclude Include="Include\Scripting\ScriptGlue.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />

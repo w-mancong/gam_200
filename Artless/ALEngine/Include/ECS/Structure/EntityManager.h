@@ -73,7 +73,7 @@ namespace ALEngine::ECS
 			\return
 			List of active entities in the scene
 		***********************************************************************************/
-		EntityList const& GetActiveEntities();
+		EntityList const& GetActiveEntities() const;
 
 	private:
 		//std::queue<Entity, std::deque<Entity, Memory::DynamicAllocator<Entity>>> mAvailableEntities{};

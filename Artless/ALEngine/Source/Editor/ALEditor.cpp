@@ -14,6 +14,7 @@ brief:	This file contains the function definitions for the ALEditor class.
 
 #include "imgui.h"
 #include "imgui_internal.h"
+#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine::Editor
 {
@@ -315,6 +316,21 @@ namespace ALEngine::Editor
 			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(tex), ImVec2(btn_size, btn_size)))
 			{
 				m_GameIsActive = !m_GameIsActive;
+				Engine::ToggleApplicationMode();
+				// Go into game scene, save state
+				if (m_GameIsActive)
+				{
+					Engine::Scene::SaveState();
+					Engine::GameStateManager::next = Engine::GameState::Gameplay;
+					Engine::GameStateManager::current = Engine::GameState::Gameplay;
+				}
+				else
+				{
+					ECS::GetSceneGraph().Destruct(-1); // destroy scene graph
+					Coordinator::Instance()->DestroyEntities();
+					Engine::Scene::LoadState();
+					Engine::GameStateManager::Next(Engine::GameState::Editor);
+				}
 			}
 			ImGui::End();
 		}
