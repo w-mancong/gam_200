@@ -228,9 +228,18 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void Docking(void);
 
+		/*!*********************************************************************************
+			\brief
+			Saves the current Scene
+		***********************************************************************************/
+		void SaveScene(void);
+
 		// Required for Singleton to function
 		friend class Templates::Singleton<ALEditor>;
 		friend class Memory::StaticMemory;
+
+		// Scene String
+		std::string m_CurrentSceneName{ "" };
 
 		// Window Min Size
 		ImVec2 m_WinMinSize{ 300.f, 25.f };

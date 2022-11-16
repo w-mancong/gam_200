@@ -100,6 +100,10 @@ namespace ALEngine::Editor
 		}
 		else
 		{
+			// Save Scene, Ctrl + S
+			if(Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::S))
+				SaveScene();
+
 			// Content Browser Panel
 			m_ContentBrowserPanel.OnImGuiRender();
 
@@ -112,8 +116,6 @@ namespace ALEngine::Editor
 			// Check if game is running
 			if (m_GameIsActive)
 			{
-				SetSelectedEntity(ECS::MAX_ENTITIES);
-				m_ScenePanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 				// Set to be editor scene panel size and pos
 				ImVec2 sceneSize = ImGui::FindWindowByName("Editor Scene")->Size;
 				ImVec2 scenePos = ImGui::FindWindowByName("Editor Scene")->Pos;
@@ -128,10 +130,10 @@ namespace ALEngine::Editor
 				m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
 				m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
 				m_ScenePanel.OnImGuiRender();	// Scene Panel
-			}
 
-			// Update if selected entity has changed
-			m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
+				// Update if selected entity has changed
+				m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
+			}
 
 			// Scene Hierarchy Panel
 			m_SceneHierarchyPanel.OnImGuiRender();
@@ -326,6 +328,8 @@ namespace ALEngine::Editor
 				// Go into game scene, save state
 				if (m_GameIsActive)
 				{
+					SetSelectedEntity(ECS::MAX_ENTITIES);
+					m_ScenePanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
@@ -471,6 +475,11 @@ namespace ALEngine::Editor
 
 		// Make Dockspace inactive
 		ImGui::End();
+	}
+	
+	void ALEditor::SaveScene(void)
+	{
+
 	}
 }
 
