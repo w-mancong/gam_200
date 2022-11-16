@@ -46,7 +46,7 @@ namespace ALEngine::Engine
 		RunFileWatcherThread();
 
 		//Scene::LoadScene("Assets\\test.scene");
-		//StartGameplaySystem();
+		StartGameplaySystem();
 	}
 
 	void Application::Update(void)
@@ -161,22 +161,22 @@ namespace ALEngine::Engine
 		if (!ALEditor::Instance()->GetGameActive())
 			return;
 #endif
-		//UpdateCharacterControllerSystem();
-		//UpdateEventTriggerSystem();
-		//UpdateGameplaySystem();
+		UpdateCharacterControllerSystem();
+		UpdateEventTriggerSystem();
+		UpdateGameplaySystem();
 	}
 
 	void Engine::FixedUpdate(void)
 	{
-		//UpdateRigidbodySystem();
-		//UpdateColliderSystem();
-		//UpdatePostRigidbodySystem();
+		UpdateRigidbodySystem();
+		UpdateColliderSystem();
+		UpdatePostRigidbodySystem();
 		
-		//UpdateEventCollisionTriggerSystem();
+		UpdateEventCollisionTriggerSystem();
 
-		//DebugDrawRigidbody();
-		//DebugDrawCollider();
-		//DrawGameplaySystem();
+		DebugDrawRigidbody();
+		DebugDrawCollider();
+		DrawGameplaySystem();
 	}
 
 	int GetAppStatus(void)

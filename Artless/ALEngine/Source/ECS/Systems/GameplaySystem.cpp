@@ -23,12 +23,18 @@ namespace ALEngine::ECS
 
 	class GameplaySystem : public System
 	{
-		enum class GAMEPLAYSTATUS
+		public:
+		enum class GAMEPLAY_STATUS
 		{
-			PLAYER_INPUT_WAITING,
-			PLAYER_MOVING,
-			ENEMY_PLANNING,
-			ENEMY_MOVING
+			PHASE_SETUP,
+			PHASE_ACTION,
+			PHASE_ENEMY,
+		};
+
+		enum class UNITS_CONTROL_STATUS {
+			NOTHING,
+			UNIT_MOVING,
+			UNIT_ATTACKING
 		};
 
 		struct MoveOrder {
@@ -37,13 +43,13 @@ namespace ALEngine::ECS
 			uint32_t path_step = 0;
 		};
 
-	public:
 		uint32_t roomSize[2]{ 6, 6 };
 		Room m_Room;
 
 		Entity playerEntity, startCellEntity, targetCellEntity;
 
-		GAMEPLAYSTATUS currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_INPUT_WAITING;
+		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
+		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 
 		MoveOrder currentModeOrder;
 		void ClearMoveOrder();
@@ -61,6 +67,11 @@ namespace ALEngine::ECS
 
 		void RunGameStateWaitPlayerInput();
 		void RunGameStateMoving();
+
+		void EndTurn();
+
+		//Creating Object
+		void InitializeEndTurnButton();
 	};
 
 	namespace
@@ -69,18 +80,28 @@ namespace ALEngine::ECS
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 	}
 
+
+
+	void Event_Button_Select_EndTurn(Entity invoker) {
+		//End turn
+		gameplaySystem->EndTurn();
+	}
+
 	void ClickSelectCell(Entity invokerCell) {
+		AL_CORE_INFO("Select Cell");
+
+		if (gameplaySystem->currentGameplayStatus != GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+			return;
+		}
+
 		//When click on cell, Move the player unit to the selected cell
 		gameplaySystem->MovePlayerEntityToCell(invokerCell);
-
-		AL_CORE_INFO("Select Cell");
 	}
 
 	void RegisterGameplaySystem(void)
 	{
 		gameplaySystem = Coordinator::Instance()->RegisterSystem<GameplaySystem>();
 		Signature signature;
-		signature.set(Coordinator::Instance()->GetComponentType<Unit>());
 		Coordinator::Instance()->SetSystemSignature<GameplaySystem>(signature);
 	}
 
@@ -91,7 +112,7 @@ namespace ALEngine::ECS
 		gameplaySystem->m_Room.roomSize = gameplaySystem->getRoomSize();
 		gameplaySystem->m_Room.roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
 
-		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {	
+		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {
 			gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
 			if (i == 0)
@@ -121,24 +142,26 @@ namespace ALEngine::ECS
 				CreateEventTrigger(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
 
 				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, ClickSelectCell);
-				
-				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i,j), cell);
+
+				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i, j), cell);
 			}
 		}
 
-		for (auto it = gameplaySystem->mEntities.begin(); it != gameplaySystem->mEntities.end(); ++it) {
-			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(*it);
-			if (unit.unitType == UNIT_TYPE::PLAYER) {
-				gameplaySystem->playerEntity = *it;
-				unit.coordinate[0] = 0;
-				unit.coordinate[1] = 0;
+		//Create Player
+		gameplaySystem->playerEntity = Coordinator::Instance()->CreateEntity();
+		Coordinator::Instance()->AddComponent(gameplaySystem->playerEntity, Transform{});
+		CreatePlayerUnit(gameplaySystem->playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		playerUnit.coordinate[0] = 0;
+		playerUnit.coordinate[1] = 0;
 
-				Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(unit.coordinate[0], unit.coordinate[1]));
-				Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(*it);
-				playertransform.position = SpawnCellTransform.position;
-				break;
-			}
-		}	
+		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]));
+		Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+		playertransform.position = SpawnCellTransform.position;
+		playertransform.scale = { 60, 60 };
+
+		//Create EndTurn Button
+		gameplaySystem->InitializeEndTurnButton();
 
 		//Set a few blocks to be inaccessible
 		gameplaySystem->ToggleCellToInaccessible(1, 0, false);
@@ -161,6 +184,29 @@ namespace ALEngine::ECS
 
 	Entity GameplaySystem::getCurrentEntityCell() {
 		return gameplaySystem->currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
+	}
+
+	void GameplaySystem::EndTurn() {
+		switch (currentGameplayStatus) {
+			case GAMEPLAY_STATUS::PHASE_SETUP:
+				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ACTION;
+
+				AL_CORE_INFO("Loading PHASE ACTION");
+				
+			break;
+
+			case GAMEPLAY_STATUS::PHASE_ACTION:
+				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ENEMY;
+
+				AL_CORE_INFO("Loading PHASE ENEMY");
+				break;
+			
+			case GAMEPLAY_STATUS::PHASE_ENEMY:
+				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
+
+				AL_CORE_INFO("Loading PHASE SETUP");
+				break;
+		}
 	}
 
 	void GameplaySystem::ClearMoveOrder() {
@@ -204,23 +250,32 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::RunGameState() {
-		switch (gameplaySystem->currentGameplayStatus){
-		case GAMEPLAYSTATUS::PLAYER_INPUT_WAITING:
+		switch (currentUnitControlStatus)
+		{
+			case UNITS_CONTROL_STATUS::NOTHING:
+
+			break;
+
+			case UNITS_CONTROL_STATUS::UNIT_MOVING:
+				RunGameStateMoving();
+				return;
+
+			case UNITS_CONTROL_STATUS::UNIT_ATTACKING:
+
+				break;
+		}
+
+		switch (currentGameplayStatus) {
+		case GAMEPLAY_STATUS::PHASE_SETUP:
+			//EndTurn();
+			break;
+
+		case GAMEPLAY_STATUS::PHASE_ACTION:
 			RunGameStateWaitPlayerInput();
 			break;
 
-		case GAMEPLAYSTATUS::PLAYER_MOVING:
-			RunGameStateMoving();
-			break;
-
-		case GAMEPLAYSTATUS::ENEMY_PLANNING:
-			
-
-			//gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_MOVING;
-			break;
-
-		case GAMEPLAYSTATUS::ENEMY_MOVING:
-			gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_INPUT_WAITING;
+		case GAMEPLAY_STATUS::PHASE_ENEMY:
+			//EndTurn();
 			break;
 		}
 	}
@@ -248,10 +303,10 @@ namespace ALEngine::ECS
 
 		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 		gameplaySystem->startCellEntity = gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]);
-		
+
 		std::vector<ECS::Entity> pathList;
 		bool isPathFound = Engine::AI::FindPath(gameplaySystem->m_Room, gameplaySystem->startCellEntity, gameplaySystem->targetCellEntity, pathList);
-		
+
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
 			return;
@@ -259,11 +314,11 @@ namespace ALEngine::ECS
 
 		gameplaySystem->SetMoveOrder(pathList);
 
-		gameplaySystem->currentGameplayStatus = GAMEPLAYSTATUS::PLAYER_MOVING;
+		gameplaySystem->currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 	}
 
 	void GameplaySystem::RunGameStateWaitPlayerInput() {
-		
+
 	}
 
 	void GameplaySystem::RunGameStateMoving() {
@@ -275,7 +330,7 @@ namespace ALEngine::ECS
 
 		//Keep track of player transform
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-		
+
 		//Move player transform to it's iterated waypoint
 		Vector2 direction = Vector3::Normalize(cellTransform.position - playerTransform.position);
 
@@ -283,7 +338,7 @@ namespace ALEngine::ECS
 
 		if (Vector3::Distance(playerTransform.position, cellTransform.position) < 1.0f) {
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
-			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell()); 
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell());
 
 			playerTransform.position = cellTransform.position;
 			playerUnit.coordinate[0] = cell.coordinate[0];
@@ -292,10 +347,27 @@ namespace ALEngine::ECS
 			bool isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 
 			if (isEndOfPath) {
-				currentGameplayStatus = GAMEPLAYSTATUS::ENEMY_PLANNING;
+				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
+
+				if (playerUnit.unitType == UNIT_TYPE::PLAYER) {
+					EndTurn();
+				}
 				return;
 			}
 		}
+	}
+
+	void GameplaySystem::InitializeEndTurnButton() {
+		Entity endTurnBtn = Coordinator::Instance()->CreateEntity();
+		Transform transform;
+		transform.position = { 750, 100 };
+		transform.scale = { 500, 100 };
+		
+		CreateCollider(endTurnBtn);
+		CreateSprite(endTurnBtn, transform);
+		EventTrigger eventTrigger;		
+		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
+		Coordinator::Instance()->AddComponent(endTurnBtn, eventTrigger);
 	}
 
 
@@ -317,7 +389,7 @@ namespace ALEngine::ECS
 			else {
 				color = { 1.f, 0.f, 0.f, 1.f };
 			}
-	
+
 			bottomleft = { cellTransform.position.x - cellTransform.scale.x * 0.5f, cellTransform.position.y - cellTransform.scale.y * 0.5f };
 			topright = { cellTransform.position.x + cellTransform.scale.x * 0.5f, cellTransform.position.y + cellTransform.scale.y * 0.5f };
 
