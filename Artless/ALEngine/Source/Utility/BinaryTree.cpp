@@ -148,6 +148,7 @@ namespace ALEngine::Tree
         // new node data
         NodeData newData;
         newData.id = newChild;
+        newData.active = true;
         newData.parent = parent;
 
         if (newChild < map.size())

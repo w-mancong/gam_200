@@ -187,8 +187,8 @@ namespace ALEngine::ECS
 			delete[] gameplaySystem->m_Room.roomCellsArray;
 			gameplaySystem->m_Room.roomCellsArray = nullptr;
 		}
-		gameplaySystem->roomSize[0] = 0;
-		gameplaySystem->roomSize[1] = 0;
+		gameplaySystem->m_Room.width = 0;
+		gameplaySystem->m_Room.height = 0;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {

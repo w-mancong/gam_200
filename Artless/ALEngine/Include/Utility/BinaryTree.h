@@ -27,7 +27,7 @@ namespace ALEngine::Tree
         {
             u32 id{};
             std::vector<s32> children{};
-            b8 active{ true };
+            b8 active{ false };
             s32 parent{-1};
         };
         struct Serial
