@@ -11,16 +11,17 @@ namespace ALEngine::Engine
 	{
 		std::atomic<int> appStatus;
 		bool focus;
+		bool editorFocus{ true };
 #if EDITOR
 		std::function<void(void)> UpdateLoop[2];
 		u64 funcIndex{};
 
 		void EditorUpdate(void)
 		{
-			if (!focus)
+			//if (!focus && !editorFocus)
 			{
-				glfwPollEvents();
-				return;
+				//glfwPollEvents();
+				//return;
 			}
 
 			{
