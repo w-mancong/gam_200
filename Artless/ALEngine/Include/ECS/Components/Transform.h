@@ -24,6 +24,9 @@ namespace ALEngine::ECS::Component
 		// Global space info
 		Math::mat4 modelMatrix{ 1.0f };
 	};
+
+	Math::vec3 GetGlobalPosition(Entity en, Transform const& trans);
+	Math::vec3 GetGlobalScale(Entity en, Transform const& trans);
 }
 
 #endif

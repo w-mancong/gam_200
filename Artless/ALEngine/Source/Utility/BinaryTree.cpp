@@ -402,6 +402,11 @@ namespace ALEngine::Tree
         return map;
     }
 
+    s32 BinaryTree::GetParent(u32 en) const
+    {
+        return map[en].parent;
+    }
+
     void BinaryTree::MoveBranch(s32 branch, s32 newParent)
     {
         searchVect.clear();

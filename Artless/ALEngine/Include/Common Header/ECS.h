@@ -9,6 +9,8 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #ifndef	ECS_H
 #define ECS_H
 
+#include <ECS/Structure/entity.h>
+
 // -------------- Components --------------------
 #include <ECS/Components/EntityData.h>
 #include <ECS/Components/RenderData.h>
@@ -28,7 +30,6 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Components/CellLoader.h>
 
 // --------------- Structure --------------------
-#include <ECS/Structure/entity.h>
 #include <ECS/Structure/component.h>
 #include <ECS/Structure/EntityManager.h>
 #include <ECS/Structure/ComponentArray.h>

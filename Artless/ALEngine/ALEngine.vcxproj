@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
+    <ClCompile Include="Source\ECS\Components\Transform.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
