@@ -196,31 +196,32 @@ namespace ALEngine::Editor
 			// 2) Temp Variable "offset" = xform.position.x * parent Global Scale
 			// 3) Display this offset in inspector
 			// 4) Calculate new Local (Parent Inverse Global Scale * offset
-			//Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-			//s32 parent = sceneGraph.GetMap()[m_SelectedEntity].parent;
-			//Transform offset = xform;
-			//if (parent != -1)
-			//{ // Current entity have a parent
-			//	Math::mat4 const& parentGlobal = Coordinator::Instance()->GetComponent<Transform>(static_cast<s32>(parent)).modelMatrix;
-			//	f32 const parentScale[2]{ parentGlobal.Column(0).Length(), parentGlobal.Column(1).Length() };
-			//	offset.position.x = parentScale[0] * offset.position.x;
-			//	offset.position.y = parentScale[1] * offset.position.y;
+			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+			s32 parent = sceneGraph.GetMap()[m_SelectedEntity].parent;
+			Transform offset = xform;
+			f32 parentScale[2];
+			if (parent != -1)
+			{ // Current entity have a parent
+				Math::mat4 const& parentGlobal = Coordinator::Instance()->GetComponent<Transform>(static_cast<s32>(parent)).modelMatrix;
+				parentScale[0] = parentGlobal.Column(0).Length(); parentScale[1] = parentGlobal.Column(1).Length();
+				offset.position.x = parentScale[0] * offset.position.x;
+				offset.position.y = parentScale[1] * offset.position.y;
 
-			//	offset.scale.x = parentScale[0] * offset.scale.x;
-			//	offset.scale.y = parentScale[1] * offset.scale.y;
-			//}
-			//f32 mtx_translate[3]{ offset.position.x, offset.position.y, 0.f },
-			//	mtx_scale[3]{ offset.scale.x, offset.scale.y, 0.f },
-			//	mtx_rotation{ xform.rotation };
-			f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
-				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
+				offset.scale.x = parentScale[0] * offset.scale.x;
+				offset.scale.y = parentScale[1] * offset.scale.y;
+			}
+			f32 mtx_translate[3]{ offset.position.x, offset.position.y, 0.f },
+				mtx_scale[3]{ offset.scale.x, offset.scale.y, 0.f },
 				mtx_rotation{ xform.rotation };
+			//f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
+			//	mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
+			//	mtx_rotation{ xform.rotation };
 
 			// Float inputs
 			if (ImGui::DragFloat2("Tr", mtx_translate))						// Traslate
 			{	// values of mtx_translate is being updated
-				//offset.position.x = mtx_translate[0];
-				//offset.position.y = mtx_translate[1];
+				offset.position.x = mtx_translate[0];
+				offset.position.y = mtx_translate[1];
 			}
 			//EDITOR_KEYBOARD_CHECK
 
@@ -229,25 +230,24 @@ namespace ALEngine::Editor
 
 			if (ImGui::DragFloat2("Sc", mtx_scale))							// Scale
 			{
-				//offset.scale.x = mtx_scale[0];
-				//offset.scale.y = mtx_scale[1];
+				offset.scale.x = mtx_scale[0];
+				offset.scale.y = mtx_scale[1];
 			}
 			EDITOR_KEYBOARD_CHECK
 
-			//// Calculating the new local position for child position
-			//if (parent != -1)
-			//{
-			//	Math::vec2 const& parentScale = Coordinator::Instance()->GetComponent<Transform>(parent).scale;
-			//	Math::mat4 const& parentInverseScale = Math::mat4::Scale(parentScale.x, parentScale.y, 1.0f).Inverse();
-			//	Math::vec3 const& newLocalPosition = parentInverseScale * offset.position;
-			//	Math::vec2 const& newLocalScale = parentInverseScale * Math::vec3(offset.scale);
+			// Calculating the new local position for child position
+			if (parent != -1)
+			{
+				Math::mat4 const& parentInverseScale = Math::mat4::Scale(parentScale[0], parentScale[1], 1.0f).Inverse();
+				Math::vec3 const& newLocalPosition = parentInverseScale * offset.position;
+				Math::vec2 const& newLocalScale = parentInverseScale * Math::vec3(offset.scale);
 
-			//	mtx_translate[0] = newLocalPosition.x;
-			//	mtx_translate[1] = newLocalPosition.y;
+				mtx_translate[0] = newLocalPosition.x;
+				mtx_translate[1] = newLocalPosition.y;
 
-			//	mtx_scale[0] = newLocalScale.x;
-			//	mtx_scale[1] = newLocalScale.y;
-			//}
+				mtx_scale[0] = newLocalScale.x;
+				mtx_scale[1] = newLocalScale.y;
+			}
 
 			// Set changes
 			Transform a(xform);
