@@ -10,7 +10,7 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
-#ifdef EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {

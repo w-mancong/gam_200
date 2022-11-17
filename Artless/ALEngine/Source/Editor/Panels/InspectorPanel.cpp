@@ -10,7 +10,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
-#ifdef EDITOR
+#if EDITOR
 
 #include "imgui_internal.h"
 #define make_string(str) #str
@@ -100,6 +100,10 @@ namespace ALEngine::Editor
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
 		//	DisplayAnimator();
 
+		// Check if there is Script component
+		if (Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+			DisplayEntityScript();
+
 		// Add component button
 		AddComponentButton();
 
@@ -177,7 +181,7 @@ namespace ALEngine::Editor
 			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
 
 		// Transform
-		if (ImGui::TreeNodeEx("Transform Component"))
+		if (ImGui::TreeNodeEx("Transform Component##Inspector"))
 		{
 			// Rotate
 			if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
@@ -243,7 +247,7 @@ namespace ALEngine::Editor
 	{
 		// Get Sprite
 		Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectedEntity);
-		if (ImGui::TreeNodeEx("Sprite Component"))
+		if (ImGui::TreeNodeEx("Sprite Component##Inspector"))
 		{
 			// Image
 			if (spr.filePath != "")
@@ -278,10 +282,17 @@ namespace ALEngine::Editor
 					if (fileString.find(".jpg") != std::string::npos ||
 						fileString.find(".png") != std::string::npos)
 					{
-						// Set Filepath
-						spr.filePath = filePath;
+						// Sprite copy
+						Sprite cpy{ spr };
 
-						spr.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+						// Set Filepath
+						cpy.filePath = filePath;
+
+						cpy.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+
+						// Run Command
+						utils::Ref<COMP_CMD<Sprite>> cmd = utils::CreateRef<COMP_CMD<Sprite>>(spr, cpy);
+						EditorCommandManager::AddCommand(cmd);
 					}
 					else
 					{
@@ -301,10 +312,21 @@ namespace ALEngine::Editor
 			//ImGui::ColorEdit4("Color", clr, clr_flags);
 			ImGui::ColorPicker4("Color", clr, clr_flags);
 			// Set new color
-			spr.color.r = clr[0];
-			spr.color.g = clr[1];
-			spr.color.b = clr[2];
-			spr.color.a = clr[3];
+			Sprite cpy{ spr };
+			cpy.color.r = clr[0];
+			cpy.color.g = clr[1];
+			cpy.color.b = clr[2];
+			cpy.color.a = clr[3];
+
+			if (cpy.color.r != spr.color.r || cpy.color.g != spr.color.g || 
+				cpy.color.b != spr.color.b || cpy.color.a != spr.color.a)
+			{
+				if (Commands::EditorCommandManager::CanAddCommand())
+				{
+					utils::Ref<COMP_CMD<Sprite>> cmd = utils::CreateRef<COMP_CMD<Sprite>>(spr, cpy);
+					EditorCommandManager::AddCommand(cmd);
+				}
+			}
 
 			// Pop TreeNodeEx
 			ImGui::TreePop();
@@ -331,10 +353,17 @@ namespace ALEngine::Editor
 				if (fileString.find(".jpg") != std::string::npos ||
 					fileString.find(".png") != std::string::npos)
 				{
-					// Set Filepath
-					spr.filePath = filePath;
+					// Sprite copy
+					Sprite cpy{ spr };
 
-					spr.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+					// Set Filepath
+					cpy.filePath = filePath;
+
+					cpy.id = Engine::AssetManager::Instance()->GetGuid(filePath);
+
+					// Run Command
+					utils::Ref<COMP_CMD<Sprite>> cmd = utils::CreateRef<COMP_CMD<Sprite>>(spr, cpy);
+					EditorCommandManager::AddCommand(cmd);
 				}
 				else
 				{
@@ -363,7 +392,7 @@ namespace ALEngine::Editor
 	void InspectorPanel::DisplayRigidBody(void)
 	{
 		// Mass, HasGravity, IsEnabled
-		if (ImGui::TreeNodeEx("RigidBody Component"))
+		if (ImGui::TreeNodeEx("RigidBody Component##Inspector"))
 		{
 			Rigidbody2D& rb = ECS::Coordinator::Instance()->GetComponent<Rigidbody2D>(m_SelectedEntity);
 
@@ -382,11 +411,11 @@ namespace ALEngine::Editor
 	void InspectorPanel::DisplayCollider(void)
 	{
 		// Enum ColliderType, Rotation, Array2 F32 Scale, IsTriggered, IsDebug, IsEnabled, Vec2 LocalPos, 
-		if (ImGui::TreeNodeEx("Collider Component"))
+		if (ImGui::TreeNodeEx("Collider Component##Inspector"))
 		{
 			Collider2D& collider = ECS::Coordinator::Instance()->GetComponent<Collider2D>(m_SelectedEntity);
 			
-			const char* typeList[1] = {"Rectangle2D_AABB"};
+			const c8* typeList[1] = {"Rectangle2D_AABB"};
 			s32 index = (s32)collider.colliderType;
 			// Enum ColliderType
 			ImGui::Combo("Collider Type##Collider", &index, typeList, IM_ARRAYSIZE(typeList));
@@ -422,7 +451,7 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayAudio(void)
 	{
-		if (ImGui::TreeNodeEx("Audio Component"))
+		if (ImGui::TreeNodeEx("Audio Component##Inspector"))
 		{
 			ImGui::TreePop();
 		}
@@ -430,8 +459,69 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayAnimator(void)
 	{
-		if (ImGui::TreeNodeEx("Animator Component"))
+		if (ImGui::TreeNodeEx("Animator Component##Inspector"))
 		{
+			ImGui::TreePop();
+		}
+	}
+
+	void InspectorPanel::DisplayEntityScript(void)
+	{
+		if (ImGui::TreeNodeEx("Script Component##Inspector"))
+		{
+			EntityScript& es = ECS::Coordinator::Instance()->GetComponent<EntityScript>(m_SelectedEntity);
+			/*u64 sizeInit{ es.Init.size() }, sizeUpdate{ es.Update.size() }, sizeExit{ es.Free.size() },
+				sizeLoad{ es.Load.size() }, sizeUnload{ es.Unload.size() };*/
+			std::string init_list{ "" }, update_list{ "" }, free_list{ "" },
+				load_list{ "" }, unload_list{ "" };
+			s32 init_select{ 0 }, update_select{ 0 }, free_select{ 0 }, 
+				load_select{ 0 }, unload_select{ 0 };
+
+			// Get list of Init Functions
+			for (auto x : es.Init)
+			{
+				init_list += x.first;
+				init_list += '\0';
+			}
+			init_list += '\0';
+
+			ImGui::Combo("Init##Script", &init_select, init_list.c_str());
+
+			// Get list of Init Functions
+			for (auto x : es.Update)
+			{
+				update_list += x.first;
+				update_list += '\0';
+			}
+			update_list += '\0';
+			ImGui::Combo("Update##Script", &update_select, update_list.c_str());
+
+			// Get list of Init Functions
+			for (auto x : es.Free)
+			{
+				free_list += x.first;
+				free_list += '\0';
+			}
+			update_list += '\0';
+			ImGui::Combo("Free##Script", &free_select, free_list.c_str());
+
+			// Get list of Init Functions
+			for (auto x : es.Load)
+			{
+				load_list += x.first;
+				load_list += '\0';
+			}
+			load_list += '\0';
+			ImGui::Combo("Load##Script", &load_select, load_list.c_str());
+
+			// Get list of Init Functions
+			for (auto x : es.Unload)
+			{
+				unload_list += x.first;
+				unload_list += '\0';
+			}
+			unload_list += '\0';
+			ImGui::Combo("Unload##Script", &unload_select, unload_list.c_str());
 			ImGui::TreePop();
 		}
 	}
@@ -511,6 +601,19 @@ namespace ALEngine::Editor
 						{
 							// Add Collider Component
 							ECS::Coordinator::Instance()->AddComponent<Collider2D>(m_SelectedEntity, Collider2D());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_Script:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Script Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Script Component
+							ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
 						}
 						++count;
 					}

@@ -438,7 +438,7 @@ namespace ALEngine::Tree
         Node* newParentNode;
         if (newParent == -1)
         {
-            newParentNode = head->right;
+            newParentNode = head;
         }
         else
         {
@@ -454,6 +454,7 @@ namespace ALEngine::Tree
         {
             if(newParent != -1)
                 newParentNode = newParentNode->left;
+
             while (newParentNode->right != nullptr)
                 newParentNode = newParentNode->right;
 
