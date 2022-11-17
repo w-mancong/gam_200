@@ -101,7 +101,10 @@ namespace ALEngine::Editor
 		else
 		{
 			// Save Scene, Ctrl + S
-			if(Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::S))
+			if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::S))
+				m_SaveScene = true;
+
+			if(m_SaveScene)
 				SaveScene();
 
 			// Content Browser Panel
@@ -291,7 +294,6 @@ namespace ALEngine::Editor
 		// Filepaths for play button
 		static const std::string play_button_fp{ "Assets/Images/button play.png" };
 		static const std::string stop_button_fp{ "Assets/Images/button stop.png" };
-		static const f32 btn_size{ 20.f };
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(25.f, 25.f), ImVec2(1000.f, 25.f));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
@@ -317,11 +319,14 @@ namespace ALEngine::Editor
 			// Get texture
 			u64 tex = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
 
+			// Get Window Height
+			f32 btnSize = ImGui::GetContentRegionAvail().y - 7.f;
+
 			// Make button centered
-			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (btn_size * 0.5f));
+			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (btnSize * 0.5f));
 
 			// Play/Stop button
-			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(tex), ImVec2(btn_size, btn_size)))
+			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(tex), ImVec2(btnSize, btnSize)))
 			{
 				m_GameIsActive = !m_GameIsActive;
 				Engine::ToggleApplicationMode();
@@ -479,7 +484,80 @@ namespace ALEngine::Editor
 	
 	void ALEditor::SaveScene(void)
 	{
+		const u32 nameSize{ 50 };
+		static c8 scene_name[nameSize]{};
+		static b8 rejectName{ false };
 
+		if (m_CurrentSceneName.empty())
+		{
+			ImGui::OpenPopup("New Scene Name##ModalSaveScene");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+			// Modal Window
+			if (ImGui::BeginPopupModal("New Scene Name##ModalSaveScene"))
+			{
+				ImGui::TextWrapped("Scene Does Not Have A Name!");
+				if (ImGui::InputText("Scene Name##SaveSceneName", scene_name, nameSize));
+				
+				// Cancel Button
+				if (ImGui::Button("Cancel##SaveSceneName"))
+				{
+					// Exit
+					ImGui::EndPopup();
+					m_SaveScene = false;
+					return;
+				}
+
+				ImGui::SameLine();
+
+				if (ImGui::Button("Save##SaveSceneName"))
+				{
+					const std::filesystem::path scenePath = "Assets";
+
+					// Check all files in current folder (Assets)
+					b8 alreadyExists{ false };
+					for (auto& dirEntry : std::filesystem::directory_iterator(scenePath))
+					{
+						const auto& path = dirEntry.path();
+
+						std::filesystem::path const& relPath = std::filesystem::relative(path, scenePath);
+
+						std::string const& fileName = relPath.filename().string();
+
+						std::string newName = scene_name;
+						newName += ".scene";
+
+						// Already has another of this name
+						if (fileName == newName)
+						{	// Cannot save
+							alreadyExists = true;
+							break;
+						}
+					}
+
+					// Check if file already exists
+					if (alreadyExists)
+					{	// Reject and request new name
+
+					}
+					else
+					{
+						m_CurrentSceneName = scene_name;
+						std::memset(scene_name, 0, nameSize);
+						Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
+						AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
+						m_SaveScene = false;
+					}
+				}
+				ImGui::EndPopup();
+			}
+		}
+		else
+		{
+			Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
+			AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
+		}
 	}
 }
 

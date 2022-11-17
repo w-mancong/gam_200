@@ -18,7 +18,7 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			//if (!focus && !editorFocus)
+			//if (!focus)
 			{
 				//glfwPollEvents();
 				//return;
