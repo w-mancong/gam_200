@@ -200,18 +200,19 @@ namespace ALEngine::Editor
 			// 2) Temp Variable "offset" = xform.position.x * parent Global Scale
 			// 3) Display this offset in inspector
 			// 4) Calculate new Local (Parent Inverse Global Scale * offset
+
 			f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
 				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
 				mtx_rotation{ xform.rotation };
 
 			// Float inputs
-			ImGui::DragFloat2("Tr", mtx_translate);						// Traslate
+			ImGui::DragFloat2("Tr", mtx_translate, 0.008f);			// Translate
 			//EDITOR_KEYBOARD_CHECK
 
 			ImGui::DragFloat("Rt", &mtx_rotation, 1.f, 0.f, 360.f);	// Rotate
 			//EDITOR_KEYBOARD_CHECK
 
-			ImGui::DragFloat2("Sc", mtx_scale);							// Scale
+			ImGui::DragFloat2("Sc", mtx_scale);						// Scale
 			EDITOR_KEYBOARD_CHECK
 
 			// Set changes
