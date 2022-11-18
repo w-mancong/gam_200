@@ -73,9 +73,6 @@ namespace ALEngine::Editor
 			Math::vec2 const& globalPosition = GetGlobalPosition(m_SelectedEntity, xform);
 			Math::vec3 const& globalScale = GetGlobalScale(m_SelectedEntity, xform);
 
-			if (m_SelectedEntity == 1)
-				std::cout << std::endl;
-
 			// Translate and Scale matrix
 			float mtx_translate[3]{ globalPosition.x, globalPosition.y, 0.f },
 				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
@@ -85,7 +82,7 @@ namespace ALEngine::Editor
 			//	mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
 			//	mtx_rot[3]{ 0.f, 0.f, xform.rotation };
 
-			f32 const TEMP_POSITION[2]{ mtx_translate[0], mtx_translate[1] };
+			//f32 const TEMP_POSITION[2]{ mtx_translate[0], mtx_translate[1] };
 
 			// Add camera position
 			mtx_translate[0] -= m_EditorCamera.Position().x;
@@ -117,19 +114,11 @@ namespace ALEngine::Editor
 			if ((parent = sceneGraph.GetParent(m_SelectedEntity)) != -1)
 			{
 				Transform const& parentTranform = Coordinator::Instance()->GetComponent<Transform>(parent);
-				f32 const parentScale[2] = { parentTranform.modelMatrix.Column(0).Length(), parentTranform.modelMatrix.Column(1).Length() };
+				Math::mat4 const& parentGlobalInverse = parentTranform.modelMatrix.Inverse();
+				Math::vec3 const& newLocalPosition = parentGlobalInverse * Math::vec3(mtx_translate[0], mtx_translate[1], 0.0f);
 
-				// code not working properly because trying to inverse to the previous local position is not accurate
-				if (utils::IsEqual(TEMP_POSITION[0], mtx_translate[0]))
-				{
-					mtx_translate[0] = xform.position.x;
-					mtx_translate[1] = xform.position.y;
-				}
-				else
-				{	// calculate new local position
-					mtx_translate[0] *= (1.0f / parentScale[0]);
-					mtx_translate[1] *= (1.0f / parentScale[1]);
-				}
+				mtx_translate[0] = newLocalPosition.x;
+				mtx_translate[1] = newLocalPosition.y;
 			}
 
 			// Set changes
