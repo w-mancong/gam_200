@@ -205,14 +205,16 @@ namespace ALEngine::Editor
 				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
 				mtx_rotation{ xform.rotation };
 
+			f32 const v_speed = ECS::GetSceneGraph().GetParent(m_SelectedEntity) == -1 ? 0.05f : 0.008f;
+
 			// Float inputs
-			ImGui::DragFloat2("Tr", mtx_translate, 0.008f);			// Translate
+			ImGui::DragFloat2("Tr", mtx_translate, v_speed);		// Translate
 			//EDITOR_KEYBOARD_CHECK
 
 			ImGui::DragFloat("Rt", &mtx_rotation, 1.f, 0.f, 360.f);	// Rotate
 			//EDITOR_KEYBOARD_CHECK
 
-			ImGui::DragFloat2("Sc", mtx_scale);						// Scale
+			ImGui::DragFloat2("Sc", mtx_scale, v_speed);			// Scale
 			EDITOR_KEYBOARD_CHECK
 
 			// Set changes

@@ -110,9 +110,6 @@ namespace ALEngine::Editor
 			// Logger Panel
 			m_LoggerPanel.OnImGuiRender();
 
-			// Check if there is a selected entity for Inspector
-			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
-
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -138,6 +135,9 @@ namespace ALEngine::Editor
 			// Scene Hierarchy Panel
 			m_SceneHierarchyPanel.OnImGuiRender();
 			
+			// Check if there is a selected entity for Inspector
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+
 			// Profiler Panel
 			m_ProfilerPanel.OnImGuiRender();
 			//ImGui::ShowDemoWindow();
@@ -289,8 +289,8 @@ namespace ALEngine::Editor
 	void ALEditor::EditorToolbar(void)
 	{
 		// Filepaths for play button
-		static const std::string play_button_fp{ "Assets/Images/button play.png" };
-		static const std::string stop_button_fp{ "Assets/Images/button stop.png" };
+		static const std::string play_button_fp{ "Assets/Dev/Images/button_play.png" };
+		static const std::string stop_button_fp{ "Assets/Dev/Images/button_stop.png" };
 		static const f32 btn_size{ 20.f };
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(25.f, 25.f), ImVec2(1000.f, 25.f));
