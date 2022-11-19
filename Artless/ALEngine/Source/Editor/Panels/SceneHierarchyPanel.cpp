@@ -155,6 +155,10 @@ namespace ALEngine::Editor
 				// Insert remove parent code here
 				sceneGraph.MoveBranch(child_pl, -1);
 				
+				Transform& xform = Coordinator::Instance()->GetComponent<Transform>(child_pl);
+				xform.localPosition = xform.position;
+				xform.localRotation = xform.rotation;
+				xform.localScale	= xform.scale;
 			}
 
 			ImGui::EndDragDropTarget();
@@ -217,6 +221,11 @@ namespace ALEngine::Editor
 					sceneGraph.MoveBranch(child_pl, m_EntityHover);
 
 					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child_pl);
+					Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(m_EntityHover);
+					// Recalculating the local position for child_pl, no need to recaculate it's children as they will always be their local position amount away from it's parent
+					childTransform.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, childTransform.rotation).Inverse() * (childTransform.position - parentTrans.position);
+					childTransform.localRotation = childTransform.rotation - parentTrans.rotation;
+					childTransform.localScale = { childTransform.scale.x / parentTrans.scale.x, childTransform.scale.y / parentTrans.scale.y };
 
 					s32 node{ static_cast<s32>(child_pl) }, parentNode{};
 					while (1)
@@ -226,13 +235,6 @@ namespace ALEngine::Editor
 						{
 							break;
 						}
-						Transform& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(parentNode); // get parent transform
-
-						childTransform.localScale.x = childTransform.localScale.x / ParentTransform.localScale.x;
-						childTransform.localScale.y = childTransform.localScale.y / ParentTransform.localScale.y;
-
-						childTransform.localPosition.x = (childTransform.localPosition.x - ParentTransform.localPosition.x) / ParentTransform.localScale.x;
-						childTransform.localPosition.y = (childTransform.localPosition.y - ParentTransform.localPosition.y) / ParentTransform.localScale.y;
 
 						node = parentNode;
 					}

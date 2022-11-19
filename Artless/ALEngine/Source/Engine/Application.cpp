@@ -18,10 +18,10 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			//if (!focus)
+			if (!focus)
 			{
-				//glfwPollEvents();
-				//return;
+				glfwPollEvents();
+				return;
 			}
 
 			{
@@ -37,17 +37,6 @@ namespace ALEngine::Engine
 
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
-
-			//EntityList const& list = Coordinator::Instance()->GetEntities();
-			//for (Entity en : list)
-			//{
-			//	if (!Coordinator::Instance()->HasComponent<Transform>(en))
-			//		continue;
-
-			//	Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-			//	trans.position	 = GetGlobalPosition(trans);
-			//	trans.scale		 = GetGlobalScale(trans);
-			//}
 
 			{
 				PROFILER_TIMER("Render Update")
@@ -103,18 +92,6 @@ namespace ALEngine::Engine
 					UpdateCppScripts();
 				}
 
-				EntityList const& list = Coordinator::Instance()->GetEntities();
-				for (Entity en : list)
-				{
-#if EDITOR
-					if (!Coordinator::Instance()->HasComponent<Transform>(en))
-						continue;
-#endif
-					Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-					trans.position	 = GetGlobalPosition(trans);
-					trans.scale		 = GetGlobalScale(trans);
-				}
-
 				{
 					PROFILER_TIMER("Fixed Update")
 					// Physics
@@ -134,6 +111,9 @@ namespace ALEngine::Engine
 						accumulator -= Time::m_FixedDeltaTime;
 					}
 				}
+
+				// Update Scene graph
+				ECS::GetSceneGraph().Update();
 
 				{
 					PROFILER_TIMER("Render Update")

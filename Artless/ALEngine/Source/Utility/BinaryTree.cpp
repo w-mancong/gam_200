@@ -47,13 +47,13 @@ namespace ALEngine::Tree
         void UpdateLocalCoordinates(Transform& trans)
         {
             trans.localPosition = trans.position;
-            //trans.localRotation = trans.rotation;
+            trans.localRotation = trans.rotation;
             trans.localScale    = trans.scale;
         }
 
         void UpdateLocalCoordinates(Transform& trans, [[maybe_unused]] Transform const& parentTrans)
         {
-            trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
+            trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, parentTrans.rotation).Inverse() * (trans.position - parentTrans.position);
             trans.localRotation = trans.rotation - parentTrans.rotation;
             trans.localScale    = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
         }
@@ -134,10 +134,12 @@ namespace ALEngine::Tree
     {
         for (s32 entity : GetParents())
         {
+            if (entity == 1)
+                std::cout << std::endl;
+
             // Update entity's global position
             Transform& trans = Coordinator::Instance()->GetComponent<Transform>(static_cast<u32>(entity));
             UpdateGlobalCoordinates(trans);
-            //UpdateParentChildrenPos(ECS::GetSceneGraph().GetMap()[entity]);
             UpdateWorld(trans, entity);
         }
 
