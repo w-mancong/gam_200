@@ -201,11 +201,11 @@ namespace ALEngine::Editor
 			// 3) Display this offset in inspector
 			// 4) Calculate new Local (Parent Inverse Global Scale * offset
 
-			f32 mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
-				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
+			f32 mtx_translate[3]{ xform.localPosition.x, xform.localPosition.y, 0.f },
+				mtx_scale[3]{ xform.localScale.x, xform.localScale.y, 0.f },
 				mtx_rotation{ xform.rotation };
 
-			f32 const v_speed = ECS::GetSceneGraph().GetParent(m_SelectedEntity) == -1 ? 0.05f : 0.008f;
+			f32 const v_speed = ECS::GetSceneGraph().GetParent(m_SelectedEntity) == -1 ? 0.1f : 0.008f;
 
 			// Float inputs
 			ImGui::DragFloat2("Tr", mtx_translate, v_speed);		// Translate
@@ -219,18 +219,18 @@ namespace ALEngine::Editor
 
 			// Set changes
 			Transform a(xform);
-			a.position.x = mtx_translate[0];
-			a.position.y = mtx_translate[1];
+			a.localPosition.x = mtx_translate[0];
+			a.localPosition.y = mtx_translate[1];
 			
 			a.rotation = mtx_rotation;
 
-			a.scale.x = mtx_scale[0];
-			a.scale.y = mtx_scale[1];
+			a.localScale.x = mtx_scale[0];
+			a.localScale.y = mtx_scale[1];
 
 			// If there are any differences in transform, run command
-			if (xform.position.x != a.position.x || xform.position.y != a.position.y ||
+			if (xform.localPosition.x != a.localPosition.x || xform.localPosition.y != a.localPosition.y ||
 				xform.rotation != a.rotation ||
-				xform.scale.x != a.scale.x || xform.scale.y != a.scale.y)
+				xform.localScale.x != a.localScale.x || xform.localScale.y != a.localScale.y)
 			{
 				if (Commands::EditorCommandManager::CanAddCommand())
 				{

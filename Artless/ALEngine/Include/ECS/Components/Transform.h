@@ -18,10 +18,13 @@ namespace ALEngine::ECS::Component
 	struct Transform
 	{
 		// Local space info
+		Math::Vector3 localPosition{ 0.0f, 0.0f, 0.0f };
+		Math::Vector2 localScale{ 1.0f, 1.0f };
+
+		// Global space info
 		Math::Vector3 position{ 0.0f, 0.0f, 0.0f };
 		Math::Vector2 scale{ 1.0f, 1.0f };
 		f32	rotation{ 0.0f };
-		// Global space info
 		Math::mat4 modelMatrix{ 1.0f };
 	};
 

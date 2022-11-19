@@ -75,7 +75,7 @@ namespace ALEngine::Editor
 
 			// Translate and Scale matrix
 			float mtx_translate[3]{ globalPosition.x, globalPosition.y, 0.f },
-				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
+				mtx_scale[3]{ xform.localScale.x, xform.localScale.y, 0.f },
 				mtx_rot[3]{ 0.f, 0.f, xform.rotation };
 
 			//float mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
@@ -123,18 +123,18 @@ namespace ALEngine::Editor
 
 			// Set changes
 			Transform updated;
-			updated.position.x = mtx_translate[0];
-			updated.position.y = mtx_translate[1];
+			updated.localPosition.x = mtx_translate[0];
+			updated.localPosition.y = mtx_translate[1];
 
-			updated.scale.x = mtx_scale[0];
-			updated.scale.y = mtx_scale[1];
+			updated.localScale.x = mtx_scale[0];
+			updated.localScale.y = mtx_scale[1];
 
 			updated.rotation = mtx_rot[2];
 
 			// If there are any differences in transform, run command
-			if (xform.position.x != updated.position.x || xform.position.y != updated.position.y ||
+			if (xform.localPosition.x != updated.localPosition.x || xform.localPosition.y != updated.localPosition.y ||
 				xform.rotation != updated.rotation ||
-				xform.scale.x != updated.scale.x || xform.scale.y != updated.scale.y)
+				xform.localScale.x != updated.localScale.x || xform.localScale.y != updated.localScale.y)
 			{
 				if (Commands::EditorCommandManager::CanAddCommand())
 				{

@@ -41,7 +41,7 @@ namespace ALEngine::Editor
 		{
 			// Entity Transform
 			Transform xform = Transform{ Math::Vector2(0.f, 0.f),
-				Math::Vector2(50.f, 50.f), 0.f };
+				Math::Vector2(50.f, 50.f) };
 
 			// Create Entity
 			ECS::Entity GO = Coordinator::Instance()->CreateEntity();
@@ -110,7 +110,7 @@ namespace ALEngine::Editor
 			{
 				// Entity Transform
 				Transform xform = Transform{ Math::Vector2(2.f, 2.f),
-					Math::Vector2(1.f, 1.f), 0.f };
+					Math::Vector2(1.f, 1.f) };
 
 				// Create Entity
 				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
@@ -227,11 +227,11 @@ namespace ALEngine::Editor
 						}
 						Transform& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(parentNode); // get parent transform
 
-						childTransform.scale.x = childTransform.scale.x / ParentTransform.scale.x;
-						childTransform.scale.y = childTransform.scale.y / ParentTransform.scale.y;
+						childTransform.localScale.x = childTransform.localScale.x / ParentTransform.localScale.x;
+						childTransform.localScale.y = childTransform.localScale.y / ParentTransform.localScale.y;
 
-						childTransform.position.x = (childTransform.position.x - ParentTransform.position.x) / ParentTransform.scale.x;
-						childTransform.position.y = (childTransform.position.y - ParentTransform.position.y) / ParentTransform.scale.y;
+						childTransform.localPosition.x = (childTransform.localPosition.x - ParentTransform.localPosition.x) / ParentTransform.localScale.x;
+						childTransform.localPosition.y = (childTransform.localPosition.y - ParentTransform.localPosition.y) / ParentTransform.localScale.y;
 
 						node = parentNode;
 					}

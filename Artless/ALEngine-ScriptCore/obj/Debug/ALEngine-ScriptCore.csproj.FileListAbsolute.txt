@@ -8,3 +8,9 @@ C:\Users\w.mancong\Documents\GitHub\gam_200\Artless\ALEngine-ScriptCore\obj\Debu
 C:\Users\w.mancong\Documents\GitHub\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.csproj.CoreCompileInputs.cache
 C:\Users\w.mancong\Documents\GitHub\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.dll
 C:\Users\w.mancong\Documents\GitHub\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.pdb
+C:\sandbox\gam_200\Artless\bin\mono\ALEngine-ScriptCore.dll
+C:\sandbox\gam_200\Artless\bin\mono\ALEngine-ScriptCore.pdb
+C:\sandbox\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.csproj.AssemblyReference.cache
+C:\sandbox\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.csproj.CoreCompileInputs.cache
+C:\sandbox\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.dll
+C:\sandbox\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.pdb
