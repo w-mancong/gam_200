@@ -55,6 +55,11 @@ namespace ALEngine::Tree
         void Init();
 
         /*!*********************************************************************************
+            \brief Update the BinaryTree
+        ***********************************************************************************/
+        void Update();
+
+        /*!*********************************************************************************
             \brief
             Pushes a new node into the BinaryTree
 
@@ -237,6 +242,13 @@ namespace ALEngine::Tree
             ID of node to destruct
         ***********************************************************************************/
         void DestructLeft(Node* node, s32 id);
+
+        /*!*********************************************************************************
+            \brief Updates the transform matrix of parent and its children
+
+            \param [in] entity: Entity to apply parent-child transform
+        ***********************************************************************************/
+        //void UpdateParentChildrenPos(NodeData const& entity);
 
     private:
         Node* head;

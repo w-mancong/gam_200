@@ -105,8 +105,9 @@ namespace ALEngine::Editor
 				// Check if selectable clicked
 				remove = true;
 			}
+			ECS::Entity selectedEntity = ALEditor::Instance()->GetSelectedEntity();
 			// Add child
-			if (ImGui::Selectable("Add child") && (ALEditor::Instance()->GetSelectedEntity() != ECS::MAX_ENTITIES))
+			if (ImGui::Selectable("Add child") && (selectedEntity != ECS::MAX_ENTITIES))
 			{
 				// Entity Transform
 				Transform xform = Transform{ Math::Vector2(2.f, 2.f),
@@ -115,7 +116,7 @@ namespace ALEngine::Editor
 				// Create Entity
 				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
 				ECS::CreateSprite(GO, xform);
-				sceneGraph.Push(ALEditor::Instance()->GetSelectedEntity(), GO); // add child entity under parent
+				sceneGraph.Push(selectedEntity, GO); // add child entity under parent
 
 				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
 				sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };

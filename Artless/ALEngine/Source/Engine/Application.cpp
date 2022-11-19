@@ -35,6 +35,27 @@ namespace ALEngine::Engine
 			Input::Update();
 			AssetManager::Instance()->Update();
 
+			//if (Input::KeyTriggered(KeyCode::A))
+			//{
+			//	Transform& trans = Coordinator::Instance()->GetComponent<Transform>(1);
+			//	trans.position.x += 50.0f;
+			//}
+
+			// Update Scene graph
+			ECS::GetSceneGraph().Update();
+
+
+			//EntityList const& list = Coordinator::Instance()->GetEntities();
+			//for (Entity en : list)
+			//{
+			//	if (!Coordinator::Instance()->HasComponent<Transform>(en))
+			//		continue;
+
+			//	Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+			//	trans.position	 = GetGlobalPosition(trans);
+			//	trans.scale		 = GetGlobalScale(trans);
+			//}
+
 			{
 				PROFILER_TIMER("Render Update")
 				// Render
@@ -87,6 +108,18 @@ namespace ALEngine::Engine
 					// Normal Update
 					Engine::Update();
 					UpdateCppScripts();
+				}
+
+				EntityList const& list = Coordinator::Instance()->GetEntities();
+				for (Entity en : list)
+				{
+#if EDITOR
+					if (!Coordinator::Instance()->HasComponent<Transform>(en))
+						continue;
+#endif
+					Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+					trans.position	 = GetGlobalPosition(trans);
+					trans.scale		 = GetGlobalScale(trans);
 				}
 
 				{

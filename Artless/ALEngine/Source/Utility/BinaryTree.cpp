@@ -11,6 +11,90 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 
 namespace ALEngine::Tree
 {
+    namespace
+    {
+        void UpdateGlobalCoordinates(Transform& trans)
+        {
+            if (trans.localPosition != trans.prevPosition || trans.localScale != trans.prevScale)
+                trans.isDirty = true;
+            if (trans.isDirty)
+            {
+                trans.position = trans.localPosition;
+                //trans.rotation = trans.localRotation;
+                trans.scale    = trans.localScale;
+            }
+        }
+
+        void UpdateGlobalCoordinates(Transform& trans, Transform const& parentTrans)
+        {
+            trans.position = parentTrans.modelMatrix * trans.localPosition;
+            trans.scale = Math::mat4::Scale(parentTrans.scale) * Math::vec3(trans.localScale);
+            //trans.rotation = trans.localRotation + parentTrans.rotation;
+        }
+
+        void UpdateLocalCoordinates(Transform& trans)
+        {
+            trans.localPosition = trans.position;
+            //trans.localRotation = trans.rotation;
+            trans.localScale    = trans.scale;
+        }
+
+        void UpdateLocalCoordinates(Transform& trans, [[maybe_unused]] Transform const& parentTrans)
+        {
+            trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
+            //trans.localRotation = trans.rotation - parentTrans.rotation;
+            trans.localScale    = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
+        }
+
+        void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
+        {
+            Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
+
+            if (entity.parent >= 0) // if entity has parent
+            {
+                Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
+                trans.modelMatrix = parentTrans.modelMatrix * Math::mat4::Model(trans);
+            }
+            else
+            {
+                /*
+                    Don't have to construct a model matrix using global coordinates because
+                    entities that do not have a parent, their local coordinates are their global coordinates
+                */
+                trans.modelMatrix = Math::mat4::Model(trans);
+            }
+        }
+
+        void UpdateWorld(Transform& trans, ECS::Entity entity)
+        {
+            s32 parent = ECS::GetSceneGraph().GetParent(entity);
+            Transform parentTrans{};
+            if (parent != -1)
+                trans.isDirty = ( parentTrans = Coordinator::Instance()->GetComponent<Transform>(parent) ).isDirty;
+            if (trans.isDirty)
+            {
+                if (parent != -1)
+                    UpdateLocalCoordinates(trans, parentTrans);
+                else
+                    UpdateLocalCoordinates(trans);
+            }            
+
+            UpdateParentChildrenPos(ECS::GetSceneGraph().GetMap()[entity]);
+
+            for (s32 child : ECS::GetSceneGraph().GetMap()[entity].children)
+            {
+                Transform& childTrans = Coordinator::Instance()->GetComponent<Transform>(static_cast<u32>(child));
+                UpdateGlobalCoordinates(childTrans, trans);
+                UpdateWorld(childTrans, child);
+            }
+
+            trans.prevPosition = trans.localPosition;
+            //trans.prevRotation = trans.localRotation;
+            trans.prevScale    = trans.localScale;
+            trans.isDirty      = false;
+        }
+    }
+
     BinaryTree::BinaryTree() : head{ nullptr }
     {
     }
@@ -23,6 +107,49 @@ namespace ALEngine::Tree
     {
         head = Memory::DynamicMemory::New<Node>();
         head->id = -1;
+    }
+
+    void BinaryTree::Update()
+    {
+        for (s32 entity : GetParents())
+        {
+            // Update entity's global position
+            Transform& trans = Coordinator::Instance()->GetComponent<Transform>(static_cast<u32>(entity));
+            UpdateGlobalCoordinates(trans);
+            //UpdateParentChildrenPos(ECS::GetSceneGraph().GetMap()[entity]);
+            UpdateWorld(trans, entity);
+        }
+
+        //for (auto entity : GetParents())
+        //{
+        //    UpdateParentChildrenPos(GetMap()[entity]);
+        //}
+
+        //// Update global position of entities
+        //ECS::EntityList const& list = Coordinator::Instance()->GetEntities();
+        //for (ECS::Entity en : list)
+        //{
+        //    s32 parent{ -1 };
+        //    Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+        //    if (trans.position == trans.prevPosition && trans.scale == trans.prevScale && trans.rotation == trans.prevRotation)
+        //        continue;
+        //    if ((parent = GetParent(en)) != -1)
+        //    {   // This entity have a parent
+        //        Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(parent);
+        //        trans.position = parentTrans.modelMatrix * trans.localPosition;
+        //        trans.scale = Math::mat4::Scale(parentTrans.scale) * Math::vec3(trans.localScale);
+        //        trans.rotation = trans.localRotation + parentTrans.rotation;
+        //    }
+        //    else
+        //    {   // This entity does not have a parent
+        //        trans.position = trans.localPosition;
+        //        trans.scale = trans.localScale;
+        //        trans.rotation = trans.localRotation;
+        //    }
+        //    trans.prevPosition = trans.position;
+        //    trans.prevRotation = trans.rotation;
+        //    trans.prevScale    = trans.scale;
+        //}
     }
 
     BinaryTree::Node* BinaryTree::SearchLeft(Node* node, s32 id)
@@ -302,6 +429,30 @@ namespace ALEngine::Tree
         }
         return DestructRight(searchVect[searchVect.size() - 1], id);
     }
+
+    //void BinaryTree::UpdateParentChildrenPos(NodeData const& entity)
+    //{
+    //    Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
+
+    //    if (entity.parent >= 0) // if entity has parent
+    //    {
+    //        Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
+    //        trans.modelMatrix = parentTrans.modelMatrix * Math::mat4::Model(trans);
+    //    }
+    //    else
+    //    {
+    //        /*
+    //            Don't have to construct a model matrix using global coordinates because
+    //            entities that do not have a parent, their local coordinates are their global coordinates
+    //        */
+    //        trans.modelMatrix = Math::mat4::Model(trans);
+    //    }
+
+    //    for (auto& child : GetMap()[entity.id].children)
+    //    {
+    //        UpdateParentChildrenPos(GetMap()[child]);
+    //    }
+    //}
 
     void BinaryTree::DestructRight(Node* node, s32 id)
     {

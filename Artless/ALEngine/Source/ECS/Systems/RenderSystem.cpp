@@ -240,39 +240,8 @@ namespace ALEngine::ECS
 		camera.ProjectionMatrix(Camera::Projection::Orthographic);
 	}
 
-	/*!*********************************************************************************
-		\brief
-		Updates the transform matrix of parent and its children
-
-		\param [in] entity
-		Entity to apply parent-child transform
-	***********************************************************************************/
-	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
-	{
-		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity.id);
-		if (entity.parent >= 0) // if entity has parent
-		{
-			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
-			transform.modelMatrix = parentTransform.modelMatrix * Math::mat4::Model(transform);
-		}
-		else
-		{
-			transform.modelMatrix = Math::mat4::Model(transform);
-		}
-
-		for (auto& child : sceneGraph.GetMap()[entity.id].children)
-		{ 
-			UpdateParentChildrenPos(sceneGraph.GetMap()[child]);
-		}
-	}
-
 	void Render(void)
-	{
-		for (auto& entity : sceneGraph.GetParents())
-		{
-			UpdateParentChildrenPos(sceneGraph.GetMap()[entity]);
-		}
-		
+	{		
 #if EDITOR
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering

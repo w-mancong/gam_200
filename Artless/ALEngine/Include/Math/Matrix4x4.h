@@ -325,8 +325,7 @@ namespace ALEngine::Math
 		static Matrix4x4 Model(Vector3 const& pos, Vector3 const& scale, f32 rot);
 
 		/*!*********************************************************************************
-			\brief
-			Construct a row major model matrix
+			\brief Construct a row major model matrix using local space
 
 			\param [in] trans: Transform component of entity
 

@@ -70,11 +70,8 @@ namespace ALEngine::Editor
 			// Get transform
 			Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
 
-			Math::vec2 const& globalPosition = GetGlobalPosition(m_SelectedEntity, xform);
-			Math::vec3 const& globalScale = GetGlobalScale(m_SelectedEntity, xform);
-
 			// Translate and Scale matrix
-			float mtx_translate[3]{ globalPosition.x, globalPosition.y, 0.f },
+			float mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
 				mtx_scale[3]{ xform.localScale.x, xform.localScale.y, 0.f },
 				mtx_rot[3]{ 0.f, 0.f, xform.rotation };
 
