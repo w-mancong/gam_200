@@ -35,15 +35,8 @@ namespace ALEngine::Engine
 			Input::Update();
 			AssetManager::Instance()->Update();
 
-			//if (Input::KeyTriggered(KeyCode::A))
-			//{
-			//	Transform& trans = Coordinator::Instance()->GetComponent<Transform>(1);
-			//	trans.position.x += 50.0f;
-			//}
-
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
-
 
 			//EntityList const& list = Coordinator::Instance()->GetEntities();
 			//for (Entity en : list)

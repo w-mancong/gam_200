@@ -20,16 +20,28 @@ namespace ALEngine::Tree
             if (trans.isDirty)
             {
                 trans.position = trans.localPosition;
-                //trans.rotation = trans.localRotation;
+                trans.rotation = trans.localRotation;
                 trans.scale    = trans.localScale;
             }
         }
 
         void UpdateGlobalCoordinates(Transform& trans, Transform const& parentTrans)
         {
+            if (trans.position != trans.prevPosition)
+            {
+                trans.localPosition = parentTrans.modelMatrix.Inverse() * trans.position;
+            }
+            if (trans.scale != trans.prevScale)
+            {
+                trans.localScale = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
+            }
+            if (trans.rotation != trans.prevRotation)
+            {
+                trans.localRotation = trans.rotation - parentTrans.rotation;
+            }
             trans.position = parentTrans.modelMatrix * trans.localPosition;
             trans.scale = Math::mat4::Scale(parentTrans.scale) * Math::vec3(trans.localScale);
-            //trans.rotation = trans.localRotation + parentTrans.rotation;
+            trans.rotation = trans.localRotation + parentTrans.rotation;
         }
 
         void UpdateLocalCoordinates(Transform& trans)
@@ -42,7 +54,7 @@ namespace ALEngine::Tree
         void UpdateLocalCoordinates(Transform& trans, [[maybe_unused]] Transform const& parentTrans)
         {
             trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
-            //trans.localRotation = trans.rotation - parentTrans.rotation;
+            trans.localRotation = trans.rotation - parentTrans.rotation;
             trans.localScale    = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
         }
 
@@ -88,9 +100,18 @@ namespace ALEngine::Tree
                 UpdateWorld(childTrans, child);
             }
 
-            trans.prevPosition = trans.localPosition;
-            //trans.prevRotation = trans.localRotation;
-            trans.prevScale    = trans.localScale;
+            if (parent != -1)
+            {
+                trans.prevPosition = trans.position;
+                trans.prevRotation = trans.rotation;
+                trans.prevScale    = trans.scale;
+            }
+            else
+            {
+                trans.prevPosition = trans.localPosition;
+                trans.prevRotation = trans.localRotation;
+                trans.prevScale    = trans.localScale;
+            }
             trans.isDirty      = false;
         }
     }

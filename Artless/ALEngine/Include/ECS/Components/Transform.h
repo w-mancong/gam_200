@@ -19,13 +19,13 @@ namespace ALEngine::ECS::Component
 		// Local space info
 		math::vec3 localPosition{ 0.0f, 0.0f, 0.0f };
 		math::vec2 localScale{ 1.0f, 1.0f };
-		
+		f32 localRotation{ 0.0f };
 
 		b8 isDirty{ false };
 
 		// To store previous information
 		math::vec3 prevPosition{ 0.0f, 0.0f, 0.0f };
-		math::vec2 prevScale{ 0.0f, 0.0f };
+		math::vec2 prevScale{ 1.0f, 1.0f };
 		f32 prevRotation{ 0.0f };
 
 		// Global space info

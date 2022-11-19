@@ -203,7 +203,7 @@ namespace ALEngine::Editor
 
 			f32 mtx_translate[3]{ xform.localPosition.x, xform.localPosition.y, 0.f },
 				mtx_scale[3]{ xform.localScale.x, xform.localScale.y, 0.f },
-				mtx_rotation{ xform.rotation };
+				mtx_rotation{ xform.localRotation };
 
 			f32 const v_speed = ECS::GetSceneGraph().GetParent(m_SelectedEntity) == -1 ? 0.1f : 0.008f;
 
@@ -222,14 +222,14 @@ namespace ALEngine::Editor
 			a.localPosition.x = mtx_translate[0];
 			a.localPosition.y = mtx_translate[1];
 			
-			a.rotation = mtx_rotation;
+			a.localRotation = mtx_rotation;
 
 			a.localScale.x = mtx_scale[0];
 			a.localScale.y = mtx_scale[1];
 
 			// If there are any differences in transform, run command
 			if (xform.localPosition.x != a.localPosition.x || xform.localPosition.y != a.localPosition.y ||
-				xform.rotation != a.rotation ||
+				xform.localRotation != a.localRotation ||
 				xform.localScale.x != a.localScale.x || xform.localScale.y != a.localScale.y)
 			{
 				if (Commands::EditorCommandManager::CanAddCommand())

@@ -308,7 +308,7 @@ namespace ALEngine::Math
 
 	Matrix4x4 Matrix4x4::Model(Transform const& trans)
 	{
-		return Model(trans.localPosition, trans.localScale, trans.rotation);
+		return Model(trans.localPosition, trans.localScale, trans.localRotation);
 	}
 
 	Matrix4x4 Matrix4x4::ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot)
