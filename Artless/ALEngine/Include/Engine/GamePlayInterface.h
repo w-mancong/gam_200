@@ -46,6 +46,7 @@ namespace ALEngine::Engine::GameplayInterface
 	void InitializePatterns(std::vector<Pattern>& patternList);
 
 	//Filter Grids from Hovering Over cell during pattern select
-	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern);
+	//void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern);
+	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color = { 1.f,1.f,1.f,1.f });
 }
 #endif

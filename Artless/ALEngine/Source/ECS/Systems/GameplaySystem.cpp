@@ -96,15 +96,17 @@ namespace ALEngine::ECS
 
 	void Event_MouseEnterCell(Entity invoker) {
 		AL_CORE_INFO("Enter Cell");
+		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[0];
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
-		cell.m_Color_Tint = { 1.f,1.f,0.f,1.f };
-		//GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+		//cell.m_Color_Tint = { 1.f,1.f,0.f,1.f };
+		GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,0.f,1.f });
 	}
 
 	void Event_MouseExitCell(Entity invoker) {
 		AL_CORE_INFO("Exit Cell");
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
-		cell.m_Color_Tint = { 1.f,1.f,1.f,1.f };
+		//cell.m_Color_Tint = { 1.f,1.f,1.f,1.f };
+		GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 	}
 
 	void Event_ClickCell(Entity invokerCell) {

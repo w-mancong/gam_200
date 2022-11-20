@@ -63,7 +63,8 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.clear();
 	}
 
-	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern) {
+	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color) {
+		std::cout << pattern.coordinate_occupied.size();
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
 			//If the coordinate is within the boundaries of the room
@@ -72,7 +73,8 @@ namespace ALEngine::Engine::GameplayInterface
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				cell.m_Color_Tint = { 1.f, 1.f, 1.f, 1.f };
+				cell.m_Color_Tint = color;
+				
 			}
 		}//End loop through pattern body check
 	}
