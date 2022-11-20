@@ -92,6 +92,10 @@ namespace ALEngine::Editor
 		if (Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
 			DisplayCollider();
 
+		// Check if there is sprite component
+		if (Coordinator::Instance()->HasComponent<ParticleProperties>(m_SelectedEntity))
+			DisplayParticleProperty();
+
 		//// Check if there is Audio component
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
 		//	DisplayAudio();
@@ -435,6 +439,37 @@ namespace ALEngine::Editor
 		}
 	}
 
+	void InspectorPanel::DisplayParticleProperty(void)
+	{
+		// Get transform
+		ParticleProperties& particleProperty = Coordinator::Instance()->GetComponent<ParticleProperties>(m_SelectedEntity);
+
+		if (ImGui::TreeNodeEx("Particle Component"))
+		{
+			f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, 1.f };
+			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, 1.f };
+
+			ImGui::DragFloat("Start Size", &particleProperty.sizeStart, 0.1f, 0.0f, 1000.0f);
+			ImGui::DragFloat("End Size", &particleProperty.sizeEnd, 0.1f, 0.0f, 1000.0f);
+			ImGui::ColorEdit4("Start Color", startClr);
+			ImGui::ColorEdit4("End Color", endClr);
+			ImGui::DragFloat("Life Time", &particleProperty.lifeTime, 0.1f, 0.0f, 1000.0f);
+			//ImGui::DragInt("Spawn Rate", &particleSpawnRate, 1, 0, 10);
+
+			particleProperty.colorStart.x = startClr[0];
+			particleProperty.colorStart.y = startClr[1];
+			particleProperty.colorStart.z = startClr[2];
+
+			particleProperty.colorEnd.x = endClr[0];
+			particleProperty.colorEnd.y = endClr[1];
+			particleProperty.colorEnd.z = endClr[2];
+
+			ImGui::TreePop();
+
+			ImGui::Separator();
+		}
+	}
+
 	ImGuizmo::OPERATION InspectorPanel::GetCurrGizmoOperation(void) const
 	{
 		return m_CurrentGizmoOperation;
@@ -510,6 +545,19 @@ namespace ALEngine::Editor
 						{
 							// Add Collider Component
 							ECS::Coordinator::Instance()->AddComponent<Collider2D>(m_SelectedEntity, Collider2D());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_Particles:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<ParticleProperties>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Particle Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<ParticleProperties>(m_SelectedEntity, ParticleProperties());
 						}
 						++count;
 					}

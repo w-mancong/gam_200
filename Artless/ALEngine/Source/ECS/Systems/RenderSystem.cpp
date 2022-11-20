@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <Graphics/ParticleSys.h>
 
 namespace ALEngine::ECS
 {
@@ -44,8 +43,8 @@ namespace ALEngine::ECS
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
 
-		ParticleSys::ParticleSystem particleSys;
-		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
+		//ParticleSystem particleSysObj;
+		//ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
@@ -180,7 +179,7 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::GizmoInit();
 
 		// Particle system init here
-		particleSys.ParticleSysInit();
+		ParticleSystem::GetParticleSystem().ParticleSysInit();
 
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
@@ -272,6 +271,7 @@ namespace ALEngine::ECS
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 #endif
 		UpdateAnimatorSystem();
+		UpdateParticleSystem();
 #if EDITOR
 		rs->RenderBatch(camera);
 #else
@@ -282,10 +282,10 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::RenderAllLines();
 
 		// Update and render particles
-		if(!Editor::ALEditor::Instance()->GetGameActive())
-			particleSystemPanel.OnImGuiRender(particleSys);
-		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender(camera);
+		//if(!Editor::ALEditor::Instance()->GetGameActive())
+		//	particleSystemPanel.OnImGuiRender(particleSys);
+		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
+		ParticleSystem::GetParticleSystem().ParticleRender(camera);
 
 		// Render all text
 		Text::RenderAllText();
@@ -428,6 +428,7 @@ namespace ALEngine::ECS
 	{
 		camera.Fov(fov);
 	}
+
 	Tree::BinaryTree& GetSceneGraph(void)
 	{
 		return sceneGraph;

@@ -251,6 +251,46 @@ namespace
 		return { texture, handle };
 	}
 
+	void LoadFont(c8 const* filePath)
+	{
+		std::string fontName, fontType;
+		std::string str{ filePath };
+		str = str.substr(str.find_last_of("/") + 1);
+		fontName = str.substr(0, str.find_first_of("-"));
+		fontType = str.substr(str.find_first_of("-") + 1, str.find_first_of(".") - str.find_first_of("-"));
+
+		// convert to all upper case
+		for (auto chr : fontName)
+			chr = toupper(chr);
+		for (auto chr : fontType)
+			chr = toupper(chr);
+
+		Font::FontType type;
+		if (fontType == "REGULAR")
+		{
+			type = Font::FontType::Regular;
+		}
+		else if (fontType == "BOLD")
+		{
+			type = Font::FontType::Bold;
+		}
+		else if (fontType == "ITALIC")
+		{
+			type = Font::FontType::Italic;
+		}
+		else if (fontType == "ITALICBOLD")
+		{
+			type = Font::FontType::ItalicBold;
+		}
+		else
+		{
+			std::cerr << "AssetManager ERROR: Font not supported: " << filePath << "\n";
+			return;
+		}
+
+		Font::FontInit(filePath, fontName, type);
+	}
+
 	Texture LoadWhiteImage(void)
 	{
 		u32 texture;

@@ -118,6 +118,8 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void DisplayAnimator(void);
 
+		void DisplayParticleProperty(void);
+
 		/*!*********************************************************************************
 			\brief
 			Displays the Sprite component info on the panel
@@ -177,6 +179,7 @@ namespace ALEngine::Editor
 		InComp_Sprite,
 		InComp_RigidBody,
 		InComp_Collider,
+		InComp_Particles,
 		InComp_Total
 	};
 }
