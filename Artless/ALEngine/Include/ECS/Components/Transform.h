@@ -35,8 +35,8 @@ namespace ALEngine::ECS::Component
 		Math::mat4 modelMatrix{ 1.0f };
 	};
 
-	Math::vec3 GetGlobalPosition(Transform const& trans);
-	Math::vec3 GetGlobalScale(Transform const& trans);
+	//Math::vec3 GetGlobalPosition(Transform const& trans);
+	//Math::vec3 GetGlobalScale(Transform const& trans);
 }
 
 #endif

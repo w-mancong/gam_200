@@ -32,6 +32,7 @@ namespace ALEngine::Tree
         };
         struct Serial
         {
+            u32 id{};
             s32 serialID, parentSerialID;
             b8 flag{ false }; // for deserialization
         };

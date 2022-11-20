@@ -134,45 +134,11 @@ namespace ALEngine::Tree
     {
         for (s32 entity : GetParents())
         {
-            if (entity == 1)
-                std::cout << std::endl;
-
             // Update entity's global position
             Transform& trans = Coordinator::Instance()->GetComponent<Transform>(static_cast<u32>(entity));
             UpdateGlobalCoordinates(trans);
             UpdateWorld(trans, entity);
         }
-
-        //for (auto entity : GetParents())
-        //{
-        //    UpdateParentChildrenPos(GetMap()[entity]);
-        //}
-
-        //// Update global position of entities
-        //ECS::EntityList const& list = Coordinator::Instance()->GetEntities();
-        //for (ECS::Entity en : list)
-        //{
-        //    s32 parent{ -1 };
-        //    Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-        //    if (trans.position == trans.prevPosition && trans.scale == trans.prevScale && trans.rotation == trans.prevRotation)
-        //        continue;
-        //    if ((parent = GetParent(en)) != -1)
-        //    {   // This entity have a parent
-        //        Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(parent);
-        //        trans.position = parentTrans.modelMatrix * trans.localPosition;
-        //        trans.scale = Math::mat4::Scale(parentTrans.scale) * Math::vec3(trans.localScale);
-        //        trans.rotation = trans.localRotation + parentTrans.rotation;
-        //    }
-        //    else
-        //    {   // This entity does not have a parent
-        //        trans.position = trans.localPosition;
-        //        trans.scale = trans.localScale;
-        //        trans.rotation = trans.localRotation;
-        //    }
-        //    trans.prevPosition = trans.position;
-        //    trans.prevRotation = trans.rotation;
-        //    trans.prevScale    = trans.scale;
-        //}
     }
 
     BinaryTree::Node* BinaryTree::SearchLeft(Node* node, s32 id)
@@ -690,12 +656,15 @@ namespace ALEngine::Tree
         ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
         std::vector<Serial> serialVect;
         std::vector<s32> insertedVect;
+        std::unordered_map<s32, s32> parentsID{};
         for (auto it{ entities.begin() }; it != entities.end(); ++it)
         {
             EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(*it);
             Serial serial;
-            serial.serialID = *it;
+            serial.id = *it;
+            serial.serialID = en.id;
             serial.parentSerialID = en.parentID;
+            parentsID[serial.serialID] = *it;
             serialVect.push_back(serial);
         }
 
@@ -705,7 +674,7 @@ namespace ALEngine::Tree
             {
                 x.flag = true;
                 insertedVect.push_back(x.serialID);
-                Push(x.parentSerialID, x.serialID);
+                Push(x.parentSerialID, static_cast<s32>(x.id));
             }
         }
 
@@ -724,7 +693,7 @@ namespace ALEngine::Tree
                     if (it->parentSerialID == x)
                     {
                         it->flag = true;
-                        Push(it->parentSerialID, it->serialID);
+                        Push(parentsID[it->parentSerialID], static_cast<s32>(it->id));
                         insertedVect.push_back(it->serialID);
                         break;
                     }

@@ -345,10 +345,11 @@ namespace ALEngine::Editor
 				{
 					ECS::GetSceneGraph().Destruct(-1); // destroy scene graph
 					Coordinator::Instance()->DestroyEntities();
+					ECS::ExitGameplaySystem();
+
 					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
-				
-					ECS::ExitGameplaySystem();
+					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);			
 				}
 			}
 			ImGui::End();
