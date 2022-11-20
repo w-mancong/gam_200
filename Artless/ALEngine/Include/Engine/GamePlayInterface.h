@@ -19,6 +19,11 @@ namespace ALEngine::Engine::GameplayInterface
 		u32 roomSize;
 	};
 
+	struct Pattern {
+		//grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
+		std::vector<Vector2Int> coordinate_occupied;
+	};
+
 	/*!*********************************************************************************
 	\brief
 	Global function to return the cell entity based on specified position 
@@ -37,6 +42,10 @@ namespace ALEngine::Engine::GameplayInterface
     ***********************************************************************************/
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
 
+	//Initialize Patterns
+	void InitializePatterns(std::vector<Pattern>& patternList);
 
+	//Filter Grids from Hovering Over cell during pattern select
+	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern);
 }
 #endif

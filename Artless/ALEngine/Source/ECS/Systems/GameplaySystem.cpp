@@ -17,9 +17,10 @@ namespace ALEngine::ECS
 	//Ease of use for ray
 	using Engine::Physics::Ray2D;
 	using Engine::GameplayInterface::Room;
-	//using Engine::AI;
 	//Ease of use
 	using namespace Math; using namespace Engine; using namespace Graphics;
+
+	using GameplayInterface::Pattern;
 
 	class GameplaySystem : public System
 	{
@@ -40,10 +41,11 @@ namespace ALEngine::ECS
 		struct MoveOrder {
 			Entity entity;
 			std::vector<Entity> path;
-			uint32_t path_step = 0;
+			u32 path_step = 0;
 		};
 
-		uint32_t roomSize[2]{ 6, 6 };
+		//******VARIABLES**********//
+		u32 roomSize[2]{ 6, 6 };
 		Room m_Room;
 
 		Entity playerEntity, startCellEntity, targetCellEntity;
@@ -52,15 +54,22 @@ namespace ALEngine::ECS
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 
 		MoveOrder currentModeOrder;
+
+
+		//Patterns
+		std::vector<Pattern> pattern_List;
+		Pattern selected_Pattern;
+
+		//******FUNCTIONS**********//
 		void ClearMoveOrder();
 		Entity getCurrentEntityCell();
 		void SetMoveOrder(std::vector<Entity> path);
 
 		//Return if reached end
 		bool StepUpModeOrderPath(MoveOrder& order);
-		uint32_t getRoomSize();
-		Entity getEntityCell(uint32_t x, uint32_t y);
-		void ToggleCellToInaccessible(uint32_t x, uint32_t y, b8 istrue);
+		u32 getRoomSize();
+		Entity getEntityCell(u32 x, u32 y);
+		void ToggleCellToInaccessible(u32 x, u32 y, b8 istrue);
 		void RunGameState();
 
 		void MovePlayerEntityToCell(Entity cellEntity);
@@ -80,15 +89,22 @@ namespace ALEngine::ECS
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 	}
 
-
-
 	void Event_Button_Select_EndTurn(Entity invoker) {
 		//End turn
 		gameplaySystem->EndTurn();
 	}
 
-	void Event_HoverCell(Entity invoker) {
-		AL_CORE_INFO("Hover Cell");
+	void Event_MouseEnterCell(Entity invoker) {
+		AL_CORE_INFO("Enter Cell");
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+		cell.m_Color_Tint = { 1.f,1.f,0.f,1.f };
+		//GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+	}
+
+	void Event_MouseExitCell(Entity invoker) {
+		AL_CORE_INFO("Exit Cell");
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+		cell.m_Color_Tint = { 1.f,1.f,1.f,1.f };
 	}
 
 	void Event_ClickCell(Entity invokerCell) {
@@ -120,6 +136,9 @@ namespace ALEngine::ECS
 		gameplaySystem->currentGameplayStatus = GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP;
 		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
 		
+		//Initialize Pattern
+		InitializePatterns(gameplaySystem->pattern_List);
+
 		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {
 			gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
@@ -134,21 +153,26 @@ namespace ALEngine::ECS
 
 			Transform transform;
 			transform.scale = { 70, 70 };
+
 			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
+
+			//CreateSprite(gameplaySystem->m_Room.roomCellsArray[i], transform);
 		}
 
-		for (uint32_t i = 0; i < gameplaySystem->roomSize[0]; ++i) {
-			for (uint32_t j = 0; j < gameplaySystem->roomSize[1]; ++j) {
+		for (s32 i = 0; i < gameplaySystem->roomSize[0]; ++i) {
+			for (s32 j = 0; j < gameplaySystem->roomSize[1]; ++j) {
 				int cellIndex = i * gameplaySystem->roomSize[0] + j;
 
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
 				transform.position = { 200 + (f32)j * 100.f, 200 + (f32)i * 100.f };
+
 				Cell cell;
-				cell.coordinate[0] = i;
-				cell.coordinate[1] = j;
+				cell.coordinate = { i,j };
 
 				CreateEventTrigger(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
 				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
+				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
+				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
 
 				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i, j), cell);
 			}
@@ -356,8 +380,8 @@ namespace ALEngine::ECS
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell());
 
 			playerTransform.position = cellTransform.position;
-			playerUnit.coordinate[0] = cell.coordinate[0];
-			playerUnit.coordinate[1] = cell.coordinate[1];
+			playerUnit.coordinate[0] = cell.coordinate.x;
+			playerUnit.coordinate[1] = cell.coordinate.y;
 
 			bool isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 
@@ -400,11 +424,11 @@ namespace ALEngine::ECS
 			Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[i]);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->m_Room.roomCellsArray[i]);
 
-			if (cell.m_isAccesible) {
-				color = { 0.f, 1.f, 0.f, 1.f };
+			if (!cell.m_isAccesible) {
+				color = { 1.f, 0.f, 0.f, 1.f };
 			}
 			else {
-				color = { 1.f, 0.f, 0.f, 1.f };
+				color = cell.m_Color_Tint;
 			}
 
 			bottomleft = { cellTransform.position.x - cellTransform.scale.x * 0.5f, cellTransform.position.y - cellTransform.scale.y * 0.5f };
