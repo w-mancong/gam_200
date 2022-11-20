@@ -116,6 +116,66 @@ namespace ALEngine::Engine::Scene
 		writer.EndArray();
 	}
 
+	void WriteParticleProperty(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("ParticleProperty");
+		writer.StartArray();
+		writer.StartObject();
+
+		ParticleProperties const& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+
+		// velocity
+		writer.Key("velocity");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.velocity.x));
+		writer.Double(static_cast<f64>(prop.velocity.y));
+		writer.EndArray();
+
+		// velocityVariation
+		writer.Key("velocityVariation");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.velocityVariation.x));
+		writer.Double(static_cast<f64>(prop.velocityVariation.y));
+		writer.EndArray();
+
+		// colorStart
+		writer.Key("colorStart");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.colorStart.x));
+		writer.Double(static_cast<f64>(prop.colorStart.y));
+		writer.Double(static_cast<f64>(prop.colorStart.z));
+		writer.Double(static_cast<f64>(prop.colorStart.w));
+		writer.EndArray();
+
+		// colorEnd
+		writer.Key("colorEnd");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.colorEnd.x));
+		writer.Double(static_cast<f64>(prop.colorEnd.y));
+		writer.Double(static_cast<f64>(prop.colorEnd.z));
+		writer.Double(static_cast<f64>(prop.colorEnd.w));
+		writer.EndArray();
+
+		// sizeStart
+		writer.Key("sizeStart");
+		writer.Double(static_cast<f64>(prop.sizeStart));
+
+		// sizeEnd
+		writer.Key("sizeEnd");
+		writer.Double(static_cast<f64>(prop.sizeEnd));
+
+		// sizeVariation
+		writer.Key("sizeVariation");
+		writer.Double(static_cast<f64>(prop.sizeVariation));
+
+		// lifeTime
+		writer.Key("lifeTime");
+		writer.Double(static_cast<f64>(prop.lifeTime));
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
 	void ReadTransform(rjs::Value const& v, ECS::Entity en)
 	{
 		Transform transform{};
@@ -135,6 +195,49 @@ namespace ALEngine::Engine::Scene
 		transform.rotation = v[0]["rotation"].GetFloat();
 
 		Coordinator::Instance()->AddComponent(en, transform);
+	}
+
+	void ReadParticleProperty(rjs::Value const& v, ECS::Entity en)
+	{
+		ParticleProperties prop{};
+
+		// Getting velocity
+		rjs::Value const& p = v[0]["velocity"];
+		prop.velocity.x = p[0].GetFloat();
+		prop.velocity.y = p[1].GetFloat();
+
+		// Getting velocityVariation
+		rjs::Value const& q = v[0]["velocityVariation"];
+		prop.velocityVariation.x = q[0].GetFloat();
+		prop.velocityVariation.y = q[1].GetFloat();
+
+		// Getting colorStart
+		rjs::Value const& w = v[0]["colorStart"];
+		prop.colorStart.x = w[0].GetFloat();
+		prop.colorStart.y = w[1].GetFloat();
+		prop.colorStart.z = w[2].GetFloat();
+		prop.colorStart.w = w[3].GetFloat();
+
+		// Getting colorEnd
+		rjs::Value const& e = v[0]["colorEnd"];
+		prop.colorEnd.x = e[0].GetFloat();
+		prop.colorEnd.y = e[1].GetFloat();
+		prop.colorEnd.z = e[2].GetFloat();
+		prop.colorEnd.w = e[3].GetFloat();
+
+		// Getting sizeStart
+		prop.sizeStart = v[0]["sizeStart"].GetFloat();
+
+		// Getting sizeEnd
+		prop.sizeEnd = v[0]["sizeEnd"].GetFloat();
+
+		// Getting sizeVariation
+		prop.sizeVariation = v[0]["sizeVariation"].GetFloat();
+
+		// Getting lifetime
+		prop.lifeTime = v[0]["lifeTime"].GetFloat();
+
+		Coordinator::Instance()->AddComponent(en, prop);
 	}
 
 	void WriteEntityData(TWriter& writer, ECS::Entity en)
@@ -596,6 +699,8 @@ namespace ALEngine::Engine::Scene
 			//	WriteCell(writer, en);
 			if (Coordinator::Instance()->HasComponent<EntityScript>(en))
 				WriteEntityScript(writer, en);
+			if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
+				WriteParticleProperty(writer, en);
 
 			writer.EndObject();
 		}
@@ -622,6 +727,8 @@ namespace ALEngine::Engine::Scene
 				ReadRigidbody2D(v["Rigidbody2D"], en);
 			if (v.HasMember("CharacterController"))
 				ReadCharacterController(v["CharacterController"], en);
+			if (v.HasMember("ParticleProperty"))
+				ReadParticleProperty(v["ParticleProperty"], en);
 			//if (v.HasMember("EventTrigger"))
 			//	ReadEventTrigger(v["EventTrigger"], en);
 			//if (v.HasMember("EventCollisionTrigger"))
