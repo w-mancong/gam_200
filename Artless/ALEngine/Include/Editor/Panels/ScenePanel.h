@@ -41,14 +41,6 @@ namespace ALEngine::Editor
 		void OnImGuiRender(void);
 
 		/*!*********************************************************************************
-			\brief
-			Sets the current gizmo operation
-			\param [in] _op:
-			Current gizmo operation
-		***********************************************************************************/
-		void SetCurrentGizmoOperation(ImGuizmo::OPERATION _op);
-
-		/*!*********************************************************************************
 		\brief
 		Gets the Width of the Scene Panel
 
@@ -108,9 +100,7 @@ namespace ALEngine::Editor
 		/*!*********************************************************************************
 			\brief To control the camera movements
 		***********************************************************************************/
-		void CameraControls(void);
-
-		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
+		void UserInput(void);
 
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size

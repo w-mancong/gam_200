@@ -126,8 +126,6 @@ namespace ALEngine::Editor
 			}
 			else
 			{	// Run editor scene panel
-				// Set selected entity for Scene Panel (for Gizmos)
-				m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
 				m_ScenePanel.OnImGuiRender();	// Scene Panel
 			}
 
@@ -584,6 +582,16 @@ namespace ALEngine::Editor
 	const ECS::Entity ALEditor::GetSelectedEntity(void)
 	{
 		return m_InspectorPanel.GetSelectedEntity();
+	}
+
+	ImGuizmo::OPERATION ALEditor::GetCurrentGizmoOperation(void)
+	{
+		return m_CurrentGizmoOperation;
+	}
+
+	void ALEditor::SetCurrentGizmoOperation(ImGuizmo::OPERATION _op)
+	{
+		m_CurrentGizmoOperation = _op;
 	}
 
 	f64 ALEditor::GetSceneWidth(void)

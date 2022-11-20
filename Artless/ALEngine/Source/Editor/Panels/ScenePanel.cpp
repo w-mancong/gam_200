@@ -16,13 +16,8 @@ brief:	This file contains function definitions for the ScenePanel class.
 
 namespace ALEngine::Editor
 {
-	// Set default operation to be Translate
-	ImGuizmo::OPERATION ScenePanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
-
 	ScenePanel::ScenePanel(void)
 	{
-		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-
 		// Set camera to ortho projection
 		m_EditorCamera.ProjectionMatrix(Engine::Camera::Projection::Orthographic);
 		m_EditorCamera.Position() = { Math::Vec3(-static_cast<f32>(Graphics::OpenGLWindow::width >> 1), -static_cast<f32>(Graphics::OpenGLWindow::height >> 1), 725.f) };
@@ -40,7 +35,7 @@ namespace ALEngine::Editor
 		// Check if there is an entity selected (For Gizmos)
 		b8 hasSelectedEntity = (selectedEntity == ECS::MAX_ENTITIES) ? false : true;
 
-		CameraControls();
+		UserInput();
 
 		// Set constraints
 		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
@@ -98,7 +93,7 @@ namespace ALEngine::Editor
 
 			// Manipulate, used for Gizmos
 			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), m_EditorCamera.ProjectionMatrix().value_ptr(),
-				m_CurrentGizmoOperation, ImGuizmo::WORLD, mtx);
+				ALEditor::Instance()->GetCurrentGizmoOperation(), ImGuizmo::WORLD, mtx);
 
 			// Get transform matrices
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
@@ -182,11 +177,6 @@ namespace ALEngine::Editor
 		ImGui::End();
 	}
 
-	void ScenePanel::SetCurrentGizmoOperation(ImGuizmo::OPERATION _op)
-	{
-		m_CurrentGizmoOperation = _op;
-	}
-
 	f64 ScenePanel::GetSceneWidth(void)
 	{
 		return m_SceneWidth;
@@ -257,7 +247,7 @@ namespace ALEngine::Editor
 		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 
-	void ScenePanel::CameraControls(void)
+	void ScenePanel::UserInput(void)
 	{
 		f32 constexpr CAM_SPEED{ 7.5f };
 

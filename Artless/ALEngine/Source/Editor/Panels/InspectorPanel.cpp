@@ -20,9 +20,6 @@ namespace ALEngine::Editor
 	// Commands namespace
 	using namespace Commands;
 
-	// Set default operation to be Translate
-	ImGuizmo::OPERATION InspectorPanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
-
 	// File buffer size
 	const u32 FILE_BUFFER_SIZE{ 1000 };
 
@@ -34,7 +31,6 @@ namespace ALEngine::Editor
 
 	InspectorPanel::InspectorPanel(void)
 	{
-		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		m_SelectedEntity = ECS::MAX_ENTITIES;
 		m_SelectedComponent = InspectorComponents::InComp_Total;
 	}
@@ -174,26 +170,26 @@ namespace ALEngine::Editor
 
 		// Select between the 3 Gizmos Operations by keypress
 		if (Input::KeyTriggered(KeyCode::W))
-			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		if (Input::KeyTriggered(KeyCode::R))
-			m_CurrentGizmoOperation = ImGuizmo::SCALE;
+			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 		if (Input::KeyTriggered(KeyCode::E))
-			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::ROTATE);
+		if (Input::KeyTriggered(KeyCode::R))
+			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::SCALE);
 
 		// Transform
 		if (ImGui::TreeNodeEx("Transform Component##Inspector"))
 		{
 			// Rotate
-			if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
-				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+			if (ImGui::RadioButton("Translate", ALEditor::Instance()->GetCurrentGizmoOperation() == ImGuizmo::TRANSLATE))
+				ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 			ImGui::SameLine();
 			// Rotate
-			if (ImGui::RadioButton("Rotate", m_CurrentGizmoOperation == ImGuizmo::ROTATE))
-				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+			if (ImGui::RadioButton("Rotate", ALEditor::Instance()->GetCurrentGizmoOperation() == ImGuizmo::ROTATE))
+				ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::ROTATE);
 			ImGui::SameLine();
 			// Scale
-			if (ImGui::RadioButton("Scale", m_CurrentGizmoOperation == ImGuizmo::SCALE))
-				m_CurrentGizmoOperation = ImGuizmo::SCALE;
+			if (ImGui::RadioButton("Scale", ALEditor::Instance()->GetCurrentGizmoOperation() == ImGuizmo::SCALE))
+				ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::SCALE);
 
 			// Translate and Scale matrix
 			// 1) Get parent global
@@ -526,11 +522,6 @@ namespace ALEngine::Editor
 			ImGui::Combo("Unload##Script", &unload_select, unload_list.c_str());
 			ImGui::TreePop();
 		}
-	}
-
-	ImGuizmo::OPERATION InspectorPanel::GetCurrGizmoOperation(void) const
-	{
-		return m_CurrentGizmoOperation;
 	}
 
 	void InspectorPanel::AddComponentButton(void)
