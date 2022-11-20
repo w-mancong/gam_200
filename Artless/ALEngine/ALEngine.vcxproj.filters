@@ -71,7 +71,9 @@
     <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
     <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
     <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Commands\Command.cpp" />
     <ClCompile Include="Source\Commands\UpdateComponentCommand.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
@@ -321,6 +323,8 @@
     <ClInclude Include="Include\Math\Vector3Int.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
     <ClInclude Include="Include\Common Header\MyScene.h" />
     <ClInclude Include="Include\Commands\Command.h" />

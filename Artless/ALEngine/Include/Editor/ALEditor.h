@@ -259,6 +259,7 @@ namespace ALEngine::Editor
 
 		// Window Min Size
 		ImVec2 m_WinMinSize{ 300.f, 25.f };
+		ImVec2 m_MenuSize{ 200.f, 300.f };
 		ImVec2 m_ToolbarMinSize{};
 
 		// Booleans
@@ -268,6 +269,9 @@ namespace ALEngine::Editor
 		b8 m_GameIsActive{ false };						// Set to true if in Game Mode
 		b8 m_FullScreen{ false };						// Set to true if game mode full screen
 		b8 m_SaveScene{ false };						// Set to save scene
+		b8 m_AnimatorPanelEnabled{ false };				// Set to true if Animator Panel is enabled
+		b8 m_AudioPanelEnabled{ false };				// Set to true if Audio Panel is enabled
+		b8 m_TileEditorEnabled{ false };				// Set to true if tile editor is enabled
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel
@@ -277,6 +281,8 @@ namespace ALEngine::Editor
 		LoggerPanel m_LoggerPanel;						// Logger Panel
 		ProfilerPanel m_ProfilerPanel;					// Profiler Panel
 		SceneHierarchyPanel m_SceneHierarchyPanel;		// Scene Hierarchy Panel
+		AnimatorEditorPanel m_AnimatorEditorPanel;            // Audio Editor Panel
+		AudioEditorPanel m_AudioEditorPanel;            // Audio Editor Panel
 
 		// Editor Colors
 		ImVec4 m_ColorTitleBg{};			// Color of Title Background

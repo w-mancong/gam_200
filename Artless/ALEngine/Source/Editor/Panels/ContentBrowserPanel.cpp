@@ -84,7 +84,6 @@ namespace ALEngine::Editor
 
 				ImGui::TreePop();
 			}
-
 		
 			//set next column
 			ImGui::NextColumn();
