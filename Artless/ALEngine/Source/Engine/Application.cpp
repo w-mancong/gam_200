@@ -218,6 +218,8 @@ namespace ALEngine::Engine
 		ZoneScopedN("Normal Update")
 		Input::Update();
 		AssetManager::Instance()->Update();
+
+		UpdateGameplaySystem();
 		AudioManagerUpdate();
 	}
 
@@ -227,6 +229,7 @@ namespace ALEngine::Engine
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 		
+		UpdateEventTriggerSystem();
 		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();
