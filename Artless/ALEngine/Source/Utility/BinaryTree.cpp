@@ -513,7 +513,6 @@ namespace ALEngine::Tree
         std::vector<s32> insertedVect;
         for (auto it{ entities.begin() }; it != entities.end(); ++it)
         {
-            std::cout << entities.size() << "\n";
             EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(*it);
             Serial serial;
             serial.serialID = *it;
