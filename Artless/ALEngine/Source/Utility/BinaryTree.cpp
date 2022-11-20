@@ -257,7 +257,7 @@ namespace ALEngine::Tree
         {
             if (x.active)
             {
-                FindChildren(x.id);
+                FindImmediateChildren(x.id);
                 x.children = GetChildren();
             }
         }
@@ -522,7 +522,7 @@ namespace ALEngine::Tree
                 {
                     if (x.active)
                     {
-                        FindChildren(x.id);
+                        FindImmediateChildren(x.id);
                         x.children = GetChildren();
                     }
                 }
@@ -609,7 +609,7 @@ namespace ALEngine::Tree
         {
             if (x.active)
             {
-                FindChildren(x.id);
+                FindImmediateChildren(x.id);
                 x.children = GetChildren();
             }
         }
