@@ -49,22 +49,6 @@ namespace ALEngine::Editor
 		void SetCurrentGizmoOperation(ImGuizmo::OPERATION _op);
 
 		/*!*********************************************************************************
-			\brief
-			Sets the selected entity
-			\param [in] _entt
-			Selected Entity
-		***********************************************************************************/
-		void SetSelectedEntity(ECS::Entity _entt);
-
-		/*!*********************************************************************************
-			\brief
-			Gets the selected entity
-			\return
-			Returns the selected entity
-		***********************************************************************************/
-		ECS::Entity GetSelectedEntity(void);
-
-		/*!*********************************************************************************
 		\brief
 		Gets the Width of the Scene Panel
 
@@ -127,7 +111,6 @@ namespace ALEngine::Editor
 		void CameraControls(void);
 
 		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
-		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES }; // Entity Selected in Inspector
 
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size

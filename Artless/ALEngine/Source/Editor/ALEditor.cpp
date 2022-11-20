@@ -127,12 +127,8 @@ namespace ALEngine::Editor
 			else
 			{	// Run editor scene panel
 				// Set selected entity for Scene Panel (for Gizmos)
-				m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
 				m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
 				m_ScenePanel.OnImGuiRender();	// Scene Panel
-
-				// Update if selected entity has changed
-				m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
 			}
 
 			// Scene Hierarchy Panel
@@ -335,7 +331,6 @@ namespace ALEngine::Editor
 				if (m_GameIsActive)
 				{
 					SetSelectedEntity(ECS::MAX_ENTITIES);
-					m_ScenePanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
