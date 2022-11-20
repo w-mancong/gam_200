@@ -26,7 +26,6 @@
     <ClCompile Include="Source\Exceptions\GLDebug.cpp" />
     <ClCompile Include="Source\Graphics\GLAD\glad.c" />
     <ClCompile Include="Source\Graphics\OpenGLWindow.cpp" />
-    <ClCompile Include="Source\Graphics\ParticleSys.cpp" />
     <ClCompile Include="Source\Graphics\Shader.cpp" />
     <ClCompile Include="Source\Graphics\Text.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
@@ -68,7 +67,6 @@
     <ClCompile Include="Source\Math\Vector2Int.cpp" />
     <ClCompile Include="Source\Math\Vector3Int.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
-    <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
     <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
     <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
@@ -141,7 +139,6 @@
     <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\Gizmo.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
-    <ClInclude Include="Include\Graphics\ParticleSys.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
     <ClInclude Include="Include\Graphics\stb_image.h" />
     <ClInclude Include="Include\Input\InputKeys.h" />

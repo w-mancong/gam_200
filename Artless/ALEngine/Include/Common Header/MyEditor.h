@@ -13,7 +13,6 @@ brief:	This file contains all the relevant Editor header files to be included in
 #include "Editor/Panels/ScenePanel.h"
 #include "Editor/Panels/GamePanel.h"
 #include "Editor/Panels/SceneHierarchyPanel.h"
-#include "Editor/Panels/ParticleSystemPanel.h"
 #include "Editor/Panels/ProfilerPanel.h"
 #include "Editor/Panels/LoggerPanel.h"
 #include "Editor/Panels/InspectorPanel.h"
