@@ -113,9 +113,6 @@ namespace ALEngine::Editor
 			// Logger Panel
 			m_LoggerPanel.OnImGuiRender();
 
-			// Check if there is a selected entity for Inspector
-			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
-
 			if (m_AnimatorPanelEnabled)
 			{
 				m_AnimatorEditorPanel.OnImGuiRender();
@@ -280,6 +277,7 @@ namespace ALEngine::Editor
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
+			ImGui::SetNextWindowSize(m_MenuSize);
 			// Settings
 			if (ImGui::BeginMenu("Settings"))
 			{
@@ -292,16 +290,23 @@ namespace ALEngine::Editor
 				ImGui::EndMenu();
 			}
 
+			ImGui::SetNextWindowSize(m_MenuSize);
 			if (ImGui::BeginMenu("Tools"))
 			{
 				// Selectable flag
 				ImGuiSelectableFlags flag = 0;
 
 				// Set active for animator panel
-				ImGui::Selectable("CreateClips/Animation", &m_AnimatorPanelEnabled, flag);
+				ImGui::Selectable("Create Clips/Animation", &m_AnimatorPanelEnabled, flag);
 	
 				//  Set active for audio panel
-				ImGui::Selectable("CreateAudio", &m_AudioPanelEnabled, flag);
+				ImGui::Selectable("Create Audio", &m_AudioPanelEnabled, flag);
+
+				//  Set active for audio panel
+				if (ImGui::MenuItem("Tile Editor"))
+				{
+					m_TileEditorEnabled = !m_TileEditorEnabled;
+				}
 
 				ImGui::EndMenu();
 			}
