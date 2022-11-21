@@ -164,7 +164,7 @@ namespace ALEngine::Editor
 
 	void ALEditor::Begin(void)
 	{
-		ZoneScopedN("Editor Update")
+		ZoneScopedN("Editor Update");
 		// Change ImGui Enabled or Disabled
 		/*
 		if (Input::KeyTriggered(KeyCode::Key_9))

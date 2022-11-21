@@ -73,7 +73,7 @@ namespace ALEngine::Engine
 			}
 
 			// Marks the end of a frame m_Loop, for tracy profiler
-			FrameMark
+			FrameMark;
 		}
 #endif
 		void GameUpdate(void)
@@ -158,7 +158,7 @@ namespace ALEngine::Engine
 				}
 
 				// Marks the end of a frame m_Loop, for tracy profiler
-				FrameMark
+				FrameMark;
 			}
 
 			// Free resources
@@ -246,7 +246,7 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-		ZoneScopedN("Normal Update")
+		ZoneScopedN("Normal Update");
 		Input::Update();
 		AssetManager::Instance()->Update();
 

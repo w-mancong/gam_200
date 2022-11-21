@@ -577,13 +577,13 @@ namespace ALEngine::Editor
 						ImGui::PopItemFlag();
 					}
 
+					ImGui::TreePop();
+
 					if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 					{
 						ImGui::OpenPopup("audio_rightclick");
 						toDelete = ad.m_ID;
 					}
-
-					ImGui::TreePop();
 				}
 	
 			}
