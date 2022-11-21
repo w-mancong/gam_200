@@ -342,8 +342,7 @@ namespace ALEngine::Editor
 					ECS::StartGameplaySystem();
 				}
 				else
-				{
-					ECS::GetSceneGraph().Destruct(-1); // destroy scene graph
+				{					
 					Coordinator::Instance()->DestroyEntities();
 					ECS::ExitGameplaySystem();
 

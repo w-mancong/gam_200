@@ -29,6 +29,9 @@ namespace ALEngine::Graphics
 
 		void window_focus_callback([[maybe_unused]] GLFWwindow* window, int focused)
 		{
+#if EDITOR
+			focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
+#endif
 			Engine::SetWindowFocus(focused);
 			Engine::ToggleMuteChannel(Engine::Channel::Master);
 		}

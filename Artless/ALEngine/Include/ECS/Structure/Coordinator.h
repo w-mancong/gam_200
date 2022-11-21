@@ -11,6 +11,8 @@ brief:	This file contains function definitions for Coordinator
 
 namespace ALEngine::ECS
 {
+	Tree::BinaryTree& GetSceneGraph(void);
+
 	/*!*********************************************************************************
 		\brief
 		Class that manages the three managers of the ECS archiecture
@@ -95,6 +97,7 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void DestroyEntities(void)
 		{
+			GetSceneGraph().Destruct(-1); // destroy scene graph
 			EntityList const& entities = mEntityManager->GetActiveEntities();
 			// Store all active entities into a temporary container
 			std::vector<Entity> temp; temp.reserve(entities.size());

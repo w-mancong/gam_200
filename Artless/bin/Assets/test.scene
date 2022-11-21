@@ -1,0 +1,76 @@
+[
+    {
+        "id": 0,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    -145.28521728515625,
+                    33.33331298828125,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #0",
+                "active": true,
+                "id": 0,
+                "parentID": -1
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    -45.28521728515625,
+                    133.33331298828125,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "entity #1",
+                "active": true,
+                "id": 1,
+                "parentID": 0
+            }
+        ]
+    }
+]

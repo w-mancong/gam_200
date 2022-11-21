@@ -9,9 +9,32 @@ namespace ALEngine::Engine
 	using namespace Editor;
 	namespace
 	{
+		class Application
+		{
+		public:
+			static void Init(void);
+			static void Update(void);
+			static void Exit(void);
+		};
+
 		std::atomic<int> appStatus;
 		bool focus;
 		bool editorFocus{ true };
+
+		BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
+		{
+			switch (fdwCtrlType)
+			{
+				// When window console x button is pressed
+			case CTRL_CLOSE_EVENT:
+				Application::Exit();
+				return TRUE;
+
+			default:
+				return FALSE;
+			}
+		}
+
 #if EDITOR
 		std::function<void(void)> UpdateLoop[2];
 		u64 funcIndex{};
@@ -34,6 +57,9 @@ namespace ALEngine::Engine
 
 			Input::Update();
 			AssetManager::Instance()->Update();
+
+			if (Input::KeyTriggered(KeyCode::A))
+				Coordinator::Instance()->DestroyEntities();
 
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
@@ -144,14 +170,6 @@ namespace ALEngine::Engine
 		}
 	}
 
-	class Application
-	{
-	public:
-		void Init(void);
-		void Update(void);
-		void Exit(void);
-	};
-
 	void Application::Init(void)
 	{
 		// Init Logger
@@ -213,10 +231,15 @@ namespace ALEngine::Engine
 
 	void Run(void)
 	{		
-		Application app;
-		app.Init();
-		app.Update();
-		app.Exit();
+#if !EDITOR
+		Console::StopConsole();
+#endif
+		if (SetConsoleCtrlHandler(CtrlHandler, TRUE))
+		{
+			Application::Init();
+			Application::Update();
+			Application::Exit();
+		}
 	}
 
 	void Engine::Update(void)
