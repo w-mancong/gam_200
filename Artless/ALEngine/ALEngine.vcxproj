@@ -152,6 +152,7 @@
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
@@ -288,6 +289,7 @@
     <ClInclude Include="Include\Common Header\MyScripting.h" />
     <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
     <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />

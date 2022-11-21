@@ -118,6 +118,10 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void DisplayAnimator(void);
 
+		/*!*********************************************************************************
+			\brief
+			Displays the Particle component info on the panel
+		***********************************************************************************/
 		void DisplayParticleProperty(void);
 
 		/*!*********************************************************************************
@@ -180,6 +184,7 @@ namespace ALEngine::Editor
 		InComp_RigidBody,
 		InComp_Collider,
 		InComp_Particles,
+		InComp_Text,
 		InComp_Total
 	};
 }

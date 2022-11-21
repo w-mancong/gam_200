@@ -272,6 +272,7 @@ namespace ALEngine::ECS
 #endif
 		UpdateAnimatorSystem();
 		UpdateParticleSystem();
+		UpdateTextSystem();
 #if EDITOR
 		rs->RenderBatch(camera);
 #else

@@ -57,7 +57,7 @@ namespace ALEngine::Editor
 		style.ScaleAllSizes(1.2f);
 
 		// Font Loading for ImGui
-		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial Italic.ttf", 20.f);
+		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial-italic.ttf", 20.f);
 
 		// Init GLFW
 		ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window() , true);

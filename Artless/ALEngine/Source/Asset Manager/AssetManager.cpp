@@ -251,18 +251,18 @@ namespace
 		return { texture, handle };
 	}
 
-	void LoadFont(c8 const* filePath)
+	void LoadFont(std::string filePath)
 	{
 		std::string fontName, fontType;
 		std::string str{ filePath };
 		str = str.substr(str.find_last_of("/") + 1);
 		fontName = str.substr(0, str.find_first_of("-"));
-		fontType = str.substr(str.find_first_of("-") + 1, str.find_first_of(".") - str.find_first_of("-"));
+		fontType = str.substr(str.find_first_of("-") + 1, str.find_first_of(".") - 1 - str.find_first_of("-"));
 
 		// convert to all upper case
-		for (auto chr : fontName)
+		for (c8& chr : fontName)
 			chr = toupper(chr);
-		for (auto chr : fontType)
+		for (c8& chr : fontType)
 			chr = toupper(chr);
 
 		Font::FontType type;
@@ -515,6 +515,13 @@ namespace ALEngine::Engine
 				}
 				case FileType::Font:
 				{
+					std::string filePath{ *it };
+					for (c8& ch : filePath)
+					{
+						if (ch == '\\')
+							ch = '/';
+					}
+					LoadFont(filePath);
 					break;
 				}
 				default:
@@ -850,6 +857,7 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Font:
 			{
+				//LoadFont(filePath);
 				break;
 			}
 			/******************************************************************************

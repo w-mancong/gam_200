@@ -562,6 +562,19 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				case InspectorComponents::InComp_Text:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<Text>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Text Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<Text>(m_SelectedEntity, Text());
+						}
+						++count;
+					}
+					break;
 				}
 			}
 

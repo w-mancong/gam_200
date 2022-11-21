@@ -39,6 +39,7 @@ namespace ALEngine::ECS::Component
 
 		// load font as face
 		FT_Face face;
+		
 		if (FT_New_Face(freeType, fontAddress.c_str(), 0, &face))
 		{
 			std::cerr << "FONTS ERROR: Failed to load font: " << fontAddress << std::endl;
@@ -60,7 +61,7 @@ namespace ALEngine::ECS::Component
 			}
 
 			// generate font textures
-			u32 shaderTexture;
+			u32 shaderTexture{};
 			glGenTextures(1, &shaderTexture);
 			glBindTexture(GL_TEXTURE_2D, shaderTexture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED,
