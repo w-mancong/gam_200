@@ -33,6 +33,11 @@ namespace ALEngine::Graphics
 			Engine::ToggleMuteChannel(Engine::Channel::Master);
 		}
 
+		void scroll_callback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] double xoffset, double yoffset)
+		{
+			Input::m_MouseWheelEvent = yoffset == -1 ? MouseWheelEvent::MouseWheelDown : MouseWheelEvent::MouseWheelUp;
+		}
+
 		u32 constexpr DEFAULT_WIDTH{ 1200 }, DEFAULT_HEIGHT{ 600 };
 	}
 
@@ -131,8 +136,10 @@ namespace ALEngine::Graphics
 		glfwSetFramebufferSizeCallback(window, ResizeWindow);
 		// tell glfw to call this function whenever window closes
 		glfwSetWindowCloseCallback(window, window_close_callback);
-		// tell glfw to call tihs function whenever window focus/not focusing
+		// tell glfw to call this function whenever window focus/not focusing
 		glfwSetWindowFocusCallback(window, window_focus_callback);
+		// tell glfw to call this function whenever mouse scroll happens
+		glfwSetScrollCallback(window, scroll_callback);
 		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
