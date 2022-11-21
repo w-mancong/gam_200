@@ -111,7 +111,7 @@ namespace ALEngine::Editor
 
 			if (m_AnimatorPanelEnabled)
 			{
-				m_AnimatorEditorPanel.OnImGuiRender();
+				m_AnimatorEditorPanel.OnImGuiRender(m_AnimatorPanelEnabled);
 			}
 
 			if (m_AudioPanelEnabled)
