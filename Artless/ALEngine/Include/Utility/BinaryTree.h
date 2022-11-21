@@ -133,6 +133,13 @@ namespace ALEngine::Tree
         ***********************************************************************************/
         std::vector<NodeData>const& GetMap();
 
+        /*!*********************************************************************************
+            \brief Return parent of current entity
+
+            \return Entity Id of parent, else -1
+        ***********************************************************************************/
+        s32 GetParent(u32 en) const;
+
         void MoveBranch(s32 branch, s32 newParent);
         void SerializeTree();
         void DeserializeTree();

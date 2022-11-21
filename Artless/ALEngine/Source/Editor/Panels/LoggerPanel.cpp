@@ -10,7 +10,7 @@ brief:	This file contains function definitions for the LoggerPanel class.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
-#ifdef EDITOR
+#if EDITOR
 
 #include <spdlog/sinks/ostream_sink.h>
 

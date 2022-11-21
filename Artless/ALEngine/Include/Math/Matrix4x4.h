@@ -89,6 +89,13 @@ namespace ALEngine::Math
 		vec4 const& operator()(size_type row) const;
 
 		/*!*********************************************************************************
+			\brief return a copy of a vec4 to the column of the matrix
+
+			\param [in] col: Column of the matrix to retrieve the data from
+		***********************************************************************************/
+		vec4 Column(size_type col) const;
+
+		/*!*********************************************************************************
 			\brief
 			Add the two 3x3 matrix together
 			\param [in] rhs:

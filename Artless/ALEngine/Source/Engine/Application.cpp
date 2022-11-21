@@ -11,16 +11,17 @@ namespace ALEngine::Engine
 	{
 		std::atomic<int> appStatus;
 		bool focus;
+		bool editorFocus{ true };
 #if EDITOR
 		std::function<void(void)> UpdateLoop[2];
 		u64 funcIndex{};
 
 		void EditorUpdate(void)
 		{
-			if (!focus)
+			//if (!focus)
 			{
-				glfwPollEvents();
-				return;
+				//glfwPollEvents();
+				//return;
 			}
 
 			{
@@ -217,6 +218,8 @@ namespace ALEngine::Engine
 		ZoneScopedN("Normal Update")
 		Input::Update();
 		AssetManager::Instance()->Update();
+
+		UpdateGameplaySystem();
 		AudioManagerUpdate();
 	}
 
@@ -226,6 +229,7 @@ namespace ALEngine::Engine
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 		
+		UpdateEventTriggerSystem();
 		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();

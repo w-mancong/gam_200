@@ -11,7 +11,7 @@ brief:	This file contains function declarations for the SceneHierarchPanel class
 #ifndef SCENE_HIERARCHY_PANEL_H
 #define SCENE_HIERARCHY_PANEL_H
 
-#ifdef EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {	

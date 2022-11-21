@@ -11,7 +11,7 @@ brief:	This file contains function declarations for the ProfilerPanel class.
 #ifndef PROFILER_PANEL_H
 #define PROFILER_PANEL_H
 
-#ifdef EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {

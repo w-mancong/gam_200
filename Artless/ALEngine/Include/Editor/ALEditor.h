@@ -11,7 +11,7 @@ brief:	This file contains the function declarations for the ALEditor class.
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
-#ifdef EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {
@@ -228,9 +228,18 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void Docking(void);
 
+		/*!*********************************************************************************
+			\brief
+			Saves the current Scene
+		***********************************************************************************/
+		void SaveScene(void);
+
 		// Required for Singleton to function
 		friend class Templates::Singleton<ALEditor>;
 		friend class Memory::StaticMemory;
+
+		// Scene String
+		std::string m_CurrentSceneName{ "" };
 
 		// Window Min Size
 		ImVec2 m_WinMinSize{ 300.f, 25.f };
@@ -246,6 +255,7 @@ namespace ALEngine::Editor
 		b8 m_FullScreen{ false };		// Set to true if game mode full screen
 		b8 m_AnimatorPanelEnabled{ false };	// Set to true if game mode full screen
 		b8 m_AudioPanelEnabled{ false };		// Set to true if game mode full screen
+		b8 m_SaveScene{ false };		// Set to save scene
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel

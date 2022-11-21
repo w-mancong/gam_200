@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#ifdef EDITOR
+#if EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -184,7 +184,12 @@ namespace ALEngine::Editor
 
 			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
 			{
-				if (directoryEntry.is_directory())
+				if (fileNamestring.find(".scene") != std::string::npos)
+				{
+					std::string the_path = directoryEntry.path().string();
+					Engine::Scene::LoadScene(the_path.c_str());
+				}
+				else if (directoryEntry.is_directory())
 				{
 					//selectable to show file
 					m_CurrentDirectory /= path.filename();

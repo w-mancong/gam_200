@@ -83,6 +83,7 @@
     <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
+    <ClCompile Include="Source\ECS\Components\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />

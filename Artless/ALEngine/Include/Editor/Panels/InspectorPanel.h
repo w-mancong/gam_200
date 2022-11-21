@@ -11,7 +11,7 @@ brief:	This file contains function declarations for the InspectorPanel class.
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
 
-#ifdef EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {
@@ -120,6 +120,12 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Displays the Script component info on the panel
+		***********************************************************************************/
+		void DisplayEntityScript(void);
+
+		/*!*********************************************************************************
+			\brief
 			Displays the Sprite component info on the panel
 
 			\return
@@ -177,6 +183,7 @@ namespace ALEngine::Editor
 		InComp_Sprite,
 		InComp_RigidBody,
 		InComp_Collider,
+		InComp_Script,
 		InComp_Total
 	};
 }
