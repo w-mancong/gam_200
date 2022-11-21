@@ -416,6 +416,15 @@ namespace ALEngine::Engine
 		(*audio.m_Ch)->setMode(LOOP);
 	}
 
+	b8 IsAudioPlaying(Audio const& audio)
+	{
+		if (!audio.m_Ch)
+			return;
+		b8 isPlaying{ false };
+		(*audio.m_Ch)->isPlaying(&isPlaying);
+		return isPlaying;
+	}
+
 	void StopChannel(Channel m_Channel)
 	{
 		audioManager->StopChannel(m_Channel);

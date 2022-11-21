@@ -57,6 +57,11 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		void ToggleMute(void);
 
+		/*!*********************************************************************************
+			\brief Check if audio sound is still playing
+		***********************************************************************************/
+		b8 IsPlaying(void);
+
 		fmod::Sound* m_Sound{ nullptr };
 		std::string m_AudioName{ "" };
 		u32 m_ID{ 0 };
