@@ -155,16 +155,16 @@ namespace ALEngine::ECS::Component
 			std::string::const_iterator c;
 			for (c = text.textString.begin(); c != text.textString.end(); c++)
 			{
-				Character ch = Font::fontCollection.find(text.currentFont)->second
+				Character m_Ch = Font::fontCollection.find(text.currentFont)->second
 					.find(text.currentType)->second.characterCollection[*c];
 
 				// position of each glyph
-				f32 xPos = text.position.x + ch.bearing.x * text.scale;
-				f32 yPos = text.position.y - (ch.size.y - ch.bearing.y) * text.scale;
+				f32 xPos = text.position.x + m_Ch.bearing.x * text.scale;
+				f32 yPos = text.position.y - (m_Ch.size.y - m_Ch.bearing.y) * text.scale;
 
 				// scale of each glyph
-				f32 width = ch.size.x * text.scale;
-				f32 height = ch.size.y * text.scale;
+				f32 width = m_Ch.size.x * text.scale;
+				f32 height = m_Ch.size.y * text.scale;
 
 				// update VBO for each character
 				f32 vertices[6][4] = {
@@ -177,7 +177,7 @@ namespace ALEngine::ECS::Component
 					{ xPos + width, yPos + height,   1.0f, 0.0f }
 				};
 				// paste glyph texture on rect
-				glBindTexture(GL_TEXTURE_2D, ch.textureID);
+				glBindTexture(GL_TEXTURE_2D, m_Ch.textureID);
 
 				// update VBO
 				glBindBuffer(GL_ARRAY_BUFFER, Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVBO);
@@ -189,7 +189,7 @@ namespace ALEngine::ECS::Component
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 
 				// advance horizontal position of glyph
-				text.position.x += (ch.advance >> 6) * text.scale;
+				text.position.x += (m_Ch.advance >> 6) * text.scale;
 			}
 		}
 		textCollection.clear();

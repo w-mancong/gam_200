@@ -34,7 +34,7 @@ namespace ALEngine::Editor
 		//imgui window-------------------------------------------------------------------------
 		ImGui::Begin("Content Browser");
 
-		//loop through directory and create buttons for each file
+		//m_Loop through directory and create buttons for each file
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_MainDirectory))
 		{
 			//file default path
@@ -128,7 +128,7 @@ namespace ALEngine::Editor
 
 		ImGui::Columns(columnCount, 0, false);
 
-		//loop through directory and create buttons for each file
+		//m_Loop through directory and create buttons for each file
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 		{
 			//file default path

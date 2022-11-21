@@ -174,6 +174,7 @@ namespace ALEngine::Editor
 		InComp_RigidBody,
 		InComp_Collider,
 		InComp_Script,
+		InComp_Audio,
 		InComp_Total
 	};
 }

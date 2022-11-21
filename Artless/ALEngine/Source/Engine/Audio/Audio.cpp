@@ -38,18 +38,18 @@ namespace ALEngine::Engine
 	void Audio::Mute(void)
 	{
 		MuteAudio(*this);
-		mute = true;
+		m_Mute = true;
 	}
 
 	void Audio::Unmute(void)
 	{
 		UnmuteAudio(*this);
-		mute = false;
+		m_Mute = false;
 	}
 
 	void Audio::ToggleMute(void)
 	{
-		if (mute)
+		if (m_Mute)
 			Unmute();
 		else
 			Mute();

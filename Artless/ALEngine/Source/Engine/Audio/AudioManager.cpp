@@ -20,14 +20,14 @@ namespace ALEngine::Engine
 		void PlayAudio(Audio& audio);
 
 		// interacting with the channels
-		void StopChannel(Channel channel);
-		void PauseChannel(Channel channel);
-		void UnpauseChannel(Channel channel);
-		void TogglePauseChannel(Channel channel);
-		void MuteChannel(Channel channel);
-		void UnmuteChannel(Channel channel);
-		void ToggleMuteChannel(Channel channel);
-		void SetChannelVolume(Channel channel, f32 volume);
+		void StopChannel(Channel m_Channel);
+		void PauseChannel(Channel m_Channel);
+		void UnpauseChannel(Channel m_Channel);
+		void TogglePauseChannel(Channel m_Channel);
+		void MuteChannel(Channel m_Channel);
+		void UnmuteChannel(Channel m_Channel);
+		void ToggleMuteChannel(Channel m_Channel);
+		void SetChannelVolume(Channel m_Channel, f32 m_Volume);
 
 		fmod::System* const& GetSystem(void) const;
 
@@ -38,10 +38,10 @@ namespace ALEngine::Engine
 		fmod::System* system{ nullptr };
 		fmod::ChannelGroup* channelGroup[static_cast<s64>(Channel::Total)]{};
 
-		// My own channel info which will be used to check if channel is for bgm/sfx
+		// My own m_Channel info which will be used to check if m_Channel is for bgm/sfx
 		struct ChannelInfo
 		{
-			fmod::Channel* ch{ nullptr };
+			fmod::Channel* m_Ch{ nullptr };
 			Channel audioChannel{ Channel::Invalid };
 		};
 
@@ -61,63 +61,63 @@ namespace ALEngine::Engine
 
 	namespace
 	{
-		Channel& operator++(Channel& ch)
+		Channel& operator++(Channel& m_Ch)
 		{
 			/*
-				Explicitly convert channel into an integral type,
+				Explicitly convert m_Channel into an integral type,
 				then incrementing it by 1
 			*/
-			s64 res = static_cast<s64>(ch); ++res;
-			// To wrap the value of ch
+			s64 res = static_cast<s64>(m_Ch); ++res;
+			// To wrap the value of m_Ch
 			if (res >= static_cast<s64>(Channel::Total))
 				res = static_cast<s64>(Channel::Invalid) + 1;
-			// converting ch to the next value then returning it
-			return (ch = static_cast<Channel>(res));
+			// converting m_Ch to the next value then returning it
+			return (m_Ch = static_cast<Channel>(res));
 		}
 
-		Channel operator++(Channel& ch, int)
+		Channel operator++(Channel& m_Ch, int)
 		{
 			/*
-				Explicitly convert channel into an integral type,
+				Explicitly convert m_Channel into an integral type,
 				then incrementing it by 1
 			*/
-			s64 res = static_cast<s64>(ch); ++res;
-			// To wrap the value of ch
+			s64 res = static_cast<s64>(m_Ch); ++res;
+			// To wrap the value of m_Ch
 			if (res >= static_cast<s64>(Channel::Total))
 				res = static_cast<s64>(Channel::Invalid) + 1;
-			Channel temp = ch;
-			// converting ch to the next value
-			ch = static_cast<Channel>(res);
+			Channel temp = m_Ch;
+			// converting m_Ch to the next value
+			m_Ch = static_cast<Channel>(res);
 			return temp;
 		}
 
-		Channel operator--(Channel ch)
+		Channel operator--(Channel m_Ch)
 		{
 			/*
-				Explicitly convert channel into an integral type,
+				Explicitly convert m_Channel into an integral type,
 				then decrementing it by 1
 			*/
-			s64 res = static_cast<s64>(ch); --res;
-			// To wrap the value of ch
+			s64 res = static_cast<s64>(m_Ch); --res;
+			// To wrap the value of m_Ch
 			if (res <= static_cast<s64>(Channel::Invalid))
 				res = static_cast<s64>(Channel::Total) - 1;
-			// converting ch to the previous value then returning it
-			return (ch = static_cast<Channel>(res));
+			// converting m_Ch to the previous value then returning it
+			return (m_Ch = static_cast<Channel>(res));
 		}
 
-		Channel operator--(Channel ch, int)
+		Channel operator--(Channel m_Ch, int)
 		{
 			/*
-				Explicitly convert channel into an integral type,
+				Explicitly convert m_Channel into an integral type,
 				then decrementing it by 1
 			*/
-			s64 res = static_cast<s64>(ch); ++res;
-			// To wrap the value of ch
+			s64 res = static_cast<s64>(m_Ch); ++res;
+			// To wrap the value of m_Ch
 			if (res >= static_cast<s64>(Channel::Invalid))
 				res = static_cast<s64>(Channel::Total) - 1;
-			Channel temp = ch;
-			// converting ch to the next value
-			ch = static_cast<Channel>(res);
+			Channel temp = m_Ch;
+			// converting m_Ch to the next value
+			m_Ch = static_cast<Channel>(res);
 			return temp;
 		}
 
@@ -131,7 +131,7 @@ namespace ALEngine::Engine
 		assert(res == FMOD_RESULT::FMOD_OK && "Fmod system not created properly!");
 		system->init(MAX_CHANNELS, FMOD_INIT_NORMAL, reinterpret_cast<void*>(FMOD_OUTPUTTYPE::FMOD_OUTPUTTYPE_AUTODETECT));
 
-		// Create channel groups
+		// Create m_Channel groups
 		s64 const TOTAL_CHANNELS{ static_cast<s64>(Channel::Total) };
 		c8 const* channelNames[TOTAL_CHANNELS] { "BGM", "SFX", "Master" };
 		for (s64 i{}; i < TOTAL_CHANNELS; ++i)
@@ -144,7 +144,7 @@ namespace ALEngine::Engine
 							*sfx{ channelGroup[static_cast<s64>(Channel::SFX)] }, 
 							*master{ channelGroup[static_cast<s64>(Channel::Master)] };		
 
-		// adding master channel as an input group to bgm and sfx
+		// adding master m_Channel as an input group to bgm and sfx
 		master->addGroup(bgm);
 		master->addGroup(sfx);
 
@@ -170,9 +170,9 @@ namespace ALEngine::Engine
 		// To remove any used channels and add them into the appropriate queue
 		for (auto it{ usedChannels.begin() }; it != usedChannels.end(); ++it)
 		{
-			fmod::Channel* const& ch = it->ch;
+			fmod::Channel* const& m_Ch = it->m_Ch;
 			b8 isPlaying{ true }; // Assume that all audio is playing
-			ch->isPlaying(&isPlaying);
+			m_Ch->isPlaying(&isPlaying);
 			if (isPlaying)
 				continue;
 			// If audio is no longer playing, add it to the appropriate queue
@@ -214,43 +214,43 @@ namespace ALEngine::Engine
 
 	void AudioManager::PlaySfx(Audio& audio)
 	{
-		// if channel size == 0, means no avaliable channel to play audio
+		// if m_Channel size == 0, means no avaliable m_Channel to play audio
 		if (!sfxChannels.size())
 			return;
-		// Get the first avaliable channel, then remove it from the queue
+		// Get the first avaliable m_Channel, then remove it from the queue
 		ChannelInfo& channelInfo = sfxChannels.front(); sfxChannels.pop();
-		fmod::Channel*& ch = channelInfo.ch;
-		system->playSound(audio.sound, channelGroup[static_cast<s64>(Channel::SFX)], false, &ch);
-		// Set audio's channel
-		audio.ch = &ch;
-		ch->setVolume(audio.volume);
-		u32 const LOOP = audio.loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
-		ch->setMode(LOOP);
-		ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::SFX)]);
+		fmod::Channel*& m_Ch = channelInfo.m_Ch;
+		system->playSound(audio.m_Sound, channelGroup[static_cast<s64>(Channel::SFX)], false, &m_Ch);
+		// Set audio's m_Channel
+		audio.m_Ch = &m_Ch;
+		m_Ch->setVolume(audio.m_Volume);
+		u32 const LOOP = audio.m_Loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		m_Ch->setMode(LOOP);
+		m_Ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::SFX)]);
 		usedChannels.push_back(channelInfo);
 	}
 
 	void AudioManager::PlayBgm(Audio& audio)
 	{
-		// if channel size == 0, means no avaliable channel to play audio
+		// if m_Channel size == 0, means no avaliable m_Channel to play audio
 		if (!bgmChannels.size())
 			return;
-		// Get the first avaliable channel, then remove it from the queue
+		// Get the first avaliable m_Channel, then remove it from the queue
 		ChannelInfo& channelInfo = bgmChannels.front(); bgmChannels.pop();
-		fmod::Channel*& ch = channelInfo.ch;
-		system->playSound(audio.sound, channelGroup[static_cast<s64>(Channel::BGM)], false, &ch);
-		// Set audio's channel
-		audio.ch = &ch;
-		ch->setVolume(audio.volume);
-		u32 const LOOP = audio.loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
-		ch->setMode(LOOP);
-		ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::BGM)]);
+		fmod::Channel*& m_Ch = channelInfo.m_Ch;
+		system->playSound(audio.m_Sound, channelGroup[static_cast<s64>(Channel::BGM)], false, &m_Ch);
+		// Set audio's m_Channel
+		audio.m_Ch = &m_Ch;
+		m_Ch->setVolume(audio.m_Volume);
+		u32 const LOOP = audio.m_Loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		m_Ch->setMode(LOOP);
+		m_Ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::BGM)]);
 		usedChannels.push_back(channelInfo);
 	}
 
 	void AudioManager::PlayAudio(Audio& audio)
 	{
-		switch (audio.channel)
+		switch (audio.m_Channel)
 		{
 			case Channel::BGM:
 			{
@@ -267,56 +267,56 @@ namespace ALEngine::Engine
 		}
 	}
 
-	void AudioManager::StopChannel(Channel channel)
+	void AudioManager::StopChannel(Channel m_Channel)
 	{
-		s64 const ch{ static_cast<s64>(channel) };
-		channelGroup[ch]->stop();
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
+		channelGroup[m_Ch]->stop();
 	}
 
-	void AudioManager::PauseChannel(Channel channel)
+	void AudioManager::PauseChannel(Channel m_Channel)
 	{
-		s64 const ch{ static_cast<s64>(channel) };
-		channelGroup[ch]->setPaused(true);
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
+		channelGroup[m_Ch]->setPaused(true);
 	}
 
-	void AudioManager::UnpauseChannel(Channel channel)
+	void AudioManager::UnpauseChannel(Channel m_Channel)
 	{
-		s64 const ch{ static_cast<s64>(channel) };
-		channelGroup[ch]->setPaused(false);
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
+		channelGroup[m_Ch]->setPaused(false);
 	}
 
-	void AudioManager::TogglePauseChannel(Channel channel)
+	void AudioManager::TogglePauseChannel(Channel m_Channel)
 	{
-		s64 const ch{ static_cast<s64>(channel) };
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
 		b8 isPaused{};
-		channelGroup[ch]->getPaused(&isPaused);
-		channelGroup[ch]->setPaused(!isPaused);
+		channelGroup[m_Ch]->getPaused(&isPaused);
+		channelGroup[m_Ch]->setPaused(!isPaused);
 	}
 
-	void AudioManager::MuteChannel(Channel channel)
+	void AudioManager::MuteChannel(Channel m_Channel)
 	{
-		s64 const ch{ static_cast<s64>(channel) };
-		channelGroup[ch]->setVolume(true);
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
+		channelGroup[m_Ch]->setVolume(true);
 	}
 
-	void AudioManager::UnmuteChannel(Channel channel)
+	void AudioManager::UnmuteChannel(Channel m_Channel)
 	{
-		s64 const ch{ static_cast<s64>(channel) };
-		channelGroup[ch]->setMute(false);
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
+		channelGroup[m_Ch]->setMute(false);
 	}
 
-	void AudioManager::ToggleMuteChannel(Channel channel)
+	void AudioManager::ToggleMuteChannel(Channel m_Channel)
 	{
-		s64 const ch{ static_cast<s64>(channel) };
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
 		b8 isMuted{};
-		channelGroup[ch]->getMute(&isMuted);
-		channelGroup[ch]->setMute(!isMuted);
+		channelGroup[m_Ch]->getMute(&isMuted);
+		channelGroup[m_Ch]->setMute(!isMuted);
 	}
 
-	void AudioManager::SetChannelVolume(Channel channel, f32 volume)
+	void AudioManager::SetChannelVolume(Channel m_Channel, f32 m_Volume)
 	{
-		s64 const ch{ static_cast<s64>(channel) };
-		channelGroup[ch]->setVolume(volume);
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
+		channelGroup[m_Ch]->setVolume(m_Volume);
 	}
 
 	/***************************************************************************************************
@@ -351,108 +351,108 @@ namespace ALEngine::Engine
 
 	void StopAudio(Audio const& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
-		(*audio.ch)->stop();
+		(*audio.m_Ch)->stop();
 	}
 
 	void PauseAudio(Audio const& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
-		(*audio.ch)->setPaused(true);
+		(*audio.m_Ch)->setPaused(true);
 	}
 
 	void UnpauseAudio(Audio const& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
-		(*audio.ch)->setPaused(false);
+		(*audio.m_Ch)->setPaused(false);
 	}
 
 	void ToggleAudioPause(Audio const& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
-		b8 isPlaying{}; (*audio.ch)->getPaused(&isPlaying);
-		(*audio.ch)->setPaused(!isPlaying);
+		b8 isPlaying{}; (*audio.m_Ch)->getPaused(&isPlaying);
+		(*audio.m_Ch)->setPaused(!isPlaying);
 	}
 
 	void MuteAudio(Audio const& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
-		(*audio.ch)->setMute(true);
+		(*audio.m_Ch)->setMute(true);
 	}
 
 	void UnmuteAudio(Audio const& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
-		(*audio.ch)->setMute(true);
+		(*audio.m_Ch)->setMute(true);
 	}
 
 	void ToggleMuteAudio(Audio& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
 		b8 isMuted{}; 
-		(*audio.ch)->getMute(&isMuted);
-		(*audio.ch)->setMute(!isMuted);
+		(*audio.m_Ch)->getMute(&isMuted);
+		(*audio.m_Ch)->setMute(!isMuted);
 	}
 
 	void SetAudioVolume(Audio const& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
-		(*audio.ch)->setVolume(audio.volume);
+		(*audio.m_Ch)->setVolume(audio.m_Volume);
 	}
 
 	void SetAudioLoop(Audio const& audio)
 	{
-		if (!audio.ch)
+		if (!audio.m_Ch)
 			return;
-		u32 const LOOP = audio.loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
-		(*audio.ch)->setMode(LOOP);
+		u32 const LOOP = audio.m_Loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		(*audio.m_Ch)->setMode(LOOP);
 	}
 
-	void StopChannel(Channel channel)
+	void StopChannel(Channel m_Channel)
 	{
-		audioManager->StopChannel(channel);
+		audioManager->StopChannel(m_Channel);
 	}
 
-	void PauseChannel(Channel channel)
+	void PauseChannel(Channel m_Channel)
 	{
-		audioManager->PauseChannel(channel);
+		audioManager->PauseChannel(m_Channel);
 	}
 
-	void UnpauseChannel(Channel channel)
+	void UnpauseChannel(Channel m_Channel)
 	{
-		audioManager->UnpauseChannel(channel);
+		audioManager->UnpauseChannel(m_Channel);
 	}
 
-	void TogglePauseChannel(Channel channel)
+	void TogglePauseChannel(Channel m_Channel)
 	{
-		audioManager->TogglePauseChannel(channel);
+		audioManager->TogglePauseChannel(m_Channel);
 	}
 
-	void MuteChannel(Channel channel)
+	void MuteChannel(Channel m_Channel)
 	{
-		audioManager->MuteChannel(channel);
+		audioManager->MuteChannel(m_Channel);
 	}
 
-	void UnmuteChannel(Channel channel)
+	void UnmuteChannel(Channel m_Channel)
 	{
-		audioManager->UnmuteChannel(channel);
+		audioManager->UnmuteChannel(m_Channel);
 	}
 
-	void ToggleMuteChannel(Channel channel)
+	void ToggleMuteChannel(Channel m_Channel)
 	{
-		audioManager->ToggleMuteChannel(channel);
+		audioManager->ToggleMuteChannel(m_Channel);
 	}
 
-	void SetChannelVolume(Channel channel, f32 volume)
+	void SetChannelVolume(Channel m_Channel, f32 m_Volume)
 	{
-		audioManager->SetChannelVolume(channel, volume);
+		audioManager->SetChannelVolume(m_Channel, m_Volume);
 	}
 }

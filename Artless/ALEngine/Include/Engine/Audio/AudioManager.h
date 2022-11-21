@@ -52,28 +52,28 @@ namespace ALEngine::Engine
 									Interface for adjusting a single audio								
 	****************************************************************************************************/
 	/*!*********************************************************************************
-		\brief Play audio's sound
+		\brief Play audio's m_Sound
 
 		\param [in] audio: Audio with the different audio settings
 	***********************************************************************************/
 	void PlayAudio(Audio& audio);
 
 	/*!*********************************************************************************
-		\brief Stop audio's sound
+		\brief Stop audio's m_Sound
 
 		\param [in] audio: Audio with the different audio settings
 	***********************************************************************************/
 	void StopAudio(Audio const& audio);
 
 	/*!*********************************************************************************
-		\brief Pause audio's sound
+		\brief Pause audio's m_Sound
 
 		\param [in] audio: Audio with the different audio settings
 	***********************************************************************************/
 	void PauseAudio(Audio const& audio);
 
 	/*!*********************************************************************************
-		\brief Unpause audio's sound
+		\brief Unpause audio's m_Sound
 
 		\param [in] audio: Audio with the different audio settings
 	***********************************************************************************/
@@ -108,77 +108,77 @@ namespace ALEngine::Engine
 	void ToggleMuteAudio(Audio const& audio);
 
 	/*!*********************************************************************************
-		\brief Set audio's volume
+		\brief Set audio's m_Volume
 
 		\param [in] audio: Audio with the different audio settings
 	***********************************************************************************/
 	void SetAudioVolume(Audio const& audio);
 
 	/*!*********************************************************************************
-		\brief Using audio's channel and loop the audio
+		\brief Using audio's m_Channel and m_Loop the audio
 
 		\param [in] audio: Audio with the different audio settings
 	***********************************************************************************/
 	void SetAudioLoop(Audio const& audio);
 
 	/***************************************************************************************************
-									Interface for adjusting channel group								
+									Interface for adjusting m_Channel group								
 	****************************************************************************************************/
 	/*!*********************************************************************************
-		\brief Stop channel group
+		\brief Stop m_Channel group
 
-		\param [in] channel: Channel group
+		\param [in] m_Channel: Channel group
 	***********************************************************************************/
-	void StopChannel(Channel channel);
+	void StopChannel(Channel m_Channel);
 
 	/*!*********************************************************************************
-		\brief Pause channel group
+		\brief Pause m_Channel group
 
-		\param [in] channel: Channel group
+		\param [in] m_Channel: Channel group
 	***********************************************************************************/
-	void PauseChannel(Channel channel);
+	void PauseChannel(Channel m_Channel);
 
 	/*!*********************************************************************************
-		\brief Unpause channel group
+		\brief Unpause m_Channel group
 
-		\param [in] channel: Channel group
+		\param [in] m_Channel: Channel group
 	***********************************************************************************/
-	void UnpauseChannel(Channel channel);
+	void UnpauseChannel(Channel m_Channel);
 
 	/*!*********************************************************************************
-		\brief Toggle function to pause channel group
+		\brief Toggle function to pause m_Channel group
 
-		\param [in] channel: Channel group
+		\param [in] m_Channel: Channel group
 	***********************************************************************************/
-	void TogglePauseChannel(Channel channel);
+	void TogglePauseChannel(Channel m_Channel);
 
 	/*!*********************************************************************************
-		\brief Mute channel
+		\brief Mute m_Channel
 
-		\param [in] channel: Channel group
+		\param [in] m_Channel: Channel group
 	***********************************************************************************/
-	void MuteChannel(Channel channel);
+	void MuteChannel(Channel m_Channel);
 
 	/*!*********************************************************************************
-		\brief Unmute channel
+		\brief Unmute m_Channel
 
-		\param [in] channel: Channel group
+		\param [in] m_Channel: Channel group
 	***********************************************************************************/
-	void UnmuteChannel(Channel channel);
+	void UnmuteChannel(Channel m_Channel);
 
 	/*!*********************************************************************************
-		\brief Toggle function to mute channel group
+		\brief Toggle function to m_Mute m_Channel group
 
-		\param [in] channel: Channel group
+		\param [in] m_Channel: Channel group
 	***********************************************************************************/
-	void ToggleMuteChannel(Channel channel);
+	void ToggleMuteChannel(Channel m_Channel);
 
 	/*!*********************************************************************************
-		\brief Set channel's volume
+		\brief Set m_Channel's m_Volume
 
-		\param [in] channel: Channel group
+		\param [in] m_Channel: Channel group
 	***********************************************************************************/
-	void SetChannelVolume(Channel channel, f32 volume);
+	void SetChannelVolume(Channel m_Channel, f32 m_Volume);
 }
 
 #endif

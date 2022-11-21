@@ -89,9 +89,9 @@ namespace ALEngine::Editor
 		if (Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
 			DisplayCollider();
 
-		//// Check if there is Audio component
-		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
-		//	DisplayAudio();
+		// Check if there is Audio component
+		if (Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
+			DisplayAudio();
 
 		//// Check if there is Animator component
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
@@ -259,7 +259,7 @@ namespace ALEngine::Editor
 			}
 
 			// File path
-			c8* fp = (c8*)spr.filePath.c_str();
+			c8* fp = const_cast<c8*>(spr.filePath.c_str());
 			ImGui::PushID("FilePath");
 			ImGui::InputText("File Path", fp, FILE_BUFFER_SIZE);
 
@@ -457,10 +457,138 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayAudio(void)
 	{
+		using namespace Engine;
+		AudioSource& audioSource = ECS::Coordinator::Instance()->GetComponent<AudioSource>(m_SelectedEntity);
+		
 		if (ImGui::TreeNodeEx("Audio Component##Inspector"))
-		{
+		{			
+			static u32 toDelete{ ECS::MAX_ENTITIES };
+			for (auto& a : audioSource.list)
+			{
+				Audio& ad = a.second;
+				std::string treeName;
+				if (ad.m_AudioName.empty())
+					treeName = "Audio##Inspector" + std::to_string(ad.m_ID);
+				else
+				{
+					u64 str_it = ad.m_AudioName.find_last_of("\\");
+					u64 sizeName = ad.m_AudioName.find_last_of(".") - str_it - 1;
+
+					treeName = ad.m_AudioName.substr(str_it + 1, sizeName);
+				}
+
+				if (ImGui::TreeNodeEx(treeName.c_str()))
+				{
+					ImGui::Text("ID: %u", ad.m_ID);
+
+					c8* stringName = const_cast<c8*>(ad.m_AudioName.c_str());
+					ImGuiInputTextFlags flag = ImGuiInputTextFlags_ReadOnly;
+					ImGui::InputTextWithHint("##AudioFileInputInspector", "Audio Clip Name", stringName, FILE_BUFFER_SIZE, flag);
+					ad.m_AudioName = stringName;
+
+					// Drag Drop for Selectable
+					if (ImGui::BeginDragDropTarget())
+					{
+						// Payload flag
+						ImGuiDragDropFlags payload_flag{ 0 };
+						//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+						// Get Drag and Drop Payload
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
+						{
+							// Get filepath
+							size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
+							wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+							// Check if image (png or jpg)
+							std::string fileString = filePath;
+							if (fileString.find(".wav") != std::string::npos)
+							{
+								u32 id_cpy = ad.m_ID;
+								ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(fileString));
+								ad.m_ID = id_cpy;
+							}
+							else
+							{
+								AL_CORE_ERROR("A .wav file is required!");
+							}
+						}
+						ImGui::EndDragDropTarget();
+					}
+
+					ImGui::DragFloat("Volume##Inspector", &ad.m_Volume, 0.001f, 0.f, 1.f);
+
+					ImGui::Checkbox("Loop##Inspector", &ad.m_Loop);
+
+					ImGui::Checkbox("Mute##Inspector", &ad.m_Mute);
+
+					const c8* channelList[]{ "BGM", "SFX" };
+					s32 currChannel = static_cast<s32>(ad.m_Channel);
+					static const c8* curr = nullptr;
+					if (ImGui::BeginCombo("Channel Group##Inspector", curr))
+					{
+						for (s32 i{ 0 }; i < IM_ARRAYSIZE(channelList); ++i)
+						{
+							const b8 is_selected = (curr == channelList[i]);
+							if (ImGui::Selectable(channelList[i], is_selected))
+							{
+								ad.m_Channel = static_cast<Channel>(i);
+								curr = channelList[i];
+							}
+
+							if (is_selected)
+							{
+								ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+							}
+						}
+
+						ImGui::EndCombo();
+					}
+
+					if (ImGui::Button("Play Audio##Inspector"))
+					{
+						ad.Play();
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Stop Audio##Inspector"))
+					{
+						ad.Stop();
+					}
+
+					if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+					{
+						ImGui::OpenPopup("audio_rightclick");
+						toDelete = ad.m_ID;
+					}
+
+					ImGui::TreePop();
+				}
+	
+			}
+
+			if (ImGui::BeginPopup("audio_rightclick"))
+			{
+				if (ImGui::Selectable("Remove"))
+				{
+					if (toDelete != ECS::MAX_ENTITIES)
+					{
+						audioSource.list.erase(toDelete);
+						toDelete = ECS::MAX_ENTITIES;
+					}
+				}
+				ImGui::EndPopup();
+			}
+
+			if (ImGui::Button("Add##AudioInspector"))
+			{
+				Audio ad;
+				ad.m_AudioName = "";
+				ad.m_ID = audioSource.id;
+				audioSource.list[audioSource.id++] = ad;
+			}
+
 			ImGui::TreePop();
-		}
+		}		
 	}
 
 	void InspectorPanel::DisplayAnimator(void)
@@ -606,15 +734,28 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
-				case InspectorComponents::InComp_Script:
+				//case InspectorComponents::InComp_Script:
+				//	// Check if has component
+				//	if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+				//	{
+				//		if (ImGui::Selectable("Script Component") &&
+				//			m_SelectedEntity != ECS::MAX_ENTITIES)
+				//		{
+				//			// Add Script Component
+				//			ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
+				//		}
+				//		++count;
+				//	}
+				//	break;
+				case InspectorComponents::InComp_Audio:
 					// Check if has component
-					if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+					if (!ECS::Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
 					{
-						if (ImGui::Selectable("Script Component") &&
+						if (ImGui::Selectable("Audio Component") &&
 							m_SelectedEntity != ECS::MAX_ENTITIES)
 						{
-							// Add Script Component
-							ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<Engine::AudioSource>(m_SelectedEntity, Engine::AudioSource());
 						}
 						++count;
 					}

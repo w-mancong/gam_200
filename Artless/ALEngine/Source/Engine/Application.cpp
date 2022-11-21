@@ -72,7 +72,7 @@ namespace ALEngine::Engine
 				Render();
 			}
 
-			// Marks the end of a frame loop, for tracy profiler
+			// Marks the end of a frame m_Loop, for tracy profiler
 			FrameMark
 		}
 #endif
@@ -157,7 +157,7 @@ namespace ALEngine::Engine
 					Time::WaitUntil();
 				}
 
-				// Marks the end of a frame loop, for tracy profiler
+				// Marks the end of a frame m_Loop, for tracy profiler
 				FrameMark
 			}
 
@@ -208,7 +208,7 @@ namespace ALEngine::Engine
 
 	void Application::Update(void)
 	{
-		// should do the game loop here
+		// should do the game m_Loop here
 		while (GameStateManager::current != GameState::Quit && appStatus)
 		{
 #if EDITOR
