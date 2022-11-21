@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="Include\Commands\Command.h" />
     <ClInclude Include="Include\Common Header\MyScripting.h" />
     <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
+    <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />

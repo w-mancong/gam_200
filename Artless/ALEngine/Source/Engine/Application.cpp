@@ -62,14 +62,12 @@ namespace ALEngine::Engine
 			Input::Update();
 			AssetManager::Instance()->Update();
 
-			if (Input::KeyTriggered(KeyCode::A))
-				Coordinator::Instance()->DestroyEntities();
-
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
 
 			{
 				PROFILER_TIMER("Render Update")
+				//RenderTransformBox();
 				// Render
 				Render();
 			}

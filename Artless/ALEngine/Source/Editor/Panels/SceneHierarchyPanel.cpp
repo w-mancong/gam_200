@@ -50,7 +50,7 @@ namespace ALEngine::Editor
 			sceneGraph.Push(-1, GO);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
-			sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
+			sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 			ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 
@@ -119,7 +119,7 @@ namespace ALEngine::Editor
 				sceneGraph.Push(selectedEntity, GO); // add child entity under parent
 
 				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
-				sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
+				sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 				AL_CORE_INFO("Entity Created!");
 			}
