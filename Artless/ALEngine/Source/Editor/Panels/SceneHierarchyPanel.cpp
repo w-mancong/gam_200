@@ -164,6 +164,35 @@ namespace ALEngine::Editor
 			ImGui::EndDragDropTarget();
 		}
 
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+			ImGui::OpenPopup("panel_rightclick##SceneHierarchy");
+
+		ImGui::SetNextWindowSize({ 200.f, 300.f });
+		if (ImGui::BeginPopup("panel_rightclick##SceneHierarchy"))
+		{
+			// Add Entity Button
+			if (ImGui::MenuItem("Add Entity"))
+			{
+				// Entity Transform
+				Transform xform = Transform{ Math::Vector2(0.f, 0.f),
+					Math::Vector2(50.f, 50.f) };
+
+				// Create Entity
+				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+				ECS::CreateSprite(GO, xform);
+
+				sceneGraph.Push(-1, GO);
+
+				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
+				sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
+
+				ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
+
+				AL_CORE_INFO("Entity Created!");
+			}
+			ImGui::EndPopup();
+		}
+
 		ImGui::End();
 	}
 	

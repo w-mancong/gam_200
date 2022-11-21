@@ -673,6 +673,11 @@ namespace ALEngine::Editor
 	{
 		m_IsReceivingKBInput = receivingInput;
 	}
+
+	b8 ALEditor::GetEditorInFocus(void)
+	{
+		return m_EditorInFocus;
+	}
 }
 
 #endif

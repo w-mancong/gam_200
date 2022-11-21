@@ -18,7 +18,7 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			if (!focus)
+			if (!focus && !editorFocus)
 			{
 				glfwPollEvents();
 				return;
@@ -30,6 +30,10 @@ namespace ALEngine::Engine
 				Commands::EditorCommandManager::Update();
 				// Begin new ImGui frame
 				ALEditor::Instance()->Begin();
+				
+				// Set the window focus
+				ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
+				editorFocus = ImGui::IsWindowFocused(flag);
 			}
 
 			Input::Update();

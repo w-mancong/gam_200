@@ -54,9 +54,10 @@ namespace ALEngine::Editor
 		// Exit if no entity
 		if (!HasSelectedEntity())
 		{
-			ImGui::NewLine();
+			/*ImGui::NewLine();
 			ImVec2 textSize = ImGui::CalcTextSize("Click on an Entity to view it's components");
-			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));
+			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));*/
+			ImGui::AlignTextToFramePadding();
 			ImGui::TextWrapped("Click on an Entity to view it's components");
 			ImGui::End();
 			return;

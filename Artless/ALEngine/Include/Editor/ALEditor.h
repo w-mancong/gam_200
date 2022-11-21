@@ -218,6 +218,16 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void SetReceivingKBInput(b8 receivingInput);
 
+		/*!*********************************************************************************
+			\brief
+			Returns if the editor is in focus
+
+			\return
+			Returns true if editor is in focus, 
+			else returns false
+		***********************************************************************************/
+		b8 GetEditorInFocus(void);
+
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -272,6 +282,7 @@ namespace ALEngine::Editor
 		b8 m_AnimatorPanelEnabled{ false };				// Set to true if Animator Panel is enabled
 		b8 m_AudioPanelEnabled{ false };				// Set to true if Audio Panel is enabled
 		b8 m_TileEditorEnabled{ false };				// Set to true if tile editor is enabled
+		b8 m_EditorInFocus{ true };						// Bool to keep track of whether the editor is in focus
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel
