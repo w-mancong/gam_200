@@ -28,6 +28,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Components/EventTrigger.h>
 #include <ECS/Components/Cell.h>
 #include <ECS/Components/CellLoader.h>
+#include <Engine/Audio/Audio.h>
 
 // --------------- Structure --------------------
 #include <ECS/Structure/component.h>

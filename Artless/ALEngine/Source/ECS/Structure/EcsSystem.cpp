@@ -15,6 +15,7 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<EventCollisionTrigger>();
 		Coordinator::Instance()->RegisterComponent<Unit>();
 		Coordinator::Instance()->RegisterComponent<Cell>();
+		Coordinator::Instance()->RegisterComponent<Engine::AudioSource>();
 
 		// To be deleted later
 		Coordinator::Instance()->RegisterComponent<EntityScript>();

@@ -64,6 +64,14 @@ namespace ALEngine::Engine
 		Channel channel{ Channel::Invalid };
 		fmod::Channel** ch{ nullptr };	// reference to fmod's channel
 	};
+
+	/*!*********************************************************************************
+		\brief Struct to store a map of different audios 
+	***********************************************************************************/
+	struct AudioSource
+	{
+		std::unordered_map<std::string, Audio> audioSources;
+	};
 }
 
 #endif
