@@ -47,6 +47,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Systems/EventCollisionTriggerSystem.h>
 #include <ECS/Systems/EventTriggerSystem.h>
 #include <ECS/Systems/GameplaySystem.h>
+#include <ECS/Systems/TransformSystem.h>
 
 
 using ALEngine::ECS::Coordinator;

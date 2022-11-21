@@ -31,6 +31,10 @@ namespace ALEngine::ECS
 		RegisterEventCollisionTriggerSystem();
 		RegisterGameplaySystem();
 
+#if EDITOR
+		//RegisterTransformSystem();
+#endif
+
 		// To be deleted later
 		RegisterCppScriptSystem();
 	}

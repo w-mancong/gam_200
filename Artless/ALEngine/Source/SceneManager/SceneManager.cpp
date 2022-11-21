@@ -53,7 +53,8 @@ namespace ALEngine::Engine::Scene
 		sprite.color.a = c[3].GetFloat();
 
 		// Getting layers
-		sprite.layer = static_cast<RenderLayer>(v[0]["layer"].GetUint64());
+		//sprite.layer = static_cast<RenderLayer>(v[0]["layer"].GetUint64());
+		sprite.layer = v[0]["layer"].GetUint();
 
 		// Initialising value
 		sprite.id = AssetManager::Instance()->GetGuid(sprite.filePath);
