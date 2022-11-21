@@ -38,6 +38,12 @@ namespace ALEngine::ECS
 			UNIT_ATTACKING
 		};
 
+		enum class PATTERN_PLACEMENT_STATUS {
+			NOTHING, 
+			PLACING_FOR_TILE,
+			PLACING_FOR_ABILITIES
+		};
+
 		struct MoveOrder {
 			Entity entity;
 			std::vector<Entity> path;
@@ -52,9 +58,11 @@ namespace ALEngine::ECS
 
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
+		PATTERN_PLACEMENT_STATUS currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
 		MoveOrder currentModeOrder;
 
+		std::vector<Entity> GUI_Pattern_Button_List;
 
 		//Patterns
 		std::vector<Pattern> pattern_List;
@@ -68,8 +76,6 @@ namespace ALEngine::ECS
 		//Return if reached end
 		bool StepUpModeOrderPath(MoveOrder& order);
 		u32 getRoomSize();
-		Entity getEntityCell(u32 x, u32 y);
-		void ToggleCellToInaccessible(u32 x, u32 y, b8 istrue);
 		void RunGameState();
 
 		void MovePlayerEntityToCell(Entity cellEntity);
@@ -89,6 +95,22 @@ namespace ALEngine::ECS
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 	}
 
+	void Event_Button_Select_CurrentPattern(Entity invoker) {
+		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+	}
+
+	void Event_Button_Select_Pattern_1(Entity invoker) {
+		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+	}
+	
+	void Event_Button_Select_Pattern_2(Entity invoker) {
+		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+	}
+	
+	void Event_Button_Select_Pattern_3(Entity invoker) {
+		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+	}
+
 	void Event_Button_Select_EndTurn(Entity invoker) {
 		//End turn
 		gameplaySystem->EndTurn();
@@ -98,14 +120,16 @@ namespace ALEngine::ECS
 		AL_CORE_INFO("Enter Cell");
 		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[0];
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
-		//cell.m_Color_Tint = { 1.f,1.f,0.f,1.f };
-		GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,0.f,1.f });
+
+		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,0.f,1.f });
+		}
 	}
 
 	void Event_MouseExitCell(Entity invoker) {
 		AL_CORE_INFO("Exit Cell");
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
-		//cell.m_Color_Tint = { 1.f,1.f,1.f,1.f };
+
 		GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 	}
 
@@ -137,6 +161,7 @@ namespace ALEngine::ECS
 		
 		gameplaySystem->currentGameplayStatus = GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP;
 		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
+		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 		
 		//Initialize Pattern
 		InitializePatterns(gameplaySystem->pattern_List);
@@ -176,7 +201,7 @@ namespace ALEngine::ECS
 				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
 				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
 
-				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i, j), cell);
+				Coordinator::Instance()->AddComponent(getEntityCell(gameplaySystem->m_Room, i, j), cell);
 			}
 		}
 
@@ -188,21 +213,23 @@ namespace ALEngine::ECS
 		playerUnit.coordinate[0] = 0;
 		playerUnit.coordinate[1] = 0;
 
-		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]));
+		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
 		Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
 		playertransform.position = SpawnCellTransform.position;
 		playertransform.scale = { 60, 60 };
 
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
+		
+		GameplayInterface::InitializePatternGUI(gameplaySystem->GUI_Pattern_Button_List);
 
 		//Set a few blocks to be inaccessible
-		gameplaySystem->ToggleCellToInaccessible(1, 0, false);
-		gameplaySystem->ToggleCellToInaccessible(1, 1, false);
-		gameplaySystem->ToggleCellToInaccessible(1, 2, false);
-		gameplaySystem->ToggleCellToInaccessible(2, 1, false);
-		gameplaySystem->ToggleCellToInaccessible(3, 1, false);
-		gameplaySystem->ToggleCellToInaccessible(3, 2, false);
+		ToggleCellToInaccessible(gameplaySystem->m_Room, 1, 0, false);
+		ToggleCellToInaccessible(gameplaySystem->m_Room, 1, 1, false);
+		ToggleCellToInaccessible(gameplaySystem->m_Room, 1, 2, false);
+		ToggleCellToInaccessible(gameplaySystem->m_Room, 2, 1, false);
+		ToggleCellToInaccessible(gameplaySystem->m_Room, 3, 1, false);
+		ToggleCellToInaccessible(gameplaySystem->m_Room, 3, 2, false);
 	}
 
 	void UpdateGameplaySystem(void)
@@ -228,6 +255,9 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::EndTurn() {
+		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
+		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
+		
 		switch (currentGameplayStatus) {
 			case GAMEPLAY_STATUS::PHASE_SETUP:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ACTION;
@@ -267,15 +297,6 @@ namespace ALEngine::ECS
 
 	uint32_t GameplaySystem::getRoomSize() {
 		return gameplaySystem->roomSize[0] * gameplaySystem->roomSize[1];
-	}
-
-	Entity GameplaySystem::getEntityCell(uint32_t x, uint32_t y) {
-		return gameplaySystem->m_Room.roomCellsArray[y * gameplaySystem->roomSize[0] + x];
-	}
-
-	void GameplaySystem::ToggleCellToInaccessible(uint32_t x, uint32_t y, b8 istrue) {
-		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(x, y));
-		cell.m_isAccesible = istrue;
 	}
 
 	bool GameplaySystem::StepUpModeOrderPath(MoveOrder& order) {
@@ -343,7 +364,7 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
-		gameplaySystem->startCellEntity = gameplaySystem->getEntityCell(playerUnit.coordinate[0], playerUnit.coordinate[1]);
+		gameplaySystem->startCellEntity = getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
 
 		std::vector<ECS::Entity> pathList;
 		bool isPathFound = Engine::AI::FindPath(gameplaySystem->m_Room, gameplaySystem->startCellEntity, gameplaySystem->targetCellEntity, pathList);
@@ -402,7 +423,7 @@ namespace ALEngine::ECS
 		Entity endTurnBtn = Coordinator::Instance()->CreateEntity();
 		Transform transform;
 		transform.position = { 750, 100 };
-		transform.scale = { 500, 100 };
+		transform.scale = { 350, 100 };
 		
 		CreateCollider(endTurnBtn);
 		CreateSprite(endTurnBtn, transform);
@@ -454,5 +475,19 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
 		Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
 		Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+	
+		//Draw the Pattern GUI
+		for (int i = 0; i < gameplaySystem->GUI_Pattern_Button_List.size(); ++i) {
+			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->GUI_Pattern_Button_List[i]);
+
+			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
+			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
+
+			//Draw 4 lines
+			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+		}
 	}
 }

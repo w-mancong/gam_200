@@ -24,11 +24,14 @@ namespace ALEngine::Engine::GameplayInterface
 		std::vector<Vector2Int> coordinate_occupied;
 	};
 
+
 	/*!*********************************************************************************
 	\brief
 	Global function to return the cell entity based on specified position 
     ***********************************************************************************/
 	u32 getEntityCell(Room& currentRoom, u32 x, u32 y);
+
+	void ToggleCellToInaccessible(Room& currentRoom, u32 x, u32 y, b8 istrue);
 
 	/*!*********************************************************************************
 	\brief
@@ -44,6 +47,9 @@ namespace ALEngine::Engine::GameplayInterface
 
 	//Initialize Patterns
 	void InitializePatterns(std::vector<Pattern>& patternList);
+
+	//Initialize Pattern GUI
+	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities);
 
 	//Filter Grids from Hovering Over cell during pattern select
 	//void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern);

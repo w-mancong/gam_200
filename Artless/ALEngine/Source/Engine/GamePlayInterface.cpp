@@ -17,6 +17,11 @@ namespace ALEngine::Engine::GameplayInterface
 		return currentRoom.roomCellsArray[y * currentRoom.width + x];
 	}
 
+	void ToggleCellToInaccessible(Room& currentRoom, u32 x, u32 y, b8 istrue) {
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+		cell.m_isAccesible = istrue;
+	}
+
 	bool CheckListContainsCell(std::list<ECS::Cell*> cellList, ECS::Cell& cellSearchNode)
 	{
 		for (auto it = cellList.begin(); it != cellList.end(); ++it) {
@@ -77,5 +82,33 @@ namespace ALEngine::Engine::GameplayInterface
 				
 			}
 		}//End loop through pattern body check
+	}
+
+	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities) {
+		GUI_Pattern_Button_Entities.clear();
+
+		//There will be a fix of 4 buttons
+		for (int i = 0; i < 4; ++i) {
+			GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->CreateEntity());
+		}
+
+		u32 x_offset = 150;
+
+		//First one will be the current
+		Transform transform;
+		transform.position = { 1000.f, 100.f, 0.f };
+		transform.scale = { 100.f, 100.f };
+
+		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[0], transform);
+
+		//The other 3 will be in queue
+		transform.position = { 1000.f + x_offset, 100.f, 0.f };
+		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[1], transform);
+		
+		transform.position = { 1000.f + x_offset * 2.f, 100.f, 0.f };
+		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[2], transform);
+
+		transform.position = { 1000.f + x_offset * 3.f, 100.f, 0.f };
+		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[3], transform);
 	}
 }
