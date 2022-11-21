@@ -13,6 +13,13 @@ brief:	This file contain static class declaration for basic key inputs from user
 
 namespace ALEngine::UserInput
 {
+	enum class MouseWheelEvent
+	{
+		MouseWheelIdle	= 0,
+		MouseWheelUp	= 1,
+		MouseWheelDown	= -1,
+	};
+
 	class Input
 	{
 	public:
@@ -110,6 +117,8 @@ namespace ALEngine::UserInput
 			Screen Y axis resolution.
 		***********************************************************************************/
 		static s32 GetScreenResY();
+
+		static MouseWheelEvent m_MouseWheelEvent;
 
 	private:
 		Input(void)  = default;

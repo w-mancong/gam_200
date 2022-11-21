@@ -164,6 +164,7 @@ namespace ALEngine::Editor
 	{
 		ZoneScopedN("Editor Update")
 		// Change ImGui Enabled or Disabled
+		/*
 		if (Input::KeyTriggered(KeyCode::Key_9))
 		{
 			m_ImGuiEnabled = !m_ImGuiEnabled;
@@ -179,6 +180,7 @@ namespace ALEngine::Editor
 				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
 			ImGui::UpdatePlatformWindows();
 		}
+		*/
 
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
@@ -367,8 +369,7 @@ namespace ALEngine::Editor
 					ECS::StartGameplaySystem();
 				}
 				else
-				{
-					ECS::GetSceneGraph().Destruct(-1); // destroy scene graph
+				{					
 					Coordinator::Instance()->DestroyEntities();
 					ECS::ExitGameplaySystem();
 
@@ -595,6 +596,7 @@ namespace ALEngine::Editor
 		{
 			Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
 			AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
+			m_SaveScene = false;
 		}
 	}
 }
@@ -677,6 +679,11 @@ namespace ALEngine::Editor
 	b8 ALEditor::GetEditorInFocus(void)
 	{
 		return m_EditorInFocus;
+	}
+	
+	void ALEditor::SetCurrentSceneName(std::string sceneName)
+	{
+		m_CurrentSceneName = sceneName;
 	}
 }
 

@@ -719,6 +719,8 @@ namespace ALEngine::Engine::Scene
 		doc.Parse(buffer);
 		Memory::DynamicMemory::Delete(buffer);
 
+		Coordinator::Instance()->DestroyEntities();
+
 		DeserializeScene(doc);
 	}
 

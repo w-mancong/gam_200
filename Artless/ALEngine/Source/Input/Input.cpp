@@ -8,6 +8,7 @@ namespace
 		 keyDownState[TOTAL_STATES][TOTAL_KEYS]		 = { false }, 
 		 keyReleasedState[TOTAL_STATES][TOTAL_KEYS]  = { false }, 
 		 keyTriggeredState[TOTAL_STATES][TOTAL_KEYS] = { false };
+
 	bool CheckInput(u64 key)
 	{
 		return GetAsyncKeyState(static_cast<u32>(key));
@@ -16,6 +17,8 @@ namespace
 
 namespace ALEngine::UserInput
 {
+	MouseWheelEvent Input::m_MouseWheelEvent{ MouseWheelEvent::MouseWheelIdle };
+
 	void Input::Update()
 	{
 		// Copy next state's to current state
@@ -23,6 +26,8 @@ namespace ALEngine::UserInput
 		std::copy(keyDownState[nextKeyIndex], keyDownState[nextKeyIndex] + TOTAL_KEYS, keyDownState[currentKeyIndex]);
 		std::copy(keyReleasedState[nextKeyIndex], keyReleasedState[nextKeyIndex] + TOTAL_KEYS, keyReleasedState[currentKeyIndex]);
 		std::copy(keyTriggeredState[nextKeyIndex], keyTriggeredState[nextKeyIndex] + TOTAL_KEYS, keyTriggeredState[currentKeyIndex]);
+
+		m_MouseWheelEvent = MouseWheelEvent::MouseWheelIdle;
 	}
 
 	s32 Input::GetScreenResX()

@@ -18,6 +18,7 @@ namespace ALEngine::Console
 
 	void StopConsole(void)
 	{
+		PostMessage(GetConsoleWindow(), WM_CLOSE, 0, 0);
 		FreeConsole();
 	}
 }
