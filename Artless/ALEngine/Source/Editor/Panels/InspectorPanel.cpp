@@ -248,6 +248,7 @@ namespace ALEngine::Editor
 		Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectedEntity);
 		if (ImGui::TreeNodeEx("Sprite Component##Inspector"))
 		{
+			ImGui::PushItemWidth(-(ImGui::GetContentRegionAvail().x / 2.5f));
 			// Image
 			if (spr.filePath != "")
 			{
@@ -304,6 +305,10 @@ namespace ALEngine::Editor
 				spr.filePath = fp;
 
 			ImGui::PopID();
+			
+			// Render Layer
+			s32 renderLayer{ 0 };
+			ImGui::DragInt("Render Layer", &renderLayer, 1.f, 0, 256);	
 
 			// Color wheel
 			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
@@ -331,6 +336,8 @@ namespace ALEngine::Editor
 			ImGui::TreePop();
 
 			ImGui::Separator();
+
+			ImGui::PopItemWidth();
 		}
 
 		// Drag Drop for Selectable

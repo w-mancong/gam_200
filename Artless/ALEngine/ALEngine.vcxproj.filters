@@ -83,6 +83,7 @@
     <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
+    <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -339,6 +340,7 @@
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptSystem.h" />
+    <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

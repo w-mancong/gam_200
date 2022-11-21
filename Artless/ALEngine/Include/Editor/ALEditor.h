@@ -290,7 +290,6 @@ namespace ALEngine::Editor
 		b8 m_SaveScene{ false };						// Set to save scene
 		b8 m_AnimatorPanelEnabled{ false };				// Set to true if Animator Panel is enabled
 		b8 m_AudioPanelEnabled{ false };				// Set to true if Audio Panel is enabled
-		b8 m_TileEditorEnabled{ false };				// Set to true if tile editor is enabled
 		b8 m_EditorInFocus{ true };						// Bool to keep track of whether the editor is in focus
 
 		// Panels
@@ -301,8 +300,9 @@ namespace ALEngine::Editor
 		LoggerPanel m_LoggerPanel;						// Logger Panel
 		ProfilerPanel m_ProfilerPanel;					// Profiler Panel
 		SceneHierarchyPanel m_SceneHierarchyPanel;		// Scene Hierarchy Panel
-		AnimatorEditorPanel m_AnimatorEditorPanel;            // Audio Editor Panel
+		AnimatorEditorPanel m_AnimatorEditorPanel;      // Audio Editor Panel
 		AudioEditorPanel m_AudioEditorPanel;            // Audio Editor Panel
+		TileEditorPanel m_TileEditor;					// Tile Editor Panel
 
 		// Editor Colors
 		ImVec4 m_ColorTitleBg{};			// Color of Title Background

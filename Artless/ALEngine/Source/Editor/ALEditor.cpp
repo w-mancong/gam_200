@@ -123,6 +123,8 @@ namespace ALEngine::Editor
 				m_AudioEditorPanel.OnImGuiRender();
 			}
 
+			m_TileEditor.OnImGuiRender();
+
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -307,7 +309,7 @@ namespace ALEngine::Editor
 				//  Set active for audio panel
 				if (ImGui::MenuItem("Tile Editor"))
 				{
-					m_TileEditorEnabled = !m_TileEditorEnabled;
+					m_TileEditor.SetPanelIsOpen(true);
 				}
 
 				ImGui::EndMenu();
@@ -476,6 +478,9 @@ namespace ALEngine::Editor
 		m_AudioEditorPanel.SetPanelMin(panel_min);
 		m_AudioEditorPanel.SetDefaults(editor_data.GetVec2("AudioPos", Math::Vec2()),
 			editor_data.GetVec2("AudioSize", panel_min));
+
+		// Tile Editor Panel
+		m_TileEditor.SetPanelMin(panel_min);
 
 	}
 
