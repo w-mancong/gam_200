@@ -419,7 +419,7 @@ namespace ALEngine::Engine
 	b8 IsAudioPlaying(Audio const& audio)
 	{
 		if (!audio.m_Ch)
-			return;
+			return false;
 		b8 isPlaying{ false };
 		(*audio.m_Ch)->isPlaying(&isPlaying);
 		return isPlaying;

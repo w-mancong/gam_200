@@ -504,11 +504,20 @@ namespace ALEngine::Editor
 						ImGui::EndDragDropTarget();
 					}
 
-					ImGui::DragFloat("Volume##Inspector", &ad.m_Volume, 0.001f, 0.f, 1.f);
+					if (ImGui::DragFloat("Volume##Inspector", &ad.m_Volume, 0.001f, 0.f, 1.f))
+					{
+						//ad.(ad.m_Volume)
+					}
 
 					ImGui::Checkbox("Loop##Inspector", &ad.m_Loop);
 
-					ImGui::Checkbox("Mute##Inspector", &ad.m_Mute);
+					if (ImGui::Checkbox("Mute##Inspector", &ad.m_Mute))
+					{
+						if (ad.m_Mute)
+							ad.Mute();
+						else
+							ad.Unmute();
+					}
 
 					const c8* channelList[]{ "BGM", "SFX" };
 					s32 currChannel = static_cast<s32>(ad.m_Channel);
@@ -533,14 +542,38 @@ namespace ALEngine::Editor
 						ImGui::EndCombo();
 					}
 
+					b8 playing = ad.IsPlaying();
+					if (playing)
+					{
+						ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+						ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+					}
 					if (ImGui::Button("Play Audio##Inspector"))
 					{
 						ad.Play();
 					}
+					if (playing)
+					{
+						ImGui::PopStyleVar();
+						ImGui::PopItemFlag();
+					}
+
 					ImGui::SameLine();
+
+					playing = ad.IsPlaying();
+					if (!playing)
+					{
+						ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+						ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+					}
 					if (ImGui::Button("Stop Audio##Inspector"))
 					{
 						ad.Stop();
+					}
+					if (!playing)
+					{
+						ImGui::PopStyleVar();
+						ImGui::PopItemFlag();
 					}
 
 					if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
