@@ -28,6 +28,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Components/EventTrigger.h>
 #include <ECS/Components/Cell.h>
 #include <ECS/Components/CellLoader.h>
+#include <Engine/Audio/Audio.h>
 
 // --------------- Structure --------------------
 #include <ECS/Structure/component.h>
@@ -47,6 +48,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Systems/EventCollisionTriggerSystem.h>
 #include <ECS/Systems/EventTriggerSystem.h>
 #include <ECS/Systems/GameplaySystem.h>
+#include <ECS/Systems/TransformSystem.h>
 
 
 using ALEngine::ECS::Coordinator;

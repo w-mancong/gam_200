@@ -12,21 +12,31 @@ brief:	This file contains the transform component
 namespace ALEngine::ECS::Component
 {
 	/*!*********************************************************************************
-		\brief
-			Transform component will be used to move entities around the scene
+		\brief Transform component will be used to move entities around the scene
 	***********************************************************************************/
 	struct Transform
 	{
 		// Local space info
-		Math::Vector3 position{ 0.0f, 0.0f, 0.0f };
-		Math::Vector2 scale{ 1.0f, 1.0f };
-		f32	rotation{ 0.0f };
+		math::vec3 localPosition{ 0.0f, 0.0f, 0.0f };
+		math::vec2 localScale{ 1.0f, 1.0f };
+		f32 localRotation{ 0.0f };
+
+		b8 isDirty{ false };
+
+		// To store previous information
+		math::vec3 prevPosition{ 0.0f, 0.0f, 0.0f };
+		math::vec2 prevScale{ 1.0f, 1.0f };
+		f32 prevRotation{ 0.0f };
+
 		// Global space info
+		math::vec3 position{ 0.0f, 0.0f, 0.0f };
+		math::vec2 scale{ 1.0f, 1.0f };
+		f32	rotation{ 0.0f };
 		Math::mat4 modelMatrix{ 1.0f };
 	};
 
-	Math::vec3 GetGlobalPosition(Entity en, Transform const& trans);
-	Math::vec3 GetGlobalScale(Entity en, Transform const& trans);
+	//Math::vec3 GetGlobalPosition(Transform const& trans);
+	//Math::vec3 GetGlobalScale(Transform const& trans);
 }
 
 #endif

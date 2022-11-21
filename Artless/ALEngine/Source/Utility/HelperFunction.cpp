@@ -5,7 +5,8 @@ namespace ALEngine::Utility
 	bool IsEqual(f32 a, f32 b)
 	{
 		const f32 abs_a = fabs(a), abs_b = fabs(b);
-		return abs_a - abs_b <= (abs_a > abs_b ? abs_b : abs_a) * FLT_EPSILON;
+		//return abs_a - abs_b <= (abs_a > abs_b ? abs_b : abs_a) * FLT_EPSILON;
+		return fabs(a - b) <= ((abs_a > abs_b ? abs_b : abs_a) * FLT_EPSILON);
 	}
 
 	c8* ReadBytes(std::filesystem::path const& filePath, u32* outSize)
