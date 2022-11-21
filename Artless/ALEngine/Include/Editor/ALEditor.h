@@ -202,6 +202,15 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void SetReceivingKBInput(b8 receivingInput);
 
+		/*!*********************************************************************************
+			\brief
+			Sets the current scene name
+
+			\param sceneName
+			The current scene name
+		***********************************************************************************/
+		void SetCurrentSceneName(std::string sceneName);
+
 	private:
 		/*!*********************************************************************************
 			\brief
