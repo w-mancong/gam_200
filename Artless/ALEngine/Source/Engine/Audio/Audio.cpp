@@ -55,6 +55,23 @@ namespace ALEngine::Engine
 			Mute();
 	}
 
+	void Audio::SetVolume(void)
+	{
+		SetAudioVolume(*this);
+	}
+
+	void Audio::SetLoop(b8 loop)
+	{
+		m_Loop = loop;
+		SetAudioLoop(*this);
+	}
+
+	void Audio::ToggleLoop(void)
+	{
+		m_Loop = !m_Loop;
+		SetAudioLoop(*this);
+	}
+
 	b8 Audio::IsPlaying(void)
 	{
 		return IsAudioPlaying(*this);

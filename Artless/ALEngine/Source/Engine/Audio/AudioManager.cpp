@@ -227,6 +227,7 @@ namespace ALEngine::Engine
 		u32 const LOOP = audio.m_Loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
 		m_Ch->setMode(LOOP);
 		m_Ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::SFX)]);
+		m_Ch->setMute(audio.m_Mute);
 		usedChannels.push_back(channelInfo);
 	}
 
@@ -245,6 +246,7 @@ namespace ALEngine::Engine
 		u32 const LOOP = audio.m_Loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
 		m_Ch->setMode(LOOP);
 		m_Ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::BGM)]);
+		m_Ch->setMute(audio.m_Mute);
 		usedChannels.push_back(channelInfo);
 	}
 
