@@ -50,7 +50,6 @@ namespace ALEngine::Engine::GameplayInterface
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 
-
 		//Straight line
 		newPattern.coordinate_occupied.push_back({ 0, 0 });
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
@@ -66,6 +65,14 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 0, 2 });
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
+
+		//Box Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		newPattern.coordinate_occupied.push_back({ 1, 1 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
 	}
 
 	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color) {
@@ -79,7 +86,6 @@ namespace ALEngine::Engine::GameplayInterface
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				cell.m_Color_Tint = color;
-				
 			}
 		}//End loop through pattern body check
 	}
@@ -99,16 +105,22 @@ namespace ALEngine::Engine::GameplayInterface
 		transform.position = { 1000.f, 100.f, 0.f };
 		transform.scale = { 100.f, 100.f };
 
+		EventTrigger eventTrigger;
+
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[0], transform);
+		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[0], eventTrigger);
 
 		//The other 3 will be in queue
 		transform.position = { 1000.f + x_offset, 100.f, 0.f };
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[1], transform);
+		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[1], eventTrigger);
 		
 		transform.position = { 1000.f + x_offset * 2.f, 100.f, 0.f };
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[2], transform);
+		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[2], eventTrigger);
 
 		transform.position = { 1000.f + x_offset * 3.f, 100.f, 0.f };
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[3], transform);
+		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[3], eventTrigger);
 	}
 }

@@ -96,19 +96,27 @@ namespace ALEngine::ECS
 	}
 
 	void Event_Button_Select_CurrentPattern(Entity invoker) {
+		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[0];
 	}
 
 	void Event_Button_Select_Pattern_1(Entity invoker) {
+		AL_CORE_INFO("Select Pattern 1");
 		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[1];
 	}
 	
 	void Event_Button_Select_Pattern_2(Entity invoker) {
+		AL_CORE_INFO("Select Pattern 2");
 		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[2];
 	}
 	
 	void Event_Button_Select_Pattern_3(Entity invoker) {
+		AL_CORE_INFO("Select Pattern 3");
 		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[3];
 	}
 
 	void Event_Button_Select_EndTurn(Entity invoker) {
@@ -118,7 +126,6 @@ namespace ALEngine::ECS
 
 	void Event_MouseEnterCell(Entity invoker) {
 		AL_CORE_INFO("Enter Cell");
-		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[0];
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
@@ -223,6 +230,12 @@ namespace ALEngine::ECS
 		
 		GameplayInterface::InitializePatternGUI(gameplaySystem->GUI_Pattern_Button_List);
 
+		Subscribe(gameplaySystem->GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
+		Subscribe(gameplaySystem->GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
+		Subscribe(gameplaySystem->GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
+		Subscribe(gameplaySystem->GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
+
+
 		//Set a few blocks to be inaccessible
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 1, 0, false);
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 1, 1, false);
@@ -292,7 +305,6 @@ namespace ALEngine::ECS
 		for (int i = path.size() - 1; i >= 0; --i) {
 			currentModeOrder.path.push_back(path[i]);
 		}
-		//currentModeOrder.path = std::move(path);
 	}
 
 	uint32_t GameplaySystem::getRoomSize() {
