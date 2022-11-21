@@ -68,6 +68,8 @@ namespace ALEngine::ECS
 		std::vector<Pattern> pattern_List;
 		Pattern selected_Pattern;
 
+		Entity current_Moused_Over_Cell;
+
 		//******FUNCTIONS**********//
 		void ClearMoveOrder();
 		Entity getCurrentEntityCell();
@@ -84,6 +86,8 @@ namespace ALEngine::ECS
 		void RunGameStateMoving();
 
 		void EndTurn();
+
+		void DeselectPatternPlacement();
 
 		//Creating Object
 		void InitializeEndTurnButton();
@@ -126,6 +130,9 @@ namespace ALEngine::ECS
 
 	void Event_MouseEnterCell(Entity invoker) {
 		AL_CORE_INFO("Enter Cell");
+
+		gameplaySystem->current_Moused_Over_Cell = invoker;
+
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
@@ -250,6 +257,14 @@ namespace ALEngine::ECS
 		if (!Editor::ALEditor::Instance()->GetGameActive()) {
 			return;
 		}
+
+		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING && Input::KeyDown(KeyCode::MouseRightButton)) {
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
+
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			gameplaySystem->DeselectPatternPlacement();
+		}
+
 		gameplaySystem->RunGameState();
 	}
 
@@ -321,6 +336,10 @@ namespace ALEngine::ECS
 		else {
 			return false;
 		}
+	}
+
+	void GameplaySystem::DeselectPatternPlacement() {
+		currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 	}
 
 	void GameplaySystem::RunGameState() {
