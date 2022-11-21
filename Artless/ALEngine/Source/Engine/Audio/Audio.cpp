@@ -54,4 +54,9 @@ namespace ALEngine::Engine
 		else
 			Mute();
 	}
+
+	b8 Audio::IsPlaying(void)
+	{
+		return IsAudioPlaying(*this);
+	}
 }
