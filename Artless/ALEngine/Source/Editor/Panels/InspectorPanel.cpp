@@ -178,7 +178,7 @@ namespace ALEngine::Editor
 			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::SCALE);
 
 		// Transform
-		if (ImGui::TreeNodeEx("Transform Component##Inspector"))
+		if (ImGui::CollapsingHeader("Transform Component##Inspector"))
 		{
 			// Rotate
 			if (ImGui::RadioButton("Translate", ALEditor::Instance()->GetCurrentGizmoOperation() == ImGuizmo::TRANSLATE))
@@ -235,10 +235,6 @@ namespace ALEngine::Editor
 					EditorCommandManager::AddCommand(cmd);
 				}
 			}
-
-			ImGui::TreePop();
-
-			ImGui::Separator();
 		}
 	}
 
@@ -246,7 +242,7 @@ namespace ALEngine::Editor
 	{
 		// Get Sprite
 		Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectedEntity);
-		if (ImGui::TreeNodeEx("Sprite Component##Inspector"))
+		if (ImGui::CollapsingHeader("Sprite Component##Inspector"))
 		{
 			ImGui::PushItemWidth(-(ImGui::GetContentRegionAvail().x / 2.5f));
 			// Image
@@ -332,11 +328,6 @@ namespace ALEngine::Editor
 				}
 			}
 
-			// Pop TreeNodeEx
-			ImGui::TreePop();
-
-			ImGui::Separator();
-
 			ImGui::PopItemWidth();
 		}
 
@@ -398,7 +389,7 @@ namespace ALEngine::Editor
 	void InspectorPanel::DisplayRigidBody(void)
 	{
 		// Mass, HasGravity, IsEnabled
-		if (ImGui::TreeNodeEx("RigidBody Component##Inspector"))
+		if (ImGui::CollapsingHeader("RigidBody Component##Inspector"))
 		{
 			Rigidbody2D& rb = ECS::Coordinator::Instance()->GetComponent<Rigidbody2D>(m_SelectedEntity);
 
@@ -408,16 +399,13 @@ namespace ALEngine::Editor
 
 			ImGui::Checkbox("Is Enabled", &rb.isEnabled);
 
-			ImGui::TreePop();
-
-			ImGui::Separator();
 		}
 	}
 
 	void InspectorPanel::DisplayCollider(void)
 	{
 		// Enum ColliderType, Rotation, Array2 F32 Scale, IsTriggered, IsDebug, IsEnabled, Vec2 LocalPos, 
-		if (ImGui::TreeNodeEx("Collider Component##Inspector"))
+		if (ImGui::CollapsingHeader("Collider Component##Inspector"))
 		{
 			Collider2D& collider = ECS::Coordinator::Instance()->GetComponent<Collider2D>(m_SelectedEntity);
 			
@@ -460,7 +448,7 @@ namespace ALEngine::Editor
 		using namespace Engine;
 		AudioSource& audioSource = ECS::Coordinator::Instance()->GetComponent<AudioSource>(m_SelectedEntity);
 		
-		if (ImGui::TreeNodeEx("Audio Component##Inspector"))
+		if (ImGui::CollapsingHeader("Audio Component##Inspector"))
 		{			
 			static u32 toDelete{ ECS::MAX_ENTITIES };
 			for (auto& a : audioSource.list)
@@ -586,8 +574,6 @@ namespace ALEngine::Editor
 				ad.m_ID = audioSource.id;
 				audioSource.list[audioSource.id++] = ad;
 			}
-
-			ImGui::TreePop();
 		}		
 	}
 
