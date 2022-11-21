@@ -391,7 +391,7 @@ namespace ALEngine::Engine
 	{
 		if (!audio.m_Ch)
 			return;
-		(*audio.m_Ch)->setMute(true);
+		(*audio.m_Ch)->setMute(false);
 	}
 
 	void ToggleMuteAudio(Audio& audio)

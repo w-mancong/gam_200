@@ -505,11 +505,12 @@ namespace ALEngine::Editor
 					}
 
 					if (ImGui::DragFloat("Volume##Inspector", &ad.m_Volume, 0.001f, 0.f, 1.f))
-					{
-						//ad.(ad.m_Volume)
-					}
+						ad.SetVolume();
 
-					ImGui::Checkbox("Loop##Inspector", &ad.m_Loop);
+					if (ImGui::Checkbox("Loop##Inspector", &ad.m_Loop))
+					{
+						ad.SetLoop(ad.m_Loop);
+					}
 
 					if (ImGui::Checkbox("Mute##Inspector", &ad.m_Mute))
 					{
