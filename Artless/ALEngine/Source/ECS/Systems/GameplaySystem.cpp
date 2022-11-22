@@ -195,12 +195,12 @@ namespace ALEngine::ECS
 			sceneGraph.Push(gameplaySystem->m_Room_Parent_Entity, gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
 
 			Transform transform;
-			transform.scale = { 70, 70 };
+			transform.scale = { 100, 100 };
 			transform.localScale = { 100, 100 };
 
 			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
 
-			CreateSprite(gameplaySystem->m_Room.roomCellsArray[i]);
+			CreateSprite(gameplaySystem->m_Room.roomCellsArray[i],"Assets/Images/Walkable.png");
 		}
 
 		for (s32 i = 0; i < gameplaySystem->roomSize[0]; ++i) {
@@ -226,23 +226,14 @@ namespace ALEngine::ECS
 
 		//Create Player
 		gameplaySystem->playerEntity = Coordinator::Instance()->CreateEntity();
-		Coordinator::Instance()->AddComponent(gameplaySystem->playerEntity, Transform{});
 		CreatePlayerUnit(gameplaySystem->playerEntity);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 		playerUnit.coordinate[0] = 0;
 		playerUnit.coordinate[1] = 0;
 
 		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
-		Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
-		playertransform.localPosition = SpawnCellTransform.position;
-		playertransform.scale = { 40, 40 };
-		playertransform.localScale = { 100, 100 };
-
-		Coordinator::Instance()->GetComponent<EntityData>(gameplaySystem->playerEntity).tag = "Player";
-		CreateSprite(gameplaySystem->playerEntity);
-
-		sceneGraph.Push(-1, gameplaySystem->playerEntity); // first cell is parent
-
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+		playerTransform.localPosition = SpawnCellTransform.position;
 
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
@@ -390,6 +381,28 @@ namespace ALEngine::ECS
 		Unit unit{};
 		unit.unitType = UNIT_TYPE::PLAYER;
 		Coordinator::Instance()->AddComponent(entity, unit);
+		Coordinator::Instance()->AddComponent(gameplaySystem->playerEntity, Transform{});
+
+		Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(entity);
+		playertransform.scale = { 50, 50 };
+		playertransform.localScale = { 100, 100 };
+
+
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		playerUnit.unit_Sprite_Entity = Coordinator::Instance()->CreateEntity();
+
+		Transform playerSpriteTransform;
+		playerSpriteTransform.localPosition = { 0.f, 0.4f };
+		playerSpriteTransform.localScale = { 1.f, 2.f };
+
+		CreateSprite(playerUnit.unit_Sprite_Entity, playerSpriteTransform, "Assets/Images/Player v2.png");
+		
+		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Player";
+		Coordinator::Instance()->GetComponent<EntityData>(playerUnit.unit_Sprite_Entity).tag = "Player_Sprite";
+
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+		sceneGraph.Push(-1, gameplaySystem->playerEntity); // first cell is parent
+		sceneGraph.Push(gameplaySystem->playerEntity, playerUnit.unit_Sprite_Entity);
 	}
 
 	void CreateEnemyUnit(Entity const& entity) {
@@ -439,7 +452,7 @@ namespace ALEngine::ECS
 		//Move player transform to it's iterated waypoint
 		Vector2 direction = Vector3::Normalize(cellTransform.localPosition - playerTransform.localPosition);
 
-		playerTransform.localPosition += direction * 100.0f * Time::m_DeltaTime;
+		playerTransform.localPosition += direction * 500.0f * Time::m_DeltaTime;
 
 		if (Vector3::Distance(playerTransform.localPosition, cellTransform.localPosition) < 1.0f) {
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);

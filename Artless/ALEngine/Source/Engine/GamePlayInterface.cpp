@@ -20,6 +20,11 @@ namespace ALEngine::Engine::GameplayInterface
 	void ToggleCellToInaccessible(Room& currentRoom, u32 x, u32 y, b8 istrue) {
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
 		cell.m_isAccesible = istrue;
+
+		if(!cell.m_isAccesible)
+		Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 0.f,0.f,0.f,0.f };
+		else
+		Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 1.f,1.f,1.f,1.f };
 	}
 
 	bool CheckListContainsCell(std::list<ECS::Cell*> cellList, ECS::Cell& cellSearchNode)

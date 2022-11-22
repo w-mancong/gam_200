@@ -106,6 +106,25 @@ namespace ALEngine::ECS
 				DestroyEntity(en);
 		}
 
+		/*!*********************************************************************************
+			\brief Find an entity by it's tag
+
+			\param [in] tag: Tag of the entity you are trying to find
+
+			\return Entity ID of the tag, else ECS::MAX_ENTITIES will be returned
+		***********************************************************************************/
+		Entity GetEntityByTag(std::string const& tag)
+		{
+			EntityList const& list = mEntityManager->GetActiveEntities();
+			for (Entity en : list)
+			{
+				Component::EntityData const& ed = Coordinator::Instance()->GetComponent<Component::EntityData>(en);
+				if (ed.tag == tag)
+					return en;
+			}
+			return MAX_ENTITIES;
+		}
+
 		/*********************************************************************************
 										COMPONENT METHODS
 		*********************************************************************************/
