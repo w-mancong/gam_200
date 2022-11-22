@@ -690,6 +690,10 @@ namespace ALEngine::Editor
 	{
 		m_CurrentSceneName = sceneName;
 	}
+	std::string const& ALEditor::GetCurrentSceneName(void) const
+	{
+		return m_CurrentSceneName;
+	}
 }
 
 #endif

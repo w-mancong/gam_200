@@ -237,6 +237,8 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void SetCurrentSceneName(std::string sceneName);
 
+		std::string const& GetCurrentSceneName(void) const;
+
 	private:
 		/*!*********************************************************************************
 			\brief
