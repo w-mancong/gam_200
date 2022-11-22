@@ -205,6 +205,10 @@ namespace ALEngine::Editor
 
 			clipError = clipText = false;
 			clipButtonIndex = 0;
+
+			tempAnimator.animatorName.clear();
+			tempAnimator.animations.clear();
+
 			pOpen = false;
 		}
 
