@@ -32,6 +32,7 @@ namespace ALEngine::ECS::Component
 		UNIT_TYPE unitType;
 		u32 coordinate[2];
 
+		ECS::Entity unit_Sprite_Entity;
 		//Cell m_CurrentCell;// current cell
 		//std::list<Cell> m_CellPath;// list of cells for path found by A* pathfinding
 	};
