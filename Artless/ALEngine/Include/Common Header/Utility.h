@@ -16,6 +16,7 @@ brief:	This file contains all the relevant Utility header files to be included i
 #include "Utility/Timer.h"
 #include "Utility/Profiler.h"
 #include "Utility/BinaryTree.h"
+#include "Utility/WindowsFileDialog.h"
 
 using ALEngine::Utility::Time;
 using ALEngine::Utility::Timer;

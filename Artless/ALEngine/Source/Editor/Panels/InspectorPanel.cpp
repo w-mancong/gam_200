@@ -13,7 +13,6 @@ brief:	This file contains function definitions for the InspectorPanel class.
 #if EDITOR
 
 #include "imgui_internal.h"
-#define make_string(str) #str
 
 namespace ALEngine::Editor 
 {
@@ -150,7 +149,10 @@ namespace ALEngine::Editor
 		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_SelectedEntity);
 
 		// Entity active
-		ImGui::Checkbox("##active", &data.active);
+		if (ImGui::Checkbox("##active", &data.active))
+		{
+
+		}
 
 		ImGui::SameLine();
 
