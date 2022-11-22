@@ -110,12 +110,16 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
+		AL_CORE_INFO("GAME START");
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
 		gameplaySystem->m_Room.height = gameplaySystem->roomSize[1];
 		gameplaySystem->m_Room.roomSize = gameplaySystem->getRoomSize();
 		gameplaySystem->m_Room.roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
-
+		
+		gameplaySystem->currentGameplayStatus = GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP;
+		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
+		
 		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {
 			gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
@@ -144,7 +148,6 @@ namespace ALEngine::ECS
 				cell.coordinate[1] = j;
 
 				CreateEventTrigger(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
-
 				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
 
 				Coordinator::Instance()->AddComponent(gameplaySystem->getEntityCell(i, j), cell);
@@ -178,6 +181,9 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
+		if (!Editor::ALEditor::Instance()->GetGameActive()) {
+			return;
+		}
 		gameplaySystem->RunGameState();
 	}
 

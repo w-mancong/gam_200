@@ -53,7 +53,8 @@ namespace ALEngine::Engine::Scene
 		sprite.color.a = c[3].GetFloat();
 
 		// Getting layers
-		sprite.layer = static_cast<RenderLayer>(v[0]["layer"].GetUint64());
+		//sprite.layer = static_cast<RenderLayer>(v[0]["layer"].GetUint64());
+		sprite.layer = v[0]["layer"].GetUint();
 
 		// Initialising value
 		sprite.id = AssetManager::Instance()->GetGuid(sprite.filePath);
@@ -657,6 +658,55 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->AddComponent(en, es);
 	}
 
+	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
+	{
+		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
+		if (entity.parent != -1)
+		{
+			Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
+			trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
+			trans.localRotation = trans.rotation - parentTrans.rotation;
+			trans.localScale = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
+		}
+		else
+		{
+			trans.localPosition = trans.position;
+			trans.localRotation = trans.rotation;
+			trans.localScale	= trans.scale;
+		}
+
+		for (s32 children : entity.children)
+			CalculateLocalCoordinate(sceneGraph.GetMap()[children], sceneGraph);
+	}
+
+	void CalculateLocalCoordinate(void)
+	{
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+		std::vector<s32> const& parentsList = sceneGraph.GetParents();
+		for (s32 en : parentsList)
+			CalculateLocalCoordinate(sceneGraph.GetMap()[en], sceneGraph);
+
+		//ECS::EntityList const& list = Coordinator::Instance()->GetEntities();
+		//for (ECS::Entity en : list)
+		//{
+		//	EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		//	Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+		//	if (ed.parentID != -1)
+		//	{	// this entity has a parent
+		//		Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(ed.parentID);
+		//		trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
+		//		trans.localRotation = trans.rotation - parentTrans.rotation;
+		//		trans.localScale = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
+		//	}
+		//	else
+		//	{
+		//		trans.localPosition = trans.position;
+		//		trans.localRotation = trans.rotation;
+		//		trans.localScale	= trans.scale;
+		//	}
+		//}
+	}
+
 	void SerializeScene(rjs::StringBuffer& sb)
 	{
 		TWriter writer(sb);
@@ -741,11 +791,14 @@ namespace ALEngine::Engine::Scene
 				ReadEntityScript(v["EntityScript"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
+		CalculateLocalCoordinate();
 	}
 
 	void SaveScene(c8 const* sceneName)
 	{
-		std::string const& filePath = "Assets\\" + std::string(sceneName) + ".scene";
+		std::string filePath{ sceneName };
+		if(filePath.find(".scene") == std::string::npos)
+			filePath = "Assets\\" + std::string(sceneName) + ".scene";
 		rjs::StringBuffer sb{};
 
 		SerializeScene(sb);
@@ -773,6 +826,8 @@ namespace ALEngine::Engine::Scene
 		rjs::Document doc;
 		doc.Parse(buffer);
 		Memory::DynamicMemory::Delete(buffer);
+
+		Coordinator::Instance()->DestroyEntities();
 
 		DeserializeScene(doc);
 	}

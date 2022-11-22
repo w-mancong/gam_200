@@ -9,7 +9,7 @@ brief:	This file contains function definitions for the ScenePanel class.
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
-#ifdef EDITOR
+#if EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -26,6 +26,7 @@ namespace ALEngine::Editor
 
 		// Set camera to ortho projection
 		m_EditorCamera.ProjectionMatrix(Engine::Camera::Projection::Orthographic);
+		m_EditorCamera.Position() = { Math::Vec3(-static_cast<f32>(Graphics::OpenGLWindow::width >> 1), -static_cast<f32>(Graphics::OpenGLWindow::height >> 1), 725.f) };
 	}
 
 	ScenePanel::~ScenePanel(void)
@@ -71,8 +72,14 @@ namespace ALEngine::Editor
 
 			// Translate and Scale matrix
 			float mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
-				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
-				mtx_rot[3]{ 0.f, 0.f, xform.rotation };
+				mtx_scale[3]{ xform.localScale.x, xform.localScale.y, 0.f },
+				mtx_rot[3]{ 0.f, 0.f, xform.localRotation };
+
+			//float mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
+			//	mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
+			//	mtx_rot[3]{ 0.f, 0.f, xform.rotation };
+
+			//f32 const TEMP_POSITION[2]{ mtx_translate[0], mtx_translate[1] };
 
 			// Add camera position
 			mtx_translate[0] -= m_EditorCamera.Position().x;
@@ -96,20 +103,35 @@ namespace ALEngine::Editor
 			// Get transform matrices
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
 
+			mtx_translate[0] += m_EditorCamera.Position().x;
+			mtx_translate[1] += m_EditorCamera.Position().y;
+
+			Tree::BinaryTree const& sceneGraph = ECS::GetSceneGraph();
+			s32 parent{ -1 };
+			if ((parent = sceneGraph.GetParent(m_SelectedEntity)) != -1)
+			{
+				Transform const& parentTranform = Coordinator::Instance()->GetComponent<Transform>(parent);
+				Math::mat4 const& parentGlobalInverse = parentTranform.modelMatrix.Inverse();
+				Math::vec3 const& newLocalPosition = parentGlobalInverse * Math::vec3(mtx_translate[0], mtx_translate[1], 0.0f);
+
+				mtx_translate[0] = newLocalPosition.x;
+				mtx_translate[1] = newLocalPosition.y;
+			}
+
 			// Set changes
 			Transform updated;
-			updated.position.x = mtx_translate[0] + m_EditorCamera.Position().x;
-			updated.position.y = mtx_translate[1] + m_EditorCamera.Position().y;
+			updated.localPosition.x = mtx_translate[0];
+			updated.localPosition.y = mtx_translate[1];
 
-			updated.scale.x = mtx_scale[0];
-			updated.scale.y = mtx_scale[1];
+			updated.localScale.x = mtx_scale[0];
+			updated.localScale.y = mtx_scale[1];
 
-			updated.rotation = mtx_rot[2];
+			updated.localRotation = mtx_rot[2];
 
 			// If there are any differences in transform, run command
-			if (xform.position.x != updated.position.x || xform.position.y != updated.position.y ||
-				xform.rotation != updated.rotation ||
-				xform.scale.x != updated.scale.x || xform.scale.y != updated.scale.y)
+			if (xform.localPosition.x != updated.localPosition.x || xform.localPosition.y != updated.localPosition.y ||
+				xform.localRotation != updated.localRotation ||
+				xform.localScale.x != updated.localScale.x || xform.localScale.y != updated.localScale.y)
 			{
 				if (Commands::EditorCommandManager::CanAddCommand())
 				{
@@ -258,7 +280,26 @@ namespace ALEngine::Editor
 		if (Input::KeyDown(KeyCode::Right))
 			m_EditorCamera.Position().x += CAM_SPEED;
 
-		
+		// Right Mouse Button Move Camera
+		static Math::Vec2 mousePosBegin{};
+		if (Input::KeyTriggered(KeyCode::MouseRightButton))
+		{
+			Math::Vec2 pos = GetMouseWorldPos();
+			if (pos.x != std::numeric_limits<f32>::max() && pos.y != std::numeric_limits<f32>::max())
+			{
+				mousePosBegin = pos;
+			}
+		}
+		else if (Input::KeyDown(KeyCode::MouseRightButton))
+		{
+			Math::Vec2 pos = GetMouseWorldPos();
+
+			if (pos.x != std::numeric_limits<f32>::max() && pos.y != std::numeric_limits<f32>::max())
+			{
+				Math::Vec2 change = mousePosBegin - pos;
+				m_EditorCamera.Position() += Math::Vec3(change.x, change.y, 0.f);
+			}
+		}
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

@@ -10,7 +10,7 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
-#ifdef EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {
@@ -41,7 +41,7 @@ namespace ALEngine::Editor
 		{
 			// Entity Transform
 			Transform xform = Transform{ Math::Vector2(0.f, 0.f),
-				Math::Vector2(50.f, 50.f), 0.f };
+				Math::Vector2(50.f, 50.f) };
 
 			// Create Entity
 			ECS::Entity GO = Coordinator::Instance()->CreateEntity();
@@ -50,7 +50,7 @@ namespace ALEngine::Editor
 			sceneGraph.Push(-1, GO);
 
 			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
-			sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
+			sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 			ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 
@@ -105,20 +105,21 @@ namespace ALEngine::Editor
 				// Check if selectable clicked
 				remove = true;
 			}
+			ECS::Entity selectedEntity = ALEditor::Instance()->GetSelectedEntity();
 			// Add child
-			if (ImGui::Selectable("Add child") && (ALEditor::Instance()->GetSelectedEntity() != ECS::MAX_ENTITIES))
+			if (ImGui::Selectable("Add child") && (selectedEntity != ECS::MAX_ENTITIES))
 			{
 				// Entity Transform
 				Transform xform = Transform{ Math::Vector2(2.f, 2.f),
-					Math::Vector2(1.f, 1.f), 0.f };
+					Math::Vector2(1.f, 1.f) };
 
 				// Create Entity
 				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
 				ECS::CreateSprite(GO, xform);
-				sceneGraph.Push(ALEditor::Instance()->GetSelectedEntity(), GO); // add child entity under parent
+				sceneGraph.Push(selectedEntity, GO); // add child entity under parent
 
 				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
-				sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
+				sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 				AL_CORE_INFO("Entity Created!");
 			}
@@ -154,6 +155,10 @@ namespace ALEngine::Editor
 				// Insert remove parent code here
 				sceneGraph.MoveBranch(child_pl, -1);
 				
+				Transform& xform = Coordinator::Instance()->GetComponent<Transform>(child_pl);
+				xform.localPosition = xform.position;
+				xform.localRotation = xform.rotation;
+				xform.localScale	= xform.scale;
 			}
 
 			ImGui::EndDragDropTarget();
@@ -216,6 +221,11 @@ namespace ALEngine::Editor
 					sceneGraph.MoveBranch(child_pl, m_EntityHover);
 
 					Transform& childTransform = Coordinator::Instance()->GetComponent<Transform>(child_pl);
+					Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(m_EntityHover);
+					// Recalculating the local position for child_pl, no need to recaculate it's children as they will always be their local position amount away from it's parent
+					childTransform.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, childTransform.rotation).Inverse() * (childTransform.position - parentTrans.position);
+					childTransform.localRotation = childTransform.rotation - parentTrans.rotation;
+					childTransform.localScale = { childTransform.scale.x / parentTrans.scale.x, childTransform.scale.y / parentTrans.scale.y };
 
 					s32 node{ static_cast<s32>(child_pl) }, parentNode{};
 					while (1)
@@ -225,13 +235,6 @@ namespace ALEngine::Editor
 						{
 							break;
 						}
-						Transform& ParentTransform = Coordinator::Instance()->GetComponent<Transform>(parentNode); // get parent transform
-
-						childTransform.scale.x = childTransform.scale.x / ParentTransform.scale.x;
-						childTransform.scale.y = childTransform.scale.y / ParentTransform.scale.y;
-
-						childTransform.position.x = (childTransform.position.x - ParentTransform.position.x) / ParentTransform.scale.x;
-						childTransform.position.y = (childTransform.position.y - ParentTransform.position.y) / ParentTransform.scale.y;
 
 						node = parentNode;
 					}

@@ -81,6 +81,7 @@
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -337,6 +338,7 @@
     <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
     <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
     <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

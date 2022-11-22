@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
     <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
     <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />

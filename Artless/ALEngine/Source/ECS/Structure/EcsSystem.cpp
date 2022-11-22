@@ -17,6 +17,7 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<ParticleProperties>();
 		Coordinator::Instance()->RegisterComponent<Cell>();
 		Coordinator::Instance()->RegisterComponent<Text>();
+		Coordinator::Instance()->RegisterComponent<Engine::AudioSource>();
 
 		// To be deleted later
 		Coordinator::Instance()->RegisterComponent<EntityScript>();
@@ -34,6 +35,10 @@ namespace ALEngine::ECS
 		RegisterGameplaySystem();
 		RegisterParticleSystem();
 		RegisterTextSystem();
+
+#if EDITOR
+		//RegisterTransformSystem();
+#endif
 
 		// To be deleted later
 		RegisterCppScriptSystem();

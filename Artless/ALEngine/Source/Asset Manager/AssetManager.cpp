@@ -328,20 +328,19 @@ namespace
 
 		return { texture, handle };
 	}
-#ifdef EDITOR
+
+#if EDITOR
 	u32 LoadButtonImage(char const* filePath)
 	{
 		s32 width, height, nrChannels;
 		// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
 		stbi_set_flip_vertically_on_load(true);
 		u8* data = stbi_load(filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
-#ifdef _DEBUG
 		if (!data)
 		{
 			AL_CORE_CRITICAL("Failed to load texture.\nFile path: {}", filePath);
 			return {};
 		}
-#endif
 		u32 format{};
 		switch (nrChannels)
 		{
@@ -358,9 +357,7 @@ namespace
 			// I only want to accept files that have RGB/RGBA formats
 			default:
 			{
-#ifdef _DEBUG
 				AL_CORE_CRITICAL("Wrong file format: Must contain RGB/RGBA channels\n");
-#endif
 				return {};
 			}
 		}
@@ -418,6 +415,51 @@ namespace ALEngine::Engine
 
 	void AssetManager::Init()
 	{
+#if EDITOR
+		Guid id{}; u32 icon{};
+		// Folder icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Folder.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Prefab icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Prefab.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Prefab.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Scene icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Scene.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Scene.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Script icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Script.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Script.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Font icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Play icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\button_play.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Stop icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_stop.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\button_stop.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+#endif
+
 		std::vector<std::string> metaFiles, fileNames;
 
 		//initialize 
@@ -448,7 +490,7 @@ namespace ALEngine::Engine
 
 		for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
 		{
-			std::string meta = *it + ".meta";
+			std::string const& meta = *it + ".meta";
 			auto it2 = std::find(metaFiles.begin(), metaFiles.end(), meta);
 
 			Guid id{};
@@ -560,7 +602,7 @@ namespace ALEngine::Engine
 			Texture const& texture{ it.second };
 			glDeleteTextures(1, &texture.texture);
 		}
-#ifdef EDITOR
+#if EDITOR
 		for (auto const& it : buttonImageList)
 			glDeleteTextures(1, &it.second );
 #endif
