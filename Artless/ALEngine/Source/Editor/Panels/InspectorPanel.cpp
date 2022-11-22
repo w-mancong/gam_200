@@ -520,29 +520,26 @@ namespace ALEngine::Editor
 			ImGui::InputText("String##InspectorTextComponent", str, 50);
 			prop.textString = str;
 
-			//ImGui::Text()
-			//f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, 1.f };
-			//f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, 1.f };
+			f32 color[4] = { prop.colour.x, prop.colour.y, prop.colour.z , 1.f };
+			f32 pos[2] = { prop.position.x, prop.position.y };
 
-			//ImGui::DragFloat("Start Size", &particleProperty.sizeStart, 0.1f, 0.0f, 1000.0f);
-			//ImGui::DragFloat("End Size", &particleProperty.sizeEnd, 0.1f, 0.0f, 1000.0f);
-			//ImGui::ColorEdit4("Start Color", startClr);
-			//ImGui::ColorEdit4("End Color", endClr);
-			//ImGui::DragFloat("Life Time", &particleProperty.lifeTime, 0.1f, 0.0f, 1000.0f);
-			////ImGui::DragInt("Spawn Rate", &particleSpawnRate, 1, 0, 10);
+			ImGui::DragFloat("Size", &prop.scale, 0.1f, 0.0f, 50.0f);
+			//ImGui::ColorEdit4("Color", color);
+			ImGui::DragFloat2("Pos", pos, 0.5f);
 
-			//particleProperty.colorStart.x = startClr[0];
-			//particleProperty.colorStart.y = startClr[1];
-			//particleProperty.colorStart.z = startClr[2];
+			// Color wheel
+			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
+			ImGui::ColorPicker4("Color", color, clr_flags);
 
-			//particleProperty.colorEnd.x = endClr[0];
-			//particleProperty.colorEnd.y = endClr[1];
-			//particleProperty.colorEnd.z = endClr[2];
+			prop.colour.x = color[0];
+			prop.colour.y = color[1];
+			prop.colour.z = color[2];
+
+			prop.position.x = pos[0];
+			prop.position.y = pos[1];
 
 			ImGui::TreePop();
-
 			ImGui::Separator();
-
 		}
 	}
 

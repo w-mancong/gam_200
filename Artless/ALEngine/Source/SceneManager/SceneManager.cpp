@@ -177,6 +177,64 @@ namespace ALEngine::Engine::Scene
 		writer.EndArray();
 	}
 
+	void WriteTextProperty(TWriter& writer, ECS::Entity en)
+	{
+		//writer.Key("TextProperty");
+		//writer.StartArray();
+		//writer.StartObject();
+
+		//Text const& prop = Coordinator::Instance()->GetComponent<Text>(en);
+
+		//// velocity
+		//writer.Key("string");
+		//writer.String(prop.textString.c_str());
+
+
+		//// velocityVariation/////////////////////////////////////////////////////
+		//writer.Key("velocityVariation");
+		//writer.StartArray();
+		//writer.Double(static_cast<f64>(prop.velocityVariation.x));
+		//writer.Double(static_cast<f64>(prop.velocityVariation.y));
+		//writer.EndArray();
+
+		//// colorStart
+		//writer.Key("colorStart");
+		//writer.StartArray();
+		//writer.Double(static_cast<f64>(prop.colorStart.x));
+		//writer.Double(static_cast<f64>(prop.colorStart.y));
+		//writer.Double(static_cast<f64>(prop.colorStart.z));
+		//writer.Double(static_cast<f64>(prop.colorStart.w));
+		//writer.EndArray();
+
+		//// colorEnd
+		//writer.Key("colorEnd");
+		//writer.StartArray();
+		//writer.Double(static_cast<f64>(prop.colorEnd.x));
+		//writer.Double(static_cast<f64>(prop.colorEnd.y));
+		//writer.Double(static_cast<f64>(prop.colorEnd.z));
+		//writer.Double(static_cast<f64>(prop.colorEnd.w));
+		//writer.EndArray();
+
+		//// sizeStart
+		//writer.Key("sizeStart");
+		//writer.Double(static_cast<f64>(prop.sizeStart));
+
+		//// sizeEnd
+		//writer.Key("sizeEnd");
+		//writer.Double(static_cast<f64>(prop.sizeEnd));
+
+		//// sizeVariation
+		//writer.Key("sizeVariation");
+		//writer.Double(static_cast<f64>(prop.sizeVariation));
+
+		//// lifeTime
+		//writer.Key("lifeTime");
+		//writer.Double(static_cast<f64>(prop.lifeTime));
+
+		//writer.EndObject();
+		//writer.EndArray();
+	}
+
 	void ReadTransform(rjs::Value const& v, ECS::Entity en)
 	{
 		Transform transform{};
@@ -751,6 +809,8 @@ namespace ALEngine::Engine::Scene
 				WriteEntityScript(writer, en);
 			if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
 				WriteParticleProperty(writer, en);
+			if (Coordinator::Instance()->HasComponent<Text>(en))
+				WriteTextProperty(writer, en);
 
 			writer.EndObject();
 		}

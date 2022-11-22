@@ -25,12 +25,10 @@ namespace ALEngine::ECS
 			Text text = Coordinator::Instance()->GetComponent<Text>(x);
 			text.currentFont = "ARIAL";
 			text.currentType = Text::FontType::Italic;
-			text.scale = 5;
+
 			if (text.currentFont.empty() || text.currentType == Text::FontType::FontTypeTotal)
 				continue;
 
-			//text.position = Math::Vector2(50, 50);
-			//text.textString = "1111111111111111111111111";
 			Font::RenderText(text);
 		}
 	}
@@ -44,10 +42,11 @@ namespace ALEngine::ECS
 	std::map<std::string, std::map<Text::FontType, Font>> Font::fontCollection;
 	std::vector<Text> Font::textCollection;
 
-	void Font::FontInit(std::string fontAddress, std::string fontName, Text::FontType fontType)
+	Font Font::FontInit(std::string fontAddress, std::string fontName, Text::FontType fontType)
 	{
-		std::cout << fontName << "\n";
-		Font newFont;
+		Font newFont; 
+		newFont.fontName = fontName;
+		newFont.fontType = fontType;
 		// compile and setup the shader
 		newFont.fontShader = ALEngine::Graphics::Shader{ "Assets/Dev/Shaders/font.vert", "Assets/Dev/Shaders/font.frag" };
 		Math::Matrix4x4 projection = Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width), 0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height));
@@ -137,14 +136,18 @@ namespace ALEngine::ECS
 		{
 			// insert into existing font family
 			Font::fontCollection.find(fontName)->second.insert(std::pair<Text::FontType, Font>(fontType, newFont));
-			return;
+		}
+		else
+		{
+			// create new font family
+			std::map<Text::FontType, Font> map;
+			map.insert(std::pair<Text::FontType, Font>(fontType, newFont));
+			Font::fontCollection.insert(std::pair<std::string, std::map<Text::FontType, Font>>(fontName, map));
 		}
 
-		// create new font family
-		std::map<Text::FontType, Font> map;
-		map.insert(std::pair<Text::FontType, Font>(fontType, newFont));
-		Font::fontCollection.insert(std::pair<std::string, std::map<Text::FontType, Font>>(fontName, map));
+		return newFont;
 	}
+
 	void Font::RenderText(Text& text)
 	{
 		textCollection.push_back(text);
