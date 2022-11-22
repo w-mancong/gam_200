@@ -560,8 +560,8 @@ namespace ALEngine::Engine
 				}
 				case FileType::Font:
 				{
-					//std::string filePath{ *it };
-					//LoadFont(filePath);
+					std::string filePath{ *it };
+					LoadFont(filePath);
 					break;
 				}
 				default:

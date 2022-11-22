@@ -499,6 +499,10 @@ namespace ALEngine::Editor
 			ImGui::TreePop();
 
 			ImGui::Separator();
+
+		}
+	}
+
 	void InspectorPanel::DisplayEntityScript(void)
 	{
 		if (ImGui::TreeNodeEx("Script Component##Inspector"))

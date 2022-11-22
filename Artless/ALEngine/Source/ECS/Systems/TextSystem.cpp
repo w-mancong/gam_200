@@ -23,18 +23,20 @@ namespace ALEngine::ECS
 		for (auto x : textSystem->mEntities)
 		{
 			Text text = Coordinator::Instance()->GetComponent<Text>(x);
-			text.currentFont = "ARIAL";
-			text.currentType = Text::FontType::Italic;
-			text.scale = 5;
-			text.position = Math::Vector2(50, 50);
-			text.textString = "1111111111111111111111111";
+			if (text.currentFont.empty() || text.currentType == Text::FontType::FontTypeTotal)
+				continue;
+
+			//text.currentFont = "ARIAL";
+			//text.currentType = Text::FontType::Italic;
+			//text.scale = 5;
+			//text.position = Math::Vector2(50, 50);
+			//text.textString = "1111111111111111111111111";
 			Font::RenderText(text);
 		}
 	}
 
 	void UpdateTextSystem(void)
 	{
-		std::cout << "Updating\n";
 		textSystem->Update();
 	}
 

@@ -64,7 +64,7 @@ namespace ALEngine::ECS
 #if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
-		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
+		//ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 #endif
 	}
 
@@ -189,7 +189,7 @@ namespace ALEngine::ECS
 		// Particle system init here
 		ParticleSystem::GetParticleSystem().ParticleSysInit();
 
-		Font::FontInit("Assets/fonts/Arial-italic.ttf", "ARIAL", Text::FontType::Italic);
+		//Font::FontInit("Assets/fonts/Arial-italic.ttf", "ARIAL", Text::FontType::Italic);
 
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
@@ -255,15 +255,14 @@ namespace ALEngine::ECS
 		UpdateAnimatorSystem();
 		UpdateParticleSystem();
 #if EDITOR
-		UpdateTextSystem();
 		rs->RenderBatch(camera);
 #else
-		UpdateTextSystem();
 		rs->RenderBatch();
 #endif
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+		UpdateTextSystem();
 
 		// Update and render particles
 		//if(!Editor::ALEditor::Instance()->GetGameActive())
@@ -293,6 +292,7 @@ namespace ALEngine::ECS
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+		UpdateTextSystem();
 
 		// Render all text
 		Font::RenderAllText();
