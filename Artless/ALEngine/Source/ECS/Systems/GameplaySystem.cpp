@@ -62,6 +62,7 @@ namespace ALEngine::ECS
 
 		MoveOrder currentModeOrder;
 
+		std::vector<Entity> GUI_Abilities_Button_List;
 		std::vector<Entity> GUI_Pattern_Button_List;
 
 		Entity m_Room_Parent_Entity;
@@ -246,6 +247,8 @@ namespace ALEngine::ECS
 		Subscribe(gameplaySystem->GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
 		Subscribe(gameplaySystem->GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
 
+
+		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
 
 		//Set a few blocks to be inaccessible
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 1, 0, false);
@@ -536,6 +539,20 @@ namespace ALEngine::ECS
 		//Draw the Pattern GUI
 		for (int i = 0; i < gameplaySystem->GUI_Pattern_Button_List.size(); ++i) {
 			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->GUI_Pattern_Button_List[i]);
+
+			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
+			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
+
+			//Draw 4 lines
+			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+		}
+
+		//Draw the Pattern GUI
+		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
+			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->GUI_Abilities_Button_List[i]);
 
 			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
 			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
