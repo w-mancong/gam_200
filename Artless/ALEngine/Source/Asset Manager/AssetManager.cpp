@@ -255,7 +255,7 @@ namespace
 	{
 		std::string fontName, fontType;
 		std::string str{ filePath };
-		str = str.substr(str.find_last_of("/") + 1);
+		str = str.substr(str.find_last_of("\\") + 1);
 		fontName = str.substr(0, str.find_first_of("-"));
 		fontType = str.substr(str.find_first_of("-") + 1, str.find_first_of(".") - 1 - str.find_first_of("-"));
 

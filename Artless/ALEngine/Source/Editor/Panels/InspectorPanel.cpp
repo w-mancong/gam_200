@@ -96,6 +96,10 @@ namespace ALEngine::Editor
 		if (Coordinator::Instance()->HasComponent<ParticleProperties>(m_SelectedEntity))
 			DisplayParticleProperty();
 
+		// Check if there is text component
+		if (Coordinator::Instance()->HasComponent<Text>(m_SelectedEntity))
+			DisplayTextProperty();
+
 		//// Check if there is Audio component
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
 		//	DisplayAudio();
@@ -162,7 +166,7 @@ namespace ALEngine::Editor
 		ImGui::SameLine();
 
 		// Tag
-		c8* tag = (c8*)data.tag.c_str();
+		c8* tag = const_cast<c8*>(data.tag.c_str());
 		// Entity Tag
 		ImGui::InputText("Tag", tag, 20);
 
@@ -495,6 +499,45 @@ namespace ALEngine::Editor
 			particleProperty.colorEnd.x = endClr[0];
 			particleProperty.colorEnd.y = endClr[1];
 			particleProperty.colorEnd.z = endClr[2];
+
+			ImGui::TreePop();
+
+			ImGui::Separator();
+
+		}
+	}
+
+	void InspectorPanel::DisplayTextProperty(void)
+	{
+		// Get transform
+		Text& prop = Coordinator::Instance()->GetComponent<Text>(m_SelectedEntity);
+
+		if (ImGui::TreeNodeEx("Text Component"))
+		{
+			// String input field
+			c8* str = const_cast<c8*>(prop.textString.c_str());	
+
+			ImGui::InputText("String##InspectorTextComponent", str, 50);
+			prop.textString = str;
+
+			//ImGui::Text()
+			//f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, 1.f };
+			//f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, 1.f };
+
+			//ImGui::DragFloat("Start Size", &particleProperty.sizeStart, 0.1f, 0.0f, 1000.0f);
+			//ImGui::DragFloat("End Size", &particleProperty.sizeEnd, 0.1f, 0.0f, 1000.0f);
+			//ImGui::ColorEdit4("Start Color", startClr);
+			//ImGui::ColorEdit4("End Color", endClr);
+			//ImGui::DragFloat("Life Time", &particleProperty.lifeTime, 0.1f, 0.0f, 1000.0f);
+			////ImGui::DragInt("Spawn Rate", &particleSpawnRate, 1, 0, 10);
+
+			//particleProperty.colorStart.x = startClr[0];
+			//particleProperty.colorStart.y = startClr[1];
+			//particleProperty.colorStart.z = startClr[2];
+
+			//particleProperty.colorEnd.x = endClr[0];
+			//particleProperty.colorEnd.y = endClr[1];
+			//particleProperty.colorEnd.z = endClr[2];
 
 			ImGui::TreePop();
 

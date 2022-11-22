@@ -125,6 +125,13 @@ namespace ALEngine::Editor
 		void DisplayParticleProperty(void);
 
 		/*!*********************************************************************************
+			\brief
+			Displays the text component info on the panel
+		***********************************************************************************/
+		void DisplayTextProperty(void);
+
+		/*!*********************************************************************************
+			\brief
 			Displays the Script component info on the panel
 		***********************************************************************************/
 		void DisplayEntityScript(void);

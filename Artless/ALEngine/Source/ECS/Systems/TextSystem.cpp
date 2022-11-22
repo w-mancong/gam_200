@@ -23,12 +23,12 @@ namespace ALEngine::ECS
 		for (auto x : textSystem->mEntities)
 		{
 			Text text = Coordinator::Instance()->GetComponent<Text>(x);
+			text.currentFont = "ARIAL";
+			text.currentType = Text::FontType::Italic;
+			text.scale = 5;
 			if (text.currentFont.empty() || text.currentType == Text::FontType::FontTypeTotal)
 				continue;
 
-			//text.currentFont = "ARIAL";
-			//text.currentType = Text::FontType::Italic;
-			//text.scale = 5;
 			//text.position = Math::Vector2(50, 50);
 			//text.textString = "1111111111111111111111111";
 			Font::RenderText(text);
@@ -46,6 +46,7 @@ namespace ALEngine::ECS
 
 	void Font::FontInit(std::string fontAddress, std::string fontName, Text::FontType fontType)
 	{
+		std::cout << fontName << "\n";
 		Font newFont;
 		// compile and setup the shader
 		newFont.fontShader = ALEngine::Graphics::Shader{ "Assets/Dev/Shaders/font.vert", "Assets/Dev/Shaders/font.frag" };
@@ -160,7 +161,7 @@ namespace ALEngine::ECS
 			it = Font::fontCollection.find(text.currentFont);
 			if (it == Font::fontCollection.end())
 			{
-				std::cerr << "FONT ERROR: Font Family Name " << text.currentFont << "not found\n";
+				std::cerr << "FONT ERROR: Font Family Name " << text.currentFont << " not found\n";
 				return;
 			}
 
