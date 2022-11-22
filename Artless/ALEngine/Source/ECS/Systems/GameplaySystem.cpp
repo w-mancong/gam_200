@@ -81,6 +81,9 @@ namespace ALEngine::ECS
 		Entity getCurrentEntityCell();
 		void SetMoveOrder(std::vector<Entity> path);
 
+		//Select Pattern
+		void SelectPattern(Pattern pattern);
+
 		//Return if reached end
 		bool StepUpModeOrderPath(MoveOrder& order);
 		u32 getRoomSize();
@@ -117,26 +120,22 @@ namespace ALEngine::ECS
 
 	void Event_Button_Select_CurrentPattern(Entity invoker) {
 		AL_CORE_INFO("Select Current Pattern");
-		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
-		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[0];
+		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
 	}
 
 	void Event_Button_Select_Pattern_1(Entity invoker) {
 		AL_CORE_INFO("Select Pattern 1");
-		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
-		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[1];
+		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[1]);
 	}
 	
 	void Event_Button_Select_Pattern_2(Entity invoker) {
 		AL_CORE_INFO("Select Pattern 2");
-		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
-		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[2];
+		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[2]);
 	}
 	
 	void Event_Button_Select_Pattern_3(Entity invoker) {
 		AL_CORE_INFO("Select Pattern 3");
-		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
-		gameplaySystem->selected_Pattern = gameplaySystem->pattern_List[3];
+		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[3]);
 	}
 
 	void Event_Button_Select_EndTurn(Entity invoker) {
@@ -170,8 +169,11 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		//When click on cell, Move the player unit to the selected cell
-		gameplaySystem->MovePlayerEntityToCell(invokerCell);
+		//If not placing, move character
+		if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
+			//When click on cell, Move the player unit to the selected cell
+			gameplaySystem->MovePlayerEntityToCell(invokerCell);
+		}
 	}
 
 	void RegisterGameplaySystem(void)
@@ -182,6 +184,10 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
+		//if (ALEngine::Editor::ALEditor::Instance()->SetCurrentSceneName()) {
+
+		//}
+
 		AL_CORE_INFO("GAME START");
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
@@ -215,7 +221,6 @@ namespace ALEngine::ECS
 			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
 
 			CreateSprite(gameplaySystem->m_Room.roomCellsArray[i],"Assets/Images/InitialTile_v04.png");
-			//CreateSprite(gameplaySystem->m_Room.roomCellsArray[i], "Assets/Images/Walkable.png");
 		}
 
 		for (s32 i = 0; i < gameplaySystem->roomSize[0]; ++i) {
@@ -337,6 +342,13 @@ namespace ALEngine::ECS
 
 				AL_CORE_INFO("Loading PHASE SETUP");
 				break;
+		}
+	}
+
+	void GameplaySystem::SelectPattern(Pattern pattern) { 
+		if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_SETUP) {
+			gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+			gameplaySystem->selected_Pattern = pattern;
 		}
 	}
 
