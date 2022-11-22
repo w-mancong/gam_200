@@ -20,9 +20,6 @@ namespace ALEngine::Editor
 	// Commands namespace
 	using namespace Commands;
 
-	// Set default operation to be Translate
-	ImGuizmo::OPERATION InspectorPanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
-
 	// File buffer size
 	const u32 FILE_BUFFER_SIZE{ 1000 };
 
@@ -34,7 +31,6 @@ namespace ALEngine::Editor
 
 	InspectorPanel::InspectorPanel(void)
 	{
-		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		m_SelectedEntity = ECS::MAX_ENTITIES;
 		m_SelectedComponent = InspectorComponents::InComp_Total;
 	}
@@ -58,9 +54,10 @@ namespace ALEngine::Editor
 		// Exit if no entity
 		if (!HasSelectedEntity())
 		{
-			ImGui::NewLine();
+			/*ImGui::NewLine();
 			ImVec2 textSize = ImGui::CalcTextSize("Click on an Entity to view it's components");
-			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));
+			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));*/
+			ImGui::AlignTextToFramePadding();
 			ImGui::TextWrapped("Click on an Entity to view it's components");
 			ImGui::End();
 			return;
@@ -92,9 +89,9 @@ namespace ALEngine::Editor
 		if (Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
 			DisplayCollider();
 
-		//// Check if there is Audio component
-		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
-		//	DisplayAudio();
+		// Check if there is Audio component
+		if (Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
+			DisplayAudio();
 
 		//// Check if there is Animator component
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
@@ -174,26 +171,26 @@ namespace ALEngine::Editor
 
 		// Select between the 3 Gizmos Operations by keypress
 		if (Input::KeyTriggered(KeyCode::W))
-			m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		if (Input::KeyTriggered(KeyCode::R))
-			m_CurrentGizmoOperation = ImGuizmo::SCALE;
+			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 		if (Input::KeyTriggered(KeyCode::E))
-			m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::ROTATE);
+		if (Input::KeyTriggered(KeyCode::R))
+			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::SCALE);
 
 		// Transform
-		if (ImGui::TreeNodeEx("Transform Component##Inspector"))
+		if (ImGui::CollapsingHeader("Transform Component##Inspector"))
 		{
 			// Rotate
-			if (ImGui::RadioButton("Translate", m_CurrentGizmoOperation == ImGuizmo::TRANSLATE))
-				m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+			if (ImGui::RadioButton("Translate", ALEditor::Instance()->GetCurrentGizmoOperation() == ImGuizmo::TRANSLATE))
+				ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 			ImGui::SameLine();
 			// Rotate
-			if (ImGui::RadioButton("Rotate", m_CurrentGizmoOperation == ImGuizmo::ROTATE))
-				m_CurrentGizmoOperation = ImGuizmo::ROTATE;
+			if (ImGui::RadioButton("Rotate", ALEditor::Instance()->GetCurrentGizmoOperation() == ImGuizmo::ROTATE))
+				ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::ROTATE);
 			ImGui::SameLine();
 			// Scale
-			if (ImGui::RadioButton("Scale", m_CurrentGizmoOperation == ImGuizmo::SCALE))
-				m_CurrentGizmoOperation = ImGuizmo::SCALE;
+			if (ImGui::RadioButton("Scale", ALEditor::Instance()->GetCurrentGizmoOperation() == ImGuizmo::SCALE))
+				ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::SCALE);
 
 			// Translate and Scale matrix
 			// 1) Get parent global
@@ -238,10 +235,6 @@ namespace ALEngine::Editor
 					EditorCommandManager::AddCommand(cmd);
 				}
 			}
-
-			ImGui::TreePop();
-
-			ImGui::Separator();
 		}
 	}
 
@@ -249,8 +242,9 @@ namespace ALEngine::Editor
 	{
 		// Get Sprite
 		Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectedEntity);
-		if (ImGui::TreeNodeEx("Sprite Component##Inspector"))
+		if (ImGui::CollapsingHeader("Sprite Component##Inspector"))
 		{
+			ImGui::PushItemWidth(-(ImGui::GetContentRegionAvail().x / 2.5f));
 			// Image
 			if (spr.filePath != "")
 			{
@@ -261,7 +255,7 @@ namespace ALEngine::Editor
 			}
 
 			// File path
-			c8* fp = (c8*)spr.filePath.c_str();
+			c8* fp = const_cast<c8*>(spr.filePath.c_str());
 			ImGui::PushID("FilePath");
 			ImGui::InputText("File Path", fp, FILE_BUFFER_SIZE);
 
@@ -307,6 +301,10 @@ namespace ALEngine::Editor
 				spr.filePath = fp;
 
 			ImGui::PopID();
+			
+			// Render Layer
+			s32 renderLayer{ 0 };
+			ImGui::DragInt("Render Layer", &renderLayer, 1.f, 0, 256);	
 
 			// Color wheel
 			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
@@ -330,10 +328,7 @@ namespace ALEngine::Editor
 				}
 			}
 
-			// Pop TreeNodeEx
-			ImGui::TreePop();
-
-			ImGui::Separator();
+			ImGui::PopItemWidth();
 		}
 
 		// Drag Drop for Selectable
@@ -394,7 +389,7 @@ namespace ALEngine::Editor
 	void InspectorPanel::DisplayRigidBody(void)
 	{
 		// Mass, HasGravity, IsEnabled
-		if (ImGui::TreeNodeEx("RigidBody Component##Inspector"))
+		if (ImGui::CollapsingHeader("RigidBody Component##Inspector"))
 		{
 			Rigidbody2D& rb = ECS::Coordinator::Instance()->GetComponent<Rigidbody2D>(m_SelectedEntity);
 
@@ -404,16 +399,13 @@ namespace ALEngine::Editor
 
 			ImGui::Checkbox("Is Enabled", &rb.isEnabled);
 
-			ImGui::TreePop();
-
-			ImGui::Separator();
 		}
 	}
 
 	void InspectorPanel::DisplayCollider(void)
 	{
 		// Enum ColliderType, Rotation, Array2 F32 Scale, IsTriggered, IsDebug, IsEnabled, Vec2 LocalPos, 
-		if (ImGui::TreeNodeEx("Collider Component##Inspector"))
+		if (ImGui::CollapsingHeader("Collider Component##Inspector"))
 		{
 			Collider2D& collider = ECS::Coordinator::Instance()->GetComponent<Collider2D>(m_SelectedEntity);
 			
@@ -453,10 +445,170 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayAudio(void)
 	{
-		if (ImGui::TreeNodeEx("Audio Component##Inspector"))
-		{
-			ImGui::TreePop();
-		}
+		using namespace Engine;
+		AudioSource& audioSource = ECS::Coordinator::Instance()->GetComponent<AudioSource>(m_SelectedEntity);
+		
+		if (ImGui::CollapsingHeader("Audio Component##Inspector"))
+		{			
+			static u32 toDelete{ ECS::MAX_ENTITIES };
+			for (auto& a : audioSource.list)
+			{
+				Audio& ad = a.second;
+				std::string treeName;
+				if (ad.m_AudioName.empty())
+					treeName = "Audio##Inspector" + std::to_string(ad.m_ID);
+				else
+				{
+					u64 str_it = ad.m_AudioName.find_last_of("\\");
+					u64 sizeName = ad.m_AudioName.find_last_of(".") - str_it - 1;
+
+					treeName = ad.m_AudioName.substr(str_it + 1, sizeName);
+				}
+
+				if (ImGui::TreeNodeEx(treeName.c_str()))
+				{
+					ImGui::Text("ID: %u", ad.m_ID);
+
+					c8* stringName = const_cast<c8*>(ad.m_AudioName.c_str());
+					ImGuiInputTextFlags flag = ImGuiInputTextFlags_ReadOnly;
+					ImGui::InputTextWithHint("##AudioFileInputInspector", "Audio Clip Name", stringName, FILE_BUFFER_SIZE, flag);
+					ad.m_AudioName = stringName;
+
+					// Drag Drop for Selectable
+					if (ImGui::BeginDragDropTarget())
+					{
+						// Payload flag
+						ImGuiDragDropFlags payload_flag{ 0 };
+						//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+						// Get Drag and Drop Payload
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
+						{
+							// Get filepath
+							size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
+							wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+							// Check if image (png or jpg)
+							std::string fileString = filePath;
+							if (fileString.find(".wav") != std::string::npos)
+							{
+								u32 id_cpy = ad.m_ID;
+								ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(fileString));
+								ad.m_ID = id_cpy;
+							}
+							else
+							{
+								AL_CORE_ERROR("A .wav file is required!");
+							}
+						}
+						ImGui::EndDragDropTarget();
+					}
+
+					if (ImGui::DragFloat("Volume##Inspector", &ad.m_Volume, 0.001f, 0.f, 1.f))
+						ad.SetVolume();
+
+					if (ImGui::Checkbox("Loop##Inspector", &ad.m_Loop))
+					{
+						ad.SetLoop(ad.m_Loop);
+					}
+
+					if (ImGui::Checkbox("Mute##Inspector", &ad.m_Mute))
+					{
+						if (ad.m_Mute)
+							ad.Mute();
+						else
+							ad.Unmute();
+					}
+
+					const c8* channelList[]{ "BGM", "SFX" };
+					s32 currChannel = static_cast<s32>(ad.m_Channel);
+					static const c8* curr = nullptr;
+					if (ImGui::BeginCombo("Channel Group##Inspector", curr))
+					{
+						for (s32 i{ 0 }; i < IM_ARRAYSIZE(channelList); ++i)
+						{
+							const b8 is_selected = (curr == channelList[i]);
+							if (ImGui::Selectable(channelList[i], is_selected))
+							{
+								ad.m_Channel = static_cast<Channel>(i);
+								curr = channelList[i];
+							}
+
+							if (is_selected)
+							{
+								ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+							}
+						}
+
+						ImGui::EndCombo();
+					}
+
+					b8 playing = ad.IsPlaying();
+					if (playing)
+					{
+						ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+						ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+					}
+					if (ImGui::Button("Play Audio##Inspector"))
+					{
+						ad.Play();
+					}
+					if (playing)
+					{
+						ImGui::PopStyleVar();
+						ImGui::PopItemFlag();
+					}
+
+					ImGui::SameLine();
+
+					playing = ad.IsPlaying();
+					if (!playing)
+					{
+						ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+						ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+					}
+					if (ImGui::Button("Stop Audio##Inspector"))
+					{
+						ad.Stop();
+					}
+					if (!playing)
+					{
+						ImGui::PopStyleVar();
+						ImGui::PopItemFlag();
+					}
+
+					if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+					{
+						ImGui::OpenPopup("audio_rightclick");
+						toDelete = ad.m_ID;
+					}
+
+					ImGui::TreePop();
+				}
+	
+			}
+
+			if (ImGui::BeginPopup("audio_rightclick"))
+			{
+				if (ImGui::Selectable("Remove"))
+				{
+					if (toDelete != ECS::MAX_ENTITIES)
+					{
+						audioSource.list.erase(toDelete);
+						toDelete = ECS::MAX_ENTITIES;
+					}
+				}
+				ImGui::EndPopup();
+			}
+
+			if (ImGui::Button("Add##AudioInspector"))
+			{
+				Audio ad;
+				ad.m_AudioName = "";
+				ad.m_ID = audioSource.id;
+				audioSource.list[audioSource.id++] = ad;
+			}
+		}		
 	}
 
 	void InspectorPanel::DisplayAnimator(void)
@@ -526,11 +678,6 @@ namespace ALEngine::Editor
 			ImGui::Combo("Unload##Script", &unload_select, unload_list.c_str());
 			ImGui::TreePop();
 		}
-	}
-
-	ImGuizmo::OPERATION InspectorPanel::GetCurrGizmoOperation(void) const
-	{
-		return m_CurrentGizmoOperation;
 	}
 
 	void InspectorPanel::AddComponentButton(void)
@@ -607,15 +754,28 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
-				case InspectorComponents::InComp_Script:
+				//case InspectorComponents::InComp_Script:
+				//	// Check if has component
+				//	if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+				//	{
+				//		if (ImGui::Selectable("Script Component") &&
+				//			m_SelectedEntity != ECS::MAX_ENTITIES)
+				//		{
+				//			// Add Script Component
+				//			ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
+				//		}
+				//		++count;
+				//	}
+				//	break;
+				case InspectorComponents::InComp_Audio:
 					// Check if has component
-					if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+					if (!ECS::Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
 					{
-						if (ImGui::Selectable("Script Component") &&
+						if (ImGui::Selectable("Audio Component") &&
 							m_SelectedEntity != ECS::MAX_ENTITIES)
 						{
-							// Add Script Component
-							ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<Engine::AudioSource>(m_SelectedEntity, Engine::AudioSource());
 						}
 						++count;
 					}

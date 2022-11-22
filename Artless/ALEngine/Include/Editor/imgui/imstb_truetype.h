@@ -19,8 +19,8 @@
 //        parse files
 //        extract glyph metrics
 //        extract glyph shapes
-//        render glyphs to one-channel bitmaps with antialiasing (box filter)
-//        render glyphs to one-channel SDF bitmaps (signed-distance field/function)
+//        render glyphs to one-m_Channel bitmaps with antialiasing (box filter)
+//        render glyphs to one-m_Channel SDF bitmaps (signed-distance field/function)
 //
 //   Todo:
 //        non-MS cmaps
@@ -593,7 +593,7 @@ typedef struct stbrp_rect stbrp_rect;
 STBTT_DEF int  stbtt_PackBegin(stbtt_pack_context *spc, unsigned char *pixels, int width, int height, int stride_in_bytes, int padding, void *alloc_context);
 // Initializes a packing context stored in the passed-in stbtt_pack_context.
 // Future calls using this context will pack characters into the bitmap passed
-// in here: a 1-channel bitmap that is width * height. stride_in_bytes is
+// in here: a 1-m_Channel bitmap that is width * height. stride_in_bytes is
 // the distance from one row to the next (or 0 to mean they are packed tightly
 // together). "padding" is the amount of padding to leave between each
 // character (normally you want '1' for bitmaps you'll use as textures with
@@ -877,7 +877,7 @@ STBTT_DEF void stbtt_FreeBitmap(unsigned char *bitmap, void *userdata);
 // frees the bitmap allocated below
 
 STBTT_DEF unsigned char *stbtt_GetCodepointBitmap(const stbtt_fontinfo *info, float scale_x, float scale_y, int codepoint, int *width, int *height, int *xoff, int *yoff);
-// allocates a large-enough single-channel 8bpp bitmap and renders the
+// allocates a large-enough single-m_Channel 8bpp bitmap and renders the
 // specified character/glyph at the specified scale into it, with
 // antialiasing. 0 is no coverage (transparent), 255 is fully covered (opaque).
 // *width & *height are filled out with the width & height of the bitmap,
@@ -933,7 +933,7 @@ typedef struct
 } stbtt__bitmap;
 
 // rasterize a shape with quadratic beziers into a bitmap
-STBTT_DEF void stbtt_Rasterize(stbtt__bitmap *result,        // 1-channel bitmap to draw into
+STBTT_DEF void stbtt_Rasterize(stbtt__bitmap *result,        // 1-m_Channel bitmap to draw into
                                float flatness_in_pixels,     // allowable error of curve in pixels
                                stbtt_vertex *vertices,       // array of vertices defining shape
                                int num_verts,                // number of vertices in above array
@@ -953,7 +953,7 @@ STBTT_DEF void stbtt_FreeSDF(unsigned char *bitmap, void *userdata);
 STBTT_DEF unsigned char * stbtt_GetGlyphSDF(const stbtt_fontinfo *info, float scale, int glyph, int padding, unsigned char onedge_value, float pixel_dist_scale, int *width, int *height, int *xoff, int *yoff);
 STBTT_DEF unsigned char * stbtt_GetCodepointSDF(const stbtt_fontinfo *info, float scale, int codepoint, int padding, unsigned char onedge_value, float pixel_dist_scale, int *width, int *height, int *xoff, int *yoff);
 // These functions compute a discretized SDF field for a single character, suitable for storing
-// in a single-channel texture, sampling with bilinear filtering, and testing against
+// in a single-m_Channel texture, sampling with bilinear filtering, and testing against
 // larger than some threshold to produce scalable fonts.
 //        info              --  the font
 //        scale             --  controls the size of the resulting SDF bitmap, same as it would be creating a regular bitmap
@@ -4787,32 +4787,32 @@ static stbtt_int32 stbtt__CompareUTF8toUTF16_bigendian_prefix(stbtt_uint8 *s1, s
 
    // convert utf16 to utf8 and compare the results while converting
    while (len2) {
-      stbtt_uint16 ch = s2[0]*256 + s2[1];
-      if (ch < 0x80) {
+      stbtt_uint16 m_Ch = s2[0]*256 + s2[1];
+      if (m_Ch < 0x80) {
          if (i >= len1) return -1;
-         if (s1[i++] != ch) return -1;
-      } else if (ch < 0x800) {
+         if (s1[i++] != m_Ch) return -1;
+      } else if (m_Ch < 0x800) {
          if (i+1 >= len1) return -1;
-         if (s1[i++] != 0xc0 + (ch >> 6)) return -1;
-         if (s1[i++] != 0x80 + (ch & 0x3f)) return -1;
-      } else if (ch >= 0xd800 && ch < 0xdc00) {
+         if (s1[i++] != 0xc0 + (m_Ch >> 6)) return -1;
+         if (s1[i++] != 0x80 + (m_Ch & 0x3f)) return -1;
+      } else if (m_Ch >= 0xd800 && m_Ch < 0xdc00) {
          stbtt_uint32 c;
          stbtt_uint16 ch2 = s2[2]*256 + s2[3];
          if (i+3 >= len1) return -1;
-         c = ((ch - 0xd800) << 10) + (ch2 - 0xdc00) + 0x10000;
+         c = ((m_Ch - 0xd800) << 10) + (ch2 - 0xdc00) + 0x10000;
          if (s1[i++] != 0xf0 + (c >> 18)) return -1;
          if (s1[i++] != 0x80 + ((c >> 12) & 0x3f)) return -1;
          if (s1[i++] != 0x80 + ((c >>  6) & 0x3f)) return -1;
          if (s1[i++] != 0x80 + ((c      ) & 0x3f)) return -1;
          s2 += 2; // plus another 2 below
          len2 -= 2;
-      } else if (ch >= 0xdc00 && ch < 0xe000) {
+      } else if (m_Ch >= 0xdc00 && m_Ch < 0xe000) {
          return -1;
       } else {
          if (i+2 >= len1) return -1;
-         if (s1[i++] != 0xe0 + (ch >> 12)) return -1;
-         if (s1[i++] != 0x80 + ((ch >> 6) & 0x3f)) return -1;
-         if (s1[i++] != 0x80 + ((ch     ) & 0x3f)) return -1;
+         if (s1[i++] != 0xe0 + (m_Ch >> 12)) return -1;
+         if (s1[i++] != 0x80 + ((m_Ch >> 6) & 0x3f)) return -1;
+         if (s1[i++] != 0x80 + ((m_Ch     ) & 0x3f)) return -1;
       }
       s2 += 2;
       len2 -= 2;

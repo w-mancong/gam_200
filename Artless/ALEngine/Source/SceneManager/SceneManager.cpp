@@ -32,7 +32,7 @@ namespace ALEngine::Engine::Scene
 
 		// Layer
 		writer.Key("layer");
-		writer.Int64(static_cast<u64>(sprite.layer));
+		writer.Uint64(static_cast<u64>(sprite.layer));
 
 		writer.EndObject();
 		writer.EndArray();
@@ -604,6 +604,11 @@ namespace ALEngine::Engine::Scene
 		//}
 	}
 
+	void test(TWriter writer)
+	{
+
+	}
+
 	void SerializeScene(rjs::StringBuffer& sb)
 	{
 		TWriter writer(sb);
@@ -618,7 +623,7 @@ namespace ALEngine::Engine::Scene
 		{
 			writer.StartObject();
 
-			writer.String("id");
+			writer.Key("id");
 			writer.Uint(id++);
 
 			ECS::Entity en = *it;

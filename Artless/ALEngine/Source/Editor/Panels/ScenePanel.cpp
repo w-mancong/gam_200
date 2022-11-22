@@ -16,14 +16,8 @@ brief:	This file contains function definitions for the ScenePanel class.
 
 namespace ALEngine::Editor
 {
-	// Set default operation to be Translate
-	ImGuizmo::OPERATION ScenePanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
-
 	ScenePanel::ScenePanel(void)
 	{
-		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		m_SelectedEntity = ECS::MAX_ENTITIES;
-
 		// Set camera to ortho projection
 		m_EditorCamera.ProjectionMatrix(Engine::Camera::Projection::Orthographic);
 		m_EditorCamera.Position() = { Math::Vec3(-static_cast<f32>(Graphics::OpenGLWindow::width >> 1), -static_cast<f32>(Graphics::OpenGLWindow::height >> 1), 725.f) };
@@ -36,11 +30,12 @@ namespace ALEngine::Editor
 	void ScenePanel::OnImGuiRender(void)
 	{
 		using namespace Commands;
+		ECS::Entity selectedEntity = ALEditor::Instance()->GetSelectedEntity();
 
 		// Check if there is an entity selected (For Gizmos)
-		b8 hasSelectedEntity = (m_SelectedEntity == ECS::MAX_ENTITIES) ? false : true;
+		b8 hasSelectedEntity = (selectedEntity == ECS::MAX_ENTITIES) ? false : true;
 
-		CameraControls();
+		UserInput();
 
 		// Set constraints
 		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
@@ -65,10 +60,10 @@ namespace ALEngine::Editor
 		ImGui::Image((void*)tex, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// Only render gizmos if an entity is selected
-		if (hasSelectedEntity && Coordinator::Instance()->HasComponent<Transform>(m_SelectedEntity))
+		if (hasSelectedEntity && Coordinator::Instance()->HasComponent<Transform>(selectedEntity))
 		{
 			// Get transform
-			Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
+			Transform& xform = Coordinator::Instance()->GetComponent<Transform>(selectedEntity);
 
 			// Translate and Scale matrix
 			float mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
@@ -98,7 +93,7 @@ namespace ALEngine::Editor
 
 			// Manipulate, used for Gizmos
 			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), m_EditorCamera.ProjectionMatrix().value_ptr(),
-				m_CurrentGizmoOperation, ImGuizmo::WORLD, mtx);
+				ALEditor::Instance()->GetCurrentGizmoOperation(), ImGuizmo::WORLD, mtx);
 
 			// Get transform matrices
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
@@ -108,7 +103,7 @@ namespace ALEngine::Editor
 
 			Tree::BinaryTree const& sceneGraph = ECS::GetSceneGraph();
 			s32 parent{ -1 };
-			if ((parent = sceneGraph.GetParent(m_SelectedEntity)) != -1)
+			if ((parent = sceneGraph.GetParent(selectedEntity)) != -1)
 			{
 				Transform const& parentTranform = Coordinator::Instance()->GetComponent<Transform>(parent);
 				Math::mat4 const& parentGlobalInverse = parentTranform.modelMatrix.Inverse();
@@ -168,7 +163,7 @@ namespace ALEngine::Editor
 
 						if (Check_Point_To_AABB(mousePos, enttXform.position, enttXform.scale.x, enttXform.scale.y))
 						{
-							m_SelectedEntity = entt;
+							ALEditor::Instance()->SetSelectedEntity(entt);
 							entity_clicked = true;
 							break;
 						}
@@ -176,25 +171,10 @@ namespace ALEngine::Editor
 				}
 				// No entities clicked (clicked viewport)
 				if (!entity_clicked && !ImGuizmo::IsOver())
-					m_SelectedEntity = ECS::MAX_ENTITIES;
+					ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 			}
 		}
 		ImGui::End();
-	}
-
-	void ScenePanel::SetCurrentGizmoOperation(ImGuizmo::OPERATION _op)
-	{
-		m_CurrentGizmoOperation = _op;
-	}
-	
-	void ScenePanel::SetSelectedEntity(ECS::Entity _entt)
-	{
-		m_SelectedEntity = _entt;
-	}
-
-	ECS::Entity ScenePanel::GetSelectedEntity(void)
-	{
-		return m_SelectedEntity;
 	}
 
 	f64 ScenePanel::GetSceneWidth(void)
@@ -267,7 +247,7 @@ namespace ALEngine::Editor
 		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 
-	void ScenePanel::CameraControls(void)
+	void ScenePanel::UserInput(void)
 	{
 		f32 constexpr CAM_SPEED{ 7.5f };
 

@@ -41,7 +41,7 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			if (!focus)
+			if (!focus && !editorFocus)
 			{
 				glfwPollEvents();
 				return;
@@ -53,6 +53,10 @@ namespace ALEngine::Engine
 				Commands::EditorCommandManager::Update();
 				// Begin new ImGui frame
 				ALEditor::Instance()->Begin();
+				
+				// Set the window focus
+				ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
+				editorFocus = ImGui::IsWindowFocused(flag);
 			}
 
 			Input::Update();
@@ -68,7 +72,7 @@ namespace ALEngine::Engine
 				Render();
 			}
 
-			// Marks the end of a frame loop, for tracy profiler
+			// Marks the end of a frame m_Loop, for tracy profiler
 			FrameMark
 		}
 #endif
@@ -153,7 +157,7 @@ namespace ALEngine::Engine
 					Time::WaitUntil();
 				}
 
-				// Marks the end of a frame loop, for tracy profiler
+				// Marks the end of a frame m_Loop, for tracy profiler
 				FrameMark
 			}
 
@@ -204,7 +208,7 @@ namespace ALEngine::Engine
 
 	void Application::Update(void)
 	{
-		// should do the game loop here
+		// should do the game m_Loop here
 		while (GameStateManager::current != GameState::Quit && appStatus)
 		{
 #if EDITOR

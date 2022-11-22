@@ -71,7 +71,9 @@
     <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
     <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
     <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Commands\Command.cpp" />
     <ClCompile Include="Source\Commands\UpdateComponentCommand.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
@@ -81,6 +83,7 @@
     <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
+    <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +325,8 @@
     <ClInclude Include="Include\Math\Vector3Int.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
     <ClInclude Include="Include\Common Header\MyScene.h" />
     <ClInclude Include="Include\Commands\Command.h" />
@@ -336,6 +341,7 @@
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptSystem.h" />
+    <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
   </ItemGroup>
   <ItemGroup>
