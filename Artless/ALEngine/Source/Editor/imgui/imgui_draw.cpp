@@ -1686,7 +1686,7 @@ void ImDrawListSplitter::ClearFreeMemory()
     for (int i = 0; i < _Channels.Size; i++)
     {
         if (i == _Current)
-            memset(&_Channels[i], 0, sizeof(_Channels[i]));  // Current channel is a copy of CmdBuffer/IdxBuffer, don't destruct again
+            memset(&_Channels[i], 0, sizeof(_Channels[i]));  // Current m_Channel is a copy of CmdBuffer/IdxBuffer, don't destruct again
         _Channels[i]._CmdBuffer.clear();
         _Channels[i]._IdxBuffer.clear();
     }
@@ -1709,7 +1709,7 @@ void ImDrawListSplitter::Split(ImDrawList* draw_list, int channels_count)
 
     // Channels[] (24/32 bytes each) hold storage that we'll swap with draw_list->_CmdBuffer/_IdxBuffer
     // The content of Channels[0] at this point doesn't matter. We clear it to make state tidy in a debugger but we don't strictly need to.
-    // When we switch to the next channel, we'll copy draw_list->_CmdBuffer/_IdxBuffer into Channels[0] and then Channels[1] into draw_list->CmdBuffer/_IdxBuffer
+    // When we switch to the next m_Channel, we'll copy draw_list->_CmdBuffer/_IdxBuffer into Channels[0] and then Channels[1] into draw_list->CmdBuffer/_IdxBuffer
     memset(&_Channels[0], 0, sizeof(ImDrawChannel));
     for (int i = 1; i < channels_count; i++)
     {
@@ -1741,31 +1741,31 @@ void ImDrawListSplitter::Merge(ImDrawList* draw_list)
     int idx_offset = last_cmd ? last_cmd->IdxOffset + last_cmd->ElemCount : 0;
     for (int i = 1; i < _Count; i++)
     {
-        ImDrawChannel& ch = _Channels[i];
-        if (ch._CmdBuffer.Size > 0 && ch._CmdBuffer.back().ElemCount == 0 && ch._CmdBuffer.back().UserCallback == NULL) // Equivalent of PopUnusedDrawCmd()
-            ch._CmdBuffer.pop_back();
+        ImDrawChannel& m_Ch = _Channels[i];
+        if (m_Ch._CmdBuffer.Size > 0 && m_Ch._CmdBuffer.back().ElemCount == 0 && m_Ch._CmdBuffer.back().UserCallback == NULL) // Equivalent of PopUnusedDrawCmd()
+            m_Ch._CmdBuffer.pop_back();
 
-        if (ch._CmdBuffer.Size > 0 && last_cmd != NULL)
+        if (m_Ch._CmdBuffer.Size > 0 && last_cmd != NULL)
         {
             // Do not include ImDrawCmd_AreSequentialIdxOffset() in the compare as we rebuild IdxOffset values ourselves.
             // Manipulating IdxOffset (e.g. by reordering draw commands like done by RenderDimmedBackgroundBehindWindow()) is not supported within a splitter.
-            ImDrawCmd* next_cmd = &ch._CmdBuffer[0];
+            ImDrawCmd* next_cmd = &m_Ch._CmdBuffer[0];
             if (ImDrawCmd_HeaderCompare(last_cmd, next_cmd) == 0 && last_cmd->UserCallback == NULL && next_cmd->UserCallback == NULL)
             {
-                // Merge previous channel last draw command with current channel first draw command if matching.
+                // Merge previous m_Channel last draw command with current m_Channel first draw command if matching.
                 last_cmd->ElemCount += next_cmd->ElemCount;
                 idx_offset += next_cmd->ElemCount;
-                ch._CmdBuffer.erase(ch._CmdBuffer.Data); // FIXME-OPT: Improve for multiple merges.
+                m_Ch._CmdBuffer.erase(m_Ch._CmdBuffer.Data); // FIXME-OPT: Improve for multiple merges.
             }
         }
-        if (ch._CmdBuffer.Size > 0)
-            last_cmd = &ch._CmdBuffer.back();
-        new_cmd_buffer_count += ch._CmdBuffer.Size;
-        new_idx_buffer_count += ch._IdxBuffer.Size;
-        for (int cmd_n = 0; cmd_n < ch._CmdBuffer.Size; cmd_n++)
+        if (m_Ch._CmdBuffer.Size > 0)
+            last_cmd = &m_Ch._CmdBuffer.back();
+        new_cmd_buffer_count += m_Ch._CmdBuffer.Size;
+        new_idx_buffer_count += m_Ch._IdxBuffer.Size;
+        for (int cmd_n = 0; cmd_n < m_Ch._CmdBuffer.Size; cmd_n++)
         {
-            ch._CmdBuffer.Data[cmd_n].IdxOffset = idx_offset;
-            idx_offset += ch._CmdBuffer.Data[cmd_n].ElemCount;
+            m_Ch._CmdBuffer.Data[cmd_n].IdxOffset = idx_offset;
+            idx_offset += m_Ch._CmdBuffer.Data[cmd_n].ElemCount;
         }
     }
     draw_list->CmdBuffer.resize(draw_list->CmdBuffer.Size + new_cmd_buffer_count);
@@ -1776,9 +1776,9 @@ void ImDrawListSplitter::Merge(ImDrawList* draw_list)
     ImDrawIdx* idx_write = draw_list->IdxBuffer.Data + draw_list->IdxBuffer.Size - new_idx_buffer_count;
     for (int i = 1; i < _Count; i++)
     {
-        ImDrawChannel& ch = _Channels[i];
-        if (int sz = ch._CmdBuffer.Size) { memcpy(cmd_write, ch._CmdBuffer.Data, sz * sizeof(ImDrawCmd)); cmd_write += sz; }
-        if (int sz = ch._IdxBuffer.Size) { memcpy(idx_write, ch._IdxBuffer.Data, sz * sizeof(ImDrawIdx)); idx_write += sz; }
+        ImDrawChannel& m_Ch = _Channels[i];
+        if (int sz = m_Ch._CmdBuffer.Size) { memcpy(cmd_write, m_Ch._CmdBuffer.Data, sz * sizeof(ImDrawCmd)); cmd_write += sz; }
+        if (int sz = m_Ch._IdxBuffer.Size) { memcpy(idx_write, m_Ch._IdxBuffer.Data, sz * sizeof(ImDrawIdx)); idx_write += sz; }
     }
     draw_list->_IdxWritePtr = idx_write;
 
@@ -2059,7 +2059,7 @@ void    ImFontAtlas::GetTexDataAsAlpha8(unsigned char** out_pixels, int* out_wid
 void    ImFontAtlas::GetTexDataAsRGBA32(unsigned char** out_pixels, int* out_width, int* out_height, int* out_bytes_per_pixel)
 {
     // Convert to RGBA32 format on demand
-    // Although it is likely to be the most commonly used format, our font rendering is 1 channel / 8 bpp
+    // Although it is likely to be the most commonly used format, our font rendering is 1 m_Channel / 8 bpp
     if (!TexPixelsRGBA32)
     {
         unsigned char* pixels = NULL;

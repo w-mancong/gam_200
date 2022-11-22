@@ -171,7 +171,7 @@ Index of this file:
 //  TableNextColumn():    true        false        false       -> [userland] when TableNextColumn() / TableSetColumnIndex() return false, user can skip submitting items but only if the column doesn't contribute to row height.
 //          SkipItems:    false       false        true        -> [internal] when SkipItems is true, most widgets will early out if submitted, resulting is no layout output.
 //           ClipRect:    normal      zero-width   zero-width  -> [internal] when ClipRect is zero, ItemAdd() will return false and most widgets will early out mid-way.
-//  ImDrawList output:    normal      dummy        dummy       -> [internal] when using the dummy channel, ImDrawList submissions (if any) will be wasted (because cliprect is zero-width anyway).
+//  ImDrawList output:    normal      dummy        dummy       -> [internal] when using the dummy m_Channel, ImDrawList submissions (if any) will be wasted (because cliprect is zero-width anyway).
 //
 // - We need to distinguish those cases because non-hidden columns that are clipped outside of scrolling bounds should still contribute their height to the row.
 //   However, in the majority of cases, the contribution to row height is the same for all columns, or the tallest cells are known by the programmer.
@@ -255,7 +255,7 @@ Index of this file:
 // Configuration
 static const int TABLE_DRAW_CHANNEL_BG0 = 0;
 static const int TABLE_DRAW_CHANNEL_BG2_FROZEN = 1;
-static const int TABLE_DRAW_CHANNEL_NOCLIP = 2;                     // When using ImGuiTableFlags_NoClip (this becomes the last visible channel)
+static const int TABLE_DRAW_CHANNEL_NOCLIP = 2;                     // When using ImGuiTableFlags_NoClip (this becomes the last visible m_Channel)
 static const float TABLE_BORDER_SIZE                     = 1.0f;    // FIXME-TABLE: Currently hard-coded because of clipping assumptions with outer borders rendering.
 static const float TABLE_RESIZE_SEPARATOR_HALF_THICKNESS = 4.0f;    // Extend outside inner borders.
 static const float TABLE_RESIZE_SEPARATOR_FEEDBACK_TIMER = 0.06f;   // Delay/timer before making the hover feedback (color+cursor) visible because tables/columns tends to be more cramped.
@@ -1257,7 +1257,7 @@ void    ImGui::EndTable()
         TableDrawBorders(table);
 
 #if 0
-    // Strip out dummy channel draw calls
+    // Strip out dummy m_Channel draw calls
     // We have no way to prevent user submitting direct ImDrawList calls into a hidden column (but ImGui:: calls will be clipped out)
     // Pros: remove draw calls which will have no effect. since they'll have zero-size cliprect they may be early out anyway.
     // Cons: making it harder for users watching metrics/debugger to spot the wasted vertices.
@@ -1974,13 +1974,13 @@ void ImGui::TableBeginCell(ImGuiTable* table, int column_n)
 
     if (table->Flags & ImGuiTableFlags_NoClip)
     {
-        // FIXME: if we end up drawing all borders/bg in EndTable, could remove this and just assert that channel hasn't changed.
+        // FIXME: if we end up drawing all borders/bg in EndTable, could remove this and just assert that m_Channel hasn't changed.
         table->DrawSplitter->SetCurrentChannel(window->DrawList, TABLE_DRAW_CHANNEL_NOCLIP);
         //IM_ASSERT(table->DrawSplitter._Current == TABLE_DRAW_CHANNEL_NOCLIP);
     }
     else
     {
-        // FIXME-TABLE: Could avoid this if draw channel is dummy channel?
+        // FIXME-TABLE: Could avoid this if draw m_Channel is dummy m_Channel?
         SetWindowClipRectBeforeSetChannel(window, column->ClipRect);
         table->DrawSplitter->SetCurrentChannel(window->DrawList, column->DrawChannelCurrent);
     }
@@ -2221,7 +2221,7 @@ void ImGui::TableUpdateColumnsWeightFromWidth(ImGuiTable* table)
 //-------------------------------------------------------------------------
 
 // Bg2 is used by Selectable (and possibly other widgets) to render to the background.
-// Unlike our Bg0/1 channel which we uses for RowBg/CellBg/Borders and where we guarantee all shapes to be CPU-clipped, the Bg2 channel being widgets-facing will rely on regular ClipRect.
+// Unlike our Bg0/1 m_Channel which we uses for RowBg/CellBg/Borders and where we guarantee all shapes to be CPU-clipped, the Bg2 m_Channel being widgets-facing will rely on regular ClipRect.
 void ImGui::TablePushBackgroundChannel()
 {
     ImGuiContext& g = *GImGui;
@@ -2251,17 +2251,17 @@ void ImGui::TablePopBackgroundChannel()
 //   increase overall dormant memory cost.
 // - We isolate headers draw commands in their own channels instead of just altering clip rects.
 //   This is in order to facilitate merging of draw commands.
-// - After crossing FreezeRowsCount, all columns see their current draw channel changed to a second set of channels.
-// - We only use the dummy draw channel so we can push a null clipping rectangle into it without affecting other
+// - After crossing FreezeRowsCount, all columns see their current draw m_Channel changed to a second set of channels.
+// - We only use the dummy draw m_Channel so we can push a null clipping rectangle into it without affecting other
 //   channels, while simplifying per-row/per-cell overhead. It will be empty and discarded when merged.
 // - We allocate 1 or 2 background draw channels. This is because we know TablePushBackgroundChannel() is only used for
-//   horizontal spanning. If we allowed vertical spanning we'd need one background draw channel per merge group (1-4).
-// Draw channel allocation (before merging):
+//   horizontal spanning. If we allowed vertical spanning we'd need one background draw m_Channel per merge group (1-4).
+// Draw m_Channel allocation (before merging):
 // - NoClip                       --> 2+D+1 channels: bg0/1 + bg2 + foreground (same clip rect == always 1 draw call)
 // - Clip                         --> 2+D+N channels
 // - FreezeRows                   --> 2+D+N*2 (unless scrolling value is zero)
 // - FreezeRows || FreezeColunns  --> 3+D+N*2 (unless scrolling value is zero)
-// Where D is 1 if any column is clipped or hidden (dummy channel) otherwise 0.
+// Where D is 1 if any column is clipped or hidden (dummy m_Channel) otherwise 0.
 void ImGui::TableSetupDrawChannels(ImGuiTable* table)
 {
     const int freeze_row_multiplier = (table->FreezeRowsCount > 0) ? 2 : 1;
@@ -2306,7 +2306,7 @@ void ImGui::TableSetupDrawChannels(ImGuiTable* table)
 // actual merging is done by table->DrawSplitter.Merge() which is called right after TableMergeDrawChannels().
 //
 // Columns where the contents didn't stray off their local clip rectangle can be merged. To achieve
-// this we merge their clip rect and make them contiguous in the channel list, so they can be merged
+// this we merge their clip rect and make them contiguous in the m_Channel list, so they can be merged
 // by the call to DrawSplitter.Merge() following to the call to this function.
 // We reorder draw commands by arranging them into a maximum of 4 distinct groups:
 //
@@ -2314,20 +2314,20 @@ void ImGui::TableSetupDrawChannels(ImGuiTable* table)
 //   [ 0. ] no freeze       [ 0. ] row freeze      [ 01 ] col freeze      [ 01 ] row+col freeze
 //   [ .. ]  or no scroll   [ 2. ]  and v-scroll   [ .. ]  and h-scroll   [ 23 ]  and v+h-scroll
 //
-// Each column itself can use 1 channel (row freeze disabled) or 2 channels (row freeze enabled).
+// Each column itself can use 1 m_Channel (row freeze disabled) or 2 channels (row freeze enabled).
 // When the contents of a column didn't stray off its limit, we move its channels into the corresponding group
 // based on its position (within frozen rows/columns groups or not).
 // At the end of the operation our 1-4 groups will each have a ImDrawCmd using the same ClipRect.
-// This function assume that each column are pointing to a distinct draw channel,
+// This function assume that each column are pointing to a distinct draw m_Channel,
 // otherwise merge_group->ChannelsCount will not match set bit count of merge_group->ChannelsMask.
 //
 // Column channels will not be merged into one of the 1-4 groups in the following cases:
 // - The contents stray off its clipping rectangle (we only compare the MaxX value, not the MinX value).
 //   Direct ImDrawList calls won't be taken into account by default, if you use them make sure the ImGui:: bounds
 //   matches, by e.g. calling SetCursorScreenPos().
-// - The channel uses more than one draw command itself. We drop all our attempt at merging stuff here..
+// - The m_Channel uses more than one draw command itself. We drop all our attempt at merging stuff here..
 //   we could do better but it's going to be rare and probably not worth the hassle.
-// Columns for which the draw channel(s) haven't been merged with other will use their own ImDrawCmd.
+// Columns for which the draw m_Channel(s) haven't been merged with other will use their own ImDrawCmd.
 //
 // This function is particularly tricky to understand.. take a breath.
 void ImGui::TableMergeDrawChannels(ImGuiTable* table)
@@ -2395,7 +2395,7 @@ void ImGui::TableMergeDrawChannels(ImGuiTable* table)
             merge_group_mask |= (1 << merge_group_n);
         }
 
-        // Invalidate current draw channel
+        // Invalidate current draw m_Channel
         // (we don't clear DrawChannelFrozen/DrawChannelUnfrozen solely to facilitate debugging/later inspection of data)
         column->DrawChannelCurrent = (ImGuiTableDrawChannelIdx)-1;
     }
@@ -2418,10 +2418,10 @@ void ImGui::TableMergeDrawChannels(ImGuiTable* table)
         }
 #endif
 
-    // 2. Rewrite channel list in our preferred order
+    // 2. Rewrite m_Channel list in our preferred order
     if (merge_group_mask != 0)
     {
-        // We skip channel 0 (Bg0/Bg1) and 1 (Bg2 frozen) from the shuffling since they won't move - see channels allocation in TableSetupDrawChannels().
+        // We skip m_Channel 0 (Bg0/Bg1) and 1 (Bg2 frozen) from the shuffling since they won't move - see channels allocation in TableSetupDrawChannels().
         const int LEADING_DRAW_CHANNELS = 2;
         g.DrawChannelsTempMergeBuffer.resize(splitter->_Count - LEADING_DRAW_CHANNELS); // Use shared temporary storage so the allocation gets amortized
         ImDrawChannel* dst_tmp = g.DrawChannelsTempMergeBuffer.Data;
@@ -2470,10 +2470,10 @@ void ImGui::TableMergeDrawChannels(ImGuiTable* table)
                     merge_group->ChannelsMask.ClearBit(n);
                     merge_channels_count--;
 
-                    ImDrawChannel* channel = &splitter->_Channels[n];
-                    IM_ASSERT(channel->_CmdBuffer.Size == 1 && merge_clip_rect.Contains(ImRect(channel->_CmdBuffer[0].ClipRect)));
-                    channel->_CmdBuffer[0].ClipRect = merge_clip_rect.ToVec4();
-                    memcpy(dst_tmp++, channel, sizeof(ImDrawChannel));
+                    ImDrawChannel* m_Channel = &splitter->_Channels[n];
+                    IM_ASSERT(m_Channel->_CmdBuffer.Size == 1 && merge_clip_rect.Contains(ImRect(m_Channel->_CmdBuffer[0].ClipRect)));
+                    m_Channel->_CmdBuffer[0].ClipRect = merge_clip_rect.ToVec4();
+                    memcpy(dst_tmp++, m_Channel, sizeof(ImDrawChannel));
                 }
             }
 
@@ -2487,8 +2487,8 @@ void ImGui::TableMergeDrawChannels(ImGuiTable* table)
         {
             if (!remaining_mask.TestBit(n))
                 continue;
-            ImDrawChannel* channel = &splitter->_Channels[n];
-            memcpy(dst_tmp++, channel, sizeof(ImDrawChannel));
+            ImDrawChannel* m_Channel = &splitter->_Channels[n];
+            memcpy(dst_tmp++, m_Channel, sizeof(ImDrawChannel));
             remaining_count--;
         }
         IM_ASSERT(dst_tmp == g.DrawChannelsTempMergeBuffer.Data + g.DrawChannelsTempMergeBuffer.Size);
@@ -3942,7 +3942,7 @@ void ImGui::NextColumn()
     PopItemWidth();
 
     // Optimization: avoid PopClipRect() + SetCurrentChannel() + PushClipRect()
-    // (which would needlessly attempt to update commands in the wrong channel, then pop or overwrite them),
+    // (which would needlessly attempt to update commands in the wrong m_Channel, then pop or overwrite them),
     ImGuiOldColumnData* column = &columns->Columns[columns->Current];
     SetWindowClipRectBeforeSetChannel(window, column->ClipRect);
     columns->Splitter.SetCurrentChannel(window->DrawList, columns->Current + 1);

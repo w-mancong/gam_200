@@ -131,7 +131,7 @@ namespace ALEngine::ECS
 
 		/*!*********************************************************************************
 			\brief
-			Entity is destroyed, loop throw to remove all the components associated to this 
+			Entity is destroyed, m_Loop throw to remove all the components associated to this 
 			entity
 
 			\param [in] entity:

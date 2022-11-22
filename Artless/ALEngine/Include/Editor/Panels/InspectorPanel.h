@@ -131,15 +131,6 @@ namespace ALEngine::Editor
 			\return
 			Current Gizmo Operation
 		***********************************************************************************/
-		ImGuizmo::OPERATION GetCurrGizmoOperation(void) const;
-
-		/*!*********************************************************************************
-			\brief
-			Displays the Sprite component info on the panel
-
-			\return
-			Current Gizmo Operation
-		***********************************************************************************/
 		void AddComponentButton(void);
 
 		/*!*********************************************************************************
@@ -161,7 +152,6 @@ namespace ALEngine::Editor
 		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
-		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
 		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES };	// Entity Selected in Inspector
 
 		// Panel sizes
@@ -184,6 +174,7 @@ namespace ALEngine::Editor
 		InComp_RigidBody,
 		InComp_Collider,
 		InComp_Script,
+		InComp_Audio,
 		InComp_Total
 	};
 }
