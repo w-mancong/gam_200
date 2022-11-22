@@ -686,6 +686,10 @@ namespace ALEngine::Editor
 	{
 		// Get Window size
 		ImVec2 winsize = ImGui::GetWindowSize();
+
+		// Add Component Button
+		f32 addCompSize = ImGui::CalcTextSize("Add Component").x;
+		ImGui::NewLine(); ImGui::NewLine(); ImGui::SameLine((winsize.x - addCompSize) * 0.5f);
 		if (ImGui::Button("Add Component"))
 		{
 			ImGui::OpenPopup("addcomponent_popup");

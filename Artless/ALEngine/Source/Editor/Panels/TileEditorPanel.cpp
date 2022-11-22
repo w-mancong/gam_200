@@ -77,9 +77,19 @@ namespace ALEngine::Editor
 	void TileEditorPanel::Update(void)
 	{
 		ImVec2 tileArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.75f, ImGui::GetContentRegionAvail().y);
+
+		ImGuiWindowFlags childFlags = ImGuiWindowFlags_HorizontalScrollbar;
 		ImGui::BeginChild("##TileEditor_TileArea", tileArea, true);
 
-
+		u32 tileNum{ 0 };
+		for (const auto& row : m_TileMap)
+		{
+			for (const auto& tile : row)
+			{
+				std::string btnID = "##TileEditorTile" + std::to_string(tileNum++);
+				ImGui::Button(btnID.c_str());
+			}
+		}
 
 		ImGui::EndChild();
 	}
@@ -99,7 +109,16 @@ namespace ALEngine::Editor
 				// Save As
 				if (ImGui::MenuItem("Save As...##TileEditorMenuBar"))
 				{
+					std::string ret = Utility::WindowsFileDialog::SaveFile("ALEngine Map (*.map)\0*.map\0");
 
+					// Save Success
+					if (ret.empty() == false)
+					{
+						SaveMap(ret.c_str());
+						m_HasMapLoaded = true;
+						m_FilePath = ret;
+						return;
+					}
 				}
 
 				// Open File
@@ -107,6 +126,17 @@ namespace ALEngine::Editor
 				{
 
 				}
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Edit##TileEditorMenuBar"))
+			{
+				// Change Size
+				if (ImGui::MenuItem("Open File##TileEditorMenuBar"))
+				{
+
+				}
+
 				ImGui::EndMenu();
 			}
 
@@ -167,6 +197,7 @@ namespace ALEngine::Editor
 			{
 				SaveMap(ret.c_str());
 				m_HasMapLoaded = true;
+				m_FilePath = ret;
 				return;
 			}
 		}
@@ -224,6 +255,7 @@ namespace ALEngine::Editor
 			{
 				LoadMap(ret.c_str());
 				m_HasMapLoaded = true;
+				m_FilePath = ret;
 				m_CurrentLoadStage = LoadStage::CreateOrLoadSelection;
 				return;
 			}
@@ -338,5 +370,3 @@ namespace ALEngine::Editor
 			m_TileMap.emplace_back(row_tiles);
 		}
 	}
-
-}
