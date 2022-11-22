@@ -181,6 +181,8 @@ namespace ALEngine::ECS
 		// Particle system init here
 		ParticleSystem::GetParticleSystem().ParticleSysInit();
 
+		Font::FontInit("Assets/fonts/Arial-italic.ttf", "ARIAL", Text::FontType::Italic);
+
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 
@@ -220,6 +222,7 @@ namespace ALEngine::ECS
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
 			std::cerr << " Editor frame buffer failed to initialize properly\n";
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
@@ -272,10 +275,11 @@ namespace ALEngine::ECS
 #endif
 		UpdateAnimatorSystem();
 		UpdateParticleSystem();
-		UpdateTextSystem();
 #if EDITOR
+		UpdateTextSystem();
 		rs->RenderBatch(camera);
 #else
+		UpdateTextSystem();
 		rs->RenderBatch();
 #endif
 
@@ -289,7 +293,7 @@ namespace ALEngine::ECS
 		ParticleSystem::GetParticleSystem().ParticleRender(camera);
 
 		// Render all text
-		Text::RenderAllText();
+		Font::RenderAllText();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
 		glDisable(GL_DEPTH_TEST);
@@ -307,7 +311,7 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::RenderAllLines();
 
 		// Render all text
-		Text::RenderAllText();
+		Font::RenderAllText();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//

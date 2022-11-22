@@ -41,7 +41,7 @@ namespace
 	std::unordered_map<Guid, Texture> textureList{};
 	std::unordered_map<Guid, Animation> animationList{};
 	std::unordered_map<Guid, Audio> audioList{};
-	std::unordered_map<Guid, Font> fontList{};
+	//std::unordered_map<Guid, Font> fontList{};
 #if EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList{};
 #endif
@@ -265,30 +265,31 @@ namespace
 		for (c8& chr : fontType)
 			chr = toupper(chr);
 
-		Font::FontType type;
+		Text::FontType type;
 		if (fontType == "REGULAR")
 		{
-			type = Font::FontType::Regular;
+			type = Text::FontType::Regular;
 		}
 		else if (fontType == "BOLD")
 		{
-			type = Font::FontType::Bold;
+			type = Text::FontType::Bold;
 		}
 		else if (fontType == "ITALIC")
 		{
-			type = Font::FontType::Italic;
+			type = Text::FontType::Italic;
 		}
 		else if (fontType == "ITALICBOLD")
 		{
-			type = Font::FontType::ItalicBold;
+			type = Text::FontType::ItalicBold;
 		}
 		else
 		{
 			std::cerr << "AssetManager ERROR: Font not supported: " << filePath << "\n";
 			return;
 		}
-
-		Font::FontInit(filePath, fontName, type);
+		
+		//Font::FontInit(filePath, fontName, type);
+		ALEngine::ECS::Font::FontInit(filePath, fontName, type);
 	}
 
 	Texture LoadWhiteImage(void)
@@ -322,6 +323,8 @@ namespace
 
 		TextureHandle handle = glGetTextureHandleARB(texture);
 		glMakeTextureHandleResidentARB(handle);
+
+		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
 		return { texture, handle };
 	}
@@ -515,13 +518,8 @@ namespace ALEngine::Engine
 				}
 				case FileType::Font:
 				{
-					std::string filePath{ *it };
-					for (c8& ch : filePath)
-					{
-						if (ch == '\\')
-							ch = '/';
-					}
-					LoadFont(filePath);
+					//std::string filePath{ *it };
+					//LoadFont(filePath);
 					break;
 				}
 				default:
