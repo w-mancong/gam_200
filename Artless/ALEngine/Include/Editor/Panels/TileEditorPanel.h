@@ -69,9 +69,15 @@ namespace ALEngine::Editor
 	private:
 		/*!*********************************************************************************
 			\brief
-			Updates the current level for the
+			Updates the current map for tile editor
 		***********************************************************************************/
 		void Update(void);
+
+		/*!*********************************************************************************
+			\brief
+			Updates the menu bar
+		***********************************************************************************/
+		void UpdateMenuBar(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -107,6 +113,7 @@ namespace ALEngine::Editor
 		// Variables
 		b8 m_HasMapLoaded{ false };				// Boolean to keep track of whether there is a map loaded
 		b8 m_PanelIsOpen{ false };				// Keeps track of whether the Panel is open
+		std::string m_FilePath{ "" };			// FilePath of the current file
 
 		std::vector<std::vector<TileType>> m_TileMap{};			// Map of tiles
 		s32 m_MapHeight{ 0 }, m_MapWidth{ 0 };					// Map Dimensions

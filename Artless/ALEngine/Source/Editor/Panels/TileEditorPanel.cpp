@@ -30,15 +30,18 @@ namespace ALEngine::Editor
 		if (m_PanelIsOpen == false)
 			return;
 
-
 		// Set constraints
 		if(m_HasMapLoaded)
 			ImGui::SetNextWindowSizeConstraints(ImVec2(ALEditor::Instance()->GetSceneWidth(), ALEditor::Instance()->GetSceneHeight()), ImGui::GetMainViewport()->WorkSize);
 		else
 			ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
+		ImGuiWindowFlags winFlags = 0;
 
-		if (!ImGui::Begin("Tile Editor"), &m_PanelIsOpen, 0)
+		if (m_HasMapLoaded)
+			winFlags = ImGuiWindowFlags_MenuBar;
+
+		if (!ImGui::Begin("Tile Editor", &m_PanelIsOpen, winFlags))
 		{
 			ImGui::End();
 			return;
@@ -47,8 +50,11 @@ namespace ALEngine::Editor
 		// No level loaded, so select 
 		if (m_HasMapLoaded == false)
 			SelectMap();
-		else 
+		else
+		{
+			UpdateMenuBar();
 			Update();
+		}
 
 		ImGui::End();
 	}
@@ -76,6 +82,36 @@ namespace ALEngine::Editor
 
 
 		ImGui::EndChild();
+	}
+
+	void TileEditorPanel::UpdateMenuBar(void)
+	{
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("Setting##TileEditorMenuBar"))
+			{
+				// Save
+				if (ImGui::MenuItem("Save##TileEditorMenuBar"))
+				{
+					SaveMap(m_FilePath.c_str());
+				}
+				
+				// Save As
+				if (ImGui::MenuItem("Save As...##TileEditorMenuBar"))
+				{
+
+				}
+
+				// Open File
+				if(ImGui::MenuItem("Open File##TileEditorMenuBar"))
+				{
+
+				}
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMenuBar();
+		}
 	}
 
 	void TileEditorPanel::CreateNewMap(void)
@@ -225,12 +261,10 @@ namespace ALEngine::Editor
 				u32 rowCount{ 0 };
 				for (const auto& i : m_TileMap)
 				{
-					writer.Key(std::to_string(rowCount++).c_str());
+					std::string row_key = std::to_string(rowCount++);
 					writer.StartArray();
 					for (const auto& j : i)
-					{
 						writer.Uint(static_cast<u32>(j));
-					}
 					writer.EndArray();
 				}
 			}
@@ -287,7 +321,22 @@ namespace ALEngine::Editor
 			AL_CORE_INFO("Height Assigned to {}", m_MapHeight);
 		}
 
+		// Make sure width or height are not 0
 		assert((m_MapWidth != 0) || (m_MapHeight != 0));
+
+		// Make sure has TileMap
+		assert(val.HasMember("Map"));
+
+		for(s32 i{0}; i < m_MapHeight; ++i)
+		{
+			Value const& row_val = val["Map"][i];
+			std::vector<TileType> row_tiles{};
+
+			for (s32 j{ 0 }; j < m_MapWidth; ++j)
+				row_tiles.emplace_back(static_cast<TileType>(row_val[j].GetInt()));
+
+			m_TileMap.emplace_back(row_tiles);
+		}
 	}
 
 }

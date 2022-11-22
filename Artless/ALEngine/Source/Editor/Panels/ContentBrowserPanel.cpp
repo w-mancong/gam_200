@@ -220,6 +220,7 @@ namespace ALEngine::Editor
 			{
 				if (fileNamestring.find(".scene") != std::string::npos)
 				{
+					ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 					std::string the_path = directoryEntry.path().string();
 					Engine::Scene::LoadScene(the_path.c_str());
 					ALEditor::Instance()->SetCurrentSceneName(the_path);
