@@ -14,6 +14,9 @@ brief:	This file contains function declarations for the TileEditorPanel class.
 
 namespace ALEngine::Editor
 {
+	// Forward Delcarations
+	enum class TileType;
+
 	/*!*********************************************************************************
 		\brief
 		Class that aids in the display of the Tile Editor Panel for the editor
@@ -66,6 +69,12 @@ namespace ALEngine::Editor
 	private:
 		/*!*********************************************************************************
 			\brief
+			Updates the current level for the
+		***********************************************************************************/
+		void Update(void);
+
+		/*!*********************************************************************************
+			\brief
 			Creates a new Map for the Tile Editor
 		***********************************************************************************/
 		void CreateNewMap(void);
@@ -78,9 +87,19 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
-			Updates the current level for the 
+			Saves the current Map
+			\param filePath
+			File Path of the map to be saved
 		***********************************************************************************/
-		void Update(void);
+		void SaveMap(const c8* filePath);
+
+		/*!*********************************************************************************
+			\brief
+			Loads the Map
+			\param filePath
+			File Path of the map to be loaded
+		***********************************************************************************/
+		void LoadMap(const c8* filePath);
 
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size
@@ -89,12 +108,23 @@ namespace ALEngine::Editor
 		b8 m_HasMapLoaded{ false };				// Boolean to keep track of whether there is a map loaded
 		b8 m_PanelIsOpen{ false };				// Keeps track of whether the Panel is open
 
+		std::vector<std::vector<TileType>> m_TileMap{};			// Map of tiles
+		s32 m_MapHeight{ 0 }, m_MapWidth{ 0 };					// Map Dimensions
+
 		enum class LoadStage
 		{
 			CreateOrLoadSelection = 0,
 			CreateMap,
 			LoadMap,
 		} m_CurrentLoadStage{ LoadStage::CreateOrLoadSelection };					// Keeps track of what section of loading of map the user is in
+	};
+
+	// Tile Editor Stuff
+	enum class TileType
+	{
+		Empty = 0,
+		Wall,
+		Enemy
 	};
 }
 

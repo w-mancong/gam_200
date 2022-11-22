@@ -283,6 +283,7 @@
     <ClCompile Include="Source\Utility\Profiler.cpp" />
     <ClCompile Include="Source\Utility\Time.cpp" />
     <ClCompile Include="Source\Utility\Timer.cpp" />
+    <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
@@ -427,6 +428,7 @@
     <ClInclude Include="Include\Utility\Type.h" />
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Scripting\ScriptEngine.h" />
+    <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
