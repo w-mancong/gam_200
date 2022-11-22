@@ -76,7 +76,6 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color) {
-		std::cout << pattern.coordinate_occupied.size();
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
 			//If the coordinate is within the boundaries of the room

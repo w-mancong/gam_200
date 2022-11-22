@@ -64,6 +64,8 @@ namespace ALEngine::ECS
 
 		std::vector<Entity> GUI_Pattern_Button_List;
 
+		Entity m_Room_Parent_Entity;
+
 		//Patterns
 		std::vector<Pattern> pattern_List;
 		Pattern selected_Pattern;
@@ -177,27 +179,28 @@ namespace ALEngine::ECS
 		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
 		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 		
+		//Initialize Room Parent 
+		gameplaySystem->m_Room_Parent_Entity = Coordinator::Instance()->CreateEntity();
+		Coordinator::Instance()->AddComponent(gameplaySystem->m_Room_Parent_Entity, Transform{});
+		Coordinator::Instance()->GetComponent<EntityData>(gameplaySystem->m_Room_Parent_Entity).tag = "Room";
+
+		sceneGraph.Push(-1, gameplaySystem->m_Room_Parent_Entity); // first cell is parent
+
 		//Initialize Pattern
 		InitializePatterns(gameplaySystem->pattern_List);
 
 		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {
 			gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
-			if (i == 0)
-			{
-				sceneGraph.Push(-1, gameplaySystem->m_Room.roomCellsArray[i]); // first cell is parent
-			}
-			else
-			{
-				sceneGraph.Push(gameplaySystem->m_Room.roomCellsArray[0], gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
-			}
+			sceneGraph.Push(gameplaySystem->m_Room_Parent_Entity, gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
 
 			Transform transform;
 			transform.scale = { 70, 70 };
+			transform.localScale = { 100, 100 };
 
 			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
 
-			//CreateSprite(gameplaySystem->m_Room.roomCellsArray[i], transform);
+			CreateSprite(gameplaySystem->m_Room.roomCellsArray[i]);
 		}
 
 		for (s32 i = 0; i < gameplaySystem->roomSize[0]; ++i) {
@@ -205,7 +208,7 @@ namespace ALEngine::ECS
 				int cellIndex = i * gameplaySystem->roomSize[0] + j;
 
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
-				transform.position = { 200 + (f32)j * 100.f, 200 + (f32)i * 100.f };
+				transform.position = { 550 + (f32)j * 100.f, 200 + (f32)i * 100.f };
 
 				Cell cell;
 				cell.coordinate = { i,j };
@@ -216,6 +219,8 @@ namespace ALEngine::ECS
 				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
 
 				Coordinator::Instance()->AddComponent(getEntityCell(gameplaySystem->m_Room, i, j), cell);
+
+				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(gameplaySystem->m_Room,i,j)).tag = "Cell[" + std::to_string(i) + "," + std::to_string(j) + "]";
 			}
 		}
 
@@ -229,8 +234,15 @@ namespace ALEngine::ECS
 
 		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
 		Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
-		playertransform.position = SpawnCellTransform.position;
-		playertransform.scale = { 60, 60 };
+		playertransform.localPosition = SpawnCellTransform.position;
+		playertransform.scale = { 40, 40 };
+		playertransform.localScale = { 100, 100 };
+
+		Coordinator::Instance()->GetComponent<EntityData>(gameplaySystem->playerEntity).tag = "Player";
+		CreateSprite(gameplaySystem->playerEntity);
+
+		sceneGraph.Push(-1, gameplaySystem->playerEntity); // first cell is parent
+
 
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
@@ -425,15 +437,15 @@ namespace ALEngine::ECS
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 
 		//Move player transform to it's iterated waypoint
-		Vector2 direction = Vector3::Normalize(cellTransform.position - playerTransform.position);
+		Vector2 direction = Vector3::Normalize(cellTransform.localPosition - playerTransform.localPosition);
 
-		playerTransform.position += direction * 100.0f * Time::m_DeltaTime;
+		playerTransform.localPosition += direction * 100.0f * Time::m_DeltaTime;
 
-		if (Vector3::Distance(playerTransform.position, cellTransform.position) < 1.0f) {
+		if (Vector3::Distance(playerTransform.localPosition, cellTransform.localPosition) < 1.0f) {
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell());
 
-			playerTransform.position = cellTransform.position;
+			playerTransform.localPosition = cellTransform.localPosition;
 			playerUnit.coordinate[0] = cell.coordinate.x;
 			playerUnit.coordinate[1] = cell.coordinate.y;
 
