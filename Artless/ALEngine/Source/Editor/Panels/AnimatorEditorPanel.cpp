@@ -6,8 +6,13 @@
 
 namespace ALEngine::Editor
 {
-	const std::filesystem::path amimatorPath{ "Assets/Dev/Animator" };//base file 
-	b8 popUpWindow{false};
+	namespace
+	{
+		const std::filesystem::path amimatorPath{ "Assets/Dev/Animators" };//base file 
+		b8 popUpWindow{ false };
+		Animator toSave{};
+		f32 timer{};
+	}
 
 	AnimatorEditorPanel::AnimatorEditorPanel()
 	{
@@ -17,13 +22,19 @@ namespace ALEngine::Editor
 	{
 	}
 
-	void AnimatorEditorPanel::OnImGuiRender(b8 pOpen)
+	void AnimatorEditorPanel::OnImGuiRender(b8& pOpen)
 	{
+		if (pOpen)
+		{
+			ImGui::OpenPopup("CreateClip");
+		}
+
 		std::string animatorsContents = FileContents(amimatorPath);
 		std::string word;
+		static b8 animatorText{ false }, animatorError{ false };
 
 		std::istringstream data(animatorsContents);
-		std::vector<const c8*> items;
+		std::vector<const c8*> items{ "testing1" ,"testing2" };
 
 		while (std::getline(data, word, ' '))
 		{
@@ -36,17 +47,10 @@ namespace ALEngine::Editor
 		}
 
 		ImGuiWindowFlags flag = 0;
-		if (ImGui::Begin("Animator Panel##", &pOpen))
+
+		if (ImGui::BeginPopupModal("CreateClip", NULL, ImGuiWindowFlags_MenuBar))
 		{
-		
-			if (ImGui::Button("close"))
-			{
-				pOpen = false;
-			}
-
-			//static int item_type = 4;
-            //const char* items[] = { "Item1", "Item2", "AAAA", "AAAB", "AABB", "ABBB", "ABBB" };
-
+	
 			if (Input::KeyTriggered(KeyCode::A))
 			{
 				items.push_back("hi");
@@ -75,25 +79,100 @@ namespace ALEngine::Editor
 				ImGui::EndCombo();
 			}
 
-			if (ImGui::Button("Create Clip##"))//create clip button
-			{
-				popUpWindow = true;			
-			}
 
-			if (popUpWindow)
+			if (animatorText)
 			{
-				ImGui::Begin("CreateClip");
-
-				if (ImGui::Button("close##"))
+				if (animatorError)
 				{
-					popUpWindow = false;
+					timer += Time::m_DeltaTime;
+					if (timer >= 3.0f)
+					{
+						timer = 0.0f;
+						animatorError = false;
+					}
+					ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Animator Name cannot be empty!");
 				}
-				ImGui::End();
+
+				c8* buffer = const_cast<c8*>(toSave.animatorName.c_str());
+				ImGui::InputTextWithHint("##AnimatorNameInput", "Animator Name", buffer, 256, ImGuiInputTextFlags_ReadOnly);
+				toSave.animatorName = buffer;
+
+				if (ImGui::Button("Create!##AnimatorPanelButton"))
+				{
+					if (!toSave.animatorName.empty())
+					{
+						toSave.animatorName = "";
+						animatorError = animatorText = false;
+						timer = 0.0f;
+					}
+					else
+						animatorError = true;
+				}
 			}
+
+			if (!animatorText)
+			{
+				if (ImGui::Button("Create Animator##AnimatorPanelButton"))//create animator button
+					animatorText = true;
+			}
+			else
+			{
+				if (ImGui::Button("Close Animator##AnimatorPanelButton"))//close animator button
+				{
+					timer = 0.0f;
+					animatorText = false;
+				}
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Create Clip##AnimatorPanelButton"))//create clip button
+			{
+				
+			}
+
+
+			if (ImGui::Button("close"))
+			{
+				animatorError = animatorText = false;
+				pOpen = false;
+			}
+
+			ImGui::EndPopup();
+		}
+
+		//if (ImGui::Begin("Animator Panel##", &pOpen))
+		//{
+		
+			//if (ImGui::Button("close"))
+			//{
+				//pOpen = false;
+			//}
+
+			//static int item_type = 4;
+            //const char* items[] = { "Item1", "Item2", "AAAA", "AAAB", "AABB", "ABBB", "ABBB" };
+
+
+
+			//if (ImGui::Button("Create Clip##"))//create clip button
+			//{
+			//	popUpWindow = true;			
+			//}
+
+			//if (popUpWindow)
+			//{
+			//	ImGui::Begin("CreateClip");
+
+			//	if (ImGui::Button("close##"))
+			//	{
+			//		popUpWindow = false;
+			//	}
+			//	ImGui::End();
+			//}
 		
 
-			ImGui::End();
-		}
+			//ImGui::End();
+		//}
 		
 
 	}
