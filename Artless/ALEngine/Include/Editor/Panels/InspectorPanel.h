@@ -1,4 +1,4 @@
-/*!
+ï»¿/*!
 file:	InspectorPanel.h
 author: Lucas Nguyen
 email:	l.nguyen@digipen.edu
@@ -6,7 +6,7 @@ brief:	This file contains function declarations for the InspectorPanel class.
 		The InspectorPanel class contains information and functions necessary for
 		the Inspector Panel of the editor to be displayed.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
@@ -27,7 +27,7 @@ namespace ALEngine::Editor
 	public:
 		/*!*********************************************************************************
 			\brief
-			Default constructor for the InspectorPanel 
+			Default constructor for the InspectorPanel
 		***********************************************************************************/
 		InspectorPanel(void);
 
@@ -69,7 +69,7 @@ namespace ALEngine::Editor
 			Returns true if there is a selected entity, else returns false
 		***********************************************************************************/
 		bool HasSelectedEntity(void);
-		
+
 		/*!*********************************************************************************
 			\brief
 			Displays the Inspector Menu on the panel

@@ -60,7 +60,7 @@ namespace ALEngine::Editor
 		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial Italic.ttf", 20.f);
 
 		// Init GLFW
-		ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window() , true);
+		ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window(), true);
 		// Set GLSL version
 		ImGui_ImplOpenGL3_Init("#version 450");
 
@@ -90,10 +90,10 @@ namespace ALEngine::Editor
 		if (m_FullScreen && m_GameIsActive)
 		{
 			// Set window size to be full screen
-			ImVec2 vpSize = ImVec2(ImGui::GetMainViewport()->WorkSize.x, 
-							ImGui::GetMainViewport()->WorkSize.y - ImGui::FindWindowByName("##toolbar")->Size.y);
+			ImVec2 vpSize = ImVec2(ImGui::GetMainViewport()->WorkSize.x,
+				ImGui::GetMainViewport()->WorkSize.y - ImGui::FindWindowByName("##toolbar")->Size.y);
 			ImVec2 vpPos = ImVec2(ImGui::GetMainViewport()->WorkPos.x,
-							ImGui::GetMainViewport()->WorkPos.y + ImGui::FindWindowByName("##toolbar")->Size.y);
+				ImGui::GetMainViewport()->WorkPos.y + ImGui::FindWindowByName("##toolbar")->Size.y);
 			ImGui::SetNextWindowSize(vpSize);
 			ImGui::SetNextWindowPos(vpPos);
 			m_GamePanel.OnImGuiRender();
@@ -104,7 +104,7 @@ namespace ALEngine::Editor
 			if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::S))
 				m_SaveScene = true;
 
-			if(m_SaveScene)
+			if (m_SaveScene)
 				SaveScene();
 
 			// Content Browser Panel
@@ -115,12 +115,12 @@ namespace ALEngine::Editor
 
 			if (m_AnimatorPanelEnabled)
 			{
-				m_AnimatorEditorPanel.OnImGuiRender();
+				m_AnimatorEditorPanel.OnImGuiRender(m_AnimatorPanelEnabled);
 			}
 
 			if (m_AudioPanelEnabled)
 			{
-				m_AudioEditorPanel.OnImGuiRender();
+				m_AudioEditorPanel.OnImGuiRender(m_AudioPanelEnabled);
 			}
 
 			m_TileEditor.OnImGuiRender();
@@ -143,7 +143,7 @@ namespace ALEngine::Editor
 
 			// Scene Hierarchy Panel
 			m_SceneHierarchyPanel.OnImGuiRender();
-			
+
 			// Check if there is a selected entity for Inspector
 			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
@@ -165,27 +165,27 @@ namespace ALEngine::Editor
 	void ALEditor::Begin(void)
 	{
 		ZoneScopedN("Editor Update")
-		// Change ImGui Enabled or Disabled
-		/*
-		if (Input::KeyTriggered(KeyCode::Key_9))
-		{
-			m_ImGuiEnabled = !m_ImGuiEnabled;
-
-			ImGuiIO& io = ImGui::GetIO();
-			// If it is iactive, set MultiViewport to disable. 
-				// This is to stop rendering panels outside of main window
-			if (m_ImGuiEnabled)
+			// Change ImGui Enabled or Disabled
+			/*
+			if (Input::KeyTriggered(KeyCode::Key_9))
 			{
-				io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-			}
-			else
-				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-			ImGui::UpdatePlatformWindows();
-		}
-		*/
+				m_ImGuiEnabled = !m_ImGuiEnabled;
 
-		// New ImGui Frame
-		ImGui_ImplOpenGL3_NewFrame();
+				ImGuiIO& io = ImGui::GetIO();
+				// If it is iactive, set MultiViewport to disable.
+					// This is to stop rendering panels outside of main window
+				if (m_ImGuiEnabled)
+				{
+					io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+				}
+				else
+					io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+				ImGui::UpdatePlatformWindows();
+			}
+			*/
+
+			// New ImGui Frame
+			ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
@@ -201,7 +201,7 @@ namespace ALEngine::Editor
 		ImGuizmo::BeginFrame();
 
 		// Enable DockSpace if it is to be enabled!
-		if(m_DockingEnabled)
+		if (m_DockingEnabled)
 			Docking();
 
 		Update();
@@ -243,37 +243,37 @@ namespace ALEngine::Editor
 		ImGuiStyle& style = ImGui::GetStyle();
 
 		// Title Colors
-		style.Colors[ImGuiCol_TitleBg]				= m_ColorTitleBg;			// Title Background
-		style.Colors[ImGuiCol_TitleBgActive]		= m_ColorTitleActiveBg;		// Title Active Background	
+		style.Colors[ImGuiCol_TitleBg] = m_ColorTitleBg;			// Title Background
+		style.Colors[ImGuiCol_TitleBgActive] = m_ColorTitleActiveBg;		// Title Active Background	
 
 		// Window Colors
-		style.Colors[ImGuiCol_WindowBg]				= m_ColorWindowBg;			// Window Background
+		style.Colors[ImGuiCol_WindowBg] = m_ColorWindowBg;			// Window Background
 
 		// Frame Backgrounds
-		style.Colors[ImGuiCol_FrameBg]				= m_ColorNormal;			// Normal Color
-		style.Colors[ImGuiCol_FrameBgActive]		= m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_FrameBgHovered]		= m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_FrameBg] = m_ColorNormal;			// Normal Color
+		style.Colors[ImGuiCol_FrameBgActive] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_FrameBgHovered] = m_ColorHovered;			// Hovered Color
 
 		// Tab Colors
-		style.Colors[ImGuiCol_Tab]					= m_ColorNormal;			// Normal Color
-		style.Colors[ImGuiCol_TabHovered]			= m_ColorHovered;			// Hovered Color
-		style.Colors[ImGuiCol_TabActive]			= m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_TabUnfocusedActive]	= m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_Tab] = m_ColorNormal;			// Normal Color
+		style.Colors[ImGuiCol_TabHovered] = m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_TabActive] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_TabUnfocusedActive] = m_ColorActive;			// Active Color
 
 		// Button Colors
-		style.Colors[ImGuiCol_Button]				= m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_ButtonActive]			= m_ColorActive2;			// Active Color 2
-		style.Colors[ImGuiCol_ButtonHovered]		= m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_Button] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_ButtonActive] = m_ColorActive2;			// Active Color 2
+		style.Colors[ImGuiCol_ButtonHovered] = m_ColorHovered;			// Hovered Color
 
 		// Header Colors
-		style.Colors[ImGuiCol_Header]				= m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_HeaderActive]			= m_ColorActive2;			// Active Color 2
-		style.Colors[ImGuiCol_HeaderHovered]		= m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_Header] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_HeaderActive] = m_ColorActive2;			// Active Color 2
+		style.Colors[ImGuiCol_HeaderHovered] = m_ColorHovered;			// Hovered Color
 
 		// Misc.
-		style.Colors[ImGuiCol_CheckMark]			= m_ColorInteractive;		// Interactive Color
-		style.Colors[ImGuiCol_SliderGrab]			= m_ColorInteractive;		// Interactive Color
-		style.Colors[ImGuiCol_SliderGrabActive]		= m_ColorActive3;			// Active Color 3
+		style.Colors[ImGuiCol_CheckMark] = m_ColorInteractive;		// Interactive Color
+		style.Colors[ImGuiCol_SliderGrab] = m_ColorInteractive;		// Interactive Color
+		style.Colors[ImGuiCol_SliderGrabActive] = m_ColorActive3;			// Active Color 3
 
 	}
 
@@ -302,7 +302,7 @@ namespace ALEngine::Editor
 
 				// Set active for animator panel
 				ImGui::Selectable("Create Clips/Animation", &m_AnimatorPanelEnabled, flag);
-	
+
 				//  Set active for audio panel
 				ImGui::Selectable("Create Audio", &m_AudioPanelEnabled, flag);
 
@@ -342,7 +342,7 @@ namespace ALEngine::Editor
 			Guid id{ 0 };
 
 			// Get texture Guid
-			if(m_GameIsActive)
+			if (m_GameIsActive)
 				id = Engine::AssetManager::Instance()->GetGuid(stop_button_fp);
 			else
 				id = Engine::AssetManager::Instance()->GetGuid(play_button_fp);
@@ -371,13 +371,13 @@ namespace ALEngine::Editor
 					ECS::StartGameplaySystem();
 				}
 				else
-				{					
+				{
 					Coordinator::Instance()->DestroyEntities();
 					ECS::ExitGameplaySystem();
 
 					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
-					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);			
+					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 				}
 			}
 			ImGui::End();
@@ -417,7 +417,7 @@ namespace ALEngine::Editor
 		col = editor_data.GetVec3("ColorActive", Vec3());
 		m_ColorActive = ImVec4(col.x, col.y, col.z, 1.f);
 		// Active 2
-		col = editor_data.GetVec3("ColorActive2",Vec3());
+		col = editor_data.GetVec3("ColorActive2", Vec3());
 		m_ColorActive2 = ImVec4(col.x, col.y, col.z, 1.f);
 		// Active 3
 		col = editor_data.GetVec3("ColorActive3", Vec3());
@@ -437,7 +437,7 @@ namespace ALEngine::Editor
 		m_ToolbarMinSize = ImVec2(toolbarMin.x, toolbarMin.y);
 
 		// Panel Min Size
-		Vec2 panel_min = editor_data.GetVec2("PanelMin", Vec2());		
+		Vec2 panel_min = editor_data.GetVec2("PanelMin", Vec2());
 
 		// Content Browser Panel
 		m_ContentBrowserPanel.SetPanelMin(panel_min);
@@ -487,7 +487,7 @@ namespace ALEngine::Editor
 	void ALEditor::SetDefaultPanel(void)
 	{
 		// Set default sizes and positions
-		
+
 	}
 
 	void ALEditor::Docking(void)
@@ -525,7 +525,7 @@ namespace ALEngine::Editor
 		// Make Dockspace inactive
 		ImGui::End();
 	}
-	
+
 	void ALEditor::SaveScene(void)
 	{
 		const u32 nameSize{ 50 };
@@ -543,7 +543,7 @@ namespace ALEngine::Editor
 			{
 				ImGui::TextWrapped("Scene Does Not Have A Name!");
 				if (ImGui::InputText("Scene Name##SaveSceneName", scene_name, nameSize));
-				
+
 				// Cancel Button
 				if (ImGui::Button("Cancel##SaveSceneName"))
 				{
@@ -670,7 +670,7 @@ namespace ALEngine::Editor
 	{
 		return m_GameIsActive;
 	}
-	
+
 	b8 ALEditor::GetReceivingKBInput(void)
 	{
 		return m_IsReceivingKBInput;
@@ -685,7 +685,7 @@ namespace ALEngine::Editor
 	{
 		return m_EditorInFocus;
 	}
-	
+
 	void ALEditor::SetCurrentSceneName(std::string sceneName)
 	{
 		m_CurrentSceneName = sceneName;

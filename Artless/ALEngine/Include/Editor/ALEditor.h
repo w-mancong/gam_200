@@ -17,7 +17,7 @@ namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
 		\brief
-		Class that manages the Dear ImGui functions and editor panels generated with 
+		Class that manages the Dear ImGui functions and editor panels generated with
 		the aid of Dear ImGui
 	***********************************************************************************/
 	class ALEditor : public Templates::Singleton<ALEditor>
@@ -38,7 +38,7 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
-			Signals the start of a new ImGui frame; any ImGui code is sandwiched between 
+			Signals the start of a new ImGui frame; any ImGui code is sandwiched between
 			this and End()
 			Ensure to call at the start of each frame, before any ImGui code is called
 		***********************************************************************************/
@@ -81,13 +81,13 @@ namespace ALEngine::Editor
 		/*!*********************************************************************************
 			\brief
 			Sets the default panel positions and sizes
-		***********************************************************************************/		
+		***********************************************************************************/
 		void SetDefaultPanel(void);
 
 
-/*!*************************************************************************************************
-	Getters and Setters
-***************************************************************************************************/
+		/*!*************************************************************************************************
+			Getters and Setters
+		***************************************************************************************************/
 	public:
 		/*!*********************************************************************************
 			\brief
@@ -223,13 +223,13 @@ namespace ALEngine::Editor
 			Returns if the editor is in focus
 
 			\return
-			Returns true if editor is in focus, 
+			Returns true if editor is in focus,
 			else returns false
 		***********************************************************************************/
 		b8 GetEditorInFocus(void);
 
 		/*!*********************************************************************************
-			\brief	
+			\brief
 			Sets the current scene name
 
 			\param sceneName

@@ -1,12 +1,12 @@
-/*!
+ï»¿/*!
 file:	InspectorPanel.cpp
 author: Lucas Nguyen
 email:	l.nguyen@digipen.edu
 brief:	This file contains function definitions for the InspectorPanel class.
-		The InspectorPanel class contains information and functions necessary for 
+		The InspectorPanel class contains information and functions necessary for
 		the Inspector Panel of the editor to be displayed.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
@@ -15,7 +15,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 #include "imgui_internal.h"
 #define make_string(str) #str
 
-namespace ALEngine::Editor 
+namespace ALEngine::Editor
 {
 	// Commands namespace
 	using namespace Commands;
@@ -38,7 +38,7 @@ namespace ALEngine::Editor
 	InspectorPanel::~InspectorPanel(void)
 	{
 	}
-	
+
 	void InspectorPanel::OnImGuiRender(void)
 	{
 		// Set constraints
@@ -65,7 +65,7 @@ namespace ALEngine::Editor
 
 		// Inspector Menu
 		InspectorMenu();
-		
+
 		// Window size
 		ImVec2 winSize = ImGui::GetWindowSize();
 
@@ -105,7 +105,7 @@ namespace ALEngine::Editor
 		AddComponentButton();
 
 		ImGui::End();
-	}	
+	}
 
 	void InspectorPanel::SetSelectedEntity(ECS::Entity setter)
 	{
@@ -150,7 +150,10 @@ namespace ALEngine::Editor
 		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_SelectedEntity);
 
 		// Entity active
-		ImGui::Checkbox("##active", &data.active);
+		if (ImGui::Checkbox("##active", &data.active))
+		{
+			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+		}
 
 		ImGui::SameLine();
 
@@ -214,11 +217,11 @@ namespace ALEngine::Editor
 			ImGui::DragFloat2("Sc", mtx_scale, v_speed);			// Scale
 			EDITOR_KEYBOARD_CHECK
 
-			// Set changes
-			Transform a(xform);
+				// Set changes
+				Transform a(xform);
 			a.localPosition.x = mtx_translate[0];
 			a.localPosition.y = mtx_translate[1];
-			
+
 			a.localRotation = mtx_rotation;
 
 			a.localScale.x = mtx_scale[0];
@@ -301,10 +304,10 @@ namespace ALEngine::Editor
 				spr.filePath = fp;
 
 			ImGui::PopID();
-			
+
 			// Render Layer
 			s32 renderLayer{ 0 };
-			ImGui::DragInt("Render Layer", &renderLayer, 1.f, 0, 256);	
+			ImGui::DragInt("Render Layer", &renderLayer, 1.f, 0, 256);
 
 			// Color wheel
 			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
@@ -318,7 +321,7 @@ namespace ALEngine::Editor
 			cpy.color.b = clr[2];
 			cpy.color.a = clr[3];
 
-			if (cpy.color.r != spr.color.r || cpy.color.g != spr.color.g || 
+			if (cpy.color.r != spr.color.r || cpy.color.g != spr.color.g ||
 				cpy.color.b != spr.color.b || cpy.color.a != spr.color.a)
 			{
 				if (Commands::EditorCommandManager::CanAddCommand())
@@ -408,8 +411,8 @@ namespace ALEngine::Editor
 		if (ImGui::CollapsingHeader("Collider Component##Inspector"))
 		{
 			Collider2D& collider = ECS::Coordinator::Instance()->GetComponent<Collider2D>(m_SelectedEntity);
-			
-			const c8* typeList[1] = {"Rectangle2D_AABB"};
+
+			const c8* typeList[1] = { "Rectangle2D_AABB" };
 			s32 index = (s32)collider.colliderType;
 			// Enum ColliderType
 			ImGui::Combo("Collider Type##Collider", &index, typeList, IM_ARRAYSIZE(typeList));
@@ -447,9 +450,9 @@ namespace ALEngine::Editor
 	{
 		using namespace Engine;
 		AudioSource& audioSource = ECS::Coordinator::Instance()->GetComponent<AudioSource>(m_SelectedEntity);
-		
+
 		if (ImGui::CollapsingHeader("Audio Component##Inspector"))
-		{			
+		{
 			static u32 toDelete{ ECS::MAX_ENTITIES };
 			for (auto& a : audioSource.list)
 			{
@@ -585,7 +588,7 @@ namespace ALEngine::Editor
 
 					ImGui::TreePop();
 				}
-	
+
 			}
 
 			if (ImGui::BeginPopup("audio_rightclick"))
@@ -608,7 +611,7 @@ namespace ALEngine::Editor
 				ad.m_ID = audioSource.id;
 				audioSource.list[audioSource.id++] = ad;
 			}
-		}		
+		}
 	}
 
 	void InspectorPanel::DisplayAnimator(void)
@@ -628,7 +631,7 @@ namespace ALEngine::Editor
 				sizeLoad{ es.Load.size() }, sizeUnload{ es.Unload.size() };*/
 			std::string init_list{ "" }, update_list{ "" }, free_list{ "" },
 				load_list{ "" }, unload_list{ "" };
-			s32 init_select{ 0 }, update_select{ 0 }, free_select{ 0 }, 
+			s32 init_select{ 0 }, update_select{ 0 }, free_select{ 0 },
 				load_select{ 0 }, unload_select{ 0 };
 
 			// Get list of Init Functions
@@ -754,19 +757,19 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
-				//case InspectorComponents::InComp_Script:
-				//	// Check if has component
-				//	if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
-				//	{
-				//		if (ImGui::Selectable("Script Component") &&
-				//			m_SelectedEntity != ECS::MAX_ENTITIES)
-				//		{
-				//			// Add Script Component
-				//			ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
-				//		}
-				//		++count;
-				//	}
-				//	break;
+					//case InspectorComponents::InComp_Script:
+					//	// Check if has component
+					//	if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+					//	{
+					//		if (ImGui::Selectable("Script Component") &&
+					//			m_SelectedEntity != ECS::MAX_ENTITIES)
+					//		{
+					//			// Add Script Component
+					//			ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
+					//		}
+					//		++count;
+					//	}
+					//	break;
 				case InspectorComponents::InComp_Audio:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
