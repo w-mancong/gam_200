@@ -20,6 +20,8 @@ brief:	This file contain all the common math header files and function declarati
 #include <Math/Vector2Int.h>
 #include <Math/Vector3Int.h>
 
+namespace math = ALEngine::Math;
+
 namespace ALEngine::Math
 {
 	/*!*********************************************************************************

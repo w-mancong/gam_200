@@ -113,9 +113,6 @@ namespace ALEngine::Editor
 			// Logger Panel
 			m_LoggerPanel.OnImGuiRender();
 
-			// Check if there is a selected entity for Inspector
-			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
-
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -141,6 +138,9 @@ namespace ALEngine::Editor
 			// Scene Hierarchy Panel
 			m_SceneHierarchyPanel.OnImGuiRender();
 			
+			// Check if there is a selected entity for Inspector
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+
 			// Profiler Panel
 			m_ProfilerPanel.OnImGuiRender();
 			ImGui::ShowDemoWindow();
@@ -160,6 +160,7 @@ namespace ALEngine::Editor
 	{
 		ZoneScopedN("Editor Update")
 		// Change ImGui Enabled or Disabled
+		/*
 		if (Input::KeyTriggered(KeyCode::Key_9))
 		{
 			m_ImGuiEnabled = !m_ImGuiEnabled;
@@ -175,6 +176,7 @@ namespace ALEngine::Editor
 				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
 			ImGui::UpdatePlatformWindows();
 		}
+		*/
 
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
@@ -292,8 +294,9 @@ namespace ALEngine::Editor
 	void ALEditor::EditorToolbar(void)
 	{
 		// Filepaths for play button
-		static const std::string play_button_fp{ "Assets/Images/button play.png" };
-		static const std::string stop_button_fp{ "Assets/Images/button stop.png" };
+		static const std::string play_button_fp{ "Assets/Dev/Images/button_play.png" };
+		static const std::string stop_button_fp{ "Assets/Dev/Images/button_stop.png" };
+		static const f32 btn_size{ 20.f };
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(25.f, 25.f), ImVec2(1000.f, 25.f));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
@@ -341,13 +344,13 @@ namespace ALEngine::Editor
 					ECS::StartGameplaySystem();
 				}
 				else
-				{
-					ECS::GetSceneGraph().Destruct(-1); // destroy scene graph
+				{					
 					Coordinator::Instance()->DestroyEntities();
+					ECS::ExitGameplaySystem();
+
 					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
-				
-					ECS::ExitGameplaySystem();
+					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);			
 				}
 			}
 			ImGui::End();
@@ -557,6 +560,7 @@ namespace ALEngine::Editor
 		{
 			Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
 			AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
+			m_SaveScene = false;
 		}
 	}
 }
@@ -624,6 +628,11 @@ namespace ALEngine::Editor
 	void ALEditor::SetReceivingKBInput(b8 receivingInput)
 	{
 		m_IsReceivingKBInput = receivingInput;
+	}
+	
+	void ALEditor::SetCurrentSceneName(std::string sceneName)
+	{
+		m_CurrentSceneName = sceneName;
 	}
 }
 

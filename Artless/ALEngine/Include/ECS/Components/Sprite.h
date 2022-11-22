@@ -20,7 +20,8 @@ namespace ALEngine::ECS::Component
 		Guid id;
 		std::string filePath;
 		Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
-		RenderLayer layer{ RenderLayer::Background };
+		//RenderLayer layer{ RenderLayer::Background };
+		u32 layer{ 0 };
 		u32 index{};	// used to determine which 
 	};
 }

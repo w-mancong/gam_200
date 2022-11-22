@@ -53,7 +53,6 @@ namespace ALEngine::ECS
 		Frustum fstm;
 
 		ParticleSys::ParticleSystem particleSys;
-		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
@@ -65,7 +64,7 @@ namespace ALEngine::ECS
 #if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
-
+		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 #endif
 	}
 
@@ -193,6 +192,7 @@ namespace ALEngine::ECS
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 
+#if EDITOR
 		// Viewport frame buffer init
 		glGenFramebuffers(1, &fbo);
 
@@ -229,7 +229,7 @@ namespace ALEngine::ECS
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
 			std::cerr << " Editor frame buffer failed to initialize properly\n";
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+#endif
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
@@ -240,40 +240,11 @@ namespace ALEngine::ECS
 		camera.ProjectionMatrix(Camera::Projection::Orthographic);
 	}
 
-	/*!*********************************************************************************
-		\brief
-		Updates the transform matrix of parent and its children
-
-		\param [in] entity
-		Entity to apply parent-child transform
-	***********************************************************************************/
-	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
+	void RenderGameplay(void)
 	{
-		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity.id);
-		if (entity.parent >= 0) // if entity has parent
-		{
-			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
-			transform.modelMatrix = parentTransform.modelMatrix * Math::mat4::Model(transform);
-		}
-		else
-		{
-			transform.modelMatrix = Math::mat4::Model(transform);
-		}
-
-		for (auto& child : sceneGraph.GetMap()[entity.id].children)
-		{ 
-			UpdateParentChildrenPos(sceneGraph.GetMap()[child]);
-		}
-	}
-
-	void Render(void)
-	{
-		for (auto& entity : sceneGraph.GetParents())
-		{
-			UpdateParentChildrenPos(sceneGraph.GetMap()[entity]);
-		}
-		
 #if EDITOR
+		if (!Editor::ALEditor::Instance()->GetGameActive())
+			return;
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
@@ -290,8 +261,10 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::RenderAllLines();
 
 		// Update and render particles
-		if(!Editor::ALEditor::Instance()->GetGameActive())
+#if EDITOR
+		if (!Editor::ALEditor::Instance()->GetGameActive())
 			particleSystemPanel.OnImGuiRender(particleSys);
+#endif
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
 		particleSys.ParticleRender(camera);
 
@@ -300,9 +273,14 @@ namespace ALEngine::ECS
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
 		glDisable(GL_DEPTH_TEST);
-		//------------------ End viewport framebuffer rendering ------------------//		
-		
+		//------------------ End viewport framebuffer rendering ------------------//	
+	}
+
 #if EDITOR
+	void RenderEditor(void)
+	{
+		if (Editor::ALEditor::Instance()->GetGameActive())
+			return;
 		//------------------ Begin editor framebuffer rendering ------------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
@@ -318,15 +296,25 @@ namespace ALEngine::ECS
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
+	}
+#endif
 
+	void Render(void)
+	{		
+		RenderGameplay();
+#if EDITOR
+		RenderEditor();
+#endif
+		
+		Gizmos::Gizmo::ClearContainer();
+
+#if EDITOR
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
 		{
 			Editor::ALEditor::Instance()->End();
 		}
 #endif
-
-		Gizmos::Gizmo::ClearContainer();
 
 		glfwPollEvents();
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());
@@ -436,6 +424,7 @@ namespace ALEngine::ECS
 	{
 		camera.Fov(fov);
 	}
+
 	Tree::BinaryTree& GetSceneGraph(void)
 	{
 		return sceneGraph;
@@ -446,7 +435,8 @@ namespace ALEngine::ECS
 		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.filePath = filePath;
-		sprite.layer = layer;
+		//sprite.layer = layer;
+		sprite.layer = static_cast<u32>(layer);
 		Coordinator::Instance()->AddComponent(entity, sprite);
 		Coordinator::Instance()->AddComponent(entity, transform);
 	}
@@ -456,7 +446,8 @@ namespace ALEngine::ECS
 		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
 		sprite.filePath = filePath;
-		sprite.layer = layer;
+		//sprite.layer = layer;
+		sprite.layer = static_cast<u32>(layer);
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}
 
