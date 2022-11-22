@@ -10,8 +10,11 @@ namespace ALEngine::Editor
 	{
 		const std::filesystem::path amimatorPath{ "Assets/Dev/Animator" };//base file 
 		b8 popUpWindow{ false };
-		Animator toSave{};
+		Animator tempAnimator{};
+		Animation tempAnimation{};
 		f32 timer{};
+
+		u64 constexpr FILE_BUFFER_SIZE{ 1024 };
 	}
 
 	AnimatorEditorPanel::AnimatorEditorPanel()
@@ -31,140 +34,181 @@ namespace ALEngine::Editor
 
 		std::vector<std::string> items{};
 		FileContents(amimatorPath, items);
-		static b8 animatorText{ false }, animatorError{ false };
+
+		// used for creating animators
+		static b8 animatorText{ false }, animatorError{ false };	
 		static std::string animatorButtonStringName[2]{ "Create Animator##AnimatorPanelButton", "Close Animator##AnimatorPanelButton" };
 		static u64 animatorButtonIndex{ 0 };
 
-		ImGuiWindowFlags flag = 0;
+		// used for creating clips
+		static b8 clipText{ false }, clipError{ false };			
+		static std::string clipButtonStringName[2]{ "Create Clip##AnimatorPanelButton", "Close Clip##AnimatorPanelButton" };
+		static u64 clipButtonIndex{ 0 };
 
-		if (ImGui::BeginPopupModal("CreateClip", nullptr, ImGuiWindowFlags_MenuBar))
+		ImGuiWindowFlags flag = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
+
+		ImGui::Begin("##Animatior/Clip Creation", &pOpen, flag);
+		static const char* currentItem = nullptr;
+		if (ImGui::BeginCombo("Animators##", currentItem)) // The second parameter is the label previewed before opening the combo.
 		{
-			static const char* currentItem = nullptr;
-			if (ImGui::BeginCombo("Animators##", currentItem)) // The second parameter is the label previewed before opening the combo.
+			for (size_t n = 0; n < items.size(); n++)
 			{
-				for (size_t n = 0; n < items.size(); n++)
+				bool isSelected = (currentItem == items[n].c_str()); // You can store your selection however you want, outside or inside your objects
+				if (ImGui::Selectable(items[n].c_str(), isSelected))
 				{
-					bool isSelected = (currentItem == items[n].c_str()); // You can store your selection however you want, outside or inside your objects
-					if (ImGui::Selectable(items[n].c_str(), isSelected))
-					{
-						currentItem = items[n].c_str();
-					}
-					if (isSelected)
-					{
-						ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
-					}
+					currentItem = items[n].c_str();
 				}
-				ImGui::EndCombo();
-			}
-
-			if (animatorText)
-			{
-				if (animatorError)
+				if (isSelected)
 				{
-					timer += Time::m_DeltaTime;
-					if (timer >= 3.0f)
-					{
-						timer = 0.0f;
-						animatorError = false;
-					}
-					ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Animator Name cannot be empty!");
-				}
-
-				c8* buffer = const_cast<c8*>(toSave.animatorName.c_str());
-				ImGui::InputTextWithHint("##AnimatorNameInput", "Animator Name", buffer, 256);
-				toSave.animatorName = buffer;
-
-				if (ImGui::Button("Create!##AnimatorPanelButton"))
-				{
-					if (!toSave.animatorName.empty())
-					{
-						ECS::SaveAnimator(toSave);
-						toSave.animatorName = "";
-						animatorError = animatorText = false;
-						timer = 0.0f;
-					}
-					else
-						animatorError = true;
+					ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
 				}
 			}
+			ImGui::EndCombo();
+		}
 
-			if (ImGui::Button(animatorButtonStringName[animatorButtonIndex].c_str()))//create animator button
+		if (animatorText)
+		{
+			if (animatorError)
 			{
-				if (!animatorText)
-				{
-					animatorText = true;
-					animatorError = false;
-				}
-				else
+				timer += Time::m_DeltaTime;
+				if (timer >= 3.0f)
 				{
 					timer = 0.0f;
 					animatorError = false;
-					animatorText = false;
 				}
-				(++animatorButtonIndex) %= 2;
+				ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Animator Name cannot be empty!");
 			}
 
-			ImGui::SameLine();
+			c8* buffer = const_cast<c8*>(tempAnimator.animatorName.c_str());
+			ImGui::InputTextWithHint("##AnimatorNameInput", "Animator Name", buffer, 256);
+			tempAnimator.animatorName = buffer;
 
-			if (animatorText)
+			if (ImGui::Button("Create!##AnimatorPanelButton"))
 			{
-				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+				if (!tempAnimator.animatorName.empty())
+				{
+					ECS::SaveAnimator(tempAnimator);
+					tempAnimator.animatorName = "";
+					animatorError = animatorText = false;
+					timer = 0.0f;
+				}
+				else
+					animatorError = true;
 			}
-			if (ImGui::Button("Create Clip##AnimatorPanelButton"))//create clip button
+		}
+		else if (clipText)
+		{
+			if (clipError)
 			{
-				
-			}
-			if (animatorText)
-			{
-				ImGui::PopStyleVar();
-				ImGui::PopItemFlag();
+				timer += Time::m_DeltaTime;
+				if (timer >= 3.0f)
+				{
+					timer = 0.0f;
+					animatorError = false;
+				}
+				ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Attach an animator before creating a clip!");
 			}
 
-			if (ImGui::Button("close"))
-			{
-				animatorError = animatorText = false;
-				animatorButtonIndex = 0;
-				pOpen = false;
-			}
+			c8* clipName = tempAnimation.clipName;
+			ImGui::InputTextWithHint("##ClipNameInput", "Name of Clip", clipName, sizeof(tempAnimation.clipName));
+			strcpy_s(tempAnimation.clipName, sizeof(tempAnimation.clipName), clipName);
 
-			ImGui::EndPopup();
+			c8* filePath = tempAnimation.filePath;
+			ImGui::InputTextWithHint("##ClipFilePathInput", "Spritesheet Source", filePath, sizeof(tempAnimation.filePath), ImGuiInputTextFlags_ReadOnly);
+
+			// Drag Drop for Selectable
+			if (ImGui::BeginDragDropTarget())
+			{
+				// Payload flag
+				ImGuiDragDropFlags payload_flag{ 0 };
+				//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+				// Get Drag and Drop Payload
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
+				{
+					// Get filepath
+					size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
+					wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+					// Check if image (png or jpg)
+					std::string fileString = filePath;
+					if (fileString.find(".png") != std::string::npos)
+					{
+						strcpy_s(tempAnimation.filePath, sizeof(tempAnimation.filePath), filePath);
+					}
+					else
+					{
+						AL_CORE_ERROR("A .png file is required!");
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
 		}
 
-		//if (ImGui::Begin("Animator Panel##", &pOpen))
-		//{
-		
-			//if (ImGui::Button("close"))
-			//{
-				//pOpen = false;
-			//}
+		if (clipText)
+		{
+			ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+		}
+		if (ImGui::Button(animatorButtonStringName[animatorButtonIndex].c_str()))//create animator button
+		{
+			if (!animatorText)
+			{
+				animatorText = true;
+			}
+			else
+			{
+				timer = 0.0f;
+				animatorError = false;
+				animatorText = false;
+			}
+			animatorError = false;
+			(++animatorButtonIndex) %= 2;
+		}
+		if (clipText)
+		{
+			ImGui::PopStyleVar();
+			ImGui::PopItemFlag();
+		}
 
-			//static int item_type = 4;
-            //const char* items[] = { "Item1", "Item2", "AAAA", "AAAB", "AABB", "ABBB", "ABBB" };
+		ImGui::SameLine();
 
+		if (animatorText)
+		{
+			ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+		}
+		if (ImGui::Button(clipButtonStringName[clipButtonIndex].c_str()))//create clip button
+		{
+			if (!clipText)
+			{
+				clipText = true;
+			}
+			else
+			{
+				timer = 0.0f;
+				clipText = false;
+			}
+			clipError = false;
+			(++clipButtonIndex) %= 2;
+		}
+		if (animatorText)
+		{
+			ImGui::PopStyleVar();
+			ImGui::PopItemFlag();
+		}
 
+		if (ImGui::Button("close"))
+		{
+			animatorError = animatorText = false;
+			animatorButtonIndex = 0;
 
-			//if (ImGui::Button("Create Clip##"))//create clip button
-			//{
-			//	popUpWindow = true;			
-			//}
+			clipError = clipText = false;
+			clipButtonIndex = 0;
+			pOpen = false;
+		}
 
-			//if (popUpWindow)
-			//{
-			//	ImGui::Begin("CreateClip");
-
-			//	if (ImGui::Button("close##"))
-			//	{
-			//		popUpWindow = false;
-			//	}
-			//	ImGui::End();
-			//}
-		
-
-			//ImGui::End();
-		//}
-		
-
+		ImGui::End();
 	}
 
 	void AnimatorEditorPanel::SetPanelMin(Math::Vec2 min)
