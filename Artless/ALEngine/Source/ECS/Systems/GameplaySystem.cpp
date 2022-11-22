@@ -138,7 +138,7 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,0.f,1.f });
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
 		}
 	}
 
@@ -195,12 +195,13 @@ namespace ALEngine::ECS
 			sceneGraph.Push(gameplaySystem->m_Room_Parent_Entity, gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
 
 			Transform transform;
-			transform.scale = { 100, 100 };
+			transform.scale = { 85, 85 };
 			transform.localScale = { 100, 100 };
 
 			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
 
-			CreateSprite(gameplaySystem->m_Room.roomCellsArray[i],"Assets/Images/Walkable.png");
+			CreateSprite(gameplaySystem->m_Room.roomCellsArray[i],"Assets/Images/InitialTile_v04.png");
+			//CreateSprite(gameplaySystem->m_Room.roomCellsArray[i], "Assets/Images/Walkable.png");
 		}
 
 		for (s32 i = 0; i < gameplaySystem->roomSize[0]; ++i) {
