@@ -8,7 +8,7 @@ namespace ALEngine::Editor
 {
 	namespace
 	{
-		const std::filesystem::path amimatorPath{ "Assets/Dev/Animators" };//base file 
+		const std::filesystem::path amimatorPath{ "Assets/Dev/Animator" };//base file 
 		b8 popUpWindow{ false };
 		Animator toSave{};
 		f32 timer{};
@@ -29,56 +29,33 @@ namespace ALEngine::Editor
 			ImGui::OpenPopup("CreateClip");
 		}
 
-		std::string animatorsContents = FileContents(amimatorPath);
-		std::string word;
+		std::vector<std::string> items{};
+		FileContents(amimatorPath, items);
 		static b8 animatorText{ false }, animatorError{ false };
-
-		std::istringstream data(animatorsContents);
-		std::vector<const c8*> items{ "testing1" ,"testing2" };
-
-		while (std::getline(data, word, ' '))
-		{
-			if (word.empty())
-			{
-				break;
-			}
-			word = word.substr(word.find_last_of("\\") + 1);
-			items.push_back(word.c_str());
-		}
+		static std::string animatorButtonStringName[2]{ "Create Animator##AnimatorPanelButton", "Close Animator##AnimatorPanelButton" };
+		static u64 animatorButtonIndex{ 0 };
 
 		ImGuiWindowFlags flag = 0;
 
-		if (ImGui::BeginPopupModal("CreateClip", NULL, ImGuiWindowFlags_MenuBar))
+		if (ImGui::BeginPopupModal("CreateClip", nullptr, ImGuiWindowFlags_MenuBar))
 		{
-	
-			if (Input::KeyTriggered(KeyCode::A))
-			{
-				items.push_back("hi");
-			}
-
-			//static char testing[15];
-
-			//ImGui::Combo("Testing", &item_type, items.data(), items.size(), items.size());
-			//ImGui::Combo("Testing", &item_type, items, IM_ARRAYSIZE(items), IM_ARRAYSIZE(items));
-
-			static const char* current_item = NULL;
-			if (ImGui::BeginCombo("Animators##", current_item)) // The second parameter is the label previewed before opening the combo.
+			static const char* currentItem = nullptr;
+			if (ImGui::BeginCombo("Animators##", currentItem)) // The second parameter is the label previewed before opening the combo.
 			{
 				for (size_t n = 0; n < items.size(); n++)
 				{
-					bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
-					if (ImGui::Selectable(items[n], is_selected))
+					bool isSelected = (currentItem == items[n].c_str()); // You can store your selection however you want, outside or inside your objects
+					if (ImGui::Selectable(items[n].c_str(), isSelected))
 					{
-						current_item = items[n];
+						currentItem = items[n].c_str();
 					}
-					if (is_selected)
+					if (isSelected)
 					{
 						ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
 					}
 				}
 				ImGui::EndCombo();
 			}
-
 
 			if (animatorText)
 			{
@@ -94,13 +71,14 @@ namespace ALEngine::Editor
 				}
 
 				c8* buffer = const_cast<c8*>(toSave.animatorName.c_str());
-				ImGui::InputTextWithHint("##AnimatorNameInput", "Animator Name", buffer, 256, ImGuiInputTextFlags_ReadOnly);
+				ImGui::InputTextWithHint("##AnimatorNameInput", "Animator Name", buffer, 256);
 				toSave.animatorName = buffer;
 
 				if (ImGui::Button("Create!##AnimatorPanelButton"))
 				{
 					if (!toSave.animatorName.empty())
 					{
+						ECS::SaveAnimator(toSave);
 						toSave.animatorName = "";
 						animatorError = animatorText = false;
 						timer = 0.0f;
@@ -110,31 +88,43 @@ namespace ALEngine::Editor
 				}
 			}
 
-			if (!animatorText)
+			if (ImGui::Button(animatorButtonStringName[animatorButtonIndex].c_str()))//create animator button
 			{
-				if (ImGui::Button("Create Animator##AnimatorPanelButton"))//create animator button
+				if (!animatorText)
+				{
 					animatorText = true;
-			}
-			else
-			{
-				if (ImGui::Button("Close Animator##AnimatorPanelButton"))//close animator button
+					animatorError = false;
+				}
+				else
 				{
 					timer = 0.0f;
+					animatorError = false;
 					animatorText = false;
 				}
+				(++animatorButtonIndex) %= 2;
 			}
 
 			ImGui::SameLine();
 
+			if (animatorText)
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			}
 			if (ImGui::Button("Create Clip##AnimatorPanelButton"))//create clip button
 			{
 				
 			}
-
+			if (animatorText)
+			{
+				ImGui::PopStyleVar();
+				ImGui::PopItemFlag();
+			}
 
 			if (ImGui::Button("close"))
 			{
 				animatorError = animatorText = false;
+				animatorButtonIndex = 0;
 				pOpen = false;
 			}
 
@@ -192,42 +182,19 @@ namespace ALEngine::Editor
 	{
 	}
 
-	std::string AnimatorEditorPanel::FileContents(const std::filesystem::path& path)
+	void AnimatorEditorPanel::FileContents(const std::filesystem::path& path, std::vector<std::string>& items)
 	{
-		// Sanity check
-		//if (!std::filesystem::is_regular_file(path))
-		//{
-		//	return { };
-		//}
-
 		// Open the file
 		// Note that we have to use binary mode as we want to return a string
 		// representing matching the bytes of the file on the file system.
-		std::string resultstring;
-
+		//std::string resultstring;
 		for (const auto& entry : std::filesystem::directory_iterator(path))
 		{
-			resultstring = entry.path().string();
-			//std::ifstream file(entry, std::ios::in | std::ios::binary);
-			//
-			//if (!file.is_open())
-			//{
-			//	return { };
-			//}
+			std::string const& animatorName = entry.path().string();
+			u64 lastOfSlash = animatorName.find_last_of("/\\") + 1;
 
-			//// Read contents
-			//std::string content{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
-
-			//// Close the file
-			//file.close();
-			//resultstring = content;
+			items.push_back(animatorName.substr(lastOfSlash));
 		}
-		return resultstring;
-	}
-
-	void AnimatorEditorPanel::FilterOutWords(std::string sentence)
-	{
-		
 	}
 }
 #endif
