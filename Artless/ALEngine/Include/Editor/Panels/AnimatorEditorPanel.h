@@ -21,7 +21,7 @@ namespace ALEngine::Editor
 		\brief
 		renders out the panel displaying the audio editor panel
 		***********************************************************************************/
-		void OnImGuiRender(b8 pOpen);
+		void OnImGuiRender(b8& pOpen);
 
 
 		/*!*********************************************************************************

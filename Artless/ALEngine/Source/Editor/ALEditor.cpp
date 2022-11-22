@@ -123,7 +123,7 @@ namespace ALEngine::Editor
 
 			if (m_AudioPanelEnabled)
 			{
-				m_AudioEditorPanel.OnImGuiRender();
+				m_AudioEditorPanel.OnImGuiRender(m_AudioPanelEnabled);
 			}
 
 			// Check if game is running
