@@ -106,6 +106,8 @@ namespace ALEngine::ECS
 	{
 		//Character Controller System to be accessed locally
 		std::shared_ptr<GameplaySystem> gameplaySystem;
+
+		std::string const sceneName = R"(Assets\test.scene)";
 	}
 
 	void Event_Button_Darken(Entity invoker) {
@@ -184,9 +186,9 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
-		//if (ALEngine::Editor::ALEditor::Instance()->SetCurrentSceneName()) {
-
-		//}
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
 
 		AL_CORE_INFO("GAME START");
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
@@ -291,6 +293,10 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
+
 		if (!Editor::ALEditor::Instance()->GetGameActive()) {
 			return;
 		}
@@ -307,6 +313,10 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
+
 		if (gameplaySystem->m_Room.roomCellsArray != nullptr) {
 			delete[] gameplaySystem->m_Room.roomCellsArray;
 			gameplaySystem->m_Room.roomCellsArray = nullptr;
@@ -530,6 +540,10 @@ namespace ALEngine::ECS
 
 
 	void DrawGameplaySystem() {
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
+
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
 		//Box holder
