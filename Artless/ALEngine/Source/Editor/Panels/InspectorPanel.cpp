@@ -522,8 +522,10 @@ namespace ALEngine::Editor
 			// font pop down menu
 			ImVec2 winsize = ImGui::GetWindowSize();
 
-			if(prop.currentFont.empty())
+			if (prop.currentFont.empty())
+			{
 				ImGui::Text("No Font Selected");
+			}
 			else
 				ImGui::Text(prop.currentFont.c_str());
 
