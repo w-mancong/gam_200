@@ -19,9 +19,9 @@ namespace ALEngine::Engine::GameplayInterface
 
 	void ToggleCellToInaccessible(Room& currentRoom, u32 x, u32 y, b8 istrue) {
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
-		cell.m_isAccesible = istrue;
+		cell.m_isBlocked = istrue;
 
-		if(!cell.m_isAccesible)
+		if(!cell.m_isBlocked)
 		Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 0.f,0.f,0.f,0.f };
 		else
 		Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 1.f,1.f,1.f,1.f };
@@ -89,7 +89,7 @@ namespace ALEngine::Engine::GameplayInterface
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				if (!cell.m_isAccesible) {
+				if (!cell.m_isBlocked) {
 					continue;
 				}
 
@@ -99,8 +99,41 @@ namespace ALEngine::Engine::GameplayInterface
 				sprite.color = color;
 			}
 		}//End loop through pattern body check
-		
-		std::cout << "\n";
+	}
+
+	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName) {
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+				//If inside room, set the cell color to yellow
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				if (!cell.m_isBlocked) {
+					continue;
+				}
+
+				cell.m_canWalk = true;
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
+			}
+		}//End loop through pattern body check
+	}
+
+	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName) {
+		ECS::Entity cellEntity = getEntityCell(room, coordinate.x, coordinate.y);
+
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		if (!cell.m_isBlocked) {
+			return;
+		}
+
+		cell.m_canWalk = true;
+
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+		sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 	}
 
 	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities) {
@@ -177,5 +210,28 @@ namespace ALEngine::Engine::GameplayInterface
 		transform.position = { startPos.x + x_offset * 5.f, 100.f, 0.f };
 		//Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], transform);
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], eventTrigger);
+	}
+
+	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern) {
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+				//If inside room, set the cell color to yellow
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				if (!cell.m_isBlocked) {
+					continue;
+				}
+
+				if (cell.m_canWalk) {
+					return false;
+				}
+
+			}
+		}//End loop through pattern body check
+
+		return true;
 	}
 }
