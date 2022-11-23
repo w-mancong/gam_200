@@ -48,9 +48,9 @@ namespace ALEngine::Editor
 
 		static b8 arrowButtonPressed{ false };
 
-		ImGuiWindowFlags flag = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoDocking;
+		ImGuiWindowFlags flag = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize;
 
-		ImGui::Begin("##Animatior/Clip Creation", &pOpen, flag);
+		ImGui::Begin("Animations##Animatior/Clip Creation", &pOpen, flag);
 
 		std::string temp;
 
@@ -60,6 +60,8 @@ namespace ALEngine::Editor
 		ImGui::SetItemAllowOverlap();
 		f32 width = ImGui::CalcItemWidth();
 		ImGui::SameLine(width - 17.0f);
+
+		f32 crossWidth = animatorText || clipText ? 22.5f : 38.5;
 
 		if (ImGui::ArrowButton("##Animator Arrow Button", ImGuiDir_Down))
 		{
@@ -77,7 +79,7 @@ namespace ALEngine::Editor
 				{
 					currentItem = items[i];
 				}
-				ImGui::SameLine(width - 22.5f);
+				ImGui::SameLine(width - crossWidth);
 				ImGui::SetItemAllowOverlap();
 				ImGui::PushID(str.c_str());
 				if (ImGui::SmallButton("X"))
