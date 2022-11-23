@@ -727,7 +727,7 @@ namespace ALEngine::Editor
 			f32 color[4] = { prop.colour.x, prop.colour.y, prop.colour.z , 1.f };
 			f32 pos[2] = { prop.position.x, prop.position.y };
 
-			ImGui::DragFloat("Size", &prop.scale, 0.1f, 0.0f, 50.0f);
+			ImGui::DragFloat("Size", &prop.scale, 0.05f, 0.0f, 5.0f);
 			ImGui::DragFloat2("Pos", pos, 0.5f);
 
 			// Color wheel
