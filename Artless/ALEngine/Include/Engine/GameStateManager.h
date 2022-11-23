@@ -65,8 +65,6 @@ namespace ALEngine::GameStateManager
 		s32 CountObject(std::string objName);
 		b8 CheckObject(std::string objName);
 
-
-		//void RemoveObject(OBJECT_TYPE type);
 		void RemoveObject(std::string newString);
 
 		void SetEndTurnStatus(ENDTURNSTATUS status);
@@ -76,9 +74,7 @@ namespace ALEngine::GameStateManager
 
 		s32 GetIndex();
 		void SetIndex(s32 index);
-
 		void CheckIndex();
-
 
 	private:
 

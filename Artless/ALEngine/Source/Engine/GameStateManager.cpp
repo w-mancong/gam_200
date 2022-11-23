@@ -185,12 +185,8 @@ namespace ALEngine::GameStateManager
 
     void GameStateManager::AddObject(std::string newString) 
     {
-        std::cout << "NEWSTRING BEFORE: " << newString << std::endl;
-
         std::transform(newString.begin(), newString.end(), newString.begin(), ::tolower);
  
-        std::cout << "NEWSTRING AFTER : " << newString << std::endl;
-
         if (newString == "player") {
             this->m_ObjectVector.insert(m_ObjectVector.begin(), newString);
             this->m_Index++;
@@ -203,27 +199,13 @@ namespace ALEngine::GameStateManager
 
     b8 GameStateManager::CheckObject(std::string objName) 
     {
-        std::cout << "OBJECT NAME BEFORE: " << objName << std::endl;
-
         std::transform(objName.begin(), objName.end(), objName.begin(), ::tolower);
 
-        std::cout << "OBJECT NAME AFTER: " << objName << std::endl;
-
-        std::cout << "m_ObjectVector SIZE : " << this->m_ObjectVector.size() << std::endl;
-         
-        std::cout << "CURRENT VECTOR BEING CHECKED : " << this->m_ObjectVector[0 + this->m_Index] << std::endl;
-
         if (std::find(this->m_ObjectVector.begin()+this->m_Index, this->m_ObjectVector.end(), objName) != this->m_ObjectVector.end()) {
-            std::cout << "Element found" << std::endl;
-            
-            std::cout << "CURRENT INDEX IS : " << this->m_Index << std::endl;
             return true;
         }
 
         else {
-            std::cout << "CURRENT INDEX IS : " << this->m_Index << std::endl;
-
-            std::cout << "Element not found" << std::endl;
             return false;
         }
 
@@ -232,15 +214,9 @@ namespace ALEngine::GameStateManager
 
     s32 GameStateManager::CountObject(std::string objName) 
     {
-        std::cout << "OBJECT NAME BEFORE: " << objName << std::endl;
-
         std::transform(objName.begin(), objName.end(), objName.begin(), ::tolower);
 
-        std::cout << "OBJECT NAME AFTER: " << objName << std::endl;
-
         s32 objCount = std::count(this->m_ObjectVector.begin(), this->m_ObjectVector.end(), objName);
-
-        std::cout << "OBJECT COUNT: " << objCount << std::endl;
 
         return objCount;
     }
@@ -248,14 +224,9 @@ namespace ALEngine::GameStateManager
     void GameStateManager::RemoveObject(std::string newString) 
     {
 
-        std::cout << "NEWSTRING NAME BEFORE: " << newString << std::endl;
-
         std::transform(newString.begin(), newString.end(), newString.begin(), ::tolower);
 
-        std::cout << "NEWSTRING NAME AFTER: " << newString << std::endl;
-
         std::vector<std::string>::iterator it;
-        std::cout << "CURRENT INDEX OF THE VECTOR THAT IS POINTING AT : " << this->m_ObjectVector[0 + this->m_Index] << std::endl;
 
         if (this->m_ObjectVector.empty()) {
             std::cerr << "VECTOR EMPTY" << std::endl;
@@ -281,8 +252,6 @@ namespace ALEngine::GameStateManager
                     this->m_ObjectVector.erase(it);
                     this->m_Index--;
                 }
-                std::cout << "CURRENT INDEX IS : " << m_Index << std::endl;
-                std::cout << "CURRENT INDEX OF THE VECTOR THAT IS POINTING AT (END) : " << this->m_ObjectVector[0 + this->m_Index] << std::endl;
 
                 return;
             }
@@ -323,7 +292,7 @@ namespace ALEngine::GameStateManager
                 }
             }
             else {
-                    std::cout << "PLAYER DOES NOT EXISTS!" << std::endl;
+                    std::cerr << "Player does not exist!" << std::endl;
             }            
 
             this->CheckIndex();
@@ -345,9 +314,8 @@ namespace ALEngine::GameStateManager
                 }
             }
             else {
-                std::cerr << "ENEMY DOES NOT EXISTS!" << std::endl;
+                std::cerr << "Enemy does not exist!" << std::endl;
             }
-
 
             this->CheckIndex();
 
