@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype\freetype.lib;GLFW\glfw3.lib;opengl32.lib;fmod\fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype\freetype.lib;GLFW\glfw3.lib;opengl32.lib;fmod\fmodL_vc.lib;mono\Debug\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -121,7 +121,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype\freetype.lib;GLFW\glfw3.lib;opengl32.lib;fmod\fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype\freetype.lib;GLFW\glfw3.lib;opengl32.lib;fmod\fmod_vc.lib;mono\Release\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;EDITOR;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -145,13 +145,19 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype\freetype.lib;GLFW\glfw3.lib;opengl32.lib;fmod\fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype\freetype.lib;GLFW\glfw3.lib;opengl32.lib;fmod\fmod_vc.lib;mono\Release\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
+    <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
+    <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
     <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
+    <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
@@ -262,7 +268,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
+    <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptInterface.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
+    <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
+    <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
+    <ClCompile Include="Source\Commands\Command.cpp" />
+    <ClCompile Include="Source\Commands\UpdateComponentCommand.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
@@ -273,8 +287,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
+    <ClInclude Include="Include\Commands\EditorCommandManager.h" />
+    <ClInclude Include="Include\Common Header\MyScene.h" />
+    <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
+    <ClInclude Include="Include\Commands\Command.h" />
+    <ClInclude Include="Include\Common Header\MyScripting.h" />
+    <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
+    <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
+    <ClInclude Include="Include\Engine\GameStateManager.h" />
+    <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
     <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAi.h" />
@@ -387,8 +412,14 @@
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
+    <ClInclude Include="Include\SceneManager\SceneManager.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptInterface.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptSystem.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\EntityScript.h" />
+    <ClInclude Include="Include\Scripting\ScriptGlue.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
+    <ClInclude Include="Include\Commands\UpdateComponentCommand.h" />
     <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
@@ -397,6 +428,7 @@
     <ClInclude Include="Include\Utility\Timer.h" />
     <ClInclude Include="Include\Utility\Type.h" />
     <ClInclude Include="Include\Engine\Physics2D.h" />
+    <ClInclude Include="Include\Scripting\ScriptEngine.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +439,7 @@
     <None Include="Resources\Objects Files\wall1.json" />
     <None Include="Resources\Objects Files\wall2.json" />
     <None Include="Resources\Objects Files\wall3.json" />
+    <None Include="Source\Commands\UpdateComponentCommand.tpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -32,12 +32,16 @@ namespace
 		Not_A_File = -1,
 		Image,
 		Audio,
-		Animation
+		Animation,
+		Font,
+		Scene,
 	};
 
 	std::unordered_map<std::string, Guid> guidList{};
 	std::unordered_map<Guid, Texture> textureList{};
 	std::unordered_map<Guid, Animation> animationList{};
+	std::unordered_map<Guid, Audio> audioList{};
+	std::unordered_map<Guid, Font> fontList{};
 #if EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList{};
 #endif
@@ -281,20 +285,19 @@ namespace
 
 		return { texture, handle };
 	}
-#ifdef EDITOR
+
+#if EDITOR
 	u32 LoadButtonImage(char const* filePath)
 	{
 		s32 width, height, nrChannels;
 		// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
 		stbi_set_flip_vertically_on_load(true);
 		u8* data = stbi_load(filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
-#ifdef _DEBUG
 		if (!data)
 		{
 			AL_CORE_CRITICAL("Failed to load texture.\nFile path: {}", filePath);
 			return {};
 		}
-#endif
 		u32 format{};
 		switch (nrChannels)
 		{
@@ -311,9 +314,7 @@ namespace
 			// I only want to accept files that have RGB/RGBA formats
 			default:
 			{
-#ifdef _DEBUG
 				AL_CORE_CRITICAL("Wrong file format: Must contain RGB/RGBA channels\n");
-#endif
 				return {};
 			}
 		}
@@ -336,6 +337,15 @@ namespace
 		return texture;
 	}
 #endif
+
+	Audio LoadAudio(c8 const* filePath)
+	{
+		fmod::Sound* m_Sound;
+		fmod::System* const& system = GetAudioSystem();
+		system->createSound(filePath, FMOD_DEFAULT, nullptr, &m_Sound);
+		return { m_Sound, filePath };
+	}
+
 	FileType GetFileType(std::string const& fileName)
 	{
 		if (fileName.find(".png") != std::string::npos || fileName.find(".jpg") != std::string::npos)
@@ -344,6 +354,10 @@ namespace
 			return FileType::Audio;
 		if (fileName.find(".anim") != std::string::npos)
 			return FileType::Animation;
+		if (fileName.find(".ttf") != std::string::npos)
+			return FileType::Font;
+		if (fileName.find(".scene") != std::string::npos)
+			return FileType::Scene;
 		return FileType::Not_A_File;
 	};
 }
@@ -358,6 +372,51 @@ namespace ALEngine::Engine
 
 	void AssetManager::Init()
 	{
+#if EDITOR
+		Guid id{}; u32 icon{};
+		// Folder icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Folder.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Prefab icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Prefab.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Prefab.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Scene icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Scene.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Scene.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Script icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Script.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Script.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Font icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Play icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\button_play.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Stop icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_stop.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\button_stop.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+#endif
+
 		std::vector<std::string> metaFiles, fileNames;
 
 		//initialize 
@@ -377,9 +436,10 @@ namespace ALEngine::Engine
 			std::string const& fileNamestring = relativePath.filename().string();
 
 			if (fileNamestring == "Dev")
-			{
 				continue;
-			}
+
+			if (path.filename().string().find(".") != std::string::npos)
+				continue;
 
 			currentCheckPath /= path.filename();
 			FolderEntry(currentCheckPath, metaFiles, fileNames);
@@ -387,15 +447,18 @@ namespace ALEngine::Engine
 
 		for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
 		{
-			std::string meta = *it + ".meta";
+			std::string const& meta = *it + ".meta";
 			auto it2 = std::find(metaFiles.begin(), metaFiles.end(), meta);
 
 			Guid id{};
 
+			FileType fileType = GetFileType(*it);
+
 			if (it2 == metaFiles.end())// no meta file, generate meta file 
 			{
 				id = PrepareGuid();
-				GenerateMetaFile(it->c_str(), id);
+				if(fileType != FileType::Scene)
+					GenerateMetaFile(it->c_str(), id);
 			}
 			else
 			{
@@ -406,31 +469,33 @@ namespace ALEngine::Engine
 				metaFiles.erase(it2);
 			}
 
-			std::string guidKey{};
-			switch (GetFileType(*it))
+			std::string guidKey{ *it };
+			switch (fileType)
 			{
 				case FileType::Image:
 				{
 					//into memory/stream
 					Texture texture = LoadTexture(it->c_str());
 					// Insert into texture list
-#ifdef _DEBUG
+#if		EDITOR
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
 #if		EDITOR
 					u32 button = LoadButtonImage(it->c_str());
-
-#ifdef _DEBUG
 					if (button)
-#endif
 						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
-					guidKey = *it;
 					break;
 				}
 				case FileType::Audio:
 				{
+					// load into memory stream
+					Audio audio = LoadAudio(it->c_str());
+#if EDITOR
+					if (audio.m_Sound)
+#endif
+						audioList.insert(std::pair<Guid, Audio>{id, audio});
 
 					break;
 				}
@@ -443,11 +508,15 @@ namespace ALEngine::Engine
 					animationList.insert(std::pair<Guid, Animation>{ id, animation });
 
 					Texture texture = LoadAnimation(animation);
-#ifdef _DEBUG
+#if	EDITOR
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
 					guidKey = animation.clipName;
+					break;
+				}
+				case FileType::Font:
+				{
 					break;
 				}
 				default:
@@ -488,7 +557,7 @@ namespace ALEngine::Engine
 			Texture const& texture{ it.second };
 			glDeleteTextures(1, &texture.texture);
 		}
-#ifdef EDITOR
+#if EDITOR
 		for (auto const& it : buttonImageList)
 			glDeleteTextures(1, &it.second );
 #endif
@@ -523,12 +592,17 @@ namespace ALEngine::Engine
 		return animationList[id];
 	}
 
+	Audio AssetManager::GetAudio(Guid id)
+	{
+		return audioList[id];
+	}
+
 	Guid AssetManager::GetGuid(std::string fileName)
 	{
 		if (!fileName.size())
 			return std::numeric_limits<Guid>::max();
 		std::replace(fileName.begin(), fileName.end(), '/', '\\');	// Change all the '/' to '\\'
-#ifdef _DEBUG // In release mode, files should already exist and thus this check is not needed
+#if	 EDITOR	// In release mode, files should already exist and thus this check is not needed
 		if (guidList.find(fileName) == guidList.end())
 			return 0;
 #endif
@@ -727,15 +801,13 @@ namespace ALEngine::Engine
 			{
 				//into memory/stream
 				Texture texture = LoadTexture(filePath.c_str());
-#ifdef _DEBUG
+#if		EDITOR
 				if (texture.handle)
 #endif
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 #if		EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
-#ifdef _DEBUG
 				if (button)
-#endif
 					buttonImageList.insert(std::pair<Guid, u32>{ id, button });
 #endif
 				guidKey = filePath;
@@ -746,9 +818,16 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Audio:
 			{
+				// load into memory stream
+				Audio audio = LoadAudio(filePath.c_str());
+#if		EDITOR
+				if (audio.m_Sound)
+#endif
+					audioList.insert(std::pair<Guid, Audio>{id, audio});
+
+				guidKey = filePath;
 				break;
 			}
-
 			/******************************************************************************
 												Animation
 			******************************************************************************/
@@ -768,6 +847,20 @@ namespace ALEngine::Engine
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 				break;
 			}
+			/******************************************************************************
+												 Font
+			******************************************************************************/
+			case FileType::Font:
+			{
+				break;
+			}
+			/******************************************************************************
+												 Scene
+			******************************************************************************/
+			//case FileType::Scene:
+			//{
+			//	break;
+			//}
 			default:
 				break;
 			}
@@ -798,15 +891,13 @@ namespace ALEngine::Engine
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
-#ifdef _DEBUG
+#if		EDITOR
 				if (newTexture.handle)
 #endif
 					textureList[id] = newTexture;
 #if		EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
-#ifdef _DEBUG
 				if (button)
-#endif
 					buttonImageList[id] = button;
 #endif
 				break;
@@ -816,6 +907,17 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Audio:
 			{
+				//Audio const& oldAudio = audioList[id];
+				// I can't find a function to unload audio memory from stream
+
+				// Load in new audio file
+				Audio newAudio = LoadAudio(filePath.c_str());
+
+#if		EDITOR
+				if (newAudio.m_Sound)
+#endif
+					audioList[id] = newAudio;
+
 				break;
 			}
 			/******************************************************************************
@@ -835,10 +937,17 @@ namespace ALEngine::Engine
 				animationList[id] = animation;
 
 				Texture newTexture = LoadAnimation(animation);
-#ifdef _DEBUG
+#if		EDITOR
 				if (newTexture.handle)
 #endif 
 					textureList[id] = newTexture;
+				break;
+			}
+			/******************************************************************************
+												 Font
+			******************************************************************************/
+			case FileType::Font:
+			{
 				break;
 			}
 			default:
@@ -883,6 +992,10 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Audio:
 			{
+				// Do not keep track of this guid anymore
+				audioList.erase(id);
+
+				guidKey = filePath;
 				break;
 			}
 			/******************************************************************************
@@ -902,6 +1015,13 @@ namespace ALEngine::Engine
 
 				guidKey = animation.clipName;
 
+				break;
+			}
+			/******************************************************************************
+												 Font
+			******************************************************************************/
+			case FileType::Font:
+			{
 				break;
 			}
 			default:

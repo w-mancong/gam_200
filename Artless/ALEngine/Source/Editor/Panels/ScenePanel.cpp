@@ -1,20 +1,26 @@
+/*!
+file:	ScenePanel.cpp
+author: Lucas Nguyen
+email:	l.nguyen@digipen.edu
+brief:	This file contains function definitions for the ScenePanel class.
+		The ScenePanel class contains information and functions necessary for
+		the Scene Panel of the editor to be displayed.
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
+#if EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"
 
 namespace ALEngine::Editor
 {
-	// Set default operation to be Translate
-	ImGuizmo::OPERATION ScenePanel::m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
-
 	ScenePanel::ScenePanel(void)
 	{
-		m_CurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		m_SelectedEntity = ECS::MAX_ENTITIES;
-
 		// Set camera to ortho projection
 		m_EditorCamera.ProjectionMatrix(Engine::Camera::Projection::Orthographic);
+		m_EditorCamera.Position() = { Math::Vec3(-static_cast<f32>(Graphics::OpenGLWindow::width >> 1), -static_cast<f32>(Graphics::OpenGLWindow::height >> 1), 725.f) };
 	}
 
 	ScenePanel::~ScenePanel(void)
@@ -23,21 +29,13 @@ namespace ALEngine::Editor
 
 	void ScenePanel::OnImGuiRender(void)
 	{
+		using namespace Commands;
+		ECS::Entity selectedEntity = ALEditor::Instance()->GetSelectedEntity();
+
 		// Check if there is an entity selected (For Gizmos)
-		b8 hasSelectedEntity = (m_SelectedEntity == ECS::MAX_ENTITIES) ? false : true;
+		b8 hasSelectedEntity = (selectedEntity == ECS::MAX_ENTITIES) ? false : true;
 
-		Math::vec3 camPos = m_EditorCamera.Position();
-
-		f32 constexpr CAM_SPEED{ 2.5f };
-
-		if (Input::KeyDown(KeyCode::Up))
-			m_EditorCamera.Position().y += CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Left))
-			m_EditorCamera.Position().x -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Down))
-			m_EditorCamera.Position().y -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Right))
-			m_EditorCamera.Position().x += CAM_SPEED;
+		UserInput();
 
 		// Set constraints
 		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
@@ -49,7 +47,7 @@ namespace ALEngine::Editor
 			return;
 		}
 
-		ECS::Render(m_EditorCamera);
+		//ECS::Render(m_EditorCamera);
 
 		// Set Scene Width and Height
 		if (m_SceneWidth != ImGui::GetContentRegionAvail().x)
@@ -62,15 +60,21 @@ namespace ALEngine::Editor
 		ImGui::Image((void*)tex, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 		// Only render gizmos if an entity is selected
-		if (hasSelectedEntity && Coordinator::Instance()->HasComponent<Transform>(m_SelectedEntity))
+		if (hasSelectedEntity && Coordinator::Instance()->HasComponent<Transform>(selectedEntity))
 		{
 			// Get transform
-			Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
+			Transform& xform = Coordinator::Instance()->GetComponent<Transform>(selectedEntity);
 
 			// Translate and Scale matrix
 			float mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
-				mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
-				mtx_rot[3]{ 0.f, 0.f, xform.rotation };
+				mtx_scale[3]{ xform.localScale.x, xform.localScale.y, 0.f },
+				mtx_rot[3]{ 0.f, 0.f, xform.localRotation };
+
+			//float mtx_translate[3]{ xform.position.x, xform.position.y, 0.f },
+			//	mtx_scale[3]{ xform.scale.x, xform.scale.y, 0.f },
+			//	mtx_rot[3]{ 0.f, 0.f, xform.rotation };
+
+			//f32 const TEMP_POSITION[2]{ mtx_translate[0], mtx_translate[1] };
 
 			// Add camera position
 			mtx_translate[0] -= m_EditorCamera.Position().x;
@@ -89,19 +93,47 @@ namespace ALEngine::Editor
 
 			// Manipulate, used for Gizmos
 			ImGuizmo::Manipulate(ECS::GetView().value_ptr(), m_EditorCamera.ProjectionMatrix().value_ptr(),
-				m_CurrentGizmoOperation, ImGuizmo::WORLD, mtx);
+				ALEditor::Instance()->GetCurrentGizmoOperation(), ImGuizmo::WORLD, mtx);
 
 			// Get transform matrices
 			ImGuizmo::DecomposeMatrixToComponents(mtx, mtx_translate, mtx_rot, mtx_scale);
 
+			mtx_translate[0] += m_EditorCamera.Position().x;
+			mtx_translate[1] += m_EditorCamera.Position().y;
+
+			Tree::BinaryTree const& sceneGraph = ECS::GetSceneGraph();
+			s32 parent{ -1 };
+			if ((parent = sceneGraph.GetParent(selectedEntity)) != -1)
+			{
+				Transform const& parentTranform = Coordinator::Instance()->GetComponent<Transform>(parent);
+				Math::mat4 const& parentGlobalInverse = parentTranform.modelMatrix.Inverse();
+				Math::vec3 const& newLocalPosition = parentGlobalInverse * Math::vec3(mtx_translate[0], mtx_translate[1], 0.0f);
+
+				mtx_translate[0] = newLocalPosition.x;
+				mtx_translate[1] = newLocalPosition.y;
+			}
+
 			// Set changes
-			xform.position.x = mtx_translate[0] + m_EditorCamera.Position().x;
-			xform.position.y = mtx_translate[1] + m_EditorCamera.Position().y;
+			Transform updated;
+			updated.localPosition.x = mtx_translate[0];
+			updated.localPosition.y = mtx_translate[1];
 
-			xform.scale.x = mtx_scale[0];
-			xform.scale.y = mtx_scale[1];
+			updated.localScale.x = mtx_scale[0];
+			updated.localScale.y = mtx_scale[1];
 
-			xform.rotation = mtx_rot[2];			
+			updated.localRotation = mtx_rot[2];
+
+			// If there are any differences in transform, run command
+			if (xform.localPosition.x != updated.localPosition.x || xform.localPosition.y != updated.localPosition.y ||
+				xform.localRotation != updated.localRotation ||
+				xform.localScale.x != updated.localScale.x || xform.localScale.y != updated.localScale.y)
+			{
+				if (Commands::EditorCommandManager::CanAddCommand())
+				{
+					utils::Ref<COMP_CMD<Transform>> cmd = utils::CreateRef<COMP_CMD<Transform>>(xform, updated);
+					EditorCommandManager::AddCommand(cmd);
+				}
+			}
 		}
 
 		// Select Entity by clicking on Scene
@@ -131,7 +163,7 @@ namespace ALEngine::Editor
 
 						if (Check_Point_To_AABB(mousePos, enttXform.position, enttXform.scale.x, enttXform.scale.y))
 						{
-							m_SelectedEntity = entt;
+							ALEditor::Instance()->SetSelectedEntity(entt);
 							entity_clicked = true;
 							break;
 						}
@@ -139,25 +171,10 @@ namespace ALEngine::Editor
 				}
 				// No entities clicked (clicked viewport)
 				if (!entity_clicked && !ImGuizmo::IsOver())
-					m_SelectedEntity = ECS::MAX_ENTITIES;
+					ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 			}
 		}
 		ImGui::End();
-	}
-
-	void ScenePanel::SetCurrentGizmoOperation(ImGuizmo::OPERATION _op)
-	{
-		m_CurrentGizmoOperation = _op;
-	}
-	
-	void ScenePanel::SetSelectedEntity(ECS::Entity _entt)
-	{
-		m_SelectedEntity = _entt;
-	}
-
-	ECS::Entity ScenePanel::GetSelectedEntity(void)
-	{
-		return m_SelectedEntity;
 	}
 
 	f64 ScenePanel::GetSceneWidth(void)
@@ -230,6 +247,41 @@ namespace ALEngine::Editor
 		m_DefaultSize = ImVec2(size.x, size.y);
 	}
 
+	void ScenePanel::UserInput(void)
+	{
+		f32 constexpr CAM_SPEED{ 7.5f };
+
+		if (Input::KeyDown(KeyCode::Up))
+			m_EditorCamera.Position().y += CAM_SPEED;
+		if (Input::KeyDown(KeyCode::Left))
+			m_EditorCamera.Position().x -= CAM_SPEED;
+		if (Input::KeyDown(KeyCode::Down))
+			m_EditorCamera.Position().y -= CAM_SPEED;
+		if (Input::KeyDown(KeyCode::Right))
+			m_EditorCamera.Position().x += CAM_SPEED;
+
+		// Right Mouse Button Move Camera
+		static Math::Vec2 mousePosBegin{};
+		if (Input::KeyTriggered(KeyCode::MouseRightButton))
+		{
+			Math::Vec2 pos = GetMouseWorldPos();
+			if (pos.x != std::numeric_limits<f32>::max() && pos.y != std::numeric_limits<f32>::max())
+			{
+				mousePosBegin = pos;
+			}
+		}
+		else if (Input::KeyDown(KeyCode::MouseRightButton))
+		{
+			Math::Vec2 pos = GetMouseWorldPos();
+
+			if (pos.x != std::numeric_limits<f32>::max() && pos.y != std::numeric_limits<f32>::max())
+			{
+				Math::Vec2 change = mousePosBegin - pos;
+				m_EditorCamera.Position() += Math::Vec3(change.x, change.y, 0.f);
+			}
+		}
+	}
+
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,
 		float width, float height) 
 	{
@@ -250,3 +302,5 @@ namespace ALEngine::Editor
 		return true;
 	}
 }
+
+#endif

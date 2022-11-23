@@ -11,6 +11,8 @@ brief:	This file contains function declarations for the InspectorPanel class.
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
 
+#if EDITOR
+
 namespace ALEngine::Editor
 {
 	// Predeclarations
@@ -94,12 +96,33 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
-			Displays the Sprite component info on the panel
-
-			\return
-			Current Gizmo Operation
+			Displays the RigidBody component info on the panel
 		***********************************************************************************/
-		ImGuizmo::OPERATION GetCurrGizmoOperation(void) const;
+		void DisplayRigidBody(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Collider component info on the panel
+		***********************************************************************************/
+		void DisplayCollider(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Audio component info on the panel
+		***********************************************************************************/
+		void DisplayAudio(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Animator component info on the panel
+		***********************************************************************************/
+		void DisplayAnimator(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Script component info on the panel
+		***********************************************************************************/
+		void DisplayEntityScript(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -129,7 +152,6 @@ namespace ALEngine::Editor
 		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
-		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
 		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES };	// Entity Selected in Inspector
 
 		// Panel sizes
@@ -149,8 +171,14 @@ namespace ALEngine::Editor
 		InComp_EntityData = 0,
 		InComp_Transform,
 		InComp_Sprite,
+		InComp_RigidBody,
+		InComp_Collider,
+		InComp_Script,
+		InComp_Audio,
 		InComp_Total
 	};
 }
+
+#endif
 
 #endif

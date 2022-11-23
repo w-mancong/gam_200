@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#if EDITOR
+
 #include "imgui.h"
 #include "imgui_internal.h"
 /*!
@@ -32,7 +34,7 @@ namespace ALEngine::Editor
 		//imgui window-------------------------------------------------------------------------
 		ImGui::Begin("Content Browser");
 
-		//loop through directory and create buttons for each file
+		//m_Loop through directory and create buttons for each file
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_MainDirectory))
 		{
 			//file default path
@@ -61,7 +63,7 @@ namespace ALEngine::Editor
 		   // ImGui::MenuItem(fileNamestring.c_str());
 
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
-			if (ImGui::TreeNode(fileNamestring.c_str()))
+			if (ImGui::TreeNodeEx(fileNamestring.c_str(), flags))
 			{
 				//for dragging file, need to fix window crash when moving window
 				if (ImGui::BeginDragDropSource())
@@ -82,7 +84,6 @@ namespace ALEngine::Editor
 
 				ImGui::TreePop();
 			}
-
 		
 			//set next column
 			ImGui::NextColumn();
@@ -127,7 +128,7 @@ namespace ALEngine::Editor
 
 		ImGui::Columns(columnCount, 0, false);
 
-		//loop through directory and create buttons for each file
+		//m_Loop through directory and create buttons for each file
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 		{
 			//file default path
@@ -160,9 +161,43 @@ namespace ALEngine::Editor
 			//push files ID 
 			ImGui::PushID(fileNamestring.c_str());
 
-			//need change to imagebuttons for icons
-
-			if (fileNamestring.find(".jpg")!= std::string::npos || fileNamestring.find(".png") != std::string::npos)
+			// To display folder icon
+			if (directoryEntry.is_directory())
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Folder.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			// To display prefab icon
+			else if (fileNamestring.find(".prefab") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Prefab.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			// To display scene icon
+			else if (fileNamestring.find(".scene") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Scene.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			// To display script icon
+			else if (fileNamestring.find(".cs") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Script.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			// To display font icon
+			else if (fileNamestring.find(".ttf") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Text.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			// To display asset icon
+			else if (fileNamestring.find(".jpg")!= std::string::npos || fileNamestring.find(".png") != std::string::npos)
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid(directoryEntry.path().string());
 				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
@@ -183,7 +218,13 @@ namespace ALEngine::Editor
 
 			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
 			{
-				if (directoryEntry.is_directory())
+				if (fileNamestring.find(".scene") != std::string::npos)
+				{
+					std::string the_path = directoryEntry.path().string();
+					Engine::Scene::LoadScene(the_path.c_str());
+					ALEditor::Instance()->SetCurrentSceneName(the_path);
+				}
+				else if (directoryEntry.is_directory())
 				{
 					//selectable to show file
 					m_CurrentDirectory /= path.filename();
@@ -225,3 +266,5 @@ namespace ALEngine::Editor
 	}
 
 }	
+
+#endif

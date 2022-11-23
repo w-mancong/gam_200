@@ -30,12 +30,12 @@ namespace ALEngine::ECS
 		{
 			const char* typeName = typeid(T).name();
 #ifdef _DEBUG
-			assert(mComponentTypes.find(typeName) == mComponentTypes.end() && "Registering component type more than once.");
+			assert(m_ComponentTypes.find(typeName) == m_ComponentTypes.end() && "Registering component type more than once.");
 #endif	
 			// Add this component type to the component type map
-			mComponentTypes.insert({ typeName, mNextComponentType });
+			m_ComponentTypes.insert({ typeName, mNextComponentType });
 			// Create a ComponentArray pointer and add it to the component arrays map
-			mComponentArrays.insert({ typeName, std::make_shared<ComponentArray<T>>() });
+			m_ComponentArrays.insert({ typeName, std::make_shared<ComponentArray<T>>() });
 			// Increment the value so that the next component registered will be different
 			++mNextComponentType;
 		}
@@ -55,10 +55,10 @@ namespace ALEngine::ECS
 		{
 			const char* typeName = typeid(T).name();
 #ifdef _DEBUG
-			assert(mComponentTypes.find(typeName) != mComponentTypes.end() && "Component not registered before use.");
+			assert(m_ComponentTypes.find(typeName) != m_ComponentTypes.end() && "Component not registered before use.");
 #endif	
 			// Return this component's type - used for creating signatures
-			return mComponentTypes[typeName];
+			return m_ComponentTypes[typeName];
 		}
 
 		/*!*********************************************************************************
@@ -75,6 +75,8 @@ namespace ALEngine::ECS
 		{
 			// Add a component to the array for an entity
 			GetComponentArray<T>()->InsertData(entity, component);
+			ComponentType index = GetComponentType<T>();
+			m_Components[entity] |= (1i64 << static_cast<u64>(index));
 		}
 
 		/*!*********************************************************************************
@@ -89,6 +91,8 @@ namespace ALEngine::ECS
 		{
 			// Remove a component from the array for an entity
 			GetComponentArray<T>()->RemoveData(entity);
+			ComponentType index = GetComponentType<T>();
+			m_Components[entity] &= ~(0b1 << index);
 		}
 
 		/*!*********************************************************************************
@@ -121,12 +125,13 @@ namespace ALEngine::ECS
 		template <typename T>
 		b8 HasComponent(Entity entity)
 		{
-			return GetComponentArray<T>()->HasData(entity);
+			ComponentType index = GetComponentType<T>();
+			return m_Components[entity].test(index);
 		}
 
 		/*!*********************************************************************************
 			\brief
-			Entity is destroyed, loop throw to remove all the components associated to this 
+			Entity is destroyed, m_Loop throw to remove all the components associated to this 
 			entity
 
 			\param [in] entity:
@@ -136,7 +141,7 @@ namespace ALEngine::ECS
 		{
 			// Notify each component array that an entity has been destroyed
 			// If it has a component for that entity, it will remove it
-			for (auto const& pair : mComponentArrays)
+			for (auto const& pair : m_ComponentArrays)
 			{
 				auto const& component = pair.second;
 				component->EntityDestroyed(entity);
@@ -150,17 +155,19 @@ namespace ALEngine::ECS
 		{
 			const char* typeName = typeid(T).name();
 #ifdef _DEBUG
-			assert(mComponentTypes.find(typeName) != mComponentTypes.end() && "Component not registered before use.");
+			assert(m_ComponentTypes.find(typeName) != m_ComponentTypes.end() && "Component not registered before use.");
 #endif
-			return std::static_pointer_cast<ComponentArray<T>>(mComponentArrays[typeName]);
+			return std::static_pointer_cast<ComponentArray<T>>(m_ComponentArrays[typeName]);
 		}
 
 		// Map from type string pointer to a component type
-		std::unordered_map<const char*, ComponentType> mComponentTypes{};
+		std::unordered_map<const char*, ComponentType> m_ComponentTypes{};
 		// Map from type string pointer to a component array
-		std::unordered_map <const char*, std::shared_ptr<IComponentArray>> mComponentArrays{};
+		std::unordered_map <const char*, std::shared_ptr<IComponentArray>> m_ComponentArrays{};
 		// The component type to be assigned to the next registered component - starting at 0
 		ComponentType mNextComponentType{};
+		// Static array to store the bits of each component - if set means the entity has the component, else dont have
+		std::array<std::bitset<MAX_COMPONENTS>, MAX_ENTITIES> m_Components;
 	};
 }
 

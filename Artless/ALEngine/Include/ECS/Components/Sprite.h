@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong@digipen.edu
 brief:	This file contains the sprite component
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	SPRITE_H
 #define SPRITE_H
@@ -20,7 +20,8 @@ namespace ALEngine::ECS::Component
 		Guid id;
 		std::string filePath;
 		Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
-		RenderLayer layer{ RenderLayer::Background };
+		//RenderLayer layer{ RenderLayer::Background };
+		u32 layer{ 0 };
 		u32 index{};	// used to determine which 
 	};
 }

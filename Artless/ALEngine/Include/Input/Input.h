@@ -6,13 +6,20 @@ email:	w.mancong@digipen.edu
 brief:	This file contain static class declaration for basic key inputs from user.
 		It also contains functions that return mouse cursor position on screen.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	INPUT_SYSTEM_H
 #define INPUT_SYSTEM_H
 
 namespace ALEngine::UserInput
 {
+	enum class MouseWheelEvent
+	{
+		MouseWheelIdle	= 0,
+		MouseWheelUp	= 1,
+		MouseWheelDown	= -1,
+	};
+
 	class Input
 	{
 	public:
@@ -110,6 +117,8 @@ namespace ALEngine::UserInput
 			Screen Y axis resolution.
 		***********************************************************************************/
 		static s32 GetScreenResY();
+
+		static MouseWheelEvent m_MouseWheelEvent;
 
 	private:
 		Input(void)  = default;

@@ -6655,7 +6655,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         if (flags & ImGuiWindowFlags_DockNodeHost)
         {
             window->DrawList->ChannelsSplit(2);
-            window->DrawList->ChannelsSetCurrent(DOCKING_HOST_DRAW_CHANNEL_FG); // Render decorations on channel 1 as we will render the backgrounds manually later
+            window->DrawList->ChannelsSetCurrent(DOCKING_HOST_DRAW_CHANNEL_FG); // Render decorations on m_Channel 1 as we will render the backgrounds manually later
         }
 
         // Restore buffer capacity when woken from a compacted state, to avoid
@@ -15263,7 +15263,7 @@ static void ImGui::DockNodeUpdate(ImGuiDockNode* node)
 
     // Draw whole dockspace background if ImGuiDockNodeFlags_PassthruCentralNode if set.
     // We need to draw a background at the root level if requested by ImGuiDockNodeFlags_PassthruCentralNode, but we will only know the correct pos/size
-    // _after_ processing the resizing splitters. So we are using the DrawList channel splitting facility to submit drawing primitives out of order!
+    // _after_ processing the resizing splitters. So we are using the DrawList m_Channel splitting facility to submit drawing primitives out of order!
     const bool render_dockspace_bg = node->IsRootNode() && host_window && (node_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0;
     if (render_dockspace_bg && node->IsVisible)
     {

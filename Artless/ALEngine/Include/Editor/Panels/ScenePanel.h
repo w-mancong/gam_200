@@ -11,6 +11,8 @@ brief:	This file contains function declarations for the ScenePanel class.
 #ifndef SCENE_PANEL_H
 #define SCENE_PANEL_H
 
+#if EDITOR
+
 namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
@@ -37,30 +39,6 @@ namespace ALEngine::Editor
 			Updates the Scene Panel
 		***********************************************************************************/
 		void OnImGuiRender(void);
-
-		/*!*********************************************************************************
-			\brief
-			Sets the current gizmo operation
-			\param [in] _op:
-			Current gizmo operation
-		***********************************************************************************/
-		void SetCurrentGizmoOperation(ImGuizmo::OPERATION _op);
-
-		/*!*********************************************************************************
-			\brief
-			Sets the selected entity
-			\param [in] _entt
-			Selected Entity
-		***********************************************************************************/
-		void SetSelectedEntity(ECS::Entity _entt);
-
-		/*!*********************************************************************************
-			\brief
-			Gets the selected entity
-			\return
-			Returns the selected entity
-		***********************************************************************************/
-		ECS::Entity GetSelectedEntity(void);
 
 		/*!*********************************************************************************
 		\brief
@@ -119,8 +97,10 @@ namespace ALEngine::Editor
 		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
-		static ImGuizmo::OPERATION m_CurrentGizmoOperation;	// Gizmo related, ImGuizmo
-		ECS::Entity m_SelectedEntity{ ECS::MAX_ENTITIES }; // Entity Selected in Inspector
+		/*!*********************************************************************************
+			\brief To control the camera movements
+		***********************************************************************************/
+		void UserInput(void);
 
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size
@@ -156,4 +136,6 @@ namespace ALEngine::Editor
 	***********************************************************************************/
 	bool Check_Point_To_AABB(Math::Vec2 pointPos, Math::Vec2 aabbPos, float width, float height);
 }
+#endif
+
 #endif

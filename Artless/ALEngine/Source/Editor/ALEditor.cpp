@@ -6,12 +6,15 @@ brief:	This file contains the function definitions for the ALEditor class.
 		The ALEditor class essentially manages the Dear ImGui functions, as well as the
 		different editor panels generated with the help of Dear ImGui.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
+#if EDITOR
+
 #include "imgui.h"
 #include "imgui_internal.h"
+#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine::Editor
 {
@@ -49,6 +52,12 @@ namespace ALEngine::Editor
 			style.WindowRounding = 0.f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.f;
 		}
+
+		// Scale of ImGui stuff
+		style.ScaleAllSizes(1.2f);
+
+		// Font Loading for ImGui
+		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial Italic.ttf", 20.f);
 
 		// Init GLFW
 		ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window() , true);
@@ -91,14 +100,30 @@ namespace ALEngine::Editor
 		}
 		else
 		{
+			// Save Scene, Ctrl + S
+			if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::S))
+				m_SaveScene = true;
+
+			if(m_SaveScene)
+				SaveScene();
+
 			// Content Browser Panel
 			m_ContentBrowserPanel.OnImGuiRender();
 
 			// Logger Panel
 			m_LoggerPanel.OnImGuiRender();
 
-			// Check if there is a selected entity for Inspector
-			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+			if (m_AnimatorPanelEnabled)
+			{
+				m_AnimatorEditorPanel.OnImGuiRender();
+			}
+
+			if (m_AudioPanelEnabled)
+			{
+				m_AudioEditorPanel.OnImGuiRender();
+			}
+
+			m_TileEditor.OnImGuiRender();
 
 			// Check if game is running
 			if (m_GameIsActive)
@@ -113,21 +138,18 @@ namespace ALEngine::Editor
 			}
 			else
 			{	// Run editor scene panel
-				// Set selected entity for Scene Panel (for Gizmos)
-				m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
-				m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
 				m_ScenePanel.OnImGuiRender();	// Scene Panel
 			}
 
-			// Update if selected entity has changed
-			m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
-
 			// Scene Hierarchy Panel
 			m_SceneHierarchyPanel.OnImGuiRender();
+			
+			// Check if there is a selected entity for Inspector
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
 			// Profiler Panel
 			m_ProfilerPanel.OnImGuiRender();
-			//ImGui::ShowDemoWindow();
+			ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -144,6 +166,7 @@ namespace ALEngine::Editor
 	{
 		ZoneScopedN("Editor Update")
 		// Change ImGui Enabled or Disabled
+		/*
 		if (Input::KeyTriggered(KeyCode::Key_9))
 		{
 			m_ImGuiEnabled = !m_ImGuiEnabled;
@@ -154,11 +177,12 @@ namespace ALEngine::Editor
 			if (m_ImGuiEnabled)
 			{
 				io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-				ImGui::UpdatePlatformWindows();
 			}
 			else
 				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+			ImGui::UpdatePlatformWindows();
 		}
+		*/
 
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
@@ -185,6 +209,10 @@ namespace ALEngine::Editor
 
 	void ALEditor::End(void)
 	{
+		// Exit if not enabled
+		if (!m_ImGuiEnabled)
+			return;
+
 		// Get the ImGui IO
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -253,6 +281,7 @@ namespace ALEngine::Editor
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
+			ImGui::SetNextWindowSize(m_MenuSize);
 			// Settings
 			if (ImGui::BeginMenu("Settings"))
 			{
@@ -265,6 +294,27 @@ namespace ALEngine::Editor
 				ImGui::EndMenu();
 			}
 
+			ImGui::SetNextWindowSize(m_MenuSize);
+			if (ImGui::BeginMenu("Tools"))
+			{
+				// Selectable flag
+				ImGuiSelectableFlags flag = 0;
+
+				// Set active for animator panel
+				ImGui::Selectable("Create Clips/Animation", &m_AnimatorPanelEnabled, flag);
+	
+				//  Set active for audio panel
+				ImGui::Selectable("Create Audio", &m_AudioPanelEnabled, flag);
+
+				//  Set active for audio panel
+				if (ImGui::MenuItem("Tile Editor"))
+				{
+					m_TileEditor.SetPanelIsOpen(true);
+				}
+
+				ImGui::EndMenu();
+			}
+
 			ImGui::EndMainMenuBar();
 		}
 	}
@@ -272,8 +322,8 @@ namespace ALEngine::Editor
 	void ALEditor::EditorToolbar(void)
 	{
 		// Filepaths for play button
-		static const std::string play_button_fp{ "Assets/Images/button play.png" };
-		static const std::string stop_button_fp{ "Assets/Images/button stop.png" };
+		static const std::string play_button_fp{ "Assets/Dev/Images/button_play.png" };
+		static const std::string stop_button_fp{ "Assets/Dev/Images/button_stop.png" };
 		static const f32 btn_size{ 20.f };
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(25.f, 25.f), ImVec2(1000.f, 25.f));
@@ -300,13 +350,35 @@ namespace ALEngine::Editor
 			// Get texture
 			u64 tex = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
 
+			// Get Window Height
+			f32 btnSize = ImGui::GetContentRegionAvail().y - 7.f;
+
 			// Make button centered
-			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (btn_size * 0.5f));
+			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (btnSize * 0.5f));
 
 			// Play/Stop button
-			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(tex), ImVec2(btn_size, btn_size)))
+			if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(tex), ImVec2(btnSize, btnSize)))
 			{
 				m_GameIsActive = !m_GameIsActive;
+				Engine::ToggleApplicationMode();
+				// Go into game scene, save state
+				if (m_GameIsActive)
+				{
+					SetSelectedEntity(ECS::MAX_ENTITIES);
+					Engine::Scene::SaveState();
+					Engine::GameStateManager::next = Engine::GameState::Gameplay;
+					Engine::GameStateManager::current = Engine::GameState::Gameplay;
+					ECS::StartGameplaySystem();
+				}
+				else
+				{					
+					Coordinator::Instance()->DestroyEntities();
+					ECS::ExitGameplaySystem();
+
+					Engine::Scene::LoadState();
+					Engine::GameStateManager::Next(Engine::GameState::Editor);
+					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);			
+				}
 			}
 			ImGui::End();
 		}
@@ -396,6 +468,20 @@ namespace ALEngine::Editor
 		m_InspectorPanel.SetPanelMin(panel_min);
 		m_InspectorPanel.SetDefaults(editor_data.GetVec2("InspectorPos", Math::Vec2()),
 			editor_data.GetVec2("InspectorSize", panel_min));
+
+		// Create Clip animator panel
+		m_AnimatorEditorPanel.SetPanelMin(panel_min);
+		m_AnimatorEditorPanel.SetDefaults(editor_data.GetVec2("AnimatorPos", Math::Vec2()),
+			editor_data.GetVec2("AnimatorSize", panel_min));
+
+		// Create Clip audio panel
+		m_AudioEditorPanel.SetPanelMin(panel_min);
+		m_AudioEditorPanel.SetDefaults(editor_data.GetVec2("AudioPos", Math::Vec2()),
+			editor_data.GetVec2("AudioSize", panel_min));
+
+		// Tile Editor Panel
+		m_TileEditor.SetPanelMin(panel_min);
+
 	}
 
 	void ALEditor::SetDefaultPanel(void)
@@ -439,6 +525,85 @@ namespace ALEngine::Editor
 		// Make Dockspace inactive
 		ImGui::End();
 	}
+	
+	void ALEditor::SaveScene(void)
+	{
+		const u32 nameSize{ 50 };
+		static c8 scene_name[nameSize]{};
+		static b8 rejectName{ false };
+
+		if (m_CurrentSceneName.empty())
+		{
+			ImGui::OpenPopup("New Scene Name##ModalSaveScene");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+			// Modal Window
+			if (ImGui::BeginPopupModal("New Scene Name##ModalSaveScene"))
+			{
+				ImGui::TextWrapped("Scene Does Not Have A Name!");
+				if (ImGui::InputText("Scene Name##SaveSceneName", scene_name, nameSize));
+				
+				// Cancel Button
+				if (ImGui::Button("Cancel##SaveSceneName"))
+				{
+					// Exit
+					ImGui::EndPopup();
+					m_SaveScene = false;
+					return;
+				}
+
+				ImGui::SameLine();
+
+				if (ImGui::Button("Save##SaveSceneName"))
+				{
+					const std::filesystem::path scenePath = "Assets";
+
+					// Check all files in current folder (Assets)
+					b8 alreadyExists{ false };
+					for (auto& dirEntry : std::filesystem::directory_iterator(scenePath))
+					{
+						const auto& path = dirEntry.path();
+
+						std::filesystem::path const& relPath = std::filesystem::relative(path, scenePath);
+
+						std::string const& fileName = relPath.filename().string();
+
+						std::string newName = scene_name;
+						newName += ".scene";
+
+						// Already has another of this name
+						if (fileName == newName)
+						{	// Cannot save
+							alreadyExists = true;
+							break;
+						}
+					}
+
+					// Check if file already exists
+					if (alreadyExists)
+					{	// Reject and request new name
+
+					}
+					else
+					{
+						m_CurrentSceneName = scene_name;
+						std::memset(scene_name, 0, nameSize);
+						Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
+						AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
+						m_SaveScene = false;
+					}
+				}
+				ImGui::EndPopup();
+			}
+		}
+		else
+		{
+			Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
+			AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
+			m_SaveScene = false;
+		}
+	}
 }
 
 // Getters and Setters
@@ -469,6 +634,16 @@ namespace ALEngine::Editor
 		return m_InspectorPanel.GetSelectedEntity();
 	}
 
+	ImGuizmo::OPERATION ALEditor::GetCurrentGizmoOperation(void)
+	{
+		return m_CurrentGizmoOperation;
+	}
+
+	void ALEditor::SetCurrentGizmoOperation(ImGuizmo::OPERATION _op)
+	{
+		m_CurrentGizmoOperation = _op;
+	}
+
 	f64 ALEditor::GetSceneWidth(void)
 	{
 		return m_ScenePanel.GetSceneWidth();
@@ -495,4 +670,30 @@ namespace ALEngine::Editor
 	{
 		return m_GameIsActive;
 	}
+	
+	b8 ALEditor::GetReceivingKBInput(void)
+	{
+		return m_IsReceivingKBInput;
+	}
+
+	void ALEditor::SetReceivingKBInput(b8 receivingInput)
+	{
+		m_IsReceivingKBInput = receivingInput;
+	}
+
+	b8 ALEditor::GetEditorInFocus(void)
+	{
+		return m_EditorInFocus;
+	}
+	
+	void ALEditor::SetCurrentSceneName(std::string sceneName)
+	{
+		m_CurrentSceneName = sceneName;
+	}
+	std::string const& ALEditor::GetCurrentSceneName(void) const
+	{
+		return m_CurrentSceneName;
+	}
 }
+
+#endif

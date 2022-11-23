@@ -6,12 +6,13 @@ brief:	This file contains the function declarations for the ALEditor class.
 		The ALEditor class essentially manages the Dear ImGui functions, as well as the
 		different editor panels generated with the help of Dear ImGui.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
-#include  <Editor/Panels/ContentBrowserPanel.h>
+#if EDITOR
+
 namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
@@ -80,13 +81,13 @@ namespace ALEngine::Editor
 		/*!*********************************************************************************
 			\brief
 			Sets the default panel positions and sizes
-		***********************************************************************************/
+		***********************************************************************************/		
 		void SetDefaultPanel(void);
 
 
-		/*!*********************************************************************************
-			Getters and Setters
-		***********************************************************************************/
+/*!*************************************************************************************************
+	Getters and Setters
+***************************************************************************************************/
 	public:
 		/*!*********************************************************************************
 			\brief
@@ -133,6 +134,22 @@ namespace ALEngine::Editor
 			Returns the selected Entity
 		***********************************************************************************/
 		const ECS::Entity GetSelectedEntity(void);
+
+		/*!*********************************************************************************
+			\brief
+			Sets the current gizmo operation
+			\param [in] _op:
+			Current gizmo operation
+		***********************************************************************************/
+		ImGuizmo::OPERATION GetCurrentGizmoOperation(void);
+
+		/*!*********************************************************************************
+			\brief
+			Sets the current gizmo operation
+			\param [in] _op:
+			Current gizmo operation
+		***********************************************************************************/
+		void SetCurrentGizmoOperation(ImGuizmo::OPERATION _op);
 
 		/*!*********************************************************************************
 		\brief
@@ -182,6 +199,46 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		b8 GetGameActive(void);
 
+		/*!*********************************************************************************
+			\brief
+			Returns if the editor is receiving keyboard input
+
+			\return
+			Returns true if editor is receiving keyboard input,
+			else returns false
+		***********************************************************************************/
+		b8 GetReceivingKBInput(void);
+
+		/*!*********************************************************************************
+			\brief
+			Sets if the editor is receiving keyboard input
+
+			\param receivingInput
+			Variable to set if the editor is receiving keyboard input
+		***********************************************************************************/
+		void SetReceivingKBInput(b8 receivingInput);
+
+		/*!*********************************************************************************
+			\brief
+			Returns if the editor is in focus
+
+			\return
+			Returns true if editor is in focus, 
+			else returns false
+		***********************************************************************************/
+		b8 GetEditorInFocus(void);
+
+		/*!*********************************************************************************
+			\brief	
+			Sets the current scene name
+
+			\param sceneName
+			The current scene name
+		***********************************************************************************/
+		void SetCurrentSceneName(std::string sceneName);
+
+		std::string const& GetCurrentSceneName(void) const;
+
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -208,19 +265,34 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void Docking(void);
 
+		/*!*********************************************************************************
+			\brief
+			Saves the current Scene
+		***********************************************************************************/
+		void SaveScene(void);
+
 		// Required for Singleton to function
 		friend class Templates::Singleton<ALEditor>;
 		friend class Memory::StaticMemory;
 
+		// Scene String
+		std::string m_CurrentSceneName{ "" };
+
 		// Window Min Size
 		ImVec2 m_WinMinSize{ 300.f, 25.f };
+		ImVec2 m_MenuSize{ 200.f, 300.f };
 		ImVec2 m_ToolbarMinSize{};
 
-		// Variables
-		b8 m_ImGuiEnabled{ false };		// Set to true if ImGui is enabled
-		b8 m_DockingEnabled{ false };	// Set to true if docking is to be enabled
-		b8 m_GameIsActive{ false };		// Set to true if in Game Mode
-		b8 m_FullScreen{ false };		// Set to true if game mode full screen
+		// Booleans
+		b8 m_IsReceivingKBInput{ false };				// Whether ImGui is receiving Input
+		b8 m_ImGuiEnabled{ false };						// Set to true if ImGui is enabled
+		b8 m_DockingEnabled{ false };					// Set to true if docking is to be enabled
+		b8 m_GameIsActive{ false };						// Set to true if in Game Mode
+		b8 m_FullScreen{ false };						// Set to true if game mode full screen
+		b8 m_SaveScene{ false };						// Set to save scene
+		b8 m_AnimatorPanelEnabled{ false };				// Set to true if Animator Panel is enabled
+		b8 m_AudioPanelEnabled{ false };				// Set to true if Audio Panel is enabled
+		b8 m_EditorInFocus{ true };						// Bool to keep track of whether the editor is in focus
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel
@@ -230,6 +302,9 @@ namespace ALEngine::Editor
 		LoggerPanel m_LoggerPanel;						// Logger Panel
 		ProfilerPanel m_ProfilerPanel;					// Profiler Panel
 		SceneHierarchyPanel m_SceneHierarchyPanel;		// Scene Hierarchy Panel
+		AnimatorEditorPanel m_AnimatorEditorPanel;      // Audio Editor Panel
+		AudioEditorPanel m_AudioEditorPanel;            // Audio Editor Panel
+		TileEditorPanel m_TileEditor;					// Tile Editor Panel
 
 		// Editor Colors
 		ImVec4 m_ColorTitleBg{};			// Color of Title Background
@@ -241,7 +316,14 @@ namespace ALEngine::Editor
 		ImVec4 m_ColorActive3{};			// Color of Active 3
 		ImVec4 m_ColorHovered{};			// Color of Hovered
 		ImVec4 m_ColorInteractive{};		// Color of Interactive
+
+		// Gizmo Operation
+		ImGuizmo::OPERATION m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
 	};
+
+#define EDITOR_KEYBOARD_CHECK if (ImGui::IsItemActivated()) { ALEditor::Instance()->SetReceivingKBInput(true); } else if (ImGui::IsItemDeactivated()) { ALEditor::Instance()->SetReceivingKBInput(false); }
 }
+
+#endif
 
 #endif

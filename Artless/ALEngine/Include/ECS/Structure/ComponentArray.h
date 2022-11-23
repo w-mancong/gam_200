@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong@digipen.edu
 brief:	This file contains function definitions for ComponentArray
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	COMPONENT_ARRAY_H
 #define COMPONENT_ARRAY_H
@@ -96,21 +96,6 @@ namespace ALEngine::ECS
 #endif	
 			// Return a reference to the entity's component
 			return mComponentArray[mEntityToIndexMap[entity]];
-		}
-
-		/*!*********************************************************************************
-			\brief
-			Check if the entity has the component data
-
-			\param [in] entity:
-			ID of the entity that to check if there is the component data
-
-			\return
-			True if entity has the component, else false
-		***********************************************************************************/
-		b8 HasData(Entity entity)
-		{
-			return mEntityToIndexMap.find(entity) != mEntityToIndexMap.end();
 		}
 
 		/*!*********************************************************************************

@@ -36,10 +36,24 @@ namespace ALEngine::Math
 
 	vec4 const& Matrix4x4::operator()(size_type row) const
 	{
-#ifdef _DEBUG
-		assert(0 <= row && 4 > row && "Rows and must be a positive integer lesser than 4!");
+#if EDITOR
+		assert(0 <= row && 4 > row && "Rows must be a positive integer lesser than 4!");
 #endif
 		return *(mat + row);
+	}
+
+	vec4 Matrix4x4::Column(size_type col) const
+	{
+#if	EDITOR
+		assert(0 <= col && 4 > col && "Columns must be a positive integer lesser than 4!");
+#endif
+		return vec4
+		{
+			(*this)(0, col),
+			(*this)(1, col),
+			(*this)(2, col),
+			(*this)(3, col),
+		};
 	}
 
 	Matrix4x4& Matrix4x4::operator+=(Matrix4x4 const& rhs)
@@ -294,7 +308,7 @@ namespace ALEngine::Math
 
 	Matrix4x4 Matrix4x4::Model(Transform const& trans)
 	{
-		return Model(trans.position, trans.scale, trans.rotation);
+		return Model(trans.localPosition, trans.localScale, trans.localRotation);
 	}
 
 	Matrix4x4 Matrix4x4::ModelT(Vector3 const& pos, Vector3 const& scale, f32 rot)

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine::Engine
 {
@@ -8,243 +9,239 @@ namespace ALEngine::Engine
 	using namespace Editor;
 	namespace
 	{
+		class Application
+		{
+		public:
+			static void Init(void);
+			static void Update(void);
+			static void Exit(void);
+		};
+
 		std::atomic<int> appStatus;
-	}
+		bool focus;
+		bool editorFocus{ true };
 
-	class Application
-	{
-	public:
-		void Init(void);
-		void Update(void);
-		void Exit(void);
-	};
+		BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
+		{
+			switch (fdwCtrlType)
+			{
+				// When window console x button is pressed
+			case CTRL_CLOSE_EVENT:
+				Application::Exit();
+				return TRUE;
 
-	namespace
-	{
-		Entity entity;
-		Audio bgm{}, sfx{};
-		f32 masterVolume{ 1.0f };
-		Entity player, floor, coin, pathfinder, button;
-	}
-
-	void CollectCoint(Entity current, Entity other) {
-		if (Coordinator::Instance()->HasComponent<CharacterController>(other)) {
-			AL_CORE_INFO("Coin Collected");
-			Coordinator::Instance()->GetComponent<Collider2D>(current).isEnabled = false;
-			Coordinator::Instance()->GetComponent<Transform>(current).position = { 10000,10000 };
+			default:
+				return FALSE;
+			}
 		}
-	}
-	void START() {
-		AL_CORE_INFO("START");
-	}
-	void STAY() {
-		AL_CORE_INFO("STAY");
-	}
 
-	void CLICK() {
-		AL_CORE_INFO("CLICK");
-	}
+#if EDITOR
+		std::function<void(void)> UpdateLoop[2];
+		u64 funcIndex{};
 
-	void EXIT() {
-		AL_CORE_INFO("EXIT");
+		void EditorUpdate(void)
+		{
+			if (!focus && !editorFocus)
+			{
+				glfwPollEvents();
+				return;
+			}
+
+			{
+				PROFILER_TIMER("Editor UI Update")
+				// Editor Command Manager Update
+				Commands::EditorCommandManager::Update();
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
+				
+				// Set the window focus
+				ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
+				editorFocus = ImGui::IsWindowFocused(flag);
+			}
+
+			Input::Update();
+			AssetManager::Instance()->Update();
+
+			// Update Scene graph
+			ECS::GetSceneGraph().Update();
+
+			{
+				PROFILER_TIMER("Render Update")
+				//RenderTransformBox();
+				// Render
+				Render();
+			}
+
+			// Marks the end of a frame m_Loop, for tracy profiler
+			FrameMark
+		}
+#endif
+		void GameUpdate(void)
+		{
+			// Accumulator for fixed delta time
+			f32 accumulator{ 0.f };
+
+			if (GameStateManager::current != GameState::Restart)
+			{				
+				// Call function load
+				LoadCppScripts();
+			}
+			else
+			{
+				GameStateManager::current = GameStateManager::previous;
+				GameStateManager::next = GameStateManager::previous;
+			}
+
+			InitCppScripts();
+
+			while (GameStateManager::current == GameStateManager::next)
+			{
+				if (!focus)
+				{
+					glfwPollEvents();
+					continue;
+				}
+#if EDITOR
+				{
+					PROFILER_TIMER("Editor UI Update")
+					// Editor Command Manager Update
+					Commands::EditorCommandManager::Update();
+					// Begin new ImGui frame
+					ALEditor::Instance()->Begin();
+				}
+#endif
+				// Get Current Time
+				Time::ClockTimeNow();
+
+				{
+					PROFILER_TIMER("Normal Update")
+					// Normal Update
+					Engine::Update();
+					UpdateCppScripts();
+				}
+
+				{
+					PROFILER_TIMER("Fixed Update")
+					// Physics
+					// Fixed Update (Physics)
+					accumulator += Time::m_DeltaTime;
+
+					// Steps to limit num times physics will run per frame
+					int currNumSteps{ 0 };
+
+					while (accumulator >= Time::m_FixedDeltaTime)
+					{
+						// Exit if physics happen more than limit
+						if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
+							break;
+
+						Engine::FixedUpdate();
+						accumulator -= Time::m_FixedDeltaTime;
+					}
+				}
+
+				// Update Scene graph
+				ECS::GetSceneGraph().Update();
+
+				{
+					PROFILER_TIMER("Render Update")
+
+					// Render
+					Render();
+				}
+
+				{
+					PROFILER_TIMER("FPS Wait")
+
+					// Wait for next frame
+					Time::WaitUntil();
+				}
+
+				// Marks the end of a frame m_Loop, for tracy profiler
+				FrameMark
+			}
+
+			// Free resources
+			FreeCppScripts();
+			// unload resource
+			if (GameStateManager::next != GameState::Restart)
+				UnloadCppScripts();
+			
+			GameStateManager::previous = GameStateManager::current;
+			GameStateManager::current = GameStateManager::next;
+		}
 	}
 
 	void Application::Init(void)
 	{
+		// Init Logger
+		ALEngine::Exceptions::Logger::Init();
+
 		OpenGLWindow::InitGLFWWindow();
+		focus = glfwGetWindowAttrib(OpenGLWindow::Window(), GLFW_VISIBLE);
 		ECS::InitSystem();
+		AudioManagerInit();
+		//ScriptEngine::Init();
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
 
-		// Init Logger
-		ALEngine::Exceptions::Logger::Init();
-
-		//// Init ImGui
+		// Init ImGui
+#if EDITOR
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(true);
 
-		AL_CORE_CRITICAL("CRITICAL");
-		AL_CORE_ERROR("ERROR");
-		AL_CORE_WARN("WARN");
-		AL_CORE_INFO("INFO");
-		AL_CORE_DEBUG("DEBUG");
-		AL_CORE_TRACE("TRACE");
+		UpdateLoop[0] = EditorUpdate;
+		UpdateLoop[1] = GameUpdate;
+#endif
 
 		Engine::AssetManager::Instance()->Init();
+		GameStateManager::Init();
+		RegisterCppScripts();
 
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-
-		player = Coordinator::Instance()->CreateEntity();
-		sceneGraph.Push(-1, player);
-		floor= Coordinator::Instance()->CreateEntity();
-		sceneGraph.Push(-1, floor);
-		coin = Coordinator::Instance()->CreateEntity();
-		sceneGraph.Push(-1, coin);
-		pathfinder = Coordinator::Instance()->CreateEntity();
-		sceneGraph.Push(-1, pathfinder);
-
-		Transform trans;
-		Serializer::Serializer level{ "Assets/Dev/Objects/Level.json" };
-
-		trans.position = level.GetVec2("btn_pos", Math::Vec2());
-		trans.scale = level.GetVec2("btn_size", Math::Vec2(1.f, 1.f));
-		button = CreateSprite(trans, level.GetString("btn_image", "").c_str());
-		sceneGraph.Push(-1, button);
-		CreateCollider(button);
-		CreateEventTrigger(button);
-		Subscribe(button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
-
-		// Initialize player
-		trans.position = level.GetVec2("player_pos", Math::Vec2());
-		trans.scale = level.GetVec2("player_size", Math::Vec2());
-		Coordinator::Instance()->AddComponent(player, trans);
-		CreateSprite(player);
-		CreateCollider(player);
-		CreateCharacterController(player);
-		CreateEventTrigger(player);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, START);
-		//Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_STAY, STAY);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, EXIT);
-		Subscribe(player, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, CLICK);
-
-		trans.position = level.GetVec2("floor_pos", Math::Vec2());
-		trans.scale = level.GetVec2("floor_size", Math::Vec2());
-		Coordinator::Instance()->AddComponent(floor, trans);
-		CreateSprite(floor);
-		CreateCollider(floor);
-		
-		trans.position = level.GetVec2("coin_pos", Math::Vec2());
-		trans.scale = level.GetVec2("coin_size", Math::Vec2());
-		Coordinator::Instance()->AddComponent(coin, trans);
-		CreateSprite(coin);
-		Sprite& coinSprite = Coordinator::Instance()->GetComponent<Sprite>(coin);
-		coinSprite.color = Color{ 1.0f, 1.0f, 0.0f, 1.0f };
-		CreateCollider(coin);
-		Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(coin), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER, CollectCoint);
-
-		trans.position = level.GetVec2("pathfinder_pos", Math::Vec2());
-		trans.scale = level.GetVec2("pathfinder_size", Math::Vec2());
-		Coordinator::Instance()->AddComponent(pathfinder, trans);
-		CreateSprite(pathfinder);
-		//CreateEnemyUnit(pathfinder);
-		CreatePlayerUnit(pathfinder);
-
-		AudioManagerInit();
-
-		fmod::System* const& system = GetAudioSystem();
-		system->createSound("Assets/Audio/bgm.wav", FMOD_DEFAULT, nullptr, &bgm.sound);
-		system->createSound("Assets/Audio/sfx.wav", FMOD_DEFAULT, nullptr, &sfx.sound);
-
-		bgm.loop = true;
-		bgm.channel = Channel::BGM;
-		bgm.Play();
-
-		sfx.channel = Channel::SFX;
-
-		Math::Vec2 anim_pos = level.GetVec2("anim_pos", Math::Vec2());
-		Transform t1{ { anim_pos.x, anim_pos.y, 0.f }, level.GetVec2("anim_size", Math::Vec2()), 0 };
-		entity = CreateSprite(t1);
-		Animator animator = CreateAnimator("Test");
-		AttachAnimator(entity, animator);
-		sceneGraph.Push(-1, entity);
-
-		// Using c++ code to create animation, will be porting it over to allow editor to create clips
-		//CreateAnimationClip("Assets/Images/test_spritesheet2.png", "PlayerRunning", 82, 95, 12, 8);
-		//AddAnimationToAnimator(animator, "PlayingGuitar");
-		//AddAnimationToAnimator(animator, "PlayerRunning");
-		//SaveAnimator(animator);
-
-		StartGameplaySystem();
+		//Scene::LoadScene("Assets\\test.scene");
+		//StartGameplaySystem();
 	}
 
 	void Application::Update(void)
 	{
-		// Accumulator for fixed delta time
-		f32 accumulator{ 0.f };
-
-		// should do the game loop here
-		while (!glfwWindowShouldClose(OpenGLWindow::Window()) && appStatus)
+		// should do the game m_Loop here
+		while (GameStateManager::current != GameState::Quit && appStatus)
 		{
-			// Get Current Time
-			Time::ClockTimeNow();
-
-			appStatus = !Input::KeyTriggered(KeyCode::Escape);
-
-			{
-				PROFILER_TIMER("Editor UI Update")
-				// Begin new ImGui frame
-				ALEditor::Instance()->Begin();
-			}
-			
-			{
-				PROFILER_TIMER("Normal Update")
-				// Normal Update
-				Engine::Update();
-			}
-
-			if (ALEditor::Instance()->GetGameActive())
-			{
-				PROFILER_TIMER("Fixed Update")
-				// Physics
-				// Fixed Update (Physics)
-				accumulator += Time::m_DeltaTime;
-
-				// Steps to limit num times physics will run per frame
-				int currNumSteps{ 0 };
-
-				while (accumulator >= Time::m_FixedDeltaTime)
-				{
-					// Exit if physics happen more than limit
-					if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
-						break;
-
-					Engine::FixedUpdate();
-					accumulator -= Time::m_FixedDeltaTime;
-				}
-			}
-
-			{
-				PROFILER_TIMER("Render Update")
-
-				// Render
-				Render();
-
-				std::ostringstream oss;
-				oss << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-				glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
-			}
-
-			{
-				PROFILER_TIMER("FPS Wait")
-
-				// Wait for next frame
-				Time::WaitUntil();
-			}
-			
-			// Marks the end of a frame loop, for tracy profiler
-			FrameMark
+#if EDITOR
+			UpdateLoop[funcIndex]();
+#else
+			GameUpdate();
+#endif
 		}
 	}
 
 	void Application::Exit(void)
 	{
 		ExitGameplaySystem();
+#if EDITOR
 		ALEditor::Instance()->Exit();		// Exit ImGui
+#endif
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		AudioManagerExit();
+		//ScriptEngine::Shutdown();
 		glfwTerminate();					// clean/delete all GLFW resources
 	}
 
 	void Run(void)
 	{		
-		Application app;
-		app.Init();
-		app.Update();
-		app.Exit();
+#if !EDITOR
+		Console::StopConsole();
+#endif
+		if (SetConsoleCtrlHandler(CtrlHandler, TRUE))
+		{
+			Application::Init();
+			Application::Update();
+			Application::Exit();
+		}
 	}
 
 	void Engine::Update(void)
@@ -252,51 +249,9 @@ namespace ALEngine::Engine
 		ZoneScopedN("Normal Update")
 		Input::Update();
 		AssetManager::Instance()->Update();
-		AudioManagerUpdate();
 
-		if (!ALEditor::Instance()->GetGameActive())
-			return;
-		UpdateCharacterControllerSystem();
-		UpdateEventTriggerSystem();
 		UpdateGameplaySystem();
-
-		if (Input::KeyTriggered(KeyCode::MouseRightButton))
-		{
-			Math::vec2 john = Input::GetMouseWorldPos();
-
-			AL_CORE_DEBUG("Mouse Pos: {}, {}", john.x, john.y);
-		}
-
-		if (ALEditor::Instance()->GetGameActive())
-		{
-			Animator& animator = Coordinator::Instance()->GetComponent<Animator>(entity);
-
-			if (Input::KeyTriggered(KeyCode::A))
-				ChangeAnimation(animator, "PlayingGuitar");
-			if (Input::KeyTriggered(KeyCode::D))
-				ChangeAnimation(animator, "PlayerRunning");
-			if (Input::KeyTriggered(KeyCode::X))
-				sfx.Play();
-			if (Input::KeyDown(KeyCode::Z))
-			{
-				masterVolume -= 0.1f;
-				if (masterVolume <= 0.0f)
-					masterVolume = 0.0f;
-				SetChannelVolume(Channel::Master, masterVolume);
-			}
-			if (Input::KeyDown(KeyCode::C))
-			{
-				masterVolume += 0.1f;
-				if (masterVolume <= 1.0f)
-					masterVolume = 1.0f;
-				SetChannelVolume(Channel::Master, masterVolume);
-			}
-			if (Input::KeyTriggered(KeyCode::P))
-				TogglePauseChannel(Channel::Master);
-			if (Input::KeyTriggered(KeyCode::M))
-				ToggleMuteChannel(Channel::Master);
-		}
-		
+		AudioManagerUpdate();
 	}
 
 	void Engine::FixedUpdate(void)
@@ -305,14 +260,33 @@ namespace ALEngine::Engine
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 		
+		UpdateEventTriggerSystem();
 		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();
 		DebugDrawCollider();
+		DrawGameplaySystem();
 	}
 
 	int GetAppStatus(void)
 	{
 		return appStatus;
 	}
+
+	void SetAppStatus(int _appStatus)
+	{
+		appStatus = _appStatus;
+	}
+
+	void SetWindowFocus(bool _focus)
+	{
+		focus = _focus;
+	}
+
+#if EDITOR
+	void ToggleApplicationMode(void)
+	{
+		(++funcIndex) %= 2;
+	}
+#endif
 }

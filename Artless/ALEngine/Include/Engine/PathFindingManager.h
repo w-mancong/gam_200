@@ -19,7 +19,7 @@ namespace ALEngine::Engine::AI
 	\brief
 	The Astar pathfinding main logic function
 	***********************************************************************************/
-	std::vector<ECS::Entity> FindPath(Engine::GameplayInterface::Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, bool defaultAstar = false);
+	b8 FindPath(Engine::GameplayInterface::Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, std::vector<ECS::Entity>& pathReturn);
 
 	/*!*********************************************************************************
 	\brief

@@ -47,7 +47,7 @@ namespace ALEngine
 			\param [in] eventType: Type of Trigger for the function to listen to
 			\param [in] fp: function that will be subscribed to the trigger
 		***********************************************************************************/
-		void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType, void (*fp)());
+		void Subscribe(EventTrigger& eventTrig, EVENT_TRIGGER_TYPE eventType, void (*fp)(ECS::Entity));
 
 		/*!*********************************************************************************
 			\brief Subscribe a function to listen to a Pointer based trigger via passing of entity instead of EventTrigger Component
@@ -56,7 +56,7 @@ namespace ALEngine
 			\param [in] eventType: Type of Trigger for the function to listen to
 			\param [in] fp: function that will be subscribed to the trigger
 		***********************************************************************************/
-		void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)());
+		void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)(ECS::Entity));
 		//void Unsubscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType);
 	}
 }

@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong@digipen.edu
 brief:	This file contains the function declarations for RenderSystem
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	RENDER_SYSTEM_H
 #define RENDER_SYSTEM_H
@@ -31,7 +31,7 @@ namespace ALEngine::ECS
 
 		\param [in] camera: Camera of the scene panel
 	***********************************************************************************/
-	void Render(Engine::Camera const& camera);
+	//void Render(Engine::Camera const& camera);
 
 	/*!*********************************************************************************
 		\brief Gets the FB Texture ID for game panel

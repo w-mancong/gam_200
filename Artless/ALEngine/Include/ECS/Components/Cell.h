@@ -17,17 +17,18 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Cell {
 
-		float m_HCost{ 0 }, m_GCost{ 10000 }, m_FCost{ 0 };
-		bool m_isAccesible{ true };
+		f32 m_HCost{ 0 }, m_GCost{ 10000 }, m_FCost{ 0 };
+		b8 m_isBlocked{ true }, m_canWalk{ false };
+		b8 hasUnit { false};
 
 		//the came from cell or parent cell
 		Cell* m_ParentCell {nullptr};
 
+		Color m_Color_Tint;
+
 		u32 unitEntity;
-		u32 coordinate[2];
-
-		ALEngine::Math::Vector2Int m_Grid;
-
+		Math::Vector2Int coordinate = { 0,0 };
+		
 		void CalculateFCost()
 		{
 			m_FCost = m_GCost + m_HCost;
@@ -35,7 +36,7 @@ namespace ALEngine::ECS::Component
 
 		bool operator==(const Cell& lhs) const
 		{
-			return ((lhs.coordinate[0] == coordinate[0]) && (lhs.coordinate[1] == coordinate[1]));
+			return ((lhs.coordinate.x == coordinate.x) && (lhs.coordinate.y == coordinate.y));
 		}
 	};
 }

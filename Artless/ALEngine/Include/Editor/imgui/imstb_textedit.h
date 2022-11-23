@@ -163,7 +163,7 @@
 //
 // Optional:
 //    STB_TEXTEDIT_K_INSERT              keyboard input to toggle insert mode
-//    STB_TEXTEDIT_IS_SPACE(ch)          true if character is whitespace (e.g. 'isspace'),
+//    STB_TEXTEDIT_IS_SPACE(m_Ch)          true if character is whitespace (e.g. 'isspace'),
 //                                          required for default WORDLEFT/WORDRIGHT handlers
 //    STB_TEXTEDIT_MOVEWORDLEFT(obj,i)   custom handler for WORDLEFT, returns index to move cursor to
 //    STB_TEXTEDIT_MOVEWORDRIGHT(obj,i)  custom handler for WORDRIGHT, returns index to move cursor to

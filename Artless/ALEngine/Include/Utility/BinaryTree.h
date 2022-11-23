@@ -27,8 +27,14 @@ namespace ALEngine::Tree
         {
             u32 id{};
             std::vector<s32> children{};
-            b8 active{ true };
+            b8 active{ false };
             s32 parent{-1};
+        };
+        struct Serial
+        {
+            u32 id{};
+            s32 serialID, parentSerialID;
+            b8 flag{ false }; // for deserialization
         };
     public:
         /*!*********************************************************************************
@@ -48,6 +54,11 @@ namespace ALEngine::Tree
             Initializes the BinaryTree
         ***********************************************************************************/
         void Init();
+
+        /*!*********************************************************************************
+            \brief Update the BinaryTree
+        ***********************************************************************************/
+        void Update();
 
         /*!*********************************************************************************
             \brief
@@ -127,6 +138,17 @@ namespace ALEngine::Tree
             Vector of NodeData
         ***********************************************************************************/
         std::vector<NodeData>const& GetMap();
+
+        /*!*********************************************************************************
+            \brief Return parent of current entity
+
+            \return Entity Id of parent, else -1
+        ***********************************************************************************/
+        s32 GetParent(u32 en) const;
+
+        void MoveBranch(s32 branch, s32 newParent);
+        void SerializeTree();
+        void DeserializeTree();
 
     private:
         /*!*********************************************************************************
@@ -221,6 +243,13 @@ namespace ALEngine::Tree
             ID of node to destruct
         ***********************************************************************************/
         void DestructLeft(Node* node, s32 id);
+
+        /*!*********************************************************************************
+            \brief Updates the transform matrix of parent and its children
+
+            \param [in] entity: Entity to apply parent-child transform
+        ***********************************************************************************/
+        //void UpdateParentChildrenPos(NodeData const& entity);
 
     private:
         Node* head;

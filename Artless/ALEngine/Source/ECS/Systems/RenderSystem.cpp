@@ -1,9 +1,17 @@
+/*!
+file:	RenderSystem.cpp
+author: Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function definition that controls the rendering for the engine
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Graphics/ParticleSys.h>
 
 namespace ALEngine::ECS
 {
-	using namespace Math; using namespace Engine; using namespace Graphics;
+	using namespace Math; using namespace Engine; using namespace Graphics; using namespace utils;
 	class RenderSystem : public System
 	{
 	public:
@@ -38,14 +46,13 @@ namespace ALEngine::ECS
 
 	namespace
 	{
-		std::shared_ptr<RenderSystem> rs;
+		Ref<RenderSystem> rs;
 		Shader indirectShader;
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
 
 		ParticleSys::ParticleSystem particleSys;
-		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
@@ -57,7 +64,7 @@ namespace ALEngine::ECS
 #if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
-
+		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 #endif
 	}
 
@@ -175,11 +182,6 @@ namespace ALEngine::ECS
 		signature.set(Coordinator::Instance()->GetComponentType<Transform>());
 		signature.set(Coordinator::Instance()->GetComponentType<Sprite>());
 		Coordinator::Instance()->SetSystemSignature<RenderSystem>(signature);
-
-		// Load and initialise fonts
-		Font::FontInit("Assets/fonts/Roboto-Regular.ttf", "roboto", Font::FontType::Regular);
-		Font::FontInit("Assets/fonts/Roboto-Italic.ttf", "roboto", Font::FontType::Italic);
-		Font::FontInit("Assets/fonts/Roboto-Bold.ttf", "roboto", Font::FontType::Bold);
 		
 		// Init Gizmo
 		Gizmos::Gizmo::GizmoInit();
@@ -190,6 +192,7 @@ namespace ALEngine::ECS
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 
+#if EDITOR
 		// Viewport frame buffer init
 		glGenFramebuffers(1, &fbo);
 
@@ -226,7 +229,7 @@ namespace ALEngine::ECS
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) // check if frame buffer failed to init			
 			std::cerr << " Editor frame buffer failed to initialize properly\n";
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+#endif
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
@@ -237,40 +240,11 @@ namespace ALEngine::ECS
 		camera.ProjectionMatrix(Camera::Projection::Orthographic);
 	}
 
-	/*!*********************************************************************************
-		\brief
-		Updates the transform matrix of parent and its children
-
-		\param [in] entity
-		Entity to apply parent-child transform
-	***********************************************************************************/
-	void UpdateParentChildrenPos(Tree::BinaryTree::NodeData const& entity)
+	void RenderGameplay(void)
 	{
-		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity.id);
-		if (entity.parent >= 0) // if entity has parent
-		{
-			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
-			transform.modelMatrix = parentTransform.modelMatrix * Math::mat4::Model(transform);
-		}
-		else
-		{
-			transform.modelMatrix = Math::mat4::Model(transform);
-		}
-
-		for (auto& child : sceneGraph.GetMap()[entity.id].children)
-		{ 
-			UpdateParentChildrenPos(sceneGraph.GetMap()[child]);
-		}
-	}
-
-	void Render(void)
-	{
-		for (auto& entity : sceneGraph.GetParents())
-		{
-			UpdateParentChildrenPos(sceneGraph.GetMap()[entity]);
-		}
-		
 #if EDITOR
+		if (!Editor::ALEditor::Instance()->GetGameActive())
+			return;
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
@@ -282,27 +256,37 @@ namespace ALEngine::ECS
 #else
 		rs->RenderBatch();
 #endif
-		Text test;
-		SetTextFont(test, "roboto");
-		SetTextFontType(test, Font::FontType::Italic);
-		SetTextString(test, "Hello World!!");
-		SetTextColor(test, Vector3(1.f, 0.f, 1.f));
-		Text::RenderText(test);
 
-		std::ostringstream ossFPS;
-		ossFPS << OpenGLWindow::title << " | FPS: " << Time::m_FPS;
-		Text FPS;
-		SetTextPos(FPS, Vector2(500.f, Input::GetScreenResY() - 50.f));
-		SetTextFont(FPS, "roboto");
-		SetTextString(FPS, ossFPS.str());
-		SetTextColor(FPS, Vector3(1.f, 1.f, 0.f));
-		Text::RenderText(FPS);
+		// This needs to be at the end
+		Gizmos::Gizmo::RenderAllLines();
 
 		// Update and render particles
-		if(!Editor::ALEditor::Instance()->GetGameActive())
+#if EDITOR
+		if (!Editor::ALEditor::Instance()->GetGameActive())
 			particleSystemPanel.OnImGuiRender(particleSys);
+#endif
 		particleSys.ParticleUpdate(Time::m_DeltaTime);
 		particleSys.ParticleRender(camera);
+
+		// Render all text
+		Text::RenderAllText();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
+		glDisable(GL_DEPTH_TEST);
+		//------------------ End viewport framebuffer rendering ------------------//	
+	}
+
+#if EDITOR
+	void RenderEditor(void)
+	{
+		if (Editor::ALEditor::Instance()->GetGameActive())
+			return;
+		//------------------ Begin editor framebuffer rendering ------------------//
+		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
+		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
+
+		rs->RenderBatch(Editor::ALEditor::Instance()->GetEditorCamera());
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
@@ -310,47 +294,59 @@ namespace ALEngine::ECS
 		// Render all text
 		Text::RenderAllText();
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
-		glDisable(GL_DEPTH_TEST);
-		//------------------ End viewport framebuffer rendering ------------------//		
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
+		//------------------- End editor framebuffer rendering -------------------//
+	}
+#endif
 
+	void Render(void)
+	{		
+		RenderGameplay();
+#if EDITOR
+		RenderEditor();
+#endif
+		
+		Gizmos::Gizmo::ClearContainer();
+
+#if EDITOR
 		// End of ImGui frame, render ImGui!
 		if (Editor::ALEditor::Instance()->GetImGuiEnabled())
 		{
 			Editor::ALEditor::Instance()->End();
 		}
+#endif
 
 		glfwPollEvents();
 		glfwSwapBuffers(Graphics::OpenGLWindow::Window());
 	}
 
 #if EDITOR
-	void Render(Camera const& cam)
-	{
-		std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
-		// copy into temp vector
-		std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
-		// sort entities by layer
-		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-		{
-			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-			return sp1.layer < sp2.layer;
-		});
-		//------------------ Begin editor framebuffer rendering ------------------//
-		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
-		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
-		
-		rs->RenderBatch(cam);
+	//void Render(Camera const& cam)
+	//{
+	//	std::vector<Entity> entities; entities.reserve(rs->mEntities.size());
+	//	// copy into temp vector
+	//	std::copy(rs->mEntities.begin(), rs->mEntities.end(), std::back_inserter(entities));
+	//	// sort entities by layer
+	//	std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
+	//	{
+	//		Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+	//		Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+	//		return sp1.layer < sp2.layer;
+	//	});
+	//	//------------------ Begin editor framebuffer rendering ------------------//
+	//	glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
+	//	glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
+	//	
+	//	rs->RenderBatch(cam);
 
-		// Update and render particles
-		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender(cam);
+	//	// Update and render particles
+	//	particleSys.ParticleUpdate(Time::m_DeltaTime);
+	//	particleSys.ParticleRender(cam);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
-		//------------------- End editor framebuffer rendering -------------------//
-	}
+	//	glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
+	//	//------------------- End editor framebuffer rendering -------------------//
+	//}
 
 	u32 GetFBTexture(void)
 	{
@@ -428,6 +424,7 @@ namespace ALEngine::ECS
 	{
 		camera.Fov(fov);
 	}
+
 	Tree::BinaryTree& GetSceneGraph(void)
 	{
 		return sceneGraph;
@@ -437,7 +434,9 @@ namespace ALEngine::ECS
 	{
 		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
-		sprite.layer = layer;
+		sprite.filePath = filePath;
+		//sprite.layer = layer;
+		sprite.layer = static_cast<u32>(layer);
 		Coordinator::Instance()->AddComponent(entity, sprite);
 		Coordinator::Instance()->AddComponent(entity, transform);
 	}
@@ -446,7 +445,9 @@ namespace ALEngine::ECS
 	{
 		Sprite sprite{};
 		sprite.id = AssetManager::Instance()->GetGuid(filePath);
-		sprite.layer = layer;
+		sprite.filePath = filePath;
+		//sprite.layer = layer;
+		sprite.layer = static_cast<u32>(layer);
 		Coordinator::Instance()->AddComponent(entity, sprite);
 	}
 

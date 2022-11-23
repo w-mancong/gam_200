@@ -5,7 +5,7 @@ email:	m.zafir@digipen.edu
 brief:	This file contains the Gizmo class declaration. Gizmo is a debugging feature
 		for the engine.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #ifndef	GIZMO_H
@@ -29,6 +29,7 @@ namespace ALEngine::Gizmos
 		static void GizmoInit();
 		static void RenderLine(Math::Vector2 pt1, Math::Vector2 pt2, Math::Vector4 const& color = Math::Vector4{ 1.0f, 1.0f, 1.0f, 1.0f }, f32 width = 1.0f);
 		static void RenderAllLines();
+		static void ClearContainer(void);
 		//static void RenderCircle(Math::Vector2 center, f32 radius);
 	};
 }

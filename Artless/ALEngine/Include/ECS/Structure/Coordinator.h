@@ -11,6 +11,8 @@ brief:	This file contains function definitions for Coordinator
 
 namespace ALEngine::ECS
 {
+	Tree::BinaryTree& GetSceneGraph(void);
+
 	/*!*********************************************************************************
 		\brief
 		Class that manages the three managers of the ECS archiecture
@@ -81,23 +83,54 @@ namespace ALEngine::ECS
 		}
 
 		/*!*********************************************************************************
-			\brief
-			Get list of active entities
+			\brief Get list of active entities
 			
-			\return
-			List of entities
+			\return List of entities
 		***********************************************************************************/
 		EntityList const& GetEntities()
 		{
 			return mEntityManager->GetActiveEntities();
 		}
 
+		/*!*********************************************************************************
+			\brief Destroy all active entities
+		***********************************************************************************/
+		void DestroyEntities(void)
+		{
+			GetSceneGraph().Destruct(-1); // destroy scene graph
+			EntityList const& entities = mEntityManager->GetActiveEntities();
+			// Store all active entities into a temporary container
+			std::vector<Entity> temp; temp.reserve(entities.size());
+			std::copy(entities.begin(), entities.end(), std::back_inserter(temp));
+			for (Entity en : temp)
+				DestroyEntity(en);
+		}
+
+		/*!*********************************************************************************
+			\brief Find an entity by it's tag
+
+			\param [in] tag: Tag of the entity you are trying to find
+
+			\return Entity ID of the tag, else ECS::MAX_ENTITIES will be returned
+		***********************************************************************************/
+		Entity GetEntityByTag(std::string const& tag)
+		{
+			EntityList const& list = mEntityManager->GetActiveEntities();
+			for (Entity en : list)
+			{
+				Component::EntityData const& ed = Coordinator::Instance()->GetComponent<Component::EntityData>(en);
+				if (ed.tag == tag)
+					return en;
+			}
+			return MAX_ENTITIES;
+		}
+
 		/*********************************************************************************
 										COMPONENT METHODS
 		*********************************************************************************/
+
 		/*!*********************************************************************************
-			\brief
-			Adds the component into the component manager
+			\brief Adds the component into the component manager
 		***********************************************************************************/
 		template <typename T>
 		void RegisterComponent(void)
@@ -106,13 +139,10 @@ namespace ALEngine::ECS
 		}
 
 		/*!*********************************************************************************
-			\brief
-			To associate an entity to this component
+			\brief To associate an entity to this component
 
-			\param [in] entity:
-			ID of the entity to have an association to this component
-			\param [in] component:
-			Component data to be associated with this entity
+			\param [in] entity: ID of the entity to have an association to this component
+			\param [in] component: Component data to be associated with this entity
 		***********************************************************************************/
 		template <typename T>
 		void AddComponent(Entity entity, T component)
@@ -126,8 +156,7 @@ namespace ALEngine::ECS
 
 #if EDITOR
 		/*!*********************************************************************************
-			\brief
-			To disassociate an entity to this component
+			\brief To disassociate an entity to this component
 
 			\param [in] entity:
 			ID of the entity to be disassociated with this component

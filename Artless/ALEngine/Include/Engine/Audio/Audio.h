@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong@digipen.edu
 brief:	Wrapper function declaration that contains all the data for playing an audio
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	AUDIO_H
 #define AUDIO_H
@@ -53,16 +53,47 @@ namespace ALEngine::Engine
 		void Unmute(void);
 
 		/*!*********************************************************************************
-			\brief Toggle function to mute audio
+			\brief Toggle function to m_Mute audio
 		***********************************************************************************/
 		void ToggleMute(void);
 
-		fmod::Sound* sound{ nullptr };
-		f32 volume{ 1.0f };
-		b8 loop{ false };
-		b8 mute{ false };
-		Channel channel{ Channel::Invalid };
-		fmod::Channel** ch{ nullptr };	// reference to fmod's channel
+		/*!*********************************************************************************
+			\brief Set the volume of the audio
+		***********************************************************************************/
+		void SetVolume(void);
+
+		/*!*********************************************************************************
+			\brief Set if audio should be looping
+		***********************************************************************************/
+		void SetLoop(b8 loop);
+
+		/*!*********************************************************************************
+			\brief Toggle loop functionality of audio
+		***********************************************************************************/
+		void ToggleLoop(void);
+
+		/*!*********************************************************************************
+			\brief Check if audio sound is still playing
+		***********************************************************************************/
+		b8 IsPlaying(void);
+
+		fmod::Sound* m_Sound{ nullptr };
+		std::string m_AudioName{ "" };
+		u32 m_ID{ 0 };
+		f32 m_Volume{ 1.0f };
+		b8 m_Loop{ false };
+		b8 m_Mute{ false };
+		Channel m_Channel{ Channel::Invalid };
+		fmod::Channel** m_Ch{ nullptr };	// reference to fmod's m_Channel
+	};
+
+	/*!*********************************************************************************
+		\brief Struct to store a map of different audios 
+	***********************************************************************************/
+	struct AudioSource
+	{
+		std::unordered_map<u32, Audio> list;
+		u32 id;
 	};
 }
 

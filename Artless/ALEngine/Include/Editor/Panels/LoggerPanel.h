@@ -11,6 +11,8 @@ brief:	This file contains function definitions for the LoggerPanel class.
 #ifndef LOGGER_PANEL_H
 #define LOGGER_PANEL_H
 
+#if EDITOR
+
 namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
@@ -85,5 +87,7 @@ namespace ALEngine::Editor
 		LOG_ALL			= LOG_TRACE | LOG_DEBUG | LOG_INFO | LOG_WARN | LOG_ERROR | LOG_CRITICAL
 	};
 }
+
+#endif
 
 #endif
