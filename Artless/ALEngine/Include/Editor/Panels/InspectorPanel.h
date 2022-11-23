@@ -1,4 +1,4 @@
-/*!
+﻿/*!
 file:	InspectorPanel.h
 author: Lucas Nguyen
 email:	l.nguyen@digipen.edu
@@ -27,7 +27,7 @@ namespace ALEngine::Editor
 	public:
 		/*!*********************************************************************************
 			\brief
-			Default constructor for the InspectorPanel 
+			Default constructor for the InspectorPanel
 		***********************************************************************************/
 		InspectorPanel(void);
 
@@ -69,7 +69,7 @@ namespace ALEngine::Editor
 			Returns true if there is a selected entity, else returns false
 		***********************************************************************************/
 		bool HasSelectedEntity(void);
-		
+
 		/*!*********************************************************************************
 			\brief
 			Displays the Inspector Menu on the panel

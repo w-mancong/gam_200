@@ -47,6 +47,9 @@ namespace ALEngine::Engine
 				return;
 			}
 
+			// Get Current Time
+			Time::ClockTimeNow();
+
 			{
 				PROFILER_TIMER("Editor UI Update")
 				// Editor Command Manager Update
@@ -55,8 +58,8 @@ namespace ALEngine::Engine
 				ALEditor::Instance()->Begin();
 				
 				// Set the window focus
-				ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
-				editorFocus = ImGui::IsWindowFocused(flag);
+				//ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
+				//editorFocus = ImGui::IsWindowFocused(flag);
 			}
 
 			Input::Update();
@@ -72,7 +75,10 @@ namespace ALEngine::Engine
 				Render();
 			}
 
-			// Marks the end of a frame m_Loop, for tracy profiler
+			// Wait for next frame
+			Time::WaitUntil();
+
+			// Marks the end of a frame loop, for tracy profiler
 			FrameMark
 		}
 #endif
@@ -101,6 +107,9 @@ namespace ALEngine::Engine
 					glfwPollEvents();
 					continue;
 				}
+
+				// Get Current Time
+				Time::ClockTimeNow();
 #if EDITOR
 				{
 					PROFILER_TIMER("Editor UI Update")
@@ -110,8 +119,6 @@ namespace ALEngine::Engine
 					ALEditor::Instance()->Begin();
 				}
 #endif
-				// Get Current Time
-				Time::ClockTimeNow();
 
 				{
 					PROFILER_TIMER("Normal Update")
