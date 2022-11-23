@@ -166,10 +166,10 @@ namespace ALEngine::Editor
 		if (ImGui::Checkbox("##active", &data.localActive))
 		{
 			Tree::BinaryTree const& sceneGraph = ECS::GetSceneGraph(0);
-			Tree::BinaryTree::NodeData const& parent = sceneGraph.GetMap()[m_SelectedEntity];
+			Tree::BinaryTree::NodeData const& node = sceneGraph.GetMap()[m_SelectedEntity];
 
 			data.active = data.localActive;
-			sceneGraph.SetParentChildActive(parent, data.active);
+			sceneGraph.SetParentChildActive(node, data.active);
 		}
 
 		ImGui::SameLine();

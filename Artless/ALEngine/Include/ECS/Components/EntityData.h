@@ -12,18 +12,24 @@ brief:	This file contains the function declarations for the EntityData struct
 namespace ALEngine::ECS::Component
 {
 	/*!*********************************************************************************
-		\brief
-			Data for the entity
+		\brief Data for the entity
 	***********************************************************************************/
 	struct EntityData
 	{
 		std::string tag{};			// Entity Tag
 		b8 active{ true };			// Entity Active (For rendering, etc...)
-		b8 localActive{ true };	// Active state that will control active (variable used inside Editor side only)
+		b8 localActive{ true };		// Active state that will control active (variable used inside Editor side only)
 		u32 id{};
-		s32 parentID{};	// Id of entity
-		
+		s32 parentID{};				// Id of entity	
 	};
+
+	/*!*********************************************************************************
+		\brief Set active state for this component
+
+		\param [in] _active: Value to set active with
+		\param [in] entity: Entity ID of this component
+	***********************************************************************************/
+	void SetActive(b8 active, Entity entity);
 }
 
 #endif
