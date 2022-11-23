@@ -6,7 +6,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 		The InspectorPanel class contains information and functions necessary for 
 		the Inspector Panel of the editor to be displayed.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
@@ -89,6 +89,17 @@ namespace ALEngine::Editor
 		if (Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
 			DisplayCollider();
 
+		// Check if there is sprite component
+		if (Coordinator::Instance()->HasComponent<ParticleProperties>(m_SelectedEntity))
+			DisplayParticleProperty();
+
+		// Check if there is text component
+		if (Coordinator::Instance()->HasComponent<Text>(m_SelectedEntity))
+			DisplayTextProperty();
+
+		//// Check if there is Audio component
+		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
+		//	DisplayAudio();
 		// Check if there is Audio component
 		if (Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
 			DisplayAudio();
@@ -158,7 +169,7 @@ namespace ALEngine::Editor
 		ImGui::SameLine();
 
 		// Tag
-		c8* tag = (c8*)data.tag.c_str();
+		c8* tag = const_cast<c8*>(data.tag.c_str());
 		// Entity Tag
 		ImGui::InputText("Tag", tag, 20);
 
@@ -622,6 +633,134 @@ namespace ALEngine::Editor
 		}
 	}
 
+	void InspectorPanel::DisplayParticleProperty(void)
+	{
+		// Get transform
+		ParticleProperties& particleProperty = Coordinator::Instance()->GetComponent<ParticleProperties>(m_SelectedEntity);
+
+		if (ImGui::TreeNodeEx("Particle Component"))
+		{
+			f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, 1.f };
+			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, 1.f };
+			f32 vel[2] = { particleProperty.velocity.x, particleProperty.velocity.y };
+			f32 velVariation[2] = { particleProperty.velocityVariation.x, particleProperty.velocityVariation.y };
+
+			ImGui::DragFloat("Start Size", &particleProperty.sizeStart, 0.1f, 0.0f, 1500.0f);
+			ImGui::DragFloat("End Size", &particleProperty.sizeEnd, 0.1f, 0.0f, 1000.0f);
+			ImGui::DragFloat("Size Variation", &particleProperty.sizeVariation, 0.1f, 0.0f, 1000.0f);
+			ImGui::ColorEdit4("Start Color", startClr);
+			ImGui::ColorEdit4("End Color", endClr);
+			ImGui::DragFloat("Life Time", &particleProperty.lifeTime, 0.1f, 0.0f, 1000.0f);
+			ImGui::DragFloat("Spawn Rate", &particleProperty.spawnRate, 0.001f, 0.0f, 10.0f);
+			ImGui::DragFloat2("Velocity", vel, 0.02f);
+			ImGui::DragFloat2("Velocity Variation", velVariation, 0.02f);
+			ImGui::DragFloat("Rotation", &particleProperty.rotation, 0.1f, 0.0f, 1000.0f);
+
+			particleProperty.velocity.x = vel[0];
+			particleProperty.velocity.y = vel[1];
+
+			particleProperty.velocityVariation.x = velVariation[0];
+			particleProperty.velocityVariation.y = velVariation[1];
+
+			particleProperty.colorStart.x = startClr[0];
+			particleProperty.colorStart.y = startClr[1];
+			particleProperty.colorStart.z = startClr[2];
+
+			particleProperty.colorEnd.x = endClr[0];
+			particleProperty.colorEnd.y = endClr[1];
+			particleProperty.colorEnd.z = endClr[2];
+
+			ImGui::TreePop();
+
+			ImGui::Separator();
+
+		}
+	}
+
+	void InspectorPanel::DisplayTextProperty(void)
+	{
+		// Get transform
+		Text& prop = Coordinator::Instance()->GetComponent<Text>(m_SelectedEntity);
+
+		if (ImGui::TreeNodeEx("Text Component"))
+		{
+			// String input field
+			c8* str = const_cast<c8*>(prop.textString.c_str());	
+			ImGui::InputText("String##InspectorTextComponent", str, 50);
+			prop.textString = str;
+
+			// font pop down menu
+			ImVec2 winsize = ImGui::GetWindowSize();
+
+			if (prop.currentFont.empty())
+			{
+				ImGui::Text("No Font Selected");
+			}
+			else
+				ImGui::Text(prop.currentFont.c_str());
+
+			if (ImGui::Button("Select Font"))
+			{
+				ImGui::OpenPopup("fontfamily_popup");
+			}
+			ImGui::SetNextWindowSize(ImVec2(winsize.x * 0.75f, 100.f));
+			if (ImGui::BeginPopup("fontfamily_popup"))
+			{
+				ImVec2 textSize = ImGui::CalcTextSize("Available Fonts");
+				ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));
+				ImGui::Separator();
+				for (auto& font : Engine::AssetManager::Instance()->GetFontList())
+				{
+					if (ImGui::Selectable(font.second.fontName.c_str()) &&
+						m_SelectedEntity != ECS::MAX_ENTITIES)
+					{
+						prop.currentFont = font.second.fontName;
+					}
+				}
+				ImGui::EndPopup();
+			}
+
+			//const c8* currentFont{ nullptr };
+			//if (ImGui::BeginCombo("Font##Inspector", currentFont))
+			//{
+			//	for (auto& i : Engine::AssetManager::Instance()->GetFontList())
+			//	{
+			//		bool isSelected = (currentFont == i.second.fontName.c_str());
+			//		if (ImGui::Selectable(i.second.fontName.c_str()) &&
+			//			m_SelectedEntity != ECS::MAX_ENTITIES, &isSelected)
+			//		{
+			//			prop.currentFont = i.second.fontName;
+			//			currentFont = i.second.fontName.c_str();
+			//		}
+
+			//		if (isSelected)
+			//			ImGui::SetItemDefaultFocus();
+			//	}
+			//	ImGui::EndCombo();
+			//}
+
+			f32 color[4] = { prop.colour.x, prop.colour.y, prop.colour.z , 1.f };
+			f32 pos[2] = { prop.position.x, prop.position.y };
+
+			ImGui::DragFloat("Size", &prop.scale, 0.05f, 0.0f, 5.0f);
+			ImGui::DragFloat2("Pos", pos, 0.5f);
+
+			// Color wheel
+			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
+			ImGui::ColorPicker4("Color", color, clr_flags);
+
+			prop.colour.x = color[0];
+			prop.colour.y = color[1];
+			prop.colour.z = color[2];
+
+			prop.position.x = pos[0];
+			prop.position.y = pos[1];
+
+			ImGui::TreePop();
+			ImGui::Separator();
+		}
+	}
+
 	void InspectorPanel::DisplayEntityScript(void)
 	{
 		if (ImGui::TreeNodeEx("Script Component##Inspector"))
@@ -753,6 +892,32 @@ namespace ALEngine::Editor
 						{
 							// Add Collider Component
 							ECS::Coordinator::Instance()->AddComponent<Collider2D>(m_SelectedEntity, Collider2D());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_Particles:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<ParticleProperties>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Particle Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<ParticleProperties>(m_SelectedEntity, ParticleProperties());
+						}
+						++count;
+					}
+					break;
+				case InspectorComponents::InComp_Text:
+					// Check if has component
+					if (!ECS::Coordinator::Instance()->HasComponent<Text>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Text Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<Text>(m_SelectedEntity, Text());
 						}
 						++count;
 					}

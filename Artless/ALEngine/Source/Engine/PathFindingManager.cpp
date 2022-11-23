@@ -16,7 +16,7 @@ namespace  ALEngine::Engine::AI
         Cell& startNode = Coordinator::Instance()->GetComponent<Cell>(startCell);
         Cell& endNode = Coordinator::Instance()->GetComponent<Cell>(endCell);
 
-        if (!endNode.m_isAccesible) {
+        if (!endNode.m_isBlocked || !endNode.m_canWalk) {
             return false;
         }
 
@@ -82,7 +82,7 @@ namespace  ALEngine::Engine::AI
                 }
                 //If it's not end
                 //then check if the current neighbour node exist inside closed list or it is blocked
-                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || !neighbourNode->m_isAccesible)
+                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || !neighbourNode->m_isBlocked || !neighbourNode->m_canWalk)
                 {
                     continue;
                 }

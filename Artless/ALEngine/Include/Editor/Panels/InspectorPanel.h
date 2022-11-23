@@ -6,7 +6,7 @@ brief:	This file contains function declarations for the InspectorPanel class.
 		The InspectorPanel class contains information and functions necessary for
 		the Inspector Panel of the editor to be displayed.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
@@ -120,6 +120,18 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Displays the Particle component info on the panel
+		***********************************************************************************/
+		void DisplayParticleProperty(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the text component info on the panel
+		***********************************************************************************/
+		void DisplayTextProperty(void);
+
+		/*!*********************************************************************************
+			\brief
 			Displays the Script component info on the panel
 		***********************************************************************************/
 		void DisplayEntityScript(void);
@@ -173,6 +185,8 @@ namespace ALEngine::Editor
 		InComp_Sprite,
 		InComp_RigidBody,
 		InComp_Collider,
+		InComp_Particles,
+		InComp_Text,
 		InComp_Script,
 		InComp_Audio,
 		InComp_Total

@@ -98,6 +98,9 @@ namespace ALEngine::ECS
 
 		void DeselectPatternPlacement();
 
+		void TogglePatternGUI(b8 istrue);
+		void ToggleAbilitiesGUI(b8 istrue);
+
 		//Creating Object
 		void InitializeEndTurnButton();
 	};
@@ -106,6 +109,8 @@ namespace ALEngine::ECS
 	{
 		//Character Controller System to be accessed locally
 		std::shared_ptr<GameplaySystem> gameplaySystem;
+
+		std::string const sceneName = R"(Assets\test.scene)";
 	}
 
 	void Event_Button_Darken(Entity invoker) {
@@ -114,8 +119,19 @@ namespace ALEngine::ECS
 	}
 
 	void Event_Button_Lighten(Entity invoker) {
+		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
+
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
+		
+		if(eventTrigger.isEnabled)
 		sprite.color = { 1.f, 1.f, 1.f, 1.f };
+	}
+
+	void Event_Button_Select_Abilities_0(Entity invoker) {
+		AL_CORE_INFO("Select Abilities 0");
+		
+		gameplaySystem->ToggleAbilitiesGUI(false);
+		gameplaySystem->TogglePatternGUI(true);
 	}
 
 	void Event_Button_Select_CurrentPattern(Entity invoker) {
@@ -151,7 +167,12 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
+			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+			
+			if(canPlace)
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+			else
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
 		}
 	}
 
@@ -165,14 +186,21 @@ namespace ALEngine::ECS
 	void Event_ClickCell(Entity invokerCell) {
 		AL_CORE_INFO("Select Cell");
 
-		if (gameplaySystem->currentGameplayStatus != GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+		if (gameplaySystem->currentUnitControlStatus != GameplaySystem::UNITS_CONTROL_STATUS::NOTHING) {
 			return;
 		}
 
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invokerCell);
 		//If not placing, move character
-		if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
+		if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING && 
+			gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
 			//When click on cell, Move the player unit to the selected cell
 			gameplaySystem->MovePlayerEntityToCell(invokerCell);
+		}
+		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
+			gameplaySystem->EndTurn();
 		}
 	}
 
@@ -184,9 +212,9 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
-		//if (ALEngine::Editor::ALEditor::Instance()->SetCurrentSceneName()) {
-
-		//}
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
 
 		AL_CORE_INFO("GAME START");
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
@@ -251,6 +279,12 @@ namespace ALEngine::ECS
 		playerUnit.coordinate[0] = 0;
 		playerUnit.coordinate[1] = 0;
 
+		playerUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, 0, 0);
+
+		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity;
+
+		GameplayInterface::PlaceWalkableOnGrid(gameplaySystem->m_Room, { 0,0 }, "Assets/Images/Walkable.png");
+
 		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
 		playerTransform.localPosition = SpawnCellTransform.position;
@@ -271,8 +305,10 @@ namespace ALEngine::ECS
 			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		}
 
-		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
 
+		//Initialize Abilities GUI
+		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
+		Subscribe(gameplaySystem->GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 
 		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
 			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
@@ -287,10 +323,17 @@ namespace ALEngine::ECS
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 2, 1, false);
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 3, 1, false);
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 3, 2, false);
+
+		//Set abilities UI off
+		gameplaySystem->ToggleAbilitiesGUI(false);
 	}
 
 	void UpdateGameplaySystem(void)
 	{
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
+
 		if (!Editor::ALEditor::Instance()->GetGameActive()) {
 			return;
 		}
@@ -300,6 +343,8 @@ namespace ALEngine::ECS
 
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			gameplaySystem->DeselectPatternPlacement();
+
+			gameplaySystem->TogglePatternGUI(true);
 		}
 
 		gameplaySystem->RunGameState();
@@ -307,10 +352,15 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
+
 		if (gameplaySystem->m_Room.roomCellsArray != nullptr) {
 			delete[] gameplaySystem->m_Room.roomCellsArray;
 			gameplaySystem->m_Room.roomCellsArray = nullptr;
 		}
+
 		gameplaySystem->m_Room.width = 0;
 		gameplaySystem->m_Room.height = 0;
 	}
@@ -320,35 +370,78 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::EndTurn() {
-		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
-		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
+		currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
+		currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 		
 		switch (currentGameplayStatus) {
 			case GAMEPLAY_STATUS::PHASE_SETUP:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ACTION;
 
 				AL_CORE_INFO("Loading PHASE ACTION");
-				
+
+				ToggleAbilitiesGUI(true);
+				TogglePatternGUI(false);
 			break;
 
 			case GAMEPLAY_STATUS::PHASE_ACTION:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ENEMY;
 
+				ToggleAbilitiesGUI(false);
+				TogglePatternGUI(false);
 				AL_CORE_INFO("Loading PHASE ENEMY");
 				break;
 			
 			case GAMEPLAY_STATUS::PHASE_ENEMY:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
 
+				TogglePatternGUI(true);
 				AL_CORE_INFO("Loading PHASE SETUP");
 				break;
 		}
 	}
 
+	void GameplaySystem::TogglePatternGUI(b8 istrue) {
+		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
+
+			eventTrigger.isEnabled = istrue;
+
+			if(istrue)
+			sprite.color = { 1.f, 1.f, 1.f, 1.f };
+			else
+			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+	}
+	
+	void GameplaySystem::ToggleAbilitiesGUI(b8 istrue) {
+		for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+
+			eventTrigger.isEnabled = false;
+			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+
+		for (int i = 0; i < 1; ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+
+			eventTrigger.isEnabled = istrue;
+
+			if (istrue)
+				sprite.color = { 1.f, 1.f, 1.f, 1.f };
+			else
+				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+	}
+
 	void GameplaySystem::SelectPattern(Pattern pattern) { 
 		if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_SETUP) {
-			gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
-			gameplaySystem->selected_Pattern = pattern;
+			currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+			selected_Pattern = pattern;
+
+			TogglePatternGUI(false);
 		}
 	}
 
@@ -508,6 +601,16 @@ namespace ALEngine::ECS
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 
+				Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity);
+
+				OriginCell.hasUnit = false;
+				OriginCell.unitEntity = 0;
+
+				//Update player cell to current
+				playerUnit.m_CurrentCell_Entity = gameplaySystem->getCurrentEntityCell();
+				cell.unitEntity = gameplaySystem->playerEntity;
+				cell.hasUnit = true;
+
 				if (playerUnit.unitType == UNIT_TYPE::PLAYER) {
 					EndTurn();
 				}
@@ -530,6 +633,10 @@ namespace ALEngine::ECS
 
 
 	void DrawGameplaySystem() {
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
+
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
 		//Box holder
@@ -543,7 +650,7 @@ namespace ALEngine::ECS
 			Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[i]);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->m_Room.roomCellsArray[i]);
 
-			if (!cell.m_isAccesible) {
+			if (!cell.m_isBlocked) {
 				color = { 1.f, 0.f, 0.f, 1.f };
 			}
 			else {
