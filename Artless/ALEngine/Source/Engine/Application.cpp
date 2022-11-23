@@ -58,8 +58,8 @@ namespace ALEngine::Engine
 				ALEditor::Instance()->Begin();
 				
 				// Set the window focus
-				ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
-				editorFocus = ImGui::IsWindowFocused(flag);
+				//ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
+				//editorFocus = ImGui::IsWindowFocused(flag);
 			}
 
 			Input::Update();

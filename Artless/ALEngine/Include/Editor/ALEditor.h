@@ -321,6 +321,8 @@ namespace ALEngine::Editor
 		ImGuizmo::OPERATION m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
 	};
 
+	void HelpMarker(const char* desc);
+
 #define EDITOR_KEYBOARD_CHECK if (ImGui::IsItemActivated()) { ALEditor::Instance()->SetReceivingKBInput(true); } else if (ImGui::IsItemDeactivated()) { ALEditor::Instance()->SetReceivingKBInput(false); }
 }
 
