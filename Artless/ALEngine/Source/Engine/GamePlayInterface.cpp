@@ -99,8 +99,26 @@ namespace ALEngine::Engine::GameplayInterface
 				sprite.color = color;
 			}
 		}//End loop through pattern body check
-		
-		std::cout << "\n";
+	}
+
+	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName) {
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+				//If inside room, set the cell color to yellow
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				if (!cell.m_isAccesible) {
+					continue;
+				}
+
+				Coordinator::Instance()->RemoveComponent<Sprite>(cellEntity);
+				
+				ECS::CreateSprite(cellEntity, sprite_fileName.c_str());
+			}
+		}//End loop through pattern body check
 	}
 
 	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities) {

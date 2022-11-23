@@ -55,7 +55,9 @@ namespace ALEngine::Engine::GameplayInterface
 	void InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities);
 
 	//Filter Grids from Hovering Over cell during pattern select
-	//void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern);
 	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color = { 1.f,1.f,1.f,1.f });
+
+	//Filter Grids from Hovering Over cell during pattern select
+	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName);
 }
 #endif

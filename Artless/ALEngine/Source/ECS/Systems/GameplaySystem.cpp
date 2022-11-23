@@ -98,6 +98,8 @@ namespace ALEngine::ECS
 
 		void DeselectPatternPlacement();
 
+		bool CheckIfPatternIsPlaceacble();
+
 		//Creating Object
 		void InitializeEndTurnButton();
 	};
@@ -167,14 +169,21 @@ namespace ALEngine::ECS
 	void Event_ClickCell(Entity invokerCell) {
 		AL_CORE_INFO("Select Cell");
 
-		if (gameplaySystem->currentGameplayStatus != GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+		if (gameplaySystem->currentUnitControlStatus != GameplaySystem::UNITS_CONTROL_STATUS::NOTHING) {
 			return;
 		}
 
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invokerCell);
 		//If not placing, move character
-		if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
+		if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING && 
+			gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
 			//When click on cell, Move the player unit to the selected cell
 			gameplaySystem->MovePlayerEntityToCell(invokerCell);
+		}
+		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
+			gameplaySystem->EndTurn();
 		}
 	}
 
@@ -321,8 +330,23 @@ namespace ALEngine::ECS
 			delete[] gameplaySystem->m_Room.roomCellsArray;
 			gameplaySystem->m_Room.roomCellsArray = nullptr;
 		}
+
 		gameplaySystem->m_Room.width = 0;
 		gameplaySystem->m_Room.height = 0;
+	}
+
+	bool GameplaySystem::CheckIfPatternIsPlaceacble() {
+		switch (currentPatternPlacementStatus) {
+		case PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES:
+
+			break;
+
+		case PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE:
+
+			break;
+		}
+	
+		return true;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {
