@@ -62,7 +62,7 @@ namespace ALEngine::ECS
 			Math::Vector2 position{}, velocity{};
 			Math::Vector4 colorStart{}, colorEnd{};
 			f32 sizeBegin{ 1.f }, sizeEnd{ 10.f }, rotation{ 0.f }, lifeTime{ 1.0f };
-			f32 lifeRemaining{ 0.0f };
+			f32 lifeRemaining{ 0.0f }, rotAmt{};
 			bool active{ false };
 		};
 		std::vector<Particle> particleContainer;

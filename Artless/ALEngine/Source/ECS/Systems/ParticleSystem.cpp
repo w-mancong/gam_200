@@ -22,12 +22,19 @@ namespace ALEngine::ECS
 
 	void ParticleSys::Update(void)
 	{
-		for (auto x : particleSystem->mEntities)
+		for (auto& x : particleSystem->mEntities)
 		{
-			ParticleProperties prop = Coordinator::Instance()->GetComponent<ParticleProperties>(x);
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(x);
-			prop.position = trans.position;
-			particleSystemObj.Emit(prop);
+			ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(x);
+ 
+			if (prop.timeCount > prop.spawnRate)
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(x);
+				prop.position = trans.position;
+				particleSystemObj.Emit(prop);
+				prop.timeCount = 0.f;
+			}
+			else
+				prop.timeCount += Time::m_DeltaTime;
 		}
 	}
 
@@ -100,7 +107,7 @@ namespace ALEngine::ECS
 			// update particle life, position, rotation
 			particle.lifeRemaining -= deltaTime;
 			particle.position += particle.velocity * (float)deltaTime;
-			particle.rotation += 0.05f * deltaTime; // rotate over time
+			particle.rotation += particle.rotAmt * deltaTime; // rotate over time
 		}
 	}
 
@@ -211,6 +218,7 @@ namespace ALEngine::ECS
 		particle.lifeRemaining = particleProperty.lifeTime;
 		particle.sizeBegin = particleProperty.sizeStart + particleProperty.sizeVariation * distribution(generator);
 		particle.sizeEnd = particleProperty.sizeEnd;
+		particle.rotAmt = particleProperty.rotation;
 
 		// cycle to next particle in the particle container
 		particleIndex = --particleIndex % particleContainer.size();

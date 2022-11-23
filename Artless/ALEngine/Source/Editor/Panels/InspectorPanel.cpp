@@ -639,13 +639,25 @@ namespace ALEngine::Editor
 		{
 			f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, 1.f };
 			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, 1.f };
+			f32 vel[2] = { particleProperty.velocity.x, particleProperty.velocity.y };
+			f32 velVariation[2] = { particleProperty.velocityVariation.x, particleProperty.velocityVariation.y };
 
-			ImGui::DragFloat("Start Size", &particleProperty.sizeStart, 0.1f, 0.0f, 1000.0f);
+			ImGui::DragFloat("Start Size", &particleProperty.sizeStart, 0.1f, 0.0f, 1500.0f);
 			ImGui::DragFloat("End Size", &particleProperty.sizeEnd, 0.1f, 0.0f, 1000.0f);
+			ImGui::DragFloat("Size Variation", &particleProperty.sizeVariation, 0.1f, 0.0f, 1000.0f);
 			ImGui::ColorEdit4("Start Color", startClr);
 			ImGui::ColorEdit4("End Color", endClr);
 			ImGui::DragFloat("Life Time", &particleProperty.lifeTime, 0.1f, 0.0f, 1000.0f);
-			//ImGui::DragInt("Spawn Rate", &particleSpawnRate, 1, 0, 10);
+			ImGui::DragFloat("Spawn Rate", &particleProperty.spawnRate, 0.001f, 0.0f, 10.0f);
+			ImGui::DragFloat2("Velocity", vel, 0.02f);
+			ImGui::DragFloat2("Velocity Variation", velVariation, 0.02f);
+			ImGui::DragFloat("Rotation", &particleProperty.rotation, 0.1f, 0.0f, 1000.0f);
+
+			particleProperty.velocity.x = vel[0];
+			particleProperty.velocity.y = vel[1];
+
+			particleProperty.velocityVariation.x = velVariation[0];
+			particleProperty.velocityVariation.y = velVariation[1];
 
 			particleProperty.colorStart.x = startClr[0];
 			particleProperty.colorStart.y = startClr[1];

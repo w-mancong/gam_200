@@ -512,6 +512,14 @@ namespace ALEngine::Engine::Scene
 		writer.Key("lifeTime");
 		writer.Double(static_cast<f64>(prop.lifeTime));
 
+		// spawnRate
+		writer.Key("spawnRate");
+		writer.Double(static_cast<f64>(prop.spawnRate));
+
+		// rotation
+		writer.Key("rotation");
+		writer.Double(static_cast<f64>(prop.rotation));
+
 		writer.EndObject();
 		writer.EndArray();
 	}
@@ -555,6 +563,12 @@ namespace ALEngine::Engine::Scene
 
 		// Getting lifetime
 		prop.lifeTime = v[0]["lifeTime"].GetFloat();
+
+		// Getting spawnRate
+		prop.spawnRate = v[0]["spawnRate"].GetFloat();
+
+		// Getting rotation
+		prop.rotation = v[0]["rotation"].GetFloat();
 
 		Coordinator::Instance()->AddComponent(en, prop);
 	}

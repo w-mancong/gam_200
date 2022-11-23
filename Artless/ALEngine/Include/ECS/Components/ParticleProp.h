@@ -12,6 +12,7 @@ namespace ALEngine::ECS::Component
 		Math::Vector2 position{ 0.f, 0.f }, velocity{ 10.f, 100.f }, velocityVariation{ 10.f, 10.f };
 		Math::Vector4 colorStart{ 1.f, 1.f, 1.f, 1.f }, colorEnd{ 1.f, 1.f, 1.f, 1.f };
 		f32 sizeStart{ 100.f }, sizeEnd{ 0.f }, sizeVariation{ 0.f }, lifeTime{ 1.f };
+		f32 timeCount{}, spawnRate{ 1.f }, rotation{};
 	};
 }
 
