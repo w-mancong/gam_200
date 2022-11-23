@@ -98,6 +98,9 @@ namespace ALEngine::ECS
 
 		void DeselectPatternPlacement();
 
+		void DisablePatternGUI();
+		void DisableAbilitiesGUI();
+
 		//Creating Object
 		void InitializeEndTurnButton();
 	};
@@ -357,7 +360,8 @@ namespace ALEngine::ECS
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ACTION;
 
 				AL_CORE_INFO("Loading PHASE ACTION");
-				
+
+				DisablePatternGUI();
 			break;
 
 			case GAMEPLAY_STATUS::PHASE_ACTION:
@@ -369,8 +373,29 @@ namespace ALEngine::ECS
 			case GAMEPLAY_STATUS::PHASE_ENEMY:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
 
+				DisablePatternGUI();
 				AL_CORE_INFO("Loading PHASE SETUP");
 				break;
+		}
+	}
+
+	void GameplaySystem::DisablePatternGUI() {
+		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
+
+			eventTrigger.isEnabled = false;
+			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+	}
+	
+	void GameplaySystem::DisableAbilitiesGUI() {
+		for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+
+			eventTrigger.isEnabled = false;
+			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
 	}
 
