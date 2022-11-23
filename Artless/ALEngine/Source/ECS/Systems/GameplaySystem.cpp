@@ -98,8 +98,8 @@ namespace ALEngine::ECS
 
 		void DeselectPatternPlacement();
 
-		void DisablePatternGUI();
-		void DisableAbilitiesGUI();
+		void TogglePatternGUI(b8 istrue);
+		void ToggleAbilitiesGUI(b8 istrue);
 
 		//Creating Object
 		void InitializeEndTurnButton();
@@ -310,6 +310,9 @@ namespace ALEngine::ECS
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 2, 1, false);
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 3, 1, false);
 		ToggleCellToInaccessible(gameplaySystem->m_Room, 3, 2, false);
+
+		//Set abilities UI off
+		gameplaySystem->ToggleAbilitiesGUI(false);
 	}
 
 	void UpdateGameplaySystem(void)
@@ -352,8 +355,8 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::EndTurn() {
-		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
-		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
+		currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
+		currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 		
 		switch (currentGameplayStatus) {
 			case GAMEPLAY_STATUS::PHASE_SETUP:
@@ -361,41 +364,51 @@ namespace ALEngine::ECS
 
 				AL_CORE_INFO("Loading PHASE ACTION");
 
-				DisablePatternGUI();
+				ToggleAbilitiesGUI(true);
+				TogglePatternGUI(false);
 			break;
 
 			case GAMEPLAY_STATUS::PHASE_ACTION:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ENEMY;
 
+				ToggleAbilitiesGUI(false);
+				TogglePatternGUI(false);
 				AL_CORE_INFO("Loading PHASE ENEMY");
 				break;
 			
 			case GAMEPLAY_STATUS::PHASE_ENEMY:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
 
-				DisablePatternGUI();
+				TogglePatternGUI(true);
 				AL_CORE_INFO("Loading PHASE SETUP");
 				break;
 		}
 	}
 
-	void GameplaySystem::DisablePatternGUI() {
+	void GameplaySystem::TogglePatternGUI(b8 istrue) {
 		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
 
-			eventTrigger.isEnabled = false;
+			eventTrigger.isEnabled = istrue;
+
+			if(istrue)
+			sprite.color = { 1.f, 1.f, 1.f, 1.f };
+			else
 			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
 	}
 	
-	void GameplaySystem::DisableAbilitiesGUI() {
+	void GameplaySystem::ToggleAbilitiesGUI(b8 istrue) {
 		for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
-			eventTrigger.isEnabled = false;
-			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+			if (istrue)
+				sprite.color = { 1.f, 1.f, 1.f, 1.f };
+			else
+				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+
 		}
 	}
 

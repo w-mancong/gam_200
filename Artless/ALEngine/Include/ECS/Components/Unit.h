@@ -27,8 +27,13 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Unit
 	{
+		std::string unit_Name;
 		s32 health, maxHealth;
+		s32 defense;
+		s32 minDamage, maxDamage;
 		s32 movementPoints, maxMovementPoints;
+		s32 minRange, maxRange;
+
 		UNIT_TYPE unitType;
 		u32 coordinate[2];
 
