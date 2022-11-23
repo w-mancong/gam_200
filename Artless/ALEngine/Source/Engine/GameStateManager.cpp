@@ -4,7 +4,7 @@
 
 namespace ALEngine::GameStateManager
 {
-    GameStateManager::GameStateManager() 
+    GameStateManager::GameStateManager()
     {
         m_TurnState = TURNSTATE::SETUP;
         m_EndStatus = ENDTURNSTATUS::CANT_END;
@@ -12,7 +12,7 @@ namespace ALEngine::GameStateManager
         m_Index = 0;
     }
 
-    b8 GameStateManager::CheckPrepareTurn()
+    b8 GameStateManager::CheckSetupTurn()
     {
         if (this->m_TurnState == TURNSTATE::SETUP) {
             return true;
