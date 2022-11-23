@@ -19,9 +19,9 @@ namespace ALEngine::Engine::GameplayInterface
 
 	void ToggleCellToInaccessible(Room& currentRoom, u32 x, u32 y, b8 istrue) {
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
-		cell.m_isAccesible = istrue;
+		cell.m_isBlocked = istrue;
 
-		if(!cell.m_isAccesible)
+		if(!cell.m_isBlocked)
 		Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 0.f,0.f,0.f,0.f };
 		else
 		Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 1.f,1.f,1.f,1.f };
@@ -89,7 +89,7 @@ namespace ALEngine::Engine::GameplayInterface
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				if (!cell.m_isAccesible) {
+				if (!cell.m_isBlocked) {
 					continue;
 				}
 
@@ -110,7 +110,7 @@ namespace ALEngine::Engine::GameplayInterface
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				if (!cell.m_isAccesible) {
+				if (!cell.m_isBlocked) {
 					continue;
 				}
 
@@ -126,7 +126,7 @@ namespace ALEngine::Engine::GameplayInterface
 		ECS::Entity cellEntity = getEntityCell(room, coordinate.x, coordinate.y);
 
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-		if (!cell.m_isAccesible) {
+		if (!cell.m_isBlocked) {
 			return;
 		}
 
@@ -221,7 +221,7 @@ namespace ALEngine::Engine::GameplayInterface
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				if (!cell.m_isAccesible) {
+				if (!cell.m_isBlocked) {
 					continue;
 				}
 

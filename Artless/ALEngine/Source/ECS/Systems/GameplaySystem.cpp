@@ -586,7 +586,7 @@ namespace ALEngine::ECS
 			Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[i]);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->m_Room.roomCellsArray[i]);
 
-			if (!cell.m_isAccesible) {
+			if (!cell.m_isBlocked) {
 				color = { 1.f, 0.f, 0.f, 1.f };
 			}
 			else {

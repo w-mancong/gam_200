@@ -18,7 +18,7 @@ namespace ALEngine::ECS::Component
 	struct Cell {
 
 		f32 m_HCost{ 0 }, m_GCost{ 10000 }, m_FCost{ 0 };
-		b8 m_isAccesible{ true }, m_canWalk{ false };
+		b8 m_isBlocked{ true }, m_canWalk{ false };
 		b8 hasUnit { false};
 
 		//the came from cell or parent cell
