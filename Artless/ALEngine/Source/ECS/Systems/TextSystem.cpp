@@ -133,7 +133,7 @@ namespace ALEngine::ECS
 		textCollection.push_back(text);
 	}
 
-	void Font::RenderAllText()
+	void Font::RenderAllText(Engine::Camera const& camera)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -154,6 +154,10 @@ namespace ALEngine::ECS
 
 			font.fontShader.use();
 			font.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
+
+			font.fontShader.Set("projection", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width), 0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
+			//font.fontShader.Set("projection", camera.ViewMatrix());
+
 			glActiveTexture(GL_TEXTURE0);
 
 			glBindVertexArray(font.fontsVAO);

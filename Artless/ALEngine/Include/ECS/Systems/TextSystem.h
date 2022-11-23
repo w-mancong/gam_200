@@ -51,7 +51,7 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		static Font FontInit(std::string fontAddress, std::string fontName);
 		static void RenderText(Text& text);
-		static void RenderAllText();
+		static void RenderAllText(Engine::Camera const& camera);
 	};
 }
 #endif

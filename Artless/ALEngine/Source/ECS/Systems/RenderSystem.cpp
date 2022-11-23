@@ -269,7 +269,7 @@ namespace ALEngine::ECS
 		ParticleSystem::GetParticleSystem().ParticleRender(camera);
 
 		// Render all text
-		Font::RenderAllText();
+		Font::RenderAllText(camera);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
 		glDisable(GL_DEPTH_TEST);
@@ -293,7 +293,7 @@ namespace ALEngine::ECS
 		UpdateTextSystem();
 
 		// Render all text
-		Font::RenderAllText();
+		Font::RenderAllText(camera);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
