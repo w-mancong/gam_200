@@ -98,8 +98,6 @@ namespace ALEngine::ECS
 
 		void DeselectPatternPlacement();
 
-		bool CheckIfPatternIsPlaceacble();
-
 		//Creating Object
 		void InitializeEndTurnButton();
 	};
@@ -155,7 +153,12 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
+			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+			
+			if(canPlace)
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+			else
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
 		}
 	}
 
@@ -262,6 +265,12 @@ namespace ALEngine::ECS
 		playerUnit.coordinate[0] = 0;
 		playerUnit.coordinate[1] = 0;
 
+		playerUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, 0, 0);
+
+		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity;
+
+		GameplayInterface::PlaceWalkableOnGrid(gameplaySystem->m_Room, { 0,0 }, "Assets/Images/Walkable.png");
+
 		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
 		playerTransform.localPosition = SpawnCellTransform.position;
@@ -333,20 +342,6 @@ namespace ALEngine::ECS
 
 		gameplaySystem->m_Room.width = 0;
 		gameplaySystem->m_Room.height = 0;
-	}
-
-	bool GameplaySystem::CheckIfPatternIsPlaceacble() {
-		switch (currentPatternPlacementStatus) {
-		case PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES:
-
-			break;
-
-		case PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE:
-
-			break;
-		}
-	
-		return true;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {
@@ -541,6 +536,16 @@ namespace ALEngine::ECS
 
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
+
+				Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity);
+
+				OriginCell.hasUnit = false;
+				OriginCell.unitEntity = 0;
+
+				//Update player cell to current
+				playerUnit.m_CurrentCell_Entity = gameplaySystem->getCurrentEntityCell();
+				cell.unitEntity = gameplaySystem->playerEntity;
+				cell.hasUnit = true;
 
 				if (playerUnit.unitType == UNIT_TYPE::PLAYER) {
 					EndTurn();

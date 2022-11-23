@@ -114,11 +114,26 @@ namespace ALEngine::Engine::GameplayInterface
 					continue;
 				}
 
+				cell.m_canWalk = true;
 				Coordinator::Instance()->RemoveComponent<Sprite>(cellEntity);
 				
 				ECS::CreateSprite(cellEntity, sprite_fileName.c_str());
 			}
 		}//End loop through pattern body check
+	}
+
+	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName) {
+		ECS::Entity cellEntity = getEntityCell(room, coordinate.x, coordinate.y);
+
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		if (!cell.m_isAccesible) {
+			return;
+		}
+
+		cell.m_canWalk = true;
+		Coordinator::Instance()->RemoveComponent<Sprite>(cellEntity);
+
+		ECS::CreateSprite(cellEntity, sprite_fileName.c_str());
 	}
 
 	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities) {
@@ -195,5 +210,28 @@ namespace ALEngine::Engine::GameplayInterface
 		transform.position = { startPos.x + x_offset * 5.f, 100.f, 0.f };
 		//Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], transform);
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], eventTrigger);
+	}
+
+	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern) {
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+				//If inside room, set the cell color to yellow
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				if (!cell.m_isAccesible) {
+					continue;
+				}
+
+				if (cell.m_canWalk) {
+					return false;
+				}
+
+			}
+		}//End loop through pattern body check
+
+		return true;
 	}
 }

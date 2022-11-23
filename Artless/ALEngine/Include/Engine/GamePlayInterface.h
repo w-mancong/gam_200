@@ -59,5 +59,9 @@ namespace ALEngine::Engine::GameplayInterface
 
 	//Filter Grids from Hovering Over cell during pattern select
 	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName);
+
+	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName);
+
+	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
 }
 #endif
