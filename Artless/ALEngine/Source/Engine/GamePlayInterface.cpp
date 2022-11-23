@@ -115,9 +115,9 @@ namespace ALEngine::Engine::GameplayInterface
 				}
 
 				cell.m_canWalk = true;
-				Coordinator::Instance()->RemoveComponent<Sprite>(cellEntity);
-				
-				ECS::CreateSprite(cellEntity, sprite_fileName.c_str());
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 			}
 		}//End loop through pattern body check
 	}
@@ -131,9 +131,9 @@ namespace ALEngine::Engine::GameplayInterface
 		}
 
 		cell.m_canWalk = true;
-		Coordinator::Instance()->RemoveComponent<Sprite>(cellEntity);
 
-		ECS::CreateSprite(cellEntity, sprite_fileName.c_str());
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+		sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 	}
 
 	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities) {
