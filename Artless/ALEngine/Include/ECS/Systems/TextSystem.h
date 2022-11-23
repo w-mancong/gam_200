@@ -36,8 +36,7 @@ namespace ALEngine::ECS
 		u32 fontsVAO{}, fontsVBO{};
 		ALEngine::Graphics::Shader fontShader;
 		std::string fontName;
-		Text::FontType fontType;
-		static std::map<std::string, std::map<Text::FontType, Font>> fontCollection;
+		//static std::map<std::string, std::map<Text::FontType, Font>> fontCollection;
 		static std::vector<Text> textCollection;
 
 		/*!*********************************************************************************
@@ -50,7 +49,7 @@ namespace ALEngine::ECS
 			\param [in] fontType:
 				Type of font.
 		***********************************************************************************/
-		static Font FontInit(std::string fontAddress, std::string fontName, Text::FontType fontType);
+		static Font FontInit(std::string fontAddress, std::string fontName);
 		static void RenderText(Text& text);
 		static void RenderAllText();
 	};

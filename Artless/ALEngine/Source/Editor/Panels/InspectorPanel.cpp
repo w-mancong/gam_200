@@ -516,15 +516,61 @@ namespace ALEngine::Editor
 		{
 			// String input field
 			c8* str = const_cast<c8*>(prop.textString.c_str());	
-
 			ImGui::InputText("String##InspectorTextComponent", str, 50);
 			prop.textString = str;
+
+			// font pop down menu
+			ImVec2 winsize = ImGui::GetWindowSize();
+
+			if(prop.currentFont.empty())
+				ImGui::Text("No Font Selected");
+			else
+				ImGui::Text(prop.currentFont.c_str());
+
+			if (ImGui::Button("Select Font"))
+			{
+				ImGui::OpenPopup("fontfamily_popup");
+			}
+			ImGui::SetNextWindowSize(ImVec2(winsize.x * 0.75f, 100.f));
+			if (ImGui::BeginPopup("fontfamily_popup"))
+			{
+				ImVec2 textSize = ImGui::CalcTextSize("Available Fonts");
+				ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (textSize.x * 0.5f));
+				ImGui::Separator();
+				for (auto& font : Engine::AssetManager::Instance()->GetFontList())
+				{
+					if (ImGui::Selectable(font.second.fontName.c_str()) &&
+						m_SelectedEntity != ECS::MAX_ENTITIES)
+					{
+						prop.currentFont = font.second.fontName;
+					}
+				}
+				ImGui::EndPopup();
+			}
+
+			//const c8* currentFont{ nullptr };
+			//if (ImGui::BeginCombo("Font##Inspector", currentFont))
+			//{
+			//	for (auto& i : Engine::AssetManager::Instance()->GetFontList())
+			//	{
+			//		bool isSelected = (currentFont == i.second.fontName.c_str());
+			//		if (ImGui::Selectable(i.second.fontName.c_str()) &&
+			//			m_SelectedEntity != ECS::MAX_ENTITIES, &isSelected)
+			//		{
+			//			prop.currentFont = i.second.fontName;
+			//			currentFont = i.second.fontName.c_str();
+			//		}
+
+			//		if (isSelected)
+			//			ImGui::SetItemDefaultFocus();
+			//	}
+			//	ImGui::EndCombo();
+			//}
 
 			f32 color[4] = { prop.colour.x, prop.colour.y, prop.colour.z , 1.f };
 			f32 pos[2] = { prop.position.x, prop.position.y };
 
 			ImGui::DragFloat("Size", &prop.scale, 0.1f, 0.0f, 50.0f);
-			//ImGui::ColorEdit4("Color", color);
 			ImGui::DragFloat2("Pos", pos, 0.5f);
 
 			// Color wheel

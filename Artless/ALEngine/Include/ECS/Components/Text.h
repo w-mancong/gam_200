@@ -18,17 +18,7 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Text
 	{
-		enum class FontType
-		{
-			Regular,
-			Bold,
-			Italic,
-			ItalicBold,
-			FontTypeTotal
-		};
-
 		std::string currentFont{}; // current selected font
-		FontType currentType{ FontType::FontTypeTotal }; // current selected font type
 		Math::Vector2 position{}; // position of text
 		Math::Vector3 colour{ 1.f, 1.f, 1.f }; // color of text
 		f32 scale{ 1.f }; // scale of text

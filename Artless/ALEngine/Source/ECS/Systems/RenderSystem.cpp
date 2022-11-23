@@ -189,8 +189,6 @@ namespace ALEngine::ECS
 		// Particle system init here
 		ParticleSystem::GetParticleSystem().ParticleSysInit();
 
-		//Font::FontInit("Assets/fonts/Arial-italic.ttf", "ARIAL", Text::FontType::Italic);
-
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
 

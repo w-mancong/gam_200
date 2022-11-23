@@ -23,10 +23,7 @@ namespace ALEngine::ECS
 		for (auto x : textSystem->mEntities)
 		{
 			Text text = Coordinator::Instance()->GetComponent<Text>(x);
-			text.currentFont = "ARIAL";
-			text.currentType = Text::FontType::Italic;
-
-			if (text.currentFont.empty() || text.currentType == Text::FontType::FontTypeTotal)
+			if (text.currentFont.empty() || text.textString.empty())
 				continue;
 
 			Font::RenderText(text);
@@ -39,14 +36,12 @@ namespace ALEngine::ECS
 	}
 
 	// declare static class variable
-	std::map<std::string, std::map<Text::FontType, Font>> Font::fontCollection;
 	std::vector<Text> Font::textCollection;
 
-	Font Font::FontInit(std::string fontAddress, std::string fontName, Text::FontType fontType)
+	Font Font::FontInit(std::string fontAddress, std::string fontName)
 	{
 		Font newFont; 
 		newFont.fontName = fontName;
-		newFont.fontType = fontType;
 		// compile and setup the shader
 		newFont.fontShader = ALEngine::Graphics::Shader{ "Assets/Dev/Shaders/font.vert", "Assets/Dev/Shaders/font.frag" };
 		Math::Matrix4x4 projection = Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width), 0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height));
@@ -130,21 +125,6 @@ namespace ALEngine::ECS
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		std::map<std::string, std::map<Text::FontType, Font>>::iterator it;
-		it = Font::fontCollection.find(fontName);
-		if (it != Font::fontCollection.end()) // if font family exists
-		{
-			// insert into existing font family
-			Font::fontCollection.find(fontName)->second.insert(std::pair<Text::FontType, Font>(fontType, newFont));
-		}
-		else
-		{
-			// create new font family
-			std::map<Text::FontType, Font> map;
-			map.insert(std::pair<Text::FontType, Font>(fontType, newFont));
-			Font::fontCollection.insert(std::pair<std::string, std::map<Text::FontType, Font>>(fontName, map));
-		}
-
 		return newFont;
 	}
 
@@ -159,38 +139,30 @@ namespace ALEngine::ECS
 
 		for (Text& text : textCollection)
 		{
-			// Perform check if font family name is found
-			std::map<std::string, std::map<Text::FontType, Font>>::iterator it;
-			it = Font::fontCollection.find(text.currentFont);
-			if (it == Font::fontCollection.end())
+			if (text.textString.empty() || text.currentFont.empty())
+				continue;
+			
+			Font font{};
+			for (auto& x : Engine::AssetManager::Instance()->GetFontList())
 			{
-				std::cerr << "FONT ERROR: Font Family Name " << text.currentFont << " not found\n";
-				return;
+				if (x.second.fontName == text.currentFont)
+				{
+					font = x.second;
+					break;
+				}
 			}
 
-			// Perform check if font type is found
-			std::map<Text::FontType, Font>::iterator it2;
-			it2 = Font::fontCollection.find(text.currentFont)->second.find(text.currentType);
-			if (it2 == Font::fontCollection.find(text.currentFont)->second.end())
-			{
-				std::cerr << "FONT ERROR: Font Type not found\n";
-				return;
-			}
-
-			Font::fontCollection.find(text.currentFont)->second
-				.find(text.currentType)->second.fontShader.use();
-			Font::fontCollection.find(text.currentFont)->second
-				.find(text.currentType)->second.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
+			font.fontShader.use();
+			font.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
 			glActiveTexture(GL_TEXTURE0);
 
-			glBindVertexArray(Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVAO);
+			glBindVertexArray(font.fontsVAO);
 
 			// iterate through all characters
 			std::string::const_iterator c;
 			for (c = text.textString.begin(); c != text.textString.end(); c++)
 			{
-				Character ch = Font::fontCollection.find(text.currentFont)->second
-					.find(text.currentType)->second.characterCollection[*c];
+				Character ch = font.characterCollection[*c];
 
 				// position of each glyph
 				f32 xPos = text.position.x + ch.bearing.x * text.scale;
@@ -214,7 +186,7 @@ namespace ALEngine::ECS
 				glBindTexture(GL_TEXTURE_2D, ch.textureID);
 
 				// update VBO
-				glBindBuffer(GL_ARRAY_BUFFER, Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVBO);
+				glBindBuffer(GL_ARRAY_BUFFER, font.fontsVBO);
 				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
 				glBindBuffer(GL_ARRAY_BUFFER, 0);

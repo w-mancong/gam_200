@@ -256,38 +256,13 @@ namespace
 		std::string fontName, fontType;
 		std::string str{ filePath };
 		str = str.substr(str.find_last_of("\\") + 1);
-		fontName = str.substr(0, str.find_first_of("-"));
-		fontType = str.substr(str.find_first_of("-") + 1, str.find_first_of(".") - 1 - str.find_first_of("-"));
+		fontName = str.substr(0, str.find_first_of("."));
 
 		// convert to all upper case
-		for (c8& chr : fontName)
-			chr = toupper(chr);
-		for (c8& chr : fontType)
-			chr = toupper(chr);
-
-		Text::FontType type;
-		if (fontType == "REGULAR")
-		{
-			type = Text::FontType::Regular;
-		}
-		else if (fontType == "BOLD")
-		{
-			type = Text::FontType::Bold;
-		}
-		else if (fontType == "ITALIC")
-		{
-			type = Text::FontType::Italic;
-		}
-		else if (fontType == "ITALICBOLD")
-		{
-			type = Text::FontType::ItalicBold;
-		}
-		else
-		{
-			std::cerr << "AssetManager ERROR: Font not supported: " << filePath << "\n";
-		}
+		//for (c8& chr : fontName)
+		//	chr = toupper(chr);
 		
-		return ALEngine::ECS::Font::FontInit(filePath, fontName, type);
+		return ALEngine::ECS::Font::FontInit(filePath, fontName);
 	}
 
 	Texture LoadWhiteImage(void)
@@ -633,6 +608,11 @@ namespace ALEngine::Engine
 	Animation AssetManager::GetAnimation(Guid id)
 	{
 		return animationList[id];
+	}
+
+	std::unordered_map<Guid, ECS::Font>& AssetManager::GetFontList()
+	{
+		return fontList;
 	}
 
 	Audio AssetManager::GetAudio(Guid id)
