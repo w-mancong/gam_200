@@ -1,10 +1,10 @@
 #include "pch.h"
 
-#include <Engine/GameStateManager.h>
+#include <Engine/TurnStateManager.h>
 
-namespace ALEngine::GameStateManager
+namespace ALEngine::TurnStateManager
 {
-    GameStateManager::GameStateManager()
+    TurnStateManager::TurnStateManager()
     {
         m_TurnState = TURNSTATE::SETUP;
         m_EndStatus = ENDTURNSTATUS::CANT_END;
@@ -12,7 +12,7 @@ namespace ALEngine::GameStateManager
         m_Index = 0;
     }
 
-    b8 GameStateManager::CheckSetupTurn()
+    b8 TurnStateManager::CheckSetupTurn()
     {
         if (this->m_TurnState == TURNSTATE::SETUP) {
             return true;
@@ -23,7 +23,7 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    b8 GameStateManager::CheckEnemyTurn()
+    b8 TurnStateManager::CheckEnemyTurn()
     {
         if (this->m_TurnState == TURNSTATE::ENEMY) {
             return true;
@@ -34,7 +34,7 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    b8 GameStateManager::CheckPlayerTurn()
+    b8 TurnStateManager::CheckPlayerTurn()
     {
         if (this->m_TurnState == TURNSTATE::PLAYER) {
             return true;
@@ -45,7 +45,7 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    b8 GameStateManager::CheckEndTurnStatus()
+    b8 TurnStateManager::CheckEndTurnStatus()
     {
         if (this->m_EndStatus == ENDTURNSTATUS::END_DEFAULT) {
             return true;
@@ -56,12 +56,12 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    TURNSTATE GameStateManager::GetTurnState() 
+    TURNSTATE TurnStateManager::GetTurnState() 
     {
         return this->m_TurnState;
     }
 
-    TURNSTATE GameStateManager::GetNextTurnState() 
+    TURNSTATE TurnStateManager::GetNextTurnState() 
     {
         s32 turnStateInt = static_cast<s32>(this->m_TurnState);
         turnStateInt++;
@@ -75,7 +75,7 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    s32 GameStateManager::GetNextTurnStateInt() 
+    s32 TurnStateManager::GetNextTurnStateInt() 
     {
         s32 turnStateInt = static_cast<s32>(this->m_TurnState);
         turnStateInt++;
@@ -89,12 +89,12 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    s32 GameStateManager::GetTurnStateInt() 
+    s32 TurnStateManager::GetTurnStateInt() 
     {
         return static_cast<s32>(this->m_TurnState);
     }
 
-    void GameStateManager::SetTurnState(TURNSTATE state)
+    void TurnStateManager::SetTurnState(TURNSTATE state)
     {
         switch (state)
         {
@@ -117,7 +117,7 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    void GameStateManager::SetTurnState(s32 enumTurnState)
+    void TurnStateManager::SetTurnState(s32 enumTurnState)
     {
         switch (enumTurnState)
         {
@@ -140,7 +140,7 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    void GameStateManager::SetNextTurnState()
+    void TurnStateManager::SetNextTurnState()
     {
         switch (this->m_TurnState)
         {
@@ -163,27 +163,27 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    ENDTURNSTATUS GameStateManager::GetEndTurnStatus() 
+    ENDTURNSTATUS TurnStateManager::GetEndTurnStatus() 
     {
         return this->m_EndStatus;
     }
 
-    void GameStateManager::SetEndTurnStatus(ENDTURNSTATUS status)
+    void TurnStateManager::SetEndTurnStatus(ENDTURNSTATUS status)
     {
         this->m_EndStatus = status;
     }
 
-    void GameStateManager::SetEndTurnStatus(s32 enumEndTurnStatus)
+    void TurnStateManager::SetEndTurnStatus(s32 enumEndTurnStatus)
     {
         this->m_EndStatus = static_cast<ENDTURNSTATUS>(enumEndTurnStatus);
     }
 
-    std::vector<std::string> GameStateManager::GetObjectVector() 
+    std::vector<std::string> TurnStateManager::GetObjectVector() 
     {
         return this->m_ObjectVector;
     }
 
-    void GameStateManager::AddObject(std::string newString) 
+    void TurnStateManager::AddObject(std::string newString) 
     {
         std::transform(newString.begin(), newString.end(), newString.begin(), ::tolower);
  
@@ -197,7 +197,7 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    b8 GameStateManager::CheckObject(std::string objName) 
+    b8 TurnStateManager::CheckObject(std::string objName) 
     {
         std::transform(objName.begin(), objName.end(), objName.begin(), ::tolower);
 
@@ -212,7 +212,7 @@ namespace ALEngine::GameStateManager
         return true;
     }
 
-    s32 GameStateManager::CountObject(std::string objName) 
+    s32 TurnStateManager::CountObject(std::string objName) 
     {
         std::transform(objName.begin(), objName.end(), objName.begin(), ::tolower);
 
@@ -221,7 +221,7 @@ namespace ALEngine::GameStateManager
         return objCount;
     }
 
-    void GameStateManager::RemoveObject(std::string newString) 
+    void TurnStateManager::RemoveObject(std::string newString) 
     {
 
         std::transform(newString.begin(), newString.end(), newString.begin(), ::tolower);
@@ -263,7 +263,7 @@ namespace ALEngine::GameStateManager
         }
     }
 
-    void GameStateManager::EndTurn()
+    void TurnStateManager::EndTurn()
     {
         //if (this->m_EndStatus == ENDTURNSTATUS::CANT_END)
         //{
@@ -325,17 +325,17 @@ namespace ALEngine::GameStateManager
         //SetEndTurnStatus(ENDTURNSTATUS::CANT_END);
     }
 
-    s32 GameStateManager::GetIndex() 
+    s32 TurnStateManager::GetIndex() 
     {
         return this->m_Index;
     }
 
-    void GameStateManager::SetIndex(s32 index) 
+    void TurnStateManager::SetIndex(s32 index) 
     {
         this->m_Index = index;
     }
 
-    void GameStateManager::CheckIndex() 
+    void TurnStateManager::CheckIndex() 
     {
         if (this->m_Index >= this->m_ObjectVector.size()) {
             this->m_Index = 0;

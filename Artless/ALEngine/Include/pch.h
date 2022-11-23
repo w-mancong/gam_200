@@ -82,6 +82,6 @@
 
 // Serializations
 #include <Serialization/Serializer.h>
-#include <Engine/GameStateManager.h>
+#include <Engine/TurnStateManager.h>
 
 #endif

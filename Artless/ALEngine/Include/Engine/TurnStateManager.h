@@ -1,16 +1,16 @@
 /*!
-file:	GameStateManger.h
+file:	TurnStateManager.h
 author:	Darrion Aw Wei Ting
 email:	weitingdarrion.aw@digipen.edu
-brief:	This file contains a custom serializer for the project with the help of rapidJSON
+brief:	This file contains a custom the manager that manages all the turns states for the game
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
-#ifndef	GAMESTATEMANAGER_H
-#define GAMESTATEMANAGER_H
+#ifndef	TURNSTATEMANAGER_H
+#define TURNSTATEMANAGER_H
 
-namespace ALEngine::GameStateManager
+namespace ALEngine::TurnStateManager
 {
 
 	//	/*!*********************************************************************************
@@ -47,7 +47,7 @@ namespace ALEngine::GameStateManager
 		NIL
 	};
 
-	class GameStateManager
+	class TurnStateManager
 	{
 	public:
 
@@ -56,7 +56,7 @@ namespace ALEngine::GameStateManager
 		//		This function is the default constructor
 		//	***********************************************************************************/
 
-		GameStateManager();
+		TurnStateManager();
 
 		//	/*!*********************************************************************************
 		//		\brief
