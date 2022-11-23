@@ -31,7 +31,7 @@ namespace ALEngine::Editor
 			return;
 
 		// Set constraints
-		if(m_HasMapLoaded)
+		if (m_HasMapLoaded)
 			ImGui::SetNextWindowSizeConstraints(ImVec2(ALEditor::Instance()->GetSceneWidth(), ALEditor::Instance()->GetSceneHeight()), ImGui::GetMainViewport()->WorkSize);
 		else
 			ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
@@ -105,7 +105,7 @@ namespace ALEngine::Editor
 				{
 					SaveMap(m_FilePath.c_str());
 				}
-				
+
 				// Save As
 				if (ImGui::MenuItem("Save As...##TileEditorMenuBar"))
 				{
@@ -122,7 +122,7 @@ namespace ALEngine::Editor
 				}
 
 				// Open File
-				if(ImGui::MenuItem("Open File##TileEditorMenuBar"))
+				if (ImGui::MenuItem("Open File##TileEditorMenuBar"))
 				{
 
 				}
@@ -211,9 +211,9 @@ namespace ALEngine::Editor
 
 	void TileEditorPanel::SelectMap(void)
 	{
-		if(m_CurrentLoadStage == LoadStage::CreateOrLoadSelection)
+		if (m_CurrentLoadStage == LoadStage::CreateOrLoadSelection)
 		{
-			ImGuiStyle &style = ImGui::GetStyle();
+			ImGuiStyle& style = ImGui::GetStyle();
 
 			f32 btn_width = ImGui::GetContentRegionAvail().x * 0.75f;
 			f32 btn_size = btn_width + style.FramePadding.x * 2.f;
@@ -223,7 +223,7 @@ namespace ALEngine::Editor
 			if (ImGui::Button("Create New Map##TileEditor", ImVec2(btn_width, 0.f)))
 			{
 				m_CurrentLoadStage = LoadStage::CreateMap;
-				
+
 				// Reset to Zero
 				m_MapHeight = 0;
 				m_MapWidth = 0;
@@ -289,7 +289,7 @@ namespace ALEngine::Editor
 
 			writer.Key("Map");
 			writer.StartArray();
-			{				
+			{
 				u32 rowCount{ 0 };
 				for (const auto& i : m_TileMap)
 				{
@@ -345,7 +345,7 @@ namespace ALEngine::Editor
 			m_MapWidth = val["Width"].GetInt();
 			AL_CORE_INFO("Width Assigned to {}", m_MapWidth);
 		}
-		
+
 		// Get Width
 		if (val.HasMember("Height"))
 		{
@@ -359,7 +359,7 @@ namespace ALEngine::Editor
 		// Make sure has TileMap
 		assert(val.HasMember("Map"));
 
-		for(s32 i{0}; i < m_MapHeight; ++i)
+		for (s32 i{ 0 }; i < m_MapHeight; ++i)
 		{
 			Value const& row_val = val["Map"][i];
 			std::vector<TileType> row_tiles{};
@@ -370,3 +370,4 @@ namespace ALEngine::Editor
 			m_TileMap.emplace_back(row_tiles);
 		}
 	}
+}
