@@ -150,7 +150,10 @@ namespace ALEngine::Editor
 		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_SelectedEntity);
 
 		// Entity active
-		ImGui::Checkbox("##active", &data.active);
+		if (ImGui::Checkbox("##active", &data.active))
+		{
+			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+		}
 
 		ImGui::SameLine();
 
@@ -459,10 +462,10 @@ namespace ALEngine::Editor
 					treeName = "Audio##Inspector" + std::to_string(ad.m_ID);
 				else
 				{
-					u64 str_it = ad.m_AudioName.find_last_of("\\");
+					u64 str_it = ad.m_AudioName.find_last_of("\\") + 1;
 					u64 sizeName = ad.m_AudioName.find_last_of(".") - str_it - 1;
 
-					treeName = ad.m_AudioName.substr(str_it + 1, sizeName);
+					treeName = ad.m_AudioName.substr(str_it, sizeName);
 				}
 
 				if (ImGui::TreeNodeEx(treeName.c_str()))
