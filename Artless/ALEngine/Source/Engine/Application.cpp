@@ -250,12 +250,13 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 
-		UpdateGameplaySystem();
 		AudioManagerUpdate();
 	}
 
 	void Engine::FixedUpdate(void)
 	{
+		UpdateGameplaySystem();
+
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();

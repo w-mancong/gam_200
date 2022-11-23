@@ -119,8 +119,19 @@ namespace ALEngine::ECS
 	}
 
 	void Event_Button_Lighten(Entity invoker) {
+		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
+
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
+		
+		if(eventTrigger.isEnabled)
 		sprite.color = { 1.f, 1.f, 1.f, 1.f };
+	}
+
+	void Event_Button_Select_Abilities_0(Entity invoker) {
+		AL_CORE_INFO("Select Abilities 0");
+		
+		gameplaySystem->ToggleAbilitiesGUI(false);
+		gameplaySystem->TogglePatternGUI(true);
 	}
 
 	void Event_Button_Select_CurrentPattern(Entity invoker) {
@@ -294,8 +305,10 @@ namespace ALEngine::ECS
 			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		}
 
-		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
 
+		//Initialize Abilities GUI
+		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
+		Subscribe(gameplaySystem->GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 
 		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
 			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
@@ -330,6 +343,8 @@ namespace ALEngine::ECS
 
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			gameplaySystem->DeselectPatternPlacement();
+
+			gameplaySystem->TogglePatternGUI(true);
 		}
 
 		gameplaySystem->RunGameState();
@@ -404,18 +419,29 @@ namespace ALEngine::ECS
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
+			eventTrigger.isEnabled = false;
+			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+
+		for (int i = 0; i < 1; ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+
+			eventTrigger.isEnabled = istrue;
+
 			if (istrue)
 				sprite.color = { 1.f, 1.f, 1.f, 1.f };
 			else
 				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-
 		}
 	}
 
 	void GameplaySystem::SelectPattern(Pattern pattern) { 
 		if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_SETUP) {
-			gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
-			gameplaySystem->selected_Pattern = pattern;
+			currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+			selected_Pattern = pattern;
+
+			TogglePatternGUI(false);
 		}
 	}
 
