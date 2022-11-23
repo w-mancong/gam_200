@@ -1,9 +1,9 @@
 #include "pch.h"
 
+#ifdef EDITOR
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "imgui/cpp/imgui_stdlib.h"
-#ifdef EDITOR
 
 namespace ALEngine::Editor
 {
@@ -48,7 +48,8 @@ namespace ALEngine::Editor
 
 		static b8 arrowButtonPressed{ false };
 
-		ImGuiWindowFlags flag = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize;
+		ImGuiWindowFlags flag = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking
+			| ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize;
 
 		ImGui::Begin("Animations##Animatior/Clip Creation", &pOpen, flag);
 
@@ -56,7 +57,9 @@ namespace ALEngine::Editor
 
 		//ImVec2 pos = ImGui::GetCursorPos();
 		static std::string currentItem{ "" };
-		ImGui::InputText("##Animator Editor current item", &currentItem);
+		ImGui::BeginDisabled();
+		ImGui::InputText("Animator##Animator Editor current item", &currentItem);
+		ImGui::EndDisabled();
 		ImGui::SetItemAllowOverlap();
 		f32 width = ImGui::CalcItemWidth();
 		ImGui::SameLine(width - 17.0f);
@@ -225,7 +228,9 @@ namespace ALEngine::Editor
 			ImGui::PopItemFlag();
 		}
 
-		if (ImGui::Button("close"))
+		ImGui::End();
+
+		if (!pOpen)
 		{
 			animatorError = animatorText = false;
 			animatorButtonIndex = 0;
@@ -235,11 +240,7 @@ namespace ALEngine::Editor
 
 			tempAnimator.animatorName.clear();
 			tempAnimator.animations.clear();
-
-			pOpen = false;
 		}
-
-		ImGui::End();
 	}
 
 	void AnimatorEditorPanel::SetPanelMin(Math::Vec2 min)
