@@ -13,7 +13,6 @@ brief:	This file contains function definitions for the InspectorPanel class.
 #if EDITOR
 
 #include "imgui_internal.h"
-#define make_string(str) #str
 
 namespace ALEngine::Editor
 {
@@ -591,13 +590,13 @@ namespace ALEngine::Editor
 						ImGui::PopItemFlag();
 					}
 
+					ImGui::TreePop();
+
 					if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 					{
 						ImGui::OpenPopup("audio_rightclick");
 						toDelete = ad.m_ID;
 					}
-
-					ImGui::TreePop();
 				}
 
 			}
@@ -638,7 +637,7 @@ namespace ALEngine::Editor
 		// Get transform
 		ParticleProperties& particleProperty = Coordinator::Instance()->GetComponent<ParticleProperties>(m_SelectedEntity);
 
-		if (ImGui::TreeNodeEx("Particle Component"))
+		if (ImGui::CollapsingHeader("Particle Component"))
 		{
 			f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, 1.f };
 			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, 1.f };
@@ -670,10 +669,7 @@ namespace ALEngine::Editor
 			particleProperty.colorEnd.y = endClr[1];
 			particleProperty.colorEnd.z = endClr[2];
 
-			ImGui::TreePop();
-
 			ImGui::Separator();
-
 		}
 	}
 
@@ -682,7 +678,7 @@ namespace ALEngine::Editor
 		// Get transform
 		Text& prop = Coordinator::Instance()->GetComponent<Text>(m_SelectedEntity);
 
-		if (ImGui::TreeNodeEx("Text Component"))
+		if (ImGui::CollapsingHeader("Text Component"))
 		{
 			// String input field
 			c8* str = const_cast<c8*>(prop.textString.c_str());	
@@ -756,14 +752,13 @@ namespace ALEngine::Editor
 			prop.position.x = pos[0];
 			prop.position.y = pos[1];
 
-			ImGui::TreePop();
 			ImGui::Separator();
 		}
 	}
 
 	void InspectorPanel::DisplayEntityScript(void)
 	{
-		if (ImGui::TreeNodeEx("Script Component##Inspector"))
+		if (ImGui::CollapsingHeader("Script Component##Inspector"))
 		{
 			EntityScript& es = ECS::Coordinator::Instance()->GetComponent<EntityScript>(m_SelectedEntity);
 			/*u64 sizeInit{ es.Init.size() }, sizeUpdate{ es.Update.size() }, sizeExit{ es.Free.size() },
@@ -818,7 +813,6 @@ namespace ALEngine::Editor
 			}
 			unload_list += '\0';
 			ImGui::Combo("Unload##Script", &unload_select, unload_list.c_str());
-			ImGui::TreePop();
 		}
 	}
 
@@ -826,6 +820,10 @@ namespace ALEngine::Editor
 	{
 		// Get Window size
 		ImVec2 winsize = ImGui::GetWindowSize();
+
+		// Add Component Button
+		f32 addCompSize = ImGui::CalcTextSize("Add Component").x;
+		ImGui::NewLine(); ImGui::NewLine(); ImGui::SameLine((winsize.x - addCompSize) * 0.5f);
 		if (ImGui::Button("Add Component"))
 		{
 			ImGui::OpenPopup("addcomponent_popup");

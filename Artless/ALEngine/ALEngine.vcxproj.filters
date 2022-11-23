@@ -85,6 +85,7 @@
     <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="..\Extern\include\imgui\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -346,6 +347,7 @@
     <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
+    <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

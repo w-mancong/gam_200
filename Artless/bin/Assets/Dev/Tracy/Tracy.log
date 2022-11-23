@@ -1,0 +1,188 @@
+﻿  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  imgui_freetype.cpp
+  TracySocket.cpp
+  TracyStackFrames.cpp
+  TracySystem.cpp
+  tracy_lz4.cpp
+  tracy_lz4hc.cpp
+  TracyBadVersion.cpp
+  TracyColor.cpp
+  TracyFileselector.cpp
+  TracyFilesystem.cpp
+  TracyImGui.cpp
+  TracyMicroArchitecture.cpp
+  TracyMouse.cpp
+  TracyPrint.cpp
+  TracyProtoHistory.cpp
+  TracySourceContents.cpp
+  TracySourceTokenizer.cpp
+  TracySourceView.cpp
+  TracyTexture.cpp
+  TracyTextureCompression.cpp
+  TracyThreadCompress.cpp
+  TracyTimelineController.cpp
+  TracyTimelineItem.cpp
+  TracyTimelineItemCpuData.cpp
+  TracyTimelineItemGpu.cpp
+  TracyTimelineItemPlot.cpp
+  TracyTimelineItemThread.cpp
+  TracyUserData.cpp
+  TracyUtility.cpp
+  TracyView.cpp
+  TracyView_Annotations.cpp
+  TracyView_Callstack.cpp
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyTimelineController.cpp(41,44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyTimelineController.cpp(41,44): warning C4244:         if( offset > m_height ) m_height = offset;
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyTimelineController.cpp(41,44): warning C4244:                                            ^
+  TracyView_Compare.cpp
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244: 'initializing': conversion from 'T' to 'T2', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:         with
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:         [
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:             T=uint64_t
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:         ]
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:         and
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:         [
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:             T2=uint16_t
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:         ]
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:         , second(std::forward<U2>(b)) {}
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(608,17): warning C4244:                 ^ (compiling source file ..\..\..\server\TracyThreadCompress.cpp)
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message : see reference to function template instantiation 'tracy::pair<unsigned __int64,T>::pair<unsigned __int64&,unsigned __int64&>(U1,U2) noexcept' being compiled
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         with
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         [
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :             T=uint16_t,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :             U1=uint64_t &,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :             U2=uint64_t &
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         ]
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         explicit DataNode(M& ROBIN_HOOD_UNUSED(map) /*unused*/, Args&&... args) noexcept(
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         ^ (compiling source file ..\..\..\server\TracyThreadCompress.cpp)
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message : see reference to function template instantiation 'tracy::pair<unsigned __int64,T>::pair<unsigned __int64&,unsigned __int64&>(U1,U2) noexcept' being compiled
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message :         with
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message :         [
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message :             T=uint16_t,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message :             U1=uint64_t &,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message :             U2=uint64_t &
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message :         ]
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message :             : mData(std::forward<Args>(args)...) {}
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(963,20): message :                    ^ (compiling source file ..\..\..\server\TracyThreadCompress.cpp)
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message : while compiling class template member function 'tracy::detail::Table<true,80,uint64_t,uint16_t,tracy::hash<unsigned __int64,void>,std::equal_to<Key>>::DataNode<tracy::detail::Table<true,80,Key,uint16_t,tracy::hash<unsigned __int64,void>,std::equal_to<Key>>,true>::DataNode<T&,T&>(M &,T &,T &) noexcept'
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         with
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         [
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :             Key=uint64_t,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :             T=uint64_t,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :             M=tracy::detail::Table<true,80,uint64_t,uint16_t,tracy::hash<unsigned __int64,void>,std::equal_to<uint64_t>>
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         ]
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         explicit DataNode(M& ROBIN_HOOD_UNUSED(map) /*unused*/, Args&&... args) noexcept(
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\tracy_robin_hood.h(961,9): message :         ^ (compiling source file ..\..\..\server\TracyThreadCompress.cpp)
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,55): message : see reference to function template instantiation 'std::pair<tracy::detail::Table<true,80,uint64_t,uint16_t,tracy::hash<unsigned __int64,void>,std::equal_to<Key>>::Iter<false>,bool> tracy::detail::Table<true,80,Key,uint16_t,tracy::hash<unsigned __int64,void>,std::equal_to<Key>>::emplace<T&,size_t&>(T &,size_t &)' being compiled
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,55): message :         with
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,55): message :         [
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,55): message :             Key=uint64_t,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,55): message :             T=uint64_t
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,55): message :         ]
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,55): message :             m_threadMap.emplace( m_threadExpand[i], i );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,55): message :                                                       ^
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,32): message : see reference to function template instantiation 'std::pair<tracy::detail::Table<true,80,uint64_t,uint16_t,tracy::hash<unsigned __int64,void>,std::equal_to<Key>>::Iter<false>,bool> tracy::detail::Table<true,80,Key,uint16_t,tracy::hash<unsigned __int64,void>,std::equal_to<Key>>::emplace<T&,size_t&>(T &,size_t &)' being compiled
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,32): message :         with
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,32): message :         [
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,32): message :             Key=uint64_t,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,32): message :             T=uint64_t
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,32): message :         ]
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,32): message :             m_threadMap.emplace( m_threadExpand[i], i );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyThreadCompress.cpp(35,32): message :                                ^
+  TracyView_ConnectionState.cpp
+  TracyView_ContextSwitch.cpp
+  TracyView_CpuData.cpp
+  TracyView_FindZone.cpp
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyUtility.cpp(175,33): warning C4244: 'argument': conversion from 'double' to 'int64_t', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyUtility.cpp(175,33): warning C4244:         return MemSizeToString( val );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyUtility.cpp(175,33): warning C4244:                                 ^
+  TracyView_FrameOverview.cpp
+  TracyView_FrameTimeline.cpp
+  TracyView_FrameTree.cpp
+  TracyView_GpuTimeline.cpp
+  TracyView_Locks.cpp
+  TracyView_Memory.cpp
+  TracyView_Messages.cpp
+  TracyView_Navigation.cpp
+  TracyView_NotificationArea.cpp
+  TracyView_Options.cpp
+  TracyView_Playback.cpp
+  TracyView_Plots.cpp
+  TracyView_Ranges.cpp
+  TracyView_Samples.cpp
+  TracyView_Statistics.cpp
+  TracyView_Timeline.cpp
+  TracyView_TraceInfo.cpp
+  TracyView_Utility.cpp
+  TracyView_ZoneInfo.cpp
+  TracyView_ZoneTimeline.cpp
+  TracyWeb.cpp
+  TracyWorker.cpp
+  BackendGlfw.cpp
+  ConnectionHistory.cpp
+  Filters.cpp
+  Fonts.cpp
+  HttpRequest.cpp
+  ImGuiContext.cpp
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(49,120): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(49,120): warning C4244:     io.Fonts->AddFontFromMemoryCompressedTTF( tracy::DroidSans_compressed_data, tracy::DroidSans_compressed_size, round( 15.0f * scale ), &configBasic, rangesBasic );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(49,120): warning C4244:                                                                                                                        ^
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(50,134): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(50,134): warning C4244:     io.Fonts->AddFontFromMemoryCompressedTTF( tracy::FontAwesomeSolid_compressed_data, tracy::FontAwesomeSolid_compressed_size, round( 14.0f * scale ), &configMerge, rangesIcons );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(50,134): warning C4244:                                                                                                                                      ^
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(51,161): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(51,161): warning C4244:     s_fixedWidth = cb_fixedWidth = io.Fonts->AddFontFromMemoryCompressedTTF( tracy::FiraCodeRetina_compressed_data, tracy::FiraCodeRetina_compressed_size, round( 15.0f * scale ), &configFixed, rangesFixed );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(51,161): warning C4244:                                                                                                                                                                 ^
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(52,145): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(52,145): warning C4244:     s_bigFont = cb_bigFont = io.Fonts->AddFontFromMemoryCompressedTTF( tracy::DroidSans_compressed_data, tracy::DroidSans_compressed_size, round( 21.0f * scale ), &configBasic );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(52,145): warning C4244:                                                                                                                                                 ^
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(53,134): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(53,134): warning C4244:     io.Fonts->AddFontFromMemoryCompressedTTF( tracy::FontAwesomeSolid_compressed_data, tracy::FontAwesomeSolid_compressed_size, round( 20.0f * scale ), &configMerge, rangesIcons );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(53,134): warning C4244:                                                                                                                                      ^
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(54,149): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(54,149): warning C4244:     s_smallFont = cb_smallFont = io.Fonts->AddFontFromMemoryCompressedTTF( tracy::DroidSans_compressed_data, tracy::DroidSans_compressed_size, round( 10.0f * scale ), &configBasic );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\Fonts.cpp(54,149): warning C4244:                                                                                                                                                     ^
+  imgui_impl_glfw.cpp
+  imgui_impl_opengl3.cpp
+  main.cpp
+  RunQueue.cpp
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\HttpRequest.cpp(117,53): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\HttpRequest.cpp(117,53): warning C4244:     if( remaining > 0 ) sock.Read( data + partSize, remaining, 15 );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\HttpRequest.cpp(117,53): warning C4244:                                                     ^
+  WindowPosition.cpp
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,130): warning C4018: '<': signed/unsigned mismatch
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,130): warning C4018:                 auto it = std::upper_bound( itBegin, m_data.ctxUsage.end(), test, [] ( const auto& l, const auto& r ) { return l < r._time_other_own; } );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,130): warning C4018:                                                                                                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message : see reference to function template instantiation 'auto tracy::Worker::GetCpuUsage::<lambda_1>::operator ()<_Ty,T>(const _T1 &,const _T2 &) const' being compiled
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message :         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message :         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message :             _Ty=int64_t,
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message :             T=tracy::ContextSwitchUsage,
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message :             _T1=int64_t,
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message :             _T2=tracy::ContextSwitchUsage
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message :         ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message : _NODISCARD _CONSTEXPR20 _FwdIt upper_bound(_FwdIt _First, _FwdIt _Last, const _Ty& _Val, _Pr _Pred) {
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(5953,101): message :                                                                                                     ^ (compiling source file ..\..\..\server\TracyWorker.cpp)
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message : see reference to function template instantiation '_FwdIt *std::upper_bound<T*,int64_t,tracy::Worker::GetCpuUsage::<lambda_1>>(_FwdIt,_FwdIt,const _Ty &,_Pr)' being compiled
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :         with
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :         [
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :             _FwdIt=tracy::ContextSwitchUsage *,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :             T=tracy::ContextSwitchUsage,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :             _Ty=int64_t,
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :             _Pr=tracy::Worker::GetCpuUsage::<lambda_1>
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :         ]
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :                 auto it = std::upper_bound( itBegin, m_data.ctxUsage.end(), test, [] ( const auto& l, const auto& r ) { return l < r._time_other_own; } );
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\server\TracyWorker.cpp(2069,153): message :                                                                                                                                                         ^
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\main.cpp(570,49): warning C4018: '>': signed/unsigned mismatch
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\main.cpp(570,49): warning C4018:         if( updateVersion != 0 && updateVersion > tracy::FileVersion( tracy::Version::Major, tracy::Version::Minor, tracy::Version::Patch ) )
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\src\main.cpp(570,49): warning C4018:                                                 ^
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Generating code
+  Compiler switch has changed, fall back to full compilation.
+  All 21958 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Tracy.vcxproj -> E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\build\win32\x64\Release\Tracy.exe
