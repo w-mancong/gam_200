@@ -13,7 +13,7 @@ namespace ALEngine::Engine
 {
 	/*!*********************************************************************************
 		\brief
-		Starts running the game loop
+		Starts running the game m_Loop
 	***********************************************************************************/
 	void Run(void);
 

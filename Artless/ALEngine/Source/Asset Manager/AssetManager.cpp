@@ -356,10 +356,10 @@ namespace
 
 	Audio LoadAudio(c8 const* filePath)
 	{
-		fmod::Sound* sound;
+		fmod::Sound* m_Sound;
 		fmod::System* const& system = GetAudioSystem();
-		system->createSound(filePath, FMOD_DEFAULT, nullptr, &sound);
-		return { sound };
+		system->createSound(filePath, FMOD_DEFAULT, nullptr, &m_Sound);
+		return { m_Sound, filePath };
 	}
 
 	FileType GetFileType(std::string const& fileName)
@@ -509,7 +509,7 @@ namespace ALEngine::Engine
 					// load into memory stream
 					Audio audio = LoadAudio(it->c_str());
 #if EDITOR
-					if (audio.sound)
+					if (audio.m_Sound)
 #endif
 						audioList.insert(std::pair<Guid, Audio>{id, audio});
 
@@ -844,7 +844,7 @@ namespace ALEngine::Engine
 				// load into memory stream
 				Audio audio = LoadAudio(filePath.c_str());
 #if		EDITOR
-				if (audio.sound)
+				if (audio.m_Sound)
 #endif
 					audioList.insert(std::pair<Guid, Audio>{id, audio});
 
@@ -938,7 +938,7 @@ namespace ALEngine::Engine
 				Audio newAudio = LoadAudio(filePath.c_str());
 
 #if		EDITOR
-				if (newAudio.sound)
+				if (newAudio.m_Sound)
 #endif
 					audioList[id] = newAudio;
 

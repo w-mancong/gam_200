@@ -113,6 +113,18 @@ namespace ALEngine::Editor
 			// Logger Panel
 			m_LoggerPanel.OnImGuiRender();
 
+			if (m_AnimatorPanelEnabled)
+			{
+				m_AnimatorEditorPanel.OnImGuiRender();
+			}
+
+			if (m_AudioPanelEnabled)
+			{
+				m_AudioEditorPanel.OnImGuiRender();
+			}
+
+			m_TileEditor.OnImGuiRender();
+
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -126,13 +138,7 @@ namespace ALEngine::Editor
 			}
 			else
 			{	// Run editor scene panel
-				// Set selected entity for Scene Panel (for Gizmos)
-				m_ScenePanel.SetSelectedEntity(m_InspectorPanel.GetSelectedEntity());
-				m_ScenePanel.SetCurrentGizmoOperation(m_InspectorPanel.GetCurrGizmoOperation());
 				m_ScenePanel.OnImGuiRender();	// Scene Panel
-
-				// Update if selected entity has changed
-				m_InspectorPanel.SetSelectedEntity(m_ScenePanel.GetSelectedEntity());
 			}
 
 			// Scene Hierarchy Panel
@@ -275,6 +281,7 @@ namespace ALEngine::Editor
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
+			ImGui::SetNextWindowSize(m_MenuSize);
 			// Settings
 			if (ImGui::BeginMenu("Settings"))
 			{
@@ -283,6 +290,27 @@ namespace ALEngine::Editor
 
 				// Set to fullscreen or normal
 				ImGui::Selectable("Fullscreen", &m_FullScreen, flag);
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::SetNextWindowSize(m_MenuSize);
+			if (ImGui::BeginMenu("Tools"))
+			{
+				// Selectable flag
+				ImGuiSelectableFlags flag = 0;
+
+				// Set active for animator panel
+				ImGui::Selectable("Create Clips/Animation", &m_AnimatorPanelEnabled, flag);
+	
+				//  Set active for audio panel
+				ImGui::Selectable("Create Audio", &m_AudioPanelEnabled, flag);
+
+				//  Set active for audio panel
+				if (ImGui::MenuItem("Tile Editor"))
+				{
+					m_TileEditor.SetPanelIsOpen(true);
+				}
 
 				ImGui::EndMenu();
 			}
@@ -337,7 +365,6 @@ namespace ALEngine::Editor
 				if (m_GameIsActive)
 				{
 					SetSelectedEntity(ECS::MAX_ENTITIES);
-					m_ScenePanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
@@ -441,6 +468,20 @@ namespace ALEngine::Editor
 		m_InspectorPanel.SetPanelMin(panel_min);
 		m_InspectorPanel.SetDefaults(editor_data.GetVec2("InspectorPos", Math::Vec2()),
 			editor_data.GetVec2("InspectorSize", panel_min));
+
+		// Create Clip animator panel
+		m_AnimatorEditorPanel.SetPanelMin(panel_min);
+		m_AnimatorEditorPanel.SetDefaults(editor_data.GetVec2("AnimatorPos", Math::Vec2()),
+			editor_data.GetVec2("AnimatorSize", panel_min));
+
+		// Create Clip audio panel
+		m_AudioEditorPanel.SetPanelMin(panel_min);
+		m_AudioEditorPanel.SetDefaults(editor_data.GetVec2("AudioPos", Math::Vec2()),
+			editor_data.GetVec2("AudioSize", panel_min));
+
+		// Tile Editor Panel
+		m_TileEditor.SetPanelMin(panel_min);
+
 	}
 
 	void ALEditor::SetDefaultPanel(void)
@@ -593,6 +634,16 @@ namespace ALEngine::Editor
 		return m_InspectorPanel.GetSelectedEntity();
 	}
 
+	ImGuizmo::OPERATION ALEditor::GetCurrentGizmoOperation(void)
+	{
+		return m_CurrentGizmoOperation;
+	}
+
+	void ALEditor::SetCurrentGizmoOperation(ImGuizmo::OPERATION _op)
+	{
+		m_CurrentGizmoOperation = _op;
+	}
+
 	f64 ALEditor::GetSceneWidth(void)
 	{
 		return m_ScenePanel.GetSceneWidth();
@@ -629,10 +680,19 @@ namespace ALEngine::Editor
 	{
 		m_IsReceivingKBInput = receivingInput;
 	}
+
+	b8 ALEditor::GetEditorInFocus(void)
+	{
+		return m_EditorInFocus;
+	}
 	
 	void ALEditor::SetCurrentSceneName(std::string sceneName)
 	{
 		m_CurrentSceneName = sceneName;
+	}
+	std::string const& ALEditor::GetCurrentSceneName(void) const
+	{
+		return m_CurrentSceneName;
 	}
 }
 

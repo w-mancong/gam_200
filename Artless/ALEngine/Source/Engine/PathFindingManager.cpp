@@ -16,7 +16,7 @@ namespace  ALEngine::Engine::AI
         Cell& startNode = Coordinator::Instance()->GetComponent<Cell>(startCell);
         Cell& endNode = Coordinator::Instance()->GetComponent<Cell>(endCell);
 
-        if (!endNode.m_isAccesible) {
+        if (!endNode.m_isBlocked || !endNode.m_canWalk) {
             return false;
         }
 
@@ -82,7 +82,7 @@ namespace  ALEngine::Engine::AI
                 }
                 //If it's not end
                 //then check if the current neighbour node exist inside closed list or it is blocked
-                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || !neighbourNode->m_isAccesible)
+                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || !neighbourNode->m_isBlocked || !neighbourNode->m_canWalk)
                 {
                     continue;
                 }
@@ -90,8 +90,8 @@ namespace  ALEngine::Engine::AI
                 //Otherwise, it's a cell we can check
                 neighbourNode->m_ParentCell = &currentNode;     //Update parent cell  
                 neighbourNode->m_HCost = CalculateDistanceCost(
-                    Engine::GameplayInterface::getEntityCell(currentRoom, neighbourNode->coordinate[0], neighbourNode->coordinate[1]),
-                    Engine::GameplayInterface::getEntityCell(currentRoom, endNode.coordinate[0], endNode.coordinate[1]));
+                    Engine::GameplayInterface::getEntityCell(currentRoom, neighbourNode->coordinate.x, neighbourNode->coordinate.y),
+                    Engine::GameplayInterface::getEntityCell(currentRoom, endNode.coordinate.x, endNode.coordinate.y));
                 neighbourNode->m_GCost = currentNode.m_GCost + 1.0f;
                 neighbourNode->m_FCost = neighbourNode->m_GCost + neighbourNode->m_HCost;
 
@@ -116,7 +116,7 @@ namespace  ALEngine::Engine::AI
     {
         std::list<Cell*> neighbourList;
         
-        u32 currentCoordinate[2]{ currentNode.coordinate[0],currentNode.coordinate[1]};
+        u32 currentCoordinate[2]{ currentNode.coordinate.x, currentNode.coordinate.y };
 
         //check cell in grid
         //astar without diagonal path, check for all neighbours except diagonal neighbour
@@ -165,7 +165,7 @@ namespace  ALEngine::Engine::AI
 
         for (auto it = pathlist.begin(); it != pathlist.end(); ++it)
         {
-            Path.push_back(Engine::GameplayInterface::getEntityCell(currentRoom, it->coordinate[0], it->coordinate[1]));
+            Path.push_back(Engine::GameplayInterface::getEntityCell(currentRoom, it->coordinate.x, it->coordinate.y));
         }
 
         return Path;
