@@ -304,7 +304,7 @@ namespace ALEngine::Editor
 				ImGui::Selectable("Create Clips/Animation", &m_AnimatorPanelEnabled, flag);
 
 				//  Set active for audio panel
-				ImGui::Selectable("Create Audio", &m_AudioPanelEnabled, flag);
+				ImGui::Selectable("Audio Mixer", &m_AudioPanelEnabled, flag);
 
 				//  Set active for audio panel
 				if (ImGui::MenuItem("Tile Editor"))

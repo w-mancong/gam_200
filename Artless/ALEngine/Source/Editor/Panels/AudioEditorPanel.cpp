@@ -18,134 +18,70 @@ namespace ALEngine::Editor
 
 	void AudioEditorPanel::OnImGuiRender(b8& pOpen)
 	{
-		//std::string audioContents = FileContents(audioPath);
-		std::vector<const c8*> items{"testing1", "testing2"};
-
-		//////loop through directory and create buttons for each file
-		//for (auto& directoryEntry : std::filesystem::directory_iterator(audioPath))
-		//{
-		//	//file default path
-		//	const auto& path = directoryEntry.path();
-
-		//	//file relative path
-		//	std::filesystem::path const& relativePath = std::filesystem::relative(path, audioPath);
-
-		//	//file name from relative path 
-		//	std::string const& fileNamestring = relativePath.filename().string();
-
-		//	if (fileNamestring.find(".meta") != std::string::npos)
-		//	{
-		//		continue;
-		//	}
-		//	ImGui::PushID(fileNamestring.c_str());
-
-		//	items.push_back(fileNamestring.c_str());
-		//	ImGui::PopID();
-		//}
-
 		if (pOpen)
 		{
 			ImGui::OpenPopup("AudioVolumeMixer");
 		}
 
+		ImGuiWindowFlags flag = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize;
 
 		//ImGui::Begin("AudioVolumeMixer");
-
-
-		if (ImGui::BeginPopupModal("AudioVolumeMixer", NULL, ImGuiWindowFlags_MenuBar))
+		if (ImGui::BeginPopupModal("AudioVolumeMixer", &pOpen, flag))
 		{
-			if (ImGui::Button("close"))
-			{
-				pOpen = false;
-			}
-			if (Input::KeyTriggered(KeyCode::A))
-			{
-				items.push_back("hi");
-			}
+			const f32 spacing = 20;
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
 
-			//static char testing[15];
-
-			//ImGui::Combo("Testing", &item_type, items.data(), items.size(), items.size());
-			//ImGui::Combo("Testing", &item_type, items, IM_ARRAYSIZE(items), IM_ARRAYSIZE(items));
-
-			static const char* current_item = NULL;
-			if (ImGui::BeginCombo("Audio##", current_item)) // The second parameter is the label previewed before opening the combo.
-			{
-				for (size_t n = 0; n < items.size(); n++)
-				{
-					bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
-					if (ImGui::Selectable(items[n], is_selected))
-					{
-						current_item = items[n];
-					}
-					if (is_selected)
-					{
-						ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
-					}
-				}
-				ImGui::EndCombo();
-			}
-
-			const float spacing = 4;
-
-			static f32 float_value_master = 0.f;
-			static f32 float_value_music = 0.f;
-			static f32 float_value_reverb = 0.f;
-			static f32 float_value_effects = 0.f;
+			static f32 floatValueMaster = 1.f;
+			static f32 floatValueBgm = 1.f;
+			static f32 floatValueSfx = 1.f;
 
 			ImGui::Text("Master");
 			ImGui::SameLine();
-			ImGui::Text("Music");
+			ImGui::Text("BGM");
 			ImGui::SameLine();
-			ImGui::Text("Reverb");
-			ImGui::SameLine();
-			ImGui::Text("Effects");
+			ImGui::Text("SFX");
 
+			//master vertical sliders
 			ImGui::PushID(0);
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.5f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.6f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.9f, 0.9f));
-			ImGui::VSliderFloat("##master", ImVec2(60, 160), &float_value_master, 0.0f, 1.0f);
+			ImGui::VSliderFloat("##master", ImVec2(50, 160), &floatValueMaster, 0.0f, 1.0f);
+			Engine::SetChannelVolume(Engine::Channel::Master, floatValueMaster);
 			ImGui::PopStyleColor(4);
 			ImGui::PopID();
 
 			ImGui::SameLine();
 
+			//music vertical sliders
 			ImGui::PushID(1);
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.5f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.6f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.7f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.9f, 0.9f));
-			ImGui::VSliderFloat("##music", ImVec2(60, 160), &float_value_music, 0.0f, 1.0f);
+			ImGui::VSliderFloat("##bgm", ImVec2(50, 160), &floatValueBgm, 0.0f, 1.0f);
+			Engine::SetChannelVolume(Engine::Channel::BGM, floatValueBgm);
 			ImGui::PopStyleColor(4);
 			ImGui::PopID();
 
 			ImGui::SameLine();
 
+			//reverb vertical sliders
 			ImGui::PushID(2);
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.5f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.6f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.7f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.9f, 0.9f));
-			ImGui::VSliderFloat("##reverb", ImVec2(60, 160), &float_value_reverb, 0.0f, 1.0f);
+			ImGui::VSliderFloat("##sfx", ImVec2(50, 160), &floatValueSfx, 0.0f, 1.0f);
+			Engine::SetChannelVolume(Engine::Channel::SFX, floatValueSfx);
 			ImGui::PopStyleColor(4);
 			ImGui::PopID();
 
-			ImGui::SameLine();
-
-			ImGui::PushID(3);
-			ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(6.f / 7.0f, 0.5f, 0.5f));
-			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(6.f / 7.0f, 0.6f, 0.5f));
-			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(6.f / 7.0f, 0.7f, 0.5f));
-			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(6.f / 7.0f, 0.9f, 0.9f));
-			ImGui::VSliderFloat("##effects", ImVec2(60, 160), &float_value_effects, 0.0f, 1.0f);
-			ImGui::PopStyleColor(4);
-			ImGui::PopID();
+			ImGui::PopStyleVar();
 
 			ImGui::EndPopup();
 		}
-
 		//ImGui::End();
 	}
 
@@ -163,40 +99,26 @@ namespace ALEngine::Editor
 	void AudioEditorPanel::Default(void)
 	{
 	}
-
-	std::string AudioEditorPanel::FileContents(const std::filesystem::path& path)
+	
+	void AudioEditorPanel::FileContents(const std::filesystem::path& path, std::vector<std::string>& items)
 	{
-		// Sanity check
-		//if (!std::filesystem::is_regular_file(path))
-		//{
-		//	return { };
-		//}
-
 		// Open the file
 		// Note that we have to use binary mode as we want to return a string
 		// representing matching the bytes of the file on the file system.
-		std::string resultstring;
-
 		for (const auto& entry : std::filesystem::directory_iterator(path))
 		{
-			resultstring = entry.path().string();
-			//std::ifstream file(entry, std::ios::in | std::ios::binary);
-			//
-			//if (!file.is_open())
-			//{
-			//	return { };
-			//}
+			std::string const& fileNamestring = std::filesystem::relative(entry.path(), path).filename().string();
+			//std::string const& animatorName = entry.path().string();
+			//u64 lastOfSlash = animatorName.find_last_of("/\\") + 1;
 
-			//// Read contents
-			//std::string content{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
+			if (fileNamestring.find(".meta") != std::string::npos)
+			{
+				continue;
+			}
 
-			//// Close the file
-			//file.close();
-			//resultstring = content;
+			items.push_back(fileNamestring);
 		}
-		return resultstring;
 	}
-
 }
 
 #endif

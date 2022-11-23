@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 #include "imgui_internal.h"
+#include "imgui/cpp/imgui_stdlib.h"
 #ifdef EDITOR
 
 namespace ALEngine::Editor
@@ -45,25 +46,49 @@ namespace ALEngine::Editor
 		static std::string clipButtonStringName[2]{ "Create Clip##AnimatorPanelButton", "Close Clip##AnimatorPanelButton" };
 		static u64 clipButtonIndex{ 0 };
 
-		ImGuiWindowFlags flag = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
+		static b8 arrowButtonPressed{ false };
+
+		ImGuiWindowFlags flag = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoDocking;
 
 		ImGui::Begin("##Animatior/Clip Creation", &pOpen, flag);
-		static const char* currentItem = nullptr;
-		if (ImGui::BeginCombo("Animators##", currentItem)) // The second parameter is the label previewed before opening the combo.
+
+		std::string temp;
+
+		//ImVec2 pos = ImGui::GetCursorPos();
+		static std::string currentItem{ "" };
+		ImGui::InputText("##Animator Editor current item", &currentItem);
+		ImGui::SetItemAllowOverlap();
+		f32 width = ImGui::CalcItemWidth();
+		ImGui::SameLine(width - 17.0f);
+
+		if (ImGui::ArrowButton("##Animator Arrow Button", ImGuiDir_Down))
 		{
-			for (size_t n = 0; n < items.size(); n++)
+			arrowButtonPressed = !arrowButtonPressed;
+		}
+		if (arrowButtonPressed)
+		{
+			
+			ImGui::BeginListBox("##Animator List Box", ImVec2(0.f, ImGui::GetContentRegionAvail().y * 0.5f));
+			for (u64 i{}; i < items.size(); ++i)
 			{
-				bool isSelected = (currentItem == items[n].c_str()); // You can store your selection however you want, outside or inside your objects
-				if (ImGui::Selectable(items[n].c_str(), isSelected))
+				std::string const& str = items[i] + "##" + std::to_string(i); 
+				bool isSelected = (currentItem == items[i]); // You can store your selection however you want, outside or inside your objects	
+				if (ImGui::Selectable(str.c_str(), &isSelected))
 				{
-					currentItem = items[n].c_str();
+					currentItem = items[i];
 				}
-				if (isSelected)
+				ImGui::SameLine(width - 22.5f);
+				ImGui::SetItemAllowOverlap();
+				ImGui::PushID(str.c_str());
+				if (ImGui::SmallButton("X"))
 				{
-					ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+					std::string fileName = "Assets\\Dev\\Animator\\" + items[i];
+					std::remove(fileName.c_str());
 				}
+				ImGui::PopID();
 			}
-			ImGui::EndCombo();
+
+			ImGui::EndListBox();
 		}
 
 		if (animatorText)
@@ -121,7 +146,7 @@ namespace ALEngine::Editor
 			{
 				// Payload flag
 				ImGuiDragDropFlags payload_flag{ 0 };
-				//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+				payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
 
 				// Get Drag and Drop Payload
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
@@ -238,10 +263,14 @@ namespace ALEngine::Editor
 		//std::string resultstring;
 		for (const auto& entry : std::filesystem::directory_iterator(path))
 		{
-			std::string const& animatorName = entry.path().string();
-			u64 lastOfSlash = animatorName.find_last_of("/\\") + 1;
+			//std::string const& animatorName = entry.path().string();
+			//u64 lastOfSlash = animatorName.find_last_of("/\\") + 1;
 
-			items.push_back(animatorName.substr(lastOfSlash));
+			//items.push_back(animatorName.substr(lastOfSlash));
+
+			std::string const& fileNamestring = std::filesystem::relative(entry.path(), path).filename().string();
+
+			items.push_back(fileNamestring);
 		}
 	}
 }
