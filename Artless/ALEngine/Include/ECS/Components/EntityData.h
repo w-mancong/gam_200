@@ -17,8 +17,9 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct EntityData
 	{
-		std::string tag{};	// Entity Tag
-		b8 active{ true };	// Entity Active (For rendering)
+		std::string tag{};			// Entity Tag
+		b8 active{ true };			// Entity Active (For rendering, etc...)
+		b8 localActive{ true };	// Active state that will control active (variable used inside Editor side only)
 		u32 id{};
 		s32 parentID{};	// Id of entity
 		

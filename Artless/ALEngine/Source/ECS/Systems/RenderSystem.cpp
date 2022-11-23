@@ -431,6 +431,11 @@ namespace ALEngine::ECS
 		return sceneGraph;
 	}
 
+	Tree::BinaryTree const& GetSceneGraph([[maybe_unused]] s32 i)
+	{
+		return sceneGraph;
+	}
+
 	void CreateSprite(Entity const& entity, Transform const& transform, const char* filePath, RenderLayer layer)
 	{
 		Sprite sprite{};

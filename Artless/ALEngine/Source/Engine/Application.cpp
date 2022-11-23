@@ -62,8 +62,7 @@ namespace ALEngine::Engine
 				//editorFocus = ImGui::IsWindowFocused(flag);
 			}
 
-			Input::Update();
-			AssetManager::Instance()->Update();
+			Engine::Update();
 
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
@@ -256,8 +255,16 @@ namespace ALEngine::Engine
 		ZoneScopedN("Normal Update");
 		Input::Update();
 		AssetManager::Instance()->Update();
-
 		AudioManagerUpdate();
+
+		//EntityList const& list = Coordinator::Instance()->GetEntities();
+		//for (Entity en : list)
+		//{
+		//	EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		//	//if (ed.active != ed.localActive[1])
+		//	//	ed.localActive[0] = ed.localActive[1] = ed.active;
+		//	//ed.active = ed.localActive[0];
+		//}
 	}
 
 	void Engine::FixedUpdate(void)

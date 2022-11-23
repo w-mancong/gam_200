@@ -16,17 +16,20 @@ brief:	This file contains function definitions for the InspectorPanel class.
 
 namespace ALEngine::Editor
 {
-	// Commands namespace
-	using namespace Commands;
+	namespace
+	{
+		// Commands namespace
+		using namespace Commands;
 
-	// File buffer size
-	const u32 FILE_BUFFER_SIZE{ 1000 };
+		// File buffer size
+		const u32 FILE_BUFFER_SIZE{ 1024 };
 
-	enum class TRANSFORM_MODE {
-		TRANSLATE = 0,
-		ROTATE,
-		SCALE
-	};
+		enum class TRANSFORM_MODE {
+			TRANSLATE = 0,
+			ROTATE,
+			SCALE
+		};
+	}
 
 	InspectorPanel::InspectorPanel(void)
 	{
@@ -160,9 +163,13 @@ namespace ALEngine::Editor
 		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_SelectedEntity);
 
 		// Entity active
-		if (ImGui::Checkbox("##active", &data.active))
+		if (ImGui::Checkbox("##active", &data.localActive))
 		{
-			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+			Tree::BinaryTree const& sceneGraph = ECS::GetSceneGraph(0);
+			Tree::BinaryTree::NodeData const& parent = sceneGraph.GetMap()[m_SelectedEntity];
+
+			data.active = data.localActive;
+			sceneGraph.SetParentChildActive(parent, data.active);
 		}
 
 		ImGui::SameLine();
