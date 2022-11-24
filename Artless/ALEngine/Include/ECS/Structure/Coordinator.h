@@ -156,7 +156,7 @@ namespace ALEngine::ECS
 		void AddComponent(Entity entity, T component)
 		{
 			mComponentManager->AddComponent<T>(entity, component);
-			auto signature = mEntityManager->GetSignature(entity);
+			Signature& signature = mEntityManager->GetSignature(entity);
 			signature.set(mComponentManager->GetComponentType<T>(), true);
 			mEntityManager->SetSignature(entity, signature);
 			mSystemManager->EntitySignatureChanged(entity, signature);
@@ -174,7 +174,7 @@ namespace ALEngine::ECS
 		void RemoveComponent(Entity entity, void (*func)(Entity) = nullptr)
 		{
 			mComponentManager->RemoveComponent<T>(entity);
-			auto signature = mEntityManager->GetSignature(entity);
+			Signature& signature = mEntityManager->GetSignature(entity);
 			signature.set(mComponentManager->GetComponentType<T>(), false);
 			mSystemManager->EntitySignatureChanged(entity, signature);
 			if(func)
