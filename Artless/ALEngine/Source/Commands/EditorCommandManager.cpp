@@ -11,7 +11,7 @@ brief:	Contains definitions for the Command Manager for the Editor
 namespace ALEngine::Commands
 {
 	COMMAND EditorCommandManager::m_Commands[MAX_COMMANDS]{};
-	s32 EditorCommandManager::m_CommandIndex{ 0 };
+	s32 EditorCommandManager::m_CommandIndex{ -1 };
 	s32 EditorCommandManager::m_NumOfCommands{ 0 };
 	CommandInputType EditorCommandManager::m_CommandInputType{ CommandInputType::NO_COMMAND };
 
