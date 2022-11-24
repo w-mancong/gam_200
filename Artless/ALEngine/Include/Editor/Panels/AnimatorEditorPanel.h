@@ -21,7 +21,7 @@ namespace ALEngine::Editor
 		\brief
 		renders out the panel displaying the audio editor panel
 		***********************************************************************************/
-		void OnImGuiRender(void);
+		void OnImGuiRender(b8& pOpen);
 
 
 		/*!*********************************************************************************
@@ -56,8 +56,7 @@ namespace ALEngine::Editor
 		ImVec2 m_DefaultPos{};	// Default Position
 		ImVec2 m_DefaultSize{};	// Default Size
 
-	    static std::string FileContents(const std::filesystem::path& path);
-
+	    void FileContents(const std::filesystem::path& path, std::vector<std::string>& items);
 	};
 }
 #endif

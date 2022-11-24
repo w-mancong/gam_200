@@ -25,6 +25,7 @@ namespace ALEngine::ECS::Component
 
 	struct EventTrigger
 	{
+		b8 isEnabled { true };
 		Event OnPointEnter, OnPointStay, OnPointExit, OnPointClick;
 		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 	};

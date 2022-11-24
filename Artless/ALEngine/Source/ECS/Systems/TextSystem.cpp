@@ -1,23 +1,48 @@
-/*!
-file:	Text.cpp
-author:	Mohamed Zafir
-email:	m.zafir@digipen.edu
-brief:	This file contains the class definition for classes Font and Text to load and
-		render text fonts.
-
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
-*//*__________________________________________________________________________________*/
 #include "pch.h"
 
-namespace ALEngine::ECS::Component
+namespace ALEngine::ECS
 {
-	// declare static class variable
-	std::map<std::string, std::map<Font::FontType, Font>> Font::fontCollection;
-	std::vector<Text> Text::textCollection;
-
-	void Font::FontInit(std::string fontAddress, std::string fontName, Font::FontType fontType)
+	namespace
 	{
-		Font newFont;
+		std::shared_ptr<TextSystem> textSystem;
+	}
+
+	void RegisterTextSystem(void)
+	{
+		/**********************************************************************************
+										Register System
+		***********************************************************************************/
+		textSystem = Coordinator::Instance()->RegisterSystem<TextSystem>();
+		Signature signature;
+		signature.set(Coordinator::Instance()->GetComponentType<Text>());
+		Coordinator::Instance()->SetSystemSignature<TextSystem>(signature);
+	}
+
+	void TextSystem::Update(void)
+	{
+		for (auto x : textSystem->mEntities)
+		{
+			Text text = Coordinator::Instance()->GetComponent<Text>(x);
+			if (text.currentFont.empty() || text.textString.empty())
+				continue;
+
+			//text.position = Coordinator::Instance()->GetComponent<Transform>(x).position;
+			Font::RenderText(text);
+		}
+	}
+
+	void UpdateTextSystem(void)
+	{
+		textSystem->Update();
+	}
+
+	// declare static class variable
+	std::vector<Text> Font::textCollection;
+
+	Font Font::FontInit(std::string fontAddress, std::string fontName)
+	{
+		Font newFont; 
+		newFont.fontName = fontName;
 		// compile and setup the shader
 		newFont.fontShader = ALEngine::Graphics::Shader{ "Assets/Dev/Shaders/font.vert", "Assets/Dev/Shaders/font.frag" };
 		Math::Matrix4x4 projection = Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width), 0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height));
@@ -39,6 +64,7 @@ namespace ALEngine::ECS::Component
 
 		// load font as face
 		FT_Face face;
+
 		if (FT_New_Face(freeType, fontAddress.c_str(), 0, &face))
 		{
 			std::cerr << "FONTS ERROR: Failed to load font: " << fontAddress << std::endl;
@@ -60,7 +86,7 @@ namespace ALEngine::ECS::Component
 			}
 
 			// generate font textures
-			u32 shaderTexture;
+			u32 shaderTexture{};
 			glGenTextures(1, &shaderTexture);
 			glBindTexture(GL_TEXTURE_2D, shaderTexture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED,
@@ -98,73 +124,74 @@ namespace ALEngine::ECS::Component
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(f32), 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
-		std::map<std::string, std::map<Font::FontType, Font>>::iterator it;
-		it = Font::fontCollection.find(fontName);
-		if (it != Font::fontCollection.end()) // if font family exists
-		{
-			// insert into existing font family
-			Font::fontCollection.find(fontName)->second.insert(std::pair<Font::FontType, Font>(fontType, newFont));
-			return;
-		}
-
-		// create new font family
-		std::map<Font::FontType, Font> map;
-		map.insert(std::pair<Font::FontType, Font>(fontType, newFont));
-		Font::fontCollection.insert(std::pair<std::string, std::map<Font::FontType, Font>>(fontName, map));
+		return newFont;
 	}
 
-	void Text::RenderText(Text& text)
+	void Font::RenderText(Text& text)
 	{
 		textCollection.push_back(text);
 	}
 
-	void Text::RenderAllText()
+	void Font::RenderAllText(Engine::Camera const& camera)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		for (Text& text : textCollection)
 		{
-			// Perform check if font family name is found
-			std::map<std::string, std::map<Font::FontType, Font>>::iterator it;
-			it = Font::fontCollection.find(text.currentFont);
-			if (it == Font::fontCollection.end())
+			if (text.textString.empty() || text.currentFont.empty())
+				continue;
+			
+			Font font{};
+			for (auto& x : Engine::AssetManager::Instance()->GetFontList())
 			{
-				std::cerr << "FONT ERROR: Font Family Name " << text.currentFont << "not found\n";
-				return;
+				if (x.second.fontName == text.currentFont)
+				{
+					font = x.second;
+					break;
+				}
 			}
 
-			// Perform check if font type is found
-			std::map<Font::FontType, Font>::iterator it2;
-			it2 = Font::fontCollection.find(text.currentFont)->second.find(text.currentType);
-			if (it2 == Font::fontCollection.find(text.currentFont)->second.end())
+			font.fontShader.use();
+			font.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
+
+			//font.fontShader.Set("projection", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width), 0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
+			//font.fontShader.Set("projection", camera.ViewMatrix());
+
+			if (!Editor::ALEditor::Instance()->GetGameActive()) // if editor
 			{
-				std::cerr << "FONT ERROR: Font Type not found\n";
-				return;
+				Engine::Camera& editorCam = Editor::ALEditor::Instance()->GetEditorCamera();
+				font.fontShader.Set("view", editorCam.ViewMatrix());
+				font.fontShader.Set("proj", editorCam.ProjectionMatrix());
+			}
+			else // if gameplay
+			{
+				font.fontShader.Set("view", camera.ViewMatrix());
+				font.fontShader.Set("proj", camera.ProjectionMatrix());
 			}
 
-			Font::fontCollection.find(text.currentFont)->second
-				.find(text.currentType)->second.fontShader.use();
-			Font::fontCollection.find(text.currentFont)->second
-				.find(text.currentType)->second.fontShader.Set("textColor", text.colour.x, text.colour.y, text.colour.z);
+			font.fontShader.Set("scale", Math::Matrix4x4::Scale(text.scale, text.scale, 1.0f));
+			font.fontShader.Set("rotate", Math::Matrix4x4::Rotation(0, Math::Vector3(0.0f, 0.0f, 1.0f)));
+			font.fontShader.Set("translate", Math::Matrix4x4::Translate(text.position.x, text.position.y, 0.0f));
+
 			glActiveTexture(GL_TEXTURE0);
 
-			glBindVertexArray(Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVAO);
+			glBindVertexArray(font.fontsVAO);
 
 			// iterate through all characters
 			std::string::const_iterator c;
 			for (c = text.textString.begin(); c != text.textString.end(); c++)
 			{
-				Character m_Ch = Font::fontCollection.find(text.currentFont)->second
-					.find(text.currentType)->second.characterCollection[*c];
+				Character ch = font.characterCollection[*c];
 
 				// position of each glyph
-				f32 xPos = text.position.x + m_Ch.bearing.x * text.scale;
-				f32 yPos = text.position.y - (m_Ch.size.y - m_Ch.bearing.y) * text.scale;
+				f32 xPos = text.position.x + ch.bearing.x * text.scale;
+				f32 yPos = text.position.y - (ch.size.y - ch.bearing.y) * text.scale;
 
 				// scale of each glyph
-				f32 width = m_Ch.size.x * text.scale;
-				f32 height = m_Ch.size.y * text.scale;
+				f32 width = ch.size.x * text.scale;
+				f32 height = ch.size.y * text.scale;
 
 				// update VBO for each character
 				f32 vertices[6][4] = {
@@ -177,10 +204,10 @@ namespace ALEngine::ECS::Component
 					{ xPos + width, yPos + height,   1.0f, 0.0f }
 				};
 				// paste glyph texture on rect
-				glBindTexture(GL_TEXTURE_2D, m_Ch.textureID);
+				glBindTexture(GL_TEXTURE_2D, ch.textureID);
 
 				// update VBO
-				glBindBuffer(GL_ARRAY_BUFFER, Font::fontCollection.find(text.currentFont)->second.find(text.currentType)->second.fontsVBO);
+				glBindBuffer(GL_ARRAY_BUFFER, font.fontsVBO);
 				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -189,52 +216,11 @@ namespace ALEngine::ECS::Component
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 
 				// advance horizontal position of glyph
-				text.position.x += (m_Ch.advance >> 6) * text.scale;
+				text.position.x += (ch.advance >> 6) * text.scale;
 			}
 		}
 		textCollection.clear();
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
-	// Text set functions
-	void SetTextFont(Text& text, std::string fontName)
-	{
-		text.currentFont = fontName;
-	}
-
-	void SetTextFontType(Text& text, Font::FontType typeName)
-	{
-		text.currentType = typeName;
-	}
-
-	void SetTextPos(Text& text, Math::Vector2 pos)
-	{
-		text.position = pos;
-	}
-
-	void SetTextPos(Text& text, f32 x, f32 y)
-	{
-		text.position = Math::Vector2(x, y);
-	}
-
-	void SetTextColor(Text& text, Math::Vector3 col)
-	{
-		text.colour = col;
-	}
-
-	void SetTextColor(Text& text, f32 r, f32 g, f32 b)
-	{
-		text.colour = Math::Vector3(r, g, b);
-	}
-
-	void SetTextSize(Text& text, f32 size)
-	{
-		text.scale = size;
-	}
-
-	void SetTextString(Text& text, std::string texts)
-	{
-		text.textString = texts;
 	}
 }

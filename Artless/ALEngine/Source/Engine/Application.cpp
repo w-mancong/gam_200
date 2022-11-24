@@ -47,6 +47,9 @@ namespace ALEngine::Engine
 				return;
 			}
 
+			// Get Current Time
+			Time::ClockTimeNow();
+
 			{
 				PROFILER_TIMER("Editor UI Update")
 				// Editor Command Manager Update
@@ -55,12 +58,11 @@ namespace ALEngine::Engine
 				ALEditor::Instance()->Begin();
 				
 				// Set the window focus
-				ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
-				editorFocus = ImGui::IsWindowFocused(flag);
+				//ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
+				//editorFocus = ImGui::IsWindowFocused(flag);
 			}
 
-			Input::Update();
-			AssetManager::Instance()->Update();
+			Engine::Update();
 
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
@@ -72,8 +74,11 @@ namespace ALEngine::Engine
 				Render();
 			}
 
-			// Marks the end of a frame m_Loop, for tracy profiler
-			FrameMark;
+			// Wait for next frame
+			Time::WaitUntil();
+
+			// Marks the end of a frame loop, for tracy profiler
+			FrameMark
 		}
 #endif
 		void GameUpdate(void)
@@ -101,6 +106,9 @@ namespace ALEngine::Engine
 					glfwPollEvents();
 					continue;
 				}
+
+				// Get Current Time
+				Time::ClockTimeNow();
 #if EDITOR
 				{
 					PROFILER_TIMER("Editor UI Update")
@@ -110,8 +118,6 @@ namespace ALEngine::Engine
 					ALEditor::Instance()->Begin();
 				}
 #endif
-				// Get Current Time
-				Time::ClockTimeNow();
 
 				{
 					PROFILER_TIMER("Normal Update")
@@ -249,13 +255,22 @@ namespace ALEngine::Engine
 		ZoneScopedN("Normal Update");
 		Input::Update();
 		AssetManager::Instance()->Update();
-
-		UpdateGameplaySystem();
 		AudioManagerUpdate();
+
+		//EntityList const& list = Coordinator::Instance()->GetEntities();
+		//for (Entity en : list)
+		//{
+		//	EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		//	//if (ed.active != ed.localActive[1])
+		//	//	ed.localActive[0] = ed.localActive[1] = ed.active;
+		//	//ed.active = ed.localActive[0];
+		//}
 	}
 
 	void Engine::FixedUpdate(void)
 	{
+		UpdateGameplaySystem();
+
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();

@@ -19,11 +19,19 @@ namespace ALEngine::Engine::GameplayInterface
 		u32 roomSize;
 	};
 
+	struct Pattern {
+		//grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
+		std::vector<Vector2Int> coordinate_occupied;
+	};
+
+
 	/*!*********************************************************************************
 	\brief
 	Global function to return the cell entity based on specified position 
     ***********************************************************************************/
 	u32 getEntityCell(Room& currentRoom, u32 x, u32 y);
+
+	void ToggleCellToInaccessible(Room& currentRoom, u32 x, u32 y, b8 istrue);
 
 	/*!*********************************************************************************
 	\brief
@@ -37,6 +45,23 @@ namespace ALEngine::Engine::GameplayInterface
     ***********************************************************************************/
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
 
+	//Initialize Patterns
+	void InitializePatterns(std::vector<Pattern>& patternList);
 
+	//Initialize Pattern GUI
+	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities);
+
+	//Initialize Pattern GUI
+	void InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities);
+
+	//Filter Grids from Hovering Over cell during pattern select
+	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color = { 1.f,1.f,1.f,1.f });
+
+	//Filter Grids from Hovering Over cell during pattern select
+	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName);
+
+	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName);
+
+	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
 }
 #endif

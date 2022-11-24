@@ -17,10 +17,10 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Animation
 	{
-		s32 width{ 128 };				// Value used to determine how wide	each texture should be
-		s32 height{ 128 };				// Value used to determine how tall each texture should be
+		s32 width{ 128 };				// Value used to determine how wide	each sample from the spritesheet should be
+		s32 height{ 128 };				// Value used to determine how tall each sample from the spritesheet should be
 		u32 sample{ 60 };				// How fast should the animation be running (1/sample)
-		u32 totalSprites{ 0 };			// Total number of sprites there is
+		u32 totalSprites{ 0 };			// Total number of sample there is in the spritesheet
 		Guid id{ 0 };					// Id of animation to be used to retrieve texture handle from AssetManager
 		c8 clipName[128]{ '\0' };		// Name of the clip
 		c8 filePath[256]{ '\0' };		// Path to the sprite sheet

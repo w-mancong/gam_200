@@ -7,7 +7,7 @@ brief:	This file contains the function definitions for the TileEditorPanel class
 		The TileEditorPanel class contains information and functions necessary for
 		the Tile Editor Panel of the editor to be displayed.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
@@ -55,7 +55,7 @@ namespace ALEngine::Editor
 			return;
 
 		// Set constraints
-		if(m_HasMapLoaded)
+		if (m_HasMapLoaded)
 			ImGui::SetNextWindowSizeConstraints(ImVec2(ALEditor::Instance()->GetSceneWidth(), ALEditor::Instance()->GetSceneHeight()), ImGui::GetMainViewport()->WorkSize);
 		else
 			ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
@@ -188,7 +188,7 @@ namespace ALEngine::Editor
 				{
 					SaveMap(m_FilePath.c_str());
 				}
-				
+
 				// Save As
 				if (ImGui::MenuItem("Save As...##TileEditorMenuBar"))
 				{
@@ -205,7 +205,7 @@ namespace ALEngine::Editor
 				}
 
 				// Open File
-				if(ImGui::MenuItem("Open File##TileEditorMenuBar"))
+				if (ImGui::MenuItem("Open File##TileEditorMenuBar"))
 				{
 
 				}
@@ -295,9 +295,9 @@ namespace ALEngine::Editor
 
 	void TileEditorPanel::SelectMap(void)
 	{
-		if(m_CurrentLoadStage == LoadStage::CreateOrLoadSelection)
+		if (m_CurrentLoadStage == LoadStage::CreateOrLoadSelection)
 		{
-			ImGuiStyle &style = ImGui::GetStyle();
+			ImGuiStyle& style = ImGui::GetStyle();
 
 			f32 btn_width = ImGui::GetContentRegionAvail().x * 0.6f;
 			f32 btn_height = ImGui::GetContentRegionAvail().y * 0.2f;
@@ -308,7 +308,7 @@ namespace ALEngine::Editor
 			if (ImGui::Button("Create New Map##TileEditor", ImVec2(btn_width, btn_height)))
 			{
 				m_CurrentLoadStage = LoadStage::CreateMap;
-				
+
 				// Reset to Zero
 				m_MapHeight = 0;
 				m_MapWidth = 0;
@@ -374,7 +374,7 @@ namespace ALEngine::Editor
 
 			writer.Key("Map");
 			writer.StartArray();
-			{				
+			{
 				u32 rowCount{ 0 };
 				for (const auto& i : m_TileMap)
 				{

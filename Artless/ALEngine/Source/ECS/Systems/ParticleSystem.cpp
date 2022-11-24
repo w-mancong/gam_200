@@ -1,20 +1,55 @@
-/*!
-file:	ParticleSys.cpp
-author:	Mohamed Zafir
-email:	m.zafir@digipen.edu
-brief:	This file contains function definitions for the engine's particle system.
-
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
-*//*__________________________________________________________________________________*/
-
 #include "pch.h"
-#include "Graphics/ParticleSys.h"
 
-namespace ALEngine::Graphics::ParticleSys
+namespace ALEngine::ECS
 {
 	namespace
 	{
-		// Init random generator
+		std::shared_ptr<ParticleSys> particleSystem;
+		ParticleSystem particleSystemObj;
+	}
+
+	void RegisterParticleSystem(void)
+	{
+		/**********************************************************************************
+										Register System
+		***********************************************************************************/
+		particleSystem = Coordinator::Instance()->RegisterSystem<ParticleSys>();
+		Signature signature;
+		signature.set(Coordinator::Instance()->GetComponentType<ParticleProperties>());
+		signature.set(Coordinator::Instance()->GetComponentType<Transform>());
+		Coordinator::Instance()->SetSystemSignature<ParticleSys>(signature);
+	}
+
+	void ParticleSys::Update(void)
+	{
+		for (auto& x : particleSystem->mEntities)
+		{
+			ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(x);
+ 
+			if (prop.timeCount > prop.spawnRate)
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(x);
+				prop.position = trans.position;
+				particleSystemObj.Emit(prop);
+				prop.timeCount = 0.f;
+			}
+			else
+				prop.timeCount += Time::m_DeltaTime;
+		}
+	}
+
+	void UpdateParticleSystem(void)
+	{
+	#if EDITOR
+			if (!Editor::ALEditor::Instance()->GetGameActive())
+				return;
+	#endif
+			particleSystem->Update();
+	}
+
+	namespace
+	{
+		// Init random generator // use Random::Range() instead !!!!!!!!!!
 		std::default_random_engine generator;
 		std::uniform_real_distribution<f32> distribution(-1.f,
 			static_cast<f32>(std::nextafter(1.0, 1.1))); // number generation interval: [-1, 1]
@@ -32,10 +67,10 @@ namespace ALEngine::Graphics::ParticleSys
 		\param [in] t:
 			Percentage between a and b
 	***********************************************************************************/
-	template<typename T> 
+	template<typename T>
 	T Lerp(T a, T b, float t)
 	{
-		return (T)(a + (b - a) * t); 
+		return (T)(a + (b - a) * t);
 	}
 
 	/*!*********************************************************************************
@@ -72,7 +107,7 @@ namespace ALEngine::Graphics::ParticleSys
 			// update particle life, position, rotation
 			particle.lifeRemaining -= deltaTime;
 			particle.position += particle.velocity * (float)deltaTime;
-			particle.rotation += 0.05f * deltaTime; // rotate over time
+			particle.rotation += particle.rotAmt * deltaTime; // rotate over time
 		}
 	}
 
@@ -129,8 +164,8 @@ namespace ALEngine::Graphics::ParticleSys
 		particleShader.use();
 		//if (Editor::ALEditor::Instance()->GetGameActive())
 		//{
-			particleShader.Set("view", camera.ViewMatrix());
-			particleShader.Set("proj", camera.ProjectionMatrix());
+		particleShader.Set("view", camera.ViewMatrix());
+		particleShader.Set("proj", camera.ProjectionMatrix());
 		//}
 		//else
 		//{
@@ -166,7 +201,7 @@ namespace ALEngine::Graphics::ParticleSys
 	\brief
 		Emits the passed in particle property.
 	***********************************************************************************/
-	void ParticleSystem::Emit(const ParticleProperties& particleProperty)
+	void ParticleSystem::Emit(const ECS::Component::ParticleProperties& particleProperty)
 	{
 		Particle& particle = particleContainer[particleIndex];
 		particle.active = true; // set particle as active
@@ -183,63 +218,14 @@ namespace ALEngine::Graphics::ParticleSys
 		particle.lifeRemaining = particleProperty.lifeTime;
 		particle.sizeBegin = particleProperty.sizeStart + particleProperty.sizeVariation * distribution(generator);
 		particle.sizeEnd = particleProperty.sizeEnd;
+		particle.rotAmt = particleProperty.rotation;
 
 		// cycle to next particle in the particle container
 		particleIndex = --particleIndex % particleContainer.size();
 	}
 
-	void SetStartColor(ParticleProperties& prop, Math::Vector4 color)
+	ParticleSystem& ParticleSystem::GetParticleSystem()
 	{
-		prop.colorStart = color;
-	}
-
-	void SetStartColor(ParticleProperties& prop, Math::Vector3 color)
-	{
-		prop.colorStart = Math::Vector4(color.x, color.y, color.z, 1.f);
-	}
-
-	void SetEndColor(ParticleProperties& prop, Math::Vector4 color)
-	{
-		prop.colorEnd = color;
-	}
-
-	void SetEndColor(ParticleProperties& prop, Math::Vector3 color)
-	{
-		prop.colorEnd = Math::Vector4(color.x, color.y, color.z, 1.f);
-	}
-
-	void SetStartSize(ParticleProperties& prop, f32 size)
-	{
-		prop.sizeStart = size;
-	}
-
-	void SetEndSize(ParticleProperties& prop, f32 size)
-	{
-		prop.sizeEnd = size;
-	}
-
-	void SetVelocity(ParticleProperties& prop, Math::Vector2 vel)
-	{
-		prop.velocity = vel;
-	}
-
-	void SetPosition(ParticleProperties& prop, Math::Vector2 pos)
-	{
-		prop.position = pos;
-	}
-
-	void SetVelVariation(ParticleProperties& prop, Math::Vector2 variation)
-	{
-		prop.velocityVariation = variation;
-	}
-
-	void SetLifeTime(ParticleProperties& prop, f32 time)
-	{
-		prop.lifeTime = time;
-	}
-
-	void SetSizeVariation(ParticleProperties& prop, f32 variation)
-	{
-		prop.sizeVariation = variation;
+		return particleSystemObj;
 	}
 }

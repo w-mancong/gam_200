@@ -4,10 +4,9 @@ author: Wong Man Cong
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition that controls the rendering for the engine
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
-#include <Graphics/ParticleSys.h>
 
 namespace ALEngine::ECS
 {
@@ -52,7 +51,8 @@ namespace ALEngine::ECS
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
 
-		ParticleSys::ParticleSystem particleSys;
+		//ParticleSystem particleSysObj;
+		//ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
@@ -64,7 +64,7 @@ namespace ALEngine::ECS
 #if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
-		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
+		//ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 #endif
 	}
 
@@ -187,7 +187,7 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::GizmoInit();
 
 		// Particle system init here
-		particleSys.ParticleSysInit();
+		ParticleSystem::GetParticleSystem().ParticleSysInit();
 
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
@@ -251,6 +251,7 @@ namespace ALEngine::ECS
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 #endif
 		UpdateAnimatorSystem();
+		UpdateParticleSystem();
 #if EDITOR
 		rs->RenderBatch(camera);
 #else
@@ -259,17 +260,16 @@ namespace ALEngine::ECS
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+		UpdateTextSystem();
 
 		// Update and render particles
-#if EDITOR
-		if (!Editor::ALEditor::Instance()->GetGameActive())
-			particleSystemPanel.OnImGuiRender(particleSys);
-#endif
-		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender(camera);
+		//if(!Editor::ALEditor::Instance()->GetGameActive())
+		//	particleSystemPanel.OnImGuiRender(particleSys);
+		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
+		ParticleSystem::GetParticleSystem().ParticleRender(camera);
 
 		// Render all text
-		Text::RenderAllText();
+		Font::RenderAllText(camera);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
 		glDisable(GL_DEPTH_TEST);
@@ -290,9 +290,10 @@ namespace ALEngine::ECS
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+		UpdateTextSystem();
 
 		// Render all text
-		Text::RenderAllText();
+		Font::RenderAllText(camera);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
@@ -426,6 +427,11 @@ namespace ALEngine::ECS
 	}
 
 	Tree::BinaryTree& GetSceneGraph(void)
+	{
+		return sceneGraph;
+	}
+
+	Tree::BinaryTree const& GetSceneGraph([[maybe_unused]] s32 i)
 	{
 		return sceneGraph;
 	}

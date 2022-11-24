@@ -27,12 +27,18 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Unit
 	{
+		std::string unit_Name;
 		s32 health, maxHealth;
+		s32 defense;
+		s32 minDamage, maxDamage;
 		s32 movementPoints, maxMovementPoints;
+		s32 minRange, maxRange;
+
 		UNIT_TYPE unitType;
 		u32 coordinate[2];
 
-		//Cell m_CurrentCell;// current cell
+		ECS::Entity unit_Sprite_Entity;
+		ECS::Entity m_CurrentCell_Entity;// current cell
 		//std::list<Cell> m_CellPath;// list of cells for path found by A* pathfinding
 	};
 }

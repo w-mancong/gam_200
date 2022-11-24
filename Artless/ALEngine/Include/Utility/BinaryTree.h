@@ -58,7 +58,7 @@ namespace ALEngine::Tree
         /*!*********************************************************************************
             \brief Update the BinaryTree
         ***********************************************************************************/
-        void Update();
+        void Update() const;
 
         /*!*********************************************************************************
             \brief
@@ -119,7 +119,7 @@ namespace ALEngine::Tree
             \return 
             Vector of node IDs
         ***********************************************************************************/
-        std::vector<s32> GetChildren();
+        std::vector<s32> GetChildren() const;
 
         /*!*********************************************************************************
             \brief
@@ -128,16 +128,26 @@ namespace ALEngine::Tree
             \return
             Vector of node IDs
         ***********************************************************************************/
-        std::vector<s32> GetParents();
+        std::vector<s32> GetParents() const;
 
         /*!*********************************************************************************
             \brief
-            Returns a vector of NodeData of all nodes in the BinaryTree
+            Returns a const reference to vector of NodeData of all nodes in the BinaryTree
 
             \return 
             Vector of NodeData
         ***********************************************************************************/
-        std::vector<NodeData>const& GetMap();
+        std::vector<NodeData>const& GetMap() const;
+
+
+        /*!*********************************************************************************
+            \brief
+            Returns a reference to vector of NodeData of all nodes in the BinaryTree
+
+            \return
+            Vector of NodeData
+        ***********************************************************************************/
+        std::vector<NodeData>& GetMap();
 
         /*!*********************************************************************************
             \brief Return parent of current entity
@@ -145,6 +155,14 @@ namespace ALEngine::Tree
             \return Entity Id of parent, else -1
         ***********************************************************************************/
         s32 GetParent(u32 en) const;
+
+        /*!*********************************************************************************
+            \brief Set the active state of all entities
+
+            \param [in] node: Node data containing the current entity id and parent's id
+            \param [in] activeState Active state to be set
+        ***********************************************************************************/
+        void SetParentChildActive(NodeData const& node, b8 activeState) const;
 
         void MoveBranch(s32 branch, s32 newParent);
         void SerializeTree();
@@ -158,7 +176,7 @@ namespace ALEngine::Tree
             \return
             Node*
         ***********************************************************************************/
-        Node* GetHead();
+        Node* GetHead() const;
 
         /*!*********************************************************************************
             \brief
@@ -218,7 +236,7 @@ namespace ALEngine::Tree
             \param [in] id
             ID of node to insert
         ***********************************************************************************/
-        void Insert(Node* node, s32 id);
+        void Insert(Node* node, s32 id) const;
 
         /*!*********************************************************************************
             \brief
@@ -243,13 +261,6 @@ namespace ALEngine::Tree
             ID of node to destruct
         ***********************************************************************************/
         void DestructLeft(Node* node, s32 id);
-
-        /*!*********************************************************************************
-            \brief Updates the transform matrix of parent and its children
-
-            \param [in] entity: Entity to apply parent-child transform
-        ***********************************************************************************/
-        //void UpdateParentChildrenPos(NodeData const& entity);
 
     private:
         Node* head;

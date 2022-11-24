@@ -11,7 +11,15 @@ brief:	This file contains function definitions for Coordinator
 
 namespace ALEngine::ECS
 {
+	/*!*********************************************************************************
+		\brief Get a reference to scene graph
+	***********************************************************************************/
 	Tree::BinaryTree& GetSceneGraph(void);
+
+	/*!*********************************************************************************
+		\brief Get a const reference to scene graph
+	***********************************************************************************/
+	Tree::BinaryTree const& GetSceneGraph(s32 i);
 
 	/*!*********************************************************************************
 		\brief
@@ -36,7 +44,7 @@ namespace ALEngine::ECS
 			Entity ent_id = mEntityManager->CreateEntity();
 
 			// Entity data
-			Component::EntityData data{ "entity #" + std::to_string(static_cast<u32>(ent_id)), true, ent_id };
+			Component::EntityData data{ "entity #" + std::to_string(static_cast<u32>(ent_id)), true, true, ent_id };
 
 			// Add EntityData component
 			Coordinator::Instance()->AddComponent<Component::EntityData>(ent_id, data);
@@ -104,6 +112,25 @@ namespace ALEngine::ECS
 			std::copy(entities.begin(), entities.end(), std::back_inserter(temp));
 			for (Entity en : temp)
 				DestroyEntity(en);
+		}
+
+		/*!*********************************************************************************
+			\brief Find an entity by it's tag
+
+			\param [in] tag: Tag of the entity you are trying to find
+
+			\return Entity ID of the tag, else ECS::MAX_ENTITIES will be returned
+		***********************************************************************************/
+		Entity GetEntityByTag(std::string const& tag)
+		{
+			EntityList const& list = mEntityManager->GetActiveEntities();
+			for (Entity en : list)
+			{
+				Component::EntityData const& ed = Coordinator::Instance()->GetComponent<Component::EntityData>(en);
+				if (ed.tag == tag)
+					return en;
+			}
+			return MAX_ENTITIES;
 		}
 
 		/*********************************************************************************

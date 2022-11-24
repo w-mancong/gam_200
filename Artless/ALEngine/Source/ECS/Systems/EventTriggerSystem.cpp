@@ -56,6 +56,12 @@ namespace ALEngine::ECS
 		//Shift through each component
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
+
+			if (!event_Trigger.isEnabled) {
+				event_Trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+				continue;
+			}
+
 			eventSystem->UpdatePointerStatus(*it);					
 			
 			//Invoke listeners based on trigger type
