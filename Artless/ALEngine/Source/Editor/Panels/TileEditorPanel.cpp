@@ -131,8 +131,10 @@ namespace ALEngine::Editor
 			ImGui::EndChild();
 
 		ImGui::SameLine();
-		if (ImGui::BeginChild("##TileEditor_Panel_Edit", ImGui::GetContentRegionAvail(), true))
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2());
+		if (ImGui::BeginChild("##TileEditor_Panel_Edit", ImGui::GetContentRegionAvail(), false))
 		{
+			ImGui::PopStyleVar();
 			if (ImGui::BeginChild("##TileEditor_Settings", ImVec2(0.f, ImGui::GetContentRegionAvail().y * 0.4f), true))
 			{
 				ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.6f);
@@ -150,20 +152,22 @@ namespace ALEngine::Editor
 				f32 width{ (ImGui::GetContentRegionAvail().x / 2.f) - ImGui::GetStyle().FramePadding.x };
 				f32 textLen{ 0.f };
 
-				{	// 
-					ImGui::BeginChild("Empty##TileEditorImage", ImVec2(width, width));
+				u32 count{ 0 };
+				for(auto& types : m_ImageMap)
+				{	
+					std::string name = types.first + "##TileEditorImage";
+					ImGui::BeginChild(name.c_str(), ImVec2(width, width));
 
-					textLen = ImGui::CalcTextSize("Empty").x ;
+					textLen = ImGui::CalcTextSize(types.first.c_str()).x ;
 					ImGui::SameLine((winWidth - textLen) * 0.25f);
-					ImGui::Text("Empty");
+					ImGui::Text(types.first.c_str());
 					//ImGui::Image
 
 					ImGui::EndChild();
-				}
 
-				textLen = ImGui::CalcTextSize("Wall").x;
-				ImGui::SameLine((winWidth - textLen) * 0.75f);
-				ImGui::Text("Wall");
+					if (count++ % 2 == 0)
+						ImGui::SameLine();
+				}
 
 				ImGui::PopStyleVar();
 				ImGui::EndChild();
@@ -174,7 +178,10 @@ namespace ALEngine::Editor
 			ImGui::EndChild();
 		}
 		else
+		{
 			ImGui::EndChild();
+			ImGui::PopStyleVar();
+		}
 	}
 
 	void TileEditorPanel::UpdateMenuBar(void)
@@ -200,6 +207,9 @@ namespace ALEngine::Editor
 						SaveMap(ret.c_str());
 						m_HasMapLoaded = true;
 						m_FilePath = ret;
+
+						ImGui::EndMenu();
+						ImGui::EndMenuBar();
 						return;
 					}
 				}
@@ -207,6 +217,23 @@ namespace ALEngine::Editor
 				// Open File
 				if (ImGui::MenuItem("Open File##TileEditorMenuBar"))
 				{
+					SaveMap(m_FilePath.c_str());
+
+					ResetVariables();
+
+					std::string ret = Utility::WindowsFileDialog::LoadFile("ALEngine Map (*.map)\0*.map\0");
+
+					// Save Success
+					if (ret.empty() == false)
+					{
+						LoadMap(ret.c_str());
+						m_HasMapLoaded = true;
+						m_FilePath = ret;
+
+						ImGui::EndMenu();
+						ImGui::EndMenuBar();
+						return;
+					}
 
 				}
 				ImGui::EndMenu();
