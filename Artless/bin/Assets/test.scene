@@ -31,8 +31,10 @@
             {
                 "tag": "profile_player",
                 "active": true,
+                "localActive": true,
                 "id": 0,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -68,8 +70,10 @@
             {
                 "tag": "bar_stats",
                 "active": true,
+                "localActive": true,
                 "id": 1,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -91,7 +95,7 @@
             {
                 "position": [
                     152.64837646484375,
-                    209.54336547851563,
+                    209.5433349609375,
                     0.0
                 ],
                 "scale": [
@@ -105,8 +109,10 @@
             {
                 "tag": "empty_health_bar",
                 "active": true,
+                "localActive": true,
                 "id": 2,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -128,7 +134,7 @@
             {
                 "position": [
                     1170.197998046875,
-                    60.12046432495117,
+                    60.120452880859375,
                     0.0
                 ],
                 "scale": [
@@ -142,8 +148,10 @@
             {
                 "tag": "next_tile",
                 "active": true,
+                "localActive": true,
                 "id": 3,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -179,8 +187,10 @@
             {
                 "tag": "bar_skill",
                 "active": true,
+                "localActive": true,
                 "id": 4,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -202,7 +212,7 @@
             {
                 "position": [
                     152.64837646484375,
-                    209.54336547851563,
+                    209.5432891845703,
                     0.0
                 ],
                 "scale": [
@@ -216,8 +226,10 @@
             {
                 "tag": "red health bar",
                 "active": true,
+                "localActive": true,
                 "id": 5,
-                "parentID": 2
+                "parentID": 2,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -239,7 +251,7 @@
             {
                 "position": [
                     1510.593994140625,
-                    42.57487869262695,
+                    42.574859619140625,
                     0.0
                 ],
                 "scale": [
@@ -253,8 +265,10 @@
             {
                 "tag": "options",
                 "active": true,
+                "localActive": true,
                 "id": 6,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -276,7 +290,7 @@
             {
                 "position": [
                     1547.1263427734375,
-                    44.3738899230957,
+                    44.37385559082031,
                     0.0
                 ],
                 "scale": [
@@ -290,8 +304,10 @@
             {
                 "tag": "menu_icon",
                 "active": true,
+                "localActive": true,
                 "id": 7,
-                "parentID": 6
+                "parentID": 6,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -313,7 +329,7 @@
             {
                 "position": [
                     1474.0140380859375,
-                    44.37491989135742,
+                    44.374900817871094,
                     0.0
                 ],
                 "scale": [
@@ -327,8 +343,10 @@
             {
                 "tag": "X",
                 "active": true,
+                "localActive": true,
                 "id": 8,
-                "parentID": 6
+                "parentID": 6,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -349,8 +367,8 @@
         "Transform": [
             {
                 "position": [
-                    1547.1287841796875,
-                    44.6979866027832,
+                    1547.12939453125,
+                    44.69794845581055,
                     0.0
                 ],
                 "scale": [
@@ -364,8 +382,10 @@
             {
                 "tag": "menu",
                 "active": true,
+                "localActive": true,
                 "id": 9,
-                "parentID": 7
+                "parentID": 7,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -401,8 +421,10 @@
             {
                 "tag": "profile_enemy",
                 "active": false,
+                "localActive": true,
                 "id": 10,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -438,8 +460,10 @@
             {
                 "tag": "end_turn",
                 "active": true,
+                "localActive": true,
                 "id": 11,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -475,8 +499,10 @@
             {
                 "tag": "phase_indicator",
                 "active": true,
+                "localActive": true,
                 "id": 12,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -512,8 +538,10 @@
             {
                 "tag": "tooltip_stats",
                 "active": true,
+                "localActive": true,
                 "id": 13,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -549,8 +577,10 @@
             {
                 "tag": "tooltip_hp/name",
                 "active": true,
+                "localActive": true,
                 "id": 14,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -586,8 +616,10 @@
             {
                 "tag": "tooltip_hpbar",
                 "active": true,
+                "localActive": true,
                 "id": 15,
-                "parentID": 14
+                "parentID": 14,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -609,7 +641,7 @@
             {
                 "position": [
                     641.676513671875,
-                    352.97406005859375,
+                    352.9740295410156,
                     0.0
                 ],
                 "scale": [
@@ -623,8 +655,10 @@
             {
                 "tag": "tooltip_skills",
                 "active": true,
+                "localActive": true,
                 "id": 16,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -646,7 +680,7 @@
             {
                 "position": [
                     542.676513671875,
-                    415.055908203125,
+                    415.05584716796875,
                     0.0
                 ],
                 "scale": [
@@ -660,8 +694,10 @@
             {
                 "tag": "skill_icon",
                 "active": true,
+                "localActive": true,
                 "id": 17,
-                "parentID": 16
+                "parentID": 16,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -697,8 +733,10 @@
             {
                 "tag": "skill_icon1",
                 "active": true,
+                "localActive": true,
                 "id": 18,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -734,8 +772,10 @@
             {
                 "tag": "skill_icon2",
                 "active": true,
+                "localActive": true,
                 "id": 19,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -771,8 +811,10 @@
             {
                 "tag": "skill_icon3",
                 "active": true,
+                "localActive": true,
                 "id": 20,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -808,8 +850,10 @@
             {
                 "tag": "skill_icon4",
                 "active": true,
+                "localActive": true,
                 "id": 21,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -845,8 +889,10 @@
             {
                 "tag": "skill_icon5",
                 "active": true,
+                "localActive": true,
                 "id": 22,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -882,8 +928,10 @@
             {
                 "tag": "skill_icon6",
                 "active": true,
+                "localActive": true,
                 "id": 23,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -904,8 +952,8 @@
         "Transform": [
             {
                 "position": [
-                    967.7009887695313,
-                    41.37047576904297,
+                    967.7012939453125,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -919,8 +967,10 @@
             {
                 "tag": "next_tile_icon1",
                 "active": true,
+                "localActive": true,
                 "id": 24,
-                "parentID": 3
+                "parentID": 3,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -942,7 +992,7 @@
             {
                 "position": [
                     1197.697998046875,
-                    41.37047576904297,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -956,8 +1006,10 @@
             {
                 "tag": "next_tile_icon2",
                 "active": true,
+                "localActive": true,
                 "id": 25,
-                "parentID": 3
+                "parentID": 3,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -979,7 +1031,7 @@
             {
                 "position": [
                     1282.698486328125,
-                    41.37047576904297,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -993,8 +1045,10 @@
             {
                 "tag": "next_tile_icon3",
                 "active": true,
+                "localActive": true,
                 "id": 26,
-                "parentID": 3
+                "parentID": 3,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -1016,7 +1070,7 @@
             {
                 "position": [
                     1367.699951171875,
-                    41.37047576904297,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -1030,8 +1084,10 @@
             {
                 "tag": "next_tile_icon4",
                 "active": true,
+                "localActive": true,
                 "id": 27,
-                "parentID": 3
+                "parentID": 3,
+                "treeNodeFlags": 32
             }
         ]
     }
