@@ -67,10 +67,29 @@ namespace ALEngine::Engine
 		Vector3 Right(void) const;
 
 		/*!*********************************************************************************
-			\brief
-			Return the front vector of camera (where the camera is facing)
+			\brief Return the front vector of camera (where the camera is facing)
 		***********************************************************************************/
 		Vector3 Front(void) const;
+
+		/*!*********************************************************************************
+			\brief Return a reference to bottom coordinates for creating orthographic projection
+		***********************************************************************************/
+		f32& ProjBottom(void);
+
+		/*!*********************************************************************************
+			\brief Return a reference to top coordinates for creating orthographic projection
+		***********************************************************************************/
+		f32& ProjTop(void);
+
+		/*!*********************************************************************************
+			\brief Return a reference to left coordinates for creating orthographic projection
+		***********************************************************************************/
+		f32& ProjLeft(void);
+
+		/*!*********************************************************************************
+			\brief Return a reference to right coordinates for creating orthographic projection
+		***********************************************************************************/
+		f32& ProjRight(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -127,6 +146,9 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		Matrix4x4 OrthographicMatrixImgui(void) const;
 
+		/*!*********************************************************************************
+			\brief Return a reference to camera's position
+		***********************************************************************************/
 		vec3& Position(void);
 
 		/*!*********************************************************************************
@@ -227,9 +249,10 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		void UpdateVectors(void);
 
-		f32 m_Yaw, m_Pitch, m_Near, m_Far, m_Fov;
-		Vector3 m_Position, m_Right, m_Up, m_Front, m_WorldUp;
-		Projection m_Projection;
+		f32 m_Yaw{}, m_Pitch{}, m_Near{}, m_Far{}, m_Fov{};
+		f32 m_ProjBottom{}, m_ProjTop{}, m_ProjLeft{}, m_ProjRight{};
+		Vector3 m_Position{}, m_Right{}, m_Up{}, m_Front{}, m_WorldUp{};
+		Projection m_Projection{};
 	};
 }
 

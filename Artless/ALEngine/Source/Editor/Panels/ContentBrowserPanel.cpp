@@ -196,6 +196,13 @@ namespace ALEngine::Editor
 				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
 				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}
+			// To display audio icon
+			else if (fileNamestring.find(".wav") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Sound.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
 			// To display asset icon
 			else if (fileNamestring.find(".jpg")!= std::string::npos || fileNamestring.find(".png") != std::string::npos)
 			{

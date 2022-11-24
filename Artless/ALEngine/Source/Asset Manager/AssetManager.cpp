@@ -389,7 +389,7 @@ namespace ALEngine::Engine
 	void AssetManager::Init()
 	{
 #if EDITOR
-		Guid id{}; u32 icon{};
+		Guid id{ 0 }; u32 icon{ 0 };
 		// Folder icon
 		id = PrepareGuid();
 		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
@@ -418,6 +418,12 @@ namespace ALEngine::Engine
 		id = PrepareGuid();
 		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
 		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Audio icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Sound.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
 		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
 		// Play icon

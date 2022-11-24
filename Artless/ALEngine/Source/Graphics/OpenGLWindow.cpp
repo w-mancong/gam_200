@@ -38,7 +38,7 @@ namespace ALEngine::Graphics
 
 		void scroll_callback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] double xoffset, double yoffset)
 		{
-			Input::m_MouseWheelEvent = yoffset == -1 ? MouseWheelEvent::MouseWheelDown : MouseWheelEvent::MouseWheelUp;
+			Input::m_MouseWheelEvent = yoffset < 0 ? MouseWheelEvent::MouseWheelDown : MouseWheelEvent::MouseWheelUp;
 		}
 
 		u32 constexpr DEFAULT_WIDTH{ 1200 }, DEFAULT_HEIGHT{ 600 };

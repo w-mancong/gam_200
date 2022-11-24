@@ -52,6 +52,26 @@ namespace ALEngine::Engine
 		return m_Front;
 	}
 
+	f32& Camera::ProjBottom(void)
+	{
+		return m_ProjBottom;
+	}
+
+	f32& Camera::ProjTop(void)
+	{
+		return m_ProjTop;
+	}
+
+	f32& Camera::ProjLeft(void)
+	{
+		return m_ProjLeft;
+	}
+
+	f32& Camera::ProjRight(void)
+	{
+		return m_ProjRight;
+	}
+
 	Vector3 Camera::Position(void) const
 	{
 		return m_Position;
@@ -83,7 +103,8 @@ namespace ALEngine::Engine
 	Matrix4x4 Camera::OrthographicMatrix(void) const
 	{
 		using namespace Graphics;
-		return Matrix4x4::Ortho(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
+		return Matrix4x4::Ortho(m_ProjLeft, m_ProjRight, m_ProjBottom, m_ProjTop, m_Near, m_Far);
+		//return Matrix4x4::Ortho(800.0f, static_cast<f32>(OpenGLWindow::width), 450.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
 	}
 
 	Matrix4x4 Camera::OrthographicMatrix(f32 l, f32 r, f32 b, f32 t) const

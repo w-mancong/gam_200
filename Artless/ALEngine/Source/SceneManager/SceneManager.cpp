@@ -154,12 +154,23 @@ namespace ALEngine::Engine::Scene
 		writer.Key("active");
 		writer.Bool(entityData.active);
 
+		// Local active status
+		writer.Key("localActive");
+		writer.Bool(entityData.localActive);
+
 		// Entity ID
 		writer.Key("id");
 		writer.Uint(entityData.id);
 		
+		// Entity's parent id for scene graph
 		writer.Key("parentID");
 		writer.Int(entityData.parentID);
+
+#if EDITOR
+		// Tree Node flag for imgui
+		writer.Key("treeNodeFlags");
+		writer.Uint64(static_cast<u64>(entityData.treeNodeFlags));
+#endif
 
 		writer.EndObject();
 		writer.EndArray();
@@ -173,10 +184,17 @@ namespace ALEngine::Engine::Scene
 		entityData.tag = v[0]["tag"].GetString();
 		// Getting active status
 		entityData.active = v[0]["active"].GetBool();
+		// Getting local active status
+		entityData.localActive = v[0]["localActive"].GetBool();
 		// Getting id
 		entityData.id = v[0]["id"].GetUint();
 		// Getting parent id
 		entityData.parentID = v[0]["parentID"].GetInt();
+
+#if EDITOR
+		// Getting tree node flags for imgui
+		entityData.treeNodeFlags = static_cast<ImGuiTreeNodeFlags_>( v[0]["treeNodeFlags"].GetUint64() );
+#endif
 	}
 
 	void WriteCollider2D(TWriter& writer, ECS::Entity en)

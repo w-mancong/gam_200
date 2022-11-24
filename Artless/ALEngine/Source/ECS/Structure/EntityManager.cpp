@@ -44,7 +44,7 @@ namespace ALEngine::ECS
 		m_Signatures[entity] = signature;
 	}
 
-	Signature EntityManager::GetSignature(Entity entity)
+	Signature& EntityManager::GetSignature(Entity entity)
 	{
 #ifdef _DEBUG
 		assert(entity < MAX_ENTITIES && "Entity out of range.");
