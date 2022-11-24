@@ -115,12 +115,12 @@ namespace ALEngine::Engine
 
 	void ScriptEngine::ShutdownMono(void)
 	{
-		mono_domain_set(mono_get_root_domain(), true);
-		mono_domain_finalize(data->appDomain, 2000);
+		//mono_domain_set(mono_get_root_domain(), true);
+		//mono_domain_finalize(data->appDomain, 2000);
 
-		mono_domain_unload(data->appDomain);
-		data->appDomain = nullptr;
-		mono_gc_collect(mono_gc_max_generation());
+		//mono_domain_unload(data->appDomain);
+		//data->appDomain = nullptr;
+		//mono_gc_collect(mono_gc_max_generation());
 
 		mono_jit_cleanup(data->rootDomain);
 		data->rootDomain = nullptr;

@@ -12,13 +12,37 @@ brief:	This file contains the function definitions for the TileEditorPanel class
 #include "pch.h"
 
 #include "imgui_internal.h"
+#define MIN_TILES_SHOWN 3
+#define MAX_TILES_SHOWN 10
+#define TILE_EDITOR_DATA_PATH "Assets/Dev/Objects/TileEditorData.json"
 
 namespace ALEngine::Editor
 {
 	TileEditorPanel::TileEditorPanel(void)
 	{
+		using namespace rapidjson;
+
+		std::string filePath_str{ TILE_EDITOR_DATA_PATH };
+		c8* buffer = Utility::ReadBytes(filePath_str.c_str());
+
+		assert(buffer);
+
+		Document doc;
+		doc.Parse(buffer);
+
+		Memory::DynamicMemory::Delete(buffer);
+
+		Value const& val{ *doc.Begin() };
+
+		// Iterate all  values
+		for (Value::ConstMemberIterator it = val.MemberBegin(); it != val.MemberEnd(); ++it)
+			m_ImageMap[it->name.GetString()] = it->value.GetString();
+
 		m_HasMapLoaded = false;
 		m_CurrentLoadStage = LoadStage::CreateOrLoadSelection;
+		m_NumTilesSeen = MIN_TILES_SHOWN;
+
+		SaveTileEditorData();
 	}
 
 	TileEditorPanel::~TileEditorPanel(void)
@@ -76,22 +100,81 @@ namespace ALEngine::Editor
 
 	void TileEditorPanel::Update(void)
 	{
-		ImVec2 tileArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.75f, ImGui::GetContentRegionAvail().y);
+		ImVec2 tilesArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.6f, ImGui::GetContentRegionAvail().y);
 
 		ImGuiWindowFlags childFlags = ImGuiWindowFlags_HorizontalScrollbar;
-		ImGui::BeginChild("##TileEditor_TileArea", tileArea, true);
-
-		u32 tileNum{ 0 };
-		for (const auto& row : m_TileMap)
+		if (ImGui::BeginChild("##TileEditor_TileArea", tilesArea, true))
 		{
-			for (const auto& tile : row)
-			{
-				std::string btnID = "##TileEditorTile" + std::to_string(tileNum++);
-				ImGui::Button(btnID.c_str());
-			}
-		}
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1.f, 1.f));
+			u32 tileNum{ 0 };
+			m_TileSize = ImGui::GetContentRegionAvail().x / static_cast<f32>(m_NumTilesSeen);
+			m_TileSize -= ImGui::GetStyle().WindowPadding.x;
 
-		ImGui::EndChild();
+			for (const auto& row : m_TileMap)
+			{
+				ImGui::NewLine();
+				for (const auto& tile : row)
+				{
+					Guid id = Engine::AssetManager::Instance()->GetGuid(m_ImageMap[tile]);
+					u64 texID = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
+
+					ImGui::SameLine();
+					std::string btnID = "##TileEditorTile" + std::to_string(tileNum++);
+					ImGui::ImageButton(btnID.c_str(), reinterpret_cast<ImTextureID>(texID), ImVec2(m_TileSize, m_TileSize));
+				}
+			}
+			ImGui::PopStyleVar();
+
+			ImGui::EndChild();
+		}
+		else
+			ImGui::EndChild();
+
+		ImGui::SameLine();
+		if (ImGui::BeginChild("##TileEditor_Panel_Edit", ImGui::GetContentRegionAvail(), true))
+		{
+			if (ImGui::BeginChild("##TileEditor_Settings", ImVec2(0.f, ImGui::GetContentRegionAvail().y * 0.4f), true))
+			{
+				ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.6f);
+				ImGui::SliderInt("Tiles Shown##TileEditor", &m_NumTilesSeen, 3, 10);
+				ImGui::PopItemWidth();
+				ImGui::EndChild();
+			}
+			else
+				ImGui::EndChild();
+
+			if (ImGui::BeginChild("##TileEditor_ImagePanel", ImVec2(0.f, ImGui::GetContentRegionAvail().y), true))
+			{
+				ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(5.f, 5.f));
+				f32 winWidth{ ImGui::GetContentRegionAvail().x };
+				f32 width{ (ImGui::GetContentRegionAvail().x / 2.f) - ImGui::GetStyle().FramePadding.x };
+				f32 textLen{ 0.f };
+
+				{	// 
+					ImGui::BeginChild("Empty##TileEditorImage", ImVec2(width, width));
+
+					textLen = ImGui::CalcTextSize("Empty").x ;
+					ImGui::SameLine((winWidth - textLen) * 0.25f);
+					ImGui::Text("Empty");
+					//ImGui::Image
+
+					ImGui::EndChild();
+				}
+
+				textLen = ImGui::CalcTextSize("Wall").x;
+				ImGui::SameLine((winWidth - textLen) * 0.75f);
+				ImGui::Text("Wall");
+
+				ImGui::PopStyleVar();
+				ImGui::EndChild();
+			}
+			else
+				ImGui::EndChild();
+
+			ImGui::EndChild();
+		}
+		else
+			ImGui::EndChild();
 	}
 
 	void TileEditorPanel::UpdateMenuBar(void)
@@ -182,10 +265,11 @@ namespace ALEngine::Editor
 			m_TileMap.clear();
 			for (s32 i{ 0 }; i < m_MapHeight; ++i)
 			{
-				std::vector<TileType> row{};
+				std::vector<std::string> row{};
 				for (s32 j{ 0 }; j < m_MapWidth; ++j)
 				{
-					row.push_back(TileType::Empty);
+					// Push the first in the map, which is normally the "Empty" tile
+					row.push_back(m_ImageMap.begin()->first);
 				}
 				m_TileMap.push_back(row);
 			}
@@ -215,12 +299,13 @@ namespace ALEngine::Editor
 		{
 			ImGuiStyle &style = ImGui::GetStyle();
 
-			f32 btn_width = ImGui::GetContentRegionAvail().x * 0.75f;
+			f32 btn_width = ImGui::GetContentRegionAvail().x * 0.6f;
+			f32 btn_height = ImGui::GetContentRegionAvail().y * 0.2f;
 			f32 btn_size = btn_width + style.FramePadding.x * 2.f;
 			f32 align = (ImGui::GetWindowSize().x - btn_size) * 0.5f;
 
 			ImGui::NewLine(); ImGui::NewLine(); ImGui::SameLine(align);
-			if (ImGui::Button("Create New Map##TileEditor", ImVec2(btn_width, 0.f)))
+			if (ImGui::Button("Create New Map##TileEditor", ImVec2(btn_width, btn_height)))
 			{
 				m_CurrentLoadStage = LoadStage::CreateMap;
 				
@@ -234,7 +319,7 @@ namespace ALEngine::Editor
 			}
 
 			ImGui::NewLine(); ImGui::NewLine(); ImGui::SameLine(align);
-			if (ImGui::Button("Load Map##TileEditor", ImVec2(btn_width, 0.f)))
+			if (ImGui::Button("Load Map##TileEditor", ImVec2(btn_width, btn_height)))
 			{
 				m_CurrentLoadStage = LoadStage::LoadMap;
 
@@ -296,7 +381,7 @@ namespace ALEngine::Editor
 					std::string row_key = std::to_string(rowCount++);
 					writer.StartArray();
 					for (const auto& j : i)
-						writer.Uint(static_cast<u32>(j));
+						writer.String(j.c_str());
 					writer.EndArray();
 				}
 			}
@@ -345,7 +430,7 @@ namespace ALEngine::Editor
 			m_MapWidth = val["Width"].GetInt();
 			AL_CORE_INFO("Width Assigned to {}", m_MapWidth);
 		}
-		
+
 		// Get Width
 		if (val.HasMember("Height"))
 		{
@@ -359,14 +444,69 @@ namespace ALEngine::Editor
 		// Make sure has TileMap
 		assert(val.HasMember("Map"));
 
-		for(s32 i{0}; i < m_MapHeight; ++i)
+		for (s32 i{ 0 }; i < m_MapHeight; ++i)
 		{
 			Value const& row_val = val["Map"][i];
-			std::vector<TileType> row_tiles{};
+			std::vector<std::string> row_tiles{};
 
 			for (s32 j{ 0 }; j < m_MapWidth; ++j)
-				row_tiles.emplace_back(static_cast<TileType>(row_val[j].GetInt()));
+				row_tiles.emplace_back(row_val[j].GetString());
 
 			m_TileMap.emplace_back(row_tiles);
 		}
+
 	}
+
+	void TileEditorPanel::SaveTileEditorData(void)
+	{
+		using namespace rapidjson;
+		std::string filePath{ TILE_EDITOR_DATA_PATH };
+
+		StringBuffer strbuf{};
+		PrettyWriter writer(strbuf);
+
+		writer.StartArray();
+		{
+			writer.StartObject();
+
+			for (auto& i : m_ImageMap)
+			{
+				writer.Key(i.first.c_str());
+				writer.String(i.second.c_str());
+			}
+			
+			writer.EndObject();
+		}
+		writer.EndArray();
+
+		std::ofstream ofs{ filePath };
+
+		if (!ofs)
+		{
+			AL_CORE_WARN("Could not open file: {}", filePath);
+			return;
+		}
+
+		ofs.write(strbuf.GetString(), strbuf.GetLength());
+
+		ofs.close();
+	}
+	
+	void TileEditorPanel::ResetVariables(void)
+	{
+		if (!m_TileMap.empty())
+		{
+			for (auto& i : m_TileMap)
+				i.clear();
+			m_TileMap.clear();
+		}
+
+		m_MapWidth = m_MapHeight = 0;
+
+		m_CurrentLoadStage = LoadStage::CreateOrLoadSelection;
+
+		m_HasMapLoaded = false;
+
+		m_FilePath = "";
+	}
+}
