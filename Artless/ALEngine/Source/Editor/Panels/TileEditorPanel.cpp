@@ -110,17 +110,21 @@ namespace ALEngine::Editor
 			m_TileSize = ImGui::GetContentRegionAvail().x / static_cast<f32>(m_NumTilesSeen);
 			m_TileSize -= ImGui::GetStyle().WindowPadding.x;
 
-			for (const auto& row : m_TileMap)
+			for (auto& row : m_TileMap)
 			{
 				ImGui::NewLine();
-				for (const auto& tile : row)
+				for (auto& tile : row)
 				{
 					Guid id = Engine::AssetManager::Instance()->GetGuid(m_ImageMap[tile]);
 					u64 texID = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
 
 					ImGui::SameLine();
 					std::string btnID = "##TileEditorTile" + std::to_string(tileNum++);
-					ImGui::ImageButton(btnID.c_str(), reinterpret_cast<ImTextureID>(texID), ImVec2(m_TileSize, m_TileSize));
+					if (ImGui::ImageButton(btnID.c_str(), reinterpret_cast<ImTextureID>(texID), 
+						ImVec2(m_TileSize, m_TileSize), { 0, 1 }, { 1, 0 }))
+					{
+						tile = m_SelectedTile;
+					}
 				}
 			}
 			ImGui::PopStyleVar();
@@ -153,17 +157,34 @@ namespace ALEngine::Editor
 				f32 textLen{ 0.f };
 
 				u32 count{ 0 };
-				for(auto& types : m_ImageMap)
+				for(auto& type : m_ImageMap)
 				{	
-					std::string name = types.first + "##TileEditorImage";
-					ImGui::BeginChild(name.c_str(), ImVec2(width, width));
+					std::string name = type.first + "##TileEditorImage";
 
-					textLen = ImGui::CalcTextSize(types.first.c_str()).x ;
-					ImGui::SameLine((winWidth - textLen) * 0.25f);
-					ImGui::Text(types.first.c_str());
-					//ImGui::Image
+					ImGui::BeginChild(name.c_str(), ImVec2(width, width), true);
+
+					textLen = ImGui::CalcTextSize(type.first.c_str()).x ;
+					ImGui::SameLine((width - textLen) * 0.5f);
+					ImGui::Text(type.first.c_str());
+
+					Guid id = Engine::AssetManager::Instance()->GetGuid(type.second.c_str());
+					u64 texture = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
+					f32 ImageSize = ImGui::GetContentRegionAvail().y;
+
+					ImGui::NewLine(); ImGui::SameLine((width - ImageSize) * 0.5f);
+					ImGui::Image(reinterpret_cast<ImTextureID>(texture), { ImageSize, ImageSize }, { 0, 1 }, { 1, 0 });
 
 					ImGui::EndChild();
+
+					if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+						m_SelectedTile = type.first;
+
+					if (m_SelectedTile == type.first)
+					{
+						ImDrawFlags draw_flag = 0;
+						ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), 
+							ImColor(ALEditor::Instance()->m_ColorActive), 0.f, draw_flag, 3.f);
+					}
 
 					if (count++ % 2 == 0)
 						ImGui::SameLine();
@@ -257,6 +278,14 @@ namespace ALEngine::Editor
 	void TileEditorPanel::CreateNewMap(void)
 	{
 		f32 winLen{ ImGui::GetContentRegionAvail().x };
+		// Back button
+		if (ImGui::Button("Back##TileEditor_CreateTileMap"))
+		{
+			m_CurrentLoadStage = LoadStage::CreateOrLoadSelection;
+			return;
+		}
+
+		ImGui::NewLine();
 		ImGui::PushItemWidth(winLen * 0.5f);
 
 		// Map Width Text

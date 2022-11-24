@@ -1,7 +1,7 @@
 [
     {
-        "Empty": "Andexs",
-        "Enemy": "Bidoe",
-        "Wall": "Charlo"
+        "Empty": "Assets\\Images\\InitialTile_v04.png",
+        "Enemy": "Assets\\Images\\Profile_Enemy_Unit.png",
+        "Wall": "Assets\\Images\\Walkable.png"
     }
 ]

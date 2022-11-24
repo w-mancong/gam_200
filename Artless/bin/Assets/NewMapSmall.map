@@ -4,13 +4,13 @@
         "Height": 4,
         "Map": [
             [
-                "Empty"
+                "Enemy"
             ],
             [
                 "Empty"
             ],
             [
-                "Empty"
+                "Wall"
             ],
             [
                 "Empty"
