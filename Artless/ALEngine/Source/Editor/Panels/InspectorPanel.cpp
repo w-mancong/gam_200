@@ -683,7 +683,7 @@ namespace ALEngine::Editor
 		{
 			// String input field
 			c8* str = const_cast<c8*>(prop.textString.c_str());	
-			ImGui::InputText("String##InspectorTextComponent", str, 50);
+			ImGui::InputText("String##InspectorTextComponent", str, 31); // exceeding 31 characters causes crash
 			prop.textString = str;
 
 			// font pop down menu
