@@ -14,9 +14,6 @@ brief:	This file contains function declarations for the TileEditorPanel class.
 
 namespace ALEngine::Editor
 {
-	// Forward Delcarations
-	enum class TileType;
-
 	/*!*********************************************************************************
 		\brief
 		Class that aids in the display of the Tile Editor Panel for the editor
@@ -107,6 +104,18 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void LoadMap(const c8* filePath);
 
+		/*!*********************************************************************************
+			\brief
+			Saves the tile editor's data
+		***********************************************************************************/
+		void SaveTileEditorData(void);
+
+		/*!*********************************************************************************
+			\brief
+			Resets all the variables required for th Tile Editor
+		***********************************************************************************/
+		void ResetVariables(void);
+
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size
 
@@ -115,8 +124,11 @@ namespace ALEngine::Editor
 		b8 m_PanelIsOpen{ false };				// Keeps track of whether the Panel is open
 		std::string m_FilePath{ "" };			// FilePath of the current file
 
-		std::vector<std::vector<TileType>> m_TileMap{};			// Map of tiles
+		std::vector<std::vector<std::string>> m_TileMap{};			// Map of tiles
+		std::map<std::string, std::string> m_ImageMap{};			// Map of all the images
 		s32 m_MapHeight{ 0 }, m_MapWidth{ 0 };					// Map Dimensions
+		s32 m_NumTilesSeen{ 0 };								// Number of tiles seen within editor
+		f32 m_TileSize{ 0.f };									// Size of Tile
 
 		enum class LoadStage
 		{
@@ -124,14 +136,6 @@ namespace ALEngine::Editor
 			CreateMap,
 			LoadMap,
 		} m_CurrentLoadStage{ LoadStage::CreateOrLoadSelection };					// Keeps track of what section of loading of map the user is in
-	};
-
-	// Tile Editor Stuff
-	enum class TileType
-	{
-		Empty = 0,
-		Wall,
-		Enemy
 	};
 }
 

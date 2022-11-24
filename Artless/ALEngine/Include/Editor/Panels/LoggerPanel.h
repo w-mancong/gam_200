@@ -12,6 +12,7 @@ brief:	This file contains function definitions for the LoggerPanel class.
 #define LOGGER_PANEL_H
 
 #if EDITOR
+#include "spdlog/sinks/base_sink.h"
 
 namespace ALEngine::Editor
 {
@@ -68,6 +69,10 @@ namespace ALEngine::Editor
 		// Panel Defaults
 		ImVec2 m_DefaultPos{};	// Default Position
 		ImVec2 m_DefaultSize{};	// Default Size
+
+	public:
+		// List of messages
+		std::vector<std::pair<std::string, s32>> m_MessageList;
 	};
 
 	/*!*********************************************************************************
@@ -86,6 +91,35 @@ namespace ALEngine::Editor
 		
 		LOG_ALL			= LOG_TRACE | LOG_DEBUG | LOG_INFO | LOG_WARN | LOG_ERROR | LOG_CRITICAL
 	};
+
+	/*!*********************************************************************************
+		\brief
+		Sink class to received messages from the spdlogger
+	***********************************************************************************/
+	template<typename Mutex>
+	class ALSink : public spdlog::sinks::base_sink<Mutex>
+	{
+	protected:
+		void sink_it_(const spdlog::details::log_msg& msg) override
+		{
+			spdlog::memory_buf_t formatted;
+			spdlog::sinks::base_sink<Mutex>::formatter_->format(msg, formatted);
+			m_Logger->m_MessageList.push_back(std::make_pair<std::string, s32>(fmt::to_string(formatted), static_cast<s32>(msg.level)));
+		}
+
+		void flush_() override
+		{
+			std::cout << std::endl;
+		}
+	public:
+		LoggerPanel* m_Logger;
+
+	};
+
+	#include "spdlog/details/null_mutex.h"
+	#include <mutex>
+	using my_sink_mt = ALSink<std::mutex>;
+	using my_sink_st = ALSink<spdlog::details::null_mutex>;
 }
 
 #endif

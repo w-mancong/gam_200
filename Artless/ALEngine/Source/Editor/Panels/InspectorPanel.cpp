@@ -277,7 +277,8 @@ namespace ALEngine::Editor
 			// File path
 			c8* fp = const_cast<c8*>(spr.filePath.c_str());
 			ImGui::PushID("FilePath");
-			ImGui::InputText("File Path", fp, FILE_BUFFER_SIZE);
+			ImGuiInputTextFlags input_flag = ImGuiInputTextFlags_ReadOnly;
+			ImGui::InputTextWithHint("##FilePath123123", "File Path", fp, FILE_BUFFER_SIZE, input_flag);
 
 			// Drag Drop!
 			if (ImGui::BeginDragDropTarget())
@@ -542,21 +543,15 @@ namespace ALEngine::Editor
 
 					const c8* channelList[]{ "BGM", "SFX" };
 					s32 currChannel = static_cast<s32>(ad.m_Channel);
-					static const c8* curr = nullptr;
-					if (ImGui::BeginCombo("Channel Group##Inspector", curr))
+					std::string comboName = "Channel Group##Inspector" + std::to_string(ad.m_ID);
+					if (ImGui::BeginCombo(comboName.c_str(), currChannel < 0 ? "BGM" : channelList[currChannel]))
 					{
 						for (s32 i{ 0 }; i < IM_ARRAYSIZE(channelList); ++i)
 						{
-							const b8 is_selected = (curr == channelList[i]);
+							const b8 is_selected = (currChannel == i);
 							if (ImGui::Selectable(channelList[i], is_selected))
 							{
 								ad.m_Channel = static_cast<Channel>(i);
-								curr = channelList[i];
-							}
-
-							if (is_selected)
-							{
-								ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
 							}
 						}
 

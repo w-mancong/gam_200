@@ -1,49 +1,56 @@
 [
     {
         "Width": 5,
-        "Height": 6,
+        "Height": 7,
         "Map": [
             [
-                0,
-                0,
-                0,
-                0,
-                0
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
             ],
             [
-                0,
-                0,
-                0,
-                0,
-                0
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
             ],
             [
-                0,
-                0,
-                0,
-                0,
-                0
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
             ],
             [
-                0,
-                0,
-                0,
-                0,
-                0
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
             ],
             [
-                0,
-                0,
-                0,
-                0,
-                0
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
             ],
             [
-                0,
-                0,
-                0,
-                0,
-                0
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
+            ],
+            [
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
             ]
         ]
     }

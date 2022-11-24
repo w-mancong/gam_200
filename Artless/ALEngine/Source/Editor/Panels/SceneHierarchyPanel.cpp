@@ -215,8 +215,14 @@ namespace ALEngine::Editor
 		// Get entity data
 		EntityData data = Coordinator::Instance()->GetComponent<EntityData>(child);
 
+		if (data.active == false)
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
 		// Begin Tree Node
 		b8 opened = ImGui::TreeNodeEx((void*)static_cast<u64>(child), flags, data.tag.c_str());
+
+		if (data.active == false)
+			ImGui::PopStyleVar();
 
 		// Check if hovered on entity
 		ImGuiHoveredFlags hover_flag = ImGuiHoveredFlags_AllowWhenBlockedByActiveItem;
