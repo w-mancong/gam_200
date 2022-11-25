@@ -604,19 +604,19 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::UpdateUnitSpriteLayer() {
-		for (int i = 0; i < enemyEntityList.size(); ++i) {
-			Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(enemyEntityList[i]);
-			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
-			Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+		//for (int i = 0; i < enemyEntityList.size(); ++i) {
+		//	Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(enemyEntityList[i]);
+		//	Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+		//	Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 
-			enemySprite.layer = base_Layer - enemyTransform.localPosition.y;
-		}
+		//	enemySprite.layer = base_Layer - enemyTransform.localPosition.y;
+		//}
 
-		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
+		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+		//Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		//Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
 
-		playerSprite.layer = base_Layer - playerTransform.localPosition.y;
+		//playerSprite.layer = base_Layer - playerTransform.localPosition.y;
 	}
 
 	void CreatePlayerUnit(Entity const& entity) {

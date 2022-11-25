@@ -2,7 +2,6 @@
 #define SKILL_HOVERING_H
 
 #include <ECS/Structure/entity.h>
-#include <Scripting/Cpp Scripts/CppScriptInterface.h>
 
 namespace ALEngine
 {

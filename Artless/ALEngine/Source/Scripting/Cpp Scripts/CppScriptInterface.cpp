@@ -2,6 +2,7 @@
 
 // to include all the cpp script headers here
 #include <Scripting/Cpp Scripts/Scripts/SkillHovering.h>
+#include <Scripting/Cpp Scripts/Scripts/StatsHovering.h>
 
 namespace ALEngine
 {
@@ -77,6 +78,7 @@ namespace ALEngine
 
 #pragma region Init Functions	
 		AL_ADD_INIT_FUNC(SkillInit);
+		AL_ADD_INIT_FUNC(StatsInit);
 #pragma endregion
 
 #pragma region Update Functions
@@ -84,6 +86,7 @@ namespace ALEngine
 
 #pragma region Exit Functions
 		AL_ADD_EXIT_FUNC(SkillReset);
+		AL_ADD_EXIT_FUNC(StatsReset);
 #pragma endregion
 
 #pragma region Unload Functions

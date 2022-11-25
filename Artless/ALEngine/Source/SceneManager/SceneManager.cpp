@@ -156,7 +156,7 @@ namespace ALEngine::Engine::Scene
 
 		// Local active status
 		writer.Key("localActive");
-		writer.Bool(entityData.localActive);
+		writer.Bool(entityData.selfActive);
 
 		// Entity ID
 		writer.Key("id");
@@ -185,7 +185,7 @@ namespace ALEngine::Engine::Scene
 		// Getting active status
 		entityData.active = v[0]["active"].GetBool();
 		// Getting local active status
-		entityData.localActive = v[0]["localActive"].GetBool();
+		entityData.selfActive = v[0]["localActive"].GetBool();
 		// Getting id
 		entityData.id = v[0]["id"].GetUint();
 		// Getting parent id

@@ -214,14 +214,12 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		//Scene::LoadScene("Assets\\test.scene");
 		//StartGameplaySystem();
+		//Scene::LoadScene("Assets\\test.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("skill_icon1");
-		//EntityScript es;
-		//es.AddInitFunction("SkillInit");
-		//Coordinator::Instance()->AddComponent(en, es);
-		//CreateEventTrigger(en);
+		//EntityScript& es = Coordinator::Instance()->GetComponent<EntityScript>(en);
+		//es.AddFreeFunction("SkillReset");
 
 		//Scene::SaveScene("test");
 	}

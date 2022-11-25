@@ -15,8 +15,14 @@ namespace ALEngine::Tree
     {
         void UpdateGlobalCoordinates(Transform& trans)
         {
-            if (trans.localPosition != trans.prevPosition || trans.localScale != trans.prevScale)
+            if (trans.localPosition != trans.prevPosition || trans.localScale != trans.prevScale || trans.localRotation != trans.prevRotation)
                 trans.isDirty = true;
+            else if (trans.position != trans.localPosition || trans.scale != trans.localScale || trans.rotation != trans.localRotation)
+            {
+                trans.localPosition = trans.position;
+                trans.localRotation = trans.rotation;
+                trans.localScale    = trans.scale;
+            }
             if (trans.isDirty)
             {
                 trans.position = trans.localPosition;
@@ -559,12 +565,12 @@ namespace ALEngine::Tree
         if (node.parent != -1)
         {
             EntityData const& parent_ed = Coordinator::Instance()->GetComponent<EntityData>(node.parent);
-            if (ed.localActive)
+            if (ed.selfActive)
                 ed.active = parent_ed.active;
         }
         else
         {
-            if (ed.localActive)
+            if (ed.selfActive)
                 ed.active = activeState;
         }
 
@@ -729,4 +735,4 @@ namespace ALEngine::Tree
             }
         } while (done == false);
     }
-} // end of namespace Tree
+} // end of namespace Tree-

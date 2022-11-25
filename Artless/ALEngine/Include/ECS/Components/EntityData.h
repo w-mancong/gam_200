@@ -18,7 +18,7 @@ namespace ALEngine::ECS::Component
 	{
 		std::string tag{};			// Entity Tag
 		b8 active{ true };			// Entity Active (For rendering, etc...)
-		b8 localActive{ true };		// Active state that will control active (variable used inside Editor side only)
+		b8 selfActive{ true };		// Active state that will control active (variable used inside Editor side only)
 		u32 id{};
 		s32 parentID{};				// Id of entity	
 #if EDITOR
