@@ -110,9 +110,9 @@ namespace ALEngine::Editor
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
 		//	DisplayAnimator();
 
-		// Check if there is Script component
-		if (Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
-			DisplayEntityScript();
+		//// Check if there is Script component
+		//if (Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+		//	DisplayEntityScript();
 
 		// Add component button
 		AddComponentButton();

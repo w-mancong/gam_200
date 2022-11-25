@@ -41,7 +41,13 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			if (!focus && !editorFocus)
+			//if (!focus && !editorFocus)
+			//{
+			//	glfwPollEvents();
+			//	return;
+			//}
+
+			if (!focus)
 			{
 				glfwPollEvents();
 				return;
@@ -208,8 +214,13 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		//Scene::LoadScene("Assets\\test.scene");
-		//StartGameplaySystem();
+		Scene::LoadScene("Assets\\test.scene");
+		StartGameplaySystem();
+
+		Entity en = Coordinator::Instance()->GetEntityByTag("skill_icon1");
+		EntityScript es;
+		es.AddInitFunction("SkillInit");
+		Coordinator::Instance()->AddComponent(en, es);
 	}
 
 	void Application::Update(void)

@@ -278,6 +278,7 @@
     <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptInterface.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\SkillHovering.cpp" />
     <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
     <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
@@ -425,6 +426,7 @@
     <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptInterface.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptSystem.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\EntityScript.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
     <ClInclude Include="Include\Scripting\ScriptGlue.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />

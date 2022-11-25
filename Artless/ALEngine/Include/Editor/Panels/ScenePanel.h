@@ -124,7 +124,7 @@ namespace ALEngine::Editor
 		// Camera
 		Engine::Camera m_EditorCamera{ Math::Vec3(0.f, 0.f, 725.f) };
 		f32 m_CameraWidth{ 0.0f }, m_CameraHeight{ 0.0f };
-		static f32 constexpr const ZOOM_SPEED{ 20.0f };
+		static f32 constexpr const ZOOM_SPEED{ 50.0f };
 	};
 
 	/*!*********************************************************************************

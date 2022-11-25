@@ -86,6 +86,8 @@
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="..\Extern\include\imgui\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
+    <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\SkillHovering.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -282,9 +284,6 @@
     <ClCompile Include="Source\Utility\Gizmo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\ECS\Components\CharacterController.h" />
@@ -348,6 +347,7 @@
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
