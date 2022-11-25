@@ -17,8 +17,12 @@ namespace ALEngine
 		if (en_tooltip >= ECS::MAX_ENTITIES)
 			return;
 
+		// tool tip skills
 		math::vec3& position = Coordinator::Instance()->GetComponent<Transform>(en_tooltip).position;
+
+		// skill icon
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(en_skillicon);
+
 		// text skill entity
 		Text& text = Coordinator::Instance()->GetComponent<Text>(en_textskill);
 		EntityData& text_ed = Coordinator::Instance()->GetComponent<EntityData>(en_textskill);
@@ -89,7 +93,7 @@ namespace ALEngine
 	{
 		if (!found_skill_tooltip)
 		{
-			en_tooltip = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
+			en_tooltip	 = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
 			en_skillicon = Coordinator::Instance()->GetEntityByTag("skill_icon");
 			en_textskill = Coordinator::Instance()->GetEntityByTag("text_skillname");
 			found_skill_tooltip = true;

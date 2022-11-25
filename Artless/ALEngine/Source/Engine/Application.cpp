@@ -217,7 +217,12 @@ namespace ALEngine::Engine
 		//StartGameplaySystem();
 		//Scene::LoadScene("Assets\\test.scene");
 
-		//Entity en = Coordinator::Instance()->GetEntityByTag("skill_icon1");
+		//Entity en = Coordinator::Instance()->GetEntityByTag("bar_stats");
+		//EntityScript es;
+		//es.AddInitFunction("StatsInit");
+		//es.AddFreeFunction("StatsReset");
+		//Coordinator::Instance()->AddComponent(en, es);
+
 		//EntityScript& es = Coordinator::Instance()->GetComponent<EntityScript>(en);
 		//es.AddFreeFunction("SkillReset");
 
