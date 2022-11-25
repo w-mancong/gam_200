@@ -22,10 +22,7 @@ namespace ALEngine::Editor
 		m_EditorCamera.ProjectionMatrix(Engine::Camera::Projection::Orthographic);
 		m_EditorCamera.Position() = { Math::Vec3(-static_cast<f32>(Graphics::OpenGLWindow::width >> 1), -static_cast<f32>(Graphics::OpenGLWindow::height >> 1), 725.f) };
 
-		m_EditorCamera.ProjBottom() = 0.0f;
-		m_EditorCamera.ProjTop()	= static_cast<f32>(Graphics::OpenGLWindow::height);
-		m_EditorCamera.ProjLeft()   = 0.0f;
-		m_EditorCamera.ProjRight()  = static_cast<f32>(Graphics::OpenGLWindow::width);
+		m_CameraWidth = static_cast<f32>(Graphics::OpenGLWindow::width);
 	}
 
 	ScenePanel::~ScenePanel(void)
@@ -287,10 +284,14 @@ namespace ALEngine::Editor
 		}
 
 		// Update camera zoom
-		m_EditorCamera.ProjBottom() += static_cast<f32>(Input::m_MouseWheelEvent) * 10.0f;
-		m_EditorCamera.ProjLeft()   += static_cast<f32>(Input::m_MouseWheelEvent) * 10.0f;
+		//m_EditorCamera.ProjBottom() += static_cast<f32>(Input::m_MouseWheelEvent) * 10.0f;
+		//m_EditorCamera.ProjLeft()   += static_cast<f32>(Input::m_MouseWheelEvent) * 10.0f;
 
-		std::cout << m_EditorCamera.ProjBottom() << std::endl;
+		m_CameraWidth  -= static_cast<f32>(Input::m_MouseWheelEvent) * 20.0f;
+		m_CameraHeight = m_CameraWidth / Graphics::OpenGLWindow::ar;
+
+		m_EditorCamera.ProjRight() = m_CameraWidth;
+		m_EditorCamera.ProjTop()   = m_CameraHeight;
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

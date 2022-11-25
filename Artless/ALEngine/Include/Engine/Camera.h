@@ -92,6 +92,26 @@ namespace ALEngine::Engine
 		f32& ProjRight(void);
 
 		/*!*********************************************************************************
+			\brief Return a const reference to bottom coordinates for creating orthographic projection
+		***********************************************************************************/
+		f32 const& ProjBottom(void) const;
+
+		/*!*********************************************************************************
+			\brief Return a const reference to top coordinates for creating orthographic projection
+		***********************************************************************************/
+		f32 const& ProjTop(void) const;
+
+		/*!*********************************************************************************
+			\brief Return a const reference to left coordinates for creating orthographic projection
+		***********************************************************************************/
+		f32 const& ProjLeft(void) const;
+
+		/*!*********************************************************************************
+			\brief Return a const reference to right coordinates for creating orthographic projection
+		***********************************************************************************/
+		f32 const& ProjRight(void) const;
+
+		/*!*********************************************************************************
 			\brief
 			Return position of camera
 		***********************************************************************************/
