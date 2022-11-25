@@ -8,7 +8,8 @@ namespace ALEngine
 		using namespace ECS;
 
 		b8 found_skill_tooltip{ false };
-		Entity en_tooltip{ MAX_ENTITIES }, en_skillicon{ MAX_ENTITIES }, en_textskill{ MAX_ENTITIES };
+		Entity en_tooltip{ MAX_ENTITIES }, en_skillicon{ MAX_ENTITIES }, en_textskill{ MAX_ENTITIES },
+			en_hard_drop{ MAX_ENTITIES }, en_life_drain{ MAX_ENTITIES };
 		math::vec3 const original_position{ 642.0f, 353.0f, 0.0f };
 	}
 
@@ -43,6 +44,8 @@ namespace ALEngine
 				text_ed.selfActive = true;
 
 				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets\\Images\\HardDrop.png");
+
+				SetActive(true, en_hard_drop);
 				break;
 			case 2:
 				position = { 475.0f, 190.0f, 0.0f };
@@ -52,6 +55,8 @@ namespace ALEngine
 				text_ed.selfActive = true;
 
 				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets\\Images\\LifeDrain.png");
+
+				SetActive(true, en_life_drain);
 				break;
 			case 3:
 				position = { 535.0f, 190.0f, 0.0f };
@@ -75,6 +80,8 @@ namespace ALEngine
 			return;
 
 		SetActive(false, en_tooltip);
+		SetActive(false, en_hard_drop);
+		SetActive(false, en_life_drain);
 		SetActive(false, en_textskill);
 
 		// Reset tooltip to original position
@@ -93,9 +100,11 @@ namespace ALEngine
 	{
 		if (!found_skill_tooltip)
 		{
-			en_tooltip	 = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
-			en_skillicon = Coordinator::Instance()->GetEntityByTag("skill_icon");
-			en_textskill = Coordinator::Instance()->GetEntityByTag("text_skillname");
+			en_tooltip	  = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
+			en_skillicon  = Coordinator::Instance()->GetEntityByTag("skill_icon");
+			en_textskill  = Coordinator::Instance()->GetEntityByTag("text_skillname");
+			en_hard_drop  = Coordinator::Instance()->GetEntityByTag("hard_drop_des1");
+			en_life_drain = Coordinator::Instance()->GetEntityByTag("life_drain_des1");
 			found_skill_tooltip = true;
 
 			Coordinator::Instance()->GetComponent<Transform>(en_tooltip).position = original_position;

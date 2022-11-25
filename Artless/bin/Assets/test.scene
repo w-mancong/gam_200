@@ -380,7 +380,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.13134765625,
+                    1547.1314697265625,
                     44.69794845581055,
                     0.0
                 ],
@@ -554,7 +554,7 @@
                 "localActive": false,
                 "id": 13,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -654,7 +654,7 @@
             {
                 "position": [
                     642.0,
-                    353.0,
+                    352.9999694824219,
                     0.0
                 ],
                 "scale": [
@@ -671,7 +671,7 @@
                 "localActive": false,
                 "id": 16,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -693,7 +693,7 @@
             {
                 "position": [
                     542.9996337890625,
-                    415.081787109375,
+                    415.0817565917969,
                     0.0
                 ],
                 "scale": [
@@ -1033,7 +1033,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7028198242188,
+                    967.702880859375,
                     41.370460510253906,
                     0.0
                 ],
@@ -1221,7 +1221,7 @@
             {
                 "position": [
                     641.99951171875,
-                    353.0,
+                    352.99993896484375,
                     0.0
                 ],
                 "scale": [
@@ -1727,6 +1727,316 @@
                 "position": [
                     191.0,
                     163.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 41,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des1",
+                "active": false,
+                "localActive": false,
+                "id": 41,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Slam your tetromino on enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    120.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 42,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des2",
+                "active": false,
+                "localActive": true,
+                "id": 42,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealing 15 DMG on all enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    104.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 43,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des3",
+                "active": false,
+                "localActive": true,
+                "id": 43,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "affected.",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    87.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 44,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des1",
+                "active": false,
+                "localActive": false,
+                "id": 44,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Drain the life of your enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    120.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 45,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des2",
+                "active": false,
+                "localActive": true,
+                "id": 45,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealing 12 DMG to all enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    104.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 46,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des3",
+                "active": false,
+                "localActive": true,
+                "id": 46,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "and heal for half of damage",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    87.5
+                ]
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [],
+                "Update": [],
+                "Free": [],
+                "Unload": []
+            }
+        ]
+    },
+    {
+        "id": 47,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0000114440918,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des4",
+                "active": false,
+                "localActive": true,
+                "id": 47,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealt",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    72.0
                 ]
             }
         ]
