@@ -238,6 +238,8 @@ namespace ALEngine::ECS
 
 		MeshBuilder::Instance()->Init();
 		camera.ProjectionMatrix(Camera::Projection::Orthographic);
+		camera.ProjRight() = static_cast<f32>(Graphics::OpenGLWindow::width);
+		camera.ProjTop() = static_cast<f32>(Graphics::OpenGLWindow::height);
 	}
 
 	void RenderGameplay(void)

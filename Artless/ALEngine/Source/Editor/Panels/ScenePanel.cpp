@@ -49,6 +49,8 @@ namespace ALEngine::Editor
 			return;
 		}
 
+		CameraZoom();
+
 		//ECS::Render(m_EditorCamera);
 
 		// Set Scene Width and Height
@@ -282,16 +284,16 @@ namespace ALEngine::Editor
 				m_EditorCamera.Position() += Math::Vec3(change.x, change.y, 0.f);
 			}
 		}
+	}
 
-		// Update camera zoom
-		//m_EditorCamera.ProjBottom() += static_cast<f32>(Input::m_MouseWheelEvent) * 10.0f;
-		//m_EditorCamera.ProjLeft()   += static_cast<f32>(Input::m_MouseWheelEvent) * 10.0f;
-
-		m_CameraWidth  -= static_cast<f32>(Input::m_MouseWheelEvent) * 20.0f;
+	void ScenePanel::CameraZoom(void)
+	{
+		if (ImGui::IsWindowHovered(ImGuiHoveredFlags_RootWindow))
+			m_CameraWidth -= static_cast<f32>(Input::m_MouseWheelEvent) * ZOOM_SPEED;
 		m_CameraHeight = m_CameraWidth / Graphics::OpenGLWindow::ar;
 
 		m_EditorCamera.ProjRight() = m_CameraWidth;
-		m_EditorCamera.ProjTop()   = m_CameraHeight;
+		m_EditorCamera.ProjTop() = m_CameraHeight;
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

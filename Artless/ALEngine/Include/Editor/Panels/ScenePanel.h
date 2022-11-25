@@ -97,10 +97,16 @@ namespace ALEngine::Editor
 		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
+
 		/*!*********************************************************************************
 			\brief To control the camera movements
 		***********************************************************************************/
 		void UserInput(void);
+
+		/*!*********************************************************************************
+			\brief To control zoom in/out of camera
+		***********************************************************************************/
+		void CameraZoom(void);
 
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size
@@ -118,6 +124,7 @@ namespace ALEngine::Editor
 		// Camera
 		Engine::Camera m_EditorCamera{ Math::Vec3(0.f, 0.f, 725.f) };
 		f32 m_CameraWidth{ 0.0f }, m_CameraHeight{ 0.0f };
+		static f32 constexpr const ZOOM_SPEED{ 20.0f };
 	};
 
 	/*!*********************************************************************************

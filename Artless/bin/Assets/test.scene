@@ -55,7 +55,7 @@
         "Transform": [
             {
                 "position": [
-                    254.01571655273438,
+                    254.01568603515625,
                     92.68330383300781,
                     0.0
                 ],
@@ -212,7 +212,7 @@
             {
                 "position": [
                     152.64837646484375,
-                    209.5432891845703,
+                    209.54324340820313,
                     0.0
                 ],
                 "scale": [
@@ -367,7 +367,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.12939453125,
+                    1547.129638671875,
                     44.69794845581055,
                     0.0
                 ],
@@ -446,7 +446,7 @@
             {
                 "position": [
                     800.0,
-                    150.0,
+                    150.00001525878906,
                     0.0
                 ],
                 "scale": [
@@ -459,11 +459,11 @@
         "EntityData": [
             {
                 "tag": "end_turn",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 11,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -498,11 +498,11 @@
         "EntityData": [
             {
                 "tag": "phase_indicator",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 12,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -537,11 +537,11 @@
         "EntityData": [
             {
                 "tag": "tooltip_stats",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 13,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -576,8 +576,8 @@
         "EntityData": [
             {
                 "tag": "tooltip_hp/name",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 14,
                 "parentID": -1,
                 "treeNodeFlags": 0
@@ -615,11 +615,11 @@
         "EntityData": [
             {
                 "tag": "tooltip_hpbar",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 15,
                 "parentID": 14,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -641,21 +641,21 @@
             {
                 "position": [
                     641.676513671875,
-                    352.9740295410156,
+                    352.97406005859375,
                     0.0
                 ],
                 "scale": [
                     300.0,
                     200.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.25868770480155945
             }
         ],
         "EntityData": [
             {
                 "tag": "tooltip_skills",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 16,
                 "parentID": -1,
                 "treeNodeFlags": 0
@@ -679,21 +679,21 @@
         "Transform": [
             {
                 "position": [
-                    542.676513671875,
-                    415.05584716796875,
+                    542.3971557617188,
+                    414.6083068847656,
                     0.0
                 ],
                 "scale": [
                     60.0,
                     46.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.25868770480155945
             }
         ],
         "EntityData": [
             {
                 "tag": "skill_icon",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 17,
                 "parentID": 16,
@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7012939453125,
+                    967.701416015625,
                     41.370460510253906,
                     0.0
                 ],
@@ -1088,6 +1088,393 @@
                 "id": 27,
                 "parentID": 3,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 28,
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    149.99993896484375,
+                    0.0
+                ],
+                "scale": [
+                    265.0,
+                    60.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_endturn",
+                "active": false,
+                "localActive": true,
+                "id": 28,
+                "parentID": 11,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "End Turn",
+                "currentFont": "Arial-italic",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    393.0,
+                    74.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "Transform": [
+            {
+                "position": [
+                    641.6764526367188,
+                    352.97406005859375,
+                    0.0
+                ],
+                "scale": [
+                    300.0,
+                    200.0
+                ],
+                "rotation": 0.25868770480155945
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_skillname",
+                "active": false,
+                "localActive": true,
+                "id": 29,
+                "parentID": 16,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Skill Name",
+                "currentFont": "Arial-italic",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    317.0,
+                    218.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    300.0,
+                    200.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_phaseindicator",
+                "active": false,
+                "localActive": true,
+                "id": 30,
+                "parentID": 12,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Phase Indicator",
+                "currentFont": "Arial-italic",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    367.5,
+                    236.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "Transform": [
+            {
+                "position": [
+                    1250.0,
+                    870.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    80.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_hp",
+                "active": false,
+                "localActive": true,
+                "id": 31,
+                "parentID": 14,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "HP / HP",
+                "currentFont": "Arial-italic",
+                "scale": 0.6499999761581421,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    465.0,
+                    463.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "Transform": [
+            {
+                "position": [
+                    250.00006103515625,
+                    390.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_playername",
+                "active": false,
+                "localActive": true,
+                "id": 32,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "DROR",
+                "currentFont": "Arial-italic",
+                "scale": 1.0,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    90.0,
+                    233.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 33,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    665.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_attack",
+                "active": false,
+                "localActive": true,
+                "id": 33,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "ATTACK             :",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    63.5,
+                    232.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 34,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    665.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_defense",
+                "active": false,
+                "localActive": true,
+                "id": 34,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "DEFENSE          :",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    63.5,
+                    209.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    665.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_movement",
+                "active": false,
+                "localActive": true,
+                "id": 35,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "MOVEMENT      :",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    63.5,
+                    185.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    665.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_range",
+                "active": false,
+                "localActive": true,
+                "id": 36,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "RANGE              :",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    63.5,
+                    161.5
+                ]
             }
         ]
     }

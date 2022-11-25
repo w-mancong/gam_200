@@ -20,9 +20,12 @@ namespace ALEngine::ECS
 
 	void TextSystem::Update(void)
 	{
-		for (auto x : textSystem->mEntities)
+		for (Entity en : textSystem->mEntities)
 		{
-			Text text = Coordinator::Instance()->GetComponent<Text>(x);
+			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
+				continue;
+
+			Text text = Coordinator::Instance()->GetComponent<Text>(en);
 			if (text.currentFont.empty() || text.textString.empty())
 				continue;
 
