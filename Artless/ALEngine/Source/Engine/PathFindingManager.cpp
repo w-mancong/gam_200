@@ -11,15 +11,15 @@ namespace  ALEngine::Engine::AI
 	\brief
 	The Astar pathfinding main logic function
 	***********************************************************************************/
-    b8 FindPath(Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, std::vector<ECS::Entity>& pathReturn)
+    b8 FindPath(Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, std::vector<ECS::Entity>& pathReturn, bool canWalkOverUnwalkable)
     {
         Cell& startNode = Coordinator::Instance()->GetComponent<Cell>(startCell);
         Cell& endNode = Coordinator::Instance()->GetComponent<Cell>(endCell);
 
-
-        if (!endNode.m_isBlocked || !endNode.m_canWalk) {
+        if (!endNode.m_isAccessible || (!canWalkOverUnwalkable && !endNode.m_canWalk)) {
             return false;
-        }
+        }      
+        
 
         if (startNode.coordinate == endNode.coordinate) {
             return false;
@@ -87,7 +87,7 @@ namespace  ALEngine::Engine::AI
                 }
                 //If it's not end
                 //then check if the current neighbour node exist inside closed list or it is blocked
-                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || !neighbourNode->m_isBlocked || !neighbourNode->m_canWalk)
+                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || !neighbourNode->m_isAccessible || (!canWalkOverUnwalkable && !neighbourNode->m_canWalk))
                 {
                     continue;
                 }
@@ -140,7 +140,7 @@ namespace  ALEngine::Engine::AI
             Cell& c = Coordinator::Instance()->GetComponent<Cell>(Engine::GameplayInterface::getEntityCell(currentRoom, currentCoordinate[0], currentCoordinate[1] + 1));
             neighbourList.push_back(&c);
         }
-        if (IsCoordinateInsideRoom(currentRoom, currentCoordinate[0] + 1, currentCoordinate[1] - 1)) //down 0,-1
+        if (IsCoordinateInsideRoom(currentRoom, currentCoordinate[0], currentCoordinate[1] - 1)) //down 0,-1
         {
             Cell& c = Coordinator::Instance()->GetComponent<Cell>(Engine::GameplayInterface::getEntityCell(currentRoom, currentCoordinate[0], currentCoordinate[1] -1));
             neighbourList.push_back(&c);

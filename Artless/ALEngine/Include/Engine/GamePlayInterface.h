@@ -41,7 +41,7 @@ namespace ALEngine::Engine::GameplayInterface
     ***********************************************************************************/
 	u32 getEntityCell(Room& currentRoom, u32 x, u32 y);
 
-	void ToggleCellToInaccessible(Room& currentRoom, u32 x, u32 y, b8 istrue);
+	void ToggleCellAccessibility(Room& currentRoom, u32 x, u32 y, b8 istrue);
 
 	/*!*********************************************************************************
 	\brief
@@ -54,6 +54,8 @@ namespace ALEngine::Engine::GameplayInterface
 	Global function to check cell is inside room of cells
     ***********************************************************************************/
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
+
+	bool IsCoordinateCellAccessible(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
 
 	//Initialize Patterns
 	void InitializePatterns(std::vector<Pattern>& patternList);
@@ -81,5 +83,8 @@ namespace ALEngine::Engine::GameplayInterface
 
 	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities);
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage);
+
+	//AI
+	void RunEnemyAdjacentAttack(Room& room, Unit& enemy);
 }
 #endif
