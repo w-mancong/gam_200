@@ -85,6 +85,6 @@ namespace ALEngine::Engine::GameplayInterface
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage);
 
 	//AI
-	void RunEnemyAdjacentAttack(Room& room, Unit& enemy);
+	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy);
 }
 #endif

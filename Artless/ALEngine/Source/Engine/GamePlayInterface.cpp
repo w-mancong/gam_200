@@ -339,7 +339,7 @@ namespace ALEngine::Engine::GameplayInterface
 		}
 	}
 
-	void RunEnemyAdjacentAttack(Room& room, Unit& enemy) {
+	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy) {
 		//adjacent to player
 		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0] + 1, enemy.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0] + 1, enemy.coordinate[1]));
@@ -347,7 +347,7 @@ namespace ALEngine::Engine::GameplayInterface
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					return;
+					return true;
 				}
 			}
 		}
@@ -357,7 +357,7 @@ namespace ALEngine::Engine::GameplayInterface
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					return;
+					return true;
 				}
 			}
 		}
@@ -367,19 +367,20 @@ namespace ALEngine::Engine::GameplayInterface
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					return;
+					return true;
 				}
 			}
 		}
-		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0], enemy.coordinate[1])) {
+		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0], enemy.coordinate[1] - 1)) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0], enemy.coordinate[1] - 1));
 
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					return;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 }

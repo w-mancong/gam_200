@@ -314,10 +314,10 @@ namespace ALEngine::ECS
 		}
 
 		//Create Player
-		gameplaySystem->PlaceNewPlayerInRoom(0, 0);
+		gameplaySystem->PlaceNewPlayerInRoom(0, 5);
 
 		gameplaySystem->enemyEntityList.clear();
-		//gameplaySystem->PlaceNewEnemyInRoom(0, 1);
+		gameplaySystem->PlaceNewEnemyInRoom(0, 1);
 		gameplaySystem->PlaceNewEnemyInRoom(4, 4);
 
 		//Create EndTurn Button
@@ -450,6 +450,15 @@ namespace ALEngine::ECS
 			case GAMEPLAY_STATUS::PHASE_ENEMY:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
 				TogglePatternGUI(true);
+
+				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+				playerUnit.movementPoints = playerUnit.maxMovementPoints;
+
+				for (int i = 0; i < enemyEntityList.size(); ++i) {
+					Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+					enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+				}
+
 				AL_CORE_INFO("Loading PHASE SETUP");
 				break;
 		}
@@ -500,8 +509,14 @@ namespace ALEngine::ECS
 
 		playerUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
 
+		playerUnit.maxMovementPoints = 4;
+		playerUnit.movementPoints = playerUnit.maxMovementPoints;
+
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity;
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).hasUnit = true;
+
+		playerUnit.maxHealth = 50;
+		playerUnit.health = 50;
 
 		GameplayInterface::PlaceWalkableOnGrid(gameplaySystem->m_Room, { x, y }, "Assets/Images/Walkable.png");
 
@@ -520,9 +535,13 @@ namespace ALEngine::ECS
 		enemyUnit.coordinate[0] = x;
 		enemyUnit.coordinate[1] = y;
 
+		enemyUnit.maxMovementPoints = 4;
+		enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+
 		enemyUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
 
 		enemyUnit.health = 20, enemyUnit.maxHealth = 20;
+		enemyUnit.minDamage = 15, enemyUnit.maxDamage = 15;
 
 		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).unitEntity = newEnemy;
 		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).hasUnit = true;
@@ -587,6 +606,8 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::RunGameState() {
+
+		Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		switch (currentUnitControlStatus)
 		{
 			case UNITS_CONTROL_STATUS::NOTHING:
@@ -701,6 +722,7 @@ namespace ALEngine::ECS
 	void GameplaySystem::MoveEnemy() {
 		ClearMoveOrder();
 
+
 		if (enemyMoved >= enemyEntityList.size()) {
 			EndTurn();
 			return;
@@ -710,32 +732,49 @@ namespace ALEngine::ECS
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyMoved]);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
+		bool ifPlayerIsAlreadyBeside = GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
+		if (ifPlayerIsAlreadyBeside) {
+			AL_CORE_INFO("ATk player");
+			++enemyMoved;
+			return;
+		}
+
 		Entity cellToMoveTo;
 		b8 hasFoundCellBesidePlayer = false;
 
 		//adjacent to player
-		if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1]) &&
-			IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1])) {
+		if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1])	&&
+			IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1])					&&
+			!Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1])).hasUnit) 
+		{
 			hasFoundCellBesidePlayer = true;
 			cellToMoveTo = GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1]);
-		}else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1]) &&
-			IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1])) {
+		}
+		else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1]) &&
+			IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1])						&&
+			!Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1])).hasUnit) 
+		{
 			hasFoundCellBesidePlayer = true;
 			cellToMoveTo = GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1]);
 		}
-		else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]) + 1 &&
-			IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] + 1)) {
+		else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]) + 1	&&
+			IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] + 1)						&&
+			!Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1])).hasUnit + 1) 
+		{
 			hasFoundCellBesidePlayer = true;
 			cellToMoveTo = GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] + 1);
 		}
-		else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]) - 1 &&
-			IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] - 1)) {
+		else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]) - 1	&&
+			IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] - 1)						&&
+			!Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1])).hasUnit - 1) 
+		{
 			hasFoundCellBesidePlayer = true;
 			cellToMoveTo = GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] - 1);
 		}
 
 		if (!hasFoundCellBesidePlayer) {
 			AL_CORE_INFO("No Space Beside Player");
+			GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
 			++enemyMoved;
 			return;
 		}
@@ -747,8 +786,8 @@ namespace ALEngine::ECS
 		
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
-			++enemyMoved;
 			GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
+			++enemyMoved;
 			return;
 		}
 
@@ -776,8 +815,6 @@ namespace ALEngine::ECS
 
 		movingTransform.localPosition += direction * 500.0f * Time::m_DeltaTime;
 
-		AL_CORE_INFO(std::to_string(movingTransform.localPosition.x) + " : " + std::to_string(movingTransform.localPosition.y));
-
 		if (Vector3::Distance(movingTransform.localPosition, cellTransform.localPosition) < 10.0f) {
 			Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell());
@@ -786,7 +823,16 @@ namespace ALEngine::ECS
 			movinUnit.coordinate[0] = cell.coordinate.x;
 			movinUnit.coordinate[1] = cell.coordinate.y;
 
-			bool isEndOfPath = StepUpModeOrderPath(currentModeOrder);
+			bool isEndOfPath = true;
+
+			--movinUnit.movementPoints;
+
+			if (movinUnit.movementPoints <= 0) {
+				isEndOfPath = true;
+			}
+			else {
+				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
+			}
 
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
