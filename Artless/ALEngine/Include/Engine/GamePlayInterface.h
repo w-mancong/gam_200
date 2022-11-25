@@ -24,6 +24,23 @@ namespace ALEngine::Engine::GameplayInterface
 		std::vector<Vector2Int> coordinate_occupied;
 	};
 
+	//For now 2 abilities
+	struct Abilities {
+		u32 current_Cooldown = 0, max_Cooldown = 2;
+		virtual void RunAbilities_OnCells(std::vector<ECS::Entity>& cell_Entities) {};
+	};
+
+	//1) Hard drop - damage all enemies in range
+	struct Abilities_HardDrop : Abilities {
+		u32 damage = 15;
+		void RunAbilities_OnCells(std::vector<ECS::Entity>& cell_Entities);
+	};
+
+	//2) Life Drain - damage and get damage amount as heal for players
+	struct Abilities_LifeDrain : Abilities {
+		u32 lifeStealAmount = 12;	//0 to 1 (1 being 100% of damage)
+		void RunAbilities_OnCells(std::vector<ECS::Entity>& cell_Entities);
+	};
 
 	/*!*********************************************************************************
 	\brief
@@ -51,6 +68,9 @@ namespace ALEngine::Engine::GameplayInterface
 	//Initialize Pattern GUI
 	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities);
 
+	//Initialize Abilities
+	void InitializeAbilities(std::vector<Abilities>& abilitiesList);
+
 	//Initialize Pattern GUI
 	void InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities);
 
@@ -63,5 +83,8 @@ namespace ALEngine::Engine::GameplayInterface
 	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName);
 
 	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
+	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
+
+	void DoDamageToUnit(Unit& unit, s32 damage);
 }
 #endif

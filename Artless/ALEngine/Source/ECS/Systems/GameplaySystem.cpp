@@ -21,6 +21,7 @@ namespace ALEngine::ECS
 	using namespace Math; using namespace Engine; using namespace Graphics;
 
 	using GameplayInterface::Pattern;
+	using GameplayInterface::Abilities;
 
 	class GameplaySystem : public System
 	{
@@ -71,6 +72,10 @@ namespace ALEngine::ECS
 		std::vector<Pattern> pattern_List;
 		Pattern selected_Pattern;
 
+		//Abilities
+		std::vector<Abilities> Abilities_List;
+		Abilities selected_Abilities;
+
 		Entity current_Moused_Over_Cell;
 
 		//UI
@@ -84,6 +89,9 @@ namespace ALEngine::ECS
 		//Select Pattern
 		void SelectPattern(Pattern pattern);
 
+		//Select Abilities
+		void SelectAbility(Abilities ability);
+
 		//Return if reached end
 		bool StepUpModeOrderPath(MoveOrder& order);
 		u32 getRoomSize();
@@ -95,8 +103,6 @@ namespace ALEngine::ECS
 		void RunGameStateMoving();
 
 		void EndTurn();
-
-		void DeselectPatternPlacement();
 
 		void TogglePatternGUI(b8 istrue);
 		void ToggleAbilitiesGUI(b8 istrue);
@@ -129,9 +135,7 @@ namespace ALEngine::ECS
 
 	void Event_Button_Select_Abilities_0(Entity invoker) {
 		AL_CORE_INFO("Select Abilities 0");
-		
-		gameplaySystem->ToggleAbilitiesGUI(false);
-		gameplaySystem->TogglePatternGUI(true);
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
 	}
 
 	void Event_Button_Select_CurrentPattern(Entity invoker) {
@@ -167,13 +171,25 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
-			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+			if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP) {
+				b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 			
-			if(canPlace)
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
-			else
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
-		}
+				if(canPlace)
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+				else
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
+			}
+			else if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+				//GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+
+				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+
+				if (canPlace)
+					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+				else
+					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
+			}
+		}//End check for pattern placement
 	}
 
 	void Event_MouseExitCell(Entity invoker) {
@@ -237,6 +253,9 @@ namespace ALEngine::ECS
 		//Initialize Pattern
 		InitializePatterns(gameplaySystem->pattern_List);
 
+		//Initialize Abilities
+		InitializeAbilities(gameplaySystem->Abilities_List);
+
 		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {
 			gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
@@ -281,7 +300,8 @@ namespace ALEngine::ECS
 
 		playerUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, 0, 0);
 
-		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity;
+		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity; 
+		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).hasUnit = true;
 
 		GameplayInterface::PlaceWalkableOnGrid(gameplaySystem->m_Room, { 0,0 }, "Assets/Images/Walkable.png");
 
@@ -338,13 +358,27 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING && Input::KeyDown(KeyCode::MouseRightButton)) {
-			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
+		//If right mouse button
+		if (Input::KeyDown(KeyCode::MouseRightButton)) {
+			//Deselect Pattern
+			if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
-			gameplaySystem->DeselectPatternPlacement();
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+				gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 
-			gameplaySystem->TogglePatternGUI(true);
+				gameplaySystem->TogglePatternGUI(true);
+			}
+			//Deselect Abilities
+			else if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
+
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+				gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
+
+				gameplaySystem->TogglePatternGUI(false);
+				gameplaySystem->ToggleAbilitiesGUI(true);
+			}
 		}
 
 		gameplaySystem->RunGameState();
@@ -443,6 +477,21 @@ namespace ALEngine::ECS
 
 			TogglePatternGUI(false);
 		}
+		else if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_ACTION) {
+			currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
+			selected_Pattern = pattern;
+
+			TogglePatternGUI(false);
+		}
+	}
+
+	void GameplaySystem::SelectAbility(Abilities ability) {
+		if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_ACTION) {
+			selected_Abilities = ability;
+
+			ToggleAbilitiesGUI(false);
+			TogglePatternGUI(true);
+		}
 	}
 
 	void GameplaySystem::ClearMoveOrder() {
@@ -473,10 +522,6 @@ namespace ALEngine::ECS
 		else {
 			return false;
 		}
-	}
-
-	void GameplaySystem::DeselectPatternPlacement() {
-		currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 	}
 
 	void GameplaySystem::RunGameState() {
