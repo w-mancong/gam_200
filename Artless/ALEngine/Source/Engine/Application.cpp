@@ -214,13 +214,16 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		Scene::LoadScene("Assets\\test.scene");
-		StartGameplaySystem();
+		//Scene::LoadScene("Assets\\test.scene");
+		//StartGameplaySystem();
 
-		Entity en = Coordinator::Instance()->GetEntityByTag("skill_icon1");
-		EntityScript es;
-		es.AddInitFunction("SkillInit");
-		Coordinator::Instance()->AddComponent(en, es);
+		//Entity en = Coordinator::Instance()->GetEntityByTag("skill_icon1");
+		//EntityScript es;
+		//es.AddInitFunction("SkillInit");
+		//Coordinator::Instance()->AddComponent(en, es);
+		//CreateEventTrigger(en);
+
+		//Scene::SaveScene("test");
 	}
 
 	void Application::Update(void)
@@ -267,15 +270,6 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
-
-		//EntityList const& list = Coordinator::Instance()->GetEntities();
-		//for (Entity en : list)
-		//{
-		//	EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
-		//	//if (ed.active != ed.localActive[1])
-		//	//	ed.localActive[0] = ed.localActive[1] = ed.active;
-		//	//ed.active = ed.localActive[0];
-		//}
 	}
 
 	void Engine::FixedUpdate(void)

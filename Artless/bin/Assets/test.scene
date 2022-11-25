@@ -367,7 +367,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.1298828125,
+                    1547.130126953125,
                     44.69794845581055,
                     0.0
                 ],
@@ -446,7 +446,7 @@
             {
                 "position": [
                     800.0,
-                    150.00001525878906,
+                    150.0,
                     0.0
                 ],
                 "scale": [
@@ -459,8 +459,8 @@
         "EntityData": [
             {
                 "tag": "end_turn",
-                "active": false,
-                "localActive": false,
+                "active": true,
+                "localActive": true,
                 "id": 11,
                 "parentID": -1,
                 "treeNodeFlags": 0
@@ -679,7 +679,7 @@
         "Transform": [
             {
                 "position": [
-                    542.3970336914063,
+                    542.3969116210938,
                     414.6083068847656,
                     0.0
                 ],
@@ -737,6 +737,17 @@
                 "id": 18,
                 "parentID": 4,
                 "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -952,7 +963,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7015380859375,
+                    967.7017211914063,
                     41.370460510253906,
                     0.0
                 ],
@@ -1097,7 +1108,7 @@
             {
                 "position": [
                     800.0,
-                    149.99990844726563,
+                    149.99989318847656,
                     0.0
                 ],
                 "scale": [
@@ -1110,7 +1121,7 @@
         "EntityData": [
             {
                 "tag": "text_endturn",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 28,
                 "parentID": 11,
@@ -1139,7 +1150,7 @@
         "Transform": [
             {
                 "position": [
-                    641.67626953125,
+                    641.6761474609375,
                     352.97406005859375,
                     0.0
                 ],

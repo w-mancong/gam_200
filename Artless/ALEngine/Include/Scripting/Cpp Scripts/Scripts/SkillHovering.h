@@ -7,7 +7,6 @@
 namespace ALEngine
 {
 	void SkillInit(ECS::Entity en);
-	void WhenSkillHover(ECS::Entity en);
 	void SkillReset(ECS::Entity en);
 }
 

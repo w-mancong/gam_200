@@ -5,11 +5,23 @@ namespace ALEngine
 {
 	namespace
 	{
+		using namespace ECS;
+
 		b8 found_skill_tooltip{ false };
-		ECS::Entity en_tooltip{ ECS::MAX_ENTITIES }, en_skillicon{ ECS::MAX_ENTITIES };
+		Entity en_tooltip{ MAX_ENTITIES }, en_skillicon{ MAX_ENTITIES };
 	}
 
-	void SkillInit([[maybe_unused]] ECS::Entity en)
+	void WhenSkillHover(Entity en)
+	{
+		std::cout << "Pointer stay: " <<  en << std::endl;
+	}
+
+	void WhenSkillPointerExit(Entity en)
+	{
+		std::cout << "Pointer exit: " << en << std::endl;
+	}
+
+	void SkillInit([[maybe_unused]] Entity en)
 	{
 		if (!found_skill_tooltip)
 		{
@@ -17,17 +29,13 @@ namespace ALEngine
 			en_skillicon = Coordinator::Instance()->GetEntityByTag("skill_icon");
 			found_skill_tooltip = true;
 		}
-		ECS::Subscribe(en, ECS::Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenSkillHover);
+		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenSkillHover);
+		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenSkillPointerExit);
 	}
 
-	void WhenSkillHover(ECS::Entity en)
-	{
-		std::cout << en << std::endl;
-	}
-
-	void SkillReset([[maybe_unused]] ECS::Entity en)
+	void SkillReset([[maybe_unused]] Entity en)
 	{
 		found_skill_tooltip = false;
-		en_tooltip = en_skillicon = ECS::MAX_ENTITIES;
+		en_tooltip = en_skillicon = MAX_ENTITIES;
 	}
 }
