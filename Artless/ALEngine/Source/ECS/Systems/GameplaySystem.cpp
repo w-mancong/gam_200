@@ -147,6 +147,12 @@ namespace ALEngine::ECS
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
 	}
 
+	void Event_Button_Select_Abilities_1(Entity invoker) {
+		AL_CORE_INFO("Select Abilities 1");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
+	}
+
+
 	void Event_Button_Select_CurrentPattern(Entity invoker) {
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
@@ -229,7 +235,7 @@ namespace ALEngine::ECS
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
-			gameplaySystem->selected_Abilities.RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
 			gameplaySystem->EndTurn();
 		}
 	}
@@ -308,7 +314,9 @@ namespace ALEngine::ECS
 		//Create Player
 		gameplaySystem->PlaceNewPlayerInRoom(0, 0);
 
+		gameplaySystem->enemyEntityList.clear();
 		gameplaySystem->PlaceNewEnemyInRoom(0, 1);
+		gameplaySystem->PlaceNewEnemyInRoom(4, 4);
 
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
@@ -335,6 +343,7 @@ namespace ALEngine::ECS
 
 		//Add events for abilities Button
 		Subscribe(gameplaySystem->GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
+		Subscribe(gameplaySystem->GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
 
 		//Add visual feedback event for abilities GUI
 		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
@@ -466,7 +475,7 @@ namespace ALEngine::ECS
 			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
 
-		for (int i = 0; i < 1; ++i) {
+		for (int i = 0; i < 2; ++i) {
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
@@ -509,6 +518,8 @@ namespace ALEngine::ECS
 		enemyUnit.coordinate[1] = y;
 
 		enemyUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
+
+		enemyUnit.health = 20, enemyUnit.maxHealth = 20;
 
 		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).unitEntity = newEnemy;
 		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).hasUnit = true;

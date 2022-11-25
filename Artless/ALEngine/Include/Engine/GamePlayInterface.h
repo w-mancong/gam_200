@@ -25,22 +25,14 @@ namespace ALEngine::Engine::GameplayInterface
 	};
 
 	//For now 2 abilities
-	struct Abilities {
+	enum class TYPE_ABILITIES { HARD_DROP, LIFE_DRAIN };
+	class Abilities {
+	public:
 		u32 current_Cooldown = 0, max_Cooldown = 2;
 
-		virtual void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) { AL_CORE_INFO("BASE"); };
-	};
+		s32 damage = 15;
 
-	//1) Hard drop - damage all enemies in range
-	struct Abilities_HardDrop : public Abilities {
-		u32 damage = 15;
-		void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) override;
-	};
-
-	//2) Life Drain - damage and get damage amount as heal for players
-	struct Abilities_LifeDrain : public Abilities {
-		u32 lifeStealAmount = 12;	//0 to 1 (1 being 100% of damage)
-		void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) override;
+		TYPE_ABILITIES current_type = TYPE_ABILITIES::HARD_DROP;
 	};
 
 	/*!*********************************************************************************
@@ -86,6 +78,8 @@ namespace ALEngine::Engine::GameplayInterface
 	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
 	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
 
-	void DoDamageToUnit(Unit& unit, s32 damage);
+
+	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities);
+	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage);
 }
 #endif

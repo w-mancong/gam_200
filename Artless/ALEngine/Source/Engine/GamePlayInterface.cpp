@@ -84,8 +84,15 @@ namespace ALEngine::Engine::GameplayInterface
 	void InitializeAbilities(std::vector<Abilities>& abilitiesList) {
 		abilitiesList.clear();
 
-		abilitiesList.push_back(Abilities_HardDrop{});
-		abilitiesList.push_back(Abilities_LifeDrain{});
+		Abilities new_ability;
+
+		new_ability.current_type = TYPE_ABILITIES::HARD_DROP;
+		new_ability.damage = 15;
+		abilitiesList.push_back(new_ability);
+
+		new_ability.current_type = TYPE_ABILITIES::LIFE_DRAIN;
+		new_ability.damage = 12;
+		abilitiesList.push_back(new_ability);
 	}
 
 	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color) {
@@ -266,8 +273,7 @@ namespace ALEngine::Engine::GameplayInterface
 		return false;
 	}
 
-	void Abilities_HardDrop::RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) {
-		AL_CORE_INFO("ABILTI 1");
+	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
 			//If the coordinate is within the boundaries of the room
@@ -279,44 +285,51 @@ namespace ALEngine::Engine::GameplayInterface
 
 				if (cell.hasUnit) {
 					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+					if (unit.health <= 0) {
+						continue;
+					}
+
+					u32 initialHealth = unit.health;
 
 					if (unit.unitType == UNIT_TYPE::ENEMY) {
-						DoDamageToUnit(unit, damage);
+						switch (abilities.current_type)
+						{
+						case TYPE_ABILITIES::HARD_DROP:
+							DoDamageToUnit(cell.unitEntity, abilities.damage);
+							break;
+						case TYPE_ABILITIES::LIFE_DRAIN:
+							DoDamageToUnit(cell.unitEntity, abilities.damage);
+
+							//Life steal 
+							ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+							Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+							u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
+							AL_CORE_INFO("Heal : " + std::to_string(healthDrained));
+
+							playerUnit.health += healthDrained;
+
+							if (playerUnit.health > playerUnit.maxHealth) {
+								playerUnit.health = playerUnit.maxHealth;
+							}
+							break;
+						}
 					}
-				}
-			}
+				}//End check if unit
+			}//End check if it's inside room
 		}//End loop through pattern body check
 	}
 
-	void Abilities_LifeDrain::RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) {
-		AL_CORE_INFO("ABILTI 2");
-		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
-			//If the coordinate is within the boundaries of the room
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
-				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
-
-				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-
-				if (cell.hasUnit) {
-					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
-
-					if (unit.unitType == UNIT_TYPE::ENEMY) {
-						DoDamageToUnit(unit, lifeStealAmount);
-					}
-				}
-			}
-		}//End loop through pattern body check
-	}
-
-	void DoDamageToUnit(Unit& unit, s32 damage) {
+	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage) {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 		unit.health -= damage;
 
 		AL_CORE_INFO(std::to_string(unit.health));
 
 		if (unit.health <= 0) {
 			AL_CORE_INFO("Enemy Died");
+			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
+			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 		}
 	}
 }
