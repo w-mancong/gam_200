@@ -218,6 +218,9 @@ namespace ALEngine::Editor
 		else
 			flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 
+		if (ALEditor::Instance()->GetSelectedEntity() == child)
+			flags |= ImGuiTreeNodeFlags_Selected;
+
 		if (data.active == false)
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 

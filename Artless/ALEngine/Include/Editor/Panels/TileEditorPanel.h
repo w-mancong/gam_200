@@ -126,9 +126,10 @@ namespace ALEngine::Editor
 
 		std::vector<std::vector<std::string>> m_TileMap{};			// Map of tiles
 		std::map<std::string, std::string> m_ImageMap{};			// Map of all the images
-		s32 m_MapHeight{ 0 }, m_MapWidth{ 0 };					// Map Dimensions
-		s32 m_NumTilesSeen{ 0 };								// Number of tiles seen within editor
-		f32 m_TileSize{ 0.f };									// Size of Tile
+		s32 m_MapHeight{ 0 }, m_MapWidth{ 0 };						// Map Dimensions
+		s32 m_NumTilesSeen{ 0 };									// Number of tiles seen within editor
+		f32 m_TileSize{ 0.f };										// Size of Tile
+		std::string m_SelectedTile{ "" };							// Tile that is selected
 
 		enum class LoadStage
 		{
