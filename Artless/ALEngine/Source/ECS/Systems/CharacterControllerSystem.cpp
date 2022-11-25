@@ -95,6 +95,10 @@ namespace ALEngine::ECS
 	void UpdateCharacterControllerSystem() {
 		//Shift through each component
 		for (auto it = characterControlS->mEntities.begin(); it != characterControlS->mEntities.end(); ++it) {
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 			CharacterController& cc = Coordinator::Instance()->GetComponent<CharacterController>(*it);
 

@@ -93,7 +93,7 @@ namespace ALEngine::ECS
 		void SelectPattern(Pattern pattern);
 
 		//Select Abilities
-		void SelectAbility(Abilities ability);
+		void SelectAbility(Abilities& ability);
 
 		//Return if reached end
 		bool StepUpModeOrderPath(MoveOrder& order);
@@ -225,6 +225,11 @@ namespace ALEngine::ECS
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
+			gameplaySystem->EndTurn();
+		}
+		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			gameplaySystem->selected_Abilities.RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 			gameplaySystem->EndTurn();
 		}
 	}
@@ -439,39 +444,39 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::TogglePatternGUI(b8 istrue) {
-		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
+		//for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
+		//	EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
+		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
 
-			eventTrigger.isEnabled = istrue;
+		//	eventTrigger.isEnabled = istrue;
 
-			if(istrue)
-			sprite.color = { 1.f, 1.f, 1.f, 1.f };
-			else
-			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
+		//	if(istrue)
+		//	sprite.color = { 1.f, 1.f, 1.f, 1.f };
+		//	else
+		//	sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		//}
 	}
 	
 	void GameplaySystem::ToggleAbilitiesGUI(b8 istrue) {
-		for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+		//for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
+		//	EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
-			eventTrigger.isEnabled = false;
-			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
+		//	eventTrigger.isEnabled = false;
+		//	sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		//}
 
-		for (int i = 0; i < 1; ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+		//for (int i = 0; i < 1; ++i) {
+		//	EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
-			eventTrigger.isEnabled = istrue;
+		//	eventTrigger.isEnabled = istrue;
 
-			if (istrue)
-				sprite.color = { 1.f, 1.f, 1.f, 1.f };
-			else
-				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
+		//	if (istrue)
+		//		sprite.color = { 1.f, 1.f, 1.f, 1.f };
+		//	else
+		//		sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		//}
 	}
 
 	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
@@ -528,7 +533,7 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void GameplaySystem::SelectAbility(Abilities ability) {
+	void GameplaySystem::SelectAbility(Abilities& ability) {
 		if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_ACTION) {
 			selected_Abilities = ability;
 

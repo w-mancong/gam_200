@@ -27,19 +27,20 @@ namespace ALEngine::Engine::GameplayInterface
 	//For now 2 abilities
 	struct Abilities {
 		u32 current_Cooldown = 0, max_Cooldown = 2;
-		virtual void RunAbilities_OnCells(std::vector<ECS::Entity>& cell_Entities) {};
+
+		virtual void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) { AL_CORE_INFO("BASE"); };
 	};
 
 	//1) Hard drop - damage all enemies in range
-	struct Abilities_HardDrop : Abilities {
+	struct Abilities_HardDrop : public Abilities {
 		u32 damage = 15;
-		void RunAbilities_OnCells(std::vector<ECS::Entity>& cell_Entities);
+		void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) override;
 	};
 
 	//2) Life Drain - damage and get damage amount as heal for players
-	struct Abilities_LifeDrain : Abilities {
+	struct Abilities_LifeDrain : public Abilities {
 		u32 lifeStealAmount = 12;	//0 to 1 (1 being 100% of damage)
-		void RunAbilities_OnCells(std::vector<ECS::Entity>& cell_Entities);
+		void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) override;
 	};
 
 	/*!*********************************************************************************
