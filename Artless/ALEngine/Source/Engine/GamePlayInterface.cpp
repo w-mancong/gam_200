@@ -343,9 +343,13 @@ namespace ALEngine::Engine::GameplayInterface
 			else {
 				AL_CORE_INFO("Enemy Died");
 			}
+
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
 			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			unit.health = 0;
+
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
+			cell.hasUnit = false;
 		}
 	}
 

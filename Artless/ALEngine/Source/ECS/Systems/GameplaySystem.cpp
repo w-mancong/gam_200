@@ -129,6 +129,15 @@ namespace ALEngine::ECS
 		void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
 
 		void DisableToolTip();
+
+		//Cheats
+		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
+		void Cheat_ToggleGodMode();
+		void Cheat_IncreasePlayerHealth(s32 amount);
+		void Cheat_ToggleDoubleAbilitiesDoubleDamage();
+		void Cheat_DecreaseEnemyHealthToOne();
+		void Cheat_ResetAllEnemiesHealth();
+		void Cheat_ResetPlayerHealth();
 	};
 
 	namespace
@@ -160,7 +169,14 @@ namespace ALEngine::ECS
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
 		
 		if(eventTrigger.isEnabled)
-		sprite.color = { 1.f, 1.f, 1.f, 1.f };
+		//sprite.color = { 1.f, 1.f, 1.f, 1.f };
+
+		if (gameplaySystem->cheat_abilitiesDoubleDamage) {
+			sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
+		}
+		else {
+			sprite.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		}
 	}
 
 	void Event_Button_Select_Abilities_0([[maybe_unused]] Entity invoker) {
@@ -477,6 +493,30 @@ namespace ALEngine::ECS
 			gameplaySystem->is_DebugDraw = !gameplaySystem->is_DebugDraw;
 		}
 
+		if (Input::KeyTriggered(KeyCode::F1)) {
+			gameplaySystem->Cheat_ToggleGodMode();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F2)) {
+			gameplaySystem->Cheat_ToggleDoubleAbilitiesDoubleDamage();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F3)) {
+			gameplaySystem->Cheat_ResetPlayerHealth();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F4)) {
+			gameplaySystem->Cheat_ResetAllEnemiesHealth();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F5)) {
+			gameplaySystem->Cheat_DecreaseEnemyHealthToOne();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F6)) {
+			gameplaySystem->Cheat_IncreasePlayerHealth(10);
+		}
+
 		gameplaySystem->RunGameState();
 		
 		gameplaySystem->UpdateUnitSpriteLayer();
@@ -575,8 +615,14 @@ namespace ALEngine::ECS
 
 			eventTrigger.isEnabled = istrue;
 
-			if (istrue)
-				sprite.color = { 1.f, 1.f, 1.f, 1.f };
+			if (istrue) {
+				if (cheat_abilitiesDoubleDamage) {
+					sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
+				}
+				else {
+					sprite.color = { 1.f, 1.f, 1.f, 1.f };
+				}
+			}
 			else
 				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
@@ -1007,11 +1053,11 @@ namespace ALEngine::ECS
 		Entity en_hard_drop = Coordinator::Instance()->GetEntityByTag("hard_drop_des1");
 		Entity en_life_drain = Coordinator::Instance()->GetEntityByTag("life_drain_des1");
 
-		Coordinator::Instance()->GetComponent<EntityData>(en_tooltip).active = false;
-		Coordinator::Instance()->GetComponent<EntityData>(en_skillicon).active = false;
-		Coordinator::Instance()->GetComponent<EntityData>(en_textskill).active = false;
-		Coordinator::Instance()->GetComponent<EntityData>(en_hard_drop).active = false;
-		Coordinator::Instance()->GetComponent<EntityData>(en_life_drain).active = false;
+		ECS::SetActive(false, en_tooltip);
+		ECS::SetActive(false, en_skillicon);
+		ECS::SetActive(false, en_textskill);
+		ECS::SetActive(false, en_hard_drop);
+		ECS::SetActive(false, en_life_drain);
 	}
 
 	void GameplaySystem::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
@@ -1037,6 +1083,100 @@ namespace ALEngine::ECS
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(GUI_Unit_Healthbar);
 		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
 		AL_CORE_CRITICAL("SIZE " + std::to_string(healthbar_transform.scale.x));
+	}
+
+	void GameplaySystem::Cheat_ToggleGodMode() {
+		godMode = !godMode;
+
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
+
+		if (godMode) {
+			playerSprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
+		}
+		else {
+			playerSprite.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		}		
+		
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			if (godMode){
+				unit.minDamage = 0;
+				unit.maxDamage = 0;
+			}
+			else {
+				unit.minDamage = 5;
+				unit.maxDamage = 5;
+			}
+		}
+		UpdateGUI_OnSelectUnit(playerEntity);
+	}
+
+	void GameplaySystem::Cheat_IncreasePlayerHealth(s32 amount) {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		unit.health += amount;
+
+		if (unit.health >= unit.maxHealth) {
+			unit.health = unit.maxHealth;
+		}
+		UpdateGUI_OnSelectUnit(playerEntity);
+	}
+
+	void GameplaySystem::Cheat_ToggleDoubleAbilitiesDoubleDamage() {
+		cheat_abilitiesDoubleDamage = !cheat_abilitiesDoubleDamage;
+		
+		if (cheat_abilitiesDoubleDamage) {
+			Abilities_List[0].damage = 30;
+			Abilities_List[1].damage = 24;
+		}
+		else {
+			Abilities_List[0].damage = 15;
+			Abilities_List[1].damage = 12;
+		}
+
+		if (currentGameplayStatus != GAMEPLAY_STATUS::PHASE_ACTION) {
+			return;
+		}
+
+		for (s32 i = 0; i < 2; ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+
+			if (cheat_abilitiesDoubleDamage) {
+				sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
+			}
+			else {
+				sprite.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			}
+		}
+	}
+
+	void GameplaySystem::Cheat_DecreaseEnemyHealthToOne() {
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			if (unit.health > 0) {
+				unit.health = 1;
+				UpdateGUI_OnSelectUnit(enemyEntityList[i]);
+			}
+		}
+	}
+
+	void GameplaySystem::Cheat_ResetAllEnemiesHealth() {
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			if (unit.health > 0) {
+				unit.health = unit.maxHealth;
+				UpdateGUI_OnSelectUnit(enemyEntityList[i]);
+			}
+		}
+	}
+
+	void GameplaySystem::Cheat_ResetPlayerHealth() {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		unit.health = unit.maxHealth;
+		UpdateGUI_OnSelectUnit(playerEntity);
 	}
 
 	void DrawGameplaySystem() {
