@@ -120,6 +120,9 @@ namespace ALEngine
 			quit_yes = Coordinator::Instance()->GetEntityByTag("button_quit_yes");
 			quit_no  = Coordinator::Instance()->GetEntityByTag("button_quit_no");
 
+			CreateEventTrigger(quit_yes);
+			CreateEventTrigger(quit_no);
+
 			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, WhenQuitYesHover);
 			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenQuitYesPointerExit);
 
@@ -146,8 +149,17 @@ namespace ALEngine
 				EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(temp);
 				ed.tag = "hotfix"; SetActive(false, temp);
 			}
-			paused = !paused;
-			SetActive(paused, en);
+
+			if (!Coordinator::Instance()->GetComponent<EntityData>(backdrop).active)
+			{
+				paused = !paused;
+				SetActive(paused, en);
+			}
+			else
+			{
+				Lighten(backdrop);
+				SetActive(false, backdrop);
+			}
 		}
 	}
 
