@@ -10,7 +10,7 @@ brief:	This file contains the function definitions for the ALEditor class.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
-#if EDITOR
+#if _EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -673,6 +673,16 @@ namespace ALEngine::Editor
 	f64 ALEditor::GetSceneHeight(void)
 	{
 		return m_ScenePanel.GetSceneHeight();
+	}
+
+	f32& ALEditor::GetSceneCameraWidth(void)
+	{
+		return m_ScenePanel.GetCameraWidth();
+	}
+
+	f32& ALEditor::GetSceneCameraHeight(void)
+	{
+		return m_ScenePanel.GetCameraHeight();
 	}
 
 	Engine::Camera& ALEditor::GetEditorCamera(void)

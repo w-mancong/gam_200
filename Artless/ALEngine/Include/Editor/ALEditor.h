@@ -11,7 +11,7 @@ brief:	This file contains the function declarations for the ALEditor class.
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
-#if EDITOR
+#if _EDITOR
 
 namespace ALEngine::Editor
 {
@@ -168,6 +168,16 @@ namespace ALEngine::Editor
 		Returns the selected Entity
 		***********************************************************************************/
 		f64 GetSceneHeight(void);
+
+		/*!*********************************************************************************
+			\brief Return editor panel camera's width
+		***********************************************************************************/
+		f32& GetSceneCameraWidth(void);
+
+		/*!*********************************************************************************
+			\brief Return editor panel camera's height
+		***********************************************************************************/
+		f32& GetSceneCameraHeight(void);
 
 		/*!*********************************************************************************
 			\brief

@@ -9,7 +9,7 @@ brief:	Contains declarations for the Command Manager for the Editor
 #ifndef EDITOR_COMMAND_MANAGER_H
 #define EDITOR_COMMAND_MANAGER_H
 
-#if EDITOR
+#if _EDITOR
 
 namespace ALEngine::Commands
 {

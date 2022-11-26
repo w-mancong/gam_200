@@ -8,7 +8,7 @@ brief:	Contains definitions for the Command Manager for the Editor
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
-#if EDITOR
+#if _EDITOR
 
 namespace ALEngine::Commands
 {

@@ -162,7 +162,7 @@ namespace ALEngine::ECS
 			mSystemManager->EntitySignatureChanged(entity, signature);
 		}
 
-#if EDITOR
+#if _EDITOR
 		/*!*********************************************************************************
 			\brief To disassociate an entity to this component
 

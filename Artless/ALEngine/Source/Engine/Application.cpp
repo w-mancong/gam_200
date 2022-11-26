@@ -6,7 +6,7 @@ namespace ALEngine::Engine
 	using namespace Math;
 	using namespace Graphics;
 	using namespace ECS;
-#if EDITOR
+#if _EDITOR
 	using namespace Editor;
 #endif
 	namespace
@@ -27,7 +27,7 @@ namespace ALEngine::Engine
 		{
 			switch (fdwCtrlType)
 			{
-				// When window console x button is pressed
+			// When window console x button is pressed
 			case CTRL_CLOSE_EVENT:
 				Application::Exit();
 				return TRUE;
@@ -37,7 +37,7 @@ namespace ALEngine::Engine
 			}
 		}
 
-#if EDITOR
+#if _EDITOR
 		std::function<void(void)> UpdateLoop[2];
 		u64 funcIndex{};
 
@@ -91,7 +91,7 @@ namespace ALEngine::Engine
 			else
 			{
 				GameStateManager::current = GameStateManager::previous;
-				GameStateManager::next = GameStateManager::previous;
+				GameStateManager::next	  = GameStateManager::previous;
 			}
 
 			InitCppScripts();
@@ -106,7 +106,7 @@ namespace ALEngine::Engine
 
 				// Get Current Time
 				Time::ClockTimeNow();
-#if EDITOR
+#if _EDITOR
 				// Editor Command Manager Update
 				Commands::EditorCommandManager::Update();
 				// Begin new ImGui frame
@@ -141,7 +141,7 @@ namespace ALEngine::Engine
 				// Wait for next frame
 				Time::WaitUntil();				
 
-#if EDITOR
+#if _EDITOR
 				// Marks the end of a frame m_Loop, for tracy profiler
 				FrameMark;
 #endif
@@ -173,7 +173,7 @@ namespace ALEngine::Engine
 		Time::Init();
 
 		// Init ImGui
-#if EDITOR
+#if _EDITOR
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(true);
 
@@ -188,8 +188,13 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		//StartGameplaySystem();
-		//Scene::LoadScene("Assets\\test.scene");
+#if !_EDITOR
+		OpenGLWindow::FullScreen(true);
+		Scene::LoadScene("Assets\\test.scene");
+		StartGameplaySystem();
+		Console::StopConsole();
+#endif
+
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("bar_stats");
 		//EntityScript es;
@@ -201,8 +206,6 @@ namespace ALEngine::Engine
 		//es.AddFreeFunction("SkillReset");
 
 		//Scene::SaveScene("test");
-
-		//OpenGLWindow::FullScreen(true);
 	}
 
 	void Application::Update(void)
@@ -210,7 +213,7 @@ namespace ALEngine::Engine
 		// should do the game m_Loop here
 		while (GameStateManager::current != GameState::Quit && appStatus)
 		{
-#if EDITOR
+#if _EDITOR
 			UpdateLoop[funcIndex]();
 #else
 			GameUpdate();
@@ -221,7 +224,7 @@ namespace ALEngine::Engine
 	void Application::Exit(void)
 	{
 		ExitGameplaySystem();
-#if EDITOR
+#if _EDITOR
 		ALEditor::Instance()->Exit();		// Exit ImGui
 #endif
 		AssetManager::Instance()->Exit();	// Clean up all Assets
@@ -232,7 +235,7 @@ namespace ALEngine::Engine
 
 	void Run(void)
 	{		
-#if !EDITOR
+#if !_EDITOR
 		Console::StopConsole();
 #endif
 		if (SetConsoleCtrlHandler(CtrlHandler, TRUE))
@@ -245,7 +248,7 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-#if EDITOR
+#if _EDITOR
 		ZoneScopedN("Normal Delta Time Update");
 #endif
 		Input::Update();
@@ -255,7 +258,7 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
-#if EDITOR
+#if _EDITOR
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
 		UpdateGameplaySystem();
@@ -287,7 +290,13 @@ namespace ALEngine::Engine
 		focus = _focus;
 	}
 
-#if EDITOR
+	void TerminateEngine(void)
+	{
+		SetAppStatus(0);
+		GameStateManager::current = Engine::GameState::Quit;
+	}
+
+#if _EDITOR
 	void ToggleApplicationMode(void)
 	{
 		(++funcIndex) %= 2;

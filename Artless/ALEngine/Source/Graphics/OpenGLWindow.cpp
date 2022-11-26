@@ -11,7 +11,6 @@ brief:		This file contains function to initialise the GLFW Window and provides
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
-#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine::Graphics
 {
@@ -20,22 +19,32 @@ namespace ALEngine::Graphics
 		void ResizeWindow([[maybe_unused]] GLFWwindow* _window, s32 width, s32 height)
 		{
 			glViewport(0, 0, width, height);
+			OpenGLWindow::width = width, OpenGLWindow::height = height;
 			OpenGLWindow::ar = static_cast<f32>(width) / static_cast<f32>(height);
+
+#if _EDITOR
+			//f32& cameraWidth  = Editor::ALEditor::Instance()->GetSceneCameraWidth();
+			//f32& cameraHeight = Editor::ALEditor::Instance()->GetSceneCameraHeight();
+
+			////Editor::ALEditor::Instance()->GetSceneCameraWidth() = cameraWidth * width / cameraWidth;
+			//cameraWidth *= static_cast<f32>(width) / cameraWidth;
+			//cameraHeight = cameraWidth / OpenGLWindow::ar;
+			//m_CameraHeight = m_CameraWidth / Graphics::OpenGLWindow::ar;
+#endif
 		}
 
 		void window_close_callback([[maybe_unused]] GLFWwindow* _window)
 		{
-			Engine::SetAppStatus(0);
-			Engine::GameStateManager::current = Engine::GameState::Quit;
+			Engine::TerminateEngine();
 		}
 
 		void window_focus_callback([[maybe_unused]] GLFWwindow* window, s32 focused)
 		{
-#if EDITOR
+#if _EDITOR
 			//focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);
 #endif
 			Engine::SetWindowFocus(focused);
-			Engine::ToggleMuteChannel(Engine::Channel::Master);
+			Engine::TogglePauseChannel(Engine::Channel::Master);
 		}
 
 		void scroll_callback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] f64 xoffset, f64 yoffset)
@@ -71,13 +80,13 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_SAMPLES, 4);
 
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-		//Console::StopConsole();
+		//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 #ifdef _DEBUG
 		// Enable OPENGL Debug Context if on debug mode
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+#else
+		Console::StopConsole();
 #endif
 
 #ifdef __APPLE__
@@ -185,10 +194,12 @@ namespace ALEngine::Graphics
 		{
 			w = width;
 			h = height;
-			x = (desktop.x >> 1) - (width >> 1);
+			x = (desktop.x >> 1) - (width  >> 1);
 			y = (desktop.y >> 1) - (height >> 1);
 		}
 		glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : nullptr, x, y, w, h, GLFW_DONT_CARE);
+		glfwGetWindowSize(window, &w, &h);
+		width = static_cast<u32>(w), height = static_cast<u32>(h);
 	}
 
 	GLFWwindow* OpenGLWindow::Window(void)

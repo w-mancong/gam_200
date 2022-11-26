@@ -42,7 +42,7 @@ namespace
 	std::unordered_map<Guid, Animation> animationList{};
 	std::unordered_map<Guid, Audio> audioList{};
 	std::unordered_map<Guid, ALEngine::ECS::Font> fontList{};
-#if EDITOR
+#if _EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList{};
 #endif
 
@@ -302,7 +302,7 @@ namespace
 		return { texture, handle };
 	}
 
-#if EDITOR
+#if _EDITOR
 	u32 LoadButtonImage(char const* filePath)
 	{
 		s32 width, height, nrChannels;
@@ -388,7 +388,7 @@ namespace ALEngine::Engine
 
 	void AssetManager::Init()
 	{
-#if EDITOR
+#if _EDITOR
 		{
 			Guid id{ 0 }; u32 icon{ 0 };
 			// Folder icon
@@ -425,6 +425,11 @@ namespace ALEngine::Engine
 			id = PrepareGuid();
 			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Sound.png", id });
 			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_TileEditor.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_TileEditor.png");
 			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
 			// Play icon
@@ -501,11 +506,11 @@ namespace ALEngine::Engine
 					//into memory/stream
 					Texture texture = LoadTexture(it->c_str());
 					// Insert into texture list
-#if		EDITOR
+#if		_EDITOR
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
-#if		EDITOR
+#if		_EDITOR
 					u32 button = LoadButtonImage(it->c_str());
 					if (button)
 						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
@@ -516,7 +521,7 @@ namespace ALEngine::Engine
 				{
 					// load into memory stream
 					Audio audio = LoadAudio(it->c_str());
-#if EDITOR
+#if _EDITOR
 					if (audio.m_Sound)
 #endif
 						audioList.insert(std::pair<Guid, Audio>{id, audio});
@@ -532,7 +537,7 @@ namespace ALEngine::Engine
 					animationList.insert(std::pair<Guid, Animation>{ id, animation });
 
 					Texture texture = LoadAnimation(animation);
-#if	EDITOR
+#if	_EDITOR
 					if (texture.handle)
 #endif
 						textureList.insert(std::pair<Guid, Texture>{ id, texture });
@@ -583,7 +588,7 @@ namespace ALEngine::Engine
 			Texture const& texture{ it.second };
 			glDeleteTextures(1, &texture.texture);
 		}
-#if EDITOR
+#if _EDITOR
 		for (auto const& it : buttonImageList)
 			glDeleteTextures(1, &it.second );
 #endif
@@ -608,7 +613,7 @@ namespace ALEngine::Engine
 		return textureList[id].handle;
 	}
 
-#if EDITOR
+#if _EDITOR
 	u32 AssetManager::GetButtonImage(Guid id)
 	{
 		return buttonImageList[id];
@@ -635,7 +640,7 @@ namespace ALEngine::Engine
 		if (!fileName.size())
 			return std::numeric_limits<Guid>::max();
 		std::replace(fileName.begin(), fileName.end(), '/', '\\');	// Change all the '/' to '\\'
-#if	 EDITOR	// In release mode, files should already exist and thus this check is not needed
+#if	 _EDITOR	// In release mode, files should already exist and thus this check is not needed
 		if (guidList.find(fileName) == guidList.end())
 			return 0;
 #endif
@@ -834,11 +839,11 @@ namespace ALEngine::Engine
 			{
 				//into memory/stream
 				Texture texture = LoadTexture(filePath.c_str());
-#if		EDITOR
+#if		_EDITOR
 				if (texture.handle)
 #endif
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });
-#if		EDITOR
+#if		_EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
 				if (button)
 					buttonImageList.insert(std::pair<Guid, u32>{ id, button });
@@ -853,7 +858,7 @@ namespace ALEngine::Engine
 			{
 				// load into memory stream
 				Audio audio = LoadAudio(filePath.c_str());
-#if		EDITOR
+#if		_EDITOR
 				if (audio.m_Sound)
 #endif
 					audioList.insert(std::pair<Guid, Audio>{id, audio});
@@ -921,17 +926,17 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(oldTexture.handle);
 				glDeleteTextures(1, &oldTexture.texture);
-#if EDITOR
+#if _EDITOR
 				glDeleteTextures(1, &buttonImageList[id]);
 #endif
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
-#if		EDITOR
+#if		_EDITOR
 				if (newTexture.handle)
 #endif
 					textureList[id] = newTexture;
-#if		EDITOR
+#if		_EDITOR
 				u32 button = LoadButtonImage(filePath.c_str());
 				if (button)
 					buttonImageList[id] = button;
@@ -949,7 +954,7 @@ namespace ALEngine::Engine
 				// Load in new audio file
 				Audio newAudio = LoadAudio(filePath.c_str());
 
-#if		EDITOR
+#if		_EDITOR
 				if (newAudio.m_Sound)
 #endif
 					audioList[id] = newAudio;
@@ -973,7 +978,7 @@ namespace ALEngine::Engine
 				animationList[id] = animation;
 
 				Texture newTexture = LoadAnimation(animation);
-#if		EDITOR
+#if		_EDITOR
 				if (newTexture.handle)
 #endif 
 					textureList[id] = newTexture;
@@ -1013,13 +1018,13 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);
 				glDeleteTextures(1, &texture.texture);
-#if EDITOR
+#if _EDITOR
 				glDeleteTextures(1, &buttonImageList[id]);
 #endif
 
 				// Do not keep track of this guid anymore
 				textureList.erase(id);
-#if	EDITOR
+#if	_EDITOR
 				buttonImageList.erase(id);
 #endif
 				guidKey = filePath;

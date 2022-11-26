@@ -11,7 +11,7 @@ brief:	This file contains function declarations for the ScenePanel class.
 #ifndef SCENE_PANEL_H
 #define SCENE_PANEL_H
 
-#if EDITOR
+#if _EDITOR
 
 namespace ALEngine::Editor
 {
@@ -68,6 +68,16 @@ namespace ALEngine::Editor
 			position was handled outside of the Scene viewport
 		***********************************************************************************/
 		Math::Vec2 GetMouseWorldPos();
+
+		/*!*********************************************************************************
+			\brief Return editor panel camera's width
+		***********************************************************************************/
+		f32& GetCameraWidth(void);
+
+		/*!*********************************************************************************
+			\brief Return editor panel camera's height
+		***********************************************************************************/
+		f32& GetCameraHeight(void);
 
 		/*!*********************************************************************************
 			\brief

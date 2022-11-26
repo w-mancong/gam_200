@@ -49,7 +49,7 @@ namespace ALEngine::Utility
 
 	void Time::WaitUntil(void)
 	{
-#if EDITOR
+#if _EDITOR
 		ZoneScopedN("FPS Wait");
 #endif
 		auto time_diff = hd_clock::now() - m_ClockedTime;
