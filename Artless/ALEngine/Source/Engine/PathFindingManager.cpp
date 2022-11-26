@@ -16,7 +16,12 @@ namespace  ALEngine::Engine::AI
         Cell& startNode = Coordinator::Instance()->GetComponent<Cell>(startCell);
         Cell& endNode = Coordinator::Instance()->GetComponent<Cell>(endCell);
 
+
         if (!endNode.m_isBlocked || !endNode.m_canWalk) {
+            return false;
+        }
+
+        if (startNode.coordinate == endNode.coordinate) {
             return false;
         }
 

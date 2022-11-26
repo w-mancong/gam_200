@@ -16,10 +16,10 @@ namespace ALEngine::Graphics
 {
 	namespace
 	{
-		void ResizeWindow(GLFWwindow* _window, int width, int height)
+		void ResizeWindow([[maybe_unused]] GLFWwindow* _window, s32 width, s32 height)
 		{
-			(void)_window;
 			glViewport(0, 0, width, height);
+			OpenGLWindow::ar = static_cast<f32>(width) / static_cast<f32>(height);
 		}
 
 		void window_close_callback([[maybe_unused]] GLFWwindow* _window)
@@ -27,7 +27,7 @@ namespace ALEngine::Graphics
 			Engine::SetAppStatus(0);
 		}
 
-		void window_focus_callback([[maybe_unused]] GLFWwindow* window, int focused)
+		void window_focus_callback([[maybe_unused]] GLFWwindow* window, s32 focused)
 		{
 #if EDITOR
 			//focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);
@@ -36,7 +36,7 @@ namespace ALEngine::Graphics
 			Engine::ToggleMuteChannel(Engine::Channel::Master);
 		}
 
-		void scroll_callback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] double xoffset, double yoffset)
+		void scroll_callback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] f64 xoffset, f64 yoffset)
 		{
 			Input::m_MouseWheelEvent = yoffset < 0 ? MouseWheelEvent::MouseWheelDown : MouseWheelEvent::MouseWheelUp;
 		}
@@ -46,6 +46,7 @@ namespace ALEngine::Graphics
 
 	GLFWwindow* OpenGLWindow::window = nullptr;
 	u32 OpenGLWindow::width{ DEFAULT_WIDTH }, OpenGLWindow::height{ DEFAULT_HEIGHT };
+	f32 OpenGLWindow::ar{};
 	std::string OpenGLWindow::title{ "ALEngine" };
 	void OpenGLWindow::InitGLFWWindow(void)
 	{
@@ -73,6 +74,8 @@ namespace ALEngine::Graphics
 		Math::vec2 dimension = config.GetVec2("dimensions", { DEFAULT_WIDTH, DEFAULT_HEIGHT });
 		width = static_cast<u32>(dimension.x);
 		height = static_cast<u32>(dimension.y);
+
+		ar = dimension.x / dimension.y;
 
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 		if (!window)

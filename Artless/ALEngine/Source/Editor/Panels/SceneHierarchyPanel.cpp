@@ -110,7 +110,7 @@ namespace ALEngine::Editor
 			if (ImGui::Selectable("Add child") && (selectedEntity != ECS::MAX_ENTITIES))
 			{
 				// Entity Transform
-				Transform xform = Transform{ Math::Vector2(2.f, 2.f),
+				Transform xform = Transform{ Math::Vector2(1.f, 1.f),
 					Math::Vector2(1.f, 1.f) };
 
 				// Create Entity

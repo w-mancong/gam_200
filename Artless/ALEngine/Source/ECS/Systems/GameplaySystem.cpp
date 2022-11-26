@@ -21,6 +21,7 @@ namespace ALEngine::ECS
 	using namespace Math; using namespace Engine; using namespace Graphics;
 
 	using GameplayInterface::Pattern;
+	using GameplayInterface::Abilities;
 
 	class GameplaySystem : public System
 	{
@@ -56,6 +57,9 @@ namespace ALEngine::ECS
 
 		Entity playerEntity, startCellEntity, targetCellEntity;
 
+		//Enemy
+		std::vector<Entity> enemyEntityList;
+
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 		PATTERN_PLACEMENT_STATUS currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
@@ -71,6 +75,10 @@ namespace ALEngine::ECS
 		std::vector<Pattern> pattern_List;
 		Pattern selected_Pattern;
 
+		//Abilities
+		std::vector<Abilities> Abilities_List;
+		Abilities selected_Abilities;
+
 		Entity current_Moused_Over_Cell;
 
 		//UI
@@ -84,10 +92,14 @@ namespace ALEngine::ECS
 		//Select Pattern
 		void SelectPattern(Pattern pattern);
 
+		//Select Abilities
+		void SelectAbility(Abilities& ability);
+
 		//Return if reached end
 		bool StepUpModeOrderPath(MoveOrder& order);
 		u32 getRoomSize();
 		void RunGameState();
+		void UpdateUnitSpriteLayer();
 
 		void MovePlayerEntityToCell(Entity cellEntity);
 
@@ -96,10 +108,11 @@ namespace ALEngine::ECS
 
 		void EndTurn();
 
-		void DeselectPatternPlacement();
-
 		void TogglePatternGUI(b8 istrue);
 		void ToggleAbilitiesGUI(b8 istrue);
+
+		void PlaceNewPlayerInRoom(s32 x, s32 y);
+		void PlaceNewEnemyInRoom(s32 x, s32 y);
 
 		//Creating Object
 		void InitializeEndTurnButton();
@@ -111,6 +124,8 @@ namespace ALEngine::ECS
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
 		std::string const sceneName = R"(Assets\test.scene)";
+
+		s32 base_Layer = 10000;
 	}
 
 	void Event_Button_Darken(Entity invoker) {
@@ -129,9 +144,7 @@ namespace ALEngine::ECS
 
 	void Event_Button_Select_Abilities_0(Entity invoker) {
 		AL_CORE_INFO("Select Abilities 0");
-		
-		gameplaySystem->ToggleAbilitiesGUI(false);
-		gameplaySystem->TogglePatternGUI(true);
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
 	}
 
 	void Event_Button_Select_CurrentPattern(Entity invoker) {
@@ -167,13 +180,25 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
-			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+			if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP) {
+				b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 			
-			if(canPlace)
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
-			else
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
-		}
+				if(canPlace)
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+				else
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
+			}
+			else if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+				//GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+
+				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+
+				if (canPlace)
+					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+				else
+					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
+			}
+		}//End check for pattern placement
 	}
 
 	void Event_MouseExitCell(Entity invoker) {
@@ -200,6 +225,11 @@ namespace ALEngine::ECS
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
+			gameplaySystem->EndTurn();
+		}
+		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			gameplaySystem->selected_Abilities.RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 			gameplaySystem->EndTurn();
 		}
 	}
@@ -237,6 +267,9 @@ namespace ALEngine::ECS
 		//Initialize Pattern
 		InitializePatterns(gameplaySystem->pattern_List);
 
+		//Initialize Abilities
+		InitializeAbilities(gameplaySystem->Abilities_List);
+
 		for (uint32_t i = 0; i < gameplaySystem->getRoomSize(); ++i) {
 			gameplaySystem->m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
@@ -273,32 +306,23 @@ namespace ALEngine::ECS
 		}
 
 		//Create Player
-		gameplaySystem->playerEntity = Coordinator::Instance()->CreateEntity();
-		CreatePlayerUnit(gameplaySystem->playerEntity);
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
-		playerUnit.coordinate[0] = 0;
-		playerUnit.coordinate[1] = 0;
+		gameplaySystem->PlaceNewPlayerInRoom(0, 0);
 
-		playerUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, 0, 0);
-
-		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity;
-
-		GameplayInterface::PlaceWalkableOnGrid(gameplaySystem->m_Room, { 0,0 }, "Assets/Images/Walkable.png");
-
-		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
-		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
-		playerTransform.localPosition = SpawnCellTransform.position;
+		gameplaySystem->PlaceNewEnemyInRoom(0, 1);
 
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
-		
+
+		//Initialize Pattern GUI
 		GameplayInterface::InitializePatternGUI(gameplaySystem->GUI_Pattern_Button_List);
 
+		//Add events for pattern Button
 		Subscribe(gameplaySystem->GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
 		Subscribe(gameplaySystem->GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
 		Subscribe(gameplaySystem->GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
 		Subscribe(gameplaySystem->GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
 
+		//Add visual feedback event for pattern GUI
 		for (int i = 0; i < gameplaySystem->GUI_Pattern_Button_List.size(); ++i) {
 			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
 			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
@@ -306,10 +330,13 @@ namespace ALEngine::ECS
 		}
 
 
-		//Initialize Abilities GUI
+		//Initialize abilities GUI
 		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
+
+		//Add events for abilities Button
 		Subscribe(gameplaySystem->GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 
+		//Add visual feedback event for abilities GUI
 		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
 			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
 			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
@@ -338,16 +365,32 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING && Input::KeyDown(KeyCode::MouseRightButton)) {
-			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
+		//If right mouse button
+		if (Input::KeyDown(KeyCode::MouseRightButton)) {
+			//Deselect Pattern
+			if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
-			gameplaySystem->DeselectPatternPlacement();
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+				gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 
-			gameplaySystem->TogglePatternGUI(true);
+				gameplaySystem->TogglePatternGUI(true);
+			}
+			//Deselect Abilities
+			else if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
+
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+				gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
+
+				gameplaySystem->TogglePatternGUI(false);
+				gameplaySystem->ToggleAbilitiesGUI(true);
+			}
 		}
 
 		gameplaySystem->RunGameState();
+		
+		gameplaySystem->UpdateUnitSpriteLayer();
 	}
 
 	void ExitGameplaySystem(void)
@@ -401,39 +444,78 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::TogglePatternGUI(b8 istrue) {
-		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
+		//for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
+		//	EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
+		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
 
-			eventTrigger.isEnabled = istrue;
+		//	eventTrigger.isEnabled = istrue;
 
-			if(istrue)
-			sprite.color = { 1.f, 1.f, 1.f, 1.f };
-			else
-			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
+		//	if(istrue)
+		//	sprite.color = { 1.f, 1.f, 1.f, 1.f };
+		//	else
+		//	sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		//}
 	}
 	
 	void GameplaySystem::ToggleAbilitiesGUI(b8 istrue) {
-		for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+		//for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
+		//	EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
-			eventTrigger.isEnabled = false;
-			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
+		//	eventTrigger.isEnabled = false;
+		//	sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		//}
 
-		for (int i = 0; i < 1; ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+		//for (int i = 0; i < 1; ++i) {
+		//	EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
-			eventTrigger.isEnabled = istrue;
+		//	eventTrigger.isEnabled = istrue;
 
-			if (istrue)
-				sprite.color = { 1.f, 1.f, 1.f, 1.f };
-			else
-				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
+		//	if (istrue)
+		//		sprite.color = { 1.f, 1.f, 1.f, 1.f };
+		//	else
+		//		sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		//}
+	}
+
+	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
+		gameplaySystem->playerEntity = Coordinator::Instance()->CreateEntity();
+		CreatePlayerUnit(gameplaySystem->playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		playerUnit.coordinate[0] = x;
+		playerUnit.coordinate[1] = y;
+
+		playerUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
+
+		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity;
+		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).hasUnit = true;
+
+		GameplayInterface::PlaceWalkableOnGrid(gameplaySystem->m_Room, { x, y }, "Assets/Images/Walkable.png");
+
+		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+		playerTransform.localPosition = SpawnCellTransform.position;
+	}
+
+	void GameplaySystem::PlaceNewEnemyInRoom(s32 x, s32 y) {
+		Entity newEnemy = Coordinator::Instance()->CreateEntity();
+
+		enemyEntityList.push_back(newEnemy);
+
+		CreateEnemyUnit(newEnemy);
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(newEnemy);
+		enemyUnit.coordinate[0] = x;
+		enemyUnit.coordinate[1] = y;
+
+		enemyUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
+
+		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).unitEntity = newEnemy;
+		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).hasUnit = true;
+		
+		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
+		Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(newEnemy);
+		enemyTransform.localPosition = SpawnCellTransform.position;
 	}
 
 	void GameplaySystem::SelectPattern(Pattern pattern) { 
@@ -442,6 +524,21 @@ namespace ALEngine::ECS
 			selected_Pattern = pattern;
 
 			TogglePatternGUI(false);
+		}
+		else if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_ACTION) {
+			currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
+			selected_Pattern = pattern;
+
+			TogglePatternGUI(false);
+		}
+	}
+
+	void GameplaySystem::SelectAbility(Abilities& ability) {
+		if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_ACTION) {
+			selected_Abilities = ability;
+
+			ToggleAbilitiesGUI(false);
+			TogglePatternGUI(true);
 		}
 	}
 
@@ -475,10 +572,6 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void GameplaySystem::DeselectPatternPlacement() {
-		currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
-	}
-
 	void GameplaySystem::RunGameState() {
 		switch (currentUnitControlStatus)
 		{
@@ -510,19 +603,34 @@ namespace ALEngine::ECS
 		}
 	}
 
+	void GameplaySystem::UpdateUnitSpriteLayer() {
+		for (int i = 0; i < enemyEntityList.size(); ++i) {
+			Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(enemyEntityList[i]);
+			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+			Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+
+			enemySprite.layer = base_Layer - enemyTransform.localPosition.y;
+		}
+
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
+
+		playerSprite.layer = base_Layer - playerTransform.localPosition.y;
+	}
+
 	void CreatePlayerUnit(Entity const& entity) {
-		//Setup rigidbody for custom stats
 		Unit unit{};
 		unit.unitType = UNIT_TYPE::PLAYER;
 		Coordinator::Instance()->AddComponent(entity, unit);
-		Coordinator::Instance()->AddComponent(gameplaySystem->playerEntity, Transform{});
+		Coordinator::Instance()->AddComponent(entity, Transform{});
 
 		Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(entity);
 		playertransform.scale = { 50, 50 };
 		playertransform.localScale = { 100, 100 };
 
 
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(entity);
 		playerUnit.unit_Sprite_Entity = Coordinator::Instance()->CreateEntity();
 
 		Transform playerSpriteTransform;
@@ -535,15 +643,36 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->GetComponent<EntityData>(playerUnit.unit_Sprite_Entity).tag = "Player_Sprite";
 
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-		sceneGraph.Push(-1, gameplaySystem->playerEntity); // first cell is parent
-		sceneGraph.Push(gameplaySystem->playerEntity, playerUnit.unit_Sprite_Entity);
+		sceneGraph.Push(-1, entity); // first cell is parent
+		sceneGraph.Push(entity, playerUnit.unit_Sprite_Entity);
 	}
 
 	void CreateEnemyUnit(Entity const& entity) {
-		//Setup rigidbody for custom stats
 		Unit unit{};
 		unit.unitType = UNIT_TYPE::ENEMY;
 		Coordinator::Instance()->AddComponent(entity, unit);
+		Coordinator::Instance()->AddComponent(entity, Transform{});
+
+		Transform& playertransform = Coordinator::Instance()->GetComponent<Transform>(entity);
+		playertransform.scale = { 50, 50 };
+		playertransform.localScale = { 100, 100 };
+
+
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(entity);
+		enemyUnit.unit_Sprite_Entity = Coordinator::Instance()->CreateEntity();
+
+		Transform enemySpriteTransform;
+		enemySpriteTransform.localPosition = { 0.f, 0.4f };
+		enemySpriteTransform.localScale = { 1.f, 2.f };
+
+		CreateSprite(enemyUnit.unit_Sprite_Entity, enemySpriteTransform, "Assets/Images/Bishop v.02.png");
+
+		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Enemy_" + std::to_string(gameplaySystem->enemyEntityList.size() - 1);
+		Coordinator::Instance()->GetComponent<EntityData>(enemyUnit.unit_Sprite_Entity).tag = "Enemy_Sprite_" + std::to_string(gameplaySystem->enemyEntityList.size() - 1);
+
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+		sceneGraph.Push(-1, entity); // first cell is parent
+		sceneGraph.Push(entity, enemyUnit.unit_Sprite_Entity);
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(Entity cellEntity) {

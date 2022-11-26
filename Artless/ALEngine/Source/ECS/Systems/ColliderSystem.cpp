@@ -278,6 +278,10 @@ namespace ALEngine::ECS
 
 		//Shift through every collider, reset their data for the collision simulation
 		for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it) {
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(*it);
 			Collider2D& Collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 
@@ -295,6 +299,10 @@ namespace ALEngine::ECS
 		//Calculate collision between every collider
 		for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
 		{
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			//One data (Treated as moving if rigidbody is enabled)
 			Collider2D& oneCollider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 			Transform& oneParentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
@@ -715,6 +723,10 @@ namespace ALEngine::ECS
 		//**************** Update the position to after all the response ************//
 		for (auto it = cs->mEntities.begin(); it != cs->mEntities.end(); ++it)
 		{
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 			Transform& parentTransform = Coordinator::Instance()->GetComponent<Transform>(*it);
 
