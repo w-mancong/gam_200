@@ -427,6 +427,11 @@ namespace ALEngine::Engine
 			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
 			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_TileEditor.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_TileEditor.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
 			// Play icon
 			id = PrepareGuid();
 			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });

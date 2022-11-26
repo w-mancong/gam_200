@@ -27,7 +27,7 @@ namespace ALEngine::Engine
 		{
 			switch (fdwCtrlType)
 			{
-				// When window console x button is pressed
+			// When window console x button is pressed
 			case CTRL_CLOSE_EVENT:
 				Application::Exit();
 				return TRUE;
@@ -96,7 +96,7 @@ namespace ALEngine::Engine
 			else
 			{
 				GameStateManager::current = GameStateManager::previous;
-				GameStateManager::next = GameStateManager::previous;
+				GameStateManager::next	  = GameStateManager::previous;
 			}
 
 			InitCppScripts();
@@ -211,6 +211,11 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
+#if !EDITOR
+		OpenGLWindow::FullScreen(true);
+		Console::StopConsole();
+#endif
+
 		//StartGameplaySystem();
 		//Scene::LoadScene("Assets\\test.scene");
 
@@ -224,8 +229,6 @@ namespace ALEngine::Engine
 		//es.AddFreeFunction("SkillReset");
 
 		//Scene::SaveScene("test");
-
-		//OpenGLWindow::FullScreen(true);
 	}
 
 	void Application::Update(void)
@@ -305,6 +308,12 @@ namespace ALEngine::Engine
 	void SetWindowFocus(bool _focus)
 	{
 		focus = _focus;
+	}
+
+	void TerminateEngine(void)
+	{
+		SetAppStatus(0);
+		GameStateManager::current = Engine::GameState::Quit;
 	}
 
 #if EDITOR

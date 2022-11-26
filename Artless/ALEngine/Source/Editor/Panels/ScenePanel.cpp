@@ -235,6 +235,16 @@ namespace ALEngine::Editor
 		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
 	}
 
+	f32& ScenePanel::GetCameraWidth(void)
+	{
+		return m_CameraWidth;
+	}
+
+	f32& ScenePanel::GetCameraHeight(void)
+	{
+		return m_CameraHeight;
+	}
+
 	Engine::Camera& ScenePanel::GetEditorCamera(void)
 	{
 		return m_EditorCamera;
@@ -253,6 +263,8 @@ namespace ALEngine::Editor
 
 	void ScenePanel::UserInput(void)
 	{
+		m_EditorCamera.Update();
+
 		f32 constexpr CAM_SPEED{ 7.5f };
 
 		if (Input::KeyDown(KeyCode::Up))

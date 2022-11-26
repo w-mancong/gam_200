@@ -661,6 +661,16 @@ namespace ALEngine::Editor
 		return m_ScenePanel.GetSceneHeight();
 	}
 
+	f32& ALEditor::GetSceneCameraWidth(void)
+	{
+		return m_ScenePanel.GetCameraWidth();
+	}
+
+	f32& ALEditor::GetSceneCameraHeight(void)
+	{
+		return m_ScenePanel.GetCameraHeight();
+	}
+
 	Engine::Camera& ALEditor::GetEditorCamera(void)
 	{
 		return m_ScenePanel.GetEditorCamera();
