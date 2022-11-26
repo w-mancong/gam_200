@@ -52,35 +52,30 @@ namespace ALEngine::Engine
 			// Get Current Time
 			Time::ClockTimeNow();
 
-			{
-				PROFILER_TIMER("Editor UI Update")
-				// Editor Command Manager Update
-				Commands::EditorCommandManager::Update();
-				// Begin new ImGui frame
-				ALEditor::Instance()->Begin();
-				
-				// Set the window focus
-				//ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
-				//editorFocus = ImGui::IsWindowFocused(flag);
-			}
+			// Editor Command Manager Update
+			Commands::EditorCommandManager::Update();
+			// Begin new ImGui frame
+			ALEditor::Instance()->Begin();
+			Input::GetMouseWorldPos();
+			
+			// Set the window focus
+			//ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
+			//editorFocus = ImGui::IsWindowFocused(flag);
 
 			Engine::Update();
 
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
 
-			{
-				PROFILER_TIMER("Render Update")
-				//RenderTransformBox();
-				// Render
-				Render();
-			}
+			//RenderTransformBox();
+			// Render
+			Render();
 
 			// Wait for next frame
 			Time::WaitUntil();
 
 			// Marks the end of a frame loop, for tracy profiler
-			FrameMark
+			FrameMark;
 		}
 #endif
 		void GameUpdate(void)
@@ -112,58 +107,40 @@ namespace ALEngine::Engine
 				// Get Current Time
 				Time::ClockTimeNow();
 #if EDITOR
-				{
-					PROFILER_TIMER("Editor UI Update")
-					// Editor Command Manager Update
-					Commands::EditorCommandManager::Update();
-					// Begin new ImGui frame
-					ALEditor::Instance()->Begin();
-				}
+				// Editor Command Manager Update
+				Commands::EditorCommandManager::Update();
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
 #endif
+				// Normal Update
+				Engine::Update();
+				UpdateCppScripts();
+				// Physics
+				// Fixed Update (Physics)
+				accumulator += Time::m_DeltaTime;
 
+				// Steps to limit num times physics will run per frame
+				int currNumSteps{ 0 };
+
+				while (accumulator >= Time::m_FixedDeltaTime)
 				{
-					PROFILER_TIMER("Normal Update")
-					// Normal Update
-					Engine::Update();
-					UpdateCppScripts();
-				}
+					// Exit if physics happen more than limit
+					if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
+						break;
 
-				{
-					PROFILER_TIMER("Fixed Update")
-					// Physics
-					// Fixed Update (Physics)
-					accumulator += Time::m_DeltaTime;
-
-					// Steps to limit num times physics will run per frame
-					int currNumSteps{ 0 };
-
-					while (accumulator >= Time::m_FixedDeltaTime)
-					{
-						// Exit if physics happen more than limit
-						if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
-							break;
-
-						Engine::FixedUpdate();
-						accumulator -= Time::m_FixedDeltaTime;
-					}
+					Engine::FixedUpdate();
+					accumulator -= Time::m_FixedDeltaTime;
 				}
 
 				// Update Scene graph
 				ECS::GetSceneGraph().Update();
 
-				{
-					PROFILER_TIMER("Render Update")
+				// Render
+				Render();
 
-					// Render
-					Render();
-				}
+				// Wait for next frame
+				Time::WaitUntil();				
 
-				{
-					PROFILER_TIMER("FPS Wait")
-
-					// Wait for next frame
-					Time::WaitUntil();
-				}
 #if EDITOR
 				// Marks the end of a frame m_Loop, for tracy profiler
 				FrameMark;
@@ -272,7 +249,7 @@ namespace ALEngine::Engine
 	void Engine::Update(void)
 	{
 #if EDITOR
-		ZoneScopedN("Normal Update");
+		ZoneScopedN("Normal Delta Time Update");
 #endif
 		Input::Update();
 		AssetManager::Instance()->Update();
@@ -281,6 +258,9 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
+#if EDITOR
+		ZoneScopedN("Fixed Delta Time Update");
+#endif
 		UpdateGameplaySystem();
 
 		UpdateRigidbodySystem();

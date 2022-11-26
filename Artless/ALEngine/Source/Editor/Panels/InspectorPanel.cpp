@@ -232,7 +232,7 @@ namespace ALEngine::Editor
 			//EDITOR_KEYBOARD_CHECK
 
 			ImGui::DragFloat2("Sc", mtx_scale, v_speed);			// Scale
-			EDITOR_KEYBOARD_CHECK
+			//EDITOR_KEYBOARD_CHECK
 
 				// Set changes
 				Transform a(xform);

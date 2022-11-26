@@ -304,8 +304,6 @@ namespace ALEngine::ECS
 
 	void Render(void)
 	{		
-		camera.Update();
-
 		RenderGameplay();
 #if EDITOR
 		RenderEditor();
