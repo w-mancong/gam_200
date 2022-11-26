@@ -181,6 +181,7 @@ namespace ALEngine
 			if (!Coordinator::Instance()->GetComponent<EntityData>(backdrop).active)
 			{
 				paused = !paused;
+				Time::m_Scale = static_cast<f32>(paused);
 				SetActive(paused, en);
 			}
 			else
