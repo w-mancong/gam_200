@@ -388,6 +388,8 @@ namespace ALEngine::ECS
 		gameplaySystem->GUI_Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
 		gameplaySystem->GUI_Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
 		gameplaySystem->GUI_Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
+
+		ECS::SetActive(false, gameplaySystem->endTurnBtnEntity);
 	}
 
 	void UpdateGameplaySystem(void)
@@ -454,7 +456,9 @@ namespace ALEngine::ECS
 	void GameplaySystem::EndTurn() {
 		currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
 		currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
-		
+
+		ECS::SetActive(false, gameplaySystem->endTurnBtnEntity);
+
 		switch (currentGameplayStatus) {
 			case GAMEPLAY_STATUS::PHASE_SETUP:
 				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ACTION;
@@ -764,6 +768,8 @@ namespace ALEngine::ECS
 
 		movingUnitEntity = playerEntity;
 		UpdateGUI_OnSelectUnit(movingUnitEntity);
+
+		ECS::SetActive(true, gameplaySystem->endTurnBtnEntity);
 	}	
 	
 	void GameplaySystem::MoveEnemy() {
