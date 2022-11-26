@@ -126,12 +126,6 @@ namespace ALEngine::Editor
 
 			m_TileEditor.OnImGuiRender();
 
-			// Scene Hierarchy Panel
-			m_SceneHierarchyPanel.OnImGuiRender();
-
-			// Check if there is a selected entity for Inspector
-			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
-
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -147,6 +141,12 @@ namespace ALEngine::Editor
 			{	// Run editor scene panel
 				m_ScenePanel.OnImGuiRender();	// Scene Panel
 			}
+
+			// Scene Hierarchy Panel
+			m_SceneHierarchyPanel.OnImGuiRender();
+
+			// Check if there is a selected entity for Inspector
+			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 		}
 	}
 
@@ -163,42 +163,34 @@ namespace ALEngine::Editor
 	{
 		ZoneScopedN("Editor Update");
 		// Change ImGui Enabled or Disabled
-		/*
-		if (Input::KeyTriggered(KeyCode::Key_9))
+		
+		if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::Key_9))
 		{
 			m_ImGuiEnabled = !m_ImGuiEnabled;
 
 			ImGuiIO& io = ImGui::GetIO();
-			// If it is iactive, set MultiViewport to disable. 
+			// If it is iactive, set MultiViewport to disable.
 				// This is to stop rendering panels outside of main window
 			if (m_ImGuiEnabled)
 			{
-				m_ImGuiEnabled = !m_ImGuiEnabled;
-
-				ImGuiIO& io = ImGui::GetIO();
-				// If it is iactive, set MultiViewport to disable.
-					// This is to stop rendering panels outside of main window
-				if (m_ImGuiEnabled)
-				{
-					io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-				}
-				else
-					io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-				ImGui::UpdatePlatformWindows();
+				io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+			}
+			else
+			{
+				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+			}
 		}
-		*/
+
+		// Check ImGui active
+		if (!m_ImGuiEnabled)
+		{
+			return;
+		}
 
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
-		// Check ImGui active
-		if (!m_ImGuiEnabled)
-		{
-			End();
-			return;
-		}
 
 		// ImGuizmo Frame
 		ImGuizmo::SetOrthographic(true);
