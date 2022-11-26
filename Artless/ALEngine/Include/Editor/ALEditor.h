@@ -278,11 +278,6 @@ namespace ALEngine::Editor
 		// Scene String
 		std::string m_CurrentSceneName{ "" };
 
-		// Window Min Size
-		ImVec2 m_WinMinSize{ 300.f, 25.f };
-		ImVec2 m_MenuSize{ 200.f, 300.f };
-		ImVec2 m_ToolbarMinSize{};
-
 		// Booleans
 		b8 m_IsReceivingKBInput{ false };				// Whether ImGui is receiving Input
 		b8 m_ImGuiEnabled{ false };						// Set to true if ImGui is enabled
@@ -293,6 +288,7 @@ namespace ALEngine::Editor
 		b8 m_AnimatorPanelEnabled{ false };				// Set to true if Animator Panel is enabled
 		b8 m_AudioPanelEnabled{ false };				// Set to true if Audio Panel is enabled
 		b8 m_EditorInFocus{ true };						// Bool to keep track of whether the editor is in focus
+		b8 m_ProfilerRunning{ false };					// Keep track of whether profiler is running
 
 		// Panels
 		ContentBrowserPanel m_ContentBrowserPanel;		// Content Browser Panel
@@ -310,6 +306,11 @@ namespace ALEngine::Editor
 		ImGuizmo::OPERATION m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
 
 	public:
+		// Window Min Size
+		ImVec2 m_WinMinSize{ 300.f, 25.f };
+		ImVec2 m_MenuSize{ 200.f, 300.f };
+		ImVec2 m_ToolbarMinSize{};
+
 		// Editor Colors
 		ImVec4 m_ColorTitleBg{};			// Color of Title Background
 		ImVec4 m_ColorTitleActiveBg{};		// Color of Title Active Background

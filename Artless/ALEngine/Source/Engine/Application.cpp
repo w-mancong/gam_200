@@ -41,11 +41,11 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			if (!focus && !editorFocus)
-			{
-				glfwPollEvents();
-				return;
-			}
+			//if (!focus)
+			//{
+			//	glfwPollEvents();
+			//	return;
+			//}
 
 			// Get Current Time
 			Time::ClockTimeNow();
@@ -78,7 +78,7 @@ namespace ALEngine::Engine
 			Time::WaitUntil();
 
 			// Marks the end of a frame loop, for tracy profiler
-			FrameMark
+			FrameMark;
 		}
 #endif
 		void GameUpdate(void)

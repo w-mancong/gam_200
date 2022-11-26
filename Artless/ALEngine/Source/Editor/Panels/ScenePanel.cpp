@@ -256,14 +256,19 @@ namespace ALEngine::Editor
 	{
 		f32 constexpr CAM_SPEED{ 7.5f };
 
-		if (Input::KeyDown(KeyCode::Up))
-			m_EditorCamera.Position().y += CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Left))
-			m_EditorCamera.Position().x -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Down))
-			m_EditorCamera.Position().y -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Right))
-			m_EditorCamera.Position().x += CAM_SPEED;
+		ImGuiIO io = ImGui::GetIO();
+
+		if (io.WantTextInput == false)
+		{
+			if (ImGui::IsKeyDown(ImGuiKey_UpArrow))
+				m_EditorCamera.Position().y += CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_LeftArrow))
+				m_EditorCamera.Position().x -= CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_DownArrow))
+				m_EditorCamera.Position().y -= CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_RightArrow))
+				m_EditorCamera.Position().x += CAM_SPEED;
+		}
 
 		// Right Mouse Button Move Camera
 		static Math::Vec2 mousePosBegin{};

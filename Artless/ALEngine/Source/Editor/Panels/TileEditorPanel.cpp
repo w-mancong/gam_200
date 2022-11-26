@@ -14,7 +14,9 @@ brief:	This file contains the function definitions for the TileEditorPanel class
 #include "imgui_internal.h"
 #define MIN_TILES_SHOWN 3
 #define MAX_TILES_SHOWN 10
+#define FILE_BUFFER_SIZE 100
 #define TILE_EDITOR_DATA_PATH "Assets/Dev/Objects/TileEditorData.json"
+#define PLUS_ICON "Assets/Dev/Images/plus.png"
 
 namespace ALEngine::Editor
 {
@@ -56,7 +58,8 @@ namespace ALEngine::Editor
 
 		// Set constraints
 		if (m_HasMapLoaded)
-			ImGui::SetNextWindowSizeConstraints(ImVec2(ALEditor::Instance()->GetSceneWidth(), ALEditor::Instance()->GetSceneHeight()), ImGui::GetMainViewport()->WorkSize);
+			ImGui::SetNextWindowSizeConstraints(ImVec2(static_cast<f32>(ALEditor::Instance()->GetSceneWidth()),
+				static_cast<f32>(ALEditor::Instance()->GetSceneHeight())), ImGui::GetMainViewport()->WorkSize);
 		else
 			ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
@@ -103,7 +106,7 @@ namespace ALEngine::Editor
 		ImVec2 tilesArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.6f, ImGui::GetContentRegionAvail().y);
 
 		ImGuiWindowFlags childFlags = ImGuiWindowFlags_HorizontalScrollbar;
-		if (ImGui::BeginChild("##TileEditor_TileArea", tilesArea, true))
+		if (ImGui::BeginChild("##TileEditor_TileArea", tilesArea, true, childFlags))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1.f, 1.f));
 			u32 tileNum{ 0 };
@@ -179,6 +182,36 @@ namespace ALEngine::Editor
 					if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 						m_SelectedTile = type.first;
 
+					// Drag Drop for Selectable
+					if (ImGui::BeginDragDropTarget())
+					{
+						// Payload flag
+						ImGuiDragDropFlags payload_flag{ 0 };
+						//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+						// Get Drag and Drop Payload
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
+						{
+							// Get filepath
+							size_t fileLen;	c8 dd_filepath[FILE_BUFFER_SIZE];
+							wcstombs_s(&fileLen, dd_filepath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+							// Check if image (png or jpg)
+							std::string fileString = dd_filepath;
+							if (fileString.find(".jpg") != std::string::npos ||
+								fileString.find(".png") != std::string::npos)
+							{
+								type.second = fileString;
+								SaveTileEditorData();
+							}
+							else
+							{
+								AL_CORE_ERROR("A .jpg or .png file is required!");
+							}
+						}
+						ImGui::EndDragDropTarget();
+					}
+
 					if (m_SelectedTile == type.first)
 					{
 						ImDrawFlags draw_flag = 0;
@@ -188,6 +221,60 @@ namespace ALEngine::Editor
 
 					if (count++ % 2 == 0)
 						ImGui::SameLine();
+				}
+				
+				// Add Tile
+				ImGui::BeginChild("Add Tile##TileEditorPanel", ImVec2(width, width), true);
+
+				textLen = ImGui::CalcTextSize("Add Tile").x;
+				ImGui::SameLine((width - textLen) * 0.5f);
+				ImGui::Text("Add Tile");
+
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets/Dev/Images/plus_icon.png");
+				u64 texture = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
+				f32 ImageSize = ImGui::GetContentRegionAvail().y;
+
+				ImGui::NewLine(); ImGui::SameLine((width - ImageSize) * 0.5f);
+				ImGui::Image(reinterpret_cast<ImTextureID>(texture), { ImageSize, ImageSize }, { 0, 1 }, { 1, 0 });
+
+				ImGui::EndChild();
+
+				if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+					ImGui::OpenPopup("Add Tile##TileEditorPopup");
+				
+				f32 popup_len = ALEditor::Instance()->m_MenuSize.x;
+				ImGui::SetNextWindowSize({ popup_len, 0.f });
+				if (ImGui::BeginPopup("Add Tile##TileEditorPopup"))
+				{
+					textLen = ImGui::CalcTextSize("Add New Tile!").x;
+					ImGui::SameLine((popup_len - textLen) * 0.5f);
+					ImGui::TextColored(ALEditor::Instance()->m_ColorActive, "Add New Tile!");
+					
+					ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+					
+					static c8 name[FILE_BUFFER_SIZE]{};
+					ImGui::InputTextWithHint("##NewTileNameInput_TileEditor", "Tile Name", name, FILE_BUFFER_SIZE);
+					ImGui::NewLine();
+
+					ImGui::PopItemWidth();
+
+					b8 nameFilled = std::strcmp(name, "") != 0;
+
+					textLen = ImGui::CalcTextSize("Add").x;
+					ImGui::NewLine();  ImGui::SameLine((popup_len - textLen) * 0.5f);					
+					if(nameFilled == false)
+						ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);						
+
+					if (ImGui::Button("Add") && nameFilled)
+					{
+						m_ImageMap[name] = "";
+						SaveTileEditorData();
+					}
+					
+					if (nameFilled == false)
+						ImGui::PopStyleVar();
+
+					ImGui::EndPopup();
 				}
 
 				ImGui::PopStyleVar();
@@ -295,7 +382,7 @@ namespace ALEngine::Editor
 
 		// Map Width Drag Int
 		ImGui::NewLine();  ImGui::SameLine(winLen * 0.25f);
-		ImGui::DragInt("##TileEditorWidth", &m_MapWidth, 1.f, 0.f, 64);
+		ImGui::DragInt("##TileEditorWidth", &m_MapWidth, 1.f, 0, 64);
 
 		// Map Height Text
 		textLen = ImGui::CalcTextSize("Map Width").x;
@@ -304,7 +391,7 @@ namespace ALEngine::Editor
 
 		// Map Height Drag Int
 		ImGui::NewLine();  ImGui::SameLine(winLen * 0.25f);
-		ImGui::DragInt("##TileEditorHeight", &m_MapHeight, 1.f, 0.f, 64);
+		ImGui::DragInt("##TileEditorHeight", &m_MapHeight, 1.f, 0, 64);
 
 		ImGui::PopItemWidth();
 
