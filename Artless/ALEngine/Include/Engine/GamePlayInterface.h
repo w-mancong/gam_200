@@ -6,7 +6,7 @@ author:	Tan Zhen Xiong
 email:	t.zhenxiong@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.h
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 
@@ -25,22 +25,14 @@ namespace ALEngine::Engine::GameplayInterface
 	};
 
 	//For now 2 abilities
-	struct Abilities {
+	enum class TYPE_ABILITIES { HARD_DROP, LIFE_DRAIN };
+	class Abilities {
+	public:
 		u32 current_Cooldown = 0, max_Cooldown = 2;
 
-		virtual void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) { AL_CORE_INFO("BASE"); };
-	};
+		s32 damage = 15;
 
-	//1) Hard drop - damage all enemies in range
-	struct Abilities_HardDrop : public Abilities {
-		u32 damage = 15;
-		void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) override;
-	};
-
-	//2) Life Drain - damage and get damage amount as heal for players
-	struct Abilities_LifeDrain : public Abilities {
-		u32 lifeStealAmount = 12;	//0 to 1 (1 being 100% of damage)
-		void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) override;
+		TYPE_ABILITIES current_type = TYPE_ABILITIES::HARD_DROP;
 	};
 
 	/*!*********************************************************************************
@@ -49,7 +41,7 @@ namespace ALEngine::Engine::GameplayInterface
     ***********************************************************************************/
 	u32 getEntityCell(Room& currentRoom, u32 x, u32 y);
 
-	void ToggleCellToInaccessible(Room& currentRoom, u32 x, u32 y, b8 istrue);
+	void ToggleCellAccessibility(Room& currentRoom, u32 x, u32 y, b8 istrue);
 
 	/*!*********************************************************************************
 	\brief
@@ -62,6 +54,8 @@ namespace ALEngine::Engine::GameplayInterface
 	Global function to check cell is inside room of cells
     ***********************************************************************************/
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
+
+	bool IsCoordinateCellAccessible(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY);
 
 	//Initialize Patterns
 	void InitializePatterns(std::vector<Pattern>& patternList);
@@ -86,6 +80,10 @@ namespace ALEngine::Engine::GameplayInterface
 	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
 	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
 
-	void DoDamageToUnit(Unit& unit, s32 damage);
+	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities);
+	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage);
+
+	//AI
+	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy);
 }
 #endif

@@ -1,9 +1,9 @@
 #include "pch.h"
 
+#if EDITOR
 #include "imgui.h"
 #include "imgui_internal.h"
 
-#ifdef EDITOR
 
 namespace ALEngine::Editor
 {

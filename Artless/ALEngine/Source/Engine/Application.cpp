@@ -6,7 +6,9 @@ namespace ALEngine::Engine
 	using namespace Math;
 	using namespace Graphics;
 	using namespace ECS;
+#if EDITOR
 	using namespace Editor;
+#endif
 	namespace
 	{
 		class Application
@@ -41,11 +43,11 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			//if (!focus)
-			//{
-			//	glfwPollEvents();
-			//	return;
-			//}
+			if (!focus)
+			{
+				glfwPollEvents();
+				return;
+			}
 
 			// Get Current Time
 			Time::ClockTimeNow();
@@ -140,6 +142,7 @@ namespace ALEngine::Engine
 
 				// Marks the end of a frame m_Loop, for tracy profiler
 				FrameMark;
+#endif
 			}
 
 			// Free resources
@@ -183,8 +186,21 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-		//Scene::LoadScene("Assets\\test.scene");
 		//StartGameplaySystem();
+		//Scene::LoadScene("Assets\\test.scene");
+
+		//Entity en = Coordinator::Instance()->GetEntityByTag("bar_stats");
+		//EntityScript es;
+		//es.AddInitFunction("StatsInit");
+		//es.AddFreeFunction("StatsReset");
+		//Coordinator::Instance()->AddComponent(en, es);
+
+		//EntityScript& es = Coordinator::Instance()->GetComponent<EntityScript>(en);
+		//es.AddFreeFunction("SkillReset");
+
+		//Scene::SaveScene("test");
+
+		//OpenGLWindow::FullScreen(true);
 	}
 
 	void Application::Update(void)
@@ -227,19 +243,12 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
+#if EDITOR
 		ZoneScopedN("Normal Delta Time Update");
+#endif
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
-
-		//EntityList const& list = Coordinator::Instance()->GetEntities();
-		//for (Entity en : list)
-		//{
-		//	EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
-		//	//if (ed.active != ed.localActive[1])
-		//	//	ed.localActive[0] = ed.localActive[1] = ed.active;
-		//	//ed.active = ed.localActive[0];
-		//}
 	}
 
 	void Engine::FixedUpdate(void)

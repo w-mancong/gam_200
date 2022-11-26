@@ -389,54 +389,56 @@ namespace ALEngine::Engine
 	void AssetManager::Init()
 	{
 #if EDITOR
-		Guid id{ 0 }; u32 icon{ 0 };
-		// Folder icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Folder.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+		{
+			Guid id{ 0 }; u32 icon{ 0 };
+			// Folder icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Folder.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Prefab icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Prefab.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Prefab.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Prefab icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Prefab.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Prefab.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Scene icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Scene.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Scene.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Scene icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Scene.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Scene.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Script icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Script.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Script.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Script icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Script.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Script.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Font icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Font icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Audio icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Sound.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Audio icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Sound.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Play icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\button_play.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Play icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\button_play.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Stop icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_stop.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\button_stop.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Stop icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_stop.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\button_stop.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+		}
 #endif
 
 		std::vector<std::string> metaFiles, fileNames;
@@ -606,10 +608,12 @@ namespace ALEngine::Engine
 		return textureList[id].handle;
 	}
 
+#if EDITOR
 	u32 AssetManager::GetButtonImage(Guid id)
 	{
 		return buttonImageList[id];
 	}
+#endif
 
 	Animation AssetManager::GetAnimation(Guid id)
 	{
@@ -917,7 +921,9 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(oldTexture.handle);
 				glDeleteTextures(1, &oldTexture.texture);
+#if EDITOR
 				glDeleteTextures(1, &buttonImageList[id]);
+#endif
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
@@ -1007,7 +1013,9 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);
 				glDeleteTextures(1, &texture.texture);
+#if EDITOR
 				glDeleteTextures(1, &buttonImageList[id]);
+#endif
 
 				// Do not keep track of this guid anymore
 				textureList.erase(id);

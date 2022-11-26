@@ -1,6 +1,8 @@
 #include <pch.h>
 
 // to include all the cpp script headers here
+#include <Scripting/Cpp Scripts/Scripts/SkillHovering.h>
+#include <Scripting/Cpp Scripts/Scripts/StatsHovering.h>
 
 namespace ALEngine
 {
@@ -69,24 +71,22 @@ namespace ALEngine
 		return unloadList[funcName];
 	}
 
-	void TestLoadFunc(ECS::Entity en)
-	{
-		std::cout << "I am entity: " << en << std::endl;
-	}
-
 	void RegisterCppScripts(void)
 	{
 #pragma region Load Functions
-		AL_ADD_LOAD_FUNC(TestLoadFunc);
 #pragma endregion
 
-#pragma region Init Functions
+#pragma region Init Functions	
+		AL_ADD_INIT_FUNC(SkillInit);
+		AL_ADD_INIT_FUNC(StatsInit);
 #pragma endregion
 
 #pragma region Update Functions
 #pragma endregion
 
 #pragma region Exit Functions
+		AL_ADD_EXIT_FUNC(SkillReset);
+		AL_ADD_EXIT_FUNC(StatsReset);
 #pragma endregion
 
 #pragma region Unload Functions

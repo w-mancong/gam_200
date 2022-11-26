@@ -68,7 +68,7 @@ namespace ALEngine::ECS
 			Entity ent_id = mEntityManager->CreateEntity();
 
 			// Entity data
-			Component::EntityData data{ tag, true, ent_id };
+			Component::EntityData data{ tag, true, true, ent_id };
 
 			// Add EntityData component
 			Coordinator::Instance()->AddComponent<Component::EntityData>(ent_id, data);

@@ -11,6 +11,7 @@ brief:	This file contains the function definitions for the TileEditorPanel class
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#if EDITOR
 #include "imgui_internal.h"
 #define MIN_TILES_SHOWN 3
 #define MAX_TILES_SHOWN 10
@@ -155,7 +156,7 @@ namespace ALEngine::Editor
 			if (ImGui::BeginChild("##TileEditor_ImagePanel", ImVec2(0.f, ImGui::GetContentRegionAvail().y), true))
 			{
 				ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(5.f, 5.f));
-				f32 winWidth{ ImGui::GetContentRegionAvail().x };
+				[[maybe_unused]] f32 winWidth{ ImGui::GetContentRegionAvail().x };
 				f32 width{ (ImGui::GetContentRegionAvail().x / 2.f) - ImGui::GetStyle().FramePadding.x };
 				f32 textLen{ 0.f };
 
@@ -653,3 +654,4 @@ namespace ALEngine::Editor
 		m_FilePath = "";
 	}
 }
+#endif

@@ -19,7 +19,7 @@ namespace ALEngine::Engine::AI
 	\brief
 	The Astar pathfinding main logic function
 	***********************************************************************************/
-	b8 FindPath(Engine::GameplayInterface::Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, std::vector<ECS::Entity>& pathReturn);
+	b8 FindPath(Engine::GameplayInterface::Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, std::vector<ECS::Entity>& pathReturn, bool canWalkOverUnwalkable);
 
 	/*!*********************************************************************************
 	\brief

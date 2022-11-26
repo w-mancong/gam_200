@@ -87,6 +87,8 @@
     <ClCompile Include="..\Extern\include\imgui\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\SkillHovering.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\StatsHovering.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -346,6 +348,8 @@
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\StatsHovering.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

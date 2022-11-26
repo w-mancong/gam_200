@@ -75,6 +75,19 @@
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "StatsInit"
+                ],
+                "Update": [],
+                "Free": [
+                    "StatsReset"
+                ],
+                "Unload": []
+            }
         ]
     },
     {
@@ -94,7 +107,7 @@
         "Transform": [
             {
                 "position": [
-                    152.64837646484375,
+                    152.64834594726563,
                     209.5433349609375,
                     0.0
                 ],
@@ -190,7 +203,7 @@
                 "localActive": true,
                 "id": 4,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -211,7 +224,7 @@
         "Transform": [
             {
                 "position": [
-                    152.64837646484375,
+                    152.64834594726563,
                     209.54319763183594,
                     0.0
                 ],
@@ -367,7 +380,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.1302490234375,
+                    1547.1314697265625,
                     44.69794845581055,
                     0.0
                 ],
@@ -421,7 +434,7 @@
             {
                 "tag": "profile_enemy",
                 "active": false,
-                "localActive": true,
+                "localActive": false,
                 "id": 10,
                 "parentID": -1,
                 "treeNodeFlags": 32
@@ -439,7 +452,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
@@ -556,7 +569,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
@@ -595,14 +608,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
                     800.0,
-                    772.0000610351563,
+                    772.0001220703125,
                     0.0
                 ],
                 "scale": [
@@ -634,21 +647,21 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
-                    641.676513671875,
-                    352.97406005859375,
+                    642.0,
+                    352.9999694824219,
                     0.0
                 ],
                 "scale": [
                     300.0,
                     200.0
                 ],
-                "rotation": 0.25868770480155945
+                "rotation": 0.0
             }
         ],
         "EntityData": [
@@ -673,21 +686,21 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
-                    542.3968505859375,
-                    414.6083068847656,
+                    542.9996337890625,
+                    415.0817565917969,
                     0.0
                 ],
                 "scale": [
                     60.0,
                     46.0
                 ],
-                "rotation": 0.25868770480155945
+                "rotation": 0.0
             }
         ],
         "EntityData": [
@@ -705,7 +718,7 @@
         "id": 18,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\HardDrop.png",
                 "color": [
                     1.0,
                     1.0,
@@ -719,7 +732,7 @@
             {
                 "position": [
                     346.94537353515625,
-                    43.26408386230469,
+                    43.26409912109375,
                     0.0
                 ],
                 "scale": [
@@ -736,7 +749,20 @@
                 "localActive": true,
                 "id": 18,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [
+                    "SkillReset"
+                ],
+                "Unload": []
             }
         ]
     },
@@ -744,7 +770,7 @@
         "id": 19,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\LifeDrain.png",
                 "color": [
                     1.0,
                     1.0,
@@ -758,7 +784,7 @@
             {
                 "position": [
                     410.9453430175781,
-                    43.24730682373047,
+                    43.247314453125,
                     0.0
                 ],
                 "scale": [
@@ -775,7 +801,18 @@
                 "localActive": true,
                 "id": 19,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -783,7 +820,7 @@
         "id": 20,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\cross.png",
                 "color": [
                     1.0,
                     1.0,
@@ -796,8 +833,8 @@
         "Transform": [
             {
                 "position": [
-                    474.9453430175781,
-                    43.25889587402344,
+                    474.94537353515625,
+                    43.2589111328125,
                     0.0
                 ],
                 "scale": [
@@ -814,7 +851,18 @@
                 "localActive": true,
                 "id": 20,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -822,7 +870,7 @@
         "id": 21,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\cross.png",
                 "color": [
                     1.0,
                     1.0,
@@ -853,7 +901,18 @@
                 "localActive": true,
                 "id": 21,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -861,7 +920,7 @@
         "id": 22,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\cross.png",
                 "color": [
                     1.0,
                     1.0,
@@ -875,7 +934,7 @@
             {
                 "position": [
                     602.9453125,
-                    43.2719612121582,
+                    43.27197265625,
                     0.0
                 ],
                 "scale": [
@@ -892,7 +951,18 @@
                 "localActive": true,
                 "id": 22,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -900,7 +970,7 @@
         "id": 23,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\cross.png",
                 "color": [
                     1.0,
                     1.0,
@@ -914,7 +984,7 @@
             {
                 "position": [
                     666.9453125,
-                    43.27207946777344,
+                    43.2720947265625,
                     0.0
                 ],
                 "scale": [
@@ -931,7 +1001,18 @@
                 "localActive": true,
                 "id": 23,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -952,7 +1033,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7018432617188,
+                    967.702880859375,
                     41.370460510253906,
                     0.0
                 ],
@@ -1139,15 +1220,15 @@
         "Transform": [
             {
                 "position": [
-                    641.6760864257813,
-                    352.97406005859375,
+                    641.99951171875,
+                    352.99993896484375,
                     0.0
                 ],
                 "scale": [
                     300.0,
                     200.0
                 ],
-                "rotation": 0.25868770480155945
+                "rotation": 0.0
             }
         ],
         "EntityData": [
@@ -1329,7 +1410,7 @@
                 "localActive": true,
                 "id": 33,
                 "parentID": 13,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
@@ -1372,7 +1453,7 @@
                 "localActive": true,
                 "id": 34,
                 "parentID": 13,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
@@ -1415,7 +1496,7 @@
                 "localActive": true,
                 "id": 35,
                 "parentID": 13,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
@@ -1474,6 +1555,488 @@
                 "position": [
                     63.5,
                     161.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 37,
+        "Transform": [
+            {
+                "position": [
+                    1150.0,
+                    940.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_attack_output",
+                "active": false,
+                "localActive": true,
+                "id": 37,
+                "parentID": 33,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[attack]",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    191.0,
+                    232.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 38,
+        "Transform": [
+            {
+                "position": [
+                    1150.0,
+                    940.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_defense_output",
+                "active": false,
+                "localActive": true,
+                "id": 38,
+                "parentID": 34,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[defense]",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    191.0,
+                    209.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 39,
+        "Transform": [
+            {
+                "position": [
+                    1150.0,
+                    940.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_move_output",
+                "active": false,
+                "localActive": true,
+                "id": 39,
+                "parentID": 35,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[move]",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    191.0,
+                    185.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 40,
+        "Transform": [
+            {
+                "position": [
+                    1150.0,
+                    940.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_range_output",
+                "active": false,
+                "localActive": true,
+                "id": 40,
+                "parentID": 36,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[range]",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    191.0,
+                    163.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 41,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des1",
+                "active": false,
+                "localActive": false,
+                "id": 41,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Slam your tetromino on enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    120.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 42,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des2",
+                "active": false,
+                "localActive": true,
+                "id": 42,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealing 15 DMG on all enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    104.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 43,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des3",
+                "active": false,
+                "localActive": true,
+                "id": 43,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "affected.",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    87.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 44,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des1",
+                "active": false,
+                "localActive": false,
+                "id": 44,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Drain the life of your enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    120.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 45,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des2",
+                "active": false,
+                "localActive": true,
+                "id": 45,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealing 12 DMG to all enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    104.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 46,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des3",
+                "active": false,
+                "localActive": true,
+                "id": 46,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "and heal for half of damage",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    87.5
+                ]
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [],
+                "Update": [],
+                "Free": [],
+                "Unload": []
+            }
+        ]
+    },
+    {
+        "id": 47,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0000114440918,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des4",
+                "active": false,
+                "localActive": true,
+                "id": 47,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealt",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    72.0
                 ]
             }
         ]

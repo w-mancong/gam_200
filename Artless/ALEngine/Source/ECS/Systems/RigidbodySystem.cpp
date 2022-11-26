@@ -102,6 +102,10 @@ namespace ALEngine::ECS
 			{		
 				//Shift through each component
 				for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+					if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+						continue;
+					}
+
 					Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 					Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 					rigid.nextPosition = transform.position;
@@ -114,6 +118,10 @@ namespace ALEngine::ECS
 
 		//Shift through each component
 		for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 
@@ -143,6 +151,10 @@ namespace ALEngine::ECS
 		//*******Debugging*******//
 		//Shift through each component
 		for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 
@@ -202,6 +214,10 @@ namespace ALEngine::ECS
 		if (rigidS->isDebugDraw) {
 			//Shift through every rigidbody and draw their rigidbody debug feedback
 			for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+				if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+					continue;
+				}
+
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 				Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 

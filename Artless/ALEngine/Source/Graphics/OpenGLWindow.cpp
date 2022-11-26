@@ -11,6 +11,7 @@ brief:		This file contains function to initialise the GLFW Window and provides
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
+#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine::Graphics
 {
@@ -25,6 +26,7 @@ namespace ALEngine::Graphics
 		void window_close_callback([[maybe_unused]] GLFWwindow* _window)
 		{
 			Engine::SetAppStatus(0);
+			Engine::GameStateManager::current = Engine::GameState::Quit;
 		}
 
 		void window_focus_callback([[maybe_unused]] GLFWwindow* window, s32 focused)
@@ -39,6 +41,19 @@ namespace ALEngine::Graphics
 		void scroll_callback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] f64 xoffset, f64 yoffset)
 		{
 			Input::m_MouseWheelEvent = yoffset < 0 ? MouseWheelEvent::MouseWheelDown : MouseWheelEvent::MouseWheelUp;
+		}
+
+		math::vec2Int GetMonitorSize(void)
+		{
+			RECT desktop;
+			HWND const hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+
+			return
+			{
+				desktop.right,
+				desktop.bottom
+			};
 		}
 
 		u32 constexpr DEFAULT_WIDTH{ 1200 }, DEFAULT_HEIGHT{ 600 };
@@ -93,8 +108,15 @@ namespace ALEngine::Graphics
 			return;
 		}
 
+		s32 x{ 0 }, y{ 0 };
+		math::Vec2Int desktop = GetMonitorSize();
+		x = (desktop.x >> 1) - (width >> 1);
+		y = (desktop.y >> 1) - (height >> 1);
+		glfwSetWindowPos(window, x, y);
+
+#ifdef _DEBUG
 		// Check GL Context
-		int flags{ 0 }; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+		s32 flags{ 0 }; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 		{	// If it Debug Context is active				
 			glEnable(GL_DEBUG_OUTPUT);	// Enable GL_DEBUG_OUTPUT
@@ -104,8 +126,7 @@ namespace ALEngine::Graphics
 			//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 		}
 
-#ifdef _DEBUG
-		int major{ 0 }, minor{ 0 };
+		s32 major{ 0 }, minor{ 0 };
 		glGetIntegerv(GL_MAJOR_VERSION, &major);
 		glGetIntegerv(GL_MINOR_VERSION, &minor);
 		std::cout << "Version: " << major << "." << minor << std::endl;
@@ -153,17 +174,21 @@ namespace ALEngine::Graphics
 
 	void OpenGLWindow::FullScreen(bool fullScreen)
 	{
-		s32 w = 0, h = 0;	// sorta buggy code: cannot see the window border
+		s32 w{ 0 }, h{ 0 }, x{ 0 }, y{ 0 };
+		math::Vec2Int desktop = GetMonitorSize();
 		if (fullScreen)
 		{
-			RECT desktop;
-			HWND const hDesktop = GetDesktopWindow();
-			GetWindowRect(hDesktop, &desktop);
-			w = desktop.right; h = desktop.bottom;
+			w = desktop.x;
+			h = desktop.y;
 		}
 		else
-			w = width, h = height;
-		glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : NULL, 0, 0, w, h, GLFW_DONT_CARE);
+		{
+			w = width;
+			h = height;
+			x = (desktop.x >> 1) - (width >> 1);
+			y = (desktop.y >> 1) - (height >> 1);
+		}
+		glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : nullptr, x, y, w, h, GLFW_DONT_CARE);
 	}
 
 	GLFWwindow* OpenGLWindow::Window(void)
