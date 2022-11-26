@@ -168,23 +168,17 @@ namespace ALEngine::Editor
 		{
 			m_ImGuiEnabled = !m_ImGuiEnabled;
 
-			ImGuiIO& io = ImGui::GetIO();
-			// If it is iactive, set MultiViewport to disable.
-				// This is to stop rendering panels outside of main window
-			if (m_ImGuiEnabled)
-			{
-				io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-			}
-			else
-			{
-				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-			}
-		}
-
-		// Check ImGui active
-		if (!m_ImGuiEnabled)
-		{
-			return;
+			//ImGuiIO& io = ImGui::GetIO();
+			//// If it is iactive, set MultiViewport to disable.
+			//	// This is to stop rendering panels outside of main window
+			//if (m_ImGuiEnabled)
+			//{
+			//	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+			//}
+			//else
+			//{
+			//	io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+			//}
 		}
 
 		// New ImGui Frame
@@ -192,13 +186,20 @@ namespace ALEngine::Editor
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		// ImGuizmo Frame
-		ImGuizmo::SetOrthographic(true);
-		ImGuizmo::BeginFrame();
-
 		// Enable DockSpace if it is to be enabled!
 		if (m_DockingEnabled)
 			Docking();
+
+		// Check ImGui active
+		if (!m_ImGuiEnabled)
+		{
+			End();
+			return;
+		}
+
+		// ImGuizmo Frame
+		ImGuizmo::SetOrthographic(true);
+		ImGuizmo::BeginFrame();
 
 		Update();
 
@@ -207,10 +208,6 @@ namespace ALEngine::Editor
 
 	void ALEditor::End(void)
 	{
-		// Exit if not enabled
-		if (!m_ImGuiEnabled)
-			return;
-
 		// Get the ImGui IO
 		ImGuiIO& io = ImGui::GetIO();
 
