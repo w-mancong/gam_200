@@ -311,13 +311,14 @@ namespace ALEngine::Engine::GameplayInterface
 							Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 							u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
-							AL_CORE_INFO("Heal : " + std::to_string(healthDrained));
 
 							playerUnit.health += healthDrained;
 
 							if (playerUnit.health > playerUnit.maxHealth) {
 								playerUnit.health = playerUnit.maxHealth;
 							}
+
+							AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 							break;
 						}
 					}
@@ -327,13 +328,21 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage) {
+		EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
+
+		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
 		unit.health -= damage;
 
-		AL_CORE_INFO(std::to_string(unit.health));
+		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
 
 		if (unit.health <= 0) {
-			AL_CORE_INFO("Enemy Died");
+			if (unit.unitType == UNIT_TYPE::PLAYER) {
+				AL_CORE_INFO("Unit Died");
+			}
+			else {
+				AL_CORE_INFO("Enemy Died");
+			}
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
 			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 		}

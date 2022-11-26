@@ -87,6 +87,8 @@ namespace ALEngine::ECS
 		//UI
 		Entity endTurnBtnEntity;
 
+		//Entity
+
 		//******FUNCTIONS**********//
 		void ClearMoveOrder();
 		Entity getCurrentEntityCell();
@@ -341,7 +343,6 @@ namespace ALEngine::ECS
 			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		}
 
-
 		//Initialize abilities GUI
 		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
 
@@ -547,7 +548,7 @@ namespace ALEngine::ECS
 		enemyUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
 
 		enemyUnit.health = 20, enemyUnit.maxHealth = 20;
-		enemyUnit.minDamage = 15, enemyUnit.maxDamage = 15;
+		enemyUnit.minDamage = 8, enemyUnit.maxDamage = 13;
 
 		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).unitEntity = newEnemy;
 		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).hasUnit = true;
@@ -703,7 +704,11 @@ namespace ALEngine::ECS
 
 		targetCellEntity = cellEntity;
 
-		[[maybe_unused]] Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		if (cell.hasUnit) {
+			return;
+		}
 
 		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		startCellEntity = getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
@@ -738,6 +743,12 @@ namespace ALEngine::ECS
 		//Find a target cell
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyMoved]);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+		if (enemyUnit.health <= 0) {
+			++enemyMoved;
+			MoveEnemy();
+			return;
+		}
 
 		AL_CORE_INFO("Run Adjacent Attack");
 		bool ifPlayerIsAlreadyBeside = GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);

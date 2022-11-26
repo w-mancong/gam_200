@@ -16,8 +16,8 @@
         "Transform": [
             {
                 "position": [
-                    103.769775390625,
-                    94.3133544921875,
+                    102.5,
+                    92.29998779296875,
                     0.0
                 ],
                 "scale": [
@@ -107,8 +107,8 @@
         "Transform": [
             {
                 "position": [
-                    152.6483154296875,
-                    209.5433349609375,
+                    152.64834594726563,
+                    209.54335021972656,
                     0.0
                 ],
                 "scale": [
@@ -125,7 +125,7 @@
                 "localActive": true,
                 "id": 2,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -164,7 +164,7 @@
                 "localActive": true,
                 "id": 3,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -203,7 +203,7 @@
                 "localActive": true,
                 "id": 4,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -224,8 +224,8 @@
         "Transform": [
             {
                 "position": [
-                    152.6483154296875,
-                    209.54319763183594,
+                    152.64834594726563,
+                    209.543212890625,
                     0.0
                 ],
                 "scale": [
@@ -380,7 +380,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.1319580078125,
+                    1547.1324462890625,
                     44.69794845581055,
                     0.0
                 ],
@@ -575,7 +575,7 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
+                    800.0000610351563,
                     790.0,
                     0.0
                 ],
@@ -614,7 +614,7 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
+                    800.0000610351563,
                     772.0001220703125,
                     0.0
                 ],
@@ -1020,7 +1020,7 @@
         "id": 24,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\T.png",
+                "filePath": "Assets\\Images\\Icon_Backdrop.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1033,8 +1033,8 @@
         "Transform": [
             {
                 "position": [
-                    967.7031860351563,
-                    41.37045669555664,
+                    967.703369140625,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -1059,7 +1059,7 @@
         "id": 25,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\I.png",
+                "filePath": "Assets\\Images\\Icon_Backdrop.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1073,7 +1073,7 @@
             {
                 "position": [
                     1197.697998046875,
-                    41.37045669555664,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -1098,7 +1098,7 @@
         "id": 26,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\L.png",
+                "filePath": "Assets\\Images\\Icon_Backdrop.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1112,7 +1112,7 @@
             {
                 "position": [
                     1282.698486328125,
-                    41.37045669555664,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -1137,7 +1137,7 @@
         "id": 27,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\O.png",
+                "filePath": "Assets\\Images\\Icon_Backdrop.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1151,7 +1151,7 @@
             {
                 "position": [
                     1367.699951171875,
-                    41.37045669555664,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -2037,6 +2037,373 @@
                 "position": [
                     210.0,
                     72.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 48,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0000305175781,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "pause_menu",
+                "active": false,
+                "localActive": false,
+                "id": 48,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 49,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Button.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    535.5,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_resume",
+                "active": false,
+                "localActive": true,
+                "id": 49,
+                "parentID": 48,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 50,
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    535.498046875,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_resume",
+                "active": false,
+                "localActive": true,
+                "id": 50,
+                "parentID": 49,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Resume Game",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    698.5,
+                    301.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 51,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Button.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    378.0,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_htp",
+                "active": false,
+                "localActive": true,
+                "id": 51,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 52,
+        "Transform": [
+            {
+                "position": [
+                    2400.0,
+                    1350.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_htp",
+                "active": false,
+                "localActive": true,
+                "id": 52,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "How To Play",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    706.5,
+                    212.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 53,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Button.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    218.699951171875,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_quit",
+                "active": false,
+                "localActive": true,
+                "id": 53,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 54,
+        "Transform": [
+            {
+                "position": [
+                    2400.0,
+                    1350.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_quit",
+                "active": false,
+                "localActive": true,
+                "id": 54,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Quit Game",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    713.0,
+                    120.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 55,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\GameLogo.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    730.800048828125,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    315.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "game_logo",
+                "active": false,
+                "localActive": true,
+                "id": 55,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 56,
+        "Transform": [
+            {
+                "position": [
+                    455.1483459472656,
+                    259.5433349609375,
+                    0.0
+                ],
+                "scale": [
+                    302.5,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_bar_hp",
+                "active": true,
+                "localActive": true,
+                "id": 56,
+                "parentID": 2,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "50/50",
+                "currentFont": "Arial-italic",
+                "scale": 0.699999988079071,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    74.0,
+                    118.0
                 ]
             }
         ]
