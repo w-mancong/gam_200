@@ -91,7 +91,7 @@ namespace ALEngine::ECS
 		Entity GUI_Unit_Profile;
 		Entity GUI_Unit_Healthbar;
 
-		//Entity
+		b8 is_DebugDraw = false;
 
 		//******FUNCTIONS**********//
 		void ClearMoveOrder();
@@ -140,11 +140,19 @@ namespace ALEngine::ECS
 	}
 
 	void Event_Button_Darken(Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
 		sprite.color = { 0.6f, 0.6f, 0.6f, 1.f };
 	}
 
 	void Event_Button_Lighten(Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
@@ -154,41 +162,73 @@ namespace ALEngine::ECS
 	}
 
 	void Event_Button_Select_Abilities_0([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		AL_CORE_INFO("Select Abilities 0");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
 	}
 
 	void Event_Button_Select_Abilities_1([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		AL_CORE_INFO("Select Abilities 1");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
 	}
 
 	void Event_Button_Select_CurrentPattern([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
 	}
 
 	void Event_Button_Select_Pattern_1([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		AL_CORE_INFO("Select Pattern 1");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[1]);
 	}
 	
 	void Event_Button_Select_Pattern_2([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		AL_CORE_INFO("Select Pattern 2");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[2]);
 	}
 	
 	void Event_Button_Select_Pattern_3([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		AL_CORE_INFO("Select Pattern 3");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[3]);
 	}
 
 	void Event_Button_Select_EndTurn([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		//End turn
 		gameplaySystem->EndTurn();
 	}
 
 	void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
 		AL_CORE_INFO("DISPLAY UNIT");
 		gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
 	}
@@ -199,6 +239,10 @@ namespace ALEngine::ECS
 		gameplaySystem->current_Moused_Over_Cell = invoker;
 
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+
+		if (!cell.m_isAccessible) {
+			return;
+		}
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
 			if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP) {
@@ -425,6 +469,10 @@ namespace ALEngine::ECS
 				gameplaySystem->TogglePatternGUI(false);
 				gameplaySystem->ToggleAbilitiesGUI(true);
 			}
+		}
+
+		if (Input::KeyTriggered(KeyCode::Key_3)) {
+			gameplaySystem->is_DebugDraw = !gameplaySystem->is_DebugDraw;
 		}
 
 		gameplaySystem->RunGameState();
@@ -984,7 +1032,10 @@ namespace ALEngine::ECS
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
 #endif
-
+		if (!gameplaySystem->is_DebugDraw)
+		{
+			return;
+		}
 		//Box holder
 		Vector2 bottomleft;
 		Vector2 topright;
