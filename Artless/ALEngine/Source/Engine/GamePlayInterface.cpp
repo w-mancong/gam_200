@@ -362,7 +362,8 @@ namespace ALEngine::Engine::GameplayInterface
 				}
 			}
 		}
-		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0], enemy.coordinate[1]) + 1) {
+		AL_CORE_INFO("Checking UP");
+		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0], enemy.coordinate[1] + 1)) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0], enemy.coordinate[1] + 1));
 
 			if (cell.hasUnit) {
