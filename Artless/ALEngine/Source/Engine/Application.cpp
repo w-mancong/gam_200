@@ -56,11 +56,6 @@ namespace ALEngine::Engine
 			Commands::EditorCommandManager::Update();
 			// Begin new ImGui frame
 			ALEditor::Instance()->Begin();
-			Input::GetMouseWorldPos();
-			
-			// Set the window focus
-			//ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
-			//editorFocus = ImGui::IsWindowFocused(flag);
 
 			Engine::Update();
 
@@ -262,6 +257,7 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
+		UpdateEventTriggerSystem();
 	}
 
 	void Engine::FixedUpdate(void)
@@ -275,7 +271,6 @@ namespace ALEngine::Engine
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 		
-		UpdateEventTriggerSystem();
 		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();

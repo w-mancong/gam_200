@@ -2539,5 +2539,83 @@
                 "treeNodeFlags": 32
             }
         ]
+    },
+    {
+        "id": 60,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\HowToPlay.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp",
+                "active": false,
+                "localActive": false,
+                "id": 60,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 61,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1491.199951171875,
+                    831.60009765625,
+                    0.0
+                ],
+                "scale": [
+                    160.0,
+                    90.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp_cross_btn",
+                "active": false,
+                "localActive": true,
+                "id": 61,
+                "parentID": 60,
+                "treeNodeFlags": 32
+            }
+        ]
     }
 ]

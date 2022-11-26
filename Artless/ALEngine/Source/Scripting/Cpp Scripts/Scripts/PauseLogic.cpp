@@ -8,9 +8,10 @@ namespace ALEngine
 		using namespace ECS;
 
 		b8 paused{ false }, pause_found{ false };
-		Entity button_resume{ MAX_ENTITIES }, button_htp{ MAX_ENTITIES }, button_quit{ MAX_ENTITIES }, 
-			backdrop{ MAX_ENTITIES }, quit_yes{ MAX_ENTITIES }, quit_no{ MAX_ENTITIES };
-		Entity en_paused{ MAX_ENTITIES }, temp{ MAX_ENTITIES };
+		Entity button_resume{ MAX_ENTITIES }, button_htp{ MAX_ENTITIES }, button_quit{ MAX_ENTITIES },	// used for displaying all btns on paused
+			backdrop{ MAX_ENTITIES }, quit_yes{ MAX_ENTITIES }, quit_no{ MAX_ENTITIES },	// used for quit game btn
+			htp{ MAX_ENTITIES }, htp_cross_btn{ MAX_ENTITIES };								// used for how to play
+		Entity en_paused{ MAX_ENTITIES }, temp{ MAX_ENTITIES };								// main paused background
 	}
 
 	void Darken(Entity en)
@@ -46,7 +47,8 @@ namespace ALEngine
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
 		{
-
+			SetActive(true, htp);
+			SetActive(false, en_paused);
 		}
 	}
 
@@ -67,6 +69,11 @@ namespace ALEngine
 		Lighten(en);
 	}
 
+	void WhenQuitYesPointerExit(Entity en)
+	{
+		Lighten(en);
+	}
+
 	void WhenQuitYesHover(Entity en)
 	{
 		Darken(en);
@@ -74,7 +81,7 @@ namespace ALEngine
 			Engine::TerminateEngine();
 	}
 
-	void WhenQuitYesPointerExit(Entity en)
+	void WhenQuitNoPointerExit(Entity en)
 	{
 		Lighten(en);
 	}
@@ -82,11 +89,24 @@ namespace ALEngine
 	void WhenQuitNoHover(Entity en)
 	{
 		Darken(en);
-		if(Input::KeyDown(KeyCode::MouseLeftButton))
+		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
 			SetActive(false, backdrop);
+			WhenQuitNoPointerExit(en);
+		}
 	}
 
-	void WhenQuitNoPointerExit(Entity en)
+	void WhenHtpCrossHover(Entity en)
+	{
+		Darken(en);
+		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
+			SetActive(false, htp);
+			SetActive(true, en_paused);
+		}
+	}
+
+	void WhenHtpCrossPointerExit(Entity en)
 	{
 		Lighten(en);
 	}
@@ -128,6 +148,14 @@ namespace ALEngine
 
 			Subscribe(quit_no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenQuitNoHover);
 			Subscribe(quit_no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenQuitNoPointerExit);
+
+			//*********************************************************************************************************
+			htp			  = Coordinator::Instance()->GetEntityByTag("htp");
+			htp_cross_btn = Coordinator::Instance()->GetEntityByTag("htp_cross_btn");
+
+			CreateEventTrigger(htp_cross_btn);
+			Subscribe(htp_cross_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenHtpCrossHover);
+			Subscribe(htp_cross_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenHtpCrossPointerExit);
 		}
 	}
 
@@ -149,8 +177,22 @@ namespace ALEngine
 				EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(temp);
 				ed.tag = "hotfix"; SetActive(false, temp);
 			}
-			paused = !paused;
-			SetActive(paused, en);
+
+			if (!Coordinator::Instance()->GetComponent<EntityData>(backdrop).active)
+			{
+				paused = !paused;
+				Time::m_Scale = static_cast<f32>(!paused);
+				SetActive(paused, en);
+			}
+			else
+			{
+				SetActive(false, backdrop);
+			}
+
+			Lighten(button_resume), Lighten(button_htp), Lighten(button_quit);
+			Lighten(backdrop), Lighten(quit_yes), Lighten(quit_no);
+			Lighten(htp), Lighten(htp_cross_btn);
+			Lighten(en_paused);
 		}
 	}
 
