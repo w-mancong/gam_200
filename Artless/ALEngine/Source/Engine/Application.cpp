@@ -115,9 +115,9 @@ namespace ALEngine::Engine
 				if (ALEditor::Instance()->GetGameActive())
 				{
 #endif
-					UpdateCppScripts();
 					// Normal Update
 					Engine::Update();
+					UpdateCppScripts();
 					// Physics
 					// Fixed Update (Physics)
 					accumulator += Time::m_DeltaTime;
