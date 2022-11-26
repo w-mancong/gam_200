@@ -125,6 +125,11 @@ namespace ALEngine::Editor
 			}
 			ImGui::EndPopup();
 		}
+
+		// Delete selected entity
+		if (Input::KeyTriggered(KeyCode::Delete))
+			remove = true;
+
 		// If there is an entity to remove
 		if (remove)
 		{

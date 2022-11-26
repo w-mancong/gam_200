@@ -283,6 +283,7 @@ namespace ALEngine::ECS
 	{
 		if (Editor::ALEditor::Instance()->GetGameActive())
 			return;
+
 		//------------------ Begin editor framebuffer rendering ------------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);

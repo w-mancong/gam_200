@@ -164,22 +164,22 @@ namespace ALEngine::Editor
 		ZoneScopedN("Editor Update");
 		// Change ImGui Enabled or Disabled
 		
-		if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::Key_9))
-		{
-			m_ImGuiEnabled = !m_ImGuiEnabled;
+		//if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::Key_9))
+		//{
+		//	m_ImGuiEnabled = !m_ImGuiEnabled;
 
-			//ImGuiIO& io = ImGui::GetIO();
-			//// If it is iactive, set MultiViewport to disable.
-			//	// This is to stop rendering panels outside of main window
-			//if (m_ImGuiEnabled)
-			//{
-			//	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-			//}
-			//else
-			//{
-			//	io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-			//}
-		}
+		//	//ImGuiIO& io = ImGui::GetIO();
+		//	//// If it is iactive, set MultiViewport to disable.
+		//	//	// This is to stop rendering panels outside of main window
+		//	//if (m_ImGuiEnabled)
+		//	//{
+		//	//	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+		//	//}
+		//	//else
+		//	//{
+		//	//	io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+		//	//}
+		//}
 
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
@@ -577,7 +577,7 @@ namespace ALEngine::Editor
 
 		// Set window flags
 		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
-			| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+			| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground
 			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
 		// Make Dockspace active
@@ -586,8 +586,15 @@ namespace ALEngine::Editor
 		// Pop window styles out
 		ImGui::PopStyleVar(3);
 
+		ImGuiDockNodeFlags dock_flag = 0;
+
+		if (!m_ImGuiEnabled)
+		{
+			dock_flag = ImGuiDockNodeFlags_PassthruCentralNode;
+		}
+
 		// Enable dockspace
-		ImGui::DockSpace(ImGui::GetID("DockSpace"));
+		ImGui::DockSpace(ImGui::GetID("DockSpace"), ImVec2(), dock_flag);
 
 		// Make Dockspace inactive
 		ImGui::End();
