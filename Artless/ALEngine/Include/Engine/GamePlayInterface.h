@@ -80,7 +80,7 @@ namespace ALEngine::Engine::GameplayInterface
 	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
 	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
 
-	void RunAbilities_OnCells(Room &room, Vector2Int coordinate, Pattern pattern);
+	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities);
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage);
 
 	//AI

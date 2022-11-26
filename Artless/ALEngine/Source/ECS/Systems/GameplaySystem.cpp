@@ -150,6 +150,11 @@ namespace ALEngine::ECS
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
 	}
 
+	void Event_Button_Select_Abilities_1([[maybe_unused]] Entity invoker) {
+		AL_CORE_INFO("Select Abilities 1");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
+	}
+
 	void Event_Button_Select_CurrentPattern([[maybe_unused]] Entity invoker) {
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
@@ -585,7 +590,7 @@ namespace ALEngine::ECS
 		currentModeOrder.path.clear();
 		currentModeOrder.path_step = 0;
 
-		for (u64 i = path.size() - 1; i >= 0; --i) {
+		for (s32 i = static_cast<s32>(path.size()) - 1; i >= 0; --i) {
 			currentModeOrder.path.push_back(path[i]);
 		}
 	}
@@ -608,7 +613,7 @@ namespace ALEngine::ECS
 
 	void GameplaySystem::RunGameState() {
 
-		Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		[[maybe_unused]] Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		switch (currentUnitControlStatus)
 		{
 			case UNITS_CONTROL_STATUS::NOTHING:
@@ -740,7 +745,7 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		Entity cellToMoveTo;
+		Entity cellToMoveTo{};
 		b8 hasFoundCellBesidePlayer = false;
 
 		//adjacent to player

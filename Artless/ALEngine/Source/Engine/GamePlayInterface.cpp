@@ -46,6 +46,7 @@ namespace ALEngine::Engine::GameplayInterface
 		if (IsCoordinateInsideRoom(currentRoom, gridX, gridY)) {
 			return Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, gridX, gridY)).m_isAccessible;
 		}
+		return false;
 	}
 
 	void InitializePatterns(std::vector<Pattern>& patternList) {
