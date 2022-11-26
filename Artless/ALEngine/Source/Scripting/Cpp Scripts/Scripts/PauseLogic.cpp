@@ -120,7 +120,10 @@ namespace ALEngine
 			quit_yes = Coordinator::Instance()->GetEntityByTag("button_quit_yes");
 			quit_no  = Coordinator::Instance()->GetEntityByTag("button_quit_no");
 
-			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, WhenQuitYesHover);
+			CreateEventTrigger(quit_yes);
+			CreateEventTrigger(quit_no);
+
+			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenQuitYesHover);
 			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenQuitYesPointerExit);
 
 			Subscribe(quit_no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenQuitNoHover);
