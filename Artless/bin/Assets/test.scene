@@ -380,7 +380,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.1324462890625,
+                    1547.1326904296875,
                     44.69794845581055,
                     0.0
                 ],
@@ -1033,7 +1033,7 @@
         "Transform": [
             {
                 "position": [
-                    967.703369140625,
+                    967.7034912109375,
                     41.370460510253906,
                     0.0
                 ],
@@ -2059,7 +2059,7 @@
             {
                 "position": [
                     800.0,
-                    450.0000305175781,
+                    450.00006103515625,
                     0.0
                 ],
                 "scale": [
@@ -2077,6 +2077,21 @@
                 "id": 48,
                 "parentID": -1,
                 "treeNodeFlags": 0
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "PauseInit"
+                ],
+                "Update": [
+                    "PauseUpdate"
+                ],
+                "Free": [
+                    "PauseReset"
+                ],
+                "Unload": []
             }
         ]
     },
@@ -2180,7 +2195,7 @@
             {
                 "position": [
                     1312.0,
-                    378.0,
+                    378.0000305175781,
                     0.0
                 ],
                 "scale": [
@@ -2262,7 +2277,7 @@
             {
                 "position": [
                     1312.0,
-                    218.699951171875,
+                    218.69998168945313,
                     0.0
                 ],
                 "scale": [
@@ -2370,7 +2385,7 @@
         "Transform": [
             {
                 "position": [
-                    455.1483459472656,
+                    455.1483154296875,
                     259.5433349609375,
                     0.0
                 ],
@@ -2405,6 +2420,123 @@
                     74.0,
                     118.0
                 ]
+            }
+        ]
+    },
+    {
+        "id": 57,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirm_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.00006103515625,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    350.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "backdrop_cfm",
+                "active": false,
+                "localActive": false,
+                "id": 57,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 58,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    703.25,
+                    354.79998779296875,
+                    0.0
+                ],
+                "scale": [
+                    135.0,
+                    52.500003814697266
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_quit_yes",
+                "active": false,
+                "localActive": true,
+                "id": 58,
+                "parentID": 57,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 59,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    896.7498779296875,
+                    354.79998779296875,
+                    0.0
+                ],
+                "scale": [
+                    135.0,
+                    52.500003814697266
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_quit_no",
+                "active": false,
+                "localActive": true,
+                "id": 59,
+                "parentID": 57,
+                "treeNodeFlags": 32
             }
         ]
     }

@@ -129,11 +129,11 @@ namespace ALEngine::ECS
 		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
 		// sort entities by layer
 		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-		{
-			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-			return sp1.layer < sp2.layer;
-		});
+			{
+				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+				return sp1.layer < sp2.layer;
+			});
 
 		u64 counter{};
 		u64 const SIZE{ entities.size() };
@@ -145,10 +145,11 @@ namespace ALEngine::ECS
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
-			*(vColor    + i) = sprite.color;
-			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			//*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vMatrix + counter) = trans.modelMatrix.Transpose();
+			*(vColor + counter) = sprite.color;
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
 
 			++counter;
 		}
@@ -157,20 +158,20 @@ namespace ALEngine::ECS
 		indirectShader.Set("proj", camera.ProjectionMatrix());
 		indirectShader.Set("view", camera.ViewMatrix());
 
-        glBindVertexArray(GetVao());
+		glBindVertexArray(GetVao());
 
 		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
 		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
-        //draw
-        glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
-            GL_UNSIGNED_INT,							//indices represented as unsigned ints
-            (void*)0,									//start with the first draw command
-            static_cast<s32>(counter),					//draw objects
-            0);											//no stride, the draw commands are tightly packed
+		//draw
+		glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
+			GL_UNSIGNED_INT,							//indices represented as unsigned ints
+			(void*)0,									//start with the first draw command
+			static_cast<s32>(counter),					//draw objects
+			0);											//no stride, the draw commands are tightly packed
 
-        glBindVertexArray(0);
+		glBindVertexArray(0);
 		indirectShader.unuse();
 	}
 #endif
@@ -249,9 +250,9 @@ namespace ALEngine::ECS
 			return;
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
+#endif
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-#endif
 		UpdateAnimatorSystem();
 		UpdateParticleSystem();
 #if EDITOR

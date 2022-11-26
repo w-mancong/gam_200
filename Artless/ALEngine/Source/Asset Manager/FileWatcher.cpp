@@ -93,7 +93,7 @@ namespace ALEngine::Engine
 						}
 					}
 				}
-				catch (std::exception const& e)
+				catch ([[maybe_unused]] std::exception const& e)
 				{
 					AL_CORE_WARN(e.what());
 				}

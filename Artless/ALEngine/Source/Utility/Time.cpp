@@ -49,6 +49,9 @@ namespace ALEngine::Utility
 
 	void Time::WaitUntil(void)
 	{
+#if EDITOR
+		ZoneScopedN("FPS Wait");
+#endif
 		auto time_diff = hd_clock::now() - m_ClockedTime;
 		const auto ideal_wait_time = nanoseconds(NUM_NANO_IN_SEC / Time::m_TargetFPS);
 

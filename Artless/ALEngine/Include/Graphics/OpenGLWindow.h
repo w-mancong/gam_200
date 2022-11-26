@@ -21,10 +21,14 @@ namespace ALEngine::Graphics
 		static void InitGLFWWindow(void);
 
 		/*!*********************************************************************************
-			\brief
-			Toggle GLFW window to be between fullscreen/windowed mode 
+			\brief Toggle GLFW window to be between fullscreen/windowed mode 
 		***********************************************************************************/
 		static void FullScreen(bool fullScreen);
+
+		///*!*********************************************************************************
+		//	\brief Set GLFW window to be fullScreen in window mode
+		//***********************************************************************************/
+		//static void FullScreenWindowed(void);
 
 		/*!*********************************************************************************
 			\brief

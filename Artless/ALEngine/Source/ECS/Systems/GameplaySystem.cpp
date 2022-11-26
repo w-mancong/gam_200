@@ -263,7 +263,7 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
-#if EDITOR
+#if _EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
@@ -392,7 +392,7 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
-#if EDITOR
+#if _EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
@@ -432,7 +432,7 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
-#if EDITOR
+#if _EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
@@ -970,7 +970,7 @@ namespace ALEngine::ECS
 	}
 
 	void DrawGameplaySystem() {
-#if EDITOR
+#if _EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}

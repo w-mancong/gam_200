@@ -232,7 +232,7 @@ namespace ALEngine::Editor
 			//EDITOR_KEYBOARD_CHECK
 
 			ImGui::DragFloat2("Sc", mtx_scale, v_speed);			// Scale
-			EDITOR_KEYBOARD_CHECK
+			//EDITOR_KEYBOARD_CHECK
 
 				// Set changes
 				Transform a(xform);
@@ -924,19 +924,19 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
-				case InspectorComponents::InComp_Script:
-					// Check if has component
-					if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
-					{
-						if (ImGui::Selectable("Script Component") &&
-							m_SelectedEntity != ECS::MAX_ENTITIES)
-						{
-							// Add Script Component
-							ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
-						}
-						++count;
-					}
-					break;
+				//case InspectorComponents::InComp_Script:
+				//	// Check if has component
+				//	if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+				//	{
+				//		if (ImGui::Selectable("Script Component") &&
+				//			m_SelectedEntity != ECS::MAX_ENTITIES)
+				//		{
+				//			// Add Script Component
+				//			ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
+				//		}
+				//		++count;
+				//	}
+				//	break;
 				case InspectorComponents::InComp_Audio:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))

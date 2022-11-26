@@ -27,11 +27,10 @@ namespace ALEngine::Editor
 	void GamePanel::OnImGuiRender(void)
 	{
 		// Set flags 
-		ImGuiWindowFlags flag = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-		b8 pOpen = false;
+		ImGuiWindowFlags flag = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
 		
 		// Begin ImGui Panel
-		if (!ImGui::Begin("Game", &pOpen, flag))
+		if (!ImGui::Begin("Game", nullptr, flag))
 		{
 			ImGui::End();
 			return;

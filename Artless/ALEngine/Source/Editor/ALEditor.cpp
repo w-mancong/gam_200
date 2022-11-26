@@ -16,6 +16,10 @@ brief:	This file contains the function definitions for the ALEditor class.
 #include "imgui_internal.h"
 #include <Engine/GSM/GameStateManager.h>
 
+#include <Windows.h>
+
+#define TRACY_FILEPATH "\\Tracy\\Tracy.exe"
+
 namespace ALEngine::Editor
 {
 	ALEditor::ALEditor(void)
@@ -102,9 +106,6 @@ namespace ALEngine::Editor
 		{
 			// Save Scene, Ctrl + S
 			if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::S))
-				m_SaveScene = true;
-
-			if (m_SaveScene)
 				SaveScene();
 
 			// Content Browser Panel
@@ -146,10 +147,6 @@ namespace ALEngine::Editor
 
 			// Check if there is a selected entity for Inspector
 			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
-
-			// Profiler Panel
-			m_ProfilerPanel.OnImGuiRender();
-			ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -166,42 +163,34 @@ namespace ALEngine::Editor
 	{
 		ZoneScopedN("Editor Update");
 		// Change ImGui Enabled or Disabled
-		/*
-		if (Input::KeyTriggered(KeyCode::Key_9))
+		
+		if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::Key_9))
 		{
 			m_ImGuiEnabled = !m_ImGuiEnabled;
 
 			ImGuiIO& io = ImGui::GetIO();
-			// If it is iactive, set MultiViewport to disable. 
+			// If it is iactive, set MultiViewport to disable.
 				// This is to stop rendering panels outside of main window
 			if (m_ImGuiEnabled)
 			{
-				m_ImGuiEnabled = !m_ImGuiEnabled;
-
-				ImGuiIO& io = ImGui::GetIO();
-				// If it is iactive, set MultiViewport to disable.
-					// This is to stop rendering panels outside of main window
-				if (m_ImGuiEnabled)
-				{
-					io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-				}
-				else
-					io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-				ImGui::UpdatePlatformWindows();
+				io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
 			}
-			*/
-
-			// New ImGui Frame
-			ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+			else
+			{
+				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+			}
+		}
 
 		// Check ImGui active
 		if (!m_ImGuiEnabled)
 		{
-			End();
 			return;
 		}
+
+		// New ImGui Frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
 		// ImGuizmo Frame
 		ImGuizmo::SetOrthographic(true);
@@ -212,6 +201,8 @@ namespace ALEngine::Editor
 			Docking();
 
 		Update();
+
+		m_IsReceivingKBInput = ImGui::GetIO().WantTextInput;
 	}
 
 	void ALEditor::End(void)
@@ -288,20 +279,47 @@ namespace ALEngine::Editor
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
-			ImGui::SetNextWindowSize(m_MenuSize);
+			ImGui::SetNextWindowSize({ m_MenuSize.x, 0.f });
+
 			// Settings
-			if (ImGui::BeginMenu("Settings"))
+			if (ImGui::BeginMenu("File"))
 			{
-				// Selectable flag
-				ImGuiSelectableFlags flag = 0;
+				if (ImGui::Selectable("Save Scene##MainMenuBar"))
+					SaveScene();
+
+				if (ImGui::Selectable("Save Scene As...##MainMenuBar"))
+				{
+					std::string tempName = m_CurrentSceneName;
+					m_CurrentSceneName = "";
+					SaveScene();
+
+					if (m_CurrentSceneName == "")
+						m_CurrentSceneName = tempName;
+				}
+
+				if (ImGui::Selectable("Load Scene"))
+				{
+					m_CurrentSceneName = Utility::WindowsFileDialog::LoadFile("ALEngine Scene (*.scene)\0*.scene\0");
+
+					if (!m_CurrentSceneName.empty())
+					{
+						if (m_CurrentSceneName.rfind(".scene") == std::string::npos)
+							m_CurrentSceneName += ".scene";
+
+						u64 str_it = m_CurrentSceneName.rfind("Assets\\");
+						m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());
+
+						Engine::Scene::LoadScene(m_CurrentSceneName.c_str());
+					}
+				}
 
 				// Set to fullscreen or normal
-				ImGui::Selectable("Fullscreen", &m_FullScreen, flag);
+				ImGui::Checkbox("Fullscreen##MainMenuBar", &m_FullScreen);
 
 				ImGui::EndMenu();
 			}
 
-			ImGui::SetNextWindowSize(m_MenuSize);
+			ImGui::SetNextWindowSize({ m_MenuSize.x, 0.f });
 			if (ImGui::BeginMenu("Tools"))
 			{
 				// Selectable flag
@@ -318,6 +336,51 @@ namespace ALEngine::Editor
 				{
 					m_TileEditor.SetPanelIsOpen(true);
 				}
+
+#ifdef TRACY_ENABLE
+				if (ImGui::MenuItem("Tracy Profiler"))
+				{
+					if (!m_ProfilerRunning)
+					{
+						TCHAR path[MAX_PATH];
+						GetCurrentDirectory(MAX_PATH, path);
+
+						HANDLE hProcess{ nullptr };
+						HANDLE hThread{ nullptr };
+						STARTUPINFO si;
+						PROCESS_INFORMATION pi;
+						DWORD dwProcessID{ 0 };
+						DWORD dwThreadID{ 0 };
+
+						ZeroMemory(&pi, sizeof(pi));
+						ZeroMemory(&si, sizeof(si));
+						si.cb = sizeof(si);
+						BOOL bCreateProcess{ NULL };
+						
+						std::string abs_path = path;
+						abs_path += +TRACY_FILEPATH;
+						bCreateProcess = CreateProcess(abs_path.c_str(),
+											nullptr,
+											nullptr,
+											nullptr,
+											FALSE,
+											0,
+											nullptr,
+											nullptr,
+											&si,
+											&pi);
+						
+						if (bCreateProcess == FALSE)
+							AL_CORE_CRITICAL("Failed to Create Process, Tracy.exe not running.");
+						else
+							m_ProfilerRunning = true;
+
+						// Close Process and Thread Handles
+						CloseHandle(pi.hProcess);
+						CloseHandle(pi.hThread);
+					}
+				}
+#endif
 
 				ImGui::EndMenu();
 			}
@@ -545,70 +608,21 @@ namespace ALEngine::Editor
 			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-			// Modal Window
-			if (ImGui::BeginPopupModal("New Scene Name##ModalSaveScene"))
+			m_CurrentSceneName = Utility::WindowsFileDialog::SaveFile("ALEngine Scene (*.scene)\0*.scene\0");
+
+			if (!m_CurrentSceneName.empty())
 			{
-				ImGui::TextWrapped("Scene Does Not Have A Name!");
-				if (ImGui::InputText("Scene Name##SaveSceneName", scene_name, nameSize));
+				if (m_CurrentSceneName.rfind(".scene") == std::string::npos)
+					m_CurrentSceneName += ".scene";
 
-				// Cancel Button
-				if (ImGui::Button("Cancel##SaveSceneName"))
-				{
-					// Exit
-					ImGui::EndPopup();
-					m_SaveScene = false;
-					return;
-				}
-
-				ImGui::SameLine();
-
-				if (ImGui::Button("Save##SaveSceneName"))
-				{
-					const std::filesystem::path scenePath = "Assets";
-
-					// Check all files in current folder (Assets)
-					b8 alreadyExists{ false };
-					for (auto& dirEntry : std::filesystem::directory_iterator(scenePath))
-					{
-						const auto& path = dirEntry.path();
-
-						std::filesystem::path const& relPath = std::filesystem::relative(path, scenePath);
-
-						std::string const& fileName = relPath.filename().string();
-
-						std::string newName = scene_name;
-						newName += ".scene";
-
-						// Already has another of this name
-						if (fileName == newName)
-						{	// Cannot save
-							alreadyExists = true;
-							break;
-						}
-					}
-
-					// Check if file already exists
-					if (alreadyExists)
-					{	// Reject and request new name
-
-					}
-					else
-					{
-						m_CurrentSceneName = scene_name;
-						std::memset(scene_name, 0, nameSize);
-						Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
-						AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
-						m_SaveScene = false;
-					}
-				}
-				ImGui::EndPopup();
+				u64 str_it = m_CurrentSceneName.rfind("Assets\\");
+				m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());
 			}
 		}
 		else
 		{
 			Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
-			AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
-			m_SaveScene = false;
+			AL_CORE_INFO("Scene {} Saved!", m_CurrentSceneName);
 		}
 	}
 }
@@ -659,6 +673,16 @@ namespace ALEngine::Editor
 	f64 ALEditor::GetSceneHeight(void)
 	{
 		return m_ScenePanel.GetSceneHeight();
+	}
+
+	f32& ALEditor::GetSceneCameraWidth(void)
+	{
+		return m_ScenePanel.GetCameraWidth();
+	}
+
+	f32& ALEditor::GetSceneCameraHeight(void)
+	{
+		return m_ScenePanel.GetCameraHeight();
 	}
 
 	Engine::Camera& ALEditor::GetEditorCamera(void)
