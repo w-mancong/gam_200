@@ -127,6 +127,8 @@ namespace ALEngine::ECS
 		void InitializeEndTurnButton();
 
 		void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
+
+		void DisableToolTip();
 	};
 
 	namespace
@@ -168,6 +170,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Abilities 0");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
+		gameplaySystem->DisableToolTip();
 	}
 
 	void Event_Button_Select_Abilities_1([[maybe_unused]] Entity invoker) {
@@ -177,6 +180,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Abilities 1");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
+		gameplaySystem->DisableToolTip();
 	}
 
 	void Event_Button_Select_CurrentPattern([[maybe_unused]] Entity invoker) {
@@ -254,8 +258,6 @@ namespace ALEngine::ECS
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
 			}
 			else if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
-				//GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
-
 				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 
 				if (canPlace)
@@ -447,7 +449,7 @@ namespace ALEngine::ECS
 			return;
 		}
 #endif
-
+		
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton)) {
 			//Deselect Pattern
@@ -705,14 +707,14 @@ namespace ALEngine::ECS
 			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
 			Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 
-			enemySprite.layer = base_Layer - enemyTransform.localPosition.y;
+			enemySprite.layer = base_Layer - static_cast<s32>(enemyTransform.localPosition.y);
 		}
 
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
 
-		playerSprite.layer = base_Layer - playerTransform.localPosition.y;
+		playerSprite.layer = base_Layer - static_cast<s32>(playerTransform.localPosition.y);
 	}
 
 	void CreatePlayerUnit(Entity entity) {
@@ -996,6 +998,20 @@ namespace ALEngine::ECS
 		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
 		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		Coordinator::Instance()->AddComponent(endTurnBtnEntity, eventTrigger);
+	}
+
+	void GameplaySystem::DisableToolTip() {
+		Entity en_tooltip = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
+		Entity en_skillicon = Coordinator::Instance()->GetEntityByTag("skill_icon");
+		Entity en_textskill = Coordinator::Instance()->GetEntityByTag("text_skillname");
+		Entity en_hard_drop = Coordinator::Instance()->GetEntityByTag("hard_drop_des1");
+		Entity en_life_drain = Coordinator::Instance()->GetEntityByTag("life_drain_des1");
+
+		Coordinator::Instance()->GetComponent<EntityData>(en_tooltip).active = false;
+		Coordinator::Instance()->GetComponent<EntityData>(en_skillicon).active = false;
+		Coordinator::Instance()->GetComponent<EntityData>(en_textskill).active = false;
+		Coordinator::Instance()->GetComponent<EntityData>(en_hard_drop).active = false;
+		Coordinator::Instance()->GetComponent<EntityData>(en_life_drain).active = false;
 	}
 
 	void GameplaySystem::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
