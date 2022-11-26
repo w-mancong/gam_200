@@ -69,6 +69,11 @@ namespace ALEngine
 		Lighten(en);
 	}
 
+	void WhenQuitYesPointerExit(Entity en)
+	{
+		Lighten(en);
+	}
+
 	void WhenQuitYesHover(Entity en)
 	{
 		Darken(en);
@@ -76,7 +81,7 @@ namespace ALEngine
 			Engine::TerminateEngine();
 	}
 
-	void WhenQuitYesPointerExit(Entity en)
+	void WhenQuitNoPointerExit(Entity en)
 	{
 		Lighten(en);
 	}
@@ -84,13 +89,11 @@ namespace ALEngine
 	void WhenQuitNoHover(Entity en)
 	{
 		Darken(en);
-		if(Input::KeyDown(KeyCode::MouseLeftButton))
+		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
 			SetActive(false, backdrop);
-	}
-
-	void WhenQuitNoPointerExit(Entity en)
-	{
-		Lighten(en);
+			WhenQuitNoPointerExit(en);
+		}
 	}
 
 	void WhenHtpCrossHover(Entity en)

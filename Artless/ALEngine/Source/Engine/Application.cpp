@@ -56,11 +56,6 @@ namespace ALEngine::Engine
 			Commands::EditorCommandManager::Update();
 			// Begin new ImGui frame
 			ALEditor::Instance()->Begin();
-			Input::GetMouseWorldPos();
-			
-			// Set the window focus
-			//ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
-			//editorFocus = ImGui::IsWindowFocused(flag);
 
 			Engine::Update();
 
