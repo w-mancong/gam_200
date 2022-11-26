@@ -40,7 +40,7 @@ namespace ALEngine::ECS
 
 	void UpdateParticleSystem(void)
 	{
-	#if EDITOR
+	#if _EDITOR
 			if (!Editor::ALEditor::Instance()->GetGameActive())
 				return;
 	#endif

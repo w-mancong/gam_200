@@ -8,7 +8,7 @@ brief:	This file contain function definition that renders line for all entities 
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
-#if EDITOR
+#if _EDITOR
 
 namespace ALEngine::ECS
 {

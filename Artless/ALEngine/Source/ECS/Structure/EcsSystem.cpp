@@ -36,7 +36,7 @@ namespace ALEngine::ECS
 		RegisterParticleSystem();
 		RegisterTextSystem();
 
-#if EDITOR
+#if _EDITOR
 		//RegisterTransformSystem();
 #endif
 

@@ -60,7 +60,7 @@ namespace ALEngine::UserInput
 
 	Math::Vec2 Input::GetMouseWorldPos()
 	{
-#if EDITOR
+#if _EDITOR
 		return Editor::ALEditor::Instance()->GetMouseWorldPos();
 #else
 		using namespace Math;

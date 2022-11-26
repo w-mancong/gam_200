@@ -11,7 +11,7 @@ brief:	This file contains function definitions for the LoggerPanel class.
 #ifndef LOGGER_PANEL_H
 #define LOGGER_PANEL_H
 
-#if EDITOR
+#if _EDITOR
 #include "spdlog/sinks/base_sink.h"
 
 namespace ALEngine::Editor

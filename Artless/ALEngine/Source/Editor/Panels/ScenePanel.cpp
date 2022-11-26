@@ -9,7 +9,7 @@ brief:	This file contains function definitions for the ScenePanel class.
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
-#if EDITOR
+#if _EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"

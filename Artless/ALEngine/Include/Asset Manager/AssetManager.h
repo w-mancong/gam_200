@@ -52,7 +52,7 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		TextureHandle GetTextureHandle(Guid id);
 
-#if EDITOR
+#if _EDITOR
 		/*!*********************************************************************************
 		\brief
 	     function for get texture for imgui image button to display

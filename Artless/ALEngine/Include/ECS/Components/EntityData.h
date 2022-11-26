@@ -21,7 +21,7 @@ namespace ALEngine::ECS::Component
 		b8 selfActive{ true };		// Active state that will control active (variable used inside Editor side only)
 		u32 id{};
 		s32 parentID{};				// Id of entity	
-#if EDITOR
+#if _EDITOR
 		ImGuiTreeNodeFlags treeNodeFlags{ 0 };	// Used for editor side of things
 #endif
 	};

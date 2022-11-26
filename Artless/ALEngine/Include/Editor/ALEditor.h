@@ -11,7 +11,7 @@ brief:	This file contains the function declarations for the ALEditor class.
 #ifndef AL_EDITOR_H
 #define AL_EDITOR_H
 
-#if EDITOR
+#if _EDITOR
 
 namespace ALEngine::Editor
 {

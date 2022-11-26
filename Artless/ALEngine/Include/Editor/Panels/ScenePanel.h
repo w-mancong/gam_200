@@ -11,7 +11,7 @@ brief:	This file contains function declarations for the ScenePanel class.
 #ifndef SCENE_PANEL_H
 #define SCENE_PANEL_H
 
-#if EDITOR
+#if _EDITOR
 
 namespace ALEngine::Editor
 {
