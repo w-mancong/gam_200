@@ -277,7 +277,6 @@ namespace ALEngine::Editor
 		if (ImGui::BeginMainMenuBar())
 		{
 			ImGui::SetNextWindowSize({ m_MenuSize.x, 0.f });
-
 			// Settings
 			if (ImGui::BeginMenu("File"))
 			{
