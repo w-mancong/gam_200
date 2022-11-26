@@ -164,7 +164,6 @@ namespace ALEngine::Engine::GameplayInterface
 		//There will be a fix of 4 buttons
 		for (int i = 1; i <= 4; ++i) {
 			GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("next_tile_icon" + std::to_string(i)));
-			//GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->CreateEntity());
 		}
 
 		u32 x_offset = 150;
@@ -177,7 +176,7 @@ namespace ALEngine::Engine::GameplayInterface
 		EventTrigger eventTrigger;
 
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[0], eventTrigger);
-
+		
 		//The other 3 will be in queue
 		transform.position = { 1000.f + x_offset, 100.f, 0.f };
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[1], eventTrigger);

@@ -48,7 +48,7 @@ namespace ALEngine::ECS
 		struct MoveOrder {
 			Entity entity;
 			std::vector<Entity> path;
-			u32 path_step = 0;
+			u32 path_step = 1;
 		};
 
 		//******VARIABLES**********//
@@ -583,12 +583,12 @@ namespace ALEngine::ECS
 
 	void GameplaySystem::ClearMoveOrder() {
 		currentModeOrder.path.clear();
-		currentModeOrder.path_step = 0;
+		currentModeOrder.path_step = 1;
 	}
 
 	void GameplaySystem::SetMoveOrder(std::vector<Entity> path) {
 		currentModeOrder.path.clear();
-		currentModeOrder.path_step = 0;
+		currentModeOrder.path_step = 1;
 
 		for (s32 i = static_cast<s32>(path.size()) - 1; i >= 0; --i) {
 			currentModeOrder.path.push_back(path[i]);
@@ -603,7 +603,7 @@ namespace ALEngine::ECS
 		++order.path_step;
 
 		if (order.path_step >= order.path.size()) {
-			order.path_step = 0;
+			order.path_step = 1;
 			return true;
 		}
 		else {
@@ -629,19 +629,19 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::UpdateUnitSpriteLayer() {
-		//for (int i = 0; i < enemyEntityList.size(); ++i) {
-		//	Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(enemyEntityList[i]);
-		//	Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
-		//	Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+		for (int i = 0; i < enemyEntityList.size(); ++i) {
+			Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(enemyEntityList[i]);
+			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+			Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 
-		//	enemySprite.layer = base_Layer - enemyTransform.localPosition.y;
-		//}
+			enemySprite.layer = base_Layer - enemyTransform.localPosition.y;
+		}
 
-		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-		//Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-		//Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
 
-		//playerSprite.layer = base_Layer - playerTransform.localPosition.y;
+		playerSprite.layer = base_Layer - playerTransform.localPosition.y;
 	}
 
 	void CreatePlayerUnit(Entity entity) {
@@ -852,6 +852,8 @@ namespace ALEngine::ECS
 			else {
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 			}
+
+			AL_CORE_INFO("Movement Poitns " + std::to_string(movinUnit.movementPoints));
 
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
