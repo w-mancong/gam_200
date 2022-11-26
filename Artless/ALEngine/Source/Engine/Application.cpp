@@ -56,6 +56,7 @@ namespace ALEngine::Engine
 			Commands::EditorCommandManager::Update();
 			// Begin new ImGui frame
 			ALEditor::Instance()->Begin();
+			Input::GetMouseWorldPos();
 			
 			// Set the window focus
 			//ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
@@ -140,6 +141,7 @@ namespace ALEngine::Engine
 				// Wait for next frame
 				Time::WaitUntil();				
 
+#if EDITOR
 				// Marks the end of a frame m_Loop, for tracy profiler
 				FrameMark;
 #endif
@@ -253,7 +255,9 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
+#if EDITOR
 		ZoneScopedN("Fixed Delta Time Update");
+#endif
 		UpdateGameplaySystem();
 
 		UpdateRigidbodySystem();
