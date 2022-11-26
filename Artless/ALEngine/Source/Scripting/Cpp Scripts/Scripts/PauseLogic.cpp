@@ -28,8 +28,10 @@ namespace ALEngine
 	void WhenResumeHover(Entity en)
 	{
 		Darken(en);
-		if (Input::KeyTriggered(KeyCode::MouseLeftButton))
+
+		if (Input::KeyDown(KeyCode::MouseLeftButton))
 		{
+			AL_CORE_CRITICAL("RESUME CLICK");
 			paused = !paused;
 			SetActive(paused, en_paused);
 		}
