@@ -705,6 +705,11 @@ namespace ALEngine::Editor
 		return m_GameIsActive;
 	}
 
+	void ALEditor::SetGameActive(b8 gameActive)
+	{
+		m_GameIsActive = gameActive;
+	}
+
 	b8 ALEditor::GetReceivingKBInput(void)
 	{
 		return m_IsReceivingKBInput;
