@@ -21,7 +21,8 @@ namespace ALEngine::Editor
 	ContentBrowserPanel::ContentBrowserPanel()
 	:m_CurrentDirectory(assetPath),
 	m_MainDirectory(assetPath),
-	searchKeyword("")
+	searchKeyword(""),
+	m_RenamePanelEnabled(false)
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -214,6 +215,16 @@ namespace ALEngine::Editor
 				const wchar_t* itemPath = path.c_str();
 				ImGui::SetDragDropPayload("ASSET_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();
+			}
+
+			if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::IsKeyPressed(ImGuiKey_F2))
+			{
+				m_RenamePanelEnabled = true;
+			}
+
+			if (m_RenamePanelEnabled)
+			{
+
 			}
 
 			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
