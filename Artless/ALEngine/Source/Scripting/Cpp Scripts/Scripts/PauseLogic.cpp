@@ -67,6 +67,11 @@ namespace ALEngine
 		Lighten(en);
 	}
 
+	void WhenQuitYesPointerExit(Entity en)
+	{
+		Lighten(en);
+	}
+
 	void WhenQuitYesHover(Entity en)
 	{
 		Darken(en);
@@ -74,7 +79,7 @@ namespace ALEngine
 			Engine::TerminateEngine();
 	}
 
-	void WhenQuitYesPointerExit(Entity en)
+	void WhenQuitNoPointerExit(Entity en)
 	{
 		Lighten(en);
 	}
@@ -82,13 +87,11 @@ namespace ALEngine
 	void WhenQuitNoHover(Entity en)
 	{
 		Darken(en);
-		if(Input::KeyDown(KeyCode::MouseLeftButton))
+		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
 			SetActive(false, backdrop);
-	}
-
-	void WhenQuitNoPointerExit(Entity en)
-	{
-		Lighten(en);
+			WhenQuitNoPointerExit(en);
+		}
 	}
 
 	void PauseInit(Entity en)
@@ -123,7 +126,7 @@ namespace ALEngine
 			CreateEventTrigger(quit_yes);
 			CreateEventTrigger(quit_no);
 
-			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, WhenQuitYesHover);
+			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenQuitYesHover);
 			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenQuitYesPointerExit);
 
 			Subscribe(quit_no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenQuitNoHover);
