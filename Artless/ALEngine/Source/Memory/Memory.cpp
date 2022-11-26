@@ -42,7 +42,9 @@ namespace ALEngine::Memory
 	void FreeInstance(void)
 	{
 		Coordinator::Free();
+#if EDITOR
 		Editor::ALEditor::Free();
+#endif
 		Engine::MeshBuilder::Free();
 		Engine::AssetManager::Free();
 	}

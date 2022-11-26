@@ -242,9 +242,11 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
+#endif
 
 		AL_CORE_INFO("GAME START");
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
@@ -357,6 +359,7 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
@@ -364,6 +367,7 @@ namespace ALEngine::ECS
 		if (!Editor::ALEditor::Instance()->GetGameActive()) {
 			return;
 		}
+#endif
 
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton)) {
@@ -395,9 +399,11 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
+#endif
 
 		if (gameplaySystem->m_Room.roomCellsArray != nullptr) {
 			delete[] gameplaySystem->m_Room.roomCellsArray;
@@ -762,12 +768,15 @@ namespace ALEngine::ECS
 
 
 	void DrawGameplaySystem() {
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
 
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
+#endif
+
 		//Box holder
 		Vector2 bottomleft;
 		Vector2 topright;

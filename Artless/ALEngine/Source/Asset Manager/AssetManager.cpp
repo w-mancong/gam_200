@@ -606,10 +606,12 @@ namespace ALEngine::Engine
 		return textureList[id].handle;
 	}
 
+#if EDITOR
 	u32 AssetManager::GetButtonImage(Guid id)
 	{
 		return buttonImageList[id];
 	}
+#endif
 
 	Animation AssetManager::GetAnimation(Guid id)
 	{
@@ -917,7 +919,9 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(oldTexture.handle);
 				glDeleteTextures(1, &oldTexture.texture);
+#if EDITOR
 				glDeleteTextures(1, &buttonImageList[id]);
+#endif
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
@@ -1007,7 +1011,9 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);
 				glDeleteTextures(1, &texture.texture);
+#if EDITOR
 				glDeleteTextures(1, &buttonImageList[id]);
+#endif
 
 				// Do not keep track of this guid anymore
 				textureList.erase(id);

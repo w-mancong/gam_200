@@ -8,6 +8,8 @@ brief:	Contains definitions for the Command Manager for the Editor
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#if EDITOR
+
 namespace ALEngine::Commands
 {
 	COMMAND EditorCommandManager::m_Commands[MAX_COMMANDS]{};
@@ -127,3 +129,5 @@ namespace ALEngine::Commands
 		return false;
 	}
 }
+
+#endif

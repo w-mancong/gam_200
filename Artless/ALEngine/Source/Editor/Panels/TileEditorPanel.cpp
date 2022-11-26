@@ -11,6 +11,7 @@ brief:	This file contains the function definitions for the TileEditorPanel class
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#if EDITOR
 #include "imgui_internal.h"
 #define MIN_TILES_SHOWN 3
 #define MAX_TILES_SHOWN 10
@@ -566,3 +567,4 @@ namespace ALEngine::Editor
 		m_FilePath = "";
 	}
 }
+#endif

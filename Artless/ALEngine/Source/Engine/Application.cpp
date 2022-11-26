@@ -6,7 +6,9 @@ namespace ALEngine::Engine
 	using namespace Math;
 	using namespace Graphics;
 	using namespace ECS;
+#if EDITOR
 	using namespace Editor;
+#endif
 	namespace
 	{
 		class Application
@@ -41,12 +43,6 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			//if (!focus && !editorFocus)
-			//{
-			//	glfwPollEvents();
-			//	return;
-			//}
-
 			if (!focus)
 			{
 				glfwPollEvents();
@@ -168,9 +164,10 @@ namespace ALEngine::Engine
 					// Wait for next frame
 					Time::WaitUntil();
 				}
-
+#if EDITOR
 				// Marks the end of a frame m_Loop, for tracy profiler
 				FrameMark;
+#endif
 			}
 
 			// Free resources
@@ -227,6 +224,8 @@ namespace ALEngine::Engine
 		//es.AddFreeFunction("SkillReset");
 
 		//Scene::SaveScene("test");
+
+		//OpenGLWindow::FullScreen(true);
 	}
 
 	void Application::Update(void)
@@ -269,7 +268,9 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
+#if EDITOR
 		ZoneScopedN("Normal Update");
+#endif
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();

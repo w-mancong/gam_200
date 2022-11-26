@@ -52,11 +52,13 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		TextureHandle GetTextureHandle(Guid id);
 
+#if EDITOR
 		/*!*********************************************************************************
 		\brief
 	     function for get texture for imgui image button to display
 		***********************************************************************************/
 		u32 GetButtonImage(Guid id);
+#endif
 
 		/*!*********************************************************************************
 			\brief Retrieve animation based on guid
