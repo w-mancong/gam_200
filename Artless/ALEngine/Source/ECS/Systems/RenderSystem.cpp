@@ -304,6 +304,7 @@ namespace ALEngine::ECS
 
 	void Render(void)
 	{		
+		ZoneScopedN("Render");
 		RenderGameplay();
 #if EDITOR
 		RenderEditor();

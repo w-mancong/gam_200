@@ -106,9 +106,6 @@ namespace ALEngine::Editor
 		{
 			// Save Scene, Ctrl + S
 			if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::S))
-				m_SaveScene = true;
-
-			if (m_SaveScene)
 				SaveScene();
 
 			// Content Browser Panel
@@ -150,10 +147,6 @@ namespace ALEngine::Editor
 			{	// Run editor scene panel
 				m_ScenePanel.OnImGuiRender();	// Scene Panel
 			}
-
-			// Profiler Panel
-			m_ProfilerPanel.OnImGuiRender();
-			ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -297,13 +290,39 @@ namespace ALEngine::Editor
 			ImGui::SetNextWindowSize({ m_MenuSize.x, 0.f });
 
 			// Settings
-			if (ImGui::BeginMenu("Settings"))
+			if (ImGui::BeginMenu("File"))
 			{
-				// Selectable flag
-				ImGuiSelectableFlags flag = 0;
+				if (ImGui::Selectable("Save Scene##MainMenuBar"))
+					SaveScene();
+
+				if (ImGui::Selectable("Save Scene As...##MainMenuBar"))
+				{
+					std::string tempName = m_CurrentSceneName;
+					m_CurrentSceneName = "";
+					SaveScene();
+
+					if (m_CurrentSceneName == "")
+						m_CurrentSceneName = tempName;
+				}
+
+				if (ImGui::Selectable("Load Scene"))
+				{
+					m_CurrentSceneName = Utility::WindowsFileDialog::LoadFile("ALEngine Scene (*.scene)\0*.scene\0");
+
+					if (!m_CurrentSceneName.empty())
+					{
+						if (m_CurrentSceneName.rfind(".scene") == std::string::npos)
+							m_CurrentSceneName += ".scene";
+
+						u64 str_it = m_CurrentSceneName.rfind("Assets\\");
+						m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());
+
+						Engine::Scene::LoadScene(m_CurrentSceneName.c_str());
+					}
+				}
 
 				// Set to fullscreen or normal
-				ImGui::Selectable("Fullscreen", &m_FullScreen, flag);
+				ImGui::Checkbox("Fullscreen##MainMenuBar", &m_FullScreen);
 
 				ImGui::EndMenu();
 			}
@@ -612,7 +631,6 @@ namespace ALEngine::Editor
 		{
 			Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
 			AL_CORE_INFO("Scene {} Saved!", m_CurrentSceneName);
-			m_SaveScene = false;
 		}
 	}
 }

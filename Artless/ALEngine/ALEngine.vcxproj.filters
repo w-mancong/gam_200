@@ -86,6 +86,7 @@
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="..\Extern\include\imgui\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
+    <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -280,9 +281,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utility\Gizmo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
