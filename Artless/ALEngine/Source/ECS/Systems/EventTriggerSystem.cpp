@@ -57,7 +57,7 @@ namespace ALEngine::ECS
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
 
-			if (!event_Trigger.isEnabled) {
+			if (!event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
 				event_Trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 				continue;
 			}

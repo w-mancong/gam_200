@@ -46,6 +46,10 @@ namespace ALEngine::ECS
 	void UpdateEventCollisionTriggerSystem() {
 		//Shift through each component
 		for (auto it = eventCollisionSystem->mEntities.begin(); it != eventCollisionSystem->mEntities.end(); ++it) {
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 			EventCollisionTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventCollisionTrigger>(*it);
 
