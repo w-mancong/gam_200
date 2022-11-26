@@ -32,6 +32,7 @@ namespace ALEngine::Graphics
 		***********************************************************************************/
 		static GLFWwindow* Window(void);
 
+		static f32 ar;
 		static u32 width, height;
 		static std::string title;
 

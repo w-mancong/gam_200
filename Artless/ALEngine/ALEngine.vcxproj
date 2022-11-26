@@ -88,13 +88,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -132,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;EDITOR;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -141,11 +142,12 @@
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>freetype\freetype.lib;GLFW\glfw3.lib;opengl32.lib;fmod\fmod_vc.lib;mono\Release\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -154,11 +156,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
+    <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
     <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
@@ -186,7 +191,6 @@
     <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\InspectorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
-    <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp">
@@ -249,9 +253,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Graphics\OpenGLWindow.cpp" />
-    <ClCompile Include="Source\Graphics\ParticleSys.cpp" />
     <ClCompile Include="Source\Graphics\Shader.cpp" />
-    <ClCompile Include="Source\Graphics\Text.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
@@ -288,6 +290,7 @@
     <ClCompile Include="Source\Utility\Profiler.cpp" />
     <ClCompile Include="Source\Utility\Time.cpp" />
     <ClCompile Include="Source\Utility\Timer.cpp" />
+    <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -299,6 +302,9 @@
     <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
     <ClInclude Include="Include\Commands\Command.h" />
     <ClInclude Include="Include\Common Header\MyScripting.h" />
+    <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
+    <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
     <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
@@ -391,7 +397,6 @@
     <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\Gizmo.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
-    <ClInclude Include="Include\Graphics\ParticleSys.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
     <ClInclude Include="Include\Graphics\stb_image.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -433,6 +438,7 @@
     <ClInclude Include="Include\Utility\Type.h" />
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Scripting\ScriptEngine.h" />
+    <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>

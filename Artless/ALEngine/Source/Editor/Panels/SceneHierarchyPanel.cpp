@@ -110,7 +110,7 @@ namespace ALEngine::Editor
 			if (ImGui::Selectable("Add child") && (selectedEntity != ECS::MAX_ENTITIES))
 			{
 				// Entity Transform
-				Transform xform = Transform{ Math::Vector2(2.f, 2.f),
+				Transform xform = Transform{ Math::Vector2(1.f, 1.f),
 					Math::Vector2(1.f, 1.f) };
 
 				// Create Entity
@@ -164,33 +164,36 @@ namespace ALEngine::Editor
 			ImGui::EndDragDropTarget();
 		}
 
-		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
-			ImGui::OpenPopup("panel_rightclick##SceneHierarchy");
-
-		ImGui::SetNextWindowSize({ 200.f, 300.f });
-		if (ImGui::BeginPopup("panel_rightclick##SceneHierarchy"))
+		if (!popup_hasopen)
 		{
-			// Add Entity Button
-			if (ImGui::MenuItem("Add Entity"))
+			if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+				ImGui::OpenPopup("panel_rightclick##SceneHierarchy");
+
+			//ImGui::SetNextWindowSize({ 200.f, 50.f });
+			if (ImGui::BeginPopup("panel_rightclick##SceneHierarchy"))
 			{
-				// Entity Transform
-				Transform xform = Transform{ Math::Vector2(0.f, 0.f),
-					Math::Vector2(50.f, 50.f) };
+				// Add Entity Button
+				if (ImGui::MenuItem("Add Entity"))
+				{
+					// Entity Transform
+					Transform xform = Transform{ Math::Vector2(0.f, 0.f),
+						Math::Vector2(50.f, 50.f) };
 
-				// Create Entity
-				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
-				ECS::CreateSprite(GO, xform);
+					// Create Entity
+					ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+					ECS::CreateSprite(GO, xform);
 
-				sceneGraph.Push(-1, GO);
+					sceneGraph.Push(-1, GO);
 
-				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
-				sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
+					Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
+					sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
-				ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
+					ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 
-				AL_CORE_INFO("Entity Created!");
+					AL_CORE_INFO("Entity Created!");
+				}
+				ImGui::EndPopup();
 			}
-			ImGui::EndPopup();
 		}
 
 		ImGui::End();
@@ -200,8 +203,11 @@ namespace ALEngine::Editor
 	{
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
+		// Get entity data
+		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
 		// Flag for Tree Node
-		ImGuiTreeNodeFlags flags = 0;
+		ImGuiTreeNodeFlags flags = data.treeNodeFlags;
 
 		// Check if has children
 		sceneGraph.FindImmediateChildren(child);
@@ -212,11 +218,18 @@ namespace ALEngine::Editor
 		else
 			flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 
-		// Get entity data
-		EntityData data = Coordinator::Instance()->GetComponent<EntityData>(child);
+		if (ALEditor::Instance()->GetSelectedEntity() == child)
+			flags |= ImGuiTreeNodeFlags_Selected;
+
+		if (data.active == false)
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 
 		// Begin Tree Node
 		b8 opened = ImGui::TreeNodeEx((void*)static_cast<u64>(child), flags, data.tag.c_str());
+		data.treeNodeFlags = opened ? ImGuiTreeNodeFlags_DefaultOpen : 0;
+
+		if (data.active == false)
+			ImGui::PopStyleVar();
 
 		// Check if hovered on entity
 		ImGuiHoveredFlags hover_flag = ImGuiHoveredFlags_AllowWhenBlockedByActiveItem;

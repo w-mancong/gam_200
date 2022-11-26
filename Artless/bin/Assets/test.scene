@@ -31,8 +31,10 @@
             {
                 "tag": "profile_player",
                 "active": true,
+                "localActive": true,
                 "id": 0,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -53,7 +55,7 @@
         "Transform": [
             {
                 "position": [
-                    254.01571655273438,
+                    254.01568603515625,
                     92.68330383300781,
                     0.0
                 ],
@@ -68,8 +70,10 @@
             {
                 "tag": "bar_stats",
                 "active": true,
+                "localActive": true,
                 "id": 1,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -91,7 +95,7 @@
             {
                 "position": [
                     152.64837646484375,
-                    209.54336547851563,
+                    209.5433349609375,
                     0.0
                 ],
                 "scale": [
@@ -105,8 +109,10 @@
             {
                 "tag": "empty_health_bar",
                 "active": true,
+                "localActive": true,
                 "id": 2,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -128,7 +134,7 @@
             {
                 "position": [
                     1170.197998046875,
-                    60.12046432495117,
+                    60.120452880859375,
                     0.0
                 ],
                 "scale": [
@@ -142,8 +148,10 @@
             {
                 "tag": "next_tile",
                 "active": true,
+                "localActive": true,
                 "id": 3,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -179,8 +187,10 @@
             {
                 "tag": "bar_skill",
                 "active": true,
+                "localActive": true,
                 "id": 4,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -202,7 +212,7 @@
             {
                 "position": [
                     152.64837646484375,
-                    209.54336547851563,
+                    209.54319763183594,
                     0.0
                 ],
                 "scale": [
@@ -216,8 +226,10 @@
             {
                 "tag": "red health bar",
                 "active": true,
+                "localActive": true,
                 "id": 5,
-                "parentID": 2
+                "parentID": 2,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -239,7 +251,7 @@
             {
                 "position": [
                     1510.593994140625,
-                    42.57487869262695,
+                    42.574859619140625,
                     0.0
                 ],
                 "scale": [
@@ -253,8 +265,10 @@
             {
                 "tag": "options",
                 "active": true,
+                "localActive": true,
                 "id": 6,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -276,7 +290,7 @@
             {
                 "position": [
                     1547.1263427734375,
-                    44.3738899230957,
+                    44.37385559082031,
                     0.0
                 ],
                 "scale": [
@@ -290,8 +304,10 @@
             {
                 "tag": "menu_icon",
                 "active": true,
+                "localActive": true,
                 "id": 7,
-                "parentID": 6
+                "parentID": 6,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -313,7 +329,7 @@
             {
                 "position": [
                     1474.0140380859375,
-                    44.37491989135742,
+                    44.374900817871094,
                     0.0
                 ],
                 "scale": [
@@ -327,8 +343,10 @@
             {
                 "tag": "X",
                 "active": true,
+                "localActive": true,
                 "id": 8,
-                "parentID": 6
+                "parentID": 6,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -349,8 +367,8 @@
         "Transform": [
             {
                 "position": [
-                    1547.1287841796875,
-                    44.6979866027832,
+                    1547.130126953125,
+                    44.69794845581055,
                     0.0
                 ],
                 "scale": [
@@ -364,8 +382,10 @@
             {
                 "tag": "menu",
                 "active": true,
+                "localActive": true,
                 "id": 9,
-                "parentID": 7
+                "parentID": 7,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -401,8 +421,10 @@
             {
                 "tag": "profile_enemy",
                 "active": false,
+                "localActive": true,
                 "id": 10,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -438,8 +460,10 @@
             {
                 "tag": "end_turn",
                 "active": true,
+                "localActive": true,
                 "id": 11,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -474,9 +498,11 @@
         "EntityData": [
             {
                 "tag": "phase_indicator",
-                "active": true,
+                "active": false,
+                "localActive": false,
                 "id": 12,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -511,9 +537,11 @@
         "EntityData": [
             {
                 "tag": "tooltip_stats",
-                "active": true,
+                "active": false,
+                "localActive": false,
                 "id": 13,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -548,9 +576,11 @@
         "EntityData": [
             {
                 "tag": "tooltip_hp/name",
-                "active": true,
+                "active": false,
+                "localActive": false,
                 "id": 14,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -585,9 +615,11 @@
         "EntityData": [
             {
                 "tag": "tooltip_hpbar",
-                "active": true,
+                "active": false,
+                "localActive": true,
                 "id": 15,
-                "parentID": 14
+                "parentID": 14,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -616,15 +648,17 @@
                     300.0,
                     200.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.25868770480155945
             }
         ],
         "EntityData": [
             {
                 "tag": "tooltip_skills",
-                "active": true,
+                "active": false,
+                "localActive": false,
                 "id": 16,
-                "parentID": -1
+                "parentID": -1,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -645,23 +679,25 @@
         "Transform": [
             {
                 "position": [
-                    542.676513671875,
-                    415.055908203125,
+                    542.3969116210938,
+                    414.6083068847656,
                     0.0
                 ],
                 "scale": [
                     60.0,
                     46.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.25868770480155945
             }
         ],
         "EntityData": [
             {
                 "tag": "skill_icon",
-                "active": true,
+                "active": false,
+                "localActive": true,
                 "id": 17,
-                "parentID": 16
+                "parentID": 16,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -697,8 +733,10 @@
             {
                 "tag": "skill_icon1",
                 "active": true,
+                "localActive": true,
                 "id": 18,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -734,8 +772,10 @@
             {
                 "tag": "skill_icon2",
                 "active": true,
+                "localActive": true,
                 "id": 19,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -771,8 +811,10 @@
             {
                 "tag": "skill_icon3",
                 "active": true,
+                "localActive": true,
                 "id": 20,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -808,8 +850,10 @@
             {
                 "tag": "skill_icon4",
                 "active": true,
+                "localActive": true,
                 "id": 21,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -845,8 +889,10 @@
             {
                 "tag": "skill_icon5",
                 "active": true,
+                "localActive": true,
                 "id": 22,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -882,8 +928,10 @@
             {
                 "tag": "skill_icon6",
                 "active": true,
+                "localActive": true,
                 "id": 23,
-                "parentID": 4
+                "parentID": 4,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -904,8 +952,8 @@
         "Transform": [
             {
                 "position": [
-                    967.7009887695313,
-                    41.37047576904297,
+                    967.7017211914063,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -919,8 +967,10 @@
             {
                 "tag": "next_tile_icon1",
                 "active": true,
+                "localActive": true,
                 "id": 24,
-                "parentID": 3
+                "parentID": 3,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -942,7 +992,7 @@
             {
                 "position": [
                     1197.697998046875,
-                    41.37047576904297,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -956,8 +1006,10 @@
             {
                 "tag": "next_tile_icon2",
                 "active": true,
+                "localActive": true,
                 "id": 25,
-                "parentID": 3
+                "parentID": 3,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -979,7 +1031,7 @@
             {
                 "position": [
                     1282.698486328125,
-                    41.37047576904297,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -993,8 +1045,10 @@
             {
                 "tag": "next_tile_icon3",
                 "active": true,
+                "localActive": true,
                 "id": 26,
-                "parentID": 3
+                "parentID": 3,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -1016,7 +1070,7 @@
             {
                 "position": [
                     1367.699951171875,
-                    41.37047576904297,
+                    41.370460510253906,
                     0.0
                 ],
                 "scale": [
@@ -1030,8 +1084,397 @@
             {
                 "tag": "next_tile_icon4",
                 "active": true,
+                "localActive": true,
                 "id": 27,
-                "parentID": 3
+                "parentID": 3,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 28,
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    149.99989318847656,
+                    0.0
+                ],
+                "scale": [
+                    265.0,
+                    60.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_endturn",
+                "active": true,
+                "localActive": true,
+                "id": 28,
+                "parentID": 11,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "End Turn",
+                "currentFont": "Arial-italic",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    393.0,
+                    74.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "Transform": [
+            {
+                "position": [
+                    641.6761474609375,
+                    352.97406005859375,
+                    0.0
+                ],
+                "scale": [
+                    300.0,
+                    200.0
+                ],
+                "rotation": 0.25868770480155945
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_skillname",
+                "active": false,
+                "localActive": true,
+                "id": 29,
+                "parentID": 16,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Skill Name",
+                "currentFont": "Arial-italic",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    317.0,
+                    218.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    300.0,
+                    200.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_phaseindicator",
+                "active": false,
+                "localActive": true,
+                "id": 30,
+                "parentID": 12,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Phase Indicator",
+                "currentFont": "Arial-italic",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    367.5,
+                    236.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "Transform": [
+            {
+                "position": [
+                    1250.0,
+                    870.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    80.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_hp",
+                "active": false,
+                "localActive": true,
+                "id": 31,
+                "parentID": 14,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "HP / HP",
+                "currentFont": "Arial-italic",
+                "scale": 0.6499999761581421,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    465.0,
+                    463.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "Transform": [
+            {
+                "position": [
+                    250.00006103515625,
+                    390.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_playername",
+                "active": false,
+                "localActive": true,
+                "id": 32,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "DROR",
+                "currentFont": "Arial-italic",
+                "scale": 1.0,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    90.0,
+                    233.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 33,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    665.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_attack",
+                "active": false,
+                "localActive": true,
+                "id": 33,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "ATTACK             :",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    63.5,
+                    232.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 34,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    665.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_defense",
+                "active": false,
+                "localActive": true,
+                "id": 34,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "DEFENSE          :",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    63.5,
+                    209.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    665.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_movement",
+                "active": false,
+                "localActive": true,
+                "id": 35,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "MOVEMENT      :",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    63.5,
+                    185.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "Transform": [
+            {
+                "position": [
+                    700.0,
+                    665.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_range",
+                "active": false,
+                "localActive": true,
+                "id": 36,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "RANGE              :",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    63.5,
+                    161.5
+                ]
             }
         ]
     }

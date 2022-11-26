@@ -120,6 +120,18 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Displays the Particle component info on the panel
+		***********************************************************************************/
+		void DisplayParticleProperty(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the text component info on the panel
+		***********************************************************************************/
+		void DisplayTextProperty(void);
+
+		/*!*********************************************************************************
+			\brief
 			Displays the Script component info on the panel
 		***********************************************************************************/
 		void DisplayEntityScript(void);
@@ -173,6 +185,8 @@ namespace ALEngine::Editor
 		InComp_Sprite,
 		InComp_RigidBody,
 		InComp_Collider,
+		InComp_Particles,
+		InComp_Text,
 		InComp_Script,
 		InComp_Audio,
 		InComp_Total

@@ -1,0 +1,1 @@
+E:\School\Gam200\gam_200\Artless\Extern\include\tracy\profiler\build\win32\x64\Release\Tracy.exe

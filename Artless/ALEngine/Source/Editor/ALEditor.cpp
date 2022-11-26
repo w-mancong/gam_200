@@ -57,7 +57,7 @@ namespace ALEngine::Editor
 		style.ScaleAllSizes(1.2f);
 
 		// Font Loading for ImGui
-		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial Italic.ttf", 20.f);
+		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial-italic.ttf", 20.f);
 
 		// Init GLFW
 		ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window(), true);
@@ -164,10 +164,17 @@ namespace ALEngine::Editor
 
 	void ALEditor::Begin(void)
 	{
-		ZoneScopedN("Editor Update")
-			// Change ImGui Enabled or Disabled
-			/*
-			if (Input::KeyTriggered(KeyCode::Key_9))
+		ZoneScopedN("Editor Update");
+		// Change ImGui Enabled or Disabled
+		/*
+		if (Input::KeyTriggered(KeyCode::Key_9))
+		{
+			m_ImGuiEnabled = !m_ImGuiEnabled;
+
+			ImGuiIO& io = ImGui::GetIO();
+			// If it is iactive, set MultiViewport to disable. 
+				// This is to stop rendering panels outside of main window
+			if (m_ImGuiEnabled)
 			{
 				m_ImGuiEnabled = !m_ImGuiEnabled;
 

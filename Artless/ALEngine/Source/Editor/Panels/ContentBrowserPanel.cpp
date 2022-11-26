@@ -177,7 +177,7 @@ namespace ALEngine::Editor
 				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}
 			// To display scene icon
-			else if (fileNamestring.find(".scene") != std::string::npos)
+			else if (fileNamestring.find(".scene") != std::string::npos || fileNamestring.find(".map") != std::string::npos)
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Scene.png");
 				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
@@ -194,6 +194,13 @@ namespace ALEngine::Editor
 			else if (fileNamestring.find(".ttf") != std::string::npos)
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Text.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			// To display audio icon
+			else if (fileNamestring.find(".wav") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Sound.png");
 				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
 				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}
@@ -231,6 +238,7 @@ namespace ALEngine::Editor
 			{
 				if (fileNamestring.find(".scene") != std::string::npos)
 				{
+					ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 					std::string the_path = directoryEntry.path().string();
 					Engine::Scene::LoadScene(the_path.c_str());
 					ALEditor::Instance()->SetCurrentSceneName(the_path);

@@ -64,7 +64,7 @@ namespace ALEngine::ECS
 			\return
 			Signature containing the components associated to this entity
 		***********************************************************************************/
-		Signature GetSignature(Entity entity);
+		Signature& GetSignature(Entity entity);
 
 		/*!*********************************************************************************
 			\brief

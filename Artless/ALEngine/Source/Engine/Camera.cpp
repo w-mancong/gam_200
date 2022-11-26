@@ -5,11 +5,17 @@ namespace ALEngine::Engine
 	Camera::Camera(Vector3 pos, Vector3 up, f32 yaw, f32 pitch, f32 zNear, f32 zFar, f32 fov) : m_Yaw{ yaw }, m_Pitch{ pitch }, m_Near{ zNear }, m_Far{ zFar }, m_Fov{ fov }, m_Position{ pos }, m_Up{ up }, m_WorldUp{ m_Up }, m_Projection{ Projection::Perspective }
 	{
 		UpdateVectors();
+
+		m_ProjRight = static_cast<f32>(Graphics::OpenGLWindow::width);
+		m_ProjTop = static_cast<f32>(Graphics::OpenGLWindow::height);
 	}
 
 	Camera::Camera(f32 x_pos, f32 y_pos, f32 z_pos, f32 x_up, f32 y_up, f32 z_up, f32 yaw, f32 pitch, f32 zNear, f32 zFar, f32 fov) : m_Yaw{ yaw }, m_Pitch{ pitch }, m_Near{ zNear }, m_Far{ zFar }, m_Fov{ fov }, m_Position{ x_pos, y_pos, z_pos }, m_Up{ x_up, y_up, z_up }, m_WorldUp{ m_Up }, m_Projection{ Projection::Perspective }
 	{
 		UpdateVectors();
+
+		m_ProjRight = static_cast<f32>(Graphics::OpenGLWindow::width);
+		m_ProjTop = static_cast<f32>(Graphics::OpenGLWindow::height);
 	}
 
 	f32 Camera::Yaw(void) const
@@ -52,6 +58,46 @@ namespace ALEngine::Engine
 		return m_Front;
 	}
 
+	f32& Camera::ProjBottom(void)
+	{
+		return const_cast<f32&>(const_cast<Camera const&>(*this).ProjBottom());
+	}
+
+	f32& Camera::ProjTop(void)
+	{
+		return const_cast<f32&>(const_cast<Camera const&>(*this).ProjTop());
+	}
+
+	f32& Camera::ProjLeft(void)
+	{
+		return const_cast<f32&>(const_cast<Camera const&>(*this).ProjLeft());
+	}
+
+	f32& Camera::ProjRight(void)
+	{
+		return const_cast<f32&>(const_cast<Camera const&>(*this).ProjRight());
+	}
+
+	f32 const& Camera::ProjBottom(void) const
+	{
+		return m_ProjBottom;
+	}
+
+	f32 const& Camera::ProjTop(void) const
+	{
+		return m_ProjTop;
+	}
+
+	f32 const& Camera::ProjLeft(void) const
+	{
+		return m_ProjLeft;
+	}
+
+	f32 const& Camera::ProjRight(void) const
+	{
+		return m_ProjRight;
+	}
+
 	Vector3 Camera::Position(void) const
 	{
 		return m_Position;
@@ -83,7 +129,8 @@ namespace ALEngine::Engine
 	Matrix4x4 Camera::OrthographicMatrix(void) const
 	{
 		using namespace Graphics;
-		return Matrix4x4::Ortho(0.0f, static_cast<f32>(OpenGLWindow::width), 0.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
+		return Matrix4x4::Ortho(m_ProjLeft, m_ProjRight, m_ProjBottom, m_ProjTop, m_Near, m_Far);
+		//return Matrix4x4::Ortho(800.0f, static_cast<f32>(OpenGLWindow::width), 450.0f, static_cast<f32>(OpenGLWindow::height), m_Near, m_Far);
 	}
 
 	Matrix4x4 Camera::OrthographicMatrix(f32 l, f32 r, f32 b, f32 t) const

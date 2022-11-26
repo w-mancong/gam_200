@@ -80,6 +80,14 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.clear();
 	}
 
+	//Initialize Abilities
+	void InitializeAbilities(std::vector<Abilities>& abilitiesList) {
+		abilitiesList.clear();
+
+		abilitiesList.push_back(Abilities_HardDrop{});
+		abilitiesList.push_back(Abilities_LifeDrain{});
+	}
+
 	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
@@ -233,5 +241,82 @@ namespace ALEngine::Engine::GameplayInterface
 		}//End loop through pattern body check
 
 		return true;
+	}
+
+	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern) {
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+				//If inside room, set the cell color to yellow
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						return true;
+					}
+				}
+			}
+		}//End loop through pattern body check
+
+		return false;
+	}
+
+	void Abilities_HardDrop::RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) {
+		AL_CORE_INFO("ABILTI 1");
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+				//If inside room, set the cell color to yellow
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::ENEMY) {
+						DoDamageToUnit(unit, damage);
+					}
+				}
+			}
+		}//End loop through pattern body check
+	}
+
+	void Abilities_LifeDrain::RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) {
+		AL_CORE_INFO("ABILTI 2");
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+				//If inside room, set the cell color to yellow
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::ENEMY) {
+						DoDamageToUnit(unit, lifeStealAmount);
+					}
+				}
+			}
+		}//End loop through pattern body check
+	}
+
+	void DoDamageToUnit(Unit& unit, s32 damage) {
+		unit.health -= damage;
+
+		AL_CORE_INFO(std::to_string(unit.health));
+
+		if (unit.health <= 0) {
+			AL_CORE_INFO("Enemy Died");
+		}
 	}
 }

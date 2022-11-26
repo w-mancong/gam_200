@@ -122,7 +122,7 @@ namespace ALEngine::Engine::Scene
 		Transform transform{};
 
 		// Getting position
-		rjs::Value const& p  = v[0]["position"];
+		rjs::Value const& p = v[0]["position"];
 		transform.position.x = p[0].GetFloat();
 		transform.position.y = p[1].GetFloat();
 		transform.position.z = p[2].GetFloat();
@@ -154,12 +154,23 @@ namespace ALEngine::Engine::Scene
 		writer.Key("active");
 		writer.Bool(entityData.active);
 
+		// Local active status
+		writer.Key("localActive");
+		writer.Bool(entityData.localActive);
+
 		// Entity ID
 		writer.Key("id");
 		writer.Uint(entityData.id);
 		
+		// Entity's parent id for scene graph
 		writer.Key("parentID");
 		writer.Int(entityData.parentID);
+
+#if EDITOR
+		// Tree Node flag for imgui
+		writer.Key("treeNodeFlags");
+		writer.Uint64(static_cast<u64>(entityData.treeNodeFlags));
+#endif
 
 		writer.EndObject();
 		writer.EndArray();
@@ -173,10 +184,17 @@ namespace ALEngine::Engine::Scene
 		entityData.tag = v[0]["tag"].GetString();
 		// Getting active status
 		entityData.active = v[0]["active"].GetBool();
+		// Getting local active status
+		entityData.localActive = v[0]["localActive"].GetBool();
 		// Getting id
 		entityData.id = v[0]["id"].GetUint();
 		// Getting parent id
 		entityData.parentID = v[0]["parentID"].GetInt();
+
+#if EDITOR
+		// Getting tree node flags for imgui
+		entityData.treeNodeFlags = static_cast<ImGuiTreeNodeFlags_>( v[0]["treeNodeFlags"].GetUint64() );
+#endif
 	}
 
 	void WriteCollider2D(TWriter& writer, ECS::Entity en)
@@ -456,6 +474,184 @@ namespace ALEngine::Engine::Scene
 
 	//}
 
+	void WriteParticleProperty(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("ParticleProperty");
+		writer.StartArray();
+		writer.StartObject();
+
+		ParticleProperties const& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+
+		// velocity
+		writer.Key("velocity");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.velocity.x));
+		writer.Double(static_cast<f64>(prop.velocity.y));
+		writer.EndArray();
+
+		// velocityVariation
+		writer.Key("velocityVariation");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.velocityVariation.x));
+		writer.Double(static_cast<f64>(prop.velocityVariation.y));
+		writer.EndArray();
+
+		// colorStart
+		writer.Key("colorStart");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.colorStart.x));
+		writer.Double(static_cast<f64>(prop.colorStart.y));
+		writer.Double(static_cast<f64>(prop.colorStart.z));
+		writer.Double(static_cast<f64>(prop.colorStart.w));
+		writer.EndArray();
+
+		// colorEnd
+		writer.Key("colorEnd");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.colorEnd.x));
+		writer.Double(static_cast<f64>(prop.colorEnd.y));
+		writer.Double(static_cast<f64>(prop.colorEnd.z));
+		writer.Double(static_cast<f64>(prop.colorEnd.w));
+		writer.EndArray();
+
+		// sizeStart
+		writer.Key("sizeStart");
+		writer.Double(static_cast<f64>(prop.sizeStart));
+
+		// sizeEnd
+		writer.Key("sizeEnd");
+		writer.Double(static_cast<f64>(prop.sizeEnd));
+
+		// sizeVariation
+		writer.Key("sizeVariation");
+		writer.Double(static_cast<f64>(prop.sizeVariation));
+
+		// lifeTime
+		writer.Key("lifeTime");
+		writer.Double(static_cast<f64>(prop.lifeTime));
+
+		// spawnRate
+		writer.Key("spawnRate");
+		writer.Double(static_cast<f64>(prop.spawnRate));
+
+		// rotation
+		writer.Key("rotation");
+		writer.Double(static_cast<f64>(prop.rotation));
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadParticleProperty(rjs::Value const& v, ECS::Entity en)
+	{
+		ParticleProperties prop{};
+
+		// Getting velocity
+		rjs::Value const& p = v[0]["velocity"];
+		prop.velocity.x = p[0].GetFloat();
+		prop.velocity.y = p[1].GetFloat();
+
+		// Getting velocityVariation
+		rjs::Value const& q = v[0]["velocityVariation"];
+		prop.velocityVariation.x = q[0].GetFloat();
+		prop.velocityVariation.y = q[1].GetFloat();
+
+		// Getting colorStart
+		rjs::Value const& w = v[0]["colorStart"];
+		prop.colorStart.x = w[0].GetFloat();
+		prop.colorStart.y = w[1].GetFloat();
+		prop.colorStart.z = w[2].GetFloat();
+		prop.colorStart.w = w[3].GetFloat();
+
+		// Getting colorEnd
+		rjs::Value const& e = v[0]["colorEnd"];
+		prop.colorEnd.x = e[0].GetFloat();
+		prop.colorEnd.y = e[1].GetFloat();
+		prop.colorEnd.z = e[2].GetFloat();
+		prop.colorEnd.w = e[3].GetFloat();
+
+		// Getting sizeStart
+		prop.sizeStart = v[0]["sizeStart"].GetFloat();
+
+		// Getting sizeEnd
+		prop.sizeEnd = v[0]["sizeEnd"].GetFloat();
+
+		// Getting sizeVariation
+		prop.sizeVariation = v[0]["sizeVariation"].GetFloat();
+
+		// Getting lifetime
+		prop.lifeTime = v[0]["lifeTime"].GetFloat();
+
+		// Getting spawnRate
+		prop.spawnRate = v[0]["spawnRate"].GetFloat();
+
+		// Getting rotation
+		prop.rotation = v[0]["rotation"].GetFloat();
+
+		Coordinator::Instance()->AddComponent(en, prop);
+	}
+
+	void WriteTextProperty(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("TextProperty");
+		writer.StartArray();
+		writer.StartObject();
+
+		Text const& prop = Coordinator::Instance()->GetComponent<Text>(en);
+
+		// velocity
+		writer.Key("textString");
+		writer.String(prop.textString.c_str());
+
+		writer.Key("currentFont");
+		writer.String(prop.currentFont.c_str());
+
+		writer.Key("scale");
+		writer.Double(static_cast<f64>(prop.scale));
+
+		// color
+		writer.Key("color");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.colour.x));
+		writer.Double(static_cast<f64>(prop.colour.y));
+		writer.Double(static_cast<f64>(prop.colour.z));
+		writer.EndArray();
+
+		// colorEnd
+		writer.Key("position");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.position.x));
+		writer.Double(static_cast<f64>(prop.position.y));
+		writer.EndArray();
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadTextProperty(rjs::Value const& v, ECS::Entity en)
+	{
+		Text prop{};
+
+		prop.textString = v[0]["textString"].GetString();
+
+		prop.currentFont = v[0]["currentFont"].GetString();
+
+		prop.scale = v[0]["scale"].GetFloat();
+
+		// Getting color
+		rjs::Value const& w = v[0]["color"];
+		prop.colour.x = w[0].GetFloat();
+		prop.colour.y = w[1].GetFloat();
+		prop.colour.z = w[2].GetFloat();
+
+		// Getting position
+		rjs::Value const& e = v[0]["position"];
+		prop.position.x = e[0].GetFloat();
+		prop.position.y = e[1].GetFloat();
+
+		Coordinator::Instance()->AddComponent(en, prop);
+	}
+
 	void WriteEntityScript(TWriter& writer, ECS::Entity en)
 	{
 		writer.Key("EntityScript");
@@ -647,8 +843,10 @@ namespace ALEngine::Engine::Scene
 			//	WriteEventCollisionTrigger(writer, en);
 			if (Coordinator::Instance()->HasComponent<Unit>(en))
 				WriteUnit(writer, en);
-			//if (Coordinator::Instance()->HasComponent<Cell>(en))
-			//	WriteCell(writer, en);
+			if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
+				WriteParticleProperty(writer, en);
+			if (Coordinator::Instance()->HasComponent<Text>(en))
+				WriteTextProperty(writer, en);
 			if (Coordinator::Instance()->HasComponent<EntityScript>(en))
 				WriteEntityScript(writer, en);
 
@@ -683,8 +881,10 @@ namespace ALEngine::Engine::Scene
 			//	ReadEventCollisionTrigger(v["EventCollisionTrigger"], en);
 			if (v.HasMember("Unit"))
 				ReadUnit(v["Unit"], en);
-			//if (v.HasMember("Cell"))
-			//	ReadCell(v["Cell"], en);
+			if (v.HasMember("ParticleProperty"))
+				ReadParticleProperty(v["ParticleProperty"], en);
+			if (v.HasMember("TextProperty"))
+				ReadTextProperty(v["TextProperty"], en);
 			if (v.HasMember("EntityScript"))
 				ReadEntityScript(v["EntityScript"], en);
 		}

@@ -11,7 +11,15 @@ brief:	This file contains function definitions for Coordinator
 
 namespace ALEngine::ECS
 {
+	/*!*********************************************************************************
+		\brief Get a reference to scene graph
+	***********************************************************************************/
 	Tree::BinaryTree& GetSceneGraph(void);
+
+	/*!*********************************************************************************
+		\brief Get a const reference to scene graph
+	***********************************************************************************/
+	Tree::BinaryTree const& GetSceneGraph(s32 i);
 
 	/*!*********************************************************************************
 		\brief
@@ -36,7 +44,7 @@ namespace ALEngine::ECS
 			Entity ent_id = mEntityManager->CreateEntity();
 
 			// Entity data
-			Component::EntityData data{ "entity #" + std::to_string(static_cast<u32>(ent_id)), true, ent_id };
+			Component::EntityData data{ "entity #" + std::to_string(static_cast<u32>(ent_id)), true, true, ent_id };
 
 			// Add EntityData component
 			Coordinator::Instance()->AddComponent<Component::EntityData>(ent_id, data);
@@ -148,7 +156,7 @@ namespace ALEngine::ECS
 		void AddComponent(Entity entity, T component)
 		{
 			mComponentManager->AddComponent<T>(entity, component);
-			auto signature = mEntityManager->GetSignature(entity);
+			Signature& signature = mEntityManager->GetSignature(entity);
 			signature.set(mComponentManager->GetComponentType<T>(), true);
 			mEntityManager->SetSignature(entity, signature);
 			mSystemManager->EntitySignatureChanged(entity, signature);
@@ -166,7 +174,7 @@ namespace ALEngine::ECS
 		void RemoveComponent(Entity entity, void (*func)(Entity) = nullptr)
 		{
 			mComponentManager->RemoveComponent<T>(entity);
-			auto signature = mEntityManager->GetSignature(entity);
+			Signature& signature = mEntityManager->GetSignature(entity);
 			signature.set(mComponentManager->GetComponentType<T>(), false);
 			mSystemManager->EntitySignatureChanged(entity, signature);
 			if(func)

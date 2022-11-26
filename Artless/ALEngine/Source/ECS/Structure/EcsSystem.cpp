@@ -14,7 +14,9 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<EventTrigger>();
 		Coordinator::Instance()->RegisterComponent<EventCollisionTrigger>();
 		Coordinator::Instance()->RegisterComponent<Unit>();
+		Coordinator::Instance()->RegisterComponent<ParticleProperties>();
 		Coordinator::Instance()->RegisterComponent<Cell>();
+		Coordinator::Instance()->RegisterComponent<Text>();
 		Coordinator::Instance()->RegisterComponent<Engine::AudioSource>();
 
 		// To be deleted later
@@ -31,6 +33,8 @@ namespace ALEngine::ECS
 		RegisterEventTriggerSystem();
 		RegisterEventCollisionTriggerSystem();
 		RegisterGameplaySystem();
+		RegisterParticleSystem();
+		RegisterTextSystem();
 
 #if EDITOR
 		//RegisterTransformSystem();

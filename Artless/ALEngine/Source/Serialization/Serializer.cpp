@@ -27,7 +27,7 @@ namespace ALEngine::Serializer
 
 			if (fp == NULL)
 			{
-				std::cerr << "Could not open file for reading!\n";
+				std::cerr << "Could not open file for writing!\n";
 				return EXIT_FAILURE;
 			}
 			else {

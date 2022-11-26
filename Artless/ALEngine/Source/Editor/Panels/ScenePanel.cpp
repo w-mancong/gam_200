@@ -21,6 +21,8 @@ namespace ALEngine::Editor
 		// Set camera to ortho projection
 		m_EditorCamera.ProjectionMatrix(Engine::Camera::Projection::Orthographic);
 		m_EditorCamera.Position() = { Math::Vec3(-static_cast<f32>(Graphics::OpenGLWindow::width >> 1), -static_cast<f32>(Graphics::OpenGLWindow::height >> 1), 725.f) };
+
+		m_CameraWidth = static_cast<f32>(Graphics::OpenGLWindow::width);
 	}
 
 	ScenePanel::~ScenePanel(void)
@@ -46,6 +48,8 @@ namespace ALEngine::Editor
 			ImGui::End();
 			return;
 		}
+
+		CameraZoom();
 
 		//ECS::Render(m_EditorCamera);
 
@@ -280,6 +284,16 @@ namespace ALEngine::Editor
 				m_EditorCamera.Position() += Math::Vec3(change.x, change.y, 0.f);
 			}
 		}
+	}
+
+	void ScenePanel::CameraZoom(void)
+	{
+		if (ImGui::IsWindowHovered(ImGuiHoveredFlags_RootWindow))
+			m_CameraWidth -= static_cast<f32>(Input::m_MouseWheelEvent) * ZOOM_SPEED;
+		m_CameraHeight = m_CameraWidth / Graphics::OpenGLWindow::ar;
+
+		m_EditorCamera.ProjRight() = m_CameraWidth;
+		m_EditorCamera.ProjTop() = m_CameraHeight;
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

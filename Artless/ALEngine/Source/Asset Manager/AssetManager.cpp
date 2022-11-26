@@ -41,7 +41,7 @@ namespace
 	std::unordered_map<Guid, Texture> textureList{};
 	std::unordered_map<Guid, Animation> animationList{};
 	std::unordered_map<Guid, Audio> audioList{};
-	std::unordered_map<Guid, Font> fontList{};
+	std::unordered_map<Guid, ALEngine::ECS::Font> fontList{};
 #if EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList{};
 #endif
@@ -251,6 +251,20 @@ namespace
 		return { texture, handle };
 	}
 
+	ALEngine::ECS::Font LoadFont(std::string filePath)
+	{
+		std::string fontName, fontType;
+		std::string str{ filePath };
+		str = str.substr(str.find_last_of("\\") + 1);
+		fontName = str.substr(0, str.find_first_of("."));
+
+		// convert to all upper case
+		//for (c8& chr : fontName)
+		//	chr = toupper(chr);
+		
+		return ALEngine::ECS::Font::FontInit(filePath, fontName);
+	}
+
 	Texture LoadWhiteImage(void)
 	{
 		u32 texture;
@@ -282,6 +296,8 @@ namespace
 
 		TextureHandle handle = glGetTextureHandleARB(texture);
 		glMakeTextureHandleResidentARB(handle);
+
+		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
 		return { texture, handle };
 	}
@@ -373,7 +389,7 @@ namespace ALEngine::Engine
 	void AssetManager::Init()
 	{
 #if EDITOR
-		Guid id{}; u32 icon{};
+		Guid id{ 0 }; u32 icon{ 0 };
 		// Folder icon
 		id = PrepareGuid();
 		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
@@ -402,6 +418,12 @@ namespace ALEngine::Engine
 		id = PrepareGuid();
 		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
 		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
+		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+		// Audio icon
+		id = PrepareGuid();
+		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Sound.png", id });
+		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
 		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
 		// Play icon
@@ -517,6 +539,8 @@ namespace ALEngine::Engine
 				}
 				case FileType::Font:
 				{
+					std::string filePath{ *it };
+					fontList.insert(std::pair<Guid, ALEngine::ECS::Font>{ id, LoadFont(filePath) });
 					break;
 				}
 				default:
@@ -590,6 +614,11 @@ namespace ALEngine::Engine
 	Animation AssetManager::GetAnimation(Guid id)
 	{
 		return animationList[id];
+	}
+
+	std::unordered_map<Guid, ECS::Font>& AssetManager::GetFontList()
+	{
+		return fontList;
 	}
 
 	Audio AssetManager::GetAudio(Guid id)
@@ -852,6 +881,7 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Font:
 			{
+				//LoadFont(filePath);
 				break;
 			}
 			/******************************************************************************

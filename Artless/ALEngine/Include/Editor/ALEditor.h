@@ -306,6 +306,10 @@ namespace ALEngine::Editor
 		AudioEditorPanel m_AudioEditorPanel;            // Audio Editor Panel
 		TileEditorPanel m_TileEditor;					// Tile Editor Panel
 
+		// Gizmo Operation
+		ImGuizmo::OPERATION m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
+
+	public:
 		// Editor Colors
 		ImVec4 m_ColorTitleBg{};			// Color of Title Background
 		ImVec4 m_ColorTitleActiveBg{};		// Color of Title Active Background
@@ -316,9 +320,6 @@ namespace ALEngine::Editor
 		ImVec4 m_ColorActive3{};			// Color of Active 3
 		ImVec4 m_ColorHovered{};			// Color of Hovered
 		ImVec4 m_ColorInteractive{};		// Color of Interactive
-
-		// Gizmo Operation
-		ImGuizmo::OPERATION m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };
 	};
 
 	void HelpMarker(const char* desc);

@@ -14,35 +14,35 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 
 namespace ALEngine::Editor
 {
-	class ParticleSystemPanel
-	{
-	public:
-		/*!*********************************************************************************
-			\brief
-			Constructor for ParticleSystemPanel
-		***********************************************************************************/
-		ParticleSystemPanel();
+	//class ParticleSystemPanel
+	//{
+	//public:
+	//	/*!*********************************************************************************
+	//		\brief
+	//		Constructor for ParticleSystemPanel
+	//	***********************************************************************************/
+	//	ParticleSystemPanel();
 
-		/*!*********************************************************************************
-			\brief
-			Destructor for ParticleSystemPanel
-		***********************************************************************************/
-		~ParticleSystemPanel();
+	//	/*!*********************************************************************************
+	//		\brief
+	//		Destructor for ParticleSystemPanel
+	//	***********************************************************************************/
+	//	~ParticleSystemPanel();
 
-		/*!*********************************************************************************
-			\brief
-			Update and render the imgui ParticleSystemPanel
+	//	/*!*********************************************************************************
+	//		\brief
+	//		Update and render the imgui ParticleSystemPanel
 
-			\param [in] system
-			ParticleSystem
-		***********************************************************************************/
-		void OnImGuiRender(ALEngine::Graphics::ParticleSys::ParticleSystem& system);
+	//		\param [in] system
+	//		ParticleSystem
+	//	***********************************************************************************/
+	//	void OnImGuiRender(ALEngine::Graphics::ParticleSys::ParticleSystem& system);
 
-	private:
-		ALEngine::Graphics::ParticleSys::ParticleProperties particleProperty;
-		b8 toggleParticles{ false };
-		s32 particleSpawnRate{ 4 };
-	};
+	//private:
+	//	ALEngine::Graphics::ParticleSys::ParticleProperties particleProperty;
+	//	b8 toggleParticles{ false };
+	//	s32 particleSpawnRate{ 4 };
+	//};
 }
 
 #endif

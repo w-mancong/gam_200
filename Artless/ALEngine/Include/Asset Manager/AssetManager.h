@@ -86,6 +86,8 @@ namespace ALEngine::Engine
 
 		void Reset(void);
 
+		std::unordered_map<Guid, ALEngine::ECS::Font>& GetFontList();
+
 	private:
 		/*!*********************************************************************************
 		 \brief
