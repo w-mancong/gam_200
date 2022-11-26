@@ -166,7 +166,7 @@ namespace ALEngine::Engine::Scene
 		writer.Key("parentID");
 		writer.Int(entityData.parentID);
 
-#if _EDITOR
+#if EDITOR
 		// Tree Node flag for imgui
 		writer.Key("treeNodeFlags");
 		writer.Uint64(static_cast<u64>(entityData.treeNodeFlags));
@@ -191,7 +191,7 @@ namespace ALEngine::Engine::Scene
 		// Getting parent id
 		entityData.parentID = v[0]["parentID"].GetInt();
 
-#if _EDITOR
+#if EDITOR
 		// Getting tree node flags for imgui
 		entityData.treeNodeFlags = static_cast<ImGuiTreeNodeFlags_>( v[0]["treeNodeFlags"].GetUint64() );
 #endif

@@ -24,7 +24,7 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	void Render(void);
 
-#if _EDITOR
+#if EDITOR
 	/*!*********************************************************************************
 		\brief Renders any entities with Sprite and Transform components, to be used
 		by ScenePanel

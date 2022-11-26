@@ -9,7 +9,7 @@ namespace ALEngine::Engine
 		Running,
 		LevelSwitch,
 		Restart,
-#if _EDITOR
+#if EDITOR
 		Editor,
 		Gameplay,
 #endif

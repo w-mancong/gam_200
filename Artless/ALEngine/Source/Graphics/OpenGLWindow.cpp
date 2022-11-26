@@ -22,7 +22,7 @@ namespace ALEngine::Graphics
 			OpenGLWindow::width = width, OpenGLWindow::height = height;
 			OpenGLWindow::ar = static_cast<f32>(width) / static_cast<f32>(height);
 
-#if _EDITOR
+#if EDITOR
 			//f32& cameraWidth  = Editor::ALEditor::Instance()->GetSceneCameraWidth();
 			//f32& cameraHeight = Editor::ALEditor::Instance()->GetSceneCameraHeight();
 
@@ -40,7 +40,7 @@ namespace ALEngine::Graphics
 
 		void window_focus_callback([[maybe_unused]] GLFWwindow* window, s32 focused)
 		{
-#if _EDITOR
+#if EDITOR
 			//focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);
 #endif
 			Engine::SetWindowFocus(focused);

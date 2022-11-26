@@ -11,7 +11,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 #ifndef	CONTENT_BROWSER_PANEL_H
 #define CONTENT_BROWSER_PANEL_H
 
-#if _EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {

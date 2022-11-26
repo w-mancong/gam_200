@@ -9,7 +9,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 #ifndef	PARTICLE_SYSTEM_PANEL_H
 #define PARTICLE_SYSTEM_PANEL_H
 
-#if _EDITOR
+#if EDITOR
 #include <Graphics/ParticleSys.h>
 
 namespace ALEngine::Editor

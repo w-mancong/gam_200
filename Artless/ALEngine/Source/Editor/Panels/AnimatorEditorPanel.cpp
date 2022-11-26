@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#if _EDITOR
+#if EDITOR
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "imgui/cpp/imgui_stdlib.h"

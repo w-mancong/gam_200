@@ -89,6 +89,7 @@
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\SkillHovering.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\StatsHovering.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\PauseLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -350,6 +351,7 @@
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\StatsHovering.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\PauseLogic.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

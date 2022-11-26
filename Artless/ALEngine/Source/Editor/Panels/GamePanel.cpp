@@ -9,7 +9,7 @@ brief:	This file contains function definitions for the GamePanel class.
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
-#if _EDITOR
+#if EDITOR
 
 #include "imgui.h"
 #include "imgui_internal.h"

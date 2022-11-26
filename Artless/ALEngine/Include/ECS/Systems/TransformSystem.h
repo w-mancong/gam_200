@@ -9,7 +9,7 @@ brief:	This file contains the function declarations for TransformSystem
 #ifndef	TRANSFORM_SYSTEM_H
 #define TRANSFORM_SYSTEM_H
 
-#if _EDITOR
+#if EDITOR
 
 namespace ALEngine::ECS
 {

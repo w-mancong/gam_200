@@ -35,7 +35,7 @@ namespace ALEngine::Exceptions
 }
 
 #define LOGGER_NAME "AL Logger"
-#if _EDITOR
+#if EDITOR
 // SET THE MIN LEVEL FOR LOG OUTPUT. (CRITICAL > ERROR > WARN > INFO > DEBUG > TRACE)
 #define AL_CORE_SET_LEVEL(...) ::ALEngine::Exceptions::Logger::GetCoreLogger()->set_level(__VA_ARGS__) 
 

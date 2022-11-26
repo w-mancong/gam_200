@@ -36,7 +36,7 @@ namespace ALEngine::Math
 
 	vec4 const& Matrix4x4::operator()(size_type row) const
 	{
-#if _EDITOR
+#if EDITOR
 		assert(0 <= row && 4 > row && "Rows must be a positive integer lesser than 4!");
 #endif
 		return *(mat + row);
@@ -44,7 +44,7 @@ namespace ALEngine::Math
 
 	vec4 Matrix4x4::Column(size_type col) const
 	{
-#if	_EDITOR
+#if	EDITOR
 		assert(0 <= col && 4 > col && "Columns must be a positive integer lesser than 4!");
 #endif
 		return vec4
