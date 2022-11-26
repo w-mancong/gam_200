@@ -11,7 +11,7 @@ brief:	This file contains function declarations for the GamePanel class.
 #ifndef GAME_PANEL_H
 #define GAME_PANEL_H
 
-#if _EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {

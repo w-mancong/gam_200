@@ -59,7 +59,7 @@ namespace ALEngine::ECS
 
 	void UpdateAnimatorSystem(void)
 	{
-#if _EDITOR
+#if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
 #endif
@@ -77,7 +77,7 @@ namespace ALEngine::ECS
 	void AttachAnimator(Entity entity, Animator& animator)
 	{
 		Coordinator::Instance()->AddComponent(entity, animator);
-#if _EDITOR
+#if EDITOR
 		if (!Coordinator::Instance()->HasComponent<Sprite>(entity))
 			return;
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(entity);

@@ -10,7 +10,7 @@ brief:	This file contains function definitions for the LoggerPanel class.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
-#if _EDITOR
+#if EDITOR
 
 namespace ALEngine::Editor
 {

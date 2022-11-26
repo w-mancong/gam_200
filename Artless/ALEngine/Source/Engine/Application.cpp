@@ -6,7 +6,7 @@ namespace ALEngine::Engine
 	using namespace Math;
 	using namespace Graphics;
 	using namespace ECS;
-#if _EDITOR
+#if EDITOR
 	using namespace Editor;
 #endif
 	namespace
@@ -37,7 +37,7 @@ namespace ALEngine::Engine
 			}
 		}
 
-#if _EDITOR
+#if EDITOR
 		std::function<void(void)> UpdateLoop[2];
 		u64 funcIndex{};
 
@@ -101,34 +101,40 @@ namespace ALEngine::Engine
 
 				// Get Current Time
 				Time::ClockTimeNow();
-#if _EDITOR
+#if EDITOR
 				// Editor Command Manager Update
 				Commands::EditorCommandManager::Update();
 				// Begin new ImGui frame
 				ALEditor::Instance()->Begin();
-#endif
-				// Normal Update
-				Engine::Update();
-				UpdateCppScripts();
-				// Physics
-				// Fixed Update (Physics)
-				accumulator += Time::m_DeltaTime;
 
-				// Steps to limit num times physics will run per frame
-				int currNumSteps{ 0 };
-
-				while (accumulator >= Time::m_FixedDeltaTime)
+				if (ALEditor::Instance()->GetGameActive())
 				{
-					// Exit if physics happen more than limit
-					if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
-						break;
+#endif
+					// Normal Update
+					Engine::Update();
+					UpdateCppScripts();
+					// Physics
+					// Fixed Update (Physics)
+					accumulator += Time::m_DeltaTime;
 
-					Engine::FixedUpdate();
-					accumulator -= Time::m_FixedDeltaTime;
+					// Steps to limit num times physics will run per frame
+					int currNumSteps{ 0 };
+
+					while (accumulator >= Time::m_FixedDeltaTime)
+					{
+						// Exit if physics happen more than limit
+						if (currNumSteps++ >= Utility::MAX_STEP_FIXED_DT)
+							break;
+
+						Engine::FixedUpdate();
+						accumulator -= Time::m_FixedDeltaTime;
+					}
+
+					// Update Scene graph
+					ECS::GetSceneGraph().Update();
+#if EDITOR
 				}
-
-				// Update Scene graph
-				ECS::GetSceneGraph().Update();
+#endif
 
 				// Render
 				Render();
@@ -136,7 +142,7 @@ namespace ALEngine::Engine
 				// Wait for next frame
 				Time::WaitUntil();				
 
-#if _EDITOR
+#if EDITOR
 				// Marks the end of a frame m_Loop, for tracy profiler
 				FrameMark;
 #endif
@@ -168,7 +174,7 @@ namespace ALEngine::Engine
 		Time::Init();
 
 		// Init ImGui
-#if _EDITOR
+#if EDITOR
 		ALEditor::Instance()->SetImGuiEnabled(true);
 		ALEditor::Instance()->SetDockingEnabled(true);
 
@@ -183,18 +189,20 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
-#if !_EDITOR
+#if !EDITOR
 		OpenGLWindow::FullScreen(true);
 		Scene::LoadScene("Assets\\test.scene");
 		StartGameplaySystem();
 		Console::StopConsole();
 #endif
 
+		//Scene::LoadScene("Assets\\test.scene");
 
-		//Entity en = Coordinator::Instance()->GetEntityByTag("bar_stats");
+		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
 		//EntityScript es;
-		//es.AddInitFunction("StatsInit");
-		//es.AddFreeFunction("StatsReset");
+		//es.AddInitFunction("PauseInit");
+		//es.AddUpdateFunction("PauseUpdate");
+		//es.AddFreeFunction("PauseReset");
 		//Coordinator::Instance()->AddComponent(en, es);
 
 		//EntityScript& es = Coordinator::Instance()->GetComponent<EntityScript>(en);
@@ -208,7 +216,7 @@ namespace ALEngine::Engine
 		// should do the game m_Loop here
 		while (GameStateManager::current != GameState::Quit && appStatus)
 		{
-#if _EDITOR
+#if EDITOR
 			UpdateLoop[funcIndex]();
 #else
 			GameUpdate();
@@ -219,7 +227,7 @@ namespace ALEngine::Engine
 	void Application::Exit(void)
 	{
 		ExitGameplaySystem();
-#if _EDITOR
+#if EDITOR
 		ALEditor::Instance()->Exit();		// Exit ImGui
 #endif
 		AssetManager::Instance()->Exit();	// Clean up all Assets
@@ -230,7 +238,7 @@ namespace ALEngine::Engine
 
 	void Run(void)
 	{		
-#if !_EDITOR
+#if !EDITOR
 		Console::StopConsole();
 #endif
 		if (SetConsoleCtrlHandler(CtrlHandler, TRUE))
@@ -243,7 +251,7 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-#if _EDITOR
+#if EDITOR
 		ZoneScopedN("Normal Delta Time Update");
 #endif
 		Input::Update();
@@ -253,7 +261,7 @@ namespace ALEngine::Engine
 
 	void Engine::FixedUpdate(void)
 	{
-#if _EDITOR
+#if EDITOR
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
 		UpdateGameplaySystem();
@@ -291,7 +299,7 @@ namespace ALEngine::Engine
 		GameStateManager::current = Engine::GameState::Quit;
 	}
 
-#if _EDITOR
+#if EDITOR
 	void ToggleApplicationMode(void)
 	{
 		(++funcIndex) %= 2;

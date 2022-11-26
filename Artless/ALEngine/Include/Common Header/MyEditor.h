@@ -8,7 +8,7 @@ brief:	This file contains all the relevant Editor header files to be included in
 *//*__________________________________________________________________________________*/
 #ifndef	MY_EDITOR_H
 #define MY_EDITOR_H
-#if _EDITOR
+#if EDITOR
 
 #include "Editor/Panels/ScenePanel.h"
 #include "Editor/Panels/GamePanel.h"

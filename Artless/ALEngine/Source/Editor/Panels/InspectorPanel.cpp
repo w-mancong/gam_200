@@ -10,7 +10,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
-#if _EDITOR
+#if EDITOR
 
 #include "imgui_internal.h"
 
@@ -924,19 +924,19 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
-				case InspectorComponents::InComp_Script:
-					// Check if has component
-					if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
-					{
-						if (ImGui::Selectable("Script Component") &&
-							m_SelectedEntity != ECS::MAX_ENTITIES)
-						{
-							// Add Script Component
-							ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
-						}
-						++count;
-					}
-					break;
+				//case InspectorComponents::InComp_Script:
+				//	// Check if has component
+				//	if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+				//	{
+				//		if (ImGui::Selectable("Script Component") &&
+				//			m_SelectedEntity != ECS::MAX_ENTITIES)
+				//		{
+				//			// Add Script Component
+				//			ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
+				//		}
+				//		++count;
+				//	}
+				//	break;
 				case InspectorComponents::InComp_Audio:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
