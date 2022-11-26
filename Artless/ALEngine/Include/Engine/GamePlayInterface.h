@@ -28,7 +28,7 @@ namespace ALEngine::Engine::GameplayInterface
 	struct Abilities {
 		u32 current_Cooldown = 0, max_Cooldown = 2;
 
-		virtual void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern) { AL_CORE_INFO("BASE"); };
+		virtual void RunAbilities_OnCells([[maybe_unused]] Room& room, [[maybe_unused]] Vector2Int coordinate, Pattern pattern) { AL_CORE_INFO("BASE"); };
 	};
 
 	//1) Hard drop - damage all enemies in range

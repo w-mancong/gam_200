@@ -117,11 +117,11 @@ namespace  ALEngine::Engine::AI
     \brief
     The function to get neighbouring cells
     ***********************************************************************************/
-    std::list<ECS::Cell*> GetNeighbourList(ECS::Cell& currentNode, Engine::GameplayInterface::Room& currentRoom, bool defaultAstar)
+    std::list<ECS::Cell*> GetNeighbourList(ECS::Cell& currentNode, Engine::GameplayInterface::Room& currentRoom, [[maybe_unused]] bool defaultAstar)
     {
         std::list<Cell*> neighbourList;
         
-        u32 currentCoordinate[2]{ currentNode.coordinate.x, currentNode.coordinate.y };
+        u32 currentCoordinate[2]{ static_cast<u32>(currentNode.coordinate.x), static_cast<u32>(currentNode.coordinate.y) };
 
         //check cell in grid
         //astar without diagonal path, check for all neighbours except diagonal neighbour

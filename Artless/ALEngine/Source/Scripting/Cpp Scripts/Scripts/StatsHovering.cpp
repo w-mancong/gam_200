@@ -10,7 +10,7 @@ namespace ALEngine
 		Entity en_tooltip{ MAX_ENTITIES };
 	}
 
-	void WhenStatsHover(Entity en)
+	void WhenStatsHover([[maybe_unused]] Entity en)
 	{
 		if (en_tooltip >= MAX_ENTITIES)
 			return;
@@ -18,7 +18,7 @@ namespace ALEngine
 		SetActive(true, en_tooltip);
 	}
 
-	void WhenStatsPointerExit(Entity en)
+	void WhenStatsPointerExit([[maybe_unused]] Entity en)
 	{
 		if (en_tooltip >= MAX_ENTITIES)
 			return;
@@ -35,7 +35,7 @@ namespace ALEngine
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenStatsPointerExit);
 	}
 
-	void StatsReset(ECS::Entity en)
+	void StatsReset([[maybe_unused]] ECS::Entity en)
 	{
 		en_tooltip = MAX_ENTITIES;
 	}

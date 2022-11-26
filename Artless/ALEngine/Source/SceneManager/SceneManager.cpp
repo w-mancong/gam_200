@@ -719,7 +719,7 @@ namespace ALEngine::Engine::Scene
 		EntityScript es{};
 
 		// Load
-		u64 index = 0;
+		rjs::SizeType index = 0;
 		rjs::Value const& load = v[0]["Load"];
 		for (auto it = load.Begin(); it != load.End(); ++it, ++index)
 			es.AddLoadFunction(load[index].GetString());

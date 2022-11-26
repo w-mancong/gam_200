@@ -57,7 +57,7 @@ namespace ALEngine::Editor
 
 		// Set constraints
 		if (m_HasMapLoaded)
-			ImGui::SetNextWindowSizeConstraints(ImVec2(ALEditor::Instance()->GetSceneWidth(), ALEditor::Instance()->GetSceneHeight()), ImGui::GetMainViewport()->WorkSize);
+			ImGui::SetNextWindowSizeConstraints(ImVec2(static_cast<f32>(ALEditor::Instance()->GetSceneWidth()), static_cast<f32>(ALEditor::Instance()->GetSceneHeight())), ImGui::GetMainViewport()->WorkSize);
 		else
 			ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
@@ -103,7 +103,7 @@ namespace ALEngine::Editor
 	{
 		ImVec2 tilesArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.6f, ImGui::GetContentRegionAvail().y);
 
-		ImGuiWindowFlags childFlags = ImGuiWindowFlags_HorizontalScrollbar;
+		[[maybe_unused]] ImGuiWindowFlags childFlags = ImGuiWindowFlags_HorizontalScrollbar;
 		if (ImGui::BeginChild("##TileEditor_TileArea", tilesArea, true))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1.f, 1.f));
@@ -153,7 +153,7 @@ namespace ALEngine::Editor
 			if (ImGui::BeginChild("##TileEditor_ImagePanel", ImVec2(0.f, ImGui::GetContentRegionAvail().y), true))
 			{
 				ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(5.f, 5.f));
-				f32 winWidth{ ImGui::GetContentRegionAvail().x };
+				[[maybe_unused]] f32 winWidth{ ImGui::GetContentRegionAvail().x };
 				f32 width{ (ImGui::GetContentRegionAvail().x / 2.f) - ImGui::GetStyle().FramePadding.x };
 				f32 textLen{ 0.f };
 
@@ -296,7 +296,7 @@ namespace ALEngine::Editor
 
 		// Map Width Drag Int
 		ImGui::NewLine();  ImGui::SameLine(winLen * 0.25f);
-		ImGui::DragInt("##TileEditorWidth", &m_MapWidth, 1.f, 0.f, 64);
+		ImGui::DragInt("##TileEditorWidth", &m_MapWidth, 1.f, 0, 64);
 
 		// Map Height Text
 		textLen = ImGui::CalcTextSize("Map Width").x;
@@ -305,7 +305,7 @@ namespace ALEngine::Editor
 
 		// Map Height Drag Int
 		ImGui::NewLine();  ImGui::SameLine(winLen * 0.25f);
-		ImGui::DragInt("##TileEditorHeight", &m_MapHeight, 1.f, 0.f, 64);
+		ImGui::DragInt("##TileEditorHeight", &m_MapHeight, 1.f, 0, 64);
 
 		ImGui::PopItemWidth();
 

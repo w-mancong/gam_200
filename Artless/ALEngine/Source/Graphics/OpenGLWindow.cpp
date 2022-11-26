@@ -116,7 +116,7 @@ namespace ALEngine::Graphics
 
 #ifdef _DEBUG
 		// Check GL Context
-		int flags{ 0 }; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+		s32 flags{ 0 }; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 		{	// If it Debug Context is active				
 			glEnable(GL_DEBUG_OUTPUT);	// Enable GL_DEBUG_OUTPUT

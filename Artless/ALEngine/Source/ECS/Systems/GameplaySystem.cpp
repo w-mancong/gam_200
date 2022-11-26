@@ -142,32 +142,32 @@ namespace ALEngine::ECS
 		sprite.color = { 1.f, 1.f, 1.f, 1.f };
 	}
 
-	void Event_Button_Select_Abilities_0(Entity invoker) {
+	void Event_Button_Select_Abilities_0([[maybe_unused]] Entity invoker) {
 		AL_CORE_INFO("Select Abilities 0");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
 	}
 
-	void Event_Button_Select_CurrentPattern(Entity invoker) {
+	void Event_Button_Select_CurrentPattern([[maybe_unused]] Entity invoker) {
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
 	}
 
-	void Event_Button_Select_Pattern_1(Entity invoker) {
+	void Event_Button_Select_Pattern_1([[maybe_unused]] Entity invoker) {
 		AL_CORE_INFO("Select Pattern 1");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[1]);
 	}
 	
-	void Event_Button_Select_Pattern_2(Entity invoker) {
+	void Event_Button_Select_Pattern_2([[maybe_unused]] Entity invoker) {
 		AL_CORE_INFO("Select Pattern 2");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[2]);
 	}
 	
-	void Event_Button_Select_Pattern_3(Entity invoker) {
+	void Event_Button_Select_Pattern_3([[maybe_unused]] Entity invoker) {
 		AL_CORE_INFO("Select Pattern 3");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[3]);
 	}
 
-	void Event_Button_Select_EndTurn(Entity invoker) {
+	void Event_Button_Select_EndTurn([[maybe_unused]] Entity invoker) {
 		//End turn
 		gameplaySystem->EndTurn();
 	}
@@ -286,9 +286,9 @@ namespace ALEngine::ECS
 			CreateSprite(gameplaySystem->m_Room.roomCellsArray[i],"Assets/Images/InitialTile_v04.png");
 		}
 
-		for (s32 i = 0; i < gameplaySystem->roomSize[0]; ++i) {
-			for (s32 j = 0; j < gameplaySystem->roomSize[1]; ++j) {
-				int cellIndex = i * gameplaySystem->roomSize[0] + j;
+		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->roomSize[0]); ++i) {
+			for (s32 j = 0; j < static_cast<s32>(gameplaySystem->roomSize[1]); ++j) {
+				s32 cellIndex = i * gameplaySystem->roomSize[0] + j;
 
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
 				transform.position = { 550 + (f32)j * 100.f, 300 + (f32)i * 100.f };
@@ -449,7 +449,7 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void GameplaySystem::TogglePatternGUI(b8 istrue) {
+	void GameplaySystem::TogglePatternGUI([[maybe_unused]] b8 istrue) {
 		//for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
 		//	EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
 		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
@@ -463,7 +463,7 @@ namespace ALEngine::ECS
 		//}
 	}
 	
-	void GameplaySystem::ToggleAbilitiesGUI(b8 istrue) {
+	void GameplaySystem::ToggleAbilitiesGUI([[maybe_unused]] b8 istrue) {
 		//for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
 		//	EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
 		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
@@ -557,7 +557,7 @@ namespace ALEngine::ECS
 		currentModeOrder.path.clear();
 		currentModeOrder.path_step = 0;
 
-		for (int i = path.size() - 1; i >= 0; --i) {
+		for (u64 i = path.size() - 1; i >= 0; --i) {
 			currentModeOrder.path.push_back(path[i]);
 		}
 	}
@@ -686,7 +686,7 @@ namespace ALEngine::ECS
 
 		gameplaySystem->targetCellEntity = cellEntity;
 
-		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		[[maybe_unused]] Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 		gameplaySystem->startCellEntity = getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
@@ -710,7 +710,7 @@ namespace ALEngine::ECS
 
 	void GameplaySystem::RunGameStateMoving() {
 		//DirectionTomove
-		Entity nextPathEtity = currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
+		[[maybe_unused]] Entity nextPathEtity = currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
 
 		//Keep track of next cell destination
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
@@ -784,7 +784,7 @@ namespace ALEngine::ECS
 		Color color = { 0.f,0.f ,0.f ,0.f };
 
 		//Draw all cells
-		for (int i = 0; i < gameplaySystem->m_Room.roomSize; ++i) {
+		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->m_Room.roomSize); ++i) {
 			Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[i]);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->m_Room.roomCellsArray[i]);
 

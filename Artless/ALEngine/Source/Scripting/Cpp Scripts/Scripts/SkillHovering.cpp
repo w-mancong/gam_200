@@ -28,8 +28,6 @@ namespace ALEngine
 		Text& text = Coordinator::Instance()->GetComponent<Text>(en_textskill);
 		EntityData& text_ed = Coordinator::Instance()->GetComponent<EntityData>(en_textskill);
 
-		Guid id{ 0 };
-
 		std::string const& tag = Coordinator::Instance()->GetComponent<EntityData>(en).tag;
 		// Geting the index of the substring
 		u64 const index = static_cast<u64>( std::atoi( tag.substr( tag.find_first_of("123456") ).c_str() ) );
