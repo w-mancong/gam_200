@@ -43,7 +43,11 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-
+			if (!focus)
+			{
+				glfwPollEvents();
+				return;
+			}
 
 			// Get Current Time
 			Time::ClockTimeNow();

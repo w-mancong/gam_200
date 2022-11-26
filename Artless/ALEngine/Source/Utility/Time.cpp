@@ -16,9 +16,9 @@ namespace ALEngine::Utility
 
 	// Static member variables definition
 	f32 Time::m_DeltaTime{ 0.0f },
-		Time::m_FPS{ 1.0f },
+		Time::m_FPS{ 0.0f },
 		Time::m_ActualDeltaTime{ 0.f },
-		Time::m_Scale{ 0.0f };
+		Time::m_Scale{ 1.0f };
 
 	const f32 Time::m_FixedDeltaTime = 1.f / 60.f;	// Fixed delta time is 60 fps
 
