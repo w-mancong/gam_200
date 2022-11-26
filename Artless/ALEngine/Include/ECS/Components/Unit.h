@@ -28,6 +28,7 @@ namespace ALEngine::ECS::Component
 	struct Unit
 	{
 		std::string unit_Name;
+		std::string unit_Profile_Sprite_File;
 		s32 health, maxHealth;
 		s32 defense;
 		s32 minDamage, maxDamage;

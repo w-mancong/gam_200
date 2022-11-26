@@ -345,6 +345,7 @@ namespace ALEngine::Engine::GameplayInterface
 			}
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
 			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+			unit.health = 0;
 		}
 	}
 

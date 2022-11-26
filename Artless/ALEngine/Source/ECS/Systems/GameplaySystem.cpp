@@ -87,6 +87,10 @@ namespace ALEngine::ECS
 		//UI
 		Entity endTurnBtnEntity;
 
+		Entity GUI_Unit_Health, GUI_Unit_Name, GUI_Unit_Attack, GUI_Unit_Defense, GUI_Unit_Movement, GUI_Unit_Range;
+		Entity GUI_Unit_Profile;
+		Entity GUI_Unit_Healthbar;
+
 		//Entity
 
 		//******FUNCTIONS**********//
@@ -121,6 +125,8 @@ namespace ALEngine::ECS
 
 		//Creating Object
 		void InitializeEndTurnButton();
+
+		void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
 	};
 
 	namespace
@@ -180,6 +186,11 @@ namespace ALEngine::ECS
 	void Event_Button_Select_EndTurn([[maybe_unused]] Entity invoker) {
 		//End turn
 		gameplaySystem->EndTurn();
+	}
+
+	void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
+		AL_CORE_INFO("DISPLAY UNIT");
+		gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
 	}
 
 	void Event_MouseEnterCell(Entity invoker) {
@@ -367,6 +378,16 @@ namespace ALEngine::ECS
 
 		//Set abilities UI off
 		gameplaySystem->ToggleAbilitiesGUI(false);
+
+		//Initialize GUI Text and Sprites
+		gameplaySystem->GUI_Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
+		gameplaySystem->GUI_Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
+		gameplaySystem->GUI_Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
+		gameplaySystem->GUI_Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
+		gameplaySystem->GUI_Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
+		gameplaySystem->GUI_Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
+		gameplaySystem->GUI_Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
+		gameplaySystem->GUI_Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
 	}
 
 	void UpdateGameplaySystem(void)
@@ -466,7 +487,7 @@ namespace ALEngine::ECS
 					Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
 					enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
 				}
-
+				UpdateGUI_OnSelectUnit(playerEntity);
 				break;
 		}
 	}
@@ -541,9 +562,6 @@ namespace ALEngine::ECS
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(newEnemy);
 		enemyUnit.coordinate[0] = x;
 		enemyUnit.coordinate[1] = y;
-
-		enemyUnit.maxMovementPoints = 4;
-		enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
 
 		enemyUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
 
@@ -657,6 +675,12 @@ namespace ALEngine::ECS
 
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(entity);
 		playerUnit.unit_Sprite_Entity = Coordinator::Instance()->CreateEntity();
+		playerUnit.unit_Name = "DROR";
+		playerUnit.minRange = 2;
+		playerUnit.minDamage = 5;
+		playerUnit.maxDamage = 5;
+		playerUnit.defense = 1;
+		playerUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Player_Unit.png";
 
 		Transform playerSpriteTransform;
 		playerSpriteTransform.localPosition = { 0.f, 0.4f };
@@ -670,6 +694,10 @@ namespace ALEngine::ECS
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		sceneGraph.Push(-1, entity); // first cell is parent
 		sceneGraph.Push(entity, playerUnit.unit_Sprite_Entity);
+
+		EventTrigger eventTrigger;
+		Coordinator::Instance()->AddComponent(entity, eventTrigger);
+		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 	}
 
 	void CreateEnemyUnit(Entity entity) {
@@ -684,6 +712,11 @@ namespace ALEngine::ECS
 
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(entity);
 		enemyUnit.unit_Sprite_Entity = Coordinator::Instance()->CreateEntity();
+		enemyUnit.unit_Name = "BISHOP";
+		enemyUnit.minRange = 1;
+		enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
+		enemyUnit.maxMovementPoints = 4;
+		enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
 
 		Transform enemySpriteTransform;
 		enemySpriteTransform.localPosition = { 0.f, 0.4f };
@@ -697,6 +730,10 @@ namespace ALEngine::ECS
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		sceneGraph.Push(-1, entity); // first cell is parent
 		sceneGraph.Push(entity, enemyUnit.unit_Sprite_Entity);
+
+		EventTrigger eventTrigger;
+		Coordinator::Instance()->AddComponent(entity, eventTrigger);
+		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(Entity cellEntity) {
@@ -726,6 +763,7 @@ namespace ALEngine::ECS
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
 		movingUnitEntity = playerEntity;
+		UpdateGUI_OnSelectUnit(movingUnitEntity);
 	}	
 	
 	void GameplaySystem::MoveEnemy() {
@@ -829,6 +867,8 @@ namespace ALEngine::ECS
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 		movingUnitEntity = enemyEntityList[enemyMoved];
 
+		UpdateGUI_OnSelectUnit(movingUnitEntity);
+
 		++enemyMoved;
 	}
 
@@ -902,6 +942,31 @@ namespace ALEngine::ECS
 		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
 		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		Coordinator::Instance()->AddComponent(endTurnBtnEntity, eventTrigger);
+	}
+
+	void GameplaySystem::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
+
+		Text& health_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Health);
+		Text& name_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Name);
+		Text& attack_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Attack);
+		Text& defense_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Defense);
+		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Movement);
+		Text& range_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Range);
+		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(GUI_Unit_Profile);
+
+		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
+		attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
+		defense_text.textString = std::to_string(unit.defense);
+		movement_text.textString = std::to_string(unit.movementPoints) + "/" + std::to_string(unit.maxMovementPoints);
+		range_text.textString = std::to_string(unit.minRange);
+		name_text.textString = unit.unit_Name;
+		
+		profile.id = AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
+
+		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(GUI_Unit_Healthbar);
+		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
+		AL_CORE_CRITICAL("SIZE " + std::to_string(healthbar_transform.scale.x));
 	}
 
 	void DrawGameplaySystem() {
