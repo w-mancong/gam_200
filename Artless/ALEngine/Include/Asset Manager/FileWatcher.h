@@ -4,8 +4,8 @@
 
 /*!
 file: FileWatcher.h
-author	 :	Chan Jie Ming Stanley
-co-author:	Wong Man Cong
+author	 :	Chan Jie Ming Stanley	(90%)
+co-author:	Wong Man Cong			(10%)
 email:	c.jiemingstanley\@digipen.edu
 		w.mancong\@digipen.edu
 brief: This file contains function declaration for FileWatcher. FileWatcher handles the
@@ -46,9 +46,15 @@ namespace ALEngine::Engine
 	    ***********************************************************************************/
 		void Start();
 
+		/*!*********************************************************************************
+		\brief If true, file watcher will not be updated
+		***********************************************************************************/
+		static void SetPause(b8 pause);
+
 	private:
 		std::unordered_map<std::string, std::filesystem::file_time_type> m_FilePaths;
 		bool m_Running = true;
+		static std::atomic<b8> m_Pause;
 
 		/*!*********************************************************************************
 		\brief

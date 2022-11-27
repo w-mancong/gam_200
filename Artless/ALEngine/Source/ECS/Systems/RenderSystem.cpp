@@ -1,13 +1,13 @@
 /*!
 file:	RenderSystem.cpp
 author: Wong Man Cong
+co-author: Mohamed Zafir (43 lines, 6%)
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition that controls the rendering for the engine
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content Â© 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
-#include <Graphics/ParticleSys.h>
 
 namespace ALEngine::ECS
 {
@@ -52,7 +52,8 @@ namespace ALEngine::ECS
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
 		Frustum fstm;
 
-		ParticleSys::ParticleSystem particleSys;
+		//ParticleSystem particleSysObj;
+		//ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
@@ -64,7 +65,7 @@ namespace ALEngine::ECS
 #if EDITOR
 		// Viewport and editor framebuffers
 		u32 fbo, fbTexture, editorFbo, editorTexture, viewportRenderBuffer;
-		ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
+		//ALEngine::Editor::ParticleSystemPanel particleSystemPanel;
 #endif
 	}
 
@@ -129,11 +130,11 @@ namespace ALEngine::ECS
 		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
 		// sort entities by layer
 		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-		{
-			Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-			Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-			return sp1.layer < sp2.layer;
-		});
+			{
+				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
+				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
+				return sp1.layer < sp2.layer;
+			});
 
 		u64 counter{};
 		u64 const SIZE{ entities.size() };
@@ -145,10 +146,11 @@ namespace ALEngine::ECS
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			*(vMatrix   + i) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
-			*(vColor    + i) = sprite.color;
-			*(texHandle + i) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + i))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			//*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			*(vMatrix + counter) = trans.modelMatrix.Transpose();
+			*(vColor + counter) = sprite.color;
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
 
 			++counter;
 		}
@@ -157,20 +159,20 @@ namespace ALEngine::ECS
 		indirectShader.Set("proj", camera.ProjectionMatrix());
 		indirectShader.Set("view", camera.ViewMatrix());
 
-        glBindVertexArray(GetVao());
+		glBindVertexArray(GetVao());
 
 		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
 		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
-        //draw
-        glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
-            GL_UNSIGNED_INT,							//indices represented as unsigned ints
-            (void*)0,									//start with the first draw command
-            static_cast<s32>(counter),					//draw objects
-            0);											//no stride, the draw commands are tightly packed
+		//draw
+		glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
+			GL_UNSIGNED_INT,							//indices represented as unsigned ints
+			(void*)0,									//start with the first draw command
+			static_cast<s32>(counter),					//draw objects
+			0);											//no stride, the draw commands are tightly packed
 
-        glBindVertexArray(0);
+		glBindVertexArray(0);
 		indirectShader.unuse();
 	}
 #endif
@@ -187,7 +189,7 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::GizmoInit();
 
 		// Particle system init here
-		particleSys.ParticleSysInit();
+		ParticleSystem::GetParticleSystem().ParticleSysInit();
 
 		// Batch rendering
 		indirectShader = Shader{ "Assets/Dev/Shaders/indirect.vert", "Assets/Dev/Shaders/indirect.frag" };
@@ -238,6 +240,8 @@ namespace ALEngine::ECS
 
 		MeshBuilder::Instance()->Init();
 		camera.ProjectionMatrix(Camera::Projection::Orthographic);
+		camera.ProjRight() = static_cast<f32>(Graphics::OpenGLWindow::width);
+		camera.ProjTop() = static_cast<f32>(Graphics::OpenGLWindow::height);
 	}
 
 	void RenderGameplay(void)
@@ -247,10 +251,11 @@ namespace ALEngine::ECS
 			return;
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
+#endif
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-#endif
 		UpdateAnimatorSystem();
+		UpdateParticleSystem();
 #if EDITOR
 		rs->RenderBatch(camera);
 #else
@@ -259,17 +264,16 @@ namespace ALEngine::ECS
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+		UpdateTextSystem();
 
 		// Update and render particles
-#if EDITOR
-		if (!Editor::ALEditor::Instance()->GetGameActive())
-			particleSystemPanel.OnImGuiRender(particleSys);
-#endif
-		particleSys.ParticleUpdate(Time::m_DeltaTime);
-		particleSys.ParticleRender(camera);
+		//if(!Editor::ALEditor::Instance()->GetGameActive())
+		//	particleSystemPanel.OnImGuiRender(particleSys);
+		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
+		ParticleSystem::GetParticleSystem().ParticleRender(camera);
 
 		// Render all text
-		Text::RenderAllText();
+		Font::RenderAllText(camera);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end of opengl rendering
 		glDisable(GL_DEPTH_TEST);
@@ -281,6 +285,7 @@ namespace ALEngine::ECS
 	{
 		if (Editor::ALEditor::Instance()->GetGameActive())
 			return;
+
 		//------------------ Begin editor framebuffer rendering ------------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
@@ -290,9 +295,10 @@ namespace ALEngine::ECS
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
+		UpdateTextSystem();
 
 		// Render all text
-		Text::RenderAllText();
+		Font::RenderAllText(camera);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // end editor framebuffer rendering
 		//------------------- End editor framebuffer rendering -------------------//
@@ -426,6 +432,11 @@ namespace ALEngine::ECS
 	}
 
 	Tree::BinaryTree& GetSceneGraph(void)
+	{
+		return sceneGraph;
+	}
+
+	Tree::BinaryTree const& GetSceneGraph([[maybe_unused]] s32 i)
 	{
 		return sceneGraph;
 	}

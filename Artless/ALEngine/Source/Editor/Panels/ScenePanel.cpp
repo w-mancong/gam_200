@@ -1,7 +1,7 @@
 /*!
 file:	ScenePanel.cpp
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the ScenePanel class.
 		The ScenePanel class contains information and functions necessary for
 		the Scene Panel of the editor to be displayed.
@@ -21,6 +21,8 @@ namespace ALEngine::Editor
 		// Set camera to ortho projection
 		m_EditorCamera.ProjectionMatrix(Engine::Camera::Projection::Orthographic);
 		m_EditorCamera.Position() = { Math::Vec3(-static_cast<f32>(Graphics::OpenGLWindow::width >> 1), -static_cast<f32>(Graphics::OpenGLWindow::height >> 1), 725.f) };
+
+		m_CameraWidth = static_cast<f32>(Graphics::OpenGLWindow::width);
 	}
 
 	ScenePanel::~ScenePanel(void)
@@ -46,6 +48,8 @@ namespace ALEngine::Editor
 			ImGui::End();
 			return;
 		}
+
+		CameraZoom();
 
 		//ECS::Render(m_EditorCamera);
 
@@ -231,6 +235,16 @@ namespace ALEngine::Editor
 		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
 	}
 
+	f32& ScenePanel::GetCameraWidth(void)
+	{
+		return m_CameraWidth;
+	}
+
+	f32& ScenePanel::GetCameraHeight(void)
+	{
+		return m_CameraHeight;
+	}
+
 	Engine::Camera& ScenePanel::GetEditorCamera(void)
 	{
 		return m_EditorCamera;
@@ -249,16 +263,23 @@ namespace ALEngine::Editor
 
 	void ScenePanel::UserInput(void)
 	{
+		m_EditorCamera.Update();
+
 		f32 constexpr CAM_SPEED{ 7.5f };
 
-		if (Input::KeyDown(KeyCode::Up))
-			m_EditorCamera.Position().y += CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Left))
-			m_EditorCamera.Position().x -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Down))
-			m_EditorCamera.Position().y -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Right))
-			m_EditorCamera.Position().x += CAM_SPEED;
+		ImGuiIO io = ImGui::GetIO();
+
+		if (io.WantTextInput == false)
+		{
+			if (ImGui::IsKeyDown(ImGuiKey_UpArrow))
+				m_EditorCamera.Position().y += CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_LeftArrow))
+				m_EditorCamera.Position().x -= CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_DownArrow))
+				m_EditorCamera.Position().y -= CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_RightArrow))
+				m_EditorCamera.Position().x += CAM_SPEED;
+		}
 
 		// Right Mouse Button Move Camera
 		static Math::Vec2 mousePosBegin{};
@@ -280,6 +301,16 @@ namespace ALEngine::Editor
 				m_EditorCamera.Position() += Math::Vec3(change.x, change.y, 0.f);
 			}
 		}
+	}
+
+	void ScenePanel::CameraZoom(void)
+	{
+		if (ImGui::IsWindowHovered(ImGuiHoveredFlags_RootWindow))
+			m_CameraWidth -= static_cast<f32>(Input::m_MouseWheelEvent) * ZOOM_SPEED;
+		m_CameraHeight = m_CameraWidth / Graphics::OpenGLWindow::ar;
+
+		m_EditorCamera.ProjRight() = m_CameraWidth;
+		m_EditorCamera.ProjTop() = m_CameraHeight;
 	}
 
 	bool Check_Point_To_AABB(Math::Vec2 position, Math::Vec2 boxCenter,

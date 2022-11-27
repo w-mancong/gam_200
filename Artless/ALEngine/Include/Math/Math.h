@@ -1,7 +1,7 @@
 /*!
 file:	Math.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contain all the common math header files and function declarations for 
 		useful math arithmetric
 

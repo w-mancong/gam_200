@@ -1,7 +1,7 @@
 /*!
 file:	GamePanel.cpp
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the GamePanel class.
 		The GamePanel class contains information and functions necessary for
 		the Game Panel of the editor to be displayed.
@@ -27,11 +27,10 @@ namespace ALEngine::Editor
 	void GamePanel::OnImGuiRender(void)
 	{
 		// Set flags 
-		ImGuiWindowFlags flag = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-		b8 pOpen = false;
+		ImGuiWindowFlags flag = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
 		
 		// Begin ImGui Panel
-		if (!ImGui::Begin("Game", &pOpen, flag))
+		if (!ImGui::Begin("Game", nullptr, flag))
 		{
 			ImGui::End();
 			return;

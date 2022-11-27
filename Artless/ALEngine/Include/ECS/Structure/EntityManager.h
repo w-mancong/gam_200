@@ -1,7 +1,7 @@
 /*!
 file:	EntityManager.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains function definitions for EntityManager
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -55,23 +55,18 @@ namespace ALEngine::ECS
 		void SetSignature(Entity entity, Signature const& signature);
 
 		/*!*********************************************************************************
-			\brief
-			Retrieve the signature for this entity
+			\brief Retrieve the signature for this entity
 
-			\param [in] entity:
-			ID of entity to retrieve the signature for
+			\param [in] entity: ID of entity to retrieve the signature for
 
-			\return
-			Signature containing the components associated to this entity
+			\return Signature containing the components associated to this entity
 		***********************************************************************************/
-		Signature GetSignature(Entity entity);
+		Signature& GetSignature(Entity entity);
 
 		/*!*********************************************************************************
-			\brief
-			Return a list of active entities in the scene
+			\brief Return a list of active entities in the scene
 
-			\return
-			List of active entities in the scene
+			\return List of active entities in the scene
 		***********************************************************************************/
 		EntityList const& GetActiveEntities() const;
 

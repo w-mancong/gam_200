@@ -1,7 +1,7 @@
 /*!
 file:	Memory.cpp
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	Memory Arena. This class handles memory allocation and deallocation by making
 		sure that memory is always streamline
 
@@ -42,7 +42,9 @@ namespace ALEngine::Memory
 	void FreeInstance(void)
 	{
 		Coordinator::Free();
+#if EDITOR
 		Editor::ALEditor::Free();
+#endif
 		Engine::MeshBuilder::Free();
 		Engine::AssetManager::Free();
 	}

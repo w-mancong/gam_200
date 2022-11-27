@@ -1,7 +1,7 @@
 /*!
-file: AssetManager.cpp
-author:		Chan Jie Ming Stanley
-co-author:	Wong Man Cong
+file:		AssetManager.cpp
+author:		Chan Jie Ming Stanley (40%)
+co-author:	Wong Man Cong		  (60%)
 email: c.jiemingstanley\@digipen.edu
 brief: This file contains function definition for AssetManager. AssetManager is a singleton
        pattern class. It will handle asset guid as well as build and generate guid for the
@@ -41,7 +41,7 @@ namespace
 	std::unordered_map<Guid, Texture> textureList{};
 	std::unordered_map<Guid, Animation> animationList{};
 	std::unordered_map<Guid, Audio> audioList{};
-	std::unordered_map<Guid, Font> fontList{};
+	std::unordered_map<Guid, ALEngine::ECS::Font> fontList{};
 #if EDITOR
 	std::unordered_map<Guid, u32>  buttonImageList{};
 #endif
@@ -251,6 +251,20 @@ namespace
 		return { texture, handle };
 	}
 
+	ALEngine::ECS::Font LoadFont(std::string filePath)
+	{
+		std::string fontName, fontType;
+		std::string str{ filePath };
+		str = str.substr(str.find_last_of("\\") + 1);
+		fontName = str.substr(0, str.find_first_of("."));
+
+		// convert to all upper case
+		//for (c8& chr : fontName)
+		//	chr = toupper(chr);
+		
+		return ALEngine::ECS::Font::FontInit(filePath, fontName);
+	}
+
 	Texture LoadWhiteImage(void)
 	{
 		u32 texture;
@@ -282,6 +296,8 @@ namespace
 
 		TextureHandle handle = glGetTextureHandleARB(texture);
 		glMakeTextureHandleResidentARB(handle);
+
+		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
 		return { texture, handle };
 	}
@@ -373,48 +389,61 @@ namespace ALEngine::Engine
 	void AssetManager::Init()
 	{
 #if EDITOR
-		Guid id{}; u32 icon{};
-		// Folder icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Folder.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+		{
+			Guid id{ 0 }; u32 icon{ 0 };
+			// Folder icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Folder.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Prefab icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Prefab.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Prefab.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Prefab icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Prefab.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Prefab.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Scene icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Scene.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Scene.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Scene icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Scene.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Scene.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Script icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Script.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Script.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Script icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Script.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Script.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Font icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Font icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Play icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\button_play.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			// Audio icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Sound.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
 
-		// Stop icon
-		id = PrepareGuid();
-		guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_stop.png", id });
-		icon = LoadButtonImage("Assets\\Dev\\Images\\button_stop.png");
-		buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_TileEditor.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_TileEditor.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Play icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\button_play.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Stop icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_stop.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\button_stop.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+		}
 #endif
 
 		std::vector<std::string> metaFiles, fileNames;
@@ -517,6 +546,8 @@ namespace ALEngine::Engine
 				}
 				case FileType::Font:
 				{
+					std::string filePath{ *it };
+					fontList.insert(std::pair<Guid, ALEngine::ECS::Font>{ id, LoadFont(filePath) });
 					break;
 				}
 				default:
@@ -582,14 +613,21 @@ namespace ALEngine::Engine
 		return textureList[id].handle;
 	}
 
+#if EDITOR
 	u32 AssetManager::GetButtonImage(Guid id)
 	{
 		return buttonImageList[id];
 	}
+#endif
 
 	Animation AssetManager::GetAnimation(Guid id)
 	{
 		return animationList[id];
+	}
+
+	std::unordered_map<Guid, ECS::Font>& AssetManager::GetFontList()
+	{
+		return fontList;
 	}
 
 	Audio AssetManager::GetAudio(Guid id)
@@ -852,6 +890,7 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Font:
 			{
+				//LoadFont(filePath);
 				break;
 			}
 			/******************************************************************************
@@ -887,7 +926,9 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(oldTexture.handle);
 				glDeleteTextures(1, &oldTexture.texture);
+#if EDITOR
 				glDeleteTextures(1, &buttonImageList[id]);
+#endif
 
 				// Load in new file
 				Texture newTexture = LoadTexture(filePath.c_str());
@@ -977,7 +1018,9 @@ namespace ALEngine::Engine
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);
 				glDeleteTextures(1, &texture.texture);
+#if EDITOR
 				glDeleteTextures(1, &buttonImageList[id]);
+#endif
 
 				// Do not keep track of this guid anymore
 				textureList.erase(id);

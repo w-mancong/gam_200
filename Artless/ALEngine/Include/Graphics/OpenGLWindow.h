@@ -1,7 +1,7 @@
 /*!
 file:	OpenGLWindow.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contain static class OpenGLWindow that controls the GLFW window
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -21,10 +21,14 @@ namespace ALEngine::Graphics
 		static void InitGLFWWindow(void);
 
 		/*!*********************************************************************************
-			\brief
-			Toggle GLFW window to be between fullscreen/windowed mode 
+			\brief Toggle GLFW window to be between fullscreen/windowed mode 
 		***********************************************************************************/
 		static void FullScreen(bool fullScreen);
+
+		///*!*********************************************************************************
+		//	\brief Set GLFW window to be fullScreen in window mode
+		//***********************************************************************************/
+		//static void FullScreenWindowed(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -32,6 +36,7 @@ namespace ALEngine::Graphics
 		***********************************************************************************/
 		static GLFWwindow* Window(void);
 
+		static f32 ar;
 		static u32 width, height;
 		static std::string title;
 

@@ -1,7 +1,7 @@
 /*!
 file:	Application.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains function declaration that controls the flow of the program
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -43,6 +43,11 @@ namespace ALEngine::Engine
 		\brief Set the focus status of the window
 	***********************************************************************************/
 	void SetWindowFocus(bool _focus);
+
+	/*!*********************************************************************************
+		\brief Call this function to terminate the program
+	***********************************************************************************/
+	void TerminateEngine(void);
 
 #if EDITOR
 	/*!*********************************************************************************

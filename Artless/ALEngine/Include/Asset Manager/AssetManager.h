@@ -1,7 +1,7 @@
 /*!
 file: AssetManager.h
-author:		Chan Jie Ming Stanley
-co-author:	Wong Man Cong
+author:		Chan Jie Ming Stanley (40%)
+co-author:	Wong Man Cong		  (60%)
 email: c.jiemingstanley\@digipen.edu
 	   w.mancong\@digipen.edu
 brief: This file contains function declaration for AssetManager. AssetManager is a singleton
@@ -52,11 +52,13 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		TextureHandle GetTextureHandle(Guid id);
 
+#if EDITOR
 		/*!*********************************************************************************
 		\brief
 	     function for get texture for imgui image button to display
 		***********************************************************************************/
 		u32 GetButtonImage(Guid id);
+#endif
 
 		/*!*********************************************************************************
 			\brief Retrieve animation based on guid
@@ -85,6 +87,8 @@ namespace ALEngine::Engine
 		void Alert(std::string const& filePath, FileStatus status);
 
 		void Reset(void);
+
+		std::unordered_map<Guid, ALEngine::ECS::Font>& GetFontList();
 
 	private:
 		/*!*********************************************************************************

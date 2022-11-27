@@ -1,7 +1,7 @@
 /*!
 file:	Utility.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains all the relevant Utility header files to be included in pch
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -16,6 +16,7 @@ brief:	This file contains all the relevant Utility header files to be included i
 #include "Utility/Timer.h"
 #include "Utility/Profiler.h"
 #include "Utility/BinaryTree.h"
+#include "Utility/WindowsFileDialog.h"
 
 using ALEngine::Utility::Time;
 using ALEngine::Utility::Timer;

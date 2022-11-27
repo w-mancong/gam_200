@@ -1,3 +1,11 @@
+/*!
+file:	Application.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function definition that starts the flow of the entire program
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
 
@@ -6,7 +14,9 @@ namespace ALEngine::Engine
 	using namespace Math;
 	using namespace Graphics;
 	using namespace ECS;
+#if EDITOR
 	using namespace Editor;
+#endif
 	namespace
 	{
 		class Application
@@ -25,7 +35,7 @@ namespace ALEngine::Engine
 		{
 			switch (fdwCtrlType)
 			{
-				// When window console x button is pressed
+			// When window console x button is pressed
 			case CTRL_CLOSE_EVENT:
 				Application::Exit();
 				return TRUE;
@@ -41,39 +51,34 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			if (!focus && !editorFocus)
+			if (!focus)
 			{
 				glfwPollEvents();
 				return;
 			}
 
-			{
-				PROFILER_TIMER("Editor UI Update")
-				// Editor Command Manager Update
-				Commands::EditorCommandManager::Update();
-				// Begin new ImGui frame
-				ALEditor::Instance()->Begin();
-				
-				// Set the window focus
-				ImGuiFocusedFlags flag = ImGuiFocusedFlags_AnyWindow;
-				editorFocus = ImGui::IsWindowFocused(flag);
-			}
+			// Get Current Time
+			Time::ClockTimeNow();
 
-			Input::Update();
-			AssetManager::Instance()->Update();
+			// Editor Command Manager Update
+			Commands::EditorCommandManager::Update();
+			// Begin new ImGui frame
+			ALEditor::Instance()->Begin();
+
+			Engine::Update();
 
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
 
-			{
-				PROFILER_TIMER("Render Update")
-				//RenderTransformBox();
-				// Render
-				Render();
-			}
+			//RenderTransformBox();
+			// Render
+			Render();
 
-			// Marks the end of a frame m_Loop, for tracy profiler
-			FrameMark
+			// Wait for next frame
+			Time::WaitUntil();
+
+			// Marks the end of a frame loop, for tracy profiler
+			FrameMark;
 		}
 #endif
 		void GameUpdate(void)
@@ -84,12 +89,15 @@ namespace ALEngine::Engine
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
+				StartGameplaySystem();
 				LoadCppScripts();
 			}
 			else
 			{
+				Scene::LoadScene();
+				StartGameplaySystem();
 				GameStateManager::current = GameStateManager::previous;
-				GameStateManager::next = GameStateManager::previous;
+				GameStateManager::next	  = GameStateManager::previous;
 			}
 
 			InitCppScripts();
@@ -101,27 +109,21 @@ namespace ALEngine::Engine
 					glfwPollEvents();
 					continue;
 				}
-#if EDITOR
-				{
-					PROFILER_TIMER("Editor UI Update")
-					// Editor Command Manager Update
-					Commands::EditorCommandManager::Update();
-					// Begin new ImGui frame
-					ALEditor::Instance()->Begin();
-				}
-#endif
+
 				// Get Current Time
 				Time::ClockTimeNow();
+#if EDITOR
+				// Editor Command Manager Update
+				Commands::EditorCommandManager::Update();
+				// Begin new ImGui frame
+				ALEditor::Instance()->Begin();
 
+				if (ALEditor::Instance()->GetGameActive())
 				{
-					PROFILER_TIMER("Normal Update")
+#endif
 					// Normal Update
 					Engine::Update();
 					UpdateCppScripts();
-				}
-
-				{
-					PROFILER_TIMER("Fixed Update")
 					// Physics
 					// Fixed Update (Physics)
 					accumulator += Time::m_DeltaTime;
@@ -138,27 +140,23 @@ namespace ALEngine::Engine
 						Engine::FixedUpdate();
 						accumulator -= Time::m_FixedDeltaTime;
 					}
+
+					// Update Scene graph
+					ECS::GetSceneGraph().Update();
+#if EDITOR
 				}
+#endif
 
-				// Update Scene graph
-				ECS::GetSceneGraph().Update();
+				// Render
+				Render();
 
-				{
-					PROFILER_TIMER("Render Update")
+				// Wait for next frame
+				Time::WaitUntil();				
 
-					// Render
-					Render();
-				}
-
-				{
-					PROFILER_TIMER("FPS Wait")
-
-					// Wait for next frame
-					Time::WaitUntil();
-				}
-
+#if EDITOR
 				// Marks the end of a frame m_Loop, for tracy profiler
-				FrameMark
+				FrameMark;
+#endif
 			}
 
 			// Free resources
@@ -167,8 +165,15 @@ namespace ALEngine::Engine
 			if (GameStateManager::next != GameState::Restart)
 				UnloadCppScripts();
 			
+#if EDITOR
+			if(ALEditor::Instance()->GetGameActive())
+#endif
+				Coordinator::Instance()->DestroyEntities();
+
+			ExitGameplaySystem();
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current = GameStateManager::next;
+
 		}
 	}
 
@@ -202,8 +207,26 @@ namespace ALEngine::Engine
 		appStatus = 1;
 		RunFileWatcherThread();
 
+#if !EDITOR
+		OpenGLWindow::FullScreen(true);
+		Scene::LoadScene("Assets\\test.scene");
+		StartGameplaySystem();
+		Console::StopConsole();
+#endif
+
 		//Scene::LoadScene("Assets\\test.scene");
-		//StartGameplaySystem();
+
+		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
+		//EntityScript es;
+		//es.AddInitFunction("PauseInit");
+		//es.AddUpdateFunction("PauseUpdate");
+		//es.AddFreeFunction("PauseReset");
+		//Coordinator::Instance()->AddComponent(en, es);
+
+		//EntityScript& es = Coordinator::Instance()->GetComponent<EntityScript>(en);
+		//es.AddFreeFunction("SkillReset");
+
+		//Scene::SaveScene("test");
 	}
 
 	void Application::Update(void)
@@ -246,21 +269,26 @@ namespace ALEngine::Engine
 
 	void Engine::Update(void)
 	{
-		ZoneScopedN("Normal Update")
+#if EDITOR
+		ZoneScopedN("Normal Delta Time Update");
+#endif
 		Input::Update();
 		AssetManager::Instance()->Update();
-
-		UpdateGameplaySystem();
 		AudioManagerUpdate();
+		UpdateEventTriggerSystem();
 	}
 
 	void Engine::FixedUpdate(void)
 	{
+#if EDITOR
+		ZoneScopedN("Fixed Delta Time Update");
+#endif
+		UpdateGameplaySystem();
+
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 		
-		UpdateEventTriggerSystem();
 		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();
@@ -281,6 +309,12 @@ namespace ALEngine::Engine
 	void SetWindowFocus(bool _focus)
 	{
 		focus = _focus;
+	}
+
+	void TerminateEngine(void)
+	{
+		SetAppStatus(0);
+		GameStateManager::current = Engine::GameState::Quit;
 	}
 
 #if EDITOR

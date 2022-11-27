@@ -26,9 +26,7 @@
     <ClCompile Include="Source\Exceptions\GLDebug.cpp" />
     <ClCompile Include="Source\Graphics\GLAD\glad.c" />
     <ClCompile Include="Source\Graphics\OpenGLWindow.cpp" />
-    <ClCompile Include="Source\Graphics\ParticleSys.cpp" />
     <ClCompile Include="Source\Graphics\Shader.cpp" />
-    <ClCompile Include="Source\Graphics\Text.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
@@ -59,8 +57,6 @@
     <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Math\Matrix2x2.cpp" />
-    <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
-    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
@@ -68,7 +64,6 @@
     <ClCompile Include="Source\Math\Vector2Int.cpp" />
     <ClCompile Include="Source\Math\Vector3Int.cpp" />
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
-    <ClCompile Include="Source\Editor\Panels\ParticleSystemPanel.cpp" />
     <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
     <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
@@ -76,7 +71,6 @@
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Commands\Command.cpp" />
-    <ClCompile Include="Source\Commands\UpdateComponentCommand.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
     <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
     <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
@@ -84,8 +78,17 @@
     <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
+    <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
     <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
+    <ClCompile Include="..\Extern\include\imgui\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
+    <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\SkillHovering.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\StatsHovering.cpp" />
+    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\PauseLogic.cpp" />
+    <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -145,7 +148,6 @@
     <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\Gizmo.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
-    <ClInclude Include="Include\Graphics\ParticleSys.h" />
     <ClInclude Include="Include\Graphics\Shader.h" />
     <ClInclude Include="Include\Graphics\stb_image.h" />
     <ClInclude Include="Include\Input\InputKeys.h" />
@@ -283,9 +285,6 @@
     <ClCompile Include="Source\Utility\Gizmo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\ECS\Components\CharacterController.h" />
@@ -309,7 +308,6 @@
     <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
     <ClInclude Include="Include\Math\Matrix2x2.h" />
-    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Common Header\MyAudio.h" />
     <ClInclude Include="Include\Engine\Audio\AudioManager.h" />
     <ClInclude Include="Include\Engine\Audio\Audio.h" />
@@ -325,8 +323,6 @@
     <ClInclude Include="Include\Math\Vector2Int.h" />
     <ClInclude Include="Include\Math\Vector3Int.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
-    <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
-    <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
@@ -343,8 +339,19 @@
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptSystem.h" />
+    <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
+    <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
     <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
+    <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
+    <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\StatsHovering.h" />
+    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\PauseLogic.h" />
+    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
+    <ClInclude Include="Include\Engine\TurnStateManager.h" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

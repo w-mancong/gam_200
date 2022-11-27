@@ -1,12 +1,21 @@
+/*!
+file: AudioEditorPanel.cpp
+author: Chan Jie Ming Stanley
+email: c.jiemingstanley\@digipen.edu
+brief: This file contains the function declaration for AudioEditorPanel.
+	   AudioEditorPanel handles the panel that display the audio volume mixer panel
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#if EDITOR
 #include "imgui.h"
 #include "imgui_internal.h"
 
-#ifdef EDITOR
 
 namespace ALEngine::Editor
 {
+	const std::filesystem::path audioPath{ "Assets/Audio" };//base file 
 	AudioEditorPanel::AudioEditorPanel()
 	{
 	}
@@ -15,68 +24,73 @@ namespace ALEngine::Editor
 	{
 	}
 
-	void AudioEditorPanel::OnImGuiRender(void)
+	void AudioEditorPanel::OnImGuiRender(b8& pOpen)
 	{
-		ImGui::Begin("Audio Panel");
+		if (pOpen)
+		{
+			ImGui::OpenPopup("AudioVolumeMixer");
+		}
 
-        const float spacing = 4;
+		ImGuiWindowFlags flag = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize;
 
-		static f32 float_value_master = 0.f;
-		static f32 float_value_music = 0.f;
-		static f32 float_value_reverb = 0.f;
-		static f32 float_value_effects= 0.f;
+		//ImGui::Begin("AudioVolumeMixer");
+		if (ImGui::BeginPopupModal("AudioVolumeMixer", &pOpen, flag))
+		{
+			const f32 spacing = 20;
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
 
-		ImGui::Text("Master");
-		ImGui::SameLine();
-		ImGui::Text("Music");
-		ImGui::SameLine();
-		ImGui::Text("Reverb");
-		ImGui::SameLine();
-		ImGui::Text("Effects");
+			static f32 floatValueMaster = 1.f;
+			static f32 floatValueBgm = 1.f;
+			static f32 floatValueSfx = 1.f;
 
-		ImGui::PushID(0);
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.5f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.6f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.9f, 0.9f));
-		ImGui::VSliderFloat("##master", ImVec2(60, 160), &float_value_master, 0.0f, 1.0f);
-		ImGui::PopStyleColor(4);
-		ImGui::PopID();
+			ImGui::Text("Master");
+			ImGui::SameLine();
+			ImGui::Text("BGM");
+			ImGui::SameLine();
+			ImGui::Text("SFX");
 
-		ImGui::SameLine();
+			//master vertical sliders
+			ImGui::PushID(0);
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.5f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.6f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.9f, 0.9f));
+			ImGui::VSliderFloat("##master", ImVec2(50, 160), &floatValueMaster, 0.0f, 1.0f);
+			Engine::SetChannelVolume(Engine::Channel::Master, floatValueMaster);
+			ImGui::PopStyleColor(4);
+			ImGui::PopID();
 
-		ImGui::PushID(1);
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.5f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.6f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.7f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.9f, 0.9f));
-		ImGui::VSliderFloat("##music", ImVec2(60, 160), &float_value_music, 0.0f, 1.0f);
-		ImGui::PopStyleColor(4);
-		ImGui::PopID();
+			ImGui::SameLine();
 
-		ImGui::SameLine();
+			//music vertical sliders
+			ImGui::PushID(1);
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.5f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.6f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.7f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.9f, 0.9f));
+			ImGui::VSliderFloat("##bgm", ImVec2(50, 160), &floatValueBgm, 0.0f, 1.0f);
+			Engine::SetChannelVolume(Engine::Channel::BGM, floatValueBgm);
+			ImGui::PopStyleColor(4);
+			ImGui::PopID();
 
-		ImGui::PushID(2);
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.5f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.6f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.7f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.9f, 0.9f));
-		ImGui::VSliderFloat("##reverb", ImVec2(60, 160), &float_value_reverb, 0.0f, 1.0f);
-		ImGui::PopStyleColor(4);
-		ImGui::PopID();
+			ImGui::SameLine();
 
-		ImGui::SameLine();
+			//reverb vertical sliders
+			ImGui::PushID(2);
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.5f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.6f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.7f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.9f, 0.9f));
+			ImGui::VSliderFloat("##sfx", ImVec2(50, 160), &floatValueSfx, 0.0f, 1.0f);
+			Engine::SetChannelVolume(Engine::Channel::SFX, floatValueSfx);
+			ImGui::PopStyleColor(4);
+			ImGui::PopID();
 
-		ImGui::PushID(3);
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(6.f / 7.0f, 0.5f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(6.f / 7.0f, 0.6f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(6.f / 7.0f, 0.7f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(6.f / 7.0f, 0.9f, 0.9f));
-		ImGui::VSliderFloat("##effects", ImVec2(60, 160), &float_value_effects, 0.0f, 1.0f);
-		ImGui::PopStyleColor(4);
-		ImGui::PopID();
+			ImGui::PopStyleVar();
 
-		ImGui::End();
+			ImGui::EndPopup();
+		}
+		//ImGui::End();
 	}
 
 	void AudioEditorPanel::SetPanelMin(Math::Vec2 min)
@@ -93,7 +107,26 @@ namespace ALEngine::Editor
 	void AudioEditorPanel::Default(void)
 	{
 	}
+	
+	void AudioEditorPanel::FileContents(const std::filesystem::path& path, std::vector<std::string>& items)
+	{
+		// Open the file
+		// Note that we have to use binary mode as we want to return a string
+		// representing matching the bytes of the file on the file system.
+		for (const auto& entry : std::filesystem::directory_iterator(path))
+		{
+			std::string const& fileNamestring = std::filesystem::relative(entry.path(), path).filename().string();
+			//std::string const& animatorName = entry.path().string();
+			//u64 lastOfSlash = animatorName.find_last_of("/\\") + 1;
 
+			if (fileNamestring.find(".meta") != std::string::npos)
+			{
+				continue;
+			}
+
+			items.push_back(fileNamestring);
+		}
+	}
 }
 
 #endif

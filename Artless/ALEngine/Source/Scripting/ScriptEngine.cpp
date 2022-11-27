@@ -1,3 +1,11 @@
+/*!
+file:	ScriptEngine.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	Scripting engine using C# mono scripting (WIP)
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 
 #include <mono/jit/jit.h>
@@ -36,7 +44,7 @@ namespace ALEngine::Engine
 
 			if (status != MONO_IMAGE_OK)
 			{
-				c8 const* errorMsg = mono_image_strerror(status);
+				[[maybe_unused]] c8 const* errorMsg = mono_image_strerror(status);
 				AL_CORE_CRITICAL("Error: {}", errorMsg);
 				return nullptr;
 			}
@@ -61,8 +69,8 @@ namespace ALEngine::Engine
 				u32 cols[MONO_TYPEDEF_SIZE];
 				mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
 
-				c8 const* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
-				c8 const* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+				[[maybe_unused]] c8 const* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
+				[[maybe_unused]] c8 const* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
 
 				AL_CORE_TRACE("{}.{}", nameSpace, name);
 			}
@@ -115,12 +123,12 @@ namespace ALEngine::Engine
 
 	void ScriptEngine::ShutdownMono(void)
 	{
-		mono_domain_set(mono_get_root_domain(), true);
-		mono_domain_finalize(data->appDomain, 2000);
+		//mono_domain_set(mono_get_root_domain(), true);
+		//mono_domain_finalize(data->appDomain, 2000);
 
-		mono_domain_unload(data->appDomain);
-		data->appDomain = nullptr;
-		mono_gc_collect(mono_gc_max_generation());
+		//mono_domain_unload(data->appDomain);
+		//data->appDomain = nullptr;
+		//mono_gc_collect(mono_gc_max_generation());
 
 		mono_jit_cleanup(data->rootDomain);
 		data->rootDomain = nullptr;

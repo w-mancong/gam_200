@@ -1,10 +1,10 @@
 /*!
-file:	CharacterControllerSystem.cpp
-author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+file:   CharacterControllerSystem.h
+author: Tan Zhen Xiong
+email:  t.zhenxiong\@digipen.edu
 brief:	This file contains the function definition for CharacterControllerSystem.cpp
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
@@ -80,14 +80,26 @@ namespace ALEngine::ECS
 		//Subscribe(Coordinator::Instance()->GetComponent<EventCollisionTrigger>(entity), EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_EXIT, OnCollisionExit_Player);
 	}
 
+	/*!*********************************************************************************
+		\brief
+			Event to run OnCollision Enter
+	***********************************************************************************/
 	void OnCollisionEnter_Player([[maybe_unused]] u32 currentEntity, [[maybe_unused]] u32 otherEntity) {
 		AL_CORE_INFO("Player Collided with something that has collider commponent ON BEGIN");
 	}
 
+	/*!*********************************************************************************
+		\brief
+			Event to run OnCollision Stay
+	***********************************************************************************/
 	void OnCollisionStay_Player([[maybe_unused]] u32 currentEntityu32, [[maybe_unused]] u32 otherEntity) {
 		AL_CORE_INFO("Player Collided with something that has collider commponent AND STAYING");
 	}
 
+	/*!*********************************************************************************
+		\brief
+			Event to run OnCollision Exit
+	***********************************************************************************/
 	void OnCollisionExit_Player([[maybe_unused]] u32 currentEntityu32, [[maybe_unused]] u32 otherEntity) {
 		AL_CORE_INFO("Player Collided with something that has collider commponent AND EXIT");
 	}
@@ -95,6 +107,10 @@ namespace ALEngine::ECS
 	void UpdateCharacterControllerSystem() {
 		//Shift through each component
 		for (auto it = characterControlS->mEntities.begin(); it != characterControlS->mEntities.end(); ++it) {
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
 			CharacterController& cc = Coordinator::Instance()->GetComponent<CharacterController>(*it);
 

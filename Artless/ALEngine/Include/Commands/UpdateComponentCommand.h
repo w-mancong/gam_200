@@ -1,7 +1,7 @@
 /*!
 file:	UpdateComponentCommand.h
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains the function declarations for the UpdateComponentCommand class.
 		This is the Command that executes the Command for Updating Components, as well 
 		as assist with undo/redo of the Command.

@@ -1,7 +1,7 @@
 /*!
 file:		Timer.cpp
 author:		Lucas Nguyen
-email:		l.nguyen@digipen.edu
+email:		l.nguyen\@digipen.edu
 brief:		This file contains the definitions for the Timer class's functions.
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

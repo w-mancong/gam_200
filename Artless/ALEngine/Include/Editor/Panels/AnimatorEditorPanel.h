@@ -3,7 +3,7 @@ file: AudioEditorPanel.h
 author: Chan Jie Ming Stanley
 email: c.jiemingstanley\@digipen.edu
 brief: This file contains the function declaration for AudioEditorPanel.
-	   AudioEditorPanel handles the panel that display the  audio editor
+	   AudioEditorPanel handles the panel that display the create clip/animations panel
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	ANIMATOR_EDITOR_PANEL_H
@@ -21,7 +21,7 @@ namespace ALEngine::Editor
 		\brief
 		renders out the panel displaying the audio editor panel
 		***********************************************************************************/
-		void OnImGuiRender(void);
+		void OnImGuiRender(b8& pOpen);
 
 
 		/*!*********************************************************************************
@@ -56,8 +56,7 @@ namespace ALEngine::Editor
 		ImVec2 m_DefaultPos{};	// Default Position
 		ImVec2 m_DefaultSize{};	// Default Size
 
-	    static std::string FileContents(const std::filesystem::path& path);
-
+	    void FileContents(const std::filesystem::path& path, std::vector<std::string>& items);
 	};
 }
 #endif

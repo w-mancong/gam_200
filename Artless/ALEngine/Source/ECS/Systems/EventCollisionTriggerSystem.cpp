@@ -1,7 +1,7 @@
 /*!
 file:	EventTriggerSystem.cpp
 author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+email:	t.zhenxiong\@digipen.edu
 brief:	This file contains the function definition for CharacterControllerSystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -46,6 +46,10 @@ namespace ALEngine::ECS
 	void UpdateEventCollisionTriggerSystem() {
 		//Shift through each component
 		for (auto it = eventCollisionSystem->mEntities.begin(); it != eventCollisionSystem->mEntities.end(); ++it) {
+			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				continue;
+			}
+
 			Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(*it);
 			EventCollisionTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventCollisionTrigger>(*it);
 

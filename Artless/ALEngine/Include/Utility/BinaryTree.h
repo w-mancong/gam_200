@@ -1,7 +1,7 @@
 /*!
 file: BinaryTree.h
 author: Mohamed Zafir
-email: m.zafir@digipen.edu
+email: m.zafir\@digipen.edu
 brief: This file contains the function declarations for class BinaryTree. Which is a data
        structure to store parent-child relationships.
 
@@ -58,7 +58,7 @@ namespace ALEngine::Tree
         /*!*********************************************************************************
             \brief Update the BinaryTree
         ***********************************************************************************/
-        void Update();
+        void Update() const;
 
         /*!*********************************************************************************
             \brief
@@ -119,7 +119,7 @@ namespace ALEngine::Tree
             \return 
             Vector of node IDs
         ***********************************************************************************/
-        std::vector<s32> GetChildren();
+        std::vector<s32> GetChildren() const;
 
         /*!*********************************************************************************
             \brief
@@ -128,16 +128,25 @@ namespace ALEngine::Tree
             \return
             Vector of node IDs
         ***********************************************************************************/
-        std::vector<s32> GetParents();
+        std::vector<s32> GetParents() const;
 
         /*!*********************************************************************************
             \brief
-            Returns a vector of NodeData of all nodes in the BinaryTree
+            Returns a const reference to vector of NodeData of all nodes in the BinaryTree
 
             \return 
             Vector of NodeData
         ***********************************************************************************/
-        std::vector<NodeData>const& GetMap();
+        std::vector<NodeData>const& GetMap() const;
+
+        /*!*********************************************************************************
+            \brief
+            Returns a reference to vector of NodeData of all nodes in the BinaryTree
+
+            \return
+            Vector of NodeData
+        ***********************************************************************************/
+        std::vector<NodeData>& GetMap();
 
         /*!*********************************************************************************
             \brief Return parent of current entity
@@ -146,8 +155,30 @@ namespace ALEngine::Tree
         ***********************************************************************************/
         s32 GetParent(u32 en) const;
 
+        /*!*********************************************************************************
+            \brief Set the active state of all entities
+
+            \param [in] node: Node data containing the current entity id and parent's id
+            \param [in] activeState Active state to be set
+        ***********************************************************************************/
+        void SetParentChildActive(NodeData const& node, b8 activeState) const;
+
+        /*!*********************************************************************************
+            \brief Move node branch in tree to another node.
+
+            \param [in] branch: Branch to move
+            \param [in] newParent: New parent to move underneath
+        ***********************************************************************************/
         void MoveBranch(s32 branch, s32 newParent);
+
+        /*!*********************************************************************************
+             \brief Serializes Tree for saving scene
+         ***********************************************************************************/
         void SerializeTree();
+
+        /*!*********************************************************************************
+             \brief Deserializes Tree for laoding scene
+         ***********************************************************************************/
         void DeserializeTree();
 
     private:
@@ -158,7 +189,7 @@ namespace ALEngine::Tree
             \return
             Node*
         ***********************************************************************************/
-        Node* GetHead();
+        Node* GetHead() const;
 
         /*!*********************************************************************************
             \brief
@@ -218,7 +249,7 @@ namespace ALEngine::Tree
             \param [in] id
             ID of node to insert
         ***********************************************************************************/
-        void Insert(Node* node, s32 id);
+        void Insert(Node* node, s32 id) const;
 
         /*!*********************************************************************************
             \brief
@@ -243,13 +274,6 @@ namespace ALEngine::Tree
             ID of node to destruct
         ***********************************************************************************/
         void DestructLeft(Node* node, s32 id);
-
-        /*!*********************************************************************************
-            \brief Updates the transform matrix of parent and its children
-
-            \param [in] entity: Entity to apply parent-child transform
-        ***********************************************************************************/
-        //void UpdateParentChildrenPos(NodeData const& entity);
 
     private:
         Node* head;

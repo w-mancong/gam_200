@@ -1,7 +1,7 @@
 /*!
 file: BinaryTree.cpp
 author: Mohamed Zafir
-email: m.zafir@digipen.edu
+email: m.zafir\@digipen.edu
 brief: This file contains the function definitions for class BinaryTree. Which is a data
        structure to store parent-child relationships.
 
@@ -15,8 +15,14 @@ namespace ALEngine::Tree
     {
         void UpdateGlobalCoordinates(Transform& trans)
         {
-            if (trans.localPosition != trans.prevPosition || trans.localScale != trans.prevScale)
+            if (trans.localPosition != trans.prevPosition || trans.localScale != trans.prevScale || trans.localRotation != trans.prevRotation)
                 trans.isDirty = true;
+            else if (trans.position != trans.localPosition || trans.scale != trans.localScale || trans.rotation != trans.localRotation)
+            {
+                trans.localPosition = trans.position;
+                trans.localRotation = trans.rotation;
+                trans.localScale    = trans.scale;
+            }
             if (trans.isDirty)
             {
                 trans.position = trans.localPosition;
@@ -130,7 +136,7 @@ namespace ALEngine::Tree
         head->id = -1;
     }
 
-    void BinaryTree::Update()
+    void BinaryTree::Update() const
     {
         for (s32 entity : GetParents())
         {
@@ -282,7 +288,7 @@ namespace ALEngine::Tree
             map.push_back(newData);
     }
 
-    void BinaryTree::Insert(Node* node, s32 id)
+    void BinaryTree::Insert(Node* node, s32 id) const
     {
         while (node->right != nullptr)
         {
@@ -368,12 +374,12 @@ namespace ALEngine::Tree
         }
     }
 
-    std::vector<s32> BinaryTree::GetChildren()
+    std::vector<s32> BinaryTree::GetChildren() const
     {
         return childrenVect;
     }
 
-    std::vector<s32> BinaryTree::GetParents()
+    std::vector<s32> BinaryTree::GetParents() const
     {
         Node* node = GetHead()->right;
         std::vector<s32> vect;
@@ -418,30 +424,6 @@ namespace ALEngine::Tree
         }
         return DestructRight(searchVect[searchVect.size() - 1], id);
     }
-
-    //void BinaryTree::UpdateParentChildrenPos(NodeData const& entity)
-    //{
-    //    Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
-
-    //    if (entity.parent >= 0) // if entity has parent
-    //    {
-    //        Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
-    //        trans.modelMatrix = parentTrans.modelMatrix * Math::mat4::Model(trans);
-    //    }
-    //    else
-    //    {
-    //        /*
-    //            Don't have to construct a model matrix using global coordinates because
-    //            entities that do not have a parent, their local coordinates are their global coordinates
-    //        */
-    //        trans.modelMatrix = Math::mat4::Model(trans);
-    //    }
-
-    //    for (auto& child : GetMap()[entity.id].children)
-    //    {
-    //        UpdateParentChildrenPos(GetMap()[child]);
-    //    }
-    //}
 
     void BinaryTree::DestructRight(Node* node, s32 id)
     {
@@ -532,12 +514,17 @@ namespace ALEngine::Tree
         }
     }
 
-    BinaryTree::Node* BinaryTree::GetHead()
+    BinaryTree::Node* BinaryTree::GetHead() const
     {
         return head;
     }
 
-    std::vector<BinaryTree::NodeData>const& BinaryTree::GetMap()
+    std::vector<BinaryTree::NodeData>const& BinaryTree::GetMap() const
+    {
+        return map;
+    }
+
+    std::vector<BinaryTree::NodeData>& BinaryTree::GetMap()
     {
         return map;
     }
@@ -545,6 +532,29 @@ namespace ALEngine::Tree
     s32 BinaryTree::GetParent(u32 en) const
     {
         return map[en].parent;
+    }
+
+    void BinaryTree::SetParentChildActive(NodeData const& node, b8 activeState) const
+    {
+        EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(node.id);
+
+        if (node.parent != -1)
+        {
+            EntityData const& parent_ed = Coordinator::Instance()->GetComponent<EntityData>(node.parent);
+            if (ed.selfActive)
+                ed.active = parent_ed.active;
+        }
+        else
+        {
+            if (ed.selfActive)
+                ed.active = activeState;
+        }
+
+        for (s32 en : node.children)
+        {
+            Tree::BinaryTree::NodeData const& nd = ECS::GetSceneGraph(0).GetMap()[en];
+            SetParentChildActive(nd, activeState);
+        }
     }
 
     void BinaryTree::MoveBranch(s32 branch, s32 newParent)
@@ -701,5 +711,4 @@ namespace ALEngine::Tree
             }
         } while (done == false);
     }
-
-} // end of namespace Tree
+} // end of namespace Tree-

@@ -1,3 +1,12 @@
+/*!
+file:	pch.h
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain all the header files that are will be precompiled instead of
+		recompiling it every build
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	PCH_H
 #define PCH_H
 
@@ -5,8 +14,7 @@
 #define NOMINMAX
 #define _USE_MATH_DEFINES
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))	// find the number of elements in an array
-#define EDITOR 1
-#define LOAD_WITH_CODE 1	// Use this when loading resources in code
+#define EDITOR 0
 
 // C++ standard library
 #include <iostream>

@@ -1,12 +1,12 @@
-/*!
+﻿/*!
 file:	InspectorPanel.h
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function declarations for the InspectorPanel class.
 		The InspectorPanel class contains information and functions necessary for
 		the Inspector Panel of the editor to be displayed.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef INSPECTOR_PANEL_H
 #define INSPECTOR_PANEL_H
@@ -27,7 +27,7 @@ namespace ALEngine::Editor
 	public:
 		/*!*********************************************************************************
 			\brief
-			Default constructor for the InspectorPanel 
+			Default constructor for the InspectorPanel
 		***********************************************************************************/
 		InspectorPanel(void);
 
@@ -69,7 +69,7 @@ namespace ALEngine::Editor
 			Returns true if there is a selected entity, else returns false
 		***********************************************************************************/
 		bool HasSelectedEntity(void);
-		
+
 		/*!*********************************************************************************
 			\brief
 			Displays the Inspector Menu on the panel
@@ -117,6 +117,18 @@ namespace ALEngine::Editor
 			Displays the Animator component info on the panel
 		***********************************************************************************/
 		void DisplayAnimator(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the Particle component info on the panel
+		***********************************************************************************/
+		void DisplayParticleProperty(void);
+
+		/*!*********************************************************************************
+			\brief
+			Displays the text component info on the panel
+		***********************************************************************************/
+		void DisplayTextProperty(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -173,6 +185,8 @@ namespace ALEngine::Editor
 		InComp_Sprite,
 		InComp_RigidBody,
 		InComp_Collider,
+		InComp_Particles,
+		InComp_Text,
 		InComp_Script,
 		InComp_Audio,
 		InComp_Total

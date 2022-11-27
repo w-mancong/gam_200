@@ -1,11 +1,12 @@
 /*!
-file:	GameplaySystem.h
-author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+file:   GameplaySystem.h
+author: Tan Zhen Xiong
+email:  t.zhenxiong\@digipen.edu
 brief:	This file contains the function declarations for GameplaySystem.h
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
+
 #ifndef	GAMEPLAY_SYSTEM_H
 #define GAMEPLAY_SYSTEM_H
 
@@ -49,13 +50,13 @@ namespace ALEngine
 			\brief
 			create player unit entity
 		***********************************************************************************/
-		void CreatePlayerUnit(Entity const& entity);
+		void CreatePlayerUnit(Entity entity);
 
 		/*!*********************************************************************************
 			\brief
 	        create enemy unit entity
 		***********************************************************************************/
-		void CreateEnemyUnit(Entity const& entity);
+		void CreateEnemyUnit(Entity entity);
 	}
 }
 #endif

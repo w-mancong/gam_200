@@ -1,17 +1,19 @@
 /*!
 file:	EditorCommandManager.h
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	Contains definitions for the Command Manager for the Editor
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#if EDITOR
+
 namespace ALEngine::Commands
 {
 	COMMAND EditorCommandManager::m_Commands[MAX_COMMANDS]{};
-	s32 EditorCommandManager::m_CommandIndex{ 0 };
+	s32 EditorCommandManager::m_CommandIndex{ -1 };
 	s32 EditorCommandManager::m_NumOfCommands{ 0 };
 	CommandInputType EditorCommandManager::m_CommandInputType{ CommandInputType::NO_COMMAND };
 
@@ -127,3 +129,5 @@ namespace ALEngine::Commands
 		return false;
 	}
 }
+
+#endif

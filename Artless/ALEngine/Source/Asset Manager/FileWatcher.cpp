@@ -1,7 +1,7 @@
 /*!
 file: FileWatcher.cpp
-author	 :	Chan Jie Ming Stanley
-co-author:	Wong Man Cong
+author	 :	Chan Jie Ming Stanley	(90%)
+co-author:	Wong Man Cong			(10%)
 email:	c.jiemingstanley\@digipen.edu
 		w.mancong\@digipen.edu
 brief: This file contains function definition for FileWatcher. FileWatcher handles the
@@ -18,6 +18,8 @@ namespace
 
 namespace ALEngine::Engine
 {
+	std::atomic<b8> FileWatcher::m_Pause{ false };
+
     FileWatcher::FileWatcher()
 	{
 		//creating a record of files from the base directory and their last modification time
@@ -33,6 +35,9 @@ namespace ALEngine::Engine
 	{
 		while (GetAppStatus())
 		{
+			if (m_Pause)
+				continue;
+
 			b8 should_delay = false;
 
 			auto tempIt = m_FilePaths.begin();
@@ -88,12 +93,17 @@ namespace ALEngine::Engine
 						}
 					}
 				}
-				catch (std::exception const& e)
+				catch ([[maybe_unused]] std::exception const& e)
 				{
 					AL_CORE_WARN(e.what());
 				}
 			}
 		}
+	}
+
+	void FileWatcher::SetPause(b8 pause)
+	{
+		m_Pause = pause;
 	}
 
 	bool FileWatcher::contains(const std::string& key)

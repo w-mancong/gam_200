@@ -1,3 +1,11 @@
+/*!
+file:	EntityManager.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function definition for EntityManager
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::ECS
@@ -44,7 +52,7 @@ namespace ALEngine::ECS
 		m_Signatures[entity] = signature;
 	}
 
-	Signature EntityManager::GetSignature(Entity entity)
+	Signature& EntityManager::GetSignature(Entity entity)
 	{
 #ifdef _DEBUG
 		assert(entity < MAX_ENTITIES && "Entity out of range.");

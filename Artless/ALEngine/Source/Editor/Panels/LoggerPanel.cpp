@@ -1,7 +1,7 @@
 /*!
 file:	LoggerPanel.cpp
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the LoggerPanel class.
 		The LoggerPanel class contains information and functions necessary for the 
 		Logger Panel of the editor to be displayed.
@@ -12,18 +12,17 @@ brief:	This file contains function definitions for the LoggerPanel class.
 
 #if EDITOR
 
-#include <spdlog/sinks/ostream_sink.h>
-
 namespace ALEngine::Editor
 {
 	LoggerPanel::LoggerPanel()
 	{
 		// Create spdlog sink to ostream to print log on imgui
-		auto ostream_sink = std::make_shared<spdlog::sinks::ostream_sink_st>(m_LoggerOSS);
-		ALEngine::Exceptions::Logger::GetCoreLogger()->sinks().push_back(ostream_sink);
-		AL_CORE_SET_PATTERN("%^[%n] [%l] [%D %T] %v%$");
+		auto my_sink = std::make_shared<my_sink_mt>();
+		my_sink->m_Logger = this; 
+		my_sink->set_pattern("%^[%n] [%l] %v%$");
+		ALEngine::Exceptions::Logger::GetCoreLogger()->sinks().push_back(my_sink);
 
-		spdlog::flush_every(std::chrono::seconds(5));
+		AL_CORE_WARN("Hello");
 
 		// Set logger flags to all
 		m_LogFlags = (u32)LOG_FLAGS::LOG_ALL;
@@ -68,12 +67,8 @@ namespace ALEngine::Editor
 		// The Text Box
 		ImGui::BeginChild("LoggerTextBox", ImVec2(0.f, 0.f), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
 
-		// Change OSS to ISS
-		std::string log_line;
-		std::istringstream iss(m_LoggerOSS.str());
-
 		// Check each line for 
-		while (std::getline(iss, log_line))
+		for(const auto& a : m_MessageList)
 		{
 			// Text Color
 			ImU32 text_clr = IM_COL32_BLACK;
@@ -81,46 +76,40 @@ namespace ALEngine::Editor
 			// Bool to print text
 			b8 to_print{ false };
 
-			// Format: "[AL] [_...], where the second bracket contains the level"
-			switch (log_line.c_str()[6])
+			// Get Log Level
+			switch (static_cast<spdlog::level::level_enum>(a.second))
 			{
-			case 'e':	// Error
-			case 'E':
+			case spdlog::level::level_enum::err:
 				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_ERROR))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(255, 128, 0, 255);
 				break;
-			case 'd':	// Debug
-			case 'D':
+			case spdlog::level::level_enum::debug:
 				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_DEBUG))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(0, 128, 255, 255);
 				break;
-			case 't':	// Trace
-			case 'T':
+			case spdlog::level::level_enum::trace:
 				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_TRACE))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(255, 255, 255, 255);
 				break;
-			case 'w':	// Warning
-			case 'W':
+			case spdlog::level::level_enum::warn:
 				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_WARN))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(255, 255, 0, 255);
 				break;
-			case 'i':	// Info
-			case 'I':
+			case spdlog::level::level_enum::info:
 				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_INFO))
 					continue;
 				to_print = true;
 				text_clr = IM_COL32(0, 255, 0, 255);
 				break;
-			case 'c':	// Critical
-			case 'C':
+			case spdlog::level::level_enum::critical:
 				if (!(m_LogFlags & (u32)LOG_FLAGS::LOG_CRITICAL))
 					continue;
 				to_print = true;
@@ -131,7 +120,7 @@ namespace ALEngine::Editor
 			if (to_print)
 			{
 				ImGui::PushStyleColor(ImGuiCol_Text, text_clr);
-				ImGui::TextUnformatted(log_line.c_str());
+				ImGui::TextUnformatted(a.first.c_str());
 				ImGui::PopStyleColor();
 			}
 		}

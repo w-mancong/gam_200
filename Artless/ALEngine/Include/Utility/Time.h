@@ -1,7 +1,7 @@
 /*!
 file:		Time.h
 author:		Lucas Nguyen
-email:		l.nguyen@digipen.edu
+email:		l.nguyen\@digipen.edu
 brief:		This file contains a class "Time" that acts as the framerate controller.
 			The delta time and FPS are calculated here.
 
@@ -64,6 +64,7 @@ namespace ALEngine::Utility
 
 	public:
 		static f32 m_DeltaTime;				// Delta Time
+		static f32 m_Scale;					// Time Scale, to be used to change the scale of delta time
 		static const f32 m_FixedDeltaTime;	// Fixed Delta Time
 		static f32 m_FPS;					// Current FPS
 	private:
@@ -79,8 +80,9 @@ namespace ALEngine::Utility
 		***********************************************************************************/
 		~Time(void) = default;
 
-		static s32 m_TargetFPS;		// Target FPS
-		static b8 m_HasFPSLimit;	// Whether there is an FPS limit
+		static s32 m_TargetFPS;			// Target FPS
+		static b8 m_HasFPSLimit;		// Whether there is an FPS limit
+		static f32 m_ActualDeltaTime;	// The actual delta time
 
 		static std::chrono::nanoseconds m_Ticks[MAX_SAMPLES];		// Stores the number of ticks in the past 100 frames
 		static std::chrono::nanoseconds m_TickSum;				// Number of ticks

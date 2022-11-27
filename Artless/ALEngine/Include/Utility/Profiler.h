@@ -1,7 +1,7 @@
 ﻿/*!
 file:	Profiler.h
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains the function declarations for the Profiler class.
 		The Profiler keeps track of the engine's performance data.
 

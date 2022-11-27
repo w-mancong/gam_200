@@ -1,8 +1,8 @@
 /*!
 file:	Vector2.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
-brief:	This file contain class definition for representing a 2D vector
+email:	w.mancong\@digipen.edu
+brief:	This file contain class declaration for representing a 2D vector
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/

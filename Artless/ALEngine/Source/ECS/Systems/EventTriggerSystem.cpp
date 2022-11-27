@@ -1,7 +1,7 @@
 /*!
 file:	EventTriggerSystem.cpp
 author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+email:	t.zhenxiong\@digipen.edu
 brief:	This file contains the function definition for CharacterControllerSystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -56,6 +56,12 @@ namespace ALEngine::ECS
 		//Shift through each component
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
+
+			if (!event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				event_Trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+				continue;
+			}
+
 			eventSystem->UpdatePointerStatus(*it);					
 			
 			//Invoke listeners based on trigger type

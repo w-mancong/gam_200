@@ -1,7 +1,7 @@
 /*!
 file:	ECS.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains all the relevant ECS header files to be included in pch
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -28,6 +28,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Components/EventTrigger.h>
 #include <ECS/Components/Cell.h>
 #include <ECS/Components/CellLoader.h>
+#include <ECS/Components/ParticleProp.h> 
 #include <Engine/Audio/Audio.h>
 
 // --------------- Structure --------------------
@@ -48,6 +49,8 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Systems/EventCollisionTriggerSystem.h>
 #include <ECS/Systems/EventTriggerSystem.h>
 #include <ECS/Systems/GameplaySystem.h>
+#include <ECS/Systems/ParticleSystem.h>
+#include <ECS/Systems/TextSystem.h>
 #include <ECS/Systems/TransformSystem.h>
 
 

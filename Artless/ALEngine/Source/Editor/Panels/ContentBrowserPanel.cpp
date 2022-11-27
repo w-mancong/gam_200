@@ -21,7 +21,8 @@ namespace ALEngine::Editor
 	ContentBrowserPanel::ContentBrowserPanel()
 	:m_CurrentDirectory(assetPath),
 	m_MainDirectory(assetPath),
-	searchKeyword("")
+	searchKeyword(""),
+	m_OptionPromptEnabled(false)
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -182,6 +183,12 @@ namespace ALEngine::Editor
 				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
 				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}
+			else if (fileNamestring.find(".map") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_TileEditor.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
 			// To display script icon
 			else if (fileNamestring.find(".cs") != std::string::npos)
 			{
@@ -193,6 +200,13 @@ namespace ALEngine::Editor
 			else if (fileNamestring.find(".ttf") != std::string::npos)
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Text.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			// To display audio icon
+			else if (fileNamestring.find(".wav") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Sound.png");
 				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
 				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}
@@ -208,7 +222,6 @@ namespace ALEngine::Editor
 				ImGui::Button(fileNamestring.c_str(), { thumbnailSize, thumbnailSize });
 			}
 			
-			//for dragging file, need to fix window crash when moving window
 			if (ImGui::BeginDragDropSource())
 			{
 				const wchar_t* itemPath = path.c_str();
@@ -220,6 +233,7 @@ namespace ALEngine::Editor
 			{
 				if (fileNamestring.find(".scene") != std::string::npos)
 				{
+					ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 					std::string the_path = directoryEntry.path().string();
 					Engine::Scene::LoadScene(the_path.c_str());
 					ALEditor::Instance()->SetCurrentSceneName(the_path);
@@ -230,6 +244,43 @@ namespace ALEngine::Editor
 					m_CurrentDirectory /= path.filename();
 				}
 			}
+
+			//for setting selected item
+			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Right) && ImGui::IsItemHovered())
+			{
+				//set selected item to delete when press delete key 
+				m_DirectoryToDelete = directoryEntry.path();
+			}
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Delete))
+			{
+				std::filesystem::remove_all(m_DirectoryToDelete);
+			}
+
+			//open prompt for delete or rename
+			if (ImGui::IsMouseClicked(ImGuiMouseButton_Right)&&ImGui::IsItemHovered())
+			{
+				//set selected item to delete when press delete button in the prompt
+				m_DirectoryToDelete = directoryEntry.path();
+				ImGui::OpenPopup("##Option prompt");
+				m_OptionPromptEnabled = true;
+			}
+
+			if (ImGui::BeginPopup("##Option prompt", m_OptionPromptEnabled))
+			{
+				if (ImGui::Button("Delete"))
+				{
+					//std::cout << m_DirectoryToDelete << std::endl;
+					std::filesystem::remove_all(m_DirectoryToDelete);
+					ImGui::CloseCurrentPopup();
+				}
+				if (ImGui::Button("Rename"))
+				{
+
+				}
+				ImGui::EndPopup();
+			}
+
 			//file name under button of file
 			ImGui::TextWrapped(fileNamestring.c_str());
 
@@ -244,6 +295,7 @@ namespace ALEngine::Editor
 
 		//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 		//ImGui::SliderFloat("Padding", &padding, 0, 32);
+
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------

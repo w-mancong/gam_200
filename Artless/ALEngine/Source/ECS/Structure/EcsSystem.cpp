@@ -1,3 +1,14 @@
+/*!
+file:		EcsSysten.cpp
+author:		Wong Man Cong
+co-author:	Tan Zhen Xiong, Mohamed Zafir
+email:		w.mancong\@digipen.edu
+			t.zhenxiong\@digipen.edu
+			m.zafir\@digipen.edu
+brief:		This file contain functions that registers all components and systesm for ECS
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::ECS
@@ -14,7 +25,9 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<EventTrigger>();
 		Coordinator::Instance()->RegisterComponent<EventCollisionTrigger>();
 		Coordinator::Instance()->RegisterComponent<Unit>();
+		Coordinator::Instance()->RegisterComponent<ParticleProperties>();
 		Coordinator::Instance()->RegisterComponent<Cell>();
+		Coordinator::Instance()->RegisterComponent<Text>();
 		Coordinator::Instance()->RegisterComponent<Engine::AudioSource>();
 
 		// To be deleted later
@@ -31,6 +44,8 @@ namespace ALEngine::ECS
 		RegisterEventTriggerSystem();
 		RegisterEventCollisionTriggerSystem();
 		RegisterGameplaySystem();
+		RegisterParticleSystem();
+		RegisterTextSystem();
 
 #if EDITOR
 		//RegisterTransformSystem();

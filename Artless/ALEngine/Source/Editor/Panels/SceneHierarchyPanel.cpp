@@ -1,7 +1,7 @@
 /*!
 file:	SceneHierarchyPanel.cpp
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the SceneHierarchPanel class.
 		The SceneHierarchyPanel class contains information and functions necessary for
 		the Scene Hierarchy Panel of the editor to be displayed.
@@ -27,41 +27,44 @@ namespace ALEngine::Editor
 		// Set constraints
 		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
-		if (!ImGui::Begin("Scene Hierarchy"))
+		if (!ImGui::Begin("Scene Hierarchy", nullptr, ImGuiWindowFlags_MenuBar))
 		{
 			ImGui::End();
 			return;
 		}
 
+		// Menu Bar
+		UpdateMenuBar();
+
 		// Make Panel Child so panel can have Drag & Drop
 		ImGui::BeginChild("SceneHierarchyPanel##PanelChild", ImGui::GetContentRegionAvail());
 
-		// Add Entity Button
-		if (ImGui::Button("Add Entity"))
-		{
-			// Entity Transform
-			Transform xform = Transform{ Math::Vector2(0.f, 0.f),
-				Math::Vector2(50.f, 50.f) };
+		//// Add Entity Button
+		//if (ImGui::Button("Add Entity"))
+		//{
+		//	// Entity Transform
+		//	Transform xform = Transform{ Math::Vector2(0.f, 0.f),
+		//		Math::Vector2(50.f, 50.f) };
 
-			// Create Entity
-			ECS::Entity GO = Coordinator::Instance()->CreateEntity();
-			ECS::CreateSprite(GO, xform);
+		//	// Create Entity
+		//	ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+		//	ECS::CreateSprite(GO, xform);
 
-			sceneGraph.Push(-1, GO);
+		//	sceneGraph.Push(-1, GO);
 
-			Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
-			sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		//	Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
+		//	sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
-			ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
+		//	ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 
-			AL_CORE_INFO("Entity Created!");
-		}
+		//	AL_CORE_INFO("Entity Created!");
+		//}
 
-		ImGui::SameLine();
+		//ImGui::SameLine();
 
-		// Remove Entity Button
-		if (!m_EntityList->empty() && ImGui::Button("Remove Entity"))
-			ImGui::OpenPopup("remove_entity_popup");
+		//// Remove Entity Button
+		//if (!m_EntityList->empty() && ImGui::Button("Remove Entity"))
+		//	ImGui::OpenPopup("remove_entity_popup");
 
 		b8 remove{ false };
 		// Remove Entity Popup!!
@@ -110,7 +113,7 @@ namespace ALEngine::Editor
 			if (ImGui::Selectable("Add child") && (selectedEntity != ECS::MAX_ENTITIES))
 			{
 				// Entity Transform
-				Transform xform = Transform{ Math::Vector2(2.f, 2.f),
+				Transform xform = Transform{ Math::Vector2(1.f, 1.f),
 					Math::Vector2(1.f, 1.f) };
 
 				// Create Entity
@@ -125,6 +128,11 @@ namespace ALEngine::Editor
 			}
 			ImGui::EndPopup();
 		}
+
+		// Delete selected entity
+		if (Input::KeyTriggered(KeyCode::Delete))
+			remove = true;
+
 		// If there is an entity to remove
 		if (remove)
 		{
@@ -164,33 +172,36 @@ namespace ALEngine::Editor
 			ImGui::EndDragDropTarget();
 		}
 
-		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
-			ImGui::OpenPopup("panel_rightclick##SceneHierarchy");
-
-		ImGui::SetNextWindowSize({ 200.f, 300.f });
-		if (ImGui::BeginPopup("panel_rightclick##SceneHierarchy"))
+		if (!popup_hasopen)
 		{
-			// Add Entity Button
-			if (ImGui::MenuItem("Add Entity"))
+			if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+				ImGui::OpenPopup("panel_rightclick##SceneHierarchy");
+
+			//ImGui::SetNextWindowSize({ 200.f, 50.f });
+			if (ImGui::BeginPopup("panel_rightclick##SceneHierarchy"))
 			{
-				// Entity Transform
-				Transform xform = Transform{ Math::Vector2(0.f, 0.f),
-					Math::Vector2(50.f, 50.f) };
+				// Add Entity Button
+				if (ImGui::MenuItem("Add Entity"))
+				{
+					// Entity Transform
+					Transform xform = Transform{ Math::Vector2(0.f, 0.f),
+						Math::Vector2(50.f, 50.f) };
 
-				// Create Entity
-				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
-				ECS::CreateSprite(GO, xform);
+					// Create Entity
+					ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+					ECS::CreateSprite(GO, xform);
 
-				sceneGraph.Push(-1, GO);
+					sceneGraph.Push(-1, GO);
 
-				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
-				sprite2.color = Color{ 0.0f, 1.0f, 0.0f, 1.0f };
+					Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
+					sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
-				ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
+					ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 
-				AL_CORE_INFO("Entity Created!");
+					AL_CORE_INFO("Entity Created!");
+				}
+				ImGui::EndPopup();
 			}
-			ImGui::EndPopup();
 		}
 
 		ImGui::End();
@@ -200,8 +211,11 @@ namespace ALEngine::Editor
 	{
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
+		// Get entity data
+		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
 		// Flag for Tree Node
-		ImGuiTreeNodeFlags flags = 0;
+		ImGuiTreeNodeFlags flags = data.treeNodeFlags;
 
 		// Check if has children
 		sceneGraph.FindImmediateChildren(child);
@@ -212,11 +226,18 @@ namespace ALEngine::Editor
 		else
 			flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 
-		// Get entity data
-		EntityData data = Coordinator::Instance()->GetComponent<EntityData>(child);
+		if (ALEditor::Instance()->GetSelectedEntity() == child)
+			flags |= ImGuiTreeNodeFlags_Selected;
+
+		if (data.active == false)
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 
 		// Begin Tree Node
 		b8 opened = ImGui::TreeNodeEx((void*)static_cast<u64>(child), flags, data.tag.c_str());
+		data.treeNodeFlags = opened ? ImGuiTreeNodeFlags_DefaultOpen : 0;
+
+		if (data.active == false)
+			ImGui::PopStyleVar();
 
 		// Check if hovered on entity
 		ImGuiHoveredFlags hover_flag = ImGuiHoveredFlags_AllowWhenBlockedByActiveItem;
@@ -289,6 +310,34 @@ namespace ALEngine::Editor
 			for (auto child_it : childrenList)
 				UpdateEntitySHP(child_it, popup_hasopen);
 			ImGui::TreePop();
+		}
+	}
+
+	void SceneHierarchyPanel::UpdateMenuBar(void)
+	{
+		if (ImGui::BeginMenuBar())
+		{
+			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+			if (ImGui::MenuItem("Add##SceneHierarchyAddEntity"))
+			{
+				// Entity Transform
+				Transform xform = Transform{ Math::Vector2(0.f, 0.f),
+					Math::Vector2(50.f, 50.f) };
+
+				// Create Entity
+				ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+				ECS::CreateSprite(GO, xform);
+
+				sceneGraph.Push(-1, GO);
+
+				Sprite& sprite2 = Coordinator::Instance()->GetComponent<Sprite>(GO);
+				sprite2.color = Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+
+				ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
+
+				AL_CORE_INFO("Entity Created!");
+			}
+			ImGui::EndMenuBar();
 		}
 	}
 

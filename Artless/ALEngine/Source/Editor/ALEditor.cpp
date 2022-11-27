@@ -1,7 +1,7 @@
 /*!
 file:	ALEditor.cpp
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains the function definitions for the ALEditor class.
 		The ALEditor class essentially manages the Dear ImGui functions, as well as the
 		different editor panels generated with the help of Dear ImGui.
@@ -15,6 +15,10 @@ brief:	This file contains the function definitions for the ALEditor class.
 #include "imgui.h"
 #include "imgui_internal.h"
 #include <Engine/GSM/GameStateManager.h>
+
+#include <Windows.h>
+
+#define TRACY_FILEPATH "\\Tracy\\Tracy.exe"
 
 namespace ALEngine::Editor
 {
@@ -57,10 +61,10 @@ namespace ALEngine::Editor
 		style.ScaleAllSizes(1.2f);
 
 		// Font Loading for ImGui
-		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial Italic.ttf", 20.f);
+		io.Fonts->AddFontFromFileTTF("Assets/fonts/Arial-italic.ttf", 20.f);
 
 		// Init GLFW
-		ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window() , true);
+		ImGui_ImplGlfw_InitForOpenGL(Graphics::OpenGLWindow::Window(), true);
 		// Set GLSL version
 		ImGui_ImplOpenGL3_Init("#version 450");
 
@@ -90,10 +94,10 @@ namespace ALEngine::Editor
 		if (m_FullScreen && m_GameIsActive)
 		{
 			// Set window size to be full screen
-			ImVec2 vpSize = ImVec2(ImGui::GetMainViewport()->WorkSize.x, 
-							ImGui::GetMainViewport()->WorkSize.y - ImGui::FindWindowByName("##toolbar")->Size.y);
+			ImVec2 vpSize = ImVec2(ImGui::GetMainViewport()->WorkSize.x,
+				ImGui::GetMainViewport()->WorkSize.y - ImGui::FindWindowByName("##toolbar")->Size.y);
 			ImVec2 vpPos = ImVec2(ImGui::GetMainViewport()->WorkPos.x,
-							ImGui::GetMainViewport()->WorkPos.y + ImGui::FindWindowByName("##toolbar")->Size.y);
+				ImGui::GetMainViewport()->WorkPos.y + ImGui::FindWindowByName("##toolbar")->Size.y);
 			ImGui::SetNextWindowSize(vpSize);
 			ImGui::SetNextWindowPos(vpPos);
 			m_GamePanel.OnImGuiRender();
@@ -102,9 +106,6 @@ namespace ALEngine::Editor
 		{
 			// Save Scene, Ctrl + S
 			if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::S))
-				m_SaveScene = true;
-
-			if(m_SaveScene)
 				SaveScene();
 
 			// Content Browser Panel
@@ -115,12 +116,12 @@ namespace ALEngine::Editor
 
 			if (m_AnimatorPanelEnabled)
 			{
-				m_AnimatorEditorPanel.OnImGuiRender();
+				m_AnimatorEditorPanel.OnImGuiRender(m_AnimatorPanelEnabled);
 			}
 
 			if (m_AudioPanelEnabled)
 			{
-				m_AudioEditorPanel.OnImGuiRender();
+				m_AudioEditorPanel.OnImGuiRender(m_AudioPanelEnabled);
 			}
 
 			m_TileEditor.OnImGuiRender();
@@ -143,13 +144,9 @@ namespace ALEngine::Editor
 
 			// Scene Hierarchy Panel
 			m_SceneHierarchyPanel.OnImGuiRender();
-			
+
 			// Check if there is a selected entity for Inspector
 			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
-
-			// Profiler Panel
-			m_ProfilerPanel.OnImGuiRender();
-			ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -164,30 +161,34 @@ namespace ALEngine::Editor
 
 	void ALEditor::Begin(void)
 	{
-		ZoneScopedN("Editor Update")
+		ZoneScopedN("Editor Update");
 		// Change ImGui Enabled or Disabled
-		/*
-		if (Input::KeyTriggered(KeyCode::Key_9))
-		{
-			m_ImGuiEnabled = !m_ImGuiEnabled;
+		
+		//if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::Key_9))
+		//{
+		//	m_ImGuiEnabled = !m_ImGuiEnabled;
 
-			ImGuiIO& io = ImGui::GetIO();
-			// If it is iactive, set MultiViewport to disable. 
-				// This is to stop rendering panels outside of main window
-			if (m_ImGuiEnabled)
-			{
-				io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-			}
-			else
-				io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-			ImGui::UpdatePlatformWindows();
-		}
-		*/
+		//	//ImGuiIO& io = ImGui::GetIO();
+		//	//// If it is iactive, set MultiViewport to disable.
+		//	//	// This is to stop rendering panels outside of main window
+		//	//if (m_ImGuiEnabled)
+		//	//{
+		//	//	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+		//	//}
+		//	//else
+		//	//{
+		//	//	io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
+		//	//}
+		//}
 
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		// Enable DockSpace if it is to be enabled!
+		if (m_DockingEnabled)
+			Docking();
 
 		// Check ImGui active
 		if (!m_ImGuiEnabled)
@@ -200,19 +201,13 @@ namespace ALEngine::Editor
 		ImGuizmo::SetOrthographic(true);
 		ImGuizmo::BeginFrame();
 
-		// Enable DockSpace if it is to be enabled!
-		if(m_DockingEnabled)
-			Docking();
-
 		Update();
+
+		m_IsReceivingKBInput = ImGui::GetIO().WantTextInput;
 	}
 
 	void ALEditor::End(void)
 	{
-		// Exit if not enabled
-		if (!m_ImGuiEnabled)
-			return;
-
 		// Get the ImGui IO
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -243,37 +238,37 @@ namespace ALEngine::Editor
 		ImGuiStyle& style = ImGui::GetStyle();
 
 		// Title Colors
-		style.Colors[ImGuiCol_TitleBg]				= m_ColorTitleBg;			// Title Background
-		style.Colors[ImGuiCol_TitleBgActive]		= m_ColorTitleActiveBg;		// Title Active Background	
+		style.Colors[ImGuiCol_TitleBg] = m_ColorTitleBg;			// Title Background
+		style.Colors[ImGuiCol_TitleBgActive] = m_ColorTitleActiveBg;		// Title Active Background	
 
 		// Window Colors
-		style.Colors[ImGuiCol_WindowBg]				= m_ColorWindowBg;			// Window Background
+		style.Colors[ImGuiCol_WindowBg] = m_ColorWindowBg;			// Window Background
 
 		// Frame Backgrounds
-		style.Colors[ImGuiCol_FrameBg]				= m_ColorNormal;			// Normal Color
-		style.Colors[ImGuiCol_FrameBgActive]		= m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_FrameBgHovered]		= m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_FrameBg] = m_ColorNormal;			// Normal Color
+		style.Colors[ImGuiCol_FrameBgActive] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_FrameBgHovered] = m_ColorHovered;			// Hovered Color
 
 		// Tab Colors
-		style.Colors[ImGuiCol_Tab]					= m_ColorNormal;			// Normal Color
-		style.Colors[ImGuiCol_TabHovered]			= m_ColorHovered;			// Hovered Color
-		style.Colors[ImGuiCol_TabActive]			= m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_TabUnfocusedActive]	= m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_Tab] = m_ColorNormal;			// Normal Color
+		style.Colors[ImGuiCol_TabHovered] = m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_TabActive] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_TabUnfocusedActive] = m_ColorActive;			// Active Color
 
 		// Button Colors
-		style.Colors[ImGuiCol_Button]				= m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_ButtonActive]			= m_ColorActive2;			// Active Color 2
-		style.Colors[ImGuiCol_ButtonHovered]		= m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_Button] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_ButtonActive] = m_ColorActive2;			// Active Color 2
+		style.Colors[ImGuiCol_ButtonHovered] = m_ColorHovered;			// Hovered Color
 
 		// Header Colors
-		style.Colors[ImGuiCol_Header]				= m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_HeaderActive]			= m_ColorActive2;			// Active Color 2
-		style.Colors[ImGuiCol_HeaderHovered]		= m_ColorHovered;			// Hovered Color
+		style.Colors[ImGuiCol_Header] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_HeaderActive] = m_ColorActive2;			// Active Color 2
+		style.Colors[ImGuiCol_HeaderHovered] = m_ColorHovered;			// Hovered Color
 
 		// Misc.
-		style.Colors[ImGuiCol_CheckMark]			= m_ColorInteractive;		// Interactive Color
-		style.Colors[ImGuiCol_SliderGrab]			= m_ColorInteractive;		// Interactive Color
-		style.Colors[ImGuiCol_SliderGrabActive]		= m_ColorActive3;			// Active Color 3
+		style.Colors[ImGuiCol_CheckMark] = m_ColorInteractive;		// Interactive Color
+		style.Colors[ImGuiCol_SliderGrab] = m_ColorInteractive;		// Interactive Color
+		style.Colors[ImGuiCol_SliderGrabActive] = m_ColorActive3;			// Active Color 3
 
 	}
 
@@ -281,20 +276,46 @@ namespace ALEngine::Editor
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
-			ImGui::SetNextWindowSize(m_MenuSize);
+			ImGui::SetNextWindowSize({ m_MenuSize.x, 0.f });
 			// Settings
-			if (ImGui::BeginMenu("Settings"))
+			if (ImGui::BeginMenu("File"))
 			{
-				// Selectable flag
-				ImGuiSelectableFlags flag = 0;
+				if (ImGui::Selectable("Save Scene##MainMenuBar"))
+					SaveScene();
+
+				if (ImGui::Selectable("Save Scene As...##MainMenuBar"))
+				{
+					std::string tempName = m_CurrentSceneName;
+					m_CurrentSceneName = "";
+					SaveScene();
+
+					if (m_CurrentSceneName == "")
+						m_CurrentSceneName = tempName;
+				}
+
+				if (ImGui::Selectable("Load Scene"))
+				{
+					m_CurrentSceneName = Utility::WindowsFileDialog::LoadFile("ALEngine Scene (*.scene)\0*.scene\0");
+
+					if (!m_CurrentSceneName.empty())
+					{
+						if (m_CurrentSceneName.rfind(".scene") == std::string::npos)
+							m_CurrentSceneName += ".scene";
+
+						u64 str_it = m_CurrentSceneName.rfind("Assets\\");
+						m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());
+
+						Engine::Scene::LoadScene(m_CurrentSceneName.c_str());
+					}
+				}
 
 				// Set to fullscreen or normal
-				ImGui::Selectable("Fullscreen", &m_FullScreen, flag);
+				ImGui::Checkbox("Fullscreen##MainMenuBar", &m_FullScreen);
 
 				ImGui::EndMenu();
 			}
 
-			ImGui::SetNextWindowSize(m_MenuSize);
+			ImGui::SetNextWindowSize({ m_MenuSize.x, 0.f });
 			if (ImGui::BeginMenu("Tools"))
 			{
 				// Selectable flag
@@ -302,15 +323,60 @@ namespace ALEngine::Editor
 
 				// Set active for animator panel
 				ImGui::Selectable("Create Clips/Animation", &m_AnimatorPanelEnabled, flag);
-	
+
 				//  Set active for audio panel
-				ImGui::Selectable("Create Audio", &m_AudioPanelEnabled, flag);
+				ImGui::Selectable("Audio Mixer", &m_AudioPanelEnabled, flag);
 
 				//  Set active for audio panel
 				if (ImGui::MenuItem("Tile Editor"))
 				{
 					m_TileEditor.SetPanelIsOpen(true);
 				}
+
+#ifdef TRACY_ENABLE
+				if (ImGui::MenuItem("Tracy Profiler"))
+				{
+					if (!m_ProfilerRunning)
+					{
+						TCHAR path[MAX_PATH];
+						GetCurrentDirectory(MAX_PATH, path);
+
+						[[maybe_unused]] HANDLE hProcess{ nullptr };
+						[[maybe_unused]] HANDLE hThread{ nullptr };
+						STARTUPINFO si;
+						PROCESS_INFORMATION pi;
+						[[maybe_unused]] DWORD dwProcessID{ 0 };
+						[[maybe_unused]] DWORD dwThreadID{ 0 };
+
+						ZeroMemory(&pi, sizeof(pi));
+						ZeroMemory(&si, sizeof(si));
+						si.cb = sizeof(si);
+						BOOL bCreateProcess{ NULL };
+						
+						std::string abs_path = path;
+						abs_path += +TRACY_FILEPATH;
+						bCreateProcess = CreateProcess(abs_path.c_str(),
+											nullptr,
+											nullptr,
+											nullptr,
+											FALSE,
+											0,
+											nullptr,
+											nullptr,
+											&si,
+											&pi);
+						
+						if (bCreateProcess == FALSE)
+							AL_CORE_CRITICAL("Failed to Create Process, Tracy.exe not running.");
+						else
+							m_ProfilerRunning = true;
+
+						// Close Process and Thread Handles
+						CloseHandle(pi.hProcess);
+						CloseHandle(pi.hThread);
+					}
+				}
+#endif
 
 				ImGui::EndMenu();
 			}
@@ -342,7 +408,7 @@ namespace ALEngine::Editor
 			Guid id{ 0 };
 
 			// Get texture Guid
-			if(m_GameIsActive)
+			if (m_GameIsActive)
 				id = Engine::AssetManager::Instance()->GetGuid(stop_button_fp);
 			else
 				id = Engine::AssetManager::Instance()->GetGuid(play_button_fp);
@@ -371,13 +437,13 @@ namespace ALEngine::Editor
 					ECS::StartGameplaySystem();
 				}
 				else
-				{					
+				{
 					Coordinator::Instance()->DestroyEntities();
 					ECS::ExitGameplaySystem();
 
 					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
-					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);			
+					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 				}
 			}
 			ImGui::End();
@@ -417,7 +483,7 @@ namespace ALEngine::Editor
 		col = editor_data.GetVec3("ColorActive", Vec3());
 		m_ColorActive = ImVec4(col.x, col.y, col.z, 1.f);
 		// Active 2
-		col = editor_data.GetVec3("ColorActive2",Vec3());
+		col = editor_data.GetVec3("ColorActive2", Vec3());
 		m_ColorActive2 = ImVec4(col.x, col.y, col.z, 1.f);
 		// Active 3
 		col = editor_data.GetVec3("ColorActive3", Vec3());
@@ -437,7 +503,7 @@ namespace ALEngine::Editor
 		m_ToolbarMinSize = ImVec2(toolbarMin.x, toolbarMin.y);
 
 		// Panel Min Size
-		Vec2 panel_min = editor_data.GetVec2("PanelMin", Vec2());		
+		Vec2 panel_min = editor_data.GetVec2("PanelMin", Vec2());
 
 		// Content Browser Panel
 		m_ContentBrowserPanel.SetPanelMin(panel_min);
@@ -487,7 +553,7 @@ namespace ALEngine::Editor
 	void ALEditor::SetDefaultPanel(void)
 	{
 		// Set default sizes and positions
-		
+
 	}
 
 	void ALEditor::Docking(void)
@@ -510,7 +576,7 @@ namespace ALEngine::Editor
 
 		// Set window flags
 		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
-			| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+			| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground
 			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
 		// Make Dockspace active
@@ -519,13 +585,20 @@ namespace ALEngine::Editor
 		// Pop window styles out
 		ImGui::PopStyleVar(3);
 
+		ImGuiDockNodeFlags dock_flag = 0;
+
+		if (!m_ImGuiEnabled)
+		{
+			dock_flag = ImGuiDockNodeFlags_PassthruCentralNode;
+		}
+
 		// Enable dockspace
-		ImGui::DockSpace(ImGui::GetID("DockSpace"));
+		ImGui::DockSpace(ImGui::GetID("DockSpace"), ImVec2(), dock_flag);
 
 		// Make Dockspace inactive
 		ImGui::End();
 	}
-	
+
 	void ALEditor::SaveScene(void)
 	{
 		const u32 nameSize{ 50 };
@@ -538,70 +611,21 @@ namespace ALEngine::Editor
 			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-			// Modal Window
-			if (ImGui::BeginPopupModal("New Scene Name##ModalSaveScene"))
+			m_CurrentSceneName = Utility::WindowsFileDialog::SaveFile("ALEngine Scene (*.scene)\0*.scene\0");
+
+			if (!m_CurrentSceneName.empty())
 			{
-				ImGui::TextWrapped("Scene Does Not Have A Name!");
-				if (ImGui::InputText("Scene Name##SaveSceneName", scene_name, nameSize));
-				
-				// Cancel Button
-				if (ImGui::Button("Cancel##SaveSceneName"))
-				{
-					// Exit
-					ImGui::EndPopup();
-					m_SaveScene = false;
-					return;
-				}
+				if (m_CurrentSceneName.rfind(".scene") == std::string::npos)
+					m_CurrentSceneName += ".scene";
 
-				ImGui::SameLine();
-
-				if (ImGui::Button("Save##SaveSceneName"))
-				{
-					const std::filesystem::path scenePath = "Assets";
-
-					// Check all files in current folder (Assets)
-					b8 alreadyExists{ false };
-					for (auto& dirEntry : std::filesystem::directory_iterator(scenePath))
-					{
-						const auto& path = dirEntry.path();
-
-						std::filesystem::path const& relPath = std::filesystem::relative(path, scenePath);
-
-						std::string const& fileName = relPath.filename().string();
-
-						std::string newName = scene_name;
-						newName += ".scene";
-
-						// Already has another of this name
-						if (fileName == newName)
-						{	// Cannot save
-							alreadyExists = true;
-							break;
-						}
-					}
-
-					// Check if file already exists
-					if (alreadyExists)
-					{	// Reject and request new name
-
-					}
-					else
-					{
-						m_CurrentSceneName = scene_name;
-						std::memset(scene_name, 0, nameSize);
-						Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
-						AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
-						m_SaveScene = false;
-					}
-				}
-				ImGui::EndPopup();
+				u64 str_it = m_CurrentSceneName.rfind("Assets\\");
+				m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());
 			}
 		}
 		else
 		{
 			Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
-			AL_CORE_INFO("Scene {}.scene Saved!", m_CurrentSceneName);
-			m_SaveScene = false;
+			AL_CORE_INFO("Scene {} Saved!", m_CurrentSceneName);
 		}
 	}
 }
@@ -654,6 +678,16 @@ namespace ALEngine::Editor
 		return m_ScenePanel.GetSceneHeight();
 	}
 
+	f32& ALEditor::GetSceneCameraWidth(void)
+	{
+		return m_ScenePanel.GetCameraWidth();
+	}
+
+	f32& ALEditor::GetSceneCameraHeight(void)
+	{
+		return m_ScenePanel.GetCameraHeight();
+	}
+
 	Engine::Camera& ALEditor::GetEditorCamera(void)
 	{
 		return m_ScenePanel.GetEditorCamera();
@@ -670,7 +704,7 @@ namespace ALEngine::Editor
 	{
 		return m_GameIsActive;
 	}
-	
+
 	b8 ALEditor::GetReceivingKBInput(void)
 	{
 		return m_IsReceivingKBInput;
@@ -685,7 +719,7 @@ namespace ALEngine::Editor
 	{
 		return m_EditorInFocus;
 	}
-	
+
 	void ALEditor::SetCurrentSceneName(std::string sceneName)
 	{
 		m_CurrentSceneName = sceneName;
@@ -693,6 +727,19 @@ namespace ALEngine::Editor
 	std::string const& ALEditor::GetCurrentSceneName(void) const
 	{
 		return m_CurrentSceneName;
+	}
+
+	void HelpMarker(const char* desc)
+	{
+		ImGui::TextDisabled("(?)");
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted(desc);
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
 	}
 }
 
