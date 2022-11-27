@@ -17,21 +17,35 @@ namespace ALEngine::ECS
 	//Ease of use for ray
 	using Engine::Physics::Ray2D;
 	using Engine::GameplayInterface::Room;
+
 	//Ease of use
 	using namespace Math; using namespace Engine; using namespace Graphics;
-
 	using GameplayInterface::Pattern;
 	using GameplayInterface::Abilities;
 
+	/*!*********************************************************************************
+	\brief
+		Contains most logic and data to run game PAVE
+	***********************************************************************************/
 	class GameplaySystem : public System
 	{
-		public:		
+		public:
+		/*!*********************************************************************************
+		\brief
+			Status of game, STOP if game is not playing anymore
+							RUNNING if game is still running
+		***********************************************************************************/
 		enum class GAMEPLAY_STATUS
 		{
 			STOP,
 			RUNNING
 		};
 
+
+		/*!*********************************************************************************
+		\brief
+			State of phase of game
+		***********************************************************************************/
 		enum class PHASE_STATUS
 		{
 			PHASE_SETUP,
@@ -39,22 +53,35 @@ namespace ALEngine::ECS
 			PHASE_ENEMY,
 		};
 
+
+		/*!*********************************************************************************
+		\brief
+			State of controlling/movement of unit
+		***********************************************************************************/
 		enum class UNITS_CONTROL_STATUS {
 			NOTHING,
 			UNIT_MOVING,
 			UNIT_ATTACKING
 		};
 
+		/*!*********************************************************************************
+		\brief
+			State of placing pattern onto room
+		***********************************************************************************/
 		enum class PATTERN_PLACEMENT_STATUS {
 			NOTHING, 
 			PLACING_FOR_TILE,
 			PLACING_FOR_ABILITIES
 		};
 
+		/*!*********************************************************************************
+		\brief
+			Container for a move order
+		***********************************************************************************/
 		struct MoveOrder {
-			Entity entity;
-			std::vector<Entity> path;
-			u32 path_step = 1;
+			Entity entity;				//unit
+			std::vector<Entity> path;	//path, list of cells
+			u32 path_step = 1;			//step into the path
 		};
 
 		//******VARIABLES**********//
@@ -1290,22 +1317,24 @@ namespace ALEngine::ECS
 	}
 
 	void DrawGameplaySystem() {
-#if _EDITOR
+	#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
 
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
-#endif
-		if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::STOP) {
-			return;
-		}
+	#endif
 
-		if (!gameplaySystem->is_DebugDraw)
-		{
-			return;
-		}
+	if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::STOP) {
+		return;
+	}
+
+	if (!gameplaySystem->is_DebugDraw)
+	{
+		return;
+	}
+
 		//Box holder
 		Vector2 bottomleft;
 		Vector2 topright;
