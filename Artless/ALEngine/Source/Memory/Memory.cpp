@@ -1,7 +1,7 @@
 /*!
 file:	Memory.cpp
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	Memory Arena. This class handles memory allocation and deallocation by making
 		sure that memory is always streamline
 

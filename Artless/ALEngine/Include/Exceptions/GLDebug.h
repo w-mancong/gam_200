@@ -1,7 +1,7 @@
 /*!
 file:	GLDebug.h
-author:	
-email:	
+author:	Darrion Aw Wei Ting
+email:	weitingdarrion.aw\@digipen.edu
 brief:	This file contains static class to log debugging messages
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

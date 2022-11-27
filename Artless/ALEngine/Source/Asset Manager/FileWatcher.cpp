@@ -1,7 +1,7 @@
 /*!
 file: FileWatcher.cpp
-author	 :	Chan Jie Ming Stanley
-co-author:	Wong Man Cong
+author	 :	Chan Jie Ming Stanley	(90%)
+co-author:	Wong Man Cong			(10%)
 email:	c.jiemingstanley\@digipen.edu
 		w.mancong\@digipen.edu
 brief: This file contains function definition for FileWatcher. FileWatcher handles the

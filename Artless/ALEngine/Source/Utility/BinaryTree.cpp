@@ -1,7 +1,7 @@
 /*!
 file: BinaryTree.cpp
 author: Mohamed Zafir
-email: m.zafir@digipen.edu
+email: m.zafir\@digipen.edu
 brief: This file contains the function definitions for class BinaryTree. Which is a data
        structure to store parent-child relationships.
 
@@ -424,30 +424,6 @@ namespace ALEngine::Tree
         }
         return DestructRight(searchVect[searchVect.size() - 1], id);
     }
-
-    //void BinaryTree::UpdateParentChildrenPos(NodeData const& entity)
-    //{
-    //    Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
-
-    //    if (entity.parent >= 0) // if entity has parent
-    //    {
-    //        Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
-    //        trans.modelMatrix = parentTrans.modelMatrix * Math::mat4::Model(trans);
-    //    }
-    //    else
-    //    {
-    //        /*
-    //            Don't have to construct a model matrix using global coordinates because
-    //            entities that do not have a parent, their local coordinates are their global coordinates
-    //        */
-    //        trans.modelMatrix = Math::mat4::Model(trans);
-    //    }
-
-    //    for (auto& child : GetMap()[entity.id].children)
-    //    {
-    //        UpdateParentChildrenPos(GetMap()[child]);
-    //    }
-    //}
 
     void BinaryTree::DestructRight(Node* node, s32 id)
     {

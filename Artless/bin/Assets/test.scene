@@ -380,7 +380,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.1337890625,
+                    1547.1375732421875,
                     44.69794845581055,
                     0.0
                 ],
@@ -1033,7 +1033,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7134399414063,
+                    967.7158813476563,
                     41.370445251464844,
                     0.0
                 ],
@@ -2195,7 +2195,7 @@
             {
                 "position": [
                     1312.0,
-                    377.9997253417969,
+                    377.99859619140625,
                     0.0
                 ],
                 "scale": [
@@ -2277,7 +2277,7 @@
             {
                 "position": [
                     1312.0,
-                    218.69949340820313,
+                    218.6978302001953,
                     0.0
                 ],
                 "scale": [
@@ -2557,7 +2557,7 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
+                    800.0000610351563,
                     450.0,
                     0.0
                 ],
@@ -2575,7 +2575,7 @@
                 "localActive": false,
                 "id": 60,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -2596,7 +2596,7 @@
         "Transform": [
             {
                 "position": [
-                    1491.199951171875,
+                    1491.19970703125,
                     831.60009765625,
                     0.0
                 ],
@@ -2615,6 +2615,155 @@
                 "id": 61,
                 "parentID": 60,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 62,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    25.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Win_Clear_Text",
+                "active": false,
+                "localActive": false,
+                "id": 62,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "No more enemy, Room Cleared",
+                "currentFont": "Roboto-Bold",
+                "scale": 0.800000011920929,
+                "color": [
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                "position": [
+                    10.0,
+                    400.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 63,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Bar_MenuBackdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    234.99996948242188,
+                    627.800048828125,
+                    0.0
+                ],
+                "scale": [
+                    350.0,
+                    100.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Win_Button",
+                "active": false,
+                "localActive": true,
+                "id": 63,
+                "parentID": 62,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 64,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    0.000030517578125,
+                    0.00006103515625,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Win_Button_Text",
+                "active": false,
+                "localActive": true,
+                "id": 64,
+                "parentID": 63,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Press here to restart",
+                "currentFont": "Roboto-Bold",
+                "scale": 0.800000011920929,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    50.0,
+                    342.0
+                ]
             }
         ]
     }

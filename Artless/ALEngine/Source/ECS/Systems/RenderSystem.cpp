@@ -1,10 +1,11 @@
 /*!
 file:	RenderSystem.cpp
 author: Wong Man Cong
+co-author: Mohamed Zafir (43 lines, 6%)
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition that controls the rendering for the engine
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 

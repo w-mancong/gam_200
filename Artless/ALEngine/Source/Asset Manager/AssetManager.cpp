@@ -1,7 +1,7 @@
 /*!
-file: AssetManager.cpp
-author:		Chan Jie Ming Stanley
-co-author:	Wong Man Cong
+file:		AssetManager.cpp
+author:		Chan Jie Ming Stanley (40%)
+co-author:	Wong Man Cong		  (60%)
 email: c.jiemingstanley\@digipen.edu
 brief: This file contains function definition for AssetManager. AssetManager is a singleton
        pattern class. It will handle asset guid as well as build and generate guid for the

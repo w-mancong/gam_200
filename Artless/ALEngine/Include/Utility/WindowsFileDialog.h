@@ -1,7 +1,7 @@
 /*!
 file:	WindowsFileDialog.h
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function declarations for the WindowsFileDialog class.
 		The WindowsFileDialog class helps to call the Windows API File Dialogs that
 		helps with saving and loading of specific files.

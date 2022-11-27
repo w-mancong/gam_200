@@ -1,7 +1,7 @@
 /*!
 file:	EditorCommandManager.h
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	Contains definitions for the Command Manager for the Editor
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

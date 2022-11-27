@@ -1,7 +1,7 @@
 /*!
 file:	MeshBuilder.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains the function declaration for MeshBuilder.
 		MeshBuilder is a singleton pattern class combined with the concept of a factory.
 		It builds and returns sprites according to the type of Mesh that is tasked to create

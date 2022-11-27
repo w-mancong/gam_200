@@ -1,10 +1,10 @@
 /*!
-file:	EventTriggerSystem.h
-author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+file:   EventTriggerSystem.h
+author: Tan Zhen Xiong
+email:  t.zhenxiong\@digipen.edu
 brief:	This file contains the function declarations for EventTriggerSystem.h
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	EVENT_TRIGGER_SYSTEM_H
 #define EVENT_TRIGGER_SYSTEM_H
@@ -57,7 +57,6 @@ namespace ALEngine
 			\param [in] fp: function that will be subscribed to the trigger
 		***********************************************************************************/
 		void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)(ECS::Entity));
-		//void Unsubscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType);
 	}
 }
 #endif

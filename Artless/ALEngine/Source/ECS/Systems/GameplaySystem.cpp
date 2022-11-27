@@ -1,10 +1,10 @@
 /*!
 file:	GameplaySystem.cpp
 author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+email:	t.zhenxiong\@digipen.edu
 brief:	This file contains the function definition for GameplaySystem.cpp
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
@@ -25,8 +25,14 @@ namespace ALEngine::ECS
 
 	class GameplaySystem : public System
 	{
-		public:
+		public:		
 		enum class GAMEPLAY_STATUS
+		{
+			STOP,
+			RUNNING
+		};
+
+		enum class PHASE_STATUS
 		{
 			PHASE_SETUP,
 			PHASE_ACTION,
@@ -63,7 +69,8 @@ namespace ALEngine::ECS
 		std::vector<Entity> enemyEntityList;
 		u32 enemyMoved = 0;
 
-		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
+		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;
+		PHASE_STATUS currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 		PATTERN_PLACEMENT_STATUS currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
@@ -90,6 +97,9 @@ namespace ALEngine::ECS
 		Entity GUI_Unit_Health, GUI_Unit_Name, GUI_Unit_Attack, GUI_Unit_Defense, GUI_Unit_Movement, GUI_Unit_Range;
 		Entity GUI_Unit_Profile;
 		Entity GUI_Unit_Healthbar;
+
+		//Win
+		Entity GUI_Win_Clear, GUI_Win_Button;
 
 		b8 is_DebugDraw = false;
 
@@ -136,8 +146,12 @@ namespace ALEngine::ECS
 		void Cheat_IncreasePlayerHealth(s32 amount);
 		void Cheat_ToggleDoubleAbilitiesDoubleDamage();
 		void Cheat_DecreaseEnemyHealthToOne();
+		void Cheat_EliminateAllEnemy();
 		void Cheat_ResetAllEnemiesHealth();
 		void Cheat_ResetPlayerHealth();
+		void Cheat_ClearFloorWalkability();
+
+		void Toggle_Gameplay_State(b8 istrue);
 	};
 
 	namespace
@@ -150,7 +164,12 @@ namespace ALEngine::ECS
 		s32 base_Layer = 10000;
 	}
 
-	void Event_Button_Darken(Entity invoker) {
+	void Event_Button_Restart([[maybe_unused]] Entity invoker) {
+		gameplaySystem->Toggle_Gameplay_State(false);
+		Scene::Restart();
+	}
+
+	void Event_Button_Darken([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
 		}
@@ -159,7 +178,7 @@ namespace ALEngine::ECS
 		sprite.color = { 0.6f, 0.6f, 0.6f, 1.f };
 	}
 
-	void Event_Button_Lighten(Entity invoker) {
+	void Event_Button_Lighten([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
 		}
@@ -265,7 +284,7 @@ namespace ALEngine::ECS
 		}
 
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
-			if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP) {
+			if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_SETUP) {
 				b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 			
 				if(canPlace)
@@ -273,7 +292,7 @@ namespace ALEngine::ECS
 				else
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
 			}
-			else if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+			else if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
 				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 
 				if (canPlace)
@@ -301,19 +320,45 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invokerCell);
 		//If not placing, move character
 		if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING && 
-			gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+			gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
 			//When click on cell, Move the player unit to the selected cell
 			gameplaySystem->MovePlayerEntityToCell(invokerCell);
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
+			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+
+			if (!canPlace && !gameplaySystem->godMode) {
+				return;
+			}
+
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
 			gameplaySystem->EndTurn();
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
+			b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+
+			if (!canPlace && !gameplaySystem->godMode) {
+				return;
+			}
+
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
 			gameplaySystem->EndTurn();
+
+			s8 eliminatedEnemyCount = 0;
+			//Check if all enemies are eliminated
+			for (s8 i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+				Unit& enemy = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
+
+				if (enemy.health <= 0) {
+					++eliminatedEnemyCount;
+				}
+			}
+			
+			if (eliminatedEnemyCount >= gameplaySystem->enemyEntityList.size()) {
+				ECS::SetActive(true, gameplaySystem->GUI_Win_Clear);
+			}
 		}
 	}
 
@@ -325,11 +370,13 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
-#if _EDITOR
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
 #endif
+		if (gameplaySystem->m_Room.roomCellsArray)
+			return;
 
 		AL_CORE_INFO("GAME START");
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
@@ -337,8 +384,9 @@ namespace ALEngine::ECS
 		gameplaySystem->m_Room.height = gameplaySystem->roomSize[1];
 		gameplaySystem->m_Room.roomSize = gameplaySystem->getRoomSize();
 		gameplaySystem->m_Room.roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
-		
-		gameplaySystem->currentGameplayStatus = GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP;
+
+		gameplaySystem->currentGameplayStatus = GameplaySystem::GAMEPLAY_STATUS::RUNNING;
+		gameplaySystem->currentPhaseStatus = GameplaySystem::PHASE_STATUS::PHASE_SETUP;
 		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
 		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 		
@@ -451,12 +499,25 @@ namespace ALEngine::ECS
 		gameplaySystem->GUI_Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
 		gameplaySystem->GUI_Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
 
+		gameplaySystem->GUI_Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+		gameplaySystem->GUI_Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+
 		ECS::SetActive(false, gameplaySystem->endTurnBtnEntity);
+		ECS::SetActive(false, gameplaySystem->GUI_Win_Clear);
+
+		CreateEventTrigger(gameplaySystem->GUI_Win_Button);
+
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
+
+		gameplaySystem->Toggle_Gameplay_State(true);
 	}
 
 	void UpdateGameplaySystem(void)
 	{
-#if _EDITOR
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
@@ -466,10 +527,14 @@ namespace ALEngine::ECS
 		}
 #endif
 		
+		if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::STOP) {
+			return;
+		}
+
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton)) {
 			//Deselect Pattern
-			if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_SETUP) {
+			if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_SETUP) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -478,7 +543,7 @@ namespace ALEngine::ECS
 				gameplaySystem->TogglePatternGUI(true);
 			}
 			//Deselect Abilities
-			else if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::PHASE_ACTION) {
+			else if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -517,6 +582,18 @@ namespace ALEngine::ECS
 			gameplaySystem->Cheat_IncreasePlayerHealth(10);
 		}
 
+		if (Input::KeyTriggered(KeyCode::F7)) {
+			gameplaySystem->EndTurn();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F8)) {
+			gameplaySystem->Cheat_EliminateAllEnemy();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F9)) {
+			gameplaySystem->Cheat_ClearFloorWalkability();
+		}
+
 		gameplaySystem->RunGameState();
 		
 		gameplaySystem->UpdateUnitSpriteLayer();
@@ -524,11 +601,11 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
-#if _EDITOR
-		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
-			return;
-		}
-#endif
+		#if EDITOR
+				if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+					return;
+				}
+		#endif
 
 		if (gameplaySystem->m_Room.roomCellsArray != nullptr) {
 			delete[] gameplaySystem->m_Room.roomCellsArray;
@@ -549,9 +626,9 @@ namespace ALEngine::ECS
 
 		ECS::SetActive(false, gameplaySystem->endTurnBtnEntity);
 
-		switch (currentGameplayStatus) {
-			case GAMEPLAY_STATUS::PHASE_SETUP:
-				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ACTION;
+		switch (currentPhaseStatus) {
+			case PHASE_STATUS::PHASE_SETUP:
+				currentPhaseStatus = PHASE_STATUS::PHASE_ACTION;
 
 				AL_CORE_DEBUG("Loading PHASE ACTION");
 
@@ -559,9 +636,9 @@ namespace ALEngine::ECS
 				TogglePatternGUI(false);
 			break;
 
-			case GAMEPLAY_STATUS::PHASE_ACTION:
+			case PHASE_STATUS::PHASE_ACTION:
 				AL_CORE_DEBUG("Loading PHASE ENEMY");
-				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_ENEMY;
+				currentPhaseStatus = PHASE_STATUS::PHASE_ENEMY;
 				enemyMoved = 0;
 
 				ToggleAbilitiesGUI(false);
@@ -569,9 +646,9 @@ namespace ALEngine::ECS
 				MoveEnemy();
 				break;
 			
-			case GAMEPLAY_STATUS::PHASE_ENEMY:
+			case PHASE_STATUS::PHASE_ENEMY:
 				AL_CORE_DEBUG("Loading PHASE SETUP");
-				currentGameplayStatus = GAMEPLAY_STATUS::PHASE_SETUP;
+				currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
 				TogglePatternGUI(true);
 
 				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
@@ -677,13 +754,13 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::SelectPattern(Pattern pattern) { 
-		if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_SETUP) {
+		if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 			currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
 			selected_Pattern = pattern;
 
 			TogglePatternGUI(false);
 		}
-		else if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_ACTION) {
+		else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 			currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
 			selected_Pattern = pattern;
 
@@ -692,7 +769,7 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::SelectAbility(Abilities& ability) {
-		if (currentGameplayStatus == GAMEPLAY_STATUS::PHASE_ACTION) {
+		if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 			selected_Abilities = ability;
 
 			ToggleAbilitiesGUI(false);
@@ -954,6 +1031,7 @@ namespace ALEngine::ECS
 			AL_CORE_INFO("No Space Beside Player, Moving to next enemy");
 			GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
 			++enemyMoved;
+			MoveEnemy();
 			return;
 		}
 
@@ -964,8 +1042,8 @@ namespace ALEngine::ECS
 		
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
-			GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
 			++enemyMoved;
+			MoveEnemy();
 			return;
 		}
 
@@ -981,6 +1059,9 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::RunGameStateMoving() {
+		if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::STOP) {
+			return;
+		}
 
 		//Keep track of next cell destination
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
@@ -996,6 +1077,16 @@ namespace ALEngine::ECS
 		if (Vector3::Distance(movingTransform.localPosition, cellTransform.localPosition) < 10.0f) {
 			Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell());
+			Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(movinUnit.m_CurrentCell_Entity);
+
+			OriginCell.hasUnit = false;
+
+			//Update player cell to current
+			movinUnit.m_CurrentCell_Entity = gameplaySystem->getCurrentEntityCell();
+			cell.unitEntity = movingUnitEntity;
+			cell.hasUnit = true;
+
+
 
 			movingTransform.localPosition = cellTransform.localPosition;
 			movinUnit.coordinate[0] = cell.coordinate.x;
@@ -1012,20 +1103,10 @@ namespace ALEngine::ECS
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 			}
 
-			AL_CORE_INFO("Movement Poitns " + std::to_string(movinUnit.movementPoints));
+			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.movementPoints));
 
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
-
-				Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(movinUnit.m_CurrentCell_Entity);
-
-				OriginCell.hasUnit = false;
-				OriginCell.unitEntity = 0;
-
-				//Update player cell to current
-				movinUnit.m_CurrentCell_Entity = gameplaySystem->getCurrentEntityCell();
-				cell.unitEntity = movingUnitEntity;
-				cell.hasUnit = true;
 
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
 					if (movinUnit.movementPoints <= 0) {
@@ -1141,7 +1222,7 @@ namespace ALEngine::ECS
 			Abilities_List[1].damage = 12;
 		}
 
-		if (currentGameplayStatus != GAMEPLAY_STATUS::PHASE_ACTION) {
+		if (currentPhaseStatus != PHASE_STATUS::PHASE_ACTION) {
 			return;
 		}
 
@@ -1166,6 +1247,16 @@ namespace ALEngine::ECS
 				UpdateGUI_OnSelectUnit(enemyEntityList[i]);
 			}
 		}
+	}	
+	
+	void GameplaySystem::Cheat_EliminateAllEnemy() {
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			GameplayInterface::DoDamageToUnit(enemyEntityList[i], unit.maxHealth);
+		}
+
+		ECS::SetActive(true, gameplaySystem->GUI_Win_Clear);
 	}
 
 	void GameplaySystem::Cheat_ResetAllEnemiesHealth() {
@@ -1185,6 +1276,19 @@ namespace ALEngine::ECS
 		UpdateGUI_OnSelectUnit(playerEntity);
 	}
 
+	void GameplaySystem::Cheat_ClearFloorWalkability() {
+		for (s8 i = 0; i < gameplaySystem->getRoomSize(); ++i) {
+			GameplayInterface::ToggleCellWalkability(gameplaySystem->m_Room, gameplaySystem->m_Room.roomCellsArray[i], false);
+		}
+
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		GameplayInterface::ToggleCellWalkability(gameplaySystem->m_Room, unit.m_CurrentCell_Entity, true);
+	}
+
+	void GameplaySystem::Toggle_Gameplay_State(b8 istrue) {
+		currentGameplayStatus = (istrue ? GAMEPLAY_STATUS::RUNNING : GAMEPLAY_STATUS::STOP);
+	}
+
 	void DrawGameplaySystem() {
 #if _EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
@@ -1194,6 +1298,10 @@ namespace ALEngine::ECS
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
 #endif
+		if (gameplaySystem->currentGameplayStatus == GameplaySystem::GAMEPLAY_STATUS::STOP) {
+			return;
+		}
+
 		if (!gameplaySystem->is_DebugDraw)
 		{
 			return;

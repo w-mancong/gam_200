@@ -1,3 +1,11 @@
+/*!
+file:	StatsHovering.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function declaration that handles hovering over the stats information
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <Scripting/Cpp Scripts/Scripts/StatsHovering.h>
 

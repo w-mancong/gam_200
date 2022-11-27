@@ -1,3 +1,11 @@
+/*!
+file:	Application.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function definition that starts the flow of the entire program
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
 
@@ -81,10 +89,13 @@ namespace ALEngine::Engine
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
+				StartGameplaySystem();
 				LoadCppScripts();
 			}
 			else
 			{
+				Scene::LoadScene();
+				StartGameplaySystem();
 				GameStateManager::current = GameStateManager::previous;
 				GameStateManager::next	  = GameStateManager::previous;
 			}
@@ -154,8 +165,15 @@ namespace ALEngine::Engine
 			if (GameStateManager::next != GameState::Restart)
 				UnloadCppScripts();
 			
+#if EDITOR
+			if(ALEditor::Instance()->GetGameActive())
+#endif
+				Coordinator::Instance()->DestroyEntities();
+
+			ExitGameplaySystem();
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current = GameStateManager::next;
+
 		}
 	}
 

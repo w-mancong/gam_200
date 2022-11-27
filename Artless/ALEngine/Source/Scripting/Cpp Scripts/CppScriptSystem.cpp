@@ -1,3 +1,11 @@
+/*!
+file:	CppScriptSystem.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file provides an interface for a cpp scripting system
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 
 namespace ALEngine

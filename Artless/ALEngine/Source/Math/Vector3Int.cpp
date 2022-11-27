@@ -1,3 +1,11 @@
+/*!
+file:	Vector3Int.cpp
+author: Chan Jie Ming Stanley
+email:	c.jiemingstanley\@digipen.edu
+brief:	This file contain class definition for representing a 3D vector and points using
+integers where the precision of floating-point is not required
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::Math

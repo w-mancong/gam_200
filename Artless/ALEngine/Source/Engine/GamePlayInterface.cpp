@@ -1,7 +1,7 @@
 /*!
 file:	GamePlayInterface.cpp
 author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+email:	t.zhenxiong\@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -142,6 +142,24 @@ namespace ALEngine::Engine::GameplayInterface
 				sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 			}
 		}//End loop through pattern body check
+	}	
+	
+	void ToggleCellWalkability(Room& room, ECS::Entity cellEntity, b8 istrue) {
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		if (!cell.m_isAccessible) {
+			return;
+		}
+
+		cell.m_canWalk = istrue;
+
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+
+		if (istrue) {
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Walkable.png");
+		}
+		else {
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+		}
 	}
 
 	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName) {
@@ -328,7 +346,7 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage) {
-		EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
+		[[maybe_unused]]EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
 		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
