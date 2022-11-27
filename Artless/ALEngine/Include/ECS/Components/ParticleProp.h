@@ -1,3 +1,12 @@
+/*!
+file:	ParticleProp.h
+author:	Mohamed Zafir
+email:	m.zafir\@digipen.edu
+brief:	This file contains the ParticleProperties component
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #ifndef	PARTICLES_H
 #define PARTICLES_H
 

@@ -370,7 +370,6 @@
     <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
     <ClInclude Include="Include\Editor\Panels\InspectorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
-    <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />

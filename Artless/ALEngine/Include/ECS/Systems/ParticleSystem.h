@@ -1,3 +1,12 @@
+/*!
+file:	ParticleSystem.h
+author:	Mohamed Zafir
+email:	m.zafir\@digipen.edu
+brief:	This file contains the function declarations for ParticleSystem.h
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #ifndef	PARTICLESYSTEM_H
 #define PARTICLESYSTEM_H
 
@@ -6,10 +15,23 @@ namespace ALEngine::ECS
 	class ParticleSys : public System
 	{
 	public:
+		/*!*********************************************************************************
+		\brief
+			Updates Particle System components
+		***********************************************************************************/
 		void Update(void);
 	};
 
+	/*!*********************************************************************************
+	\brief
+		Initializes Particle System (calls ParticleSys->Update)
+	***********************************************************************************/
 	void RegisterParticleSystem(void);
+
+	/*!*********************************************************************************
+	\brief
+		Updates Particle System
+	***********************************************************************************/
 	void UpdateParticleSystem(void);
 
 	class ParticleSystem
@@ -41,15 +63,23 @@ namespace ALEngine::ECS
 		/*!*********************************************************************************
 		\brief
 			Renders all active particles in the particle container.
+		\param [in] camera:
+			Camera to render to.
 		***********************************************************************************/
 		void ParticleRender(Engine::Camera const& camera);
 
 		/*!*********************************************************************************
 		\brief
 			Emits the passed in particle property.
+		\param [in] particleProperty:
+			Property of particle to emit.
 		***********************************************************************************/
 		void Emit(const ECS::Component::ParticleProperties& particleProperty);
 
+		/*!*********************************************************************************
+		\brief
+			Return the ParticleSystem.
+		***********************************************************************************/
 		static ParticleSystem& GetParticleSystem();
 
 	private:
