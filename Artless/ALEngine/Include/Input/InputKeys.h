@@ -1,7 +1,7 @@
 /*!
 file:	InputKeys.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contain an enum class that has that contains all the accepted keys
 		for input
 

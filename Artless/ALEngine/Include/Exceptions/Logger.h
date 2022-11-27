@@ -1,7 +1,7 @@
 /*!
 file:	Logger.h
 author:	Darrion Aw Wei Ting
-email:	weitingdarrion.aw@digipen.edu
+email:	weitingdarrion.aw\@digipen.edu
 brief:	This file contains a logger for the project with the use of spdlog.
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

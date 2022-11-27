@@ -1,3 +1,11 @@
+/*!
+file:	SceneManager.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function definition for saving/loading a scene
+
+		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <Engine/GSM/GameStateManager.h>
 
@@ -9,8 +17,9 @@ namespace ALEngine::Engine::Scene
 		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
 
 		std::string currScene;
-
+#if EDITOR
 		std::string state;
+#endif
 	}
 
 	void WriteSprite(TWriter& writer, ECS::Entity en)
@@ -941,6 +950,12 @@ namespace ALEngine::Engine::Scene
 		currScene.clear();
 	}
 
+	void Restart(void)
+	{
+		GameStateManager::next = GameState::Restart;
+	}
+
+#if EDITOR
 	void SaveState(void)
 	{
 		rjs::StringBuffer sb{};
@@ -954,9 +969,5 @@ namespace ALEngine::Engine::Scene
 		doc.Parse(state.c_str());
 		DeserializeScene(doc);
 	}
-
-	void Restart(void)
-	{
-		GameStateManager::next = GameState::Restart;
-	}
+#endif
 }

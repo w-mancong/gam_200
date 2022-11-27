@@ -1,3 +1,11 @@
+/*!
+file:	Application.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function definition that starts the flow of the entire program
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
 

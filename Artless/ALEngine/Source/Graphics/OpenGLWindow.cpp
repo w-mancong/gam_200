@@ -2,8 +2,8 @@
 file:		OpenGLWindow.cpp
 author:		Wong Man Cong
 co-author:	Lucas Nguyen
-email:		w.mancong@digipen.edu
-			l.nguyen@digipen.edu
+email:		w.mancong\@digipen.edu
+			l.nguyen\@digipen.edu
 brief:		This file contains function to initialise the GLFW Window and provides
 			interface to interact with it
 

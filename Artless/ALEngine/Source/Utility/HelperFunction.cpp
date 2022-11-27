@@ -1,3 +1,11 @@
+/*!
+file:	HelperFunctions.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain useful functions declarations to help ease with the process of coding
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::Utility

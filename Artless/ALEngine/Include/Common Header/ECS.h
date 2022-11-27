@@ -1,7 +1,7 @@
 /*!
 file:	ECS.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains all the relevant ECS header files to be included in pch
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

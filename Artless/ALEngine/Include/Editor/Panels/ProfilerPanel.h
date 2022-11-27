@@ -1,7 +1,7 @@
 /*!
 file:	ProfilerPanel.h
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function declarations for the ProfilerPanel class.
 		The ProfilerPanel class contains information and functions necessary for
 		the Profiler Panel of the editor to be displayed.

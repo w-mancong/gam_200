@@ -1,3 +1,11 @@
+/*!
+file:	Matrix2x2.h
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This class provide an interface for creating a 2x2 matrix
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef MATRIX_2X2_H
 #define MATRIX_2X2_H
 

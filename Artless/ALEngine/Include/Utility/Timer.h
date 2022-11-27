@@ -1,7 +1,7 @@
 /*!
 file:		Timer.h
 author:		Lucas Nguyen
-email:		l.nguyen@digipen.edu
+email:		l.nguyen\@digipen.edu
 brief:		This file contains the declaration for the Timer class, which is used to 
 			track the time taken for a function to execute, mainly used for the 
 			Profiler.

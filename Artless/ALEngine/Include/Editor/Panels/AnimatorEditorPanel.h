@@ -3,7 +3,7 @@ file: AudioEditorPanel.h
 author: Chan Jie Ming Stanley
 email: c.jiemingstanley\@digipen.edu
 brief: This file contains the function declaration for AudioEditorPanel.
-	   AudioEditorPanel handles the panel that display the  audio editor
+	   AudioEditorPanel handles the panel that display the create clip/animations panel
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	ANIMATOR_EDITOR_PANEL_H

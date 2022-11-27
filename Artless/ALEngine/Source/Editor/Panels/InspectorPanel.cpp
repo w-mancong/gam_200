@@ -1,12 +1,12 @@
 ﻿/*!
 file:	InspectorPanel.cpp
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the InspectorPanel class.
 		The InspectorPanel class contains information and functions necessary for
 		the Inspector Panel of the editor to be displayed.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
@@ -296,8 +296,7 @@ namespace ALEngine::Editor
 
 					// Check if image (png or jpg)
 					std::string fileString = filePath;
-					if (fileString.find(".jpg") != std::string::npos ||
-						fileString.find(".png") != std::string::npos)
+					if (fileString.find(".png") != std::string::npos)
 					{
 						// Sprite copy
 						Sprite cpy{ spr };

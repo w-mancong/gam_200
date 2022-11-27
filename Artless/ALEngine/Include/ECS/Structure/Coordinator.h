@@ -1,10 +1,10 @@
 /*!
 file:	Coordinator.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains function definitions for Coordinator
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	COORDINATOR_H
 #define COORDINATOR_H
@@ -86,8 +86,8 @@ namespace ALEngine::ECS
 		void DestroyEntity(Entity entity)
 		{
 			m_EntityManager->DestroyEntity(entity);
-			mComponentManager->EntityDestroy(entity);
-			mSystemManager->EntityDestroyed(entity);
+			m_ComponentManager->EntityDestroy(entity);
+			m_SystemManager->EntityDestroyed(entity);
 		}
 
 		/*!*********************************************************************************
@@ -145,7 +145,7 @@ namespace ALEngine::ECS
 		template <typename T>
 		void RegisterComponent(void)
 		{
-			mComponentManager->RegisterComponent<T>();
+			m_ComponentManager->RegisterComponent<T>();
 		}
 
 		/*!*********************************************************************************
@@ -157,11 +157,11 @@ namespace ALEngine::ECS
 		template <typename T>
 		void AddComponent(Entity entity, T component)
 		{
-			mComponentManager->AddComponent<T>(entity, component);
+			m_ComponentManager->AddComponent<T>(entity, component);
 			Signature& signature = m_EntityManager->GetSignature(entity);
-			signature.set(mComponentManager->GetComponentType<T>(), true);
+			signature.set(m_ComponentManager->GetComponentType<T>(), true);
 			m_EntityManager->SetSignature(entity, signature);
-			mSystemManager->EntitySignatureChanged(entity, signature);
+			m_SystemManager->EntitySignatureChanged(entity, signature);
 		}
 
 #if EDITOR
@@ -175,10 +175,10 @@ namespace ALEngine::ECS
 		template <typename T>
 		void RemoveComponent(Entity entity, void (*func)(Entity) = nullptr)
 		{
-			mComponentManager->RemoveComponent<T>(entity);
+			m_ComponentManager->RemoveComponent<T>(entity);
 			Signature& signature = m_EntityManager->GetSignature(entity);
-			signature.set(mComponentManager->GetComponentType<T>(), false);
-			mSystemManager->EntitySignatureChanged(entity, signature);
+			signature.set(m_ComponentManager->GetComponentType<T>(), false);
+			m_SystemManager->EntitySignatureChanged(entity, signature);
 			if(func)
 				func(entity);
 		}
@@ -193,10 +193,10 @@ namespace ALEngine::ECS
 		template <typename T>
 		void RemoveComponent(Entity entity)
 		{
-			mComponentManager->RemoveComponent<T>(entity);
+			m_ComponentManager->RemoveComponent<T>(entity);
 			auto signature = m_EntityManager->GetSignature(entity);
-			signature.set(mComponentManager->GetComponentType<T>(), false);
-			mSystemManager->EntitySignatureChanged(entity, signature);
+			signature.set(m_ComponentManager->GetComponentType<T>(), false);
+			m_SystemManager->EntitySignatureChanged(entity, signature);
 		}
 #endif
 		/*!*********************************************************************************
@@ -212,7 +212,7 @@ namespace ALEngine::ECS
 		template <typename T>
 		T& GetComponent(Entity entity)
 		{
-			return mComponentManager->GetComponent<T>(entity);
+			return m_ComponentManager->GetComponent<T>(entity);
 		}
 
 		/*!*********************************************************************************
@@ -228,7 +228,7 @@ namespace ALEngine::ECS
 		template <typename T>
 		b8 HasComponent(Entity entity)
 		{
-			return mComponentManager->HasComponent<T>(entity);
+			return m_ComponentManager->HasComponent<T>(entity);
 		}
 
 		/*!*********************************************************************************
@@ -241,7 +241,7 @@ namespace ALEngine::ECS
 		template <typename T>
 		ComponentType GetComponentType(void)
 		{
-			return mComponentManager->GetComponentType<T>();
+			return m_ComponentManager->GetComponentType<T>();
 		}
 
 		/*********************************************************************************
@@ -258,7 +258,7 @@ namespace ALEngine::ECS
 		template <typename T>
 		std::shared_ptr<T> RegisterSystem(void)
 		{
-			return mSystemManager->RegisterSystem<T>();
+			return m_SystemManager->RegisterSystem<T>();
 		}
 
 		/*!*********************************************************************************
@@ -271,7 +271,7 @@ namespace ALEngine::ECS
 		template <typename T>
 		void SetSystemSignature(Signature signature)
 		{
-			mSystemManager->SetSignature<T>(signature);
+			m_SystemManager->SetSignature<T>(signature);
 		}
 
 	private:
@@ -285,17 +285,17 @@ namespace ALEngine::ECS
 		void Init(void)
 		{
 			// Create pointers to each manager
-			mComponentManager = std::make_unique<ComponentManager>();
+			m_ComponentManager = std::make_unique<ComponentManager>();
 			m_EntityManager = std::make_unique<EntityManager>();
-			mSystemManager = std::make_unique<SystemManager>();
+			m_SystemManager = std::make_unique<SystemManager>();
 		}
 
 		friend class Templates::Singleton<Coordinator>;
 		friend class Memory::StaticMemory;
 
-		std::unique_ptr<ComponentManager> mComponentManager;
+		std::unique_ptr<ComponentManager> m_ComponentManager;
 		std::unique_ptr<EntityManager> m_EntityManager;
-		std::unique_ptr<SystemManager> mSystemManager;
+		std::unique_ptr<SystemManager> m_SystemManager;
 	};
 }
 

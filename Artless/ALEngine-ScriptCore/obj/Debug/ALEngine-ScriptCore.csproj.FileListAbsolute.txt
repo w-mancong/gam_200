@@ -25,4 +25,3 @@ E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCo
 E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.csproj.CoreCompileInputs.cache
 E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.dll
 E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.pdb
-C:\sandbox\gam_200\Artless\ALEngine-ScriptCore\obj\Debug\ALEngine-ScriptCore.csproj.AssemblyReference.cache

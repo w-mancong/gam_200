@@ -1,7 +1,7 @@
 /*!
 file: BinaryTree.cpp
 author: Mohamed Zafir
-email: m.zafir@digipen.edu
+email: m.zafir\@digipen.edu
 brief: This file contains the function definitions for class BinaryTree. Which is a data
        structure to store parent-child relationships.
 

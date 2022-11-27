@@ -1,7 +1,7 @@
 /*!
 file: ParticleSystemPanel.h
 author: Mohamed Zafir
-email: m.zafir@digipen.edu
+email: m.zafir\@digipen.edu
 brief: This file contains the function declaration for ParticleSystemPanel.
 	   ParticleSystemPanel handles the panel that manages the properties of particles.
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.

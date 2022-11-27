@@ -1,7 +1,7 @@
 ﻿/*!
 file:	MySerializer.h
 author:	Darrion Aw Wei Ting
-email:	weitingdarrion.aw@digipen.edu
+email:	weitingdarrion.aw\@digipen.edu
 brief:	This file contains a custom serializer for the project with the help of rapidJSON
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

@@ -67,6 +67,10 @@ namespace ALEngine::Editor
 
 		std::filesystem::path m_CurrentDirectory;// for keeping track of current file directory or path
 		std::filesystem::path m_MainDirectory;
+
+		std::filesystem::path m_DirectoryToDelete;
+
+		b8 m_OptionPromptEnabled{ false };
 	};
 }
 #endif

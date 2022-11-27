@@ -1,7 +1,7 @@
 /*!
 file:	GamePlayInterface.cpp
 author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+email:	t.zhenxiong\@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -328,7 +328,7 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage) {
-		EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
+		[[maybe_unused]]EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
 		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");

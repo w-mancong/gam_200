@@ -1,3 +1,11 @@
+/*!
+file:	PauseLogic.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function declaration for a pause menu
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <Scripting/Cpp Scripts/Scripts/PauseLogic.h>
 
@@ -33,6 +41,7 @@ namespace ALEngine
 		{
 			Lighten(en);
 			paused = !paused;
+			Time::m_Scale = static_cast<f32>(!paused);
 			SetActive(paused, en_paused);
 		}
 	}
@@ -47,6 +56,7 @@ namespace ALEngine
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
 		{
+			Lighten(en);
 			SetActive(true, htp);
 			SetActive(false, en_paused);
 		}
@@ -61,7 +71,10 @@ namespace ALEngine
 	{
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
+			Lighten(en);
 			SetActive(true, backdrop);
+		}
 	}
 
 	void WhenQuitPointerExit(Entity en)
@@ -91,6 +104,7 @@ namespace ALEngine
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
 		{
+			Lighten(en);
 			SetActive(false, backdrop);
 			WhenQuitNoPointerExit(en);
 		}
@@ -101,6 +115,7 @@ namespace ALEngine
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
 		{
+			Lighten(en);
 			SetActive(false, htp);
 			SetActive(true, en_paused);
 		}
