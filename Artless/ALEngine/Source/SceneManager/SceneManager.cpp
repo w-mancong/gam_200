@@ -1,6 +1,7 @@
 /*!
 file:	SceneManager.cpp
 author:	Wong Man Cong
+co-author: Mohamed Zafir (123 lines, 20%)
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition for saving/loading a scene
 

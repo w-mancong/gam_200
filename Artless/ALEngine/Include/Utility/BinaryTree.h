@@ -139,7 +139,6 @@ namespace ALEngine::Tree
         ***********************************************************************************/
         std::vector<NodeData>const& GetMap() const;
 
-
         /*!*********************************************************************************
             \brief
             Returns a reference to vector of NodeData of all nodes in the BinaryTree
@@ -164,8 +163,22 @@ namespace ALEngine::Tree
         ***********************************************************************************/
         void SetParentChildActive(NodeData const& node, b8 activeState) const;
 
+        /*!*********************************************************************************
+            \brief Move node branch in tree to another node.
+
+            \param [in] branch: Branch to move
+            \param [in] newParent: New parent to move underneath
+        ***********************************************************************************/
         void MoveBranch(s32 branch, s32 newParent);
+
+        /*!*********************************************************************************
+             \brief Serializes Tree for saving scene
+         ***********************************************************************************/
         void SerializeTree();
+
+        /*!*********************************************************************************
+             \brief Deserializes Tree for laoding scene
+         ***********************************************************************************/
         void DeserializeTree();
 
     private:
