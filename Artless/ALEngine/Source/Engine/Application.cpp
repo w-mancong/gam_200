@@ -86,16 +86,16 @@ namespace ALEngine::Engine
 			// Accumulator for fixed delta time
 			f32 accumulator{ 0.f };
 
-			StartGameplaySystem();
-
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
+				StartGameplaySystem();
 				LoadCppScripts();
 			}
 			else
 			{
 				Scene::LoadScene();
+				StartGameplaySystem();
 				GameStateManager::current = GameStateManager::previous;
 				GameStateManager::next	  = GameStateManager::previous;
 			}
@@ -165,7 +165,10 @@ namespace ALEngine::Engine
 			if (GameStateManager::next != GameState::Restart)
 				UnloadCppScripts();
 			
-			Coordinator::Instance()->DestroyEntities();
+#if EDITOR
+			if(ALEditor::Instance()->GetGameActive())
+#endif
+				Coordinator::Instance()->DestroyEntities();
 
 			ExitGameplaySystem();
 			GameStateManager::previous = GameStateManager::current;

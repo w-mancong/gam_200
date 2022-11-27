@@ -18,11 +18,11 @@ namespace ALEngine::Engine::GameplayInterface
 	struct Room
 	{
 		//Will contain array to the room's cell's entity
-		u32* roomCellsArray;
+		u32* roomCellsArray{ nullptr };
 
 		//Size of room
-		u32 width, height;
-		u32 roomSize; //width * height
+		u32 width{}, height{};
+		u32 roomSize{}; //width * height
 	};
 
 	/*!*********************************************************************************
@@ -31,7 +31,7 @@ namespace ALEngine::Engine::GameplayInterface
 	***********************************************************************************/
 	struct Pattern {
 		//list of grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
-		std::vector<Vector2Int> coordinate_occupied;
+		std::vector<Vector2Int> coordinate_occupied{};
 	};
 
 	//***************For now 2 abilities***************//

@@ -357,11 +357,14 @@ namespace ALEngine::ECS
 	}
 
 	void StartGameplaySystem(void) {
-#if _EDITOR
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
 #endif
+		if (gameplaySystem->m_Room.roomCellsArray)
+			return;
+
 		AL_CORE_INFO("GAME START");
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
@@ -501,7 +504,7 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
-#if _EDITOR
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}
@@ -581,7 +584,7 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
-#if _EDITOR
+#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
 		}

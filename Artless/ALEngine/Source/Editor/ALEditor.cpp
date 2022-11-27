@@ -434,12 +434,12 @@ namespace ALEngine::Editor
 					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
-					//ECS::StartGameplaySystem();
+					ECS::StartGameplaySystem();
 				}
 				else
 				{
 					Coordinator::Instance()->DestroyEntities();
-					//ECS::ExitGameplaySystem();
+					ECS::ExitGameplaySystem();
 
 					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);

@@ -947,7 +947,6 @@ namespace ALEngine::Engine::Scene
 	void LoadScene(void)
 	{
 		LoadScene(currScene.c_str());
-		currScene.clear();
 	}
 
 	void Restart(void)
