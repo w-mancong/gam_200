@@ -21,6 +21,7 @@ namespace ALEngine::Editor
 	ContentBrowserPanel::ContentBrowserPanel()
 	:m_CurrentDirectory(assetPath),
 	m_MainDirectory(assetPath),
+	subDirectory(assetPath),
 	searchKeyword(""),
 	m_OptionPromptEnabled(false)
 	{}
@@ -63,9 +64,45 @@ namespace ALEngine::Editor
 			//selectable files
 		   // ImGui::MenuItem(fileNamestring.c_str());
 
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
-			if (ImGui::TreeNodeEx(fileNamestring.c_str(), flags))
+			if (directoryEntry.is_directory())
 			{
+				if (ImGui::TreeNodeEx(fileNamestring.c_str()))
+				{
+					//selectable to show file
+					for (auto& subDirectoryEntry : std::filesystem::recursive_directory_iterator(directoryEntry))
+					{
+						const auto& subpath = subDirectoryEntry.path();
+
+						//file relative path
+						std::filesystem::path const& subRelativePath = std::filesystem::relative(subpath, assetPath);
+
+						//file name from relative path 
+						std::string const& subFileNamestring = subRelativePath.filename().string();
+
+						if (subFileNamestring.find(".meta") != std::string::npos)
+						{
+							continue;
+						}
+
+						//selectable files
+						ImGui::Selectable(subFileNamestring.c_str());
+
+						//for dragging file, need to fix window crash when moving window
+						if (ImGui::BeginDragDropSource())
+						{
+							const wchar_t* itemPath = subRelativePath.c_str();
+							ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+							ImGui::EndDragDropSource();
+						}
+
+					}
+
+					ImGui::TreePop();
+				}
+			}
+			else
+			{
+				ImGui::Selectable(fileNamestring.c_str());
 				//for dragging file, need to fix window crash when moving window
 				if (ImGui::BeginDragDropSource())
 				{
@@ -73,17 +110,6 @@ namespace ALEngine::Editor
 					ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 					ImGui::EndDragDropSource();
 				}
-
-				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
-				{
-					if (directoryEntry.is_directory() && (m_MainDirectory == m_CurrentDirectory))
-					{
-						//selectable to show file
-						m_CurrentDirectory /= path.filename();
-					}
-				}
-
-				ImGui::TreePop();
 			}
 		
 			//set next column
