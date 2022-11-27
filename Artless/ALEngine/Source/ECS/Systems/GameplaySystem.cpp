@@ -327,7 +327,7 @@ namespace ALEngine::ECS
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
 			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 
-			if (!canPlace) {
+			if (!canPlace && !gameplaySystem->godMode) {
 				return;
 			}
 
@@ -338,7 +338,7 @@ namespace ALEngine::ECS
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
 			b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 
-			if (!canPlace) {
+			if (!canPlace && !gameplaySystem->godMode) {
 				return;
 			}
 
