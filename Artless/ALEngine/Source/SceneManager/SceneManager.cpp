@@ -1,4 +1,5 @@
 #include <pch.h>
+#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine::Engine::Scene
 {
@@ -6,6 +7,8 @@ namespace ALEngine::Engine::Scene
 	{
 		namespace rjs = rapidjson;
 		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
+
+		std::string currScene;
 
 		std::string state;
 	}
@@ -921,6 +924,8 @@ namespace ALEngine::Engine::Scene
 			return;
 		}
 
+		currScene = sceneName;
+
 		rjs::Document doc;
 		doc.Parse(buffer);
 		Memory::DynamicMemory::Delete(buffer);
@@ -928,6 +933,12 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->DestroyEntities();
 
 		DeserializeScene(doc);
+	}
+
+	void LoadScene(void)
+	{
+		LoadScene(currScene.c_str());
+		currScene.clear();
 	}
 
 	void SaveState(void)
@@ -942,5 +953,10 @@ namespace ALEngine::Engine::Scene
 		rjs::Document doc;
 		doc.Parse(state.c_str());
 		DeserializeScene(doc);
+	}
+
+	void Restart(void)
+	{
+		GameStateManager::next = GameState::Restart;
 	}
 }

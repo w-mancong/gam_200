@@ -41,7 +41,7 @@ namespace ALEngine::ECS
 		Entity CreateEntity(void)
 		{
 			// Get entity ID
-			Entity ent_id = mEntityManager->CreateEntity();
+			Entity ent_id = m_EntityManager->CreateEntity();
 
 			// Entity data
 			Component::EntityData data{ "entity #" + std::to_string(static_cast<u32>(ent_id)), true, true, ent_id };
@@ -65,7 +65,7 @@ namespace ALEngine::ECS
 		Entity CreateEntity(const c8* tag)
 		{
 			// Get entity ID
-			Entity ent_id = mEntityManager->CreateEntity();
+			Entity ent_id = m_EntityManager->CreateEntity();
 
 			// Entity data
 			Component::EntityData data{ tag, true, true, ent_id };
@@ -85,7 +85,7 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void DestroyEntity(Entity entity)
 		{
-			mEntityManager->DestroyEntity(entity);
+			m_EntityManager->DestroyEntity(entity);
 			mComponentManager->EntityDestroy(entity);
 			mSystemManager->EntityDestroyed(entity);
 		}
@@ -97,7 +97,7 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		EntityList const& GetEntities()
 		{
-			return mEntityManager->GetActiveEntities();
+			return m_EntityManager->GetActiveEntities();
 		}
 
 		/*!*********************************************************************************
@@ -105,8 +105,10 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void DestroyEntities(void)
 		{
+			if (m_EntityManager->GetActiveEntities().empty())
+				return;
 			GetSceneGraph().Destruct(-1); // destroy scene graph
-			EntityList const& entities = mEntityManager->GetActiveEntities();
+			EntityList const& entities = m_EntityManager->GetActiveEntities();
 			// Store all active entities into a temporary container
 			std::vector<Entity> temp; temp.reserve(entities.size());
 			std::copy(entities.begin(), entities.end(), std::back_inserter(temp));
@@ -123,7 +125,7 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		Entity GetEntityByTag(std::string const& tag)
 		{
-			EntityList const& list = mEntityManager->GetActiveEntities();
+			EntityList const& list = m_EntityManager->GetActiveEntities();
 			for (Entity en : list)
 			{
 				Component::EntityData const& ed = Coordinator::Instance()->GetComponent<Component::EntityData>(en);
@@ -156,9 +158,9 @@ namespace ALEngine::ECS
 		void AddComponent(Entity entity, T component)
 		{
 			mComponentManager->AddComponent<T>(entity, component);
-			Signature& signature = mEntityManager->GetSignature(entity);
+			Signature& signature = m_EntityManager->GetSignature(entity);
 			signature.set(mComponentManager->GetComponentType<T>(), true);
-			mEntityManager->SetSignature(entity, signature);
+			m_EntityManager->SetSignature(entity, signature);
 			mSystemManager->EntitySignatureChanged(entity, signature);
 		}
 
@@ -174,7 +176,7 @@ namespace ALEngine::ECS
 		void RemoveComponent(Entity entity, void (*func)(Entity) = nullptr)
 		{
 			mComponentManager->RemoveComponent<T>(entity);
-			Signature& signature = mEntityManager->GetSignature(entity);
+			Signature& signature = m_EntityManager->GetSignature(entity);
 			signature.set(mComponentManager->GetComponentType<T>(), false);
 			mSystemManager->EntitySignatureChanged(entity, signature);
 			if(func)
@@ -192,7 +194,7 @@ namespace ALEngine::ECS
 		void RemoveComponent(Entity entity)
 		{
 			mComponentManager->RemoveComponent<T>(entity);
-			auto signature = mEntityManager->GetSignature(entity);
+			auto signature = m_EntityManager->GetSignature(entity);
 			signature.set(mComponentManager->GetComponentType<T>(), false);
 			mSystemManager->EntitySignatureChanged(entity, signature);
 		}
@@ -284,7 +286,7 @@ namespace ALEngine::ECS
 		{
 			// Create pointers to each manager
 			mComponentManager = std::make_unique<ComponentManager>();
-			mEntityManager = std::make_unique<EntityManager>();
+			m_EntityManager = std::make_unique<EntityManager>();
 			mSystemManager = std::make_unique<SystemManager>();
 		}
 
@@ -292,7 +294,7 @@ namespace ALEngine::ECS
 		friend class Memory::StaticMemory;
 
 		std::unique_ptr<ComponentManager> mComponentManager;
-		std::unique_ptr<EntityManager> mEntityManager;
+		std::unique_ptr<EntityManager> m_EntityManager;
 		std::unique_ptr<SystemManager> mSystemManager;
 	};
 }

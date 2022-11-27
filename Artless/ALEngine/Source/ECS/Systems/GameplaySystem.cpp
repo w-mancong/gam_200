@@ -154,8 +154,7 @@ namespace ALEngine::ECS
 	}
 
 	void Event_Button_Restart([[maybe_unused]] Entity invoker) {
-		Coordinator::Instance()->DestroyEntities();
-		Scene::LoadScene(sceneName.c_str());
+		Scene::Restart();
 	}
 
 	void Event_Button_Darken([[maybe_unused]] Entity invoker) {

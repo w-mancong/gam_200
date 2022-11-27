@@ -85,6 +85,7 @@ namespace ALEngine::Engine
 			}
 			else
 			{
+				Scene::LoadScene();
 				GameStateManager::current = GameStateManager::previous;
 				GameStateManager::next	  = GameStateManager::previous;
 			}
@@ -154,6 +155,8 @@ namespace ALEngine::Engine
 			if (GameStateManager::next != GameState::Restart)
 				UnloadCppScripts();
 			
+			Coordinator::Instance()->DestroyEntities();
+
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current = GameStateManager::next;
 		}
