@@ -33,6 +33,7 @@ namespace ALEngine
 		{
 			Lighten(en);
 			paused = !paused;
+			Time::m_Scale = static_cast<f32>(!paused);
 			SetActive(paused, en_paused);
 		}
 	}
@@ -47,6 +48,7 @@ namespace ALEngine
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
 		{
+			Lighten(en);
 			SetActive(true, htp);
 			SetActive(false, en_paused);
 		}
@@ -61,7 +63,10 @@ namespace ALEngine
 	{
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
+			Lighten(en);
 			SetActive(true, backdrop);
+		}
 	}
 
 	void WhenQuitPointerExit(Entity en)
@@ -91,6 +96,7 @@ namespace ALEngine
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
 		{
+			Lighten(en);
 			SetActive(false, backdrop);
 			WhenQuitNoPointerExit(en);
 		}
@@ -101,6 +107,7 @@ namespace ALEngine
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
 		{
+			Lighten(en);
 			SetActive(false, htp);
 			SetActive(true, en_paused);
 		}

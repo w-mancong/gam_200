@@ -748,19 +748,25 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::UpdateUnitSpriteLayer() {
-		for (int i = 0; i < enemyEntityList.size(); ++i) {
+		for (s32 i = 0; i < static_cast<s32>(enemyEntityList.size()); ++i) {
 			Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(enemyEntityList[i]);
 			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
 			Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 
-			enemySprite.layer = base_Layer - static_cast<s32>(enemyTransform.localPosition.y);
+			if (utils::IsEqual(Time::m_Scale, 1.0f))
+				enemySprite.layer = base_Layer - static_cast<s32>(enemyTransform.localPosition.y);
+			else
+				enemySprite.layer = 1;
 		}
 
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
 
-		playerSprite.layer = base_Layer - static_cast<s32>(playerTransform.localPosition.y);
+		if (utils::IsEqual(Time::m_Scale, 1.0f))
+			playerSprite.layer = base_Layer - static_cast<s32>(playerTransform.localPosition.y);
+		else
+			playerSprite.layer = 1;
 	}
 
 	void CreatePlayerUnit(Entity entity) {
