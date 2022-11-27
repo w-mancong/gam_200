@@ -19,12 +19,23 @@ namespace ALEngine::Graphics
 		void ResizeWindow([[maybe_unused]] GLFWwindow* _window, s32 width, s32 height)
 		{
 			glViewport(0, 0, width, height);
+			OpenGLWindow::width = width, OpenGLWindow::height = height;
 			OpenGLWindow::ar = static_cast<f32>(width) / static_cast<f32>(height);
+
+#if EDITOR
+			//f32& cameraWidth  = Editor::ALEditor::Instance()->GetSceneCameraWidth();
+			//f32& cameraHeight = Editor::ALEditor::Instance()->GetSceneCameraHeight();
+
+			////Editor::ALEditor::Instance()->GetSceneCameraWidth() = cameraWidth * width / cameraWidth;
+			//cameraWidth *= static_cast<f32>(width) / cameraWidth;
+			//cameraHeight = cameraWidth / OpenGLWindow::ar;
+			//m_CameraHeight = m_CameraWidth / Graphics::OpenGLWindow::ar;
+#endif
 		}
 
 		void window_close_callback([[maybe_unused]] GLFWwindow* _window)
 		{
-			Engine::SetAppStatus(0);
+			Engine::TerminateEngine();
 		}
 
 		void window_focus_callback([[maybe_unused]] GLFWwindow* window, s32 focused)
@@ -33,12 +44,25 @@ namespace ALEngine::Graphics
 			//focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);
 #endif
 			Engine::SetWindowFocus(focused);
-			Engine::ToggleMuteChannel(Engine::Channel::Master);
+			Engine::TogglePauseChannel(Engine::Channel::Master);
 		}
 
 		void scroll_callback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] f64 xoffset, f64 yoffset)
 		{
 			Input::m_MouseWheelEvent = yoffset < 0 ? MouseWheelEvent::MouseWheelDown : MouseWheelEvent::MouseWheelUp;
+		}
+
+		math::vec2Int GetMonitorSize(void)
+		{
+			RECT desktop;
+			HWND const hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+
+			return
+			{
+				desktop.right,
+				desktop.bottom
+			};
 		}
 
 		u32 constexpr DEFAULT_WIDTH{ 1200 }, DEFAULT_HEIGHT{ 600 };
@@ -56,13 +80,13 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_SAMPLES, 4);
 
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-		//Console::StopConsole();
+		//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 #ifdef _DEBUG
 		// Enable OPENGL Debug Context if on debug mode
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+#else
+		Console::StopConsole();
 #endif
 
 #ifdef __APPLE__
@@ -93,8 +117,15 @@ namespace ALEngine::Graphics
 			return;
 		}
 
+		s32 x{ 0 }, y{ 0 };
+		math::Vec2Int desktop = GetMonitorSize();
+		x = (desktop.x >> 1) - (width >> 1);
+		y = (desktop.y >> 1) - (height >> 1);
+		glfwSetWindowPos(window, x, y);
+
+#ifdef _DEBUG
 		// Check GL Context
-		int flags{ 0 }; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+		s32 flags{ 0 }; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 		{	// If it Debug Context is active				
 			glEnable(GL_DEBUG_OUTPUT);	// Enable GL_DEBUG_OUTPUT
@@ -104,8 +135,7 @@ namespace ALEngine::Graphics
 			//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 		}
 
-#ifdef _DEBUG
-		int major{ 0 }, minor{ 0 };
+		s32 major{ 0 }, minor{ 0 };
 		glGetIntegerv(GL_MAJOR_VERSION, &major);
 		glGetIntegerv(GL_MINOR_VERSION, &minor);
 		std::cout << "Version: " << major << "." << minor << std::endl;
@@ -153,17 +183,23 @@ namespace ALEngine::Graphics
 
 	void OpenGLWindow::FullScreen(bool fullScreen)
 	{
-		s32 w = 0, h = 0;	// sorta buggy code: cannot see the window border
+		s32 w{ 0 }, h{ 0 }, x{ 0 }, y{ 0 };
+		math::Vec2Int desktop = GetMonitorSize();
 		if (fullScreen)
 		{
-			RECT desktop;
-			HWND const hDesktop = GetDesktopWindow();
-			GetWindowRect(hDesktop, &desktop);
-			w = desktop.right; h = desktop.bottom;
+			w = desktop.x;
+			h = desktop.y;
 		}
 		else
-			w = width, h = height;
-		glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : NULL, 0, 0, w, h, GLFW_DONT_CARE);
+		{
+			w = width;
+			h = height;
+			x = (desktop.x >> 1) - (width  >> 1);
+			y = (desktop.y >> 1) - (height >> 1);
+		}
+		glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : nullptr, x, y, w, h, GLFW_DONT_CARE);
+		glfwGetWindowSize(window, &w, &h);
+		width = static_cast<u32>(w), height = static_cast<u32>(h);
 	}
 
 	GLFWwindow* OpenGLWindow::Window(void)

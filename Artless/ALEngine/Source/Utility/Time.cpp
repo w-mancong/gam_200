@@ -15,8 +15,11 @@ namespace ALEngine::Utility
 	static constexpr long NUM_NANO_IN_SEC = 1000000000;
 
 	// Static member variables definition
-	f32 Time::m_DeltaTime = 0.0f, 
-		Time::m_FPS = 0.0f;
+	f32 Time::m_DeltaTime{ 0.0f },
+		Time::m_FPS{ 0.0f },
+		Time::m_ActualDeltaTime{ 0.f },
+		Time::m_Scale{ 1.0f };
+
 	const f32 Time::m_FixedDeltaTime = 1.f / 60.f;	// Fixed delta time is 60 fps
 
 	s32 Time::m_TargetFPS = 0;	// 0 means unlimited
@@ -49,6 +52,9 @@ namespace ALEngine::Utility
 
 	void Time::WaitUntil(void)
 	{
+#if EDITOR
+		ZoneScopedN("FPS Wait");
+#endif
 		auto time_diff = hd_clock::now() - m_ClockedTime;
 		const auto ideal_wait_time = nanoseconds(NUM_NANO_IN_SEC / Time::m_TargetFPS);
 
@@ -63,7 +69,8 @@ namespace ALEngine::Utility
 		}
 
 		// Calculate Delta Time
-		m_DeltaTime = static_cast<float>(static_cast<f64>(time_diff.count()) / static_cast<f64>(NUM_NANO_IN_SEC));
+		m_ActualDeltaTime = static_cast<float>(static_cast<f64>(time_diff.count()) / static_cast<f64>(NUM_NANO_IN_SEC));
+		m_DeltaTime = m_ActualDeltaTime * m_Scale;
 
 		// Calculate the number of ticks in the last 100 frames
 		m_TickSum -= m_Ticks[m_TickIndex];	// Subtract tick value falling off

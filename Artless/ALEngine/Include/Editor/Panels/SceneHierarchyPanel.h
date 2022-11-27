@@ -42,16 +42,6 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
-			Updates the entity for the Scene Hierarchy Panel
-			\param child
-			Child entity to be updated onto the Scene Hierarchy Panel
-			\param popup_hasopen
-			Boolean for whether there is a popup
-		***********************************************************************************/
-		void UpdateEntitySHP(ECS::Entity child, b8& popup_hasopen);
-
-		/*!*********************************************************************************
-			\brief
 			Set the panel's minimum size
 			\param min
 			Panel's min size
@@ -69,6 +59,22 @@ namespace ALEngine::Editor
 		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
 	private:
+		/*!*********************************************************************************
+			\brief
+			Updates the entity for the Scene Hierarchy Panel
+			\param child
+			Child entity to be updated onto the Scene Hierarchy Panel
+			\param popup_hasopen
+			Boolean for whether there is a popup
+		***********************************************************************************/
+		void UpdateEntitySHP(ECS::Entity child, b8& popup_hasopen);
+
+		/*!*********************************************************************************
+			\brief
+			Updates the Menu Bar for the Scene Hierarchy Panel
+		***********************************************************************************/
+		void UpdateMenuBar(void);
+
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size
 

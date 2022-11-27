@@ -47,4 +47,4 @@ Artless/Extern/include/glm
 Artless/bin/logs
 
 # Don't Ignore
-!Artless/bin/Assets/Dev/Tracy/*
+!Artless/bin/Tracy/*

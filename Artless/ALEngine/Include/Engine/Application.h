@@ -44,6 +44,11 @@ namespace ALEngine::Engine
 	***********************************************************************************/
 	void SetWindowFocus(bool _focus);
 
+	/*!*********************************************************************************
+		\brief Call this function to terminate the program
+	***********************************************************************************/
+	void TerminateEngine(void);
+
 #if EDITOR
 	/*!*********************************************************************************
 		\brief Toggle between editor mode and game mode

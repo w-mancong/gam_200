@@ -49,13 +49,13 @@ namespace ALEngine
 			\brief
 			create player unit entity
 		***********************************************************************************/
-		void CreatePlayerUnit(Entity const& entity);
+		void CreatePlayerUnit(Entity entity);
 
 		/*!*********************************************************************************
 			\brief
 	        create enemy unit entity
 		***********************************************************************************/
-		void CreateEnemyUnit(Entity const& entity);
+		void CreateEnemyUnit(Entity entity);
 	}
 }
 #endif

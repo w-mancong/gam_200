@@ -235,6 +235,16 @@ namespace ALEngine::Editor
 		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
 	}
 
+	f32& ScenePanel::GetCameraWidth(void)
+	{
+		return m_CameraWidth;
+	}
+
+	f32& ScenePanel::GetCameraHeight(void)
+	{
+		return m_CameraHeight;
+	}
+
 	Engine::Camera& ScenePanel::GetEditorCamera(void)
 	{
 		return m_EditorCamera;
@@ -253,16 +263,23 @@ namespace ALEngine::Editor
 
 	void ScenePanel::UserInput(void)
 	{
+		m_EditorCamera.Update();
+
 		f32 constexpr CAM_SPEED{ 7.5f };
 
-		if (Input::KeyDown(KeyCode::Up))
-			m_EditorCamera.Position().y += CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Left))
-			m_EditorCamera.Position().x -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Down))
-			m_EditorCamera.Position().y -= CAM_SPEED;
-		if (Input::KeyDown(KeyCode::Right))
-			m_EditorCamera.Position().x += CAM_SPEED;
+		ImGuiIO io = ImGui::GetIO();
+
+		if (io.WantTextInput == false)
+		{
+			if (ImGui::IsKeyDown(ImGuiKey_UpArrow))
+				m_EditorCamera.Position().y += CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_LeftArrow))
+				m_EditorCamera.Position().x -= CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_DownArrow))
+				m_EditorCamera.Position().y -= CAM_SPEED;
+			if (ImGui::IsKeyDown(ImGuiKey_RightArrow))
+				m_EditorCamera.Position().x += CAM_SPEED;
+		}
 
 		// Right Mouse Button Move Camera
 		static Math::Vec2 mousePosBegin{};

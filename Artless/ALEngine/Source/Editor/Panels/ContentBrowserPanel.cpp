@@ -177,9 +177,15 @@ namespace ALEngine::Editor
 				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}
 			// To display scene icon
-			else if (fileNamestring.find(".scene") != std::string::npos || fileNamestring.find(".map") != std::string::npos)
+			else if (fileNamestring.find(".scene") != std::string::npos)
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_Scene.png");
+				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
+				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+			}
+			else if (fileNamestring.find(".map") != std::string::npos)
+			{
+				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Dev\\Images\\Icon_TileEditor.png");
 				u64 texture = static_cast<u64>(Engine::AssetManager::Instance()->GetButtonImage(id));
 				ImGui::ImageButton(reinterpret_cast<ImTextureID>(texture), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 			}

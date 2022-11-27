@@ -2,6 +2,9 @@
     {
         "Empty": "Assets\\Images\\InitialTile_v04.png",
         "Enemy": "Assets\\Images\\Profile_Enemy_Unit.png",
+        "Enemy 2": "Assets\\Images\\Bar_HPFull.png",
+        "Enemy 3": "Assets\\Images\\Player v2.png",
+        "Enemy 4": "",
         "Wall": "Assets\\Images\\Walkable.png"
     }
 ]

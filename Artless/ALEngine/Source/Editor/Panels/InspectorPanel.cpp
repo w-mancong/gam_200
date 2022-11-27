@@ -110,9 +110,9 @@ namespace ALEngine::Editor
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
 		//	DisplayAnimator();
 
-		// Check if there is Script component
-		if (Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
-			DisplayEntityScript();
+		//// Check if there is Script component
+		//if (Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+		//	DisplayEntityScript();
 
 		// Add component button
 		AddComponentButton();
@@ -163,12 +163,12 @@ namespace ALEngine::Editor
 		EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_SelectedEntity);
 
 		// Entity active
-		if (ImGui::Checkbox("##active", &data.localActive))
+		if (ImGui::Checkbox("##active", &data.selfActive))
 		{
 			Tree::BinaryTree const& sceneGraph = ECS::GetSceneGraph(0);
 			Tree::BinaryTree::NodeData const& node = sceneGraph.GetMap()[m_SelectedEntity];
 
-			data.active = data.localActive;
+			data.active = data.selfActive;
 			sceneGraph.SetParentChildActive(node, data.active);
 		}
 
@@ -232,7 +232,7 @@ namespace ALEngine::Editor
 			//EDITOR_KEYBOARD_CHECK
 
 			ImGui::DragFloat2("Sc", mtx_scale, v_speed);			// Scale
-			EDITOR_KEYBOARD_CHECK
+			//EDITOR_KEYBOARD_CHECK
 
 				// Set changes
 				Transform a(xform);
@@ -324,8 +324,9 @@ namespace ALEngine::Editor
 			ImGui::PopID();
 
 			// Render Layer
-			s32 renderLayer{ 0 };
+			s32 renderLayer{ static_cast<s32>(spr.layer) };
 			ImGui::DragInt("Render Layer", &renderLayer, 1.f, 0, 256);
+			spr.layer = static_cast<u32>(renderLayer);
 
 			// Color wheel
 			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
@@ -338,6 +339,7 @@ namespace ALEngine::Editor
 			cpy.color.g = clr[1];
 			cpy.color.b = clr[2];
 			cpy.color.a = clr[3];
+			cpy.layer = renderLayer;
 
 			if (cpy.color.r != spr.color.r || cpy.color.g != spr.color.g ||
 				cpy.color.b != spr.color.b || cpy.color.a != spr.color.a)
@@ -922,19 +924,19 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
-				case InspectorComponents::InComp_Script:
-					// Check if has component
-					if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
-					{
-						if (ImGui::Selectable("Script Component") &&
-							m_SelectedEntity != ECS::MAX_ENTITIES)
-						{
-							// Add Script Component
-							ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
-						}
-						++count;
-					}
-					break;
+				//case InspectorComponents::InComp_Script:
+				//	// Check if has component
+				//	if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
+				//	{
+				//		if (ImGui::Selectable("Script Component") &&
+				//			m_SelectedEntity != ECS::MAX_ENTITIES)
+				//		{
+				//			// Add Script Component
+				//			ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
+				//		}
+				//		++count;
+				//	}
+				//	break;
 				case InspectorComponents::InComp_Audio:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))

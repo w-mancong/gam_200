@@ -16,8 +16,8 @@
         "Transform": [
             {
                 "position": [
-                    103.769775390625,
-                    94.3133544921875,
+                    102.5,
+                    92.29998779296875,
                     0.0
                 ],
                 "scale": [
@@ -75,6 +75,19 @@
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "StatsInit"
+                ],
+                "Update": [],
+                "Free": [
+                    "StatsReset"
+                ],
+                "Unload": []
+            }
         ]
     },
     {
@@ -94,8 +107,8 @@
         "Transform": [
             {
                 "position": [
-                    152.64837646484375,
-                    209.5433349609375,
+                    152.64834594726563,
+                    209.54335021972656,
                     0.0
                 ],
                 "scale": [
@@ -112,7 +125,7 @@
                 "localActive": true,
                 "id": 2,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -134,7 +147,7 @@
             {
                 "position": [
                     1170.197998046875,
-                    60.120452880859375,
+                    60.12043762207031,
                     0.0
                 ],
                 "scale": [
@@ -151,7 +164,7 @@
                 "localActive": true,
                 "id": 3,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -211,8 +224,8 @@
         "Transform": [
             {
                 "position": [
-                    152.64837646484375,
-                    209.54319763183594,
+                    152.64834594726563,
+                    209.543212890625,
                     0.0
                 ],
                 "scale": [
@@ -367,7 +380,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.130126953125,
+                    1547.1337890625,
                     44.69794845581055,
                     0.0
                 ],
@@ -407,7 +420,7 @@
             {
                 "position": [
                     102.5,
-                    92.29998779296875,
+                    92.30000305175781,
                     0.0
                 ],
                 "scale": [
@@ -421,7 +434,7 @@
             {
                 "tag": "profile_enemy",
                 "active": false,
-                "localActive": true,
+                "localActive": false,
                 "id": 10,
                 "parentID": -1,
                 "treeNodeFlags": 32
@@ -439,7 +452,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 254
             }
         ],
         "Transform": [
@@ -556,7 +569,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
@@ -595,14 +608,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
                     800.0,
-                    772.0000610351563,
+                    772.0001220703125,
                     0.0
                 ],
                 "scale": [
@@ -634,21 +647,21 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
-                    641.676513671875,
-                    352.97406005859375,
+                    642.0,
+                    353.0,
                     0.0
                 ],
                 "scale": [
                     300.0,
                     200.0
                 ],
-                "rotation": 0.25868770480155945
+                "rotation": 0.0
             }
         ],
         "EntityData": [
@@ -673,21 +686,21 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
-                    542.3969116210938,
-                    414.6083068847656,
+                    542.9996337890625,
+                    415.08172607421875,
                     0.0
                 ],
                 "scale": [
                     60.0,
                     46.0
                 ],
-                "rotation": 0.25868770480155945
+                "rotation": 0.0
             }
         ],
         "EntityData": [
@@ -705,7 +718,7 @@
         "id": 18,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\HardDrop.png",
                 "color": [
                     1.0,
                     1.0,
@@ -719,7 +732,7 @@
             {
                 "position": [
                     346.94537353515625,
-                    43.26408386230469,
+                    43.26409912109375,
                     0.0
                 ],
                 "scale": [
@@ -736,7 +749,20 @@
                 "localActive": true,
                 "id": 18,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [
+                    "SkillReset"
+                ],
+                "Unload": []
             }
         ]
     },
@@ -744,7 +770,7 @@
         "id": 19,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\LifeDrain.png",
                 "color": [
                     1.0,
                     1.0,
@@ -758,7 +784,7 @@
             {
                 "position": [
                     410.9453430175781,
-                    43.24730682373047,
+                    43.247314453125,
                     0.0
                 ],
                 "scale": [
@@ -775,7 +801,18 @@
                 "localActive": true,
                 "id": 19,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -783,7 +820,7 @@
         "id": 20,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\cross.png",
                 "color": [
                     1.0,
                     1.0,
@@ -796,8 +833,8 @@
         "Transform": [
             {
                 "position": [
-                    474.9453430175781,
-                    43.25889587402344,
+                    474.94537353515625,
+                    43.2589111328125,
                     0.0
                 ],
                 "scale": [
@@ -814,7 +851,18 @@
                 "localActive": true,
                 "id": 20,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -822,7 +870,7 @@
         "id": 21,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\cross.png",
                 "color": [
                     1.0,
                     1.0,
@@ -853,7 +901,18 @@
                 "localActive": true,
                 "id": 21,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -861,7 +920,7 @@
         "id": 22,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\cross.png",
                 "color": [
                     1.0,
                     1.0,
@@ -875,7 +934,7 @@
             {
                 "position": [
                     602.9453125,
-                    43.2719612121582,
+                    43.27197265625,
                     0.0
                 ],
                 "scale": [
@@ -892,7 +951,18 @@
                 "localActive": true,
                 "id": 22,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -900,7 +970,7 @@
         "id": 23,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\cross.png",
                 "color": [
                     1.0,
                     1.0,
@@ -914,7 +984,7 @@
             {
                 "position": [
                     666.9453125,
-                    43.27207946777344,
+                    43.2720947265625,
                     0.0
                 ],
                 "scale": [
@@ -931,7 +1001,18 @@
                 "localActive": true,
                 "id": 23,
                 "parentID": 4,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "SkillInit"
+                ],
+                "Update": [],
+                "Free": [],
+                "Unload": []
             }
         ]
     },
@@ -939,7 +1020,7 @@
         "id": 24,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\T.png",
                 "color": [
                     1.0,
                     1.0,
@@ -952,8 +1033,8 @@
         "Transform": [
             {
                 "position": [
-                    967.7017211914063,
-                    41.370460510253906,
+                    967.7134399414063,
+                    41.370445251464844,
                     0.0
                 ],
                 "scale": [
@@ -978,7 +1059,7 @@
         "id": 25,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\I.png",
                 "color": [
                     1.0,
                     1.0,
@@ -992,7 +1073,7 @@
             {
                 "position": [
                     1197.697998046875,
-                    41.370460510253906,
+                    41.370445251464844,
                     0.0
                 ],
                 "scale": [
@@ -1017,7 +1098,7 @@
         "id": 26,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\L.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1031,7 +1112,7 @@
             {
                 "position": [
                     1282.698486328125,
-                    41.370460510253906,
+                    41.370445251464844,
                     0.0
                 ],
                 "scale": [
@@ -1056,7 +1137,7 @@
         "id": 27,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\O.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1070,7 +1151,7 @@
             {
                 "position": [
                     1367.699951171875,
-                    41.370460510253906,
+                    41.370445251464844,
                     0.0
                 ],
                 "scale": [
@@ -1097,7 +1178,7 @@
             {
                 "position": [
                     800.0,
-                    149.99989318847656,
+                    149.9998779296875,
                     0.0
                 ],
                 "scale": [
@@ -1139,15 +1220,15 @@
         "Transform": [
             {
                 "position": [
-                    641.6761474609375,
-                    352.97406005859375,
+                    641.99951171875,
+                    352.99993896484375,
                     0.0
                 ],
                 "scale": [
                     300.0,
                     200.0
                 ],
-                "rotation": 0.25868770480155945
+                "rotation": 0.0
             }
         ],
         "EntityData": [
@@ -1329,7 +1410,7 @@
                 "localActive": true,
                 "id": 33,
                 "parentID": 13,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
@@ -1372,7 +1453,7 @@
                 "localActive": true,
                 "id": 34,
                 "parentID": 13,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
@@ -1415,7 +1496,7 @@
                 "localActive": true,
                 "id": 35,
                 "parentID": 13,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
@@ -1475,6 +1556,1065 @@
                     63.5,
                     161.5
                 ]
+            }
+        ]
+    },
+    {
+        "id": 37,
+        "Transform": [
+            {
+                "position": [
+                    1150.0,
+                    940.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_attack_output",
+                "active": false,
+                "localActive": true,
+                "id": 37,
+                "parentID": 33,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[attack]",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    191.0,
+                    232.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 38,
+        "Transform": [
+            {
+                "position": [
+                    1150.0,
+                    940.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_defense_output",
+                "active": false,
+                "localActive": true,
+                "id": 38,
+                "parentID": 34,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[defense]",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    191.0,
+                    209.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 39,
+        "Transform": [
+            {
+                "position": [
+                    1150.0,
+                    940.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_move_output",
+                "active": false,
+                "localActive": true,
+                "id": 39,
+                "parentID": 35,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[move]",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    191.0,
+                    185.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 40,
+        "Transform": [
+            {
+                "position": [
+                    1150.0,
+                    940.0,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    275.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_range_output",
+                "active": false,
+                "localActive": true,
+                "id": 40,
+                "parentID": 36,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[range]",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    191.0,
+                    163.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 41,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des1",
+                "active": false,
+                "localActive": false,
+                "id": 41,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Slam your tetromino on enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    120.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 42,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des2",
+                "active": false,
+                "localActive": true,
+                "id": 42,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealing 15 DMG on all enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    104.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 43,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "hard_drop_des3",
+                "active": false,
+                "localActive": true,
+                "id": 43,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "affected.",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    162.5,
+                    87.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 44,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des1",
+                "active": false,
+                "localActive": false,
+                "id": 44,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Drain the life of your enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    120.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 45,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des2",
+                "active": false,
+                "localActive": true,
+                "id": 45,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealing 12 DMG to all enemies",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    104.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 46,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.00000762939453,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des3",
+                "active": false,
+                "localActive": true,
+                "id": 46,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "and heal for half of damage",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    87.5
+                ]
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [],
+                "Update": [],
+                "Free": [],
+                "Unload": []
+            }
+        ]
+    },
+    {
+        "id": 47,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0000114440918,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "life_drain_des4",
+                "active": false,
+                "localActive": true,
+                "id": 47,
+                "parentID": 44,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "dealt",
+                "currentFont": "Arial-italic",
+                "scale": 0.625,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    210.0,
+                    72.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 48,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 255
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.00006103515625,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "pause_menu",
+                "active": false,
+                "localActive": false,
+                "id": 48,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "EntityScript": [
+            {
+                "Load": [],
+                "Init": [
+                    "PauseInit"
+                ],
+                "Update": [
+                    "PauseUpdate"
+                ],
+                "Free": [
+                    "PauseReset"
+                ],
+                "Unload": []
+            }
+        ]
+    },
+    {
+        "id": 49,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Button.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    535.5,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_resume",
+                "active": false,
+                "localActive": true,
+                "id": 49,
+                "parentID": 48,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 50,
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    535.498046875,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_resume",
+                "active": false,
+                "localActive": true,
+                "id": 50,
+                "parentID": 49,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Resume Game",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    698.5,
+                    301.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 51,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Button.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    377.9997253417969,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_htp",
+                "active": false,
+                "localActive": true,
+                "id": 51,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 52,
+        "Transform": [
+            {
+                "position": [
+                    2400.0,
+                    1350.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_htp",
+                "active": false,
+                "localActive": true,
+                "id": 52,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "How To Play",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    706.5,
+                    212.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 53,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Button.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    218.69949340820313,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_quit",
+                "active": false,
+                "localActive": true,
+                "id": 53,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 54,
+        "Transform": [
+            {
+                "position": [
+                    2400.0,
+                    1350.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_quit",
+                "active": false,
+                "localActive": true,
+                "id": 54,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Quit Game",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    713.0,
+                    120.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 55,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\GameLogo.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    730.800048828125,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    315.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "game_logo",
+                "active": false,
+                "localActive": true,
+                "id": 55,
+                "parentID": 48,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 56,
+        "Transform": [
+            {
+                "position": [
+                    455.1483154296875,
+                    259.5433349609375,
+                    0.0
+                ],
+                "scale": [
+                    302.5,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_bar_hp",
+                "active": true,
+                "localActive": true,
+                "id": 56,
+                "parentID": 2,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "50/50",
+                "currentFont": "Arial-italic",
+                "scale": 0.699999988079071,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    74.0,
+                    118.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 57,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirm_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.00006103515625,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    350.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "backdrop_cfm",
+                "active": false,
+                "localActive": false,
+                "id": 57,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 58,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    703.25,
+                    354.79998779296875,
+                    0.0
+                ],
+                "scale": [
+                    135.0,
+                    52.500003814697266
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_quit_yes",
+                "active": false,
+                "localActive": true,
+                "id": 58,
+                "parentID": 57,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 59,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    896.7498779296875,
+                    354.79998779296875,
+                    0.0
+                ],
+                "scale": [
+                    135.0,
+                    52.500003814697266
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_quit_no",
+                "active": false,
+                "localActive": true,
+                "id": 59,
+                "parentID": 57,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 60,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\HowToPlay.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp",
+                "active": false,
+                "localActive": false,
+                "id": 60,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 61,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1491.199951171875,
+                    831.60009765625,
+                    0.0
+                ],
+                "scale": [
+                    160.0,
+                    90.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp_cross_btn",
+                "active": false,
+                "localActive": true,
+                "id": 61,
+                "parentID": 60,
+                "treeNodeFlags": 32
             }
         ]
     }

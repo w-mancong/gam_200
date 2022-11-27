@@ -60,7 +60,36 @@ namespace ALEngine::UserInput
 
 	Math::Vec2 Input::GetMouseWorldPos()
 	{
+#if EDITOR
 		return Editor::ALEditor::Instance()->GetMouseWorldPos();
+#else
+		using namespace Math;
+		f64 mousePosX, mousePosY;
+		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
+
+		Vec4 mousePos{ 0.f, 0.f, 0.f, 1.f };
+
+		mousePos.x = 2.f * (static_cast<f32>(mousePosX) / static_cast<f32>(Graphics::OpenGLWindow::width)) - 1.f;
+		mousePos.y = -2.f * (static_cast<f32>(mousePosY) / static_cast<f32>(Graphics::OpenGLWindow::height)) + 1.f;
+
+		// Check if within range of scene
+		if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
+			mousePos.y >= -1.f && mousePos.y <= 1.f)
+		{
+			Mat4 inv_proj = ECS::GetProjection();
+			inv_proj = mat4::InverseT(inv_proj);
+
+			// View matrix
+			Mat4 inv_view = ECS::GetView();
+			inv_view = Mat4::InverseT(inv_view);
+
+			mousePos = inv_view * inv_proj * mousePos;
+			std::cout << "Pos: " << mousePos.x << ", " << mousePos.y << std::endl;
+			return Math::Vec2(mousePos.x, mousePos.y);
+		}
+
+		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
+#endif
 	}
 
 	bool Input::KeyState(KeyCode key)

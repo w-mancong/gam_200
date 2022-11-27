@@ -8,7 +8,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
-#ifdef EDITOR
+#if EDITOR
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "imgui/cpp/imgui_stdlib.h"
@@ -105,10 +105,10 @@ namespace ALEngine::Editor
 		ImGui::EndDisabled();
 
 		ImGui::SetItemAllowOverlap();
-		f32 width = ImGui::CalcItemWidth();
-		ImGui::SameLine(width - 17.0f);
+		f32 inputTextWidth = ImGui::CalcItemWidth();
+		ImGui::SameLine(inputTextWidth - 17.0f);
 
-		f32 const crossWidth = animatorText || clipText ? 22.5f : 38.5;
+		f32 const crossWidth = animatorText || clipText ? 22.5f : 38.5f;
 		f32 const listBoxHeightSpacing = animatorText || clipText ? 0.35f : 0.7f;
 
 		if (ImGui::ArrowButton("##Animator Arrow Button", ImGuiDir_Down))
@@ -127,7 +127,7 @@ namespace ALEngine::Editor
 				{
 					currentAnimatorName = items[i];
 				}
-				ImGui::SameLine(width - crossWidth);
+				ImGui::SameLine(inputTextWidth - crossWidth);
 				ImGui::SetItemAllowOverlap();
 				ImGui::PushID(str.c_str());
 				if (ImGui::SmallButton("X"))
@@ -198,8 +198,8 @@ namespace ALEngine::Editor
 				}
 				ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Source of spritesheet cannot be empty!");
 			}
-			c8* filePath = tempAnimation.filePath;
-			ImGui::InputTextWithHint("##ClipFilePathInput", "Spritesheet Source", filePath, sizeof(tempAnimation.filePath), ImGuiInputTextFlags_ReadOnly);
+			c8* animationFilePath = tempAnimation.filePath;
+			ImGui::InputTextWithHint("##ClipFilePathInput", "Spritesheet Source", animationFilePath, sizeof(tempAnimation.filePath), ImGuiInputTextFlags_ReadOnly);
 
 			// Drag Drop for Selectable
 			if (ImGui::BeginDragDropTarget())

@@ -162,6 +162,7 @@ namespace ALEngine::ECS
 			//font.fontShader.Set("projection", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width), 0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 			//font.fontShader.Set("projection", camera.ViewMatrix());
 
+#if EDITOR
 			if (!Editor::ALEditor::Instance()->GetGameActive()) // if editor
 			{
 				Engine::Camera& editorCam = Editor::ALEditor::Instance()->GetEditorCamera();
@@ -170,9 +171,12 @@ namespace ALEngine::ECS
 			}
 			else // if gameplay
 			{
+#endif
 				font.fontShader.Set("view", camera.ViewMatrix());
 				font.fontShader.Set("proj", camera.ProjectionMatrix());
+#if EDITOR
 			}
+#endif
 
 			font.fontShader.Set("scale", Math::Matrix4x4::Scale(text.scale, text.scale, 1.0f));
 			font.fontShader.Set("rotate", Math::Matrix4x4::Rotation(0, Math::Vector3(0.0f, 0.0f, 1.0f)));

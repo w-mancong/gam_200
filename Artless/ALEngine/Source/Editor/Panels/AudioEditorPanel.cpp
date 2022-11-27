@@ -7,10 +7,11 @@ brief: This file contains the function declaration for AudioEditorPanel.
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
+
+#if EDITOR
 #include "imgui.h"
 #include "imgui_internal.h"
 
-#ifdef EDITOR
 
 namespace ALEngine::Editor
 {
