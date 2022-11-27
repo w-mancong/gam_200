@@ -42,7 +42,7 @@ namespace ALEngine::ECS
 		void InsertData(Entity entity, T component)
 		{
 #ifdef _DEBUG
-			assert(mEntityToIndexMap.find(entity) == mEntityToIndexMap.end() && "Component added to same entity more than once.");
+			assert(m_EntityToIndexMap.find(entity) == m_EntityToIndexMap.end() && "Component added to same entity more than once.");
 #endif
 			// Put new entry at end and update the maps
 			u64 newIndex = m_Size;
@@ -62,7 +62,7 @@ namespace ALEngine::ECS
 		void RemoveData(Entity entity)
 		{
 #ifdef _DEBUG
-			assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Removing non-existent component.");
+			assert(m_EntityToIndexMap.find(entity) != m_EntityToIndexMap.end() && "Removing non-existent component.");
 #endif
 			// Copy element at end into deleted element's place to maintain density
 			u64 indexOfRemovedEntity = m_EntityToIndexMap[entity];
@@ -92,7 +92,7 @@ namespace ALEngine::ECS
 		T& GetData(Entity entity)
 		{
 #ifdef _DEBUG
-			assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Retrieving non-existent component.");
+			assert(m_EntityToIndexMap.find(entity) != m_EntityToIndexMap.end() && "Retrieving non-existent component.");
 #endif	
 			// Return a reference to the entity's component
 			return m_ComponentArray[m_EntityToIndexMap[entity]];
