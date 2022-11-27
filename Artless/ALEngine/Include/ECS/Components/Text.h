@@ -2,8 +2,7 @@
 file:	Text.h
 author:	Mohamed Zafir
 email:	m.zafir\@digipen.edu
-brief:	This file contains the class declaration for classes Font and Text which
-		renders text on screen.
+brief:	This file contains the Text component.
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -12,10 +11,6 @@ brief:	This file contains the class declaration for classes Font and Text which
 
 namespace ALEngine::ECS::Component
 {
-	/*!*********************************************************************************
-		\brief
-		Enum used for differentiating the different type of Shape to be created
-	***********************************************************************************/
 	struct Text
 	{
 		std::string currentFont{}; // current selected font

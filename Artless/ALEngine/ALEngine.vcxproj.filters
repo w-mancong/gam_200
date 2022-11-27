@@ -322,7 +322,6 @@
     <ClInclude Include="Include\Math\Vector2Int.h" />
     <ClInclude Include="Include\Math\Vector3Int.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
-    <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
