@@ -91,6 +91,9 @@ namespace ALEngine::ECS
 		Entity GUI_Unit_Profile;
 		Entity GUI_Unit_Healthbar;
 
+		//Win
+		Entity GUI_Win_Clear, GUI_Win_Button;
+
 		b8 is_DebugDraw = false;
 
 		//******FUNCTIONS**********//
@@ -150,7 +153,12 @@ namespace ALEngine::ECS
 		s32 base_Layer = 10000;
 	}
 
-	void Event_Button_Darken(Entity invoker) {
+	void Event_Button_Restart([[maybe_unused]] Entity invoker) {
+		Coordinator::Instance()->DestroyEntities();
+		Scene::LoadScene(sceneName.c_str());
+	}
+
+	void Event_Button_Darken([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
 		}
@@ -159,7 +167,7 @@ namespace ALEngine::ECS
 		sprite.color = { 0.6f, 0.6f, 0.6f, 1.f };
 	}
 
-	void Event_Button_Lighten(Entity invoker) {
+	void Event_Button_Lighten([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
 		}
@@ -330,7 +338,6 @@ namespace ALEngine::ECS
 			return;
 		}
 #endif
-
 		AL_CORE_INFO("GAME START");
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		gameplaySystem->m_Room.width = gameplaySystem->roomSize[0];
@@ -451,7 +458,17 @@ namespace ALEngine::ECS
 		gameplaySystem->GUI_Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
 		gameplaySystem->GUI_Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
 
+		gameplaySystem->GUI_Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+		gameplaySystem->GUI_Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+
 		ECS::SetActive(false, gameplaySystem->endTurnBtnEntity);
+
+		CreateEventTrigger(gameplaySystem->GUI_Win_Button);
+
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
 	}
 
 	void UpdateGameplaySystem(void)
@@ -515,6 +532,10 @@ namespace ALEngine::ECS
 
 		if (Input::KeyTriggered(KeyCode::F6)) {
 			gameplaySystem->Cheat_IncreasePlayerHealth(10);
+		}
+
+		if (Input::KeyTriggered(KeyCode::F7)) {
+			gameplaySystem->EndTurn();
 		}
 
 		gameplaySystem->RunGameState();
