@@ -33,11 +33,11 @@ namespace ALEngine::ECS
 			assert(m_ComponentTypes.find(typeName) == m_ComponentTypes.end() && "Registering component type more than once.");
 #endif	
 			// Add this component type to the component type map
-			m_ComponentTypes.insert({ typeName, mNextComponentType });
+			m_ComponentTypes.insert({ typeName, m_NextComponentType });
 			// Create a ComponentArray pointer and add it to the component arrays map
 			m_ComponentArrays.insert({ typeName, std::make_shared<ComponentArray<T>>() });
 			// Increment the value so that the next component registered will be different
-			++mNextComponentType;
+			++m_NextComponentType;
 		}
 
 		/*!*********************************************************************************
@@ -165,7 +165,7 @@ namespace ALEngine::ECS
 		// Map from type string pointer to a component array
 		std::unordered_map <const char*, std::shared_ptr<IComponentArray>> m_ComponentArrays{};
 		// The component type to be assigned to the next registered component - starting at 0
-		ComponentType mNextComponentType{};
+		ComponentType m_NextComponentType{};
 		// Static array to store the bits of each component - if set means the entity has the component, else dont have
 		std::array<std::bitset<MAX_COMPONENTS>, MAX_ENTITIES> m_Components;
 	};

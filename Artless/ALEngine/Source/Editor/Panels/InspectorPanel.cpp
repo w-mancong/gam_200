@@ -296,8 +296,7 @@ namespace ALEngine::Editor
 
 					// Check if image (png or jpg)
 					std::string fileString = filePath;
-					if (fileString.find(".jpg") != std::string::npos ||
-						fileString.find(".png") != std::string::npos)
+					if (fileString.find(".png") != std::string::npos)
 					{
 						// Sprite copy
 						Sprite cpy{ spr };

@@ -341,12 +341,12 @@ namespace ALEngine::Editor
 						TCHAR path[MAX_PATH];
 						GetCurrentDirectory(MAX_PATH, path);
 
-						HANDLE hProcess{ nullptr };
-						HANDLE hThread{ nullptr };
+						[[maybe_unused]] HANDLE hProcess{ nullptr };
+						[[maybe_unused]] HANDLE hThread{ nullptr };
 						STARTUPINFO si;
 						PROCESS_INFORMATION pi;
-						DWORD dwProcessID{ 0 };
-						DWORD dwThreadID{ 0 };
+						[[maybe_unused]] DWORD dwProcessID{ 0 };
+						[[maybe_unused]] DWORD dwThreadID{ 0 };
 
 						ZeroMemory(&pi, sizeof(pi));
 						ZeroMemory(&si, sizeof(si));
