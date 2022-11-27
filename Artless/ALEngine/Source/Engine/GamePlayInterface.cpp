@@ -164,7 +164,6 @@ namespace ALEngine::Engine::GameplayInterface
 		//There will be a fix of 4 buttons
 		for (int i = 1; i <= 4; ++i) {
 			GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("next_tile_icon" + std::to_string(i)));
-			//GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->CreateEntity());
 		}
 
 		u32 x_offset = 150;
@@ -177,7 +176,7 @@ namespace ALEngine::Engine::GameplayInterface
 		EventTrigger eventTrigger;
 
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[0], eventTrigger);
-
+		
 		//The other 3 will be in queue
 		transform.position = { 1000.f + x_offset, 100.f, 0.f };
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[1], eventTrigger);
@@ -312,13 +311,14 @@ namespace ALEngine::Engine::GameplayInterface
 							Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 							u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
-							AL_CORE_INFO("Heal : " + std::to_string(healthDrained));
 
 							playerUnit.health += healthDrained;
 
 							if (playerUnit.health > playerUnit.maxHealth) {
 								playerUnit.health = playerUnit.maxHealth;
 							}
+
+							AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 							break;
 						}
 					}
@@ -328,15 +328,28 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage) {
+		EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
+
+		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
 		unit.health -= damage;
 
-		AL_CORE_INFO(std::to_string(unit.health));
+		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
 
 		if (unit.health <= 0) {
-			AL_CORE_INFO("Enemy Died");
+			if (unit.unitType == UNIT_TYPE::PLAYER) {
+				AL_CORE_INFO("Unit Died");
+			}
+			else {
+				AL_CORE_INFO("Enemy Died");
+			}
+
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
 			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+			unit.health = 0;
+
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
+			cell.hasUnit = false;
 		}
 	}
 
@@ -362,7 +375,8 @@ namespace ALEngine::Engine::GameplayInterface
 				}
 			}
 		}
-		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0], enemy.coordinate[1]) + 1) {
+		AL_CORE_INFO("Checking UP");
+		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0], enemy.coordinate[1] + 1)) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0], enemy.coordinate[1] + 1));
 
 			if (cell.hasUnit) {

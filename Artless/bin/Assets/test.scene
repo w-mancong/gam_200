@@ -147,7 +147,7 @@
             {
                 "position": [
                     1170.197998046875,
-                    60.120452880859375,
+                    60.12043762207031,
                     0.0
                 ],
                 "scale": [
@@ -164,7 +164,7 @@
                 "localActive": true,
                 "id": 3,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -380,7 +380,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.1326904296875,
+                    1547.1337890625,
                     44.69794845581055,
                     0.0
                 ],
@@ -420,7 +420,7 @@
             {
                 "position": [
                     102.5,
-                    92.29998779296875,
+                    92.30000305175781,
                     0.0
                 ],
                 "scale": [
@@ -452,7 +452,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256
+                "layer": 254
             }
         ],
         "Transform": [
@@ -575,7 +575,7 @@
         "Transform": [
             {
                 "position": [
-                    800.0000610351563,
+                    800.0,
                     790.0,
                     0.0
                 ],
@@ -614,7 +614,7 @@
         "Transform": [
             {
                 "position": [
-                    800.0000610351563,
+                    800.0,
                     772.0001220703125,
                     0.0
                 ],
@@ -654,7 +654,7 @@
             {
                 "position": [
                     642.0,
-                    352.9999694824219,
+                    353.0,
                     0.0
                 ],
                 "scale": [
@@ -1020,7 +1020,7 @@
         "id": 24,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\T.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1033,8 +1033,8 @@
         "Transform": [
             {
                 "position": [
-                    967.7034912109375,
-                    41.370460510253906,
+                    967.7134399414063,
+                    41.370445251464844,
                     0.0
                 ],
                 "scale": [
@@ -1059,7 +1059,7 @@
         "id": 25,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\I.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1073,7 +1073,7 @@
             {
                 "position": [
                     1197.697998046875,
-                    41.370460510253906,
+                    41.370445251464844,
                     0.0
                 ],
                 "scale": [
@@ -1098,7 +1098,7 @@
         "id": 26,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\L.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1112,7 +1112,7 @@
             {
                 "position": [
                     1282.698486328125,
-                    41.370460510253906,
+                    41.370445251464844,
                     0.0
                 ],
                 "scale": [
@@ -1137,7 +1137,7 @@
         "id": 27,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Icon_Backdrop.png",
+                "filePath": "Assets\\Images\\O.png",
                 "color": [
                     1.0,
                     1.0,
@@ -1151,7 +1151,7 @@
             {
                 "position": [
                     1367.699951171875,
-                    41.370460510253906,
+                    41.370445251464844,
                     0.0
                 ],
                 "scale": [
@@ -1221,7 +1221,7 @@
             {
                 "position": [
                     641.99951171875,
-                    352.9999084472656,
+                    352.99993896484375,
                     0.0
                 ],
                 "scale": [
@@ -2052,7 +2052,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256
+                "layer": 255
             }
         ],
         "Transform": [
@@ -2195,7 +2195,7 @@
             {
                 "position": [
                     1312.0,
-                    378.0000305175781,
+                    377.9997253417969,
                     0.0
                 ],
                 "scale": [
@@ -2277,7 +2277,7 @@
             {
                 "position": [
                     1312.0,
-                    218.69998168945313,
+                    218.69949340820313,
                     0.0
                 ],
                 "scale": [
@@ -2536,6 +2536,84 @@
                 "localActive": true,
                 "id": 59,
                 "parentID": 57,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 60,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\HowToPlay.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp",
+                "active": false,
+                "localActive": false,
+                "id": 60,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 61,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1491.199951171875,
+                    831.60009765625,
+                    0.0
+                ],
+                "scale": [
+                    160.0,
+                    90.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp_cross_btn",
+                "active": false,
+                "localActive": true,
+                "id": 61,
+                "parentID": 60,
                 "treeNodeFlags": 32
             }
         ]

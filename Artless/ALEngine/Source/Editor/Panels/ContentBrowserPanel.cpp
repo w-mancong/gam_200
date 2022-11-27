@@ -21,7 +21,8 @@ namespace ALEngine::Editor
 	ContentBrowserPanel::ContentBrowserPanel()
 	:m_CurrentDirectory(assetPath),
 	m_MainDirectory(assetPath),
-	searchKeyword("")
+	searchKeyword(""),
+	m_OptionPromptEnabled(false)
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -221,7 +222,6 @@ namespace ALEngine::Editor
 				ImGui::Button(fileNamestring.c_str(), { thumbnailSize, thumbnailSize });
 			}
 			
-			//for dragging file, need to fix window crash when moving window
 			if (ImGui::BeginDragDropSource())
 			{
 				const wchar_t* itemPath = path.c_str();
@@ -244,6 +244,43 @@ namespace ALEngine::Editor
 					m_CurrentDirectory /= path.filename();
 				}
 			}
+
+			//for setting selected item
+			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Right) && ImGui::IsItemHovered())
+			{
+				//set selected item to delete when press delete key 
+				m_DirectoryToDelete = directoryEntry.path();
+			}
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Delete))
+			{
+				std::filesystem::remove_all(m_DirectoryToDelete);
+			}
+
+			//open prompt for delete or rename
+			if (ImGui::IsMouseClicked(ImGuiMouseButton_Right)&&ImGui::IsItemHovered())
+			{
+				//set selected item to delete when press delete button in the prompt
+				m_DirectoryToDelete = directoryEntry.path();
+				ImGui::OpenPopup("##Option prompt");
+				m_OptionPromptEnabled = true;
+			}
+
+			if (ImGui::BeginPopup("##Option prompt", m_OptionPromptEnabled))
+			{
+				if (ImGui::Button("Delete"))
+				{
+					//std::cout << m_DirectoryToDelete << std::endl;
+					std::filesystem::remove_all(m_DirectoryToDelete);
+					ImGui::CloseCurrentPopup();
+				}
+				if (ImGui::Button("Rename"))
+				{
+
+				}
+				ImGui::EndPopup();
+			}
+
 			//file name under button of file
 			ImGui::TextWrapped(fileNamestring.c_str());
 
@@ -258,6 +295,7 @@ namespace ALEngine::Editor
 
 		//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 		//ImGui::SliderFloat("Padding", &padding, 0, 32);
+
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------
