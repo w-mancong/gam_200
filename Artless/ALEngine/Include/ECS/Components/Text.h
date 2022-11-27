@@ -1,7 +1,7 @@
 /*!
 file:	Text.h
 author:	Mohamed Zafir
-email:	m.zafir@digipen.edu
+email:	m.zafir\@digipen.edu
 brief:	This file contains the class declaration for classes Font and Text which
 		renders text on screen.
 

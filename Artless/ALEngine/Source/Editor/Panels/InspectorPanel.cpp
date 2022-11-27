@@ -1,7 +1,7 @@
 ﻿/*!
 file:	InspectorPanel.cpp
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the InspectorPanel class.
 		The InspectorPanel class contains information and functions necessary for
 		the Inspector Panel of the editor to be displayed.

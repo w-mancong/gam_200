@@ -1,7 +1,7 @@
 /*!
 file:	ALEditor.cpp
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains the function definitions for the ALEditor class.
 		The ALEditor class essentially manages the Dear ImGui functions, as well as the
 		different editor panels generated with the help of Dear ImGui.

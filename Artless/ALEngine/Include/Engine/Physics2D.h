@@ -1,7 +1,7 @@
 /*!
 file:	Physics2D.h
 author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+email:	t.zhenxiong\@digipen.edu
 brief:	This file contains the function declaration for Physics2D.h
 		It contains declaration of structs for Ray2D, Raycasthit2D.
 		It also contains functions needed for raycasting

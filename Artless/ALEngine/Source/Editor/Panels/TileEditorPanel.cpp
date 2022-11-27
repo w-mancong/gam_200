@@ -1,7 +1,7 @@
 /*!
 file:	TileEditorPanel.cpp
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains the function definitions for the TileEditorPanel class.
 		The Tile Editor Panel creates or loads previous Tile Levels created.
 		The TileEditorPanel class contains information and functions necessary for

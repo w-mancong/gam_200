@@ -1,7 +1,7 @@
 /*!
 file: AssetManager.h
-author:		Chan Jie Ming Stanley
-co-author:	Wong Man Cong
+author:		Chan Jie Ming Stanley (40%)
+co-author:	Wong Man Cong		  (60%)
 email: c.jiemingstanley\@digipen.edu
 	   w.mancong\@digipen.edu
 brief: This file contains function declaration for AssetManager. AssetManager is a singleton

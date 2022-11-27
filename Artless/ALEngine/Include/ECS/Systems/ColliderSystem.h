@@ -1,7 +1,7 @@
 /*!
 file:	ColliderSystem.h
 author:	Tan Zhen Xiong
-email:	t.zhenxiong@digipen.edu
+email:	t.zhenxiong\@digipen.edu
 brief:	This file contains the function declarations for ColliderSystem.h
 		It also contains interface to prepare a gameobject for physics and collision
 		

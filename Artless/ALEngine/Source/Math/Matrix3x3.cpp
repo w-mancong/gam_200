@@ -1,3 +1,12 @@
+/*!
+file:	Matrix3x3.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain a 3x3 Matrix that is inherited from a base matrix class. The file
+		also provides function declaration to constructing a Translation, Scale and Rotation matrix
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::Math

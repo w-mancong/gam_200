@@ -1,7 +1,7 @@
 /*!
 file:	UpdateComponentCommand.tpp
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains the function definitions for the templated 
 		UpdateComponentCommand class.
 

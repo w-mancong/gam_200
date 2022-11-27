@@ -1,7 +1,7 @@
 /*!
 file:	Random.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains function that returns a randomized number between two number
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

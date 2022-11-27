@@ -1,7 +1,7 @@
 /*!
 file:	EntityData.h
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains the function declarations for the EntityData struct
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

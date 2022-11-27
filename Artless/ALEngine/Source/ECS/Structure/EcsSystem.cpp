@@ -1,3 +1,14 @@
+/*!
+file:		EcsSysten.cpp
+author:		Wong Man Cong
+co-author:	Tan Zhen Xiong, Mohamed Zafir
+email:		w.mancong\@digipen.edu
+			t.zhenxiong\@digipen.edu
+			m.zafir\@digipen.edu
+brief:		This file contain functions that registers all components and systesm for ECS
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::ECS

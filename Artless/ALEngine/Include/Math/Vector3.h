@@ -1,8 +1,8 @@
 /*!
 file:	Vector3.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
-brief:	This file contain class definition for representing a 3D vector
+email:	w.mancong\@digipen.edu
+brief:	This file contain class declaration for representing a 3D vector
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/

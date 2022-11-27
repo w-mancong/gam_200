@@ -6,7 +6,7 @@ file: PathFindingManager.h
 author: Chan Jie Ming Stanley
 co-author:	Tan Zhen Xiong
 email: c.jiemingstanley\@digipen.edu
-email:	t.zhenxiong@digipen.edu
+email:	t.zhenxiong\@digipen.edu
 brief: This file contains function declaration for PathFindingManager
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/

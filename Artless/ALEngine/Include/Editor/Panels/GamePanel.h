@@ -1,7 +1,7 @@
 /*!
 file:	GamePanel.h
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function declarations for the GamePanel class.
 		The GamePanel class contains information and functions necessary for
 		the Game Panel of the editor to be displayed.

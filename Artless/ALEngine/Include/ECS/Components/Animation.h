@@ -1,7 +1,7 @@
 ﻿/*!
 file:	Animation.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains the animation component
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -12,8 +12,7 @@ brief:	This file contains the animation component
 namespace ALEngine::ECS::Component
 {
 	/*!*********************************************************************************
-		\brief
-			Struct to store all the relevant data to load in sprite sheets
+		\brief Struct to store all the relevant data to load in sprite sheets
 	***********************************************************************************/
 	struct Animation
 	{

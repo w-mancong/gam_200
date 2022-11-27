@@ -1,7 +1,7 @@
 /*!
 file:	Matrix4x4.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contain a 4x4 Matrix that is inherited from a base matrix class. The file
 		also provides function declaration to constructing a Translation, Scale and Rotation matrix
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
