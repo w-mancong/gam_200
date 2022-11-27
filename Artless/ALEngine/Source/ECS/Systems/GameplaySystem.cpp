@@ -1019,6 +1019,7 @@ namespace ALEngine::ECS
 			AL_CORE_INFO("No Space Beside Player, Moving to next enemy");
 			GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
 			++enemyMoved;
+			MoveEnemy();
 			return;
 		}
 
@@ -1090,7 +1091,7 @@ namespace ALEngine::ECS
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 			}
 
-			AL_CORE_INFO("Movement Poitns " + std::to_string(movinUnit.movementPoints));
+			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.movementPoints));
 
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
