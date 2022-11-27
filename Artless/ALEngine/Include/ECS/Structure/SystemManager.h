@@ -42,7 +42,7 @@ namespace ALEngine::ECS
 		{
 			const char* typeName = typeid(T).name();
 #ifdef _DEBUG
-			assert(mSystems.find(typeName) == mSystems.end() && "Registering system more than once.");
+			assert(m_Systems.find(typeName) == m_Systems.end() && "Registering system more than once.");
 #endif	
 			// Create a pointer to the system and return it so it can be used externally
 			auto system = std::make_shared<T>();
@@ -62,7 +62,7 @@ namespace ALEngine::ECS
 		{
 			const char* typeName = typeid(T).name();
 #ifdef _DEBUG
-			assert(mSystems.find(typeName) != mSystems.end() && "System used before registered.");
+			assert(m_Systems.find(typeName) != m_Systems.end() && "System used before registered.");
 #endif	
 			// Set the signature for this system
 			m_Signatures.insert({ typeName, signature });
