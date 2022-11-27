@@ -109,7 +109,7 @@ namespace ALEngine::Engine::GameplayInterface
 
 	/*!*********************************************************************************
 	\brief
-		Filter Grids from Hovering Over cell during pattern select
+		Place pattern onto grid
 	\param [in]
 		room: gameplay room
 	\param [in]
@@ -120,6 +120,20 @@ namespace ALEngine::Engine::GameplayInterface
 		sprite_fileName: sprite to replace the cell of
 	***********************************************************************************/
 	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName);
+
+	/*!*********************************************************************************
+	\brief
+		Disable pattern onto grid
+	\param [in]
+		room: gameplay room
+	\param [in]
+		coordinate: Coordinate to switch to walkable
+	\param [in]
+		pattern: Range, pattern
+	\param [in]
+		sprite_fileName: sprite to replace the cell of
+	***********************************************************************************/
+	void ToggleCellWalkability(Room& room, ECS::Entity cellEntity, b8 istrue);
 
 	/*!*********************************************************************************
 	\brief

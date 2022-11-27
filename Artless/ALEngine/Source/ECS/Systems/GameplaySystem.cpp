@@ -149,6 +149,7 @@ namespace ALEngine::ECS
 		void Cheat_EliminateAllEnemy();
 		void Cheat_ResetAllEnemiesHealth();
 		void Cheat_ResetPlayerHealth();
+		void Cheat_ClearFloorWalkability();
 
 		void Toggle_Gameplay_State(b8 istrue);
 	};
@@ -577,6 +578,10 @@ namespace ALEngine::ECS
 			gameplaySystem->Cheat_EliminateAllEnemy();
 		}
 
+		if (Input::KeyTriggered(KeyCode::F9)) {
+			gameplaySystem->Cheat_ClearFloorWalkability();
+		}
+
 		gameplaySystem->RunGameState();
 		
 		gameplaySystem->UpdateUnitSpriteLayer();
@@ -584,11 +589,11 @@ namespace ALEngine::ECS
 
 	void ExitGameplaySystem(void)
 	{
-#if EDITOR
-		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
-			return;
-		}
-#endif
+		#if EDITOR
+				if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+					return;
+				}
+		#endif
 
 		if (gameplaySystem->m_Room.roomCellsArray != nullptr) {
 			delete[] gameplaySystem->m_Room.roomCellsArray;
@@ -1024,8 +1029,8 @@ namespace ALEngine::ECS
 		
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
-			GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
 			++enemyMoved;
+			MoveEnemy();
 			return;
 		}
 
@@ -1059,6 +1064,16 @@ namespace ALEngine::ECS
 		if (Vector3::Distance(movingTransform.localPosition, cellTransform.localPosition) < 10.0f) {
 			Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell());
+			Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(movinUnit.m_CurrentCell_Entity);
+
+			OriginCell.hasUnit = false;
+
+			//Update player cell to current
+			movinUnit.m_CurrentCell_Entity = gameplaySystem->getCurrentEntityCell();
+			cell.unitEntity = movingUnitEntity;
+			cell.hasUnit = true;
+
+
 
 			movingTransform.localPosition = cellTransform.localPosition;
 			movinUnit.coordinate[0] = cell.coordinate.x;
@@ -1079,16 +1094,6 @@ namespace ALEngine::ECS
 
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
-
-				Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(movinUnit.m_CurrentCell_Entity);
-
-				OriginCell.hasUnit = false;
-				OriginCell.unitEntity = 0;
-
-				//Update player cell to current
-				movinUnit.m_CurrentCell_Entity = gameplaySystem->getCurrentEntityCell();
-				cell.unitEntity = movingUnitEntity;
-				cell.hasUnit = true;
 
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
 					if (movinUnit.movementPoints <= 0) {
@@ -1256,6 +1261,15 @@ namespace ALEngine::ECS
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		unit.health = unit.maxHealth;
 		UpdateGUI_OnSelectUnit(playerEntity);
+	}
+
+	void GameplaySystem::Cheat_ClearFloorWalkability() {
+		for (s8 i = 0; i < gameplaySystem->getRoomSize(); ++i) {
+			GameplayInterface::ToggleCellWalkability(gameplaySystem->m_Room, gameplaySystem->m_Room.roomCellsArray[i], false);
+		}
+
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		GameplayInterface::ToggleCellWalkability(gameplaySystem->m_Room, unit.m_CurrentCell_Entity, true);
 	}
 
 	void GameplaySystem::Toggle_Gameplay_State(b8 istrue) {

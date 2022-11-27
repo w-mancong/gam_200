@@ -142,6 +142,24 @@ namespace ALEngine::Engine::GameplayInterface
 				sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 			}
 		}//End loop through pattern body check
+	}	
+	
+	void ToggleCellWalkability(Room& room, ECS::Entity cellEntity, b8 istrue) {
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		if (!cell.m_isAccessible) {
+			return;
+		}
+
+		cell.m_canWalk = istrue;
+
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+
+		if (istrue) {
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Walkable.png");
+		}
+		else {
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+		}
 	}
 
 	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName) {

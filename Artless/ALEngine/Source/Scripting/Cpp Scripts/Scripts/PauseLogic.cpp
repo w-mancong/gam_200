@@ -176,6 +176,10 @@ namespace ALEngine
 
 	void PauseUpdate(Entity en)
 	{
+		if (Coordinator::Instance()->GetComponent<EntityData>(htp).active) {
+			return;
+		}
+
 		if (Input::KeyTriggered(KeyCode::Escape))
 		{
 			if (temp >= MAX_ENTITIES)
