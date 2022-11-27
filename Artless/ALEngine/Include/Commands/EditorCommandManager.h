@@ -72,7 +72,7 @@ namespace ALEngine::Commands
 		static b8 CanAddCommand(void);
 
 	private:
-		static const s32 MAX_COMMANDS{ 10 };
+		static const s32 MAX_COMMANDS{ 20 };
 		static COMMAND m_Commands[MAX_COMMANDS];		// List of Commands
 		static s32 m_NumOfCommands;						// Number of Commands in List
 		static s32 m_CommandIndex;						// Index of the Current Command

@@ -173,11 +173,6 @@
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
-    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Development|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
@@ -308,6 +303,7 @@
     <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
     <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
+    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
@@ -377,7 +373,6 @@
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
-    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Engine\Audio\Audio.h" />
     <ClInclude Include="Include\Engine\Audio\AudioManager.h" />
     <ClInclude Include="Include\Engine\Camera.h" />

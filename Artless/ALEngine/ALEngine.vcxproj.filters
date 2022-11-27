@@ -57,7 +57,6 @@
     <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Math\Matrix2x2.cpp" />
-    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
@@ -309,7 +308,6 @@
     <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
     <ClInclude Include="Include\Math\Matrix2x2.h" />
-    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Common Header\MyAudio.h" />
     <ClInclude Include="Include\Engine\Audio\AudioManager.h" />
     <ClInclude Include="Include\Engine\Audio\Audio.h" />
@@ -352,6 +350,7 @@
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\StatsHovering.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\PauseLogic.h" />
+    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

@@ -7,7 +7,7 @@ brief:	This file contains the function definitions for the TileEditorPanel class
 		The TileEditorPanel class contains information and functions necessary for
 		the Tile Editor Panel of the editor to be displayed.
 
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
