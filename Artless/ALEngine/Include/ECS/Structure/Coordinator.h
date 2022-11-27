@@ -191,10 +191,10 @@ namespace ALEngine::ECS
 		template <typename T>
 		void RemoveComponent(Entity entity)
 		{
-			mComponentManager->RemoveComponent<T>(entity);
-			auto signature = mEntityManager->GetSignature(entity);
-			signature.set(mComponentManager->GetComponentType<T>(), false);
-			mSystemManager->EntitySignatureChanged(entity, signature);
+			m_ComponentManager->RemoveComponent<T>(entity);
+			auto signature = m_EntityManager->GetSignature(entity);
+			signature.set(m_ComponentManager->GetComponentType<T>(), false);
+			m_SystemManager->EntitySignatureChanged(entity, signature);
 		}
 #endif
 		/*!*********************************************************************************
