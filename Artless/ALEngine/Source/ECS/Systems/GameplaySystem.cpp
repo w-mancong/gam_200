@@ -139,6 +139,7 @@ namespace ALEngine::ECS
 		void Cheat_IncreasePlayerHealth(s32 amount);
 		void Cheat_ToggleDoubleAbilitiesDoubleDamage();
 		void Cheat_DecreaseEnemyHealthToOne();
+		void Cheat_EliminateAllEnemy();
 		void Cheat_ResetAllEnemiesHealth();
 		void Cheat_ResetPlayerHealth();
 	};
@@ -322,6 +323,20 @@ namespace ALEngine::ECS
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
 			gameplaySystem->EndTurn();
+
+			s8 eliminatedEnemyCount = 0;
+			//Check if all enemies are eliminated
+			for (s8 i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+				Unit& enemy = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
+
+				if (enemy.health <= 0) {
+					++eliminatedEnemyCount;
+				}
+			}
+			
+			if (eliminatedEnemyCount >= gameplaySystem->enemyEntityList.size()) {
+				ECS::SetActive(true, gameplaySystem->GUI_Win_Clear);
+			}
 		}
 	}
 
@@ -462,6 +477,7 @@ namespace ALEngine::ECS
 		gameplaySystem->GUI_Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
 
 		ECS::SetActive(false, gameplaySystem->endTurnBtnEntity);
+		ECS::SetActive(false, gameplaySystem->GUI_Win_Clear);
 
 		CreateEventTrigger(gameplaySystem->GUI_Win_Button);
 
@@ -536,6 +552,10 @@ namespace ALEngine::ECS
 
 		if (Input::KeyTriggered(KeyCode::F7)) {
 			gameplaySystem->EndTurn();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F8)) {
+			gameplaySystem->Cheat_EliminateAllEnemy();
 		}
 
 		gameplaySystem->RunGameState();
@@ -1181,6 +1201,16 @@ namespace ALEngine::ECS
 				UpdateGUI_OnSelectUnit(enemyEntityList[i]);
 			}
 		}
+	}	
+	
+	void GameplaySystem::Cheat_EliminateAllEnemy() {
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			GameplayInterface::DoDamageToUnit(enemyEntityList[i], unit.maxHealth);
+		}
+
+		ECS::SetActive(true, gameplaySystem->GUI_Win_Clear);
 	}
 
 	void GameplaySystem::Cheat_ResetAllEnemiesHealth() {
