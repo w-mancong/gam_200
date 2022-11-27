@@ -1,11 +1,11 @@
 /*!
-file:	ColliderSystem.h
-author:	Tan Zhen Xiong
-email:	t.zhenxiong\@digipen.edu
+file:   ColliderSystem.h
+author: Tan Zhen Xiong
+email:  t.zhenxiong\@digipen.edu
 brief:	This file contains the function declarations for ColliderSystem.h
 		It also contains interface to prepare a gameobject for physics and collision
-		
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+
+		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	COLLIDER_SYSTEM_H
 #define COLLIDER_SYSTEM_H

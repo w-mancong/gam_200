@@ -1,10 +1,10 @@
 /*!
-file:	CharacterControllerSystem.h
-author:	Tan Zhen Xiong
-email:	t.zhenxiong\@digipen.edu
+file:   CharacterControllerSystem.h
+author: Tan Zhen Xiong
+email:  t.zhenxiong\@digipen.edu
 brief:	This file contains the function declarations for CharacterControllerSystem.h
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	CHARACTERCONTROLLER_SYSTEM_H
 #define CHARACTERCONTROLLER_SYSTEM_H
@@ -33,9 +33,22 @@ namespace ALEngine
 		***********************************************************************************/
 		void CreateCharacterController(Entity const& entity);
 
-
+		/*!*********************************************************************************
+			\brief
+			Collsion Enter Event To Subscribe for player
+		***********************************************************************************/
 		void OnCollisionEnter_Player(u32 currentEntity, u32 otherEntity);
+
+		/*!*********************************************************************************
+			\brief
+			Collsion Stay Event To Subscribe for player
+		***********************************************************************************/
 		void OnCollisionStay_Player(u32 currentEntity, u32 otherEntity);
+
+		/*!*********************************************************************************
+			\brief
+			Collsion Exit Event To Subscribe for player
+		***********************************************************************************/
 		void OnCollisionExit_Player(u32 currentEntity, u32 otherEntity);
 	}
 }

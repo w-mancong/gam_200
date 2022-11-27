@@ -5,9 +5,10 @@ co-author: Mohamed Zafir (123 lines, 20%)
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition for saving/loading a scene
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
+#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine::Engine::Scene
 {
@@ -15,6 +16,8 @@ namespace ALEngine::Engine::Scene
 	{
 		namespace rjs = rapidjson;
 		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
+
+		std::string currScene;
 #if EDITOR
 		std::string state;
 #endif
@@ -931,6 +934,8 @@ namespace ALEngine::Engine::Scene
 			return;
 		}
 
+		currScene = sceneName;
+
 		rjs::Document doc;
 		doc.Parse(buffer);
 		Memory::DynamicMemory::Delete(buffer);
@@ -939,6 +944,17 @@ namespace ALEngine::Engine::Scene
 
 		DeserializeScene(doc);
 	}
+
+	void LoadScene(void)
+	{
+		LoadScene(currScene.c_str());
+	}
+
+	void Restart(void)
+	{
+		GameStateManager::next = GameState::Restart;
+	}
+
 #if EDITOR
 	void SaveState(void)
 	{

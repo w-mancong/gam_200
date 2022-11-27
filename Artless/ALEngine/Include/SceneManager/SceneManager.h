@@ -25,6 +25,16 @@ namespace ALEngine::Engine::Scene
 	***********************************************************************************/
 	void LoadScene(c8 const* sceneName);
 
+	/*!*********************************************************************************
+		\brief This function will be used when the game restarts
+	***********************************************************************************/
+	void LoadScene(void);
+
+	/*!*********************************************************************************
+		\brief An interface to restart gameplay
+	***********************************************************************************/
+	void Restart(void);
+
 #if EDITOR
 	/*!*********************************************************************************
 		\brief An interface to save the state of the editor when user press the play button
