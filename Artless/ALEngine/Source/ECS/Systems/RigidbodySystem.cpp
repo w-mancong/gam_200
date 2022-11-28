@@ -2,7 +2,7 @@
 file:	RigidbodySystem.cpp
 author:	Tan Zhen Xiong
 email:	t.zhenxiong\@digipen.edu
-brief:	This file contains the function definition for RigidbodySystem.h
+brief:	This file contains the function definition for RigidbodySystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/

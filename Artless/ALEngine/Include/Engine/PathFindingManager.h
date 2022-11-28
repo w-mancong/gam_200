@@ -8,6 +8,7 @@ brief: This file contains function declaration for PathFindingManager
 
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
+
 #include "Engine/GamePlayInterface.h"
 
 #ifndef PATH_FINDING_MANAGER_H

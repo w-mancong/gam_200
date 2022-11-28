@@ -2,7 +2,7 @@
 file:	EventTriggerSystem.cpp
 author:	Tan Zhen Xiong
 email:	t.zhenxiong\@digipen.edu
-brief:	This file contains the function definition for CharacterControllerSystem.cpp
+brief:	This file contains the function definition for EventTriggerSystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -25,11 +25,34 @@ namespace ALEngine::ECS
 	class EventTriggerSystem : public System
 	{
 	public:
+		/*!*********************************************************************************
+		\brief
+			Invoke the listeners from a trigger
+		***********************************************************************************/
 		void InvokeTriggerListeners(Entity invokerEntity, EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type);
+
+		/*!*********************************************************************************
+		\brief
+			Invoke an Event
+		***********************************************************************************/
 		void InvokeEvent(Entity invokerEntity, Event& event_trigger);
+
+		/*!*********************************************************************************
+		\brief
+			Update the Trigger state for an event
+		***********************************************************************************/
 		void UpdateEventTriggerState(EventTrigger& event_trigger, b8 isCurrentlyPointingOn);
+
+		/*!*********************************************************************************
+		\brief
+			Get the current Event from the event Trigger
+		***********************************************************************************/
 		Event& GetEventFromTrigger(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type);
 
+		/*!*********************************************************************************
+		\brief
+			Update Trigger Stat from based on input mouse 
+		***********************************************************************************/
 		void UpdatePointerStatus(Entity entity);
 	};
 
@@ -38,6 +61,7 @@ namespace ALEngine::ECS
 		//Character Controller System to be accessed locally
 		std::shared_ptr<EventTriggerSystem> eventSystem;
 
+		//Keep track of all subscribed functions
 		std::unordered_map <std::string, void (*)()> allSubscribedFunction;
 	}
 
@@ -86,7 +110,6 @@ namespace ALEngine::ECS
 
 	void EventTriggerSystem::UpdatePointerStatus(Entity entity) {
 		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
-
 		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
 
 		//Check if mouse position is over the collider
@@ -97,7 +120,6 @@ namespace ALEngine::ECS
 			isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)transform.position + collider.m_localPosition, collider.scale[0] + transform.scale.x, collider.scale[1] + transform.scale.y);
 		}
 		else {
-
 			isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)transform.position, transform.scale.x, transform.scale.y);
 		}
 	
@@ -112,6 +134,7 @@ namespace ALEngine::ECS
 	}
 
 	void EventTriggerSystem::InvokeTriggerListeners(Entity invokerEntity, EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type) {
+		//Invoke event based on input trigger type
 		switch (trigger_type) {
 		case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
 			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointEnter);
@@ -129,6 +152,7 @@ namespace ALEngine::ECS
 	}
 
 	Event& EventTriggerSystem::GetEventFromTrigger(EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type) {
+		//Get the event from event Trigger
 		switch (trigger_type)
 		{
 			case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
@@ -149,6 +173,7 @@ namespace ALEngine::ECS
 	}
 
 	void EventTriggerSystem::UpdateEventTriggerState(EventTrigger& event_trigger, b8 isCurrentlyPointingOn) {
+		//Update trigger event according to mouse pointer
 		switch (event_trigger.current_Trigger_State)
 		{
 		case EVENT_TRIGGER_TYPE::NOTHING:
