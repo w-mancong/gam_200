@@ -56,8 +56,6 @@ namespace ALEngine::Editor
 		ImVec2 m_DefaultPos{};	// Default Position
 		ImVec2 m_DefaultSize{};	// Default Size
 
-		void FileContents(const std::filesystem::path& path, std::vector<std::string>& items);
-
 	};
 }
 #endif

@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
 brief:	This file contains function definitions for Coordinator
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	COORDINATOR_H
 #define COORDINATOR_H
@@ -105,6 +105,8 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void DestroyEntities(void)
 		{
+			if (m_EntityManager->GetActiveEntities().empty())
+				return;
 			GetSceneGraph().Destruct(-1); // destroy scene graph
 			EntityList const& entities = m_EntityManager->GetActiveEntities();
 			// Store all active entities into a temporary container

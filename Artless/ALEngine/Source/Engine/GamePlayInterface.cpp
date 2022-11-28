@@ -14,13 +14,15 @@ namespace ALEngine::Engine::GameplayInterface
 {
 	u32 getEntityCell(Room& currentRoom,u32 x, u32 y)
 	{
+		//Get required cell's entity
 		return currentRoom.roomCellsArray[y * currentRoom.width + x];
 	}
 
 	void ToggleCellAccessibility(Room& currentRoom, u32 x, u32 y, b8 istrue) {
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
-		cell.m_isAccessible = istrue;
+		cell.m_isAccessible = istrue;	//set accessible
 
+		//Toggle color accordingly
 		if(!cell.m_isAccessible)
 		Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 0.f,0.f,0.f,0.f };
 		else
@@ -29,20 +31,25 @@ namespace ALEngine::Engine::GameplayInterface
 
 	bool CheckListContainsCell(std::list<ECS::Cell*> cellList, ECS::Cell& cellSearchNode)
 	{
+		//If contain, returns true
 		for (auto it = cellList.begin(); it != cellList.end(); ++it) {
 			if (*it == &cellSearchNode) {
 				return true;
 			}
 		}
+
+		//Else false
 		return false;
 	}
 
 	bool IsCoordinateInsideRoom(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY)
 	{
+		//Return if coordinate is inside room
 		return (gridX >= 0) && (gridX < currentRoom.width) && (gridY >= 0) && (gridY < currentRoom.height);
 	}
 
 	bool IsCoordinateCellAccessible(Engine::GameplayInterface::Room& currentRoom, u32 gridX, u32 gridY) {
+		//Return if Coordinate is accessible/walkable
 		if (IsCoordinateInsideRoom(currentRoom, gridX, gridY)) {
 			return Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, gridX, gridY)).m_isAccessible;
 		}
@@ -50,8 +57,10 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void InitializePatterns(std::vector<Pattern>& patternList) {
+		//Clear pattern
 		patternList.clear();
 
+		//Template for pattern
 		Pattern newPattern;
 		
 		//upside down T shape
@@ -89,14 +98,18 @@ namespace ALEngine::Engine::GameplayInterface
 
 	//Initialize Abilities
 	void InitializeAbilities(std::vector<Abilities>& abilitiesList) {
+		//Clear abilities
 		abilitiesList.clear();
 
+		//Template for abilities
 		Abilities new_ability;
 
+		//Fixed damage
 		new_ability.current_type = TYPE_ABILITIES::HARD_DROP;
 		new_ability.damage = 15;
 		abilitiesList.push_back(new_ability);
 
+		//Life steal
 		new_ability.current_type = TYPE_ABILITIES::LIFE_DRAIN;
 		new_ability.damage = 12;
 		abilitiesList.push_back(new_ability);
@@ -136,22 +149,48 @@ namespace ALEngine::Engine::GameplayInterface
 					continue;
 				}
 
+				//Set can walk to true
 				cell.m_canWalk = true;
 
 				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 				sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 			}
 		}//End loop through pattern body check
+	}	
+	
+	void ToggleCellWalkability([[maybe_unused]] Room& room, ECS::Entity cellEntity, b8 istrue) {
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		
+		//if is completely block, dont need set
+		if (!cell.m_isAccessible) {
+			return;
+		}
+
+		//Set to toggle
+		cell.m_canWalk = istrue;
+
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+
+		//Set sprite accordingly
+		if (istrue) {
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Walkable.png");
+		}
+		else {
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+		}
 	}
 
 	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName) {
 		ECS::Entity cellEntity = getEntityCell(room, coordinate.x, coordinate.y);
 
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//if is completely block, dont need set
 		if (!cell.m_isAccessible) {
 			return;
 		}
 
+		//Set to canwalk
 		cell.m_canWalk = true;
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
@@ -159,6 +198,7 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities) {
+		//Clear GUI
 		GUI_Pattern_Button_Entities.clear();
 
 		//There will be a fix of 4 buttons
@@ -166,6 +206,7 @@ namespace ALEngine::Engine::GameplayInterface
 			GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("next_tile_icon" + std::to_string(i)));
 		}
 
+		//Set base x
 		u32 x_offset = 150;
 
 		//First one will be the current
@@ -189,6 +230,7 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities) {
+		//Clear GUI
 		GUI_Abilities_Button_Entities.clear();
 
 		//There will be a fix of 4 buttons
@@ -197,8 +239,10 @@ namespace ALEngine::Engine::GameplayInterface
 			//GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->CreateEntity());
 		}
 
+		//Set base x
 		u32 x_offset = 75;
 
+		//Start pos
 		Vector3 startPos = { 50.f, 100.f, 0.f };
 
 		//First one will be the current
@@ -208,28 +252,22 @@ namespace ALEngine::Engine::GameplayInterface
 
 		EventTrigger eventTrigger;
 
-		//Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[0], transform);
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[0], eventTrigger);
 
 		//The other 3 will be in queue
 		transform.position = { startPos.x + x_offset, 100.f, 0.f };
-		//Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[1], transform);
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[1], eventTrigger);
 
 		transform.position = { startPos.x + x_offset * 2.f, 100.f, 0.f };
-		//Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[2], transform);
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[2], eventTrigger);
 
 		transform.position = { startPos.x + x_offset * 3.f, 100.f, 0.f };
-		//Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[3], transform);
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[3], eventTrigger);
 
 		transform.position = { startPos.x + x_offset * 4.f, 100.f, 0.f };
-		//Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[4], transform);
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[4], eventTrigger);
 
 		transform.position = { startPos.x + x_offset * 5.f, 100.f, 0.f };
-		//Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], transform);
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], eventTrigger);
 	}
 
@@ -249,7 +287,6 @@ namespace ALEngine::Engine::GameplayInterface
 				if (cell.m_canWalk) {
 					return false;
 				}
-
 			}
 		}//End loop through pattern body check
 
@@ -328,15 +365,19 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage) {
-		EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
+		[[maybe_unused]]EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
 		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
+
+		//Do damage
 		unit.health -= damage;
 
 		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
 
+		//If no health
 		if (unit.health <= 0) {
+			//Determinte type
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				AL_CORE_INFO("Unit Died");
 			}
@@ -346,15 +387,16 @@ namespace ALEngine::Engine::GameplayInterface
 
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
 			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
-			unit.health = 0;
+			unit.health = 0;	//Limit to 0
 
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
-			cell.hasUnit = false;
+			cell.hasUnit = false;	//Free it's cell
 		}
 	}
 
 	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy) {
-		//adjacent to player
+		//Check 4 adjacent
+		//If player is beside, do damage to it
 		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0] + 1, enemy.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0] + 1, enemy.coordinate[1]));
 

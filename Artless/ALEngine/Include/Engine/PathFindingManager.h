@@ -1,18 +1,18 @@
-#ifndef PATH_FINDING_MANAGER_H
-#define PATH_FINDING_MANAGER_H
-
 /*!
 file: PathFindingManager.h
-author: Chan Jie Ming Stanley
-co-author:	Tan Zhen Xiong
+author:		Chan Jie Ming Stanley	(50%)
+co-author:	Tan Zhen Xiong			(50%)
 email: c.jiemingstanley\@digipen.edu
-email:	t.zhenxiong\@digipen.edu
+	   t.zhenxiong\@digipen.edu
 brief: This file contains function declaration for PathFindingManager
+
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
+
 #include "Engine/GamePlayInterface.h"
 
-
+#ifndef PATH_FINDING_MANAGER_H
+#define PATH_FINDING_MANAGER_H
 namespace ALEngine::Engine::AI
 {
 	/*!*********************************************************************************

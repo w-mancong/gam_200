@@ -1,11 +1,12 @@
 /*!
-file:	Unit.h
-author:	Tan Zhen Xiong
-email:	t.zhenxiong\@digipen.edu
-brief:	This file contains the function declarations for Collider.h
+file:   Unit.h
+author: Tan Zhen Xiong
+email:  t.zhenxiong\@digipen.edu
+brief:  This file contains the function declarations for Collider.h
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
+
 #ifndef	UNIT_H
 #define UNIT_H
 
@@ -27,20 +28,30 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Unit
 	{
+		//Name of unit
 		std::string unit_Name;
+
+		//File to profile of unit
 		std::string unit_Profile_Sprite_File;
+
+		//Stats
 		s32 health, maxHealth;
 		s32 defense;
 		s32 minDamage, maxDamage;
 		s32 movementPoints, maxMovementPoints;
 		s32 minRange, maxRange;
 
+		//unit type
 		UNIT_TYPE unitType;
+	
+		//int coords, 0 is x, 1 is y
 		u32 coordinate[2];
 
+		//Entity that acts as the unit's sprite
 		ECS::Entity unit_Sprite_Entity;
-		ECS::Entity m_CurrentCell_Entity;// current cell
-		//std::list<Cell> m_CellPath;// list of cells for path found by A* pathfinding
+		
+		//Current cell unit is on
+		ECS::Entity m_CurrentCell_Entity;
 	};
 }
 #endif
