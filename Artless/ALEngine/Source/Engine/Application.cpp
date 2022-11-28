@@ -289,6 +289,13 @@ namespace ALEngine::Engine
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 		
+		UpdateEventTriggerSystem();
+
+#if EDITOR
+		if (!ALEditor::Instance()->GetGameActive())
+			return;
+#endif
+
 		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();

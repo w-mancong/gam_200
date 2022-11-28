@@ -105,6 +105,11 @@ namespace ALEngine::ECS
 					eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT);
 					break;
 			}
+
+#if EDITOR
+			if (Editor::ALEditor::Instance()->GetGameActive() == false)
+				break;
+#endif
 		}
 	}
 
