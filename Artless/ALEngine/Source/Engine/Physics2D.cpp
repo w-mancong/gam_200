@@ -1,10 +1,10 @@
 /*!
-file:	Physics2D.cpp
-author:	Tan Zhen Xiong
-email:	t.zhenxiong\@digipen.edu
-brief:	This file contains the function definition for Physics2D.h
+file:   Physics2D.cpp
+author: Tan Zhen Xiong
+email:  t.zhenxiong\@digipen.edu
+brief:	This file contains the function definition for Physics2D.cpp
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"

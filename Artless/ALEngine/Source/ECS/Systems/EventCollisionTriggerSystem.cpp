@@ -2,9 +2,9 @@
 file:	EventTriggerSystem.cpp
 author:	Tan Zhen Xiong
 email:	t.zhenxiong\@digipen.edu
-brief:	This file contains the function definition for CharacterControllerSystem.cpp
+brief:	This file contains the function definition for EventTriggerSystem.cpp
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
@@ -24,8 +24,17 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	class EventCollisionTriggerSystem : public System
 	{
-	public:
+	public:		
+		/*!*********************************************************************************
+		\brief
+			Invoke the the Collision Event Trigger based on input trigger_type
+		***********************************************************************************/
 		void InvokeCollisionEventTriggers(EventCollisionTrigger& collisionTrigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type, Entity current);
+
+		/*!*********************************************************************************
+		\brief
+			Get event of trigger_type from event_trigger
+		***********************************************************************************/
 		CollisionEvent& GetEventFromTrigger(EventCollisionTrigger& event_trigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type);
 	};
 
@@ -124,6 +133,7 @@ namespace ALEngine::ECS
 	}
 
 	CollisionEvent& EventCollisionTriggerSystem::GetEventFromTrigger(EventCollisionTrigger& event_trigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type) {
+		//Get event of trigger_type from event_trigger
 		switch (trigger_type)
 		{
 		case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER:
@@ -150,6 +160,7 @@ namespace ALEngine::ECS
 	}
 
 	void EventCollisionTriggerSystem::InvokeCollisionEventTriggers(EventCollisionTrigger& collisionTrigger, EVENT_COLLISION_TRIGGER_TYPE trigger_type, Entity current) {
+		//Invoke the collision event Trigger from given trigger_type
 		switch (trigger_type) {
 			case EVENT_COLLISION_TRIGGER_TYPE::ON_COLLISION_ENTER:		
 				for (auto it = collisionTrigger.OnCollisionEnter.m_Listeners.begin(); it != collisionTrigger.OnCollisionEnter.m_Listeners.end(); ++it) {
