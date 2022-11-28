@@ -173,6 +173,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Development|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
+    <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
@@ -308,6 +309,7 @@
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
+    <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
     <ClInclude Include="Include\Engine\PathFindingManager.h" />

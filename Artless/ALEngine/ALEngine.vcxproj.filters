@@ -66,6 +66,7 @@
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
     <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
     <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
+    <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
     <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
@@ -349,6 +350,8 @@
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\StatsHovering.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\PauseLogic.h" />
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
+    <ClInclude Include="Include\Engine\TurnStateManager.h" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
