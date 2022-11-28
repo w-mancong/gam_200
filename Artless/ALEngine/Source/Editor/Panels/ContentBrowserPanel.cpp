@@ -64,7 +64,7 @@ namespace ALEngine::Editor
 			//selectable files
 		   // ImGui::MenuItem(fileNamestring.c_str());
 
-			if (directoryEntry.is_directory())
+			if (directoryEntry.is_directory()) //if is folder then do treenodeEx
 			{
 				if (ImGui::TreeNodeEx(fileNamestring.c_str()))
 				{
@@ -100,7 +100,7 @@ namespace ALEngine::Editor
 					ImGui::TreePop();
 				}
 			}
-			else
+			else //if not folder then do selectable
 			{
 				ImGui::Selectable(fileNamestring.c_str());
 				//for dragging file, need to fix window crash when moving window
@@ -255,6 +255,7 @@ namespace ALEngine::Editor
 				ImGui::EndDragDropSource();
 			}
 
+			//to enter into folder directory
 			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
 			{
 				if (fileNamestring.find(".scene") != std::string::npos)
@@ -283,7 +284,7 @@ namespace ALEngine::Editor
 				std::filesystem::remove_all(m_DirectoryToDelete);
 			}
 
-			//open prompt for delete or rename
+			//open prompt for delete
 			if (ImGui::IsMouseClicked(ImGuiMouseButton_Right)&&ImGui::IsItemHovered())
 			{
 				//set selected item to delete when press delete button in the prompt
@@ -300,6 +301,7 @@ namespace ALEngine::Editor
 					std::filesystem::remove_all(m_DirectoryToDelete);
 					ImGui::CloseCurrentPopup();
 				}
+				//rename not implemented yet
 				if (ImGui::Button("Rename"))
 				{
 
