@@ -196,7 +196,7 @@ namespace ALEngine
 
 	void PauseUpdate(Entity en)
 	{
-		if (Coordinator::Instance()->GetComponent<EntityData>(htp).active) {
+		if (!Editor::ALEditor::Instance()->GetGameActive() || Coordinator::Instance()->GetComponent<EntityData>(htp).active) {
 			return;
 		}
 
