@@ -56,7 +56,7 @@ namespace ALEngine::Editor
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.9f, 0.9f));
 			ImGui::VSliderFloat("##master", ImVec2(50, 160), &floatValueMaster, 0.0f, 1.0f);
-			Engine::SetChannelVolume(Engine::Channel::Master, floatValueMaster);
+			Engine::SetChannelVolume(Engine::Channel::Master, floatValueMaster); //set Master volume
 			ImGui::PopStyleColor(4);
 			ImGui::PopID();
 
@@ -69,7 +69,7 @@ namespace ALEngine::Editor
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.7f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(1.f / 7.0f, 0.9f, 0.9f));
 			ImGui::VSliderFloat("##bgm", ImVec2(50, 160), &floatValueBgm, 0.0f, 1.0f);
-			Engine::SetChannelVolume(Engine::Channel::BGM, floatValueBgm);
+			Engine::SetChannelVolume(Engine::Channel::BGM, floatValueBgm); //set BGM volume
 			ImGui::PopStyleColor(4);
 			ImGui::PopID();
 
@@ -82,7 +82,7 @@ namespace ALEngine::Editor
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.7f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(4.f / 7.0f, 0.9f, 0.9f));
 			ImGui::VSliderFloat("##sfx", ImVec2(50, 160), &floatValueSfx, 0.0f, 1.0f);
-			Engine::SetChannelVolume(Engine::Channel::SFX, floatValueSfx);
+			Engine::SetChannelVolume(Engine::Channel::SFX, floatValueSfx); //set SFX volume
 			ImGui::PopStyleColor(4);
 			ImGui::PopID();
 
@@ -107,26 +107,7 @@ namespace ALEngine::Editor
 	void AudioEditorPanel::Default(void)
 	{
 	}
-	
-	void AudioEditorPanel::FileContents(const std::filesystem::path& path, std::vector<std::string>& items)
-	{
-		// Open the file
-		// Note that we have to use binary mode as we want to return a string
-		// representing matching the bytes of the file on the file system.
-		for (const auto& entry : std::filesystem::directory_iterator(path))
-		{
-			std::string const& fileNamestring = std::filesystem::relative(entry.path(), path).filename().string();
-			//std::string const& animatorName = entry.path().string();
-			//u64 lastOfSlash = animatorName.find_last_of("/\\") + 1;
 
-			if (fileNamestring.find(".meta") != std::string::npos)
-			{
-				continue;
-			}
-
-			items.push_back(fileNamestring);
-		}
-	}
 }
 
 #endif
