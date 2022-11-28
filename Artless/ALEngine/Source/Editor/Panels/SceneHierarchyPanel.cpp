@@ -130,7 +130,7 @@ namespace ALEngine::Editor
 		}
 
 		// Delete selected entity
-		if (Input::KeyTriggered(KeyCode::Delete))
+		if (Input::KeyTriggered(KeyCode::Delete) && (ALEditor::Instance()->GetSelectedEntity() != ECS::MAX_ENTITIES))
 			remove = true;
 
 		// If there is an entity to remove
