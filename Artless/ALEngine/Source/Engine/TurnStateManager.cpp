@@ -1,3 +1,13 @@
+/*!
+file:	TurnStateManager.cpp
+author:	Darrion Aw Wei Ting
+email:	weitingdarrion.aw@digipen.edu
+brief:	This file contains a custom the manager that manages all the turns states for the game
+
+        All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
+
 #include "pch.h"
 
 #include <Engine/TurnStateManager.h>
