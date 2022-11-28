@@ -461,8 +461,6 @@ namespace ALEngine::Editor
 			f32 pos[2]{ collider.m_localPosition.x, collider.m_localPosition.y };
 			ImGui::DragFloat("Local Position##Collider", pos);
 			collider.m_localPosition = Math::Vec2(pos[0], pos[1]);
-
-			ImGui::TreePop();
 		}
 	}
 
