@@ -158,7 +158,7 @@ namespace ALEngine::Engine::GameplayInterface
 		}//End loop through pattern body check
 	}	
 	
-	void ToggleCellWalkability(Room& room, ECS::Entity cellEntity, b8 istrue) {
+	void ToggleCellWalkability([[maybe_unused]] Room& room, ECS::Entity cellEntity, b8 istrue) {
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 		
 		//if is completely block, dont need set

@@ -70,7 +70,7 @@ namespace ALEngine::TurnStateManager
             return this->m_TurnState;
         }
         else {
-            turnStateInt - (static_cast<s32>(TURNSTATE::NUMCHECK)) - 1;
+            turnStateInt -= (static_cast<s32>(TURNSTATE::NUMCHECK));
             return static_cast<TURNSTATE>(turnStateInt);
         }
     }
@@ -84,7 +84,7 @@ namespace ALEngine::TurnStateManager
             return turnStateInt;
         }
         else {
-            turnStateInt - (static_cast<s32>(TURNSTATE::NUMCHECK)) - 1;
+            turnStateInt -= (static_cast<s32>(TURNSTATE::NUMCHECK));
             return turnStateInt;
         }
     }
@@ -216,7 +216,7 @@ namespace ALEngine::TurnStateManager
     {
         std::transform(objName.begin(), objName.end(), objName.begin(), ::tolower);
 
-        s32 objCount = std::count(this->m_ObjectVector.begin(), this->m_ObjectVector.end(), objName);
+        s32 objCount = static_cast<s32>( std::count(this->m_ObjectVector.begin(), this->m_ObjectVector.end(), objName) );
 
         return objCount;
     }
