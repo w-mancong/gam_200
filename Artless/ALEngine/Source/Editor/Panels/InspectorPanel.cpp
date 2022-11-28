@@ -1,7 +1,7 @@
 ﻿/*!
 file:	InspectorPanel.cpp
-author: Lucas Nguyen
-co-author: Mohamed Zafir (85 lines, 12.5%)
+author: Lucas Nguyen (87.5%)
+co-author: Mohamed Zafir (12.5%)
 email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the InspectorPanel class.
 		The InspectorPanel class contains information and functions necessary for

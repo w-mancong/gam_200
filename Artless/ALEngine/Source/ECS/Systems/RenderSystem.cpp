@@ -1,7 +1,7 @@
 /*!
 file:	RenderSystem.cpp
-author: Wong Man Cong
-co-author: Mohamed Zafir (43 lines, 6%)
+author: Wong Man Cong (94%)
+co-author: Mohamed Zafir (6%)
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition that controls the rendering for the engine
 
