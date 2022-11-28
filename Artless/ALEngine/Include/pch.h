@@ -5,7 +5,7 @@ email:	w.mancong\@digipen.edu
 brief:	This file contain all the header files that are will be precompiled instead of
 		recompiling it every build
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #ifndef	PCH_H
 #define PCH_H
@@ -93,5 +93,6 @@ brief:	This file contain all the header files that are will be precompiled inste
 
 // Serializations
 #include <Serialization/Serializer.h>
+#include <Engine/TurnStateManager.h>
 
 #endif
