@@ -1,3 +1,11 @@
+/*!
+file:	ParticleSystem.cpp
+author:	Mohamed Zafir
+email:	m.zafir\@digipen.edu
+brief:	This file contains the function definitions for ParticleSystem
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include "pch.h"
 
 namespace ALEngine::ECS
@@ -162,17 +170,8 @@ namespace ALEngine::ECS
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		particleShader.use();
-		//if (Editor::ALEditor::Instance()->GetGameActive())
-		//{
 		particleShader.Set("view", camera.ViewMatrix());
 		particleShader.Set("proj", camera.ProjectionMatrix());
-		//}
-		//else
-		//{
-		//	Engine::Camera& cam = Editor::ALEditor::Instance()->GetEditorCamera();
-		//	particleShader.Set("view", cam.ViewMatrix());
-		//	particleShader.Set("proj", cam.ProjectionMatrix());
-		//}
 
 		for (auto& particle : particleContainer)
 		{

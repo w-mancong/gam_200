@@ -1,3 +1,11 @@
+/*!
+file:	Matrix2x2.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This class provide an interface for creating a 2x2 matrix
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
 
 namespace ALEngine::Math

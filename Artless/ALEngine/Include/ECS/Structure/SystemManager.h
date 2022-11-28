@@ -1,7 +1,7 @@
 /*!
 file:	SystemManager.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains function definitions for SystemManager
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -42,11 +42,11 @@ namespace ALEngine::ECS
 		{
 			const char* typeName = typeid(T).name();
 #ifdef _DEBUG
-			assert(mSystems.find(typeName) == mSystems.end() && "Registering system more than once.");
+			assert(m_Systems.find(typeName) == m_Systems.end() && "Registering system more than once.");
 #endif	
 			// Create a pointer to the system and return it so it can be used externally
 			auto system = std::make_shared<T>();
-			mSystems.insert({ typeName, system });
+			m_Systems.insert({ typeName, system });
 			return system;
 		}
 
@@ -62,10 +62,10 @@ namespace ALEngine::ECS
 		{
 			const char* typeName = typeid(T).name();
 #ifdef _DEBUG
-			assert(mSystems.find(typeName) != mSystems.end() && "System used before registered.");
+			assert(m_Systems.find(typeName) != m_Systems.end() && "System used before registered.");
 #endif	
 			// Set the signature for this system
-			mSignatures.insert({ typeName, signature });
+			m_Signatures.insert({ typeName, signature });
 		}
 
 		/*!*********************************************************************************
@@ -79,7 +79,7 @@ namespace ALEngine::ECS
 		{
 			// Erase a destroyed entity from all system lists
 			// mEntities is a set so no check needed
-			for (auto const& pair : mSystems)
+			for (auto const& pair : m_Systems)
 			{
 				auto const& system = pair.second;
 				system->mEntities.erase(entity);
@@ -99,11 +99,11 @@ namespace ALEngine::ECS
 		void EntitySignatureChanged(Entity entity, Signature entitySignature)
 		{
 			//Notify each system that an entity's signature changed
-			for (auto const& pair : mSystems)
+			for (auto const& pair : m_Systems)
 			{
 				auto const& type = pair.first;
 				auto const& system = pair.second;
-				auto const& systemSignature = mSignatures[type];
+				auto const& systemSignature = m_Signatures[type];
 
 				// Entity signature matches system signature - insert into set
 				if ((entitySignature & systemSignature) == systemSignature)
@@ -115,9 +115,9 @@ namespace ALEngine::ECS
 
 	private:
 		// Map from system type string pointer to a signature
-		std::unordered_map<const char*, Signature> mSignatures{};
+		std::unordered_map<const char*, Signature> m_Signatures{};
 		// Map from system type string pointer to a system pointer
-		std::unordered_map<const char*, std::shared_ptr<System>> mSystems{};
+		std::unordered_map<const char*, std::shared_ptr<System>> m_Systems{};
 	};
 }
 

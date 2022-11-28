@@ -1,7 +1,7 @@
 /*!
 file:	OpenGLWindow.h
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contain static class OpenGLWindow that controls the GLFW window
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

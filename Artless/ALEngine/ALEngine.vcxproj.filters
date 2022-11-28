@@ -57,8 +57,6 @@
     <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Math\Matrix2x2.cpp" />
-    <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
-    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
@@ -72,7 +70,6 @@
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Commands\Command.cpp" />
-    <ClCompile Include="Source\Commands\UpdateComponentCommand.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
     <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
     <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
@@ -90,6 +87,7 @@
     <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\SkillHovering.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\StatsHovering.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\PauseLogic.cpp" />
+    <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -309,7 +307,6 @@
     <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
     <ClInclude Include="Include\Math\Matrix2x2.h" />
-    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Common Header\MyAudio.h" />
     <ClInclude Include="Include\Engine\Audio\AudioManager.h" />
     <ClInclude Include="Include\Engine\Audio\Audio.h" />
@@ -325,7 +322,6 @@
     <ClInclude Include="Include\Math\Vector2Int.h" />
     <ClInclude Include="Include\Math\Vector3Int.h" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
-    <ClInclude Include="Include\Editor\Panels\ParticleSystemPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
@@ -352,6 +348,7 @@
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\StatsHovering.h" />
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\PauseLogic.h" />
+    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

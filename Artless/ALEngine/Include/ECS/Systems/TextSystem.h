@@ -1,3 +1,12 @@
+/*!
+file:	TextSystem.h
+author:	Mohamed Zafir
+email:	m.zafir\@digipen.edu
+brief:	This file contains the function declarations for TextSystem.h
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #ifndef	TEXTSYSTEM_H
 #define TEXTSYSTEM_H
 
@@ -6,15 +15,28 @@ namespace ALEngine::ECS
 	class TextSystem : public System
 	{
 	public:
+		/*!*********************************************************************************
+			\brief
+			Updates Text System Components
+		***********************************************************************************/
 		void Update(void);
 	};
 
+	/*!*********************************************************************************
+		\brief
+		Initializes the Text System
+	***********************************************************************************/
 	void RegisterTextSystem(void);
+
+	/*!*********************************************************************************
+		\brief
+		Updates the Text System (calls TextSystem->Update)
+	***********************************************************************************/
 	void UpdateTextSystem(void);
 
 	/*!*********************************************************************************
-	\brief
-	struct to encapsulate font character data
+		\brief
+		struct to encapsulate font character data
     ***********************************************************************************/
 	struct Character
 	{
@@ -27,16 +49,10 @@ namespace ALEngine::ECS
 	class Font
 	{
 	public:
-		/*!*********************************************************************************
-			\brief
-			Enum class used for differentiating the different type of fonts
-		***********************************************************************************/
-
 		std::map<GLchar, Character> characterCollection;
 		u32 fontsVAO{}, fontsVBO{};
 		ALEngine::Graphics::Shader fontShader;
 		std::string fontName;
-		//static std::map<std::string, std::map<Text::FontType, Font>> fontCollection;
 		static std::vector<Text> textCollection;
 
 		/*!*********************************************************************************
@@ -46,11 +62,23 @@ namespace ALEngine::ECS
 				File path of font file.
 			\param [in] fontName:
 				Name of font.
-			\param [in] fontType:
-				Type of font.
 		***********************************************************************************/
 		static Font FontInit(std::string fontAddress, std::string fontName);
+
+		/*!*********************************************************************************
+			\brief
+				Stores text to render into a container to render later.
+			\param [in] text:
+				Text to render.
+		***********************************************************************************/
 		static void RenderText(Text& text);
+
+		/*!*********************************************************************************
+			\brief
+				Renders all instances of Text.
+			\param [in] camera:
+				Camera to render to.
+		***********************************************************************************/
 		static void RenderAllText(Engine::Camera const& camera);
 	};
 }

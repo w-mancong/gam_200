@@ -1,7 +1,7 @@
 /*!
 file:	LoggerPanel.cpp
 author: Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the LoggerPanel class.
 		The LoggerPanel class contains information and functions necessary for the 
 		Logger Panel of the editor to be displayed.

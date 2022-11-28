@@ -1,7 +1,7 @@
 /*!
 file:	AnimatorSystem.cpp
 author:	Wong Man Cong
-email:	w.mancong@digipen.edu
+email:	w.mancong\@digipen.edu
 brief:	This file contains the function definition for AnimatorSystem
 
 		Constrains: All the animation clips should have unique names to their animation

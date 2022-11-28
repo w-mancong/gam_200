@@ -1,7 +1,7 @@
 ﻿/*!
 file:	Command.h
 author:	Lucas Nguyen
-email:	l.nguyen@digipen.edu
+email:	l.nguyen\@digipen.edu
 brief:	This file contains the function declarations for the Command class.
 		The Command class is what is used for tracking the commands or actions that are
 		run on the engine.
