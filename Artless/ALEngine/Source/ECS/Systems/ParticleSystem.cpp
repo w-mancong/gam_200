@@ -227,4 +227,12 @@ namespace ALEngine::ECS
 	{
 		return particleSystemObj;
 	}
+
+	void ParticleSystem::ClearParticles()
+	{
+		for (auto particle : particleContainer)
+		{
+			particle.active = false;
+		}
+	}
 }
