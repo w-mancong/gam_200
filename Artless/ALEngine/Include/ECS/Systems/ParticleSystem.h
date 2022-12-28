@@ -84,6 +84,8 @@ namespace ALEngine::ECS
 
 		void ClearParticles();
 
+		u32& GetParticleCounter();
+
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -99,6 +101,8 @@ namespace ALEngine::ECS
 		};
 		std::vector<Particle> particleContainer;
 		u32 particleIndex = 999; // max index of particles container
+		u32 particleCounter{};
+
 		u32 particleVAO{ 0 }, particleVBO{}, particleEBO{};
 		Graphics::Shader particleShader;
 	};

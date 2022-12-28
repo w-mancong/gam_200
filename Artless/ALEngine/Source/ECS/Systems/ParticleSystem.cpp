@@ -194,6 +194,7 @@ namespace ALEngine::ECS
 		// cleanup
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		particleCounter = 0;
 	}
 
 	/*!*********************************************************************************
@@ -218,6 +219,7 @@ namespace ALEngine::ECS
 		particle.sizeBegin = particleProperty.sizeStart + particleProperty.sizeVariation * distribution(generator);
 		particle.sizeEnd = particleProperty.sizeEnd;
 		particle.rotAmt = particleProperty.rotation;
+		++particleCounter;
 
 		// cycle to next particle in the particle container
 		particleIndex = --particleIndex % particleContainer.size();
@@ -234,5 +236,10 @@ namespace ALEngine::ECS
 		{
 			particle.active = false;
 		}
+	}
+
+	u32& ParticleSystem::GetParticleCounter()
+	{
+		return particleCounter;
 	}
 }
