@@ -47,7 +47,7 @@ namespace ALEngine::ECS
 		\brief
 			Update Trigger Stat from based on input mouse 
 		***********************************************************************************/
-		void UpdatePointerStatus(Entity entity);
+		void UpdatePointerStatus(Entity entity, bool previousStillOverlapping);
 
 		//State of Trigger
 		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
@@ -72,6 +72,7 @@ namespace ALEngine::ECS
 	void UpdateEventTriggerSystem() {
 		//Get if triggered
 		bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
+		b8 previousStillOverlapping = false;
 
 		//Do a check in case the current interacted trigger deactivates itself while being used
 		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING) {
@@ -80,6 +81,22 @@ namespace ALEngine::ECS
 			//Update the system state to nothing is that is the case
 			if (!current_event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(eventSystem->m_interactedEventTrigger_Entity).active) {
 				eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+			}
+		}		
+		
+		//If the system was interacting with an eventTrigger
+		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING) {
+			//Keep track of whether it's still being interacted/overlapping
+			EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
+			Transform& previousTransform = Coordinator::Instance()->GetComponent<Transform>(eventSystem->m_interactedEventTrigger_Entity);
+
+			//Get the calcaltion
+			if (Coordinator::Instance()->HasComponent<Collider2D>(eventSystem->m_interactedEventTrigger_Entity)) {
+				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(eventSystem->m_interactedEventTrigger_Entity);
+				previousStillOverlapping = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)previousTransform.position + collider.m_localPosition, collider.scale[0] + previousTransform.scale.x, collider.scale[1] + previousTransform.scale.y);
+			}
+			else {
+				previousStillOverlapping = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)previousTransform.position, previousTransform.scale.x, previousTransform.scale.y);
 			}
 		}
 
@@ -90,12 +107,17 @@ namespace ALEngine::ECS
 			if (!event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
 				continue;
 			}
-			eventSystem->UpdatePointerStatus(*it);
+
+			//Update the latest interacted event trigger, pass in the check for previous event trigger overlap as well
+			eventSystem->UpdatePointerStatus(*it, previousStillOverlapping);
 		}
+
+		//Run the invoking of the event trigger that is interacted with
+		//Nothing will happen if the state is nothing
 		eventSystem->InvokeActiveEventTriggers();
 	}
 
-	void EventTriggerSystem::UpdatePointerStatus(Entity entity) {
+	void EventTriggerSystem::UpdatePointerStatus(Entity entity, bool previousStillOverlapping) {
 		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
 		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
 
@@ -118,17 +140,6 @@ namespace ALEngine::ECS
 		//If the system is already interacting with something
 		if (current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING && entity != m_interactedEventTrigger_Entity && isPointingOver) {
 			EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(m_interactedEventTrigger_Entity);
-			Transform& previousTransform = Coordinator::Instance()->GetComponent<Transform>(m_interactedEventTrigger_Entity);
-
-			b8 previousStillOverlapping = false;
-
-			if (Coordinator::Instance()->HasComponent<Collider2D>(m_interactedEventTrigger_Entity)) {
-				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(m_interactedEventTrigger_Entity);
-				previousStillOverlapping = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)previousTransform.position + collider.m_localPosition, collider.scale[0] + previousTransform.scale.x, collider.scale[1] + previousTransform.scale.y);
-			}
-			else {
-				previousStillOverlapping = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)previousTransform.position, previousTransform.scale.x, previousTransform.scale.y);
-			}
 
 			//Take the entity that has the higher layer
 			if (!previousStillOverlapping || (previousStillOverlapping && eventTrigger.layer > current_interacted_eventTrigger.layer)) {
