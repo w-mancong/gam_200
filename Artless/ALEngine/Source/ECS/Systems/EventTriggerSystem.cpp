@@ -47,7 +47,7 @@ namespace ALEngine::ECS
 		\brief
 			Update Trigger Stat from based on input mouse 
 		***********************************************************************************/
-		bool UpdatePointerStatus(Entity entity);
+		void UpdatePointerStatus(Entity entity);
 
 		//State of Trigger
 		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
@@ -90,14 +90,12 @@ namespace ALEngine::ECS
 			if (!event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
 				continue;
 			}
-
-			if (eventSystem->UpdatePointerStatus(*it)) {
-				return;
-			}
+			eventSystem->UpdatePointerStatus(*it);
 		}
+		eventSystem->InvokeActiveEventTriggers();
 	}
 
-	bool EventTriggerSystem::UpdatePointerStatus(Entity entity) {
+	void EventTriggerSystem::UpdatePointerStatus(Entity entity) {
 		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
 		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
 
@@ -114,16 +112,26 @@ namespace ALEngine::ECS
 
 		//If system is currently idle and checked entity is not pointed over
 		if (current_Trigger_State == EVENT_TRIGGER_TYPE::NOTHING && !isPointingOver) {
-			return false;
+			return;
 		}
 
 		//If the system is already interacting with something
 		if (current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING && entity != m_interactedEventTrigger_Entity && isPointingOver) {
-			AL_CORE_INFO(entity + " : " + Coordinator::Instance()->GetComponent<EntityData>(entity).tag);
 			EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(m_interactedEventTrigger_Entity);
+			Transform& previousTransform = Coordinator::Instance()->GetComponent<Transform>(m_interactedEventTrigger_Entity);
+
+			b8 previousStillOverlapping = false;
+
+			if (Coordinator::Instance()->HasComponent<Collider2D>(m_interactedEventTrigger_Entity)) {
+				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(m_interactedEventTrigger_Entity);
+				previousStillOverlapping = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)previousTransform.position + collider.m_localPosition, collider.scale[0] + previousTransform.scale.x, collider.scale[1] + previousTransform.scale.y);
+			}
+			else {
+				previousStillOverlapping = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)previousTransform.position, previousTransform.scale.x, previousTransform.scale.y);
+			}
 
 			//Take the entity that has the higher layer
-			//if (eventTrigger.layer > current_interacted_eventTrigger.layer) {
+			if (!previousStillOverlapping || (previousStillOverlapping && eventTrigger.layer > current_interacted_eventTrigger.layer)) {
 				//Run the exit event for previous even trigger
 				eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, current_interacted_eventTrigger.OnPointExit);
 				
@@ -131,64 +139,49 @@ namespace ALEngine::ECS
 				m_interactedEventTrigger_Entity = entity;
 				eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, eventTrigger.OnPointEnter);
 				current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_ENTER;
-				return true;
-			//}
+				return;
+			}
 		}
-
-		//std::cout << entity << " : " << Coordinator::Instance()->GetComponent<EntityData>(entity).tag << "\n";
 
 		//return if the check fails and the check entity is not what the system is already interacting with
 		//In case previous checks fails
 		if (!isPointingOver && entity != m_interactedEventTrigger_Entity) {
-			return false;
+			return;
 		}
-
-		//AL_CORE_INFO("Pointer over" + Coordinator::Instance()->GetComponent<EntityData>(entity).tag);
 
 		//If reached here, means the pointer entered an entity and the system is fresh.
 		//usual trigger flow
 		switch (current_Trigger_State) {
 		case EVENT_TRIGGER_TYPE::NOTHING:
-			AL_CORE_INFO("ENTER");
 			current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_ENTER;
 			m_interactedEventTrigger_Entity = entity;
-			eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, eventTrigger.OnPointEnter);
 			break;
 
 		case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
 			if (isPointingOver) {
-					AL_CORE_INFO("STAY");
 					current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_STAY;
-					eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, eventTrigger.OnPointStay);
 				}
 			else {
-				AL_CORE_INFO("EXIT ENTER");
 				current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_EXIT;
-				eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, eventTrigger.OnPointExit);
 			}
 			break;
 
 		case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
 			if (Input::KeyTriggered(KeyCode::MouseLeftButton)) {
-				AL_CORE_INFO("CLICK");
-				eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, eventTrigger.OnPointClick);
+				current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_CLICK;
 				break;
 			}
 
 			if (!isPointingOver) {
-				AL_CORE_INFO("EXIT STAY");
 				current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_EXIT;
-				eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, eventTrigger.OnPointExit);
 			}
 			break;
 		case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
-				AL_CORE_INFO("NOTHING");
 				current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
-				eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, eventTrigger.OnPointExit);
 			break;
 		}
 
-		return true;
+		return;
 	}
 
 	void EventTriggerSystem::InvokeEvent(Entity invokerEntity, Event& evnt) {
@@ -217,6 +210,7 @@ namespace ALEngine::ECS
 			break;
 		case EVENT_TRIGGER_TYPE::ON_POINTER_CLICK:
 			eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, event_trigger.OnPointClick);
+			current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_STAY;
 			break;
 		}
 	}
