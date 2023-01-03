@@ -34,6 +34,7 @@ namespace ALEngine::ECS
 		for (auto& x : particleSystem->mEntities)
 		{
 			ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(x);
+			prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(x);
  
 			if (prop.timeCount > prop.spawnRate)
 			{

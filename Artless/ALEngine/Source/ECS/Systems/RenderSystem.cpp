@@ -99,9 +99,7 @@ namespace ALEngine::ECS
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			std::cout << "id: " << sprite.id;
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
-			std::cout << "index: " << sprite.index;
 
 			++counter;
 		}
@@ -129,8 +127,6 @@ namespace ALEngine::ECS
 
 	void RenderSystem::RenderParticleBatch(Camera const& cam)
 	{
-		std::vector<Entity> entities; entities.reserve(ParticleSystem::GetParticleSystem().GetParticleCounter());
-
 		u64 counter{};
 		for (auto const& particle : ParticleSystem::GetParticleSystem().GetParticleContainer())
 		{
@@ -180,6 +176,7 @@ namespace ALEngine::ECS
 #else
 	void RenderSystem::RenderBatch(void)
 	{
+		std::cout << "game render\n";
 		std::vector<Entity> entities; entities.reserve(mEntities.size());
 		// copy into temp vector
 		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
@@ -233,8 +230,7 @@ namespace ALEngine::ECS
 
 	void RenderSystem::RenderParticleBatch(void)
 	{
-		std::vector<Entity> entities; entities.reserve(ParticleSystem::GetParticleSystem().GetParticleCounter());
-
+		std::cout << "Game\n";
 		u64 counter{};
 		for (auto const& particle : ParticleSystem::GetParticleSystem().GetParticleContainer())
 		{
@@ -254,8 +250,8 @@ namespace ALEngine::ECS
 
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
 			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
-			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(1);
-			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(1);
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
+			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
 
 			++counter;
 		}
