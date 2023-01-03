@@ -99,7 +99,9 @@ namespace ALEngine::ECS
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
+			std::cout << "id: " << sprite.id;
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			std::cout << "index: " << sprite.index;
 
 			++counter;
 		}
@@ -127,32 +129,29 @@ namespace ALEngine::ECS
 
 	void RenderSystem::RenderParticleBatch(Camera const& cam)
 	{
-		std::vector<Entity> entities; entities.reserve(mEntities.size());
-		// copy into temp vector
-		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
-		// sort entities by layer
-		std::sort(entities.begin(), entities.end(), [](auto const& lhs, auto const& rhs)
-			{
-				Sprite const& sp1 = Coordinator::Instance()->GetComponent<Sprite>(lhs);
-				Sprite const& sp2 = Coordinator::Instance()->GetComponent<Sprite>(rhs);
-				return sp1.layer < sp2.layer;
-			});
+		std::vector<Entity> entities; entities.reserve(ParticleSystem::GetParticleSystem().GetParticleCounter());
 
 		u64 counter{};
-		u64 const SIZE{ entities.size() };
-		for (u64 i{}; i < SIZE; ++i)
+		for (auto const& particle : ParticleSystem::GetParticleSystem().GetParticleContainer())
 		{
-			Entity const& en = entities[i];
-			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
+			if (particle.active == false)
 				continue;
-			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
-			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			//*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			// Interpolate color and size between particle birth and death
+			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
+			Vector4 color = ParticleSystem::Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
+			f32 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
+
+			Transform trans;
+			trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
+			trans.scale = Math::Vector2(size, size);
+			trans.rotation = particle.rotation;
+			trans.modelMatrix = Math::mat4::Model(trans);
+
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
-			*(vColor + counter) = sprite.color;
-			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
+			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
 
 			++counter;
 		}
@@ -235,24 +234,28 @@ namespace ALEngine::ECS
 	void RenderSystem::RenderParticleBatch(void)
 	{
 		std::vector<Entity> entities; entities.reserve(ParticleSystem::GetParticleSystem().GetParticleCounter());
-		// copy into temp vector
-		std::copy(mEntities.begin(), mEntities.end(), std::back_inserter(entities));
 
 		u64 counter{};
-		u64 const SIZE{ entities.size() };
-		for (u64 i{}; i < SIZE; ++i)
+		for (auto const& particle : ParticleSystem::GetParticleSystem().GetParticleContainer())
 		{
-			Entity const& en = entities[i];
-			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
+			if (particle.active == false)
 				continue;
-			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
-			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			//*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
+			// Interpolate color and size between particle birth and death
+			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
+			Vector4 color = ParticleSystem::Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
+			f32 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
+
+			Transform trans;
+			trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
+			trans.scale = Math::Vector2(size, size);
+			trans.rotation = particle.rotation;
+			trans.modelMatrix = Math::mat4::Model(trans);
+
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
-			*(vColor + counter) = sprite.color;
-			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
-			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
+			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(1);
+			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(1);
 
 			++counter;
 		}
@@ -349,6 +352,7 @@ namespace ALEngine::ECS
 
 	void RenderGameplay(void)
 	{
+		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
@@ -361,8 +365,10 @@ namespace ALEngine::ECS
 		UpdateParticleSystem();
 #if EDITOR
 		rs->RenderBatch(camera);
+		rs->RenderParticleBatch(camera);
 #else
 		rs->RenderBatch();
+		rs->RenderParticleBatch();
 #endif
 
 		// This needs to be at the end
@@ -372,8 +378,7 @@ namespace ALEngine::ECS
 		// Update and render particles
 		//if(!Editor::ALEditor::Instance()->GetGameActive())
 		//	particleSystemPanel.OnImGuiRender(particleSys);
-		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
-		ParticleSystem::GetParticleSystem().ParticleRender(camera);
+		//ParticleSystem::GetParticleSystem().ParticleRender(camera);
 
 		// Render all text
 		Font::RenderAllText(camera);
@@ -395,6 +400,7 @@ namespace ALEngine::ECS
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
 
 		rs->RenderBatch(Editor::ALEditor::Instance()->GetEditorCamera());
+		rs->RenderParticleBatch(Editor::ALEditor::Instance()->GetEditorCamera());
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();

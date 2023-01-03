@@ -25,6 +25,7 @@ namespace ALEngine::ECS
 		Signature signature;
 		signature.set(Coordinator::Instance()->GetComponentType<ParticleProperties>());
 		signature.set(Coordinator::Instance()->GetComponentType<Transform>());
+		signature.set(Coordinator::Instance()->GetComponentType<Sprite>());
 		Coordinator::Instance()->SetSystemSignature<ParticleSys>(signature);
 	}
 
@@ -76,7 +77,7 @@ namespace ALEngine::ECS
 			Percentage between a and b
 	***********************************************************************************/
 	template<typename T>
-	T Lerp(T a, T b, float t)
+	T ParticleSystem::Lerp(T a, T b, float t)
 	{
 		return (T)(a + (b - a) * t);
 	}
@@ -219,6 +220,7 @@ namespace ALEngine::ECS
 		particle.sizeBegin = particleProperty.sizeStart + particleProperty.sizeVariation * distribution(generator);
 		particle.sizeEnd = particleProperty.sizeEnd;
 		particle.rotAmt = particleProperty.rotation;
+		particle.sprite = particleProperty.sprite;
 		++particleCounter;
 
 		// cycle to next particle in the particle container
@@ -241,5 +243,10 @@ namespace ALEngine::ECS
 	u32& ParticleSystem::GetParticleCounter()
 	{
 		return particleCounter;
+	}
+
+	std::vector<ParticleSystem::Particle> const& ParticleSystem::GetParticleContainer()
+	{
+		return particleContainer;
 	}
 }
