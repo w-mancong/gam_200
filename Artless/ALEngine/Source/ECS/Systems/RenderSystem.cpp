@@ -94,6 +94,7 @@ namespace ALEngine::ECS
 				continue;
 			Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+			//std::cout << trans.localPosition << " - " << trans.position << "\n";
 
 			//*(vMatrix + counter) = Math::mat4::ModelT(trans.position, trans.scale, trans.rotation);
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
@@ -139,9 +140,9 @@ namespace ALEngine::ECS
 			f32 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
 
 			Transform trans;
-			trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
-			trans.scale = Math::Vector2(size, size);
-			trans.rotation = particle.rotation;
+			trans.localPosition = trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
+			trans.localScale = trans.scale = Math::Vector2(size, size);
+			trans.localRotation = trans.rotation = particle.rotation;
 			trans.modelMatrix = Math::mat4::Model(trans);
 
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
