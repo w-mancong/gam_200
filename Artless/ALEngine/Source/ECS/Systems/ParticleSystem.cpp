@@ -185,7 +185,7 @@ namespace ALEngine::ECS
 			Math::Vector4 color = Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
 			f32 size = Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
 
-			// Render
+			//Render
 			particleShader.Set("scale", Math::Matrix4x4::Scale(size, size, 1.0f));
 			particleShader.Set("rotate", Math::Matrix4x4::Rotation(particle.rotation, Math::Vector3(0.0f, 0.0f, 1.0f)));
 			particleShader.Set("translate", Math::Matrix4x4::Translate(particle.position.x, particle.position.y, 0.0f));
@@ -193,7 +193,7 @@ namespace ALEngine::ECS
 			glBindVertexArray(particleVAO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		}
-		// cleanup
+		//cleanup
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		particleCounter = 0;
