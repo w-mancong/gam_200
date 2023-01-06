@@ -82,6 +82,8 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		static ParticleSystem& GetParticleSystem();
 
+		void ClearParticles();
+
 	private:
 		/*!*********************************************************************************
 			\brief

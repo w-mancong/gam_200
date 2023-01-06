@@ -115,6 +115,7 @@ namespace ALEngine::Editor
 		{
 			arrowButtonPressed = !arrowButtonPressed;
 		}
+		//custom begincombo for panel as imgui begincombo does not work the way needed for panel.
 		if (arrowButtonPressed)
 		{
 			
@@ -143,7 +144,7 @@ namespace ALEngine::Editor
 
 		if (animatorText)
 		{
-			if (animatorError)
+			if (animatorError)//check if animator name is empty and if empty display user feedback error message
 			{
 				timer += Time::m_DeltaTime;
 				if (timer >= 3.0f)
@@ -172,7 +173,7 @@ namespace ALEngine::Editor
 		}
 		else if (clipText)
 		{
-			if (clipNameError)
+			if (clipNameError)//check if clip name is empty and if empty display user feedback error message
 			{
 				clipNameErrorTimer += Time::m_DeltaTime;
 				if (clipNameErrorTimer >= 3.0f)
@@ -188,7 +189,7 @@ namespace ALEngine::Editor
 			strcpy_s(tempAnimation.clipName, sizeof(tempAnimation.clipName), clipName);
 			ImGui::SameLine(); HelpMarker("Name of animation clip");
 
-			if (clipFilePathError)
+			if (clipFilePathError)//check if file path of spritesheet is empty and if empty display user feedback error message
 			{
 				clipFilePathErrorTimer += Time::m_DeltaTime;
 				if (clipFilePathErrorTimer >= 3.0f)
@@ -352,10 +353,7 @@ namespace ALEngine::Editor
 
 	void AnimatorEditorPanel::FileContents(const std::filesystem::path& path, std::vector<std::string>& items)
 	{
-		// Open the file
-		// Note that we have to use binary mode as we want to return a string
-		// representing matching the bytes of the file on the file system.
-		//std::string resultstring;
+		// Open the folder directory and push the names of file into a vector
 		for (const auto& entry : std::filesystem::directory_iterator(path))
 		{
 			//std::string const& animatorName = entry.path().string();

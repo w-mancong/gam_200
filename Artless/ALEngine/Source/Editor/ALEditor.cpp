@@ -304,7 +304,6 @@ namespace ALEngine::Editor
 
 						u64 str_it = m_CurrentSceneName.rfind("Assets\\");
 						m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());
-
 						Engine::Scene::LoadScene(m_CurrentSceneName.c_str());
 					}
 				}
@@ -438,6 +437,7 @@ namespace ALEngine::Editor
 				}
 				else
 				{
+					ECS::ParticleSystem::GetParticleSystem().ClearParticles();
 					Coordinator::Instance()->DestroyEntities();
 					ECS::ExitGameplaySystem();
 
@@ -703,6 +703,11 @@ namespace ALEngine::Editor
 	b8 ALEditor::GetGameActive(void)
 	{
 		return m_GameIsActive;
+	}
+
+	void ALEditor::SetGameActive(b8 gameActive)
+	{
+		m_GameIsActive = gameActive;
 	}
 
 	b8 ALEditor::GetReceivingKBInput(void)
