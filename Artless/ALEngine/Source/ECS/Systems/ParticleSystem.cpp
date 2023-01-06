@@ -238,7 +238,7 @@ namespace ALEngine::ECS
 
 	void ParticleSystem::ClearParticles()
 	{
-		for (auto particle : particleContainer)
+		for (auto &particle : particleContainer)
 		{
 			particle.active = false;
 		}
