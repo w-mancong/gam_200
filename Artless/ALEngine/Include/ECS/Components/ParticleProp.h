@@ -23,6 +23,7 @@ namespace ALEngine::ECS::Component
 		f32 sizeStart{ 100.f }, sizeEnd{ 0.f }, sizeVariation{ 0.f }, lifeTime{ 1.f };
 		f32 timeCount{}, spawnRate{ 1.f }, rotation{};
 		Sprite sprite;
+		b8 gravityEnabled;
 	};
 }
 

@@ -118,6 +118,8 @@ namespace ALEngine::ECS
 			particle.lifeRemaining -= deltaTime;
 			particle.position += particle.velocity * (float)deltaTime;
 			particle.rotation += particle.rotAmt * deltaTime; // rotate over time
+			if(particle.gravityEnabled)
+				particle.velocity -= Math::Vec2(0.f, 9.8f);
 		}
 	}
 
@@ -222,6 +224,7 @@ namespace ALEngine::ECS
 		particle.sizeEnd = particleProperty.sizeEnd;
 		particle.rotAmt = particleProperty.rotation;
 		particle.sprite = particleProperty.sprite;
+		particle.gravityEnabled = particleProperty.gravityEnabled;
 		++particleCounter;
 
 		// cycle to next particle in the particle container

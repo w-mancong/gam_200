@@ -100,8 +100,9 @@ namespace ALEngine::ECS
 			Math::Vector4 colorStart{}, colorEnd{};
 			f32 sizeBegin{ 1.f }, sizeEnd{ 10.f }, rotation{ 0.f }, lifeTime{ 1.0f };
 			f32 lifeRemaining{ 0.0f }, rotAmt{};
-			bool active{ false };
+			b8 active{ false };
 			Sprite sprite;
+			b8 gravityEnabled{ false };
 		};
 		std::vector<Particle> particleContainer;
 		u32 particleIndex = 999; // max index of particles container
