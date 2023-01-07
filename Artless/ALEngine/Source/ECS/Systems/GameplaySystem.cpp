@@ -1354,7 +1354,6 @@ namespace ALEngine::ECS
 
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(GUI_Unit_Healthbar);
 		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
-		AL_CORE_CRITICAL("SIZE " + std::to_string(healthbar_transform.scale.x));
 	}
 
 	void GameplaySystem::Cheat_ToggleGodMode() {
