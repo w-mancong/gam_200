@@ -67,7 +67,7 @@ namespace ALEngine::Commands
 	{
 		if (m_CommandIndex >= 0)
 		{
-			AL_CORE_DEBUG("Undo Command: {}", m_CommandIndex);
+			AL_CORE_DEBUG("Undo Command: Number {}", m_CommandIndex);
 			m_Commands[m_CommandIndex]->Undo();
 			--m_CommandIndex;
 		}
@@ -78,6 +78,7 @@ namespace ALEngine::Commands
 		s32 redoIndex = m_CommandIndex + 1;
 		if (redoIndex < m_NumOfCommands && redoIndex >= 0)
 		{
+			AL_CORE_DEBUG("Redo Command: Number {}", m_CommandIndex);
 			m_Commands[redoIndex]->Execute();
 			++m_CommandIndex;
 		}

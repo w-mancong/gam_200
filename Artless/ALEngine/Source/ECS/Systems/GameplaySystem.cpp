@@ -304,7 +304,7 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
+		[[maybe_unused]] EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
 		
@@ -742,6 +742,8 @@ namespace ALEngine::ECS
 
 		gameplaySystem->m_Room.width = 0;
 		gameplaySystem->m_Room.height = 0;
+		gameplaySystem->godMode = false;
+		gameplaySystem->cheat_abilitiesDoubleDamage = false;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {
@@ -1460,7 +1462,7 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::Cheat_ClearFloorWalkability() {
-		for (s8 i = 0; i < gameplaySystem->getRoomSize(); ++i) {
+		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->getRoomSize()); ++i) {
 			GameplayInterface::ToggleCellWalkability(gameplaySystem->m_Room, gameplaySystem->m_Room.roomCellsArray[i], false);
 		}
 

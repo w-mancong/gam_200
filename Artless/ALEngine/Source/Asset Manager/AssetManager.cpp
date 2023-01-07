@@ -257,10 +257,6 @@ namespace
 		std::string str{ filePath };
 		str = str.substr(str.find_last_of("\\") + 1);
 		fontName = str.substr(0, str.find_first_of("."));
-
-		// convert to all upper case
-		//for (c8& chr : fontName)
-		//	chr = toupper(chr);
 		
 		return ALEngine::ECS::Font::FontInit(filePath, fontName);
 	}

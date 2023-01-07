@@ -9,7 +9,16 @@ brief: This file contains function definition for PathFindingManager
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
+/*!
+file: PathFindingManager.cpp
+author:		Chan Jie Ming Stanley	(50%)
+co-author:	Tan Zhen Xiong			(50%)
+email: c.jiemingstanley\@digipen.edu
+       t.zhenxiong\@digipen.edu
+brief: This file contains function declaration for PathFindingManager
 
+All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <Engine/PathFindingManager.h>
 
 namespace  ALEngine::Engine::AI

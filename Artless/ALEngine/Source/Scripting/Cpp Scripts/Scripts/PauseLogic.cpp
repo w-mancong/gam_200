@@ -8,6 +8,7 @@ brief:	This file contain function declaration for a pause menu
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <Scripting/Cpp Scripts/Scripts/PauseLogic.h>
+#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine
 {
@@ -91,7 +92,26 @@ namespace ALEngine
 	{
 		Darken(en);
 		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
+#if EDITOR
+			if (Editor::ALEditor::Instance()->GetImGuiEnabled())
+			{
+				Editor::ALEditor::Instance()->SetGameActive(false);
+				Engine::ToggleApplicationMode();
+
+				Coordinator::Instance()->DestroyEntities();
+				ECS::ExitGameplaySystem();
+
+				Engine::Scene::LoadState();
+				Engine::GameStateManager::Next(Engine::GameState::Editor);
+				Editor::ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
+			}
+			else
+				Engine::TerminateEngine();
+#else
 			Engine::TerminateEngine();
+#endif
+		}
 	}
 
 	void WhenQuitNoPointerExit(Entity en)
@@ -176,7 +196,11 @@ namespace ALEngine
 
 	void PauseUpdate(Entity en)
 	{
-		if (Coordinator::Instance()->GetComponent<EntityData>(htp).active) {
+#if EDITOR
+		if (!Editor::ALEditor::Instance()->GetGameActive())
+			return;
+#endif
+		if(Coordinator::Instance()->GetComponent<EntityData>(htp).active) {
 			return;
 		}
 

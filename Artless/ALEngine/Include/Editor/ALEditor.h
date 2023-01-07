@@ -208,6 +208,15 @@ namespace ALEngine::Editor
 			else returns false
 		***********************************************************************************/
 		b8 GetGameActive(void);
+		
+		/*!*********************************************************************************
+			\brief
+			Set if the game panel is active or not
+
+			\param gameActive
+			Setter for whether the game is active or not
+		***********************************************************************************/
+		void SetGameActive(b8 gameActive);
 
 		/*!*********************************************************************************
 			\brief
@@ -247,6 +256,13 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void SetCurrentSceneName(std::string sceneName);
 
+		/*!*********************************************************************************
+			\brief
+			Gets the current scene name
+
+			\Return
+			Returns the current scene name
+		***********************************************************************************/
 		std::string const& GetCurrentSceneName(void) const;
 
 	private:

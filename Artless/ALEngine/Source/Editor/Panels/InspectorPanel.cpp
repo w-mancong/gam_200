@@ -1,7 +1,7 @@
 ﻿/*!
 file:	InspectorPanel.cpp
-author: Lucas Nguyen
-co-author: Mohamed Zafir (85 lines, 12.5%)
+author: Lucas Nguyen (87.5%)
+co-author: Mohamed Zafir (12.5%)
 email:	l.nguyen\@digipen.edu
 brief:	This file contains function definitions for the InspectorPanel class.
 		The InspectorPanel class contains information and functions necessary for
@@ -461,8 +461,6 @@ namespace ALEngine::Editor
 			f32 pos[2]{ collider.m_localPosition.x, collider.m_localPosition.y };
 			ImGui::DragFloat("Local Position##Collider", pos);
 			collider.m_localPosition = Math::Vec2(pos[0], pos[1]);
-
-			ImGui::TreePop();
 		}
 	}
 
@@ -658,6 +656,7 @@ namespace ALEngine::Editor
 			ImGui::DragFloat2("Velocity", vel, 0.02f);
 			ImGui::DragFloat2("Velocity Variation", velVariation, 0.02f);
 			ImGui::DragFloat("Rotation", &particleProperty.rotation, 0.1f, 0.0f, 1000.0f);
+			ImGui::Checkbox("Enable Gravity", &particleProperty.gravityEnabled);
 
 			particleProperty.velocity.x = vel[0];
 			particleProperty.velocity.y = vel[1];

@@ -239,6 +239,9 @@ namespace ALEngine::Engine
 #else
 			GameUpdate();
 #endif
+			std::ostringstream oss{};
+			oss << OpenGLWindow::title + " | FPS: " << Time::m_FPS;
+			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
 		}
 	}
 
@@ -289,6 +292,13 @@ namespace ALEngine::Engine
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 		
+		UpdateEventTriggerSystem();
+
+#if EDITOR
+		if (!ALEditor::Instance()->GetGameActive())
+			return;
+#endif
+
 		UpdateEventCollisionTriggerSystem();
 
 		DebugDrawRigidbody();
