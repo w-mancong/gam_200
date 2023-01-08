@@ -279,6 +279,7 @@ namespace ALEngine::Engine
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
 		UpdateEventTriggerSystem();
+		UpdateButtonSystem();
 	}
 
 	void Engine::FixedUpdate(void)

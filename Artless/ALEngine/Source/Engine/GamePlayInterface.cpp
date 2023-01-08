@@ -9,9 +9,12 @@ brief:	This file contains the function definition for GamePlayInterface.cpp
 
 #include "pch.h"
 #include <Engine/GamePlayInterface.h>
+#include <ECS/Systems/ButtonSystem.h>
 
 namespace ALEngine::Engine::GameplayInterface
 {
+	using ECS::CreateButton, ECS::Subscribe;
+
 	u32 getEntityCell(Room& currentRoom,u32 x, u32 y)
 	{
 		//Get required cell's entity
@@ -229,6 +232,24 @@ namespace ALEngine::Engine::GameplayInterface
 		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[3], eventTrigger);
 	}
 
+	//void Test(ECS::Entity invoker) {
+	//	AL_CORE_CRITICAL("TEST");
+	//}
+
+	void Event_Button_Darken_Test(ECS::Entity invoker) {
+		//Darken the button
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_CRITICAL("DARK");
+
+		Button button = Coordinator::Instance()->GetComponent<Button>(invoker);
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
+		sprite.color = button.m_color_Tint_OnHover;
+	}
+
+
 	void InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities) {
 		//Clear GUI
 		GUI_Abilities_Button_Entities.clear();
@@ -236,39 +257,11 @@ namespace ALEngine::Engine::GameplayInterface
 		//There will be a fix of 4 buttons
 		for (int i = 1; i <= 6; ++i) {
 			GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("skill_icon" + std::to_string(i)));
-			//GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->CreateEntity());
-		}
-
-		//Set base x
-		u32 x_offset = 75;
-
-		//Start pos
-		Vector3 startPos = { 50.f, 100.f, 0.f };
-
-		//First one will be the current
-		Transform transform;
-		transform.position = startPos;
-		transform.scale = { 50.f, 50.f };
-
-		EventTrigger eventTrigger;
-
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[0], eventTrigger);
-
-		//The other 3 will be in queue
-		transform.position = { startPos.x + x_offset, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[1], eventTrigger);
-
-		transform.position = { startPos.x + x_offset * 2.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[2], eventTrigger);
-
-		transform.position = { startPos.x + x_offset * 3.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[3], eventTrigger);
-
-		transform.position = { startPos.x + x_offset * 4.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[4], eventTrigger);
-
-		transform.position = { startPos.x + x_offset * 5.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], eventTrigger);
+			CreateButton(GUI_Abilities_Button_Entities[i-1]);
+			Subscribe(GUI_Abilities_Button_Entities[i - 1], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, ECS::Event_Button_Darken);
+			Subscribe(GUI_Abilities_Button_Entities[i - 1], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, ECS::Event_Button_Lighten);
+			Subscribe(GUI_Abilities_Button_Entities[i - 1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, ECS::Event_Button_Lighten);
+		}		
 	}
 
 	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern) {

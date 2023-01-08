@@ -159,6 +159,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
+    <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
@@ -295,6 +296,8 @@
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\ECS\Components\Button.h" />
+    <ClInclude Include="Include\ECS\Systems\ButtonSystem.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
     <ClInclude Include="Include\Commands\EditorCommandManager.h" />
