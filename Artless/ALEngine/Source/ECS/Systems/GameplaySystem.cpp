@@ -270,6 +270,12 @@ namespace ALEngine::ECS
 			Set gameplay system to running or not
 		***********************************************************************************/
 		void Toggle_Gameplay_State(b8 istrue);
+
+		void scanRoomCellArray();
+
+		void checkTileCounters(Cell selectedCell);
+
+
 	};
 
 	namespace
@@ -792,7 +798,43 @@ namespace ALEngine::ECS
 					enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
 				}
 				UpdateGUI_OnSelectUnit(playerEntity);
+
+				//scanRoomCellArray();
+
 				break;
+		}
+	}
+
+	void GameplaySystem::scanRoomCellArray() {
+		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
+		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->roomSize[0]); ++i) {
+			for (s32 j = 0; j < static_cast<s32>(gameplaySystem->roomSize[1]); ++j) {
+				s32 cellIndex = i * gameplaySystem->roomSize[0] + j;
+				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				//std::cout << "[" << i << ", " << j << "]" << std::endl;
+				checkTileCounters(cell);
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.color = { 1.f, 1.f, 1.f, 1.f };
+				//sprite.filePath
+				//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				//sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
+
+				//after destruction, replace tile sprite with Assets/Images/InitialTile_v04.png
+
+			}
+		}
+	}
+
+	void GameplaySystem::checkTileCounters(Cell selectedCell) {
+		//std::cout << "SELECTED CELL COUNTER IS CURRENTLY : " << selectedCell.m_resetCounter << std::endl;
+		if (selectedCell.m_resetCounter > 0) {
+			selectedCell.m_resetCounter--;
+		}
+
+		if (selectedCell.m_resetCounter == 0) {
+			selectedCell.m_canWalk = false;	
 		}
 	}
 
