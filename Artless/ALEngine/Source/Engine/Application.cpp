@@ -214,6 +214,8 @@ namespace ALEngine::Engine
 		Console::StopConsole();
 #endif
 
+
+
 		//Scene::LoadScene("Assets\\test.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
