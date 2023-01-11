@@ -9,6 +9,8 @@ brief:	This file contains the logic component
 #ifndef	LOGIC_COMPONENT_H
 #define LOGIC_COMPONENT_H
 
+#include <ECS/Components/UniBehaviour.h>
+
 namespace ALEngine::ECS::Component
 {
 	struct LogicComponent

@@ -90,7 +90,7 @@ namespace ALEngine::Engine
 			{				
 				// Call function load
 				StartGameplaySystem();
-				LoadCppScripts();
+				ECS::Load();
 			}
 			else
 			{
@@ -100,7 +100,7 @@ namespace ALEngine::Engine
 				GameStateManager::next	  = GameStateManager::previous;
 			}
 
-			InitCppScripts();
+			ECS::Init();
 
 			while (GameStateManager::current == GameStateManager::next)
 			{
@@ -123,7 +123,7 @@ namespace ALEngine::Engine
 #endif
 					// Normal Update
 					Engine::Update();
-					UpdateCppScripts();
+					ECS::Update();
 					// Physics
 					// Fixed Update (Physics)
 					accumulator += Time::m_DeltaTime;
@@ -138,6 +138,7 @@ namespace ALEngine::Engine
 							break;
 
 						Engine::FixedUpdate();
+						ECS::LateUpdate();
 						accumulator -= Time::m_FixedDeltaTime;
 					}
 
@@ -160,10 +161,10 @@ namespace ALEngine::Engine
 			}
 
 			// Free resources
-			FreeCppScripts();
+			ECS::Free();
 			// unload resource
 			if (GameStateManager::next != GameState::Restart)
-				UnloadCppScripts();
+				ECS::Unload();
 			
 #if EDITOR
 			if(ALEditor::Instance()->GetGameActive())
@@ -214,7 +215,7 @@ namespace ALEngine::Engine
 		Console::StopConsole();
 #endif
 
-
+		//Coordinator::Instance()->AddComponent
 
 		//Scene::LoadScene("Assets\\test.scene");
 

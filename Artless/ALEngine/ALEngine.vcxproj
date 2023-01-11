@@ -296,6 +296,7 @@
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
     <ClInclude Include="Include\ECS\Components\UniBehaviour.h" />
     <ClInclude Include="Include\ECS\Systems\LogicSystem.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
@@ -445,6 +446,7 @@
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Scripting\ScriptEngine.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
+    <ClInclude Include="Scripts\Header\TestBehaviour.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>

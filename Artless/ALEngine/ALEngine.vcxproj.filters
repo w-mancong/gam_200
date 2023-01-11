@@ -354,6 +354,8 @@
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\ECS\Systems\LogicSystem.h" />
     <ClInclude Include="Include\ECS\Components\UniBehaviour.h" />
+    <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
+    <ClInclude Include="Scripts\Header\TestBehaviour.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
