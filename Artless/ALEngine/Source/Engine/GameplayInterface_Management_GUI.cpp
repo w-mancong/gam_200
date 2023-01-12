@@ -12,18 +12,11 @@ brief:	This file contains the function definition for GamePlayInterface.cpp
 
 namespace ALEngine::Engine::GameplayInterface_Management_GUI
 {
-	//List for containing entities of GUI
-	std::vector<ECS::Entity> GUI_Abilities_Button_List;
-	std::vector<ECS::Entity> GUI_Pattern_Button_List;
+	GUI guiManager;
 
-	std::vector<ECS::Entity>& Get_GUI_Abilities_Button_List()
+	GUI& getGuiManager()
 	{
-		return GUI_Abilities_Button_List;
-	}
-
-	std::vector<ECS::Entity>& Get_GUI_Pattern_Button_List()
-	{
-		return GUI_Pattern_Button_List;
+		return guiManager;
 	}
 
 	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities) {
@@ -102,9 +95,9 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 
 	void TogglePatternGUI(b8 istrue) {
 		//Toggle the pattern GUI accordingly
-		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
+		for (int i = 0; i < guiManager.GUI_Pattern_Button_List.size(); ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Pattern_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Pattern_Button_List[i]);
 
 			eventTrigger.isEnabled = istrue;
 
@@ -117,9 +110,9 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 
 	void ToggleAbilitiesGUI(b8 istrue) {
 		//Disable all the abilities GUI
-		for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+		for (int i = 0; i < guiManager.GUI_Abilities_Button_List.size(); ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
 
 			eventTrigger.isEnabled = false;
 			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
@@ -127,8 +120,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 
 		//Toggle the first 2 abilities GUI accordingly 
 		for (int i = 0; i < 2; ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
 
 			eventTrigger.isEnabled = istrue;
 
@@ -158,5 +151,28 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		ECS::SetActive(false, en_textskill);
 		ECS::SetActive(false, en_hard_drop);
 		ECS::SetActive(false, en_life_drain);
+	}
+
+	void InitializeGUI()
+	{
+		//Initialize GUI Text and Sprites zafir
+		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
+		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
+		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
+		guiManager.Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
+		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
+		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
+		guiManager.Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
+		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
+		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+
+		//Set abilities UI off
+		ToggleAbilitiesGUI(false);
+
+		ECS::SetActive(false, guiManager.endTurnBtnEntity);
+		ECS::SetActive(false, guiManager.Win_Clear);
+
+		ECS::CreateEventTrigger(guiManager.Win_Button);
 	}
 }

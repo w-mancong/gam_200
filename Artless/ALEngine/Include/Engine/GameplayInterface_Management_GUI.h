@@ -11,6 +11,26 @@ brief:	This file contains the function definition for GamePlayInterface.h
 #define GAMEPLAY_INTERFACE_MANAGEMENT_GUI_H
 namespace ALEngine::Engine::GameplayInterface_Management_GUI
 {
+	struct GUI
+	{
+		//UI
+		ECS::Entity endTurnBtnEntity;
+
+		//Keep track of GUI entities
+		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Range;
+		ECS::Entity Unit_Profile;
+		ECS::Entity Unit_Healthbar;
+
+		//Win
+		ECS::Entity Win_Clear, Win_Button;
+
+		//List for containing entities of GUI
+		std::vector<ECS::Entity> GUI_Abilities_Button_List;
+		std::vector<ECS::Entity> GUI_Pattern_Button_List;
+	};
+
+	GUI& getGuiManager();
+
 	/*!*********************************************************************************
 	\brief
 		Initialize Pattern GUI
@@ -40,10 +60,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		Update the unit information GUI when select the unit
 	***********************************************************************************/
 	void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
-
-	std::vector<ECS::Entity>& Get_GUI_Abilities_Button_List();
-
-	std::vector<ECS::Entity>& Get_GUI_Pattern_Button_List();
 
 	void DisableToolTipGUI();
 }
