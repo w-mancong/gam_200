@@ -11,6 +11,7 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/Physics2D.h"
 #include "Engine/PathFindingManager.h"
 #include "Engine/GamePlayInterface.h"
+#include "Engine/GameplayInterface_Management_GUI.h"
 
 namespace ALEngine::ECS
 {
@@ -22,6 +23,7 @@ namespace ALEngine::ECS
 	using namespace Math; using namespace Engine; using namespace Graphics;
 	using GameplayInterface::Pattern;
 	using GameplayInterface::Abilities;
+	using namespace GameplayInterface_Management_GUI;
 
 	/*!*********************************************************************************
 	\brief
@@ -104,10 +106,6 @@ namespace ALEngine::ECS
 
 		//Keep track of what move order the unit has
 		MoveOrder currentModeOrder;
-
-		//List for containing entities of GUI
-		std::vector<Entity> GUI_Abilities_Button_List;
-		std::vector<Entity> GUI_Pattern_Button_List;
 
 		//Keep track of the parent of all the cells
 		Entity m_Room_Parent_Entity;
@@ -213,18 +211,6 @@ namespace ALEngine::ECS
 
 		/*!*********************************************************************************
 		\brief
-			Toggle Pattern GUI active
-		***********************************************************************************/
-		void TogglePatternGUI(b8 istrue);
-
-		/*!*********************************************************************************
-		\brief
-			Toggle Abilities GUI active
-		***********************************************************************************/
-		void ToggleAbilitiesGUI(b8 istrue);
-
-		/*!*********************************************************************************
-		\brief
 			Place Player onto room
 		***********************************************************************************/
 		void PlaceNewPlayerInRoom(s32 x, s32 y);
@@ -247,12 +233,6 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
 
-		/*!*********************************************************************************
-		\brief
-			Disable Tool Tips
-		***********************************************************************************/
-		void DisableToolTip();
-
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
 		void Cheat_ToggleGodMode();
@@ -270,7 +250,7 @@ namespace ALEngine::ECS
 			Set gameplay system to running or not
 		***********************************************************************************/
 		void Toggle_Gameplay_State(b8 istrue);
-	};
+	}; // end of class GameplaySystem
 
 	namespace
 	{
@@ -323,7 +303,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Abilities 0");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
-		gameplaySystem->DisableToolTip();
+		DisableToolTipGUI();
 	}
 
 	void Event_Button_Select_Abilities_1([[maybe_unused]] Entity invoker) {
@@ -333,7 +313,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Abilities 1");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
-		gameplaySystem->DisableToolTip();
+		DisableToolTipGUI();
 	}
 
 	void Event_Button_Select_CurrentPattern([[maybe_unused]] Entity invoker) {
@@ -575,33 +555,33 @@ namespace ALEngine::ECS
 		gameplaySystem->InitializeEndTurnButton();
 
 		//Initialize Pattern GUI
-		GameplayInterface::InitializePatternGUI(gameplaySystem->GUI_Pattern_Button_List);
+		InitializePatternGUI(Get_GUI_Pattern_Button_List());
 
 		//Add events for pattern Button
-		Subscribe(gameplaySystem->GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
-		Subscribe(gameplaySystem->GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
-		Subscribe(gameplaySystem->GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
-		Subscribe(gameplaySystem->GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
+		Subscribe(Get_GUI_Pattern_Button_List()[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
+		Subscribe(Get_GUI_Pattern_Button_List()[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
+		Subscribe(Get_GUI_Pattern_Button_List()[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
+		Subscribe(Get_GUI_Pattern_Button_List()[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
 
 		//Add visual feedback event for pattern GUI
-		for (int i = 0; i < gameplaySystem->GUI_Pattern_Button_List.size(); ++i) {
-			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
+		for (int i = 0; i < Get_GUI_Pattern_Button_List().size(); ++i) {
+			Subscribe(Get_GUI_Pattern_Button_List()[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
+			Subscribe(Get_GUI_Pattern_Button_List()[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
+			Subscribe(Get_GUI_Pattern_Button_List()[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		}
 
 		//Initialize abilities GUI
-		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
+		InitializeAbilitiesGUI(Get_GUI_Abilities_Button_List());
 
 		//Add events for abilities Button
-		Subscribe(gameplaySystem->GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
-		Subscribe(gameplaySystem->GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
+		Subscribe(Get_GUI_Abilities_Button_List()[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
+		Subscribe(Get_GUI_Abilities_Button_List()[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
 
 		//Add visual feedback event for abilities GUI
-		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
-			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
+		for (int i = 0; i < Get_GUI_Abilities_Button_List().size(); ++i) {
+			Subscribe(Get_GUI_Abilities_Button_List()[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
+			Subscribe(Get_GUI_Abilities_Button_List()[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
+			Subscribe(Get_GUI_Abilities_Button_List()[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		}
 		
 		//Set a few blocks to be inaccessible
@@ -613,9 +593,9 @@ namespace ALEngine::ECS
 		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 2, false);
 
 		//Set abilities UI off
-		gameplaySystem->ToggleAbilitiesGUI(false);
+		ToggleAbilitiesGUI(false);
 
-		//Initialize GUI Text and Sprites
+		//Initialize GUI Text and Sprites zafir
 		gameplaySystem->GUI_Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		gameplaySystem->GUI_Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
 		gameplaySystem->GUI_Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
@@ -666,7 +646,7 @@ namespace ALEngine::ECS
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 				gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 
-				gameplaySystem->TogglePatternGUI(true);
+				TogglePatternGUI(true);
 			}
 			//Deselect Abilities
 			else if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
@@ -675,8 +655,8 @@ namespace ALEngine::ECS
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 				gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 
-				gameplaySystem->TogglePatternGUI(false);
-				gameplaySystem->ToggleAbilitiesGUI(true);
+				TogglePatternGUI(false);
+				ToggleAbilitiesGUI(true);
 			}
 		}
 
@@ -796,50 +776,25 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void GameplaySystem::TogglePatternGUI(b8 istrue) {
-		//Toggle the pattern GUI accordingly
-		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
+	//	//Toggle the first 2 abilities GUI accordingly 
+	//	for (int i = 0; i < 2; ++i) {
+	//		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
+	//		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
-			eventTrigger.isEnabled = istrue;
+	//		eventTrigger.isEnabled = istrue;
 
-			if(istrue)
-			sprite.color = { 1.f, 1.f, 1.f, 1.f };
-			else
-			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
-	}
-	
-	void GameplaySystem::ToggleAbilitiesGUI(b8 istrue) {
-		//Disable all the abilities GUI
-		for (int i = 0; i < GUI_Abilities_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
-
-			eventTrigger.isEnabled = false;
-			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
-
-		//Toggle the first 2 abilities GUI accordingly 
-		for (int i = 0; i < 2; ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
-
-			eventTrigger.isEnabled = istrue;
-
-			if (istrue) {
-				if (cheat_abilitiesDoubleDamage) {
-					sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
-				}
-				else {
-					sprite.color = { 1.f, 1.f, 1.f, 1.f };
-				}
-			}
-			else
-				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
-	}
+	//		if (istrue) {
+	//			if (cheat_abilitiesDoubleDamage) {
+	//				sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
+	//			}
+	//			else {
+	//				sprite.color = { 1.f, 1.f, 1.f, 1.f };
+	//			}
+	//		}
+	//		else
+	//			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+	//	}
+	//}
 
 	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
 		//Create a new player entity
@@ -1316,20 +1271,6 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->AddComponent(endTurnBtnEntity, eventTrigger);
 	}
 
-	void GameplaySystem::DisableToolTip() {
-		Entity en_tooltip = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
-		Entity en_skillicon = Coordinator::Instance()->GetEntityByTag("skill_icon");
-		Entity en_textskill = Coordinator::Instance()->GetEntityByTag("text_skillname");
-		Entity en_hard_drop = Coordinator::Instance()->GetEntityByTag("hard_drop_des1");
-		Entity en_life_drain = Coordinator::Instance()->GetEntityByTag("life_drain_des1");
-
-		ECS::SetActive(false, en_tooltip);
-		ECS::SetActive(false, en_skillicon);
-		ECS::SetActive(false, en_textskill);
-		ECS::SetActive(false, en_hard_drop);
-		ECS::SetActive(false, en_life_drain);
-	}
-
 	void GameplaySystem::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
@@ -1410,7 +1351,7 @@ namespace ALEngine::ECS
 		}
 
 		for (s32 i = 0; i < 2; ++i) {
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(Get_GUI_Abilities_Button_List()[i]);
 
 			if (cheat_abilitiesDoubleDamage) {
 				sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
@@ -1532,8 +1473,8 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
 	
 		//Draw the Pattern GUI
-		for (int i = 0; i < gameplaySystem->GUI_Pattern_Button_List.size(); ++i) {
-			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->GUI_Pattern_Button_List[i]);
+		for (int i = 0; i < Get_GUI_Pattern_Button_List().size(); ++i) {
+			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(Get_GUI_Pattern_Button_List()[i]);
 
 			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
 			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
@@ -1546,8 +1487,8 @@ namespace ALEngine::ECS
 		}
 
 		//Draw the Pattern GUI
-		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
-			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->GUI_Abilities_Button_List[i]);
+		for (int i = 0; i < Get_GUI_Abilities_Button_List().size(); ++i) {
+			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(Get_GUI_Abilities_Button_List()[i]);
 
 			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
 			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
