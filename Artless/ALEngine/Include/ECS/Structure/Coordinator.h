@@ -164,13 +164,6 @@ namespace ALEngine::ECS
 			signature.set(m_ComponentManager->GetComponentType<T>(), true);
 			m_EntityManager->SetSignature(entity, signature);
 			m_SystemManager->EntitySignatureChanged(entity, signature);
-
-			if constexpr (std::is_polymorphic<T>::value)
-			{
-				// This line checks if component is inherited from UniBehaviour
-				if (dynamic_cast<Component::UniBehaviour*>(&component))
-					AddLogicComponent(entity, component);
-			}
 		}
 
 #if EDITOR

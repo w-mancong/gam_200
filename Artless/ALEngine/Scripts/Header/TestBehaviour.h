@@ -1,3 +1,6 @@
+#ifndef	TEST_BEHAVIOUR_H
+#define TEST_BEHAVIOUR_H
+
 #include <ECS/Components/UniBehaviour.h>
 #include <iostream>
 
@@ -55,3 +58,5 @@ namespace ALEngine::Script
 		};
 	};
 }
+
+#endif

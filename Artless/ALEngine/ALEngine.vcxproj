@@ -63,7 +63,7 @@
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
+    <IncludePath>$(SolutionDir)\ALEngine\Include;$(SolutionDir)\AlEngine\Scripts\Header</IncludePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
@@ -71,7 +71,7 @@
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
+    <IncludePath>$(SolutionDir)\ALEngine\Include;$(SolutionDir)\AlEngine\Scripts\Header</IncludePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -79,7 +79,7 @@
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
+    <IncludePath>$(SolutionDir)\ALEngine\Include;$(SolutionDir)\AlEngine\Scripts\Header</IncludePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

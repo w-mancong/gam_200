@@ -29,23 +29,13 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->SetSystemSignature<LogicSystem>(signature);
 	}
 
-	template <typename T>
-	void AddLogicComponent(Entity en, T component)
-	{
-		if (!Coordinator::Instance()->HasComponent<LogicComponent>(en))
-			Coordinator::Instance()->AddComponent(en, LogicComponent());
-
-		LogicComponent& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
-		lc.logics.emplace_back(component);
-	}
-
 	void Load(void)
 	{
 		for (Entity en : ls->mEntities)
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (UniBehaviour* ub : lc.logics)
+			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
 				ub->Load(en);
 		}
 	}
@@ -56,7 +46,7 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (UniBehaviour* ub : lc.logics)
+			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
 				ub->Init(en);
 		}
 	}
@@ -67,7 +57,7 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (UniBehaviour* ub : lc.logics)
+			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
 				ub->Update(en);
 		}
 	}
@@ -78,7 +68,7 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (UniBehaviour* ub : lc.logics)
+			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
 				ub->LateUpdate(en);
 		}
 	}
@@ -89,7 +79,7 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (UniBehaviour* ub : lc.logics)
+			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
 				ub->Free(en);
 		}
 	}
@@ -100,7 +90,7 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (UniBehaviour* ub : lc.logics)
+			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
 				ub->Unload(en);
 		}
 	}

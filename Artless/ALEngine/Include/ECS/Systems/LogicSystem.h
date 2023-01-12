@@ -11,16 +11,34 @@ brief:	This file contains the function declarations for LogicSystem
 
 namespace ALEngine::ECS
 {
+	class Coordinator;
+
 	/*!*********************************************************************************
 		\brief Register AnimatorSystem
 	***********************************************************************************/
 	void RegisterLogicSystem(void);
 
 	/*!*********************************************************************************
-		\brief 
+		\brief If the component is inherited from UniBehaviour, the component will be 
+		added into the vector inside of LogicComponent
 	***********************************************************************************/
 	template <typename T>
-	void AddLogicComponent(Entity en, T component);
+	void AddLogicComponent(Entity en)
+	{
+		if constexpr (std::is_polymorphic<T>::value)
+		{
+			// This line checks if component is inherited from UniBehaviour
+			T component;
+			if (!dynamic_cast<Component::UniBehaviour*>( &component ))
+				return;
+
+			if (!Coordinator::Instance()->HasComponent<Component::LogicComponent>(en))
+				Coordinator::Instance()->AddComponent(en, Component::LogicComponent());
+
+			Component::LogicComponent& lc = Coordinator::Instance()->GetComponent<Component::LogicComponent>(en);
+			lc.logics.emplace_back(std::make_shared<T>());
+		}
+	}
 
 	/*!*********************************************************************************
 		\brief Run all the UniBehaviour's Load function inside LogicComponent

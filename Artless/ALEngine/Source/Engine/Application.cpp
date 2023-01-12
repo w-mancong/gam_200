@@ -8,6 +8,8 @@ brief:	This file contain function definition that starts the flow of the entire 
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
+#include <TestBehaviour.h>
+#include <ECS/Systems/LogicSystem.h>
 
 namespace ALEngine::Engine
 {
@@ -68,7 +70,7 @@ namespace ALEngine::Engine
 			Engine::Update();
 
 			// Update Scene graph
-			ECS::GetSceneGraph().Update();
+			//ECS::GetSceneGraph().Update();
 
 			//RenderTransformBox();
 			// Render
@@ -89,13 +91,13 @@ namespace ALEngine::Engine
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
-				StartGameplaySystem();
+				//StartGameplaySystem();
 				ECS::Load();
 			}
 			else
 			{
 				Scene::LoadScene();
-				StartGameplaySystem();
+				//StartGameplaySystem();
 				GameStateManager::current = GameStateManager::previous;
 				GameStateManager::next	  = GameStateManager::previous;
 			}
@@ -143,7 +145,7 @@ namespace ALEngine::Engine
 					}
 
 					// Update Scene graph
-					ECS::GetSceneGraph().Update();
+					//ECS::GetSceneGraph().Update();
 #if EDITOR
 				}
 #endif
@@ -171,7 +173,7 @@ namespace ALEngine::Engine
 #endif
 				Coordinator::Instance()->DestroyEntities();
 
-			ExitGameplaySystem();
+			//ExitGameplaySystem();
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current = GameStateManager::next;
 
@@ -215,7 +217,8 @@ namespace ALEngine::Engine
 		Console::StopConsole();
 #endif
 
-		//Coordinator::Instance()->AddComponent
+		Entity en = Coordinator::Instance()->CreateEntity();
+		ECS::AddLogicComponent<Script::TestBehaviour>(en);
 
 		//Scene::LoadScene("Assets\\test.scene");
 

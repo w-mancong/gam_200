@@ -37,32 +37,32 @@ namespace ALEngine::ECS::Component
 		/*!*********************************************************************************
 			\brief Used to load in any resources, will only run once when new scene loads
 		***********************************************************************************/
-		void Load([[maybe_unused]] Entity en) {};
+		virtual void Load([[maybe_unused]] Entity en) {};
 
 		/*!*********************************************************************************
 			\brief Used to initialise any values to it's default value
 		***********************************************************************************/
-		void Init([[maybe_unused]] Entity en) {};
+		virtual void Init([[maybe_unused]] Entity en) {};
 
 		/*!*********************************************************************************
 			\brief Updates every frame
 		***********************************************************************************/
-		void Update([[maybe_unused]] Entity en) {};
+		virtual void Update([[maybe_unused]] Entity en) {};
 
 		/*!*********************************************************************************
 			\brief This update will be used for physics related logic
 		***********************************************************************************/
-		void LateUpdate([[maybe_unused]] Entity en) {};
+		virtual void LateUpdate([[maybe_unused]] Entity en) {};
 
 		/*!*********************************************************************************
 			\brief Whenever a scene ends, use this function to free any resources
 		***********************************************************************************/
-		void Free([[maybe_unused]] Entity en) {};
+		virtual void Free([[maybe_unused]] Entity en) {};
 
 		/*!*********************************************************************************
 			\brief Use this function to unload any resourcecs before changing to the next level
 		***********************************************************************************/
-		void Unload([[maybe_unused]] Entity en) {};
+		virtual void Unload([[maybe_unused]] Entity en) {};
 
 		/*!*********************************************************************************
 			\brief Pure virtual destructor 
