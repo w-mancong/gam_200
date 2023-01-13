@@ -152,6 +152,9 @@ namespace ALEngine::Engine::GameplayInterface
 				//Set can walk to true
 				cell.m_canWalk = true;
 
+				//Sets the tile counter to 2 turns before it collapses
+				cell.m_resetCounter = 2;
+
 				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 				sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 			}
