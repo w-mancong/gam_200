@@ -214,6 +214,14 @@ namespace ALEngine::Engine
 		Console::StopConsole();
 #endif
 
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+		
+		//Create Button Entity
+		Entity buttonEntity = Coordinator::Instance()->CreateEntity();
+		sceneGraph.Push(-1, buttonEntity);
+		Coordinator::Instance()->GetComponent<EntityData>(buttonEntity).tag = "NewButton";
+		CreateButton(buttonEntity);
+
 		//Scene::LoadScene("Assets\\test.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
@@ -278,8 +286,6 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
-		UpdateEventTriggerSystem();
-		UpdateButtonSystem();
 	}
 
 	void Engine::FixedUpdate(void)
@@ -288,6 +294,9 @@ namespace ALEngine::Engine
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
 		UpdateGameplaySystem();
+
+		UpdateEventTriggerSystem();
+		UpdateButtonSystem();
 
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();

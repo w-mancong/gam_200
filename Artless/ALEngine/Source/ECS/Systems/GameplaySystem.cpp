@@ -472,7 +472,7 @@ namespace ALEngine::ECS
 #endif
 		if (gameplaySystem->m_Room.roomCellsArray)
 			return;
-
+		
 		AL_CORE_INFO("GAME START");
 		//Set up scene
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();

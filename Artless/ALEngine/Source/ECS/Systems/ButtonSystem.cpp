@@ -65,13 +65,40 @@ namespace ALEngine::ECS
 	}
 
 	void UpdateButtonSystem() {
-		//Shift through each component
-		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
-			Button& button = Coordinator::Instance()->GetComponent<Button>(*it);
-		}
+		////Shift through each component
+		//for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
+		//	Button& button = Coordinator::Instance()->GetComponent<Button>(*it);
+		//}
 	}
 
 	void CreateButton(Entity const& entity) {
+		//Add neccesary components if needed
+		//Create a background if needed
+		if (!Coordinator::Instance()->HasComponent<Sprite>(entity)) {
+			Transform transform;
+			transform.scale = { 300,100 };
+			Coordinator::Instance()->AddComponent(entity, transform);
+		
+			CreateSprite(entity);
+		}
+
+		//Add text component if needed
+		if (!Coordinator::Instance()->HasComponent<Text>(entity)) {
+			Text text;
+
+			text.textString = "button Text";
+			text.scale = 1.0f;
+			text.currentFont = "Roboto-Bold";
+			text.colour = { 0.f, 0.f, 0.f, 1.f };
+
+			//Transform& transform = Coordinator::Instance()->Instance
+
+			text.position -= {50, 0};
+
+			//text
+			Coordinator::Instance()->AddComponent(entity, text);
+		}
+
 		//Setup EventTrigger for custom stats
 		Button button{};
 		button.m_color_Tint_Normal = { 1.f, 1.f, 1.f, 1.f };
@@ -87,12 +114,13 @@ namespace ALEngine::ECS
 			return;
 		}
 
+		//Add eventTrigger with default settings
 		EventTrigger eventTrigger;
+		eventTrigger.layer = 100;
+		Coordinator::Instance()->AddComponent(entity, eventTrigger);
+
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
-		eventTrigger.layer = 100;
-
-		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 	}
 }
