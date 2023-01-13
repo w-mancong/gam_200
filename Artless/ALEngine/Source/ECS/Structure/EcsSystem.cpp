@@ -30,9 +30,6 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<Text>();
 		Coordinator::Instance()->RegisterComponent<Engine::AudioSource>();
 		Coordinator::Instance()->RegisterComponent<LogicComponent>();
-
-		// To be deleted later
-		Coordinator::Instance()->RegisterComponent<EntityScript>();
 	}
 
 	void RegisterSystem(void)
@@ -52,9 +49,6 @@ namespace ALEngine::ECS
 #if EDITOR
 		//RegisterTransformSystem();
 #endif
-
-		// To be deleted later
-		RegisterCppScriptSystem();
 	}
 
 	void InitSystem(void)

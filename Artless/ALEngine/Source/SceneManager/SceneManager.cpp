@@ -665,105 +665,6 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->AddComponent(en, prop);
 	}
 
-	void WriteEntityScript(TWriter& writer, ECS::Entity en)
-	{
-		writer.Key("EntityScript");
-		writer.StartArray();
-		writer.StartObject();
-
-		EntityScript const& es = Coordinator::Instance()->GetComponent<EntityScript>(en);
-
-		// load function names
-		writer.Key("Load");
-		writer.StartArray();
-		for (auto const& v : es.Load)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		// init function names
-		writer.Key("Init");
-		writer.StartArray();
-		for (auto const& v : es.Init)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		// load function names
-		writer.Key("Update");
-		writer.StartArray();
-		for (auto const& v : es.Update)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		// load function names
-		writer.Key("Free");
-		writer.StartArray();
-		for (auto const& v : es.Free)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		// load function names
-		writer.Key("Unload");
-		writer.StartArray();
-		for (auto const& v : es.Unload)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		writer.EndObject();
-		writer.EndArray();
-	}
-
-	void ReadEntityScript(rjs::Value const& v, ECS::Entity en)
-	{
-		EntityScript es{};
-
-		// Load
-		rjs::SizeType index = 0;
-		rjs::Value const& load = v[0]["Load"];
-		for (auto it = load.Begin(); it != load.End(); ++it, ++index)
-			es.AddLoadFunction(load[index].GetString());
-
-		// Init
-		index = 0;
-		rjs::Value const& init = v[0]["Init"];
-		for (auto it = init.Begin(); it != init.End(); ++it, ++index)
-			es.AddInitFunction(init[index].GetString());
-
-		// Update
-		index = 0;
-		rjs::Value const& update = v[0]["Update"];
-		for (auto it = update.Begin(); it != update.End(); ++it, ++index)
-			es.AddUpdateFunction(update[index].GetString());
-
-		// Free
-		index = 0;
-		rjs::Value const& free = v[0]["Free"];
-		for (auto it = free.Begin(); it != free.End(); ++it, ++index)
-			es.AddFreeFunction(free[index].GetString());
-
-		// Unload
-		index = 0;
-		rjs::Value const& unload = v[0]["Unload"];
-		for (auto it = unload.Begin(); it != unload.End(); ++it, ++index)
-			es.AddUnloadFunction(unload[index].GetString());
-
-		Coordinator::Instance()->AddComponent(en, es);
-	}
-
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
 	{
 		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
@@ -860,8 +761,6 @@ namespace ALEngine::Engine::Scene
 				WriteParticleProperty(writer, en);
 			if (Coordinator::Instance()->HasComponent<Text>(en))
 				WriteTextProperty(writer, en);
-			if (Coordinator::Instance()->HasComponent<EntityScript>(en))
-				WriteEntityScript(writer, en);
 
 			writer.EndObject();
 		}
@@ -898,8 +797,6 @@ namespace ALEngine::Engine::Scene
 				ReadParticleProperty(v["ParticleProperty"], en);
 			if (v.HasMember("TextProperty"))
 				ReadTextProperty(v["TextProperty"], en);
-			if (v.HasMember("EntityScript"))
-				ReadEntityScript(v["EntityScript"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
 		CalculateLocalCoordinate();

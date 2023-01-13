@@ -72,11 +72,6 @@
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Commands\Command.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
-    <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
-    <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptInterface.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
@@ -85,9 +80,6 @@
     <ClCompile Include="..\Extern\include\imgui\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\SkillHovering.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\StatsHovering.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\PauseLogic.cpp" />
     <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
   </ItemGroup>
@@ -332,14 +324,8 @@
     <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
     <ClInclude Include="Include\Commands\UpdateComponentCommand.h" />
     <ClInclude Include="Include\Commands\EditorCommandManager.h" />
-    <ClInclude Include="Include\Scripting\ScriptEngine.h" />
-    <ClInclude Include="Include\Common Header\MyScripting.h" />
-    <ClInclude Include="Include\Scripting\ScriptGlue.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptInterface.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\EntityScript.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptSystem.h" />
     <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
     <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
     <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
@@ -347,9 +333,6 @@
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\StatsHovering.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\PauseLogic.h" />
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\ECS\Systems\LogicSystem.h" />

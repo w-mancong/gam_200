@@ -205,7 +205,6 @@ namespace ALEngine::Engine
 
 		Engine::AssetManager::Instance()->Init();
 		GameStateManager::Init();
-		RegisterCppScripts();
 
 		appStatus = 1;
 		RunFileWatcherThread();
