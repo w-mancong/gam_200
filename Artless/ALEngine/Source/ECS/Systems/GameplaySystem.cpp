@@ -241,7 +241,29 @@ namespace ALEngine::ECS
 			Set gameplay system to running or not
 		***********************************************************************************/
 		void Toggle_Gameplay_State(b8 istrue);
-	}; // end of class GameplaySystem
+
+		/*!*********************************************************************************
+		\brief
+			Scan the entire room array to check for the tile counters and to 
+			change the sprite to the correct state of the tile
+		***********************************************************************************/
+		void scanRoomCellArray();
+
+		/*!*********************************************************************************
+		\brief
+			Check the tile the player is currently on to check if the 
+			tile is supposed to be destroyed
+		***********************************************************************************/
+		void checkPlayerPlacement();
+
+		/*!*********************************************************************************
+		\brief
+			Check the selected tile counters and to make 
+			amendments to them at the end of the turn
+		***********************************************************************************/
+		s32 checkTileCounters(Cell& selectedCell);
+
+	};
 
 	namespace
 	{
@@ -681,17 +703,17 @@ namespace ALEngine::ECS
 		}
 		//******END CHEAT KEYS******//
 
-		gameplaySystem->RunGameState();	
+		gameplaySystem->RunGameState();
 		gameplaySystem->UpdateUnitSpriteLayer();
 	}
 
 	void ExitGameplaySystem(void)
 	{
-		#if EDITOR
-				if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
-					return;
-				}
-		#endif
+#if EDITOR
+		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
+			return;
+		}
+#endif
 
 		if (gameplaySystem->m_Room.roomCellsArray != nullptr) {
 			delete[] gameplaySystem->m_Room.roomCellsArray;
@@ -718,46 +740,105 @@ namespace ALEngine::ECS
 
 		//Set the turn accordingly
 		switch (currentPhaseStatus) {
-			case PHASE_STATUS::PHASE_SETUP:
-				currentPhaseStatus = PHASE_STATUS::PHASE_ACTION;
+		case PHASE_STATUS::PHASE_SETUP:
+			currentPhaseStatus = PHASE_STATUS::PHASE_ACTION;
 
-				AL_CORE_DEBUG("Loading PHASE ACTION");
+			AL_CORE_DEBUG("Loading PHASE ACTION");
 
-				ToggleAbilitiesGUI(true);
-				TogglePatternGUI(false);
+			ToggleAbilitiesGUI(true);
+			TogglePatternGUI(false);
 			break;
 
-			case PHASE_STATUS::PHASE_ACTION:
-				AL_CORE_DEBUG("Loading PHASE ENEMY");
-				currentPhaseStatus = PHASE_STATUS::PHASE_ENEMY;
-				enemyMoved = 0;
+		case PHASE_STATUS::PHASE_ACTION:
+			AL_CORE_DEBUG("Loading PHASE ENEMY");
+			currentPhaseStatus = PHASE_STATUS::PHASE_ENEMY;
+			enemyMoved = 0;
 
-				ToggleAbilitiesGUI(false);
-				TogglePatternGUI(false);
-				MoveEnemy();
-				break;
-			
-			case PHASE_STATUS::PHASE_ENEMY:
-				AL_CORE_DEBUG("Loading PHASE SETUP");
-				currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
-				TogglePatternGUI(true);
+			ToggleAbilitiesGUI(false);
+			TogglePatternGUI(false);
+			MoveEnemy();
+			break;
 
-				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-				playerUnit.movementPoints = playerUnit.maxMovementPoints;
+		case PHASE_STATUS::PHASE_ENEMY:
+			AL_CORE_DEBUG("Loading PHASE SETUP");
+			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
+			TogglePatternGUI(true);
 
-				for (int i = 0; i < enemyEntityList.size(); ++i) {
-					Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
-					enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
-				}
-				UpdateGUI_OnSelectUnit(playerEntity);
-				break;
+			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+			playerUnit.movementPoints = playerUnit.maxMovementPoints;
+
+			for (int i = 0; i < enemyEntityList.size(); ++i) {
+				Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+				enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+			}
+			UpdateGUI_OnSelectUnit(playerEntity);
+
+			scanRoomCellArray();
+
+			checkPlayerPlacement();
+
+			break;
 		}
 	}
 
-	//	//Toggle the first 2 abilities GUI accordingly 
-	//	for (int i = 0; i < 2; ++i) {
-	//		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Abilities_Button_List[i]);
-	//		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
+	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile
+	void GameplaySystem::scanRoomCellArray() {
+		s32 resetCounter;
+		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
+		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->roomSize[0]); ++i) {
+			for (s32 j = 0; j < static_cast<s32>(gameplaySystem->roomSize[1]); ++j) {
+				s32 cellIndex = i * gameplaySystem->roomSize[0] + j;
+				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				resetCounter = checkTileCounters(cell);
+
+				if (resetCounter == 1) {
+
+					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/CloseButton.png");
+
+				}
+				if (resetCounter == 0) {
+					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+				}
+
+			}
+		}
+	}
+
+	//Check the tile the player is currently on to check if the tile is supposed to be destroyed
+	void GameplaySystem::checkPlayerPlacement() {
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Entity cellEntity = playerUnit.m_CurrentCell_Entity;
+		Cell& playerUnitCell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		if (playerUnitCell.m_canWalk == false) {
+			playerUnit.health = 0;
+		}
+	}
+
+
+	//Check the selected tile counters and to make amendments to them at the end of the turn
+	s32 GameplaySystem::checkTileCounters(Cell& selectedCell) {
+
+		if (selectedCell.m_resetCounter > 0) {
+			selectedCell.m_resetCounter--;
+		}
+
+		if (selectedCell.m_resetCounter == 0) {
+			selectedCell.m_canWalk = false;	
+		}
+
+		return selectedCell.m_resetCounter;
+	}
+
+	void GameplaySystem::TogglePatternGUI(b8 istrue) {
+		//Toggle the pattern GUI accordingly
+		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
 
 	//		eventTrigger.isEnabled = istrue;
 
