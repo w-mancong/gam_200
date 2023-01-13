@@ -822,7 +822,6 @@ namespace ALEngine::ECS
 
 	//Check the selected tile counters and to make amendments to them at the end of the turn
 	s32 GameplaySystem::checkTileCounters(Cell& selectedCell) {
-
 		if (selectedCell.m_resetCounter > 0) {
 			selectedCell.m_resetCounter--;
 		}
@@ -833,27 +832,6 @@ namespace ALEngine::ECS
 
 		return selectedCell.m_resetCounter;
 	}
-
-	void GameplaySystem::TogglePatternGUI(b8 istrue) {
-		//Toggle the pattern GUI accordingly
-		for (int i = 0; i < GUI_Pattern_Button_List.size(); ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(GUI_Pattern_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Pattern_Button_List[i]);
-
-	//		eventTrigger.isEnabled = istrue;
-
-	//		if (istrue) {
-	//			if (cheat_abilitiesDoubleDamage) {
-	//				sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
-	//			}
-	//			else {
-	//				sprite.color = { 1.f, 1.f, 1.f, 1.f };
-	//			}
-	//		}
-	//		else
-	//			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-	//	}
-	//}
 
 	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
 		//Create a new player entity
