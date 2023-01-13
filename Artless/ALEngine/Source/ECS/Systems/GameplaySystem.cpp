@@ -539,7 +539,7 @@ namespace ALEngine::ECS
 			sceneGraph.Push(gameplaySystem->m_Room_Parent_Entity, gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
 
 			Transform transform;
-			transform.scale = { 85, 85 };
+			transform.scale = { 100, 100 };
 			transform.localScale = { 100, 100 };
 
 			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
@@ -1044,6 +1044,7 @@ namespace ALEngine::ECS
 
 		//Add events
 		EventTrigger eventTrigger;
+		eventTrigger.layer = 1;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 	}
@@ -1085,6 +1086,7 @@ namespace ALEngine::ECS
 
 		//Set enemy events
 		EventTrigger eventTrigger;
+		eventTrigger.layer = 1;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 	}
@@ -1359,7 +1361,6 @@ namespace ALEngine::ECS
 
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(GUI_Unit_Healthbar);
 		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
-		AL_CORE_CRITICAL("SIZE " + std::to_string(healthbar_transform.scale.x));
 	}
 
 	void GameplaySystem::Cheat_ToggleGodMode() {
