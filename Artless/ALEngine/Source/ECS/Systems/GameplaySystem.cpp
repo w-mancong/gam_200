@@ -281,33 +281,6 @@ namespace ALEngine::ECS
 		Scene::Restart();
 	}
 
-	void Event_Button_Darken([[maybe_unused]] Entity invoker) {
-		//Darken the button
-		if (utils::IsEqual(Time::m_Scale, 0.f)) {
-			return;
-		}
-
-		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
-		sprite.color = { 0.6f, 0.6f, 0.6f, 1.f };
-	}
-
-	void Event_Button_Lighten([[maybe_unused]] Entity invoker) {
-		//Return the button to normal color
-		if (utils::IsEqual(Time::m_Scale, 0.f)) {
-			return;
-		}
-
-		[[maybe_unused]] EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
-
-		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
-		
-		if (gameplaySystem->cheat_abilitiesDoubleDamage) {
-			sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
-		}
-		else {
-			sprite.color = { 1.0f, 1.0f, 1.0f, 1.0f };
-		}
-	}
 
 	void Event_Button_Select_Abilities_0([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
@@ -516,8 +489,6 @@ namespace ALEngine::ECS
 
 		sceneGraph.Push(-1, gameplaySystem->m_Room_Parent_Entity); // first cell is parent
 
-		ALEngine::Engine::GameplayInterface_Management_GUI::InitializeGUI();
-
 		//Initialize Pattern
 		InitializePatterns(gameplaySystem->pattern_List);
 
@@ -570,11 +541,17 @@ namespace ALEngine::ECS
 		PlaceNewEnemyInRoom(0, 1, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
         PlaceNewEnemyInRoom(4, 4, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
 
-		//Create EndTurn Button
+		////Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
 
 		//Initialize Pattern GUI
 		InitializePatternGUI(getGuiManager().GUI_Pattern_Button_List);
+
+		//Initialize abilities GUI
+		InitializeAbilitiesGUI(getGuiManager().GUI_Abilities_Button_List);
+
+		//Initialize General GUI
+		InitializeGUI();
 
 		//Add events for pattern Button
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
@@ -582,26 +559,11 @@ namespace ALEngine::ECS
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
 
-		//Add visual feedback event for pattern GUI
-		for (int i = 0; i < getGuiManager().GUI_Pattern_Button_List.size(); ++i) {
-			Subscribe(getGuiManager().GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-			Subscribe(getGuiManager().GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-			Subscribe(getGuiManager().GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
-		}
-
-		//Initialize abilities GUI
-		InitializeAbilitiesGUI(getGuiManager().GUI_Abilities_Button_List);
 
 		//Add events for abilities Button
 		Subscribe(getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 		Subscribe(getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
 
-		//Add visual feedback event for abilities GUI
-		for (int i = 0; i < getGuiManager().GUI_Abilities_Button_List.size(); ++i) {
-			Subscribe(getGuiManager().GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-			Subscribe(getGuiManager().GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-			Subscribe(getGuiManager().GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
-		}
 		
 		//Set a few blocks to be inaccessible
 		ToggleCellAccessibility(gameplaySystem->m_Room, 1, 0, false);
@@ -611,9 +573,6 @@ namespace ALEngine::ECS
 		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 1, false);
 		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 2, false);
 		
-		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
 
 		gameplaySystem->Toggle_Gameplay_State(true);
@@ -1301,13 +1260,9 @@ namespace ALEngine::ECS
 
 	void GameplaySystem::InitializeEndTurnButton() {
 		getGuiManager().endTurnBtnEntity = Coordinator::Instance()->GetEntityByTag("end_turn");
-		
-		EventTrigger eventTrigger;		
-		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
-		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
-		Coordinator::Instance()->AddComponent(getGuiManager().endTurnBtnEntity, eventTrigger);
+		CreateButton(getGuiManager().endTurnBtnEntity);
+
+		Subscribe(getGuiManager().endTurnBtnEntity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
 	}
 
 	void GameplaySystem::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
