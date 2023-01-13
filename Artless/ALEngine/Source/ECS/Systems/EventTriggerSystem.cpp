@@ -4,7 +4,7 @@ author:	Tan Zhen Xiong
 email:	t.zhenxiong\@digipen.edu
 brief:	This file contains the function definition for EventTriggerSystem.cpp
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"

@@ -85,21 +85,9 @@ namespace ALEngine::Engine::GameplayInterface
 
 	/*!*********************************************************************************
 	\brief
-		Initialize Pattern GUI
-	***********************************************************************************/
-	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities);
-
-	/*!*********************************************************************************
-	\brief
 		Initialize Abilities
 	***********************************************************************************/
 	void InitializeAbilities(std::vector<Abilities>& abilitiesList);
-
-	/*!*********************************************************************************
-	\brief
-		Initialize Pattern GUI
-	***********************************************************************************/
-	void InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities);
 
 	/*!*********************************************************************************
 	\brief
