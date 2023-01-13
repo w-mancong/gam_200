@@ -11,6 +11,8 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/Physics2D.h"
 #include "Engine/PathFindingManager.h"
 #include "Engine/GamePlayInterface.h"
+#include "Engine/GameplayInterface_Management_Enemy.h"
+
 
 namespace ALEngine::ECS
 {
@@ -22,6 +24,7 @@ namespace ALEngine::ECS
 	using namespace Math; using namespace Engine; using namespace Graphics;
 	using GameplayInterface::Pattern;
 	using GameplayInterface::Abilities;
+	using namespace Engine::GameplayInterface_Management_Enemy;
 
 	/*!*********************************************************************************
 	\brief
@@ -381,14 +384,16 @@ namespace ALEngine::ECS
 		gameplaySystem->EndTurn();
 	}
 
-	void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
-		if (utils::IsEqual(Time::m_Scale, 0.f)) {
-			return;
-		}
+	//void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
+	//	if (utils::IsEqual(Time::m_Scale, 0.f)) {
+	//		return;
+	//	}
 
-		AL_CORE_INFO("DISPLAY UNIT");
-		gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
-	}
+	//	AL_CORE_INFO("DISPLAY UNIT");
+	//	gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
+	//}
+
+	
 
 	void Event_MouseEnterCell(Entity invoker) {
 		//Keep track of cell the mouse is interacting with
@@ -568,8 +573,10 @@ namespace ALEngine::ECS
 		gameplaySystem->PlaceNewPlayerInRoom(0, 5);
 
 		gameplaySystem->enemyEntityList.clear();
-		gameplaySystem->PlaceNewEnemyInRoom(0, 1);
-		gameplaySystem->PlaceNewEnemyInRoom(4, 4);
+		//gameplaySystem->PlaceNewEnemyInRoom(0, 1);
+		//gameplaySystem->PlaceNewEnemyInRoom(4, 4);
+		PlaceNewEnemyInRoom(0, 1, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+        PlaceNewEnemyInRoom(4, 4, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
 
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
@@ -1559,4 +1566,15 @@ namespace ALEngine::ECS
 			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
 		}
 	}
+}
+
+void ALEngine::Engine::GameplayInterface_Management_Enemy::Event_Unit_OnSelect([[maybe_unused]] Entity invoker)
+{
+	if (utils::IsEqual(Time::m_Scale, 0.f))
+	{
+		return;
+	}
+
+	AL_CORE_INFO("DISPLAY UNIT");
+	ALEngine::ECS::gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
 }
