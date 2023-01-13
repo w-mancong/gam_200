@@ -494,6 +494,8 @@ namespace ALEngine::ECS
 
 		sceneGraph.Push(-1, gameplaySystem->m_Room_Parent_Entity); // first cell is parent
 
+		ALEngine::Engine::GameplayInterface_Management_GUI::InitializeGUI();
+
 		//Initialize Pattern
 		InitializePatterns(gameplaySystem->pattern_List);
 
@@ -593,6 +595,8 @@ namespace ALEngine::ECS
 		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
 
 		gameplaySystem->Toggle_Gameplay_State(true);
+		ToggleAbilitiesGUI(false);
+		TogglePatternGUI(true);
 	}
 
 	void UpdateGameplaySystem(void)

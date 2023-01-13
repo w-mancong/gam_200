@@ -91,6 +91,13 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 
 		transform.position = { startPos.x + x_offset * 5.f, 100.f, 0.f };
 		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], eventTrigger);
+
+		for (int i = 0; i < 2; ++i) {
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
+
+			eventTrigger.isEnabled = true;
+		}
 	}
 
 	void TogglePatternGUI(b8 istrue) {
@@ -114,27 +121,13 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
 
-			eventTrigger.isEnabled = false;
-			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
-		}
-
-		//Toggle the first 2 abilities GUI accordingly 
-		for (int i = 0; i < 2; ++i) {
-			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
-
 			eventTrigger.isEnabled = istrue;
 
-			//if (istrue) {
-			//	if (GetCheatAbilitiesDoubleDamage()) {
-			//		sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
-			//	}
-			//	else {
-			//		sprite.color = { 1.f, 1.f, 1.f, 1.f };
-			//	}
-			//}
-			//else
-			//	sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+			if (istrue) {
+				sprite.color = { 1.f, 1.f, 1.f, 1.f };
+			}
+			else
+				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
 	}
 

@@ -62,5 +62,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 	void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
 
 	void DisableToolTipGUI();
+
+	void InitializeGUI();
 }
 #endif
