@@ -26,6 +26,9 @@ namespace ALEngine::ECS::Component
 		//canWalk - accessible and if walkable by player unit
 		b8 m_isAccessible{ true }, m_canWalk{ false };
 
+		//A counter that resets the tile's walkability after 2 turns
+		s32 m_resetCounter{ 0 };
+
 		//Has unit
 		b8 hasUnit { false};
 
