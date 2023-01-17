@@ -41,6 +41,9 @@ namespace ALEngine::ECS::Component
 		//unit entity that is on the cell
 		u32 unitEntity;
 
+		Entity child_overlay;
+		b8 iswall{ false };
+
 		//Coordinate of the cll
 		Math::Vector2Int coordinate = { 0,0 };
 
