@@ -82,6 +82,7 @@
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
+    <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -339,6 +340,7 @@
     <ClInclude Include="Include\ECS\Components\UniBehaviour.h" />
     <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
     <ClInclude Include="Scripts\Header\TestBehaviour.h" />
+    <ClInclude Include="Scripts\Header\GameplayCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

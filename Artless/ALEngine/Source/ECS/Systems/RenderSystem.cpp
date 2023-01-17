@@ -431,6 +431,11 @@ namespace ALEngine::ECS
 		camera.Fov(fov);
 	}
 
+	Engine::Camera& GetCamera(void)
+	{
+		return camera;
+	}
+
 	Tree::BinaryTree& GetSceneGraph(void)
 	{
 		return sceneGraph;

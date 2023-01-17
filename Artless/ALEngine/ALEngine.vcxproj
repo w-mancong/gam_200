@@ -158,6 +158,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
@@ -429,6 +430,7 @@
     <ClInclude Include="Include\Utility\Type.h" />
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
+    <ClInclude Include="Scripts\Header\GameplayCamera.h" />
     <ClInclude Include="Scripts\Header\TestBehaviour.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>

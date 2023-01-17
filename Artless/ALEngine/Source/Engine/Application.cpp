@@ -8,7 +8,7 @@ brief:	This file contain function definition that starts the flow of the entire 
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
-#include <TestBehaviour.h>
+#include <GameplayCamera.h>
 #include <ECS/Systems/LogicSystem.h>
 
 namespace ALEngine::Engine
@@ -210,14 +210,14 @@ namespace ALEngine::Engine
 		RunFileWatcherThread();
 
 #if !EDITOR
-		OpenGLWindow::FullScreen(true);
-		Scene::LoadScene("Assets\\test.scene");
-		StartGameplaySystem();
-		Console::StopConsole();
+		//OpenGLWindow::FullScreen(true);
+		//Scene::LoadScene("Assets\\test.scene");
+		//StartGameplaySystem();
+		//Console::StopConsole();
 #endif
 
 		Entity en = Coordinator::Instance()->CreateEntity();
-		ECS::AddLogicComponent<Script::TestBehaviour>(en);
+		ECS::AddLogicComponent<Script::GameplayCamera>(en);
 
 		//Scene::LoadScene("Assets\\test.scene");
 
@@ -291,7 +291,7 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
-		UpdateGameplaySystem();
+		//UpdateGameplaySystem();
 
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
