@@ -551,6 +551,10 @@ namespace ALEngine::Engine::Scene
 		writer.Key("rotation");
 		writer.Double(static_cast<f64>(prop.rotation));
 
+		// gravityEnabled
+		writer.Key("gravityEnabled");
+		writer.Bool(prop.gravityEnabled);
+
 		writer.EndObject();
 		writer.EndArray();
 	}
@@ -600,6 +604,9 @@ namespace ALEngine::Engine::Scene
 
 		// Getting rotation
 		prop.rotation = v[0]["rotation"].GetFloat();
+
+		// Getting gravityEnabled
+		prop.gravityEnabled = v[0]["gravityEnabled"].GetBool();
 
 		Coordinator::Instance()->AddComponent(en, prop);
 	}
