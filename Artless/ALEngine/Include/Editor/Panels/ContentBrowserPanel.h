@@ -63,7 +63,8 @@ namespace ALEngine::Editor
 		ImVec2 m_DefaultPos{};	// Default Position
 		ImVec2 m_DefaultSize{};	// Default Size
 
-		c8 searchKeyword[256];	//for search bar
+		c8 m_SearchKeyword[256];	//for search bar
+		c8 m_NameOfRenameFile[256];
 
 		std::filesystem::path m_CurrentDirectory;// for keeping track of current file directory or path
 		std::filesystem::path m_MainDirectory;
@@ -72,6 +73,8 @@ namespace ALEngine::Editor
 		std::filesystem::path m_DirectoryToDelete;
 
 		b8 m_OptionPromptEnabled{ false };
+		b8 m_RenameFile{ false };
+		
 	};
 }
 #endif
