@@ -26,6 +26,48 @@ namespace ALEngine::Engine::GameplayInterface
 	};
 
 	/*!*********************************************************************************
+		\brief
+			Status of game, STOP if game is not playing anymore
+							RUNNING if game is still running
+		***********************************************************************************/
+	enum class GAMEPLAY_STATUS
+	{
+		STOP,
+		RUNNING
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of phase of game
+	***********************************************************************************/
+	enum class PHASE_STATUS
+	{
+		PHASE_SETUP,
+		PHASE_ACTION,
+		PHASE_ENEMY,
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of controlling/movement of unit
+	***********************************************************************************/
+	enum class UNITS_CONTROL_STATUS {
+		NOTHING,
+		UNIT_MOVING,
+		UNIT_ATTACKING
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of placing pattern onto room
+	***********************************************************************************/
+	enum class PATTERN_PLACEMENT_STATUS {
+		NOTHING,
+		PLACING_FOR_TILE,
+		PLACING_FOR_ABILITIES
+	};
+
+	/*!*********************************************************************************
 	\brief
 		Container for Pattern
 	***********************************************************************************/

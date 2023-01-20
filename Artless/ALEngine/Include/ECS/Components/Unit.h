@@ -52,6 +52,8 @@ namespace ALEngine::ECS::Component
 		
 		//Current cell unit is on
 		ECS::Entity m_CurrentCell_Entity;
+
+		//void(*UpdateEnemyLogic);
 	};
 }
 #endif

@@ -18,8 +18,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	enum class ENEMY_TYPE
 	{
-		ENEMY_TYPE01,   //0
-		ENEMY_TYPE02,   //1
+		ENEMY_TYPE01,   //0 Enemy Melee
+		ENEMY_TYPE02,   //1 Cell Destroyer
 		ENEMY_TYPE03,   //2
 		ENEMY_TYPE04    //3
 	};
@@ -42,6 +42,15 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 	//void PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection);
 
 	void Event_Unit_OnSelect([[maybe_unused]] Entity invoker);
+
+	void SetMoveOrder(std::vector<Entity> path);
+
+	void EndTurn();
+
+	void Enemy_Logic_Update_Melee(u32& enemyMoved, std::vector<Entity>& enemyEntityList,Entity& playerEntity, Entity& startCellEntity, Room& m_Room, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, ALEngine::ECS::Entity& movingUnitEntity);
+
+	void Enemy_Logic_Update_CellDestroyer(u32& enemyMoved, std::vector<Entity>& enemyEntityList, Entity& playerEntity, Entity& startCellEntity, Room& m_Room, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, ALEngine::ECS::Entity& movingUnitEntity);
+
 }
 #endif
 
