@@ -113,11 +113,6 @@ namespace ALEngine::Engine::GameplayInterface
 		new_ability.current_type = TYPE_ABILITIES::LIFE_DRAIN;
 		new_ability.damage = 12;
 		abilitiesList.push_back(new_ability);
-
-		//Construct Wall
-		new_ability.current_type = TYPE_ABILITIES::CONSTRUCT_WALL;
-		//TRIGGER BIULDWALL FUNCTION HERE
-		abilitiesList.push_back(new_ability);
 	}
 
 	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color) {

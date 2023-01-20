@@ -271,8 +271,7 @@ namespace ALEngine::ECS
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
 		std::string const sceneName = R"(Assets\test.scene)";
-
-		s32 base_Layer = 10000;		//Base layer 
+		s32 base_Layer = 10000;		//Base layer
 	}
 
 	//****************EVENTS*****************//
