@@ -22,8 +22,10 @@ namespace ALEngine::Editor
 	:m_CurrentDirectory(assetPath),
 	m_MainDirectory(assetPath),
 	subDirectory(assetPath),
-	searchKeyword(""),
-	m_OptionPromptEnabled(false)
+	m_SearchKeyword(""),
+	m_OptionPromptEnabled(false),
+	m_RenameFile(false),
+	m_NameOfRenameFile("")
 	{}
 
 	ContentBrowserPanel::~ContentBrowserPanel()
@@ -135,9 +137,9 @@ namespace ALEngine::Editor
 		}
 
 		ImGui::Text("Search Bar");
-		ImGui::InputText("Search Tag", searchKeyword, 256);
+		ImGui::InputText("Search Tag", m_SearchKeyword, 256);
 
-		std::string searchString(searchKeyword);
+		std::string searchString(m_SearchKeyword);
 		std::transform(searchString.begin(), searchString.end(), searchString.begin(), ::tolower);
 
 		std::string fileNameCheck{ "" };
@@ -304,14 +306,34 @@ namespace ALEngine::Editor
 				//rename not implemented yet
 				if (ImGui::Button("Rename"))
 				{
-
+					m_RenameFile = true;
+					ImGui::CloseCurrentPopup();
 				}
 				ImGui::EndPopup();
 			}
 
-			//file name under button of file
-			ImGui::TextWrapped(fileNamestring.c_str());
+		    strcpy_s(m_NameOfRenameFile, fileNamestring.c_str());
 
+			//file name under button of file
+			if (m_RenameFile)
+			{
+				ImGui::InputText("##FileName", m_NameOfRenameFile, 256);
+
+				if (ImGui::IsKeyPressed(ImGuiKey_Enter))
+				{
+					if (std::rename(fileNamestring.c_str(), m_NameOfRenameFile))
+					{
+						std::perror("Error renaming");
+					}
+					m_RenameFile = false;
+				}
+			}
+			else
+			{
+				ImGui::TextWrapped(fileNamestring.c_str());
+				
+			}
+			
 			//set next column
 			ImGui::NextColumn();
 
