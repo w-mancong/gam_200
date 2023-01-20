@@ -35,7 +35,7 @@ namespace ALEngine::Engine::GameplayInterface
 	};
 
 	//***************For now 2 abilities***************//
-	enum class TYPE_ABILITIES { HARD_DROP, LIFE_DRAIN };
+	enum class TYPE_ABILITIES { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL};
 
 	/*!*********************************************************************************
 	\brief
@@ -198,5 +198,11 @@ namespace ALEngine::Engine::GameplayInterface
 		if enemy attacked player and player is adjacent
 	***********************************************************************************/
 	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy);
+
+
+	void constructWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
+
+	void destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
+
 }
 #endif

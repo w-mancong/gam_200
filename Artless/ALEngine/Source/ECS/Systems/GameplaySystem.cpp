@@ -263,6 +263,7 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		s32 checkTileCounters(Cell& selectedCell);
 
+
 	};
 
 	namespace
@@ -298,6 +299,16 @@ namespace ALEngine::ECS
 		}
 
 		AL_CORE_INFO("Select Abilities 1");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
+		DisableToolTipGUI();
+	}
+
+	void Event_Button_Select_Abilities_2([[maybe_unused]] Entity invoker) { //CONSTRUCT WALL SKILL
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Construct Wall");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
 		DisableToolTipGUI();
 	}
@@ -526,9 +537,24 @@ namespace ALEngine::ECS
 				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
 				Subscribe(gameplaySystem->m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
 
-				Coordinator::Instance()->AddComponent(getEntityCell(gameplaySystem->m_Room, i, j), cell);
+				//Add the child overlay
+				cell.child_overlay = Coordinator::Instance()->CreateEntity();
 
+				sceneGraph.Push(gameplaySystem->m_Room_Parent_Entity, cell.child_overlay); // other cells are children of the parent
+				CreateSprite(cell.child_overlay,"Assets/Images/InitialTile_v04.png");
+
+				Transform child_overlay_transform;
+				child_overlay_transform.scale = transform.scale;
+				child_overlay_transform.scale.y += 50;
+				child_overlay_transform.position = { 550 + (f32)i * 100.f, 300 + (f32)j * 100.f };
+				child_overlay_transform.position.y += 50 >> 2;
+				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
+
+				Coordinator::Instance()->AddComponent(getEntityCell(gameplaySystem->m_Room, i, j), cell);
+				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(i) + "," + std::to_string(j) + "]";
 				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(gameplaySystem->m_Room,i,j)).tag = "Cell[" + std::to_string(i) + "," + std::to_string(j) + "]";
+				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
+			
 			}
 		}
 
@@ -563,6 +589,7 @@ namespace ALEngine::ECS
 		//Add events for abilities Button
 		Subscribe(getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 		Subscribe(getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
+		Subscribe(getGuiManager().GUI_Abilities_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_2);
 
 		
 		//Set a few blocks to be inaccessible
@@ -618,6 +645,19 @@ namespace ALEngine::ECS
 				ToggleAbilitiesGUI(true);
 			}
 		}
+		//TEMPORARY TROUBLESHOOTING FEATURE FOR BUILDING WALL ABILITY
+		if (Input::KeyTriggered(KeyCode::B)) {
+			std::cout << "B IS PRESSED" << std::endl;
+			GameplayInterface::constructWall(gameplaySystem->m_Room, 0, 2, true);
+			GameplayInterface::constructWall(gameplaySystem->m_Room, 2, 0, true);
+		}
+
+		if (Input::KeyTriggered(KeyCode::N)) {
+			std::cout << "N IS PRESSED" << std::endl;
+			GameplayInterface::destroyWall(gameplaySystem->m_Room, 0, 2, true);
+			GameplayInterface::destroyWall(gameplaySystem->m_Room, 2, 0, true);
+		}
+
 
 		//Toggle debug draw
 		if (Input::KeyTriggered(KeyCode::Key_3)) {
@@ -755,7 +795,7 @@ namespace ALEngine::ECS
 				if (resetCounter == 1) {
 
 					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/CloseButton.png");
+					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/CloseButton.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 
 				}
 				if (resetCounter == 0) {
@@ -791,6 +831,7 @@ namespace ALEngine::ECS
 
 		return selectedCell.m_resetCounter;
 	}
+
 
 	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
 		//Create a new player entity

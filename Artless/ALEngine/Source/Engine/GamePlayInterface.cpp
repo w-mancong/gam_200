@@ -22,6 +22,8 @@ namespace ALEngine::Engine::GameplayInterface
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
 		cell.m_isAccessible = istrue;	//set accessible
 
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = istrue;
+
 		//Toggle color accordingly
 		if(!cell.m_isAccessible)
 		Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 0.f,0.f,0.f,0.f };
@@ -112,6 +114,11 @@ namespace ALEngine::Engine::GameplayInterface
 		//Life steal
 		new_ability.current_type = TYPE_ABILITIES::LIFE_DRAIN;
 		new_ability.damage = 12;
+		abilitiesList.push_back(new_ability);
+
+		//Construct Wall
+		new_ability.current_type = TYPE_ABILITIES::CONSTRUCT_WALL;
+		//TRIGGER THE BUILD WALL FUNCTION HERE!!
 		abilitiesList.push_back(new_ability);
 	}
 
@@ -270,6 +277,7 @@ namespace ALEngine::Engine::GameplayInterface
 							DoDamageToUnit(cell.unitEntity, abilities.damage);
 							break;
 						case TYPE_ABILITIES::LIFE_DRAIN:
+						{
 							DoDamageToUnit(cell.unitEntity, abilities.damage);
 
 							//Life steal 
@@ -287,6 +295,13 @@ namespace ALEngine::Engine::GameplayInterface
 							AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 							break;
 						}
+						case TYPE_ABILITIES::CONSTRUCT_WALL:
+							std ::cout << "CASE CONSTRUCT WALL IS TRIGGERED" << std::endl;
+							constructWall(room, coordinate.x, coordinate.y, true);
+
+							break;
+						}
+
 					}
 				}//End check if unit
 			}//End check if it's inside room
@@ -369,4 +384,23 @@ namespace ALEngine::Engine::GameplayInterface
 		}
 		return false;
 	}
+
+	void constructWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
+
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+		cell.iswall = isTrue;
+		cell.m_canWalk = !isTrue;
+
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
+	}
+
+	void destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
+
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+		cell.iswall = isTrue;
+		cell.m_canWalk = !isTrue;
+
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
+	}
+
 }
