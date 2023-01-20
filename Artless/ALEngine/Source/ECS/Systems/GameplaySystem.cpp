@@ -11,8 +11,6 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/Physics2D.h"
 #include "Engine/PathFindingManager.h"
 #include "Engine/GamePlayInterface.h"
-#include "Engine/GameplayInterface_Management_Enemy.h"
-#include "Engine/GameplayInterface_Management_GUI.h"
 
 namespace ALEngine::ECS
 {
@@ -24,8 +22,6 @@ namespace ALEngine::ECS
 	using namespace Math; using namespace Engine; using namespace Graphics;
 	using GameplayInterface::Pattern;
 	using GameplayInterface::Abilities;
-	using namespace Engine::GameplayInterface_Management_Enemy;
-	using namespace GameplayInterface_Management_GUI;
 
 	/*!*********************************************************************************
 	\brief
@@ -109,6 +105,10 @@ namespace ALEngine::ECS
 		//Keep track of what move order the unit has
 		MoveOrder currentModeOrder;
 
+		//List for containing entities of GUI
+		std::vector<Entity> GUI_Abilities_Button_List;
+		std::vector<Entity> GUI_Pattern_Button_List;
+
 		//Keep track of the parent of all the cells
 		Entity m_Room_Parent_Entity;
 
@@ -122,6 +122,17 @@ namespace ALEngine::ECS
 
 		//Cell that the mouse is hovering over
 		Entity current_Moused_Over_Cell;
+
+		//UI
+		Entity endTurnBtnEntity;
+
+		//Keep track of GUI entities
+		Entity GUI_Unit_Health, GUI_Unit_Name, GUI_Unit_Attack, GUI_Unit_Defense, GUI_Unit_Movement, GUI_Unit_Range;
+		Entity GUI_Unit_Profile;
+		Entity GUI_Unit_Healthbar;
+
+		//Win
+		Entity GUI_Win_Clear, GUI_Win_Button;
 
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = false;
@@ -202,6 +213,18 @@ namespace ALEngine::ECS
 
 		/*!*********************************************************************************
 		\brief
+			Toggle Pattern GUI active
+		***********************************************************************************/
+		void TogglePatternGUI(b8 istrue);
+
+		/*!*********************************************************************************
+		\brief
+			Toggle Abilities GUI active
+		***********************************************************************************/
+		void ToggleAbilitiesGUI(b8 istrue);
+
+		/*!*********************************************************************************
+		\brief
 			Place Player onto room
 		***********************************************************************************/
 		void PlaceNewPlayerInRoom(s32 x, s32 y);
@@ -223,6 +246,12 @@ namespace ALEngine::ECS
 			Update the unit information GUI when select the unit
 		***********************************************************************************/
 		void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
+
+		/*!*********************************************************************************
+		\brief
+			Disable Tool Tips
+		***********************************************************************************/
+		void DisableToolTip();
 
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
@@ -281,6 +310,33 @@ namespace ALEngine::ECS
 		Scene::Restart();
 	}
 
+	void Event_Button_Darken([[maybe_unused]] Entity invoker) {
+		//Darken the button
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
+		sprite.color = { 0.6f, 0.6f, 0.6f, 1.f };
+	}
+
+	void Event_Button_Lighten([[maybe_unused]] Entity invoker) {
+		//Return the button to normal color
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		[[maybe_unused]] EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
+
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
+		
+		if (gameplaySystem->cheat_abilitiesDoubleDamage) {
+			sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
+		}
+		else {
+			sprite.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		}
+	}
 
 	void Event_Button_Select_Abilities_0([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
@@ -289,7 +345,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Abilities 0");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
-		DisableToolTipGUI();
+		gameplaySystem->DisableToolTip();
 	}
 
 	void Event_Button_Select_Abilities_1([[maybe_unused]] Entity invoker) {
@@ -299,7 +355,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Abilities 1");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
-		DisableToolTipGUI();
+		gameplaySystem->DisableToolTip();
 	}
 
 	void Event_Button_Select_CurrentPattern([[maybe_unused]] Entity invoker) {
@@ -347,16 +403,14 @@ namespace ALEngine::ECS
 		gameplaySystem->EndTurn();
 	}
 
-	//void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
-	//	if (utils::IsEqual(Time::m_Scale, 0.f)) {
-	//		return;
-	//	}
+	void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
 
-	//	AL_CORE_INFO("DISPLAY UNIT");
-	//	gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
-	//}
-
-	
+		AL_CORE_INFO("DISPLAY UNIT");
+		gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
+	}
 
 	void Event_MouseEnterCell(Entity invoker) {
 		//Keep track of cell the mouse is interacting with
@@ -446,7 +500,7 @@ namespace ALEngine::ECS
 			}
 			
 			if (eliminatedEnemyCount >= gameplaySystem->enemyEntityList.size()) {
-				ECS::SetActive(true, getGuiManager().Win_Clear);
+				ECS::SetActive(true, gameplaySystem->GUI_Win_Clear);
 			}
 		}
 	}
@@ -502,7 +556,7 @@ namespace ALEngine::ECS
 			sceneGraph.Push(gameplaySystem->m_Room_Parent_Entity, gameplaySystem->m_Room.roomCellsArray[i]); // other cells are children of the parent
 
 			Transform transform;
-			transform.scale = { 100, 100 };
+			transform.scale = { 85, 85 };
 			transform.localScale = { 100, 100 };
 
 			Coordinator::Instance()->AddComponent(gameplaySystem->m_Room.roomCellsArray[i], transform);
@@ -536,34 +590,41 @@ namespace ALEngine::ECS
 		gameplaySystem->PlaceNewPlayerInRoom(0, 5);
 
 		gameplaySystem->enemyEntityList.clear();
-		//gameplaySystem->PlaceNewEnemyInRoom(0, 1);
-		//gameplaySystem->PlaceNewEnemyInRoom(4, 4);
-		PlaceNewEnemyInRoom(0, 1, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
-        PlaceNewEnemyInRoom(4, 4, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+		gameplaySystem->PlaceNewEnemyInRoom(0, 1);
+		gameplaySystem->PlaceNewEnemyInRoom(4, 4);
 
-		////Create EndTurn Button
+		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
 
 		//Initialize Pattern GUI
-		InitializePatternGUI(getGuiManager().GUI_Pattern_Button_List);
-
-		//Initialize abilities GUI
-		InitializeAbilitiesGUI(getGuiManager().GUI_Abilities_Button_List);
-
-		//Initialize General GUI
-		InitializeGUI();
+		GameplayInterface::InitializePatternGUI(gameplaySystem->GUI_Pattern_Button_List);
 
 		//Add events for pattern Button
-		Subscribe(getGuiManager().GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
-		Subscribe(getGuiManager().GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
-		Subscribe(getGuiManager().GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
-		Subscribe(getGuiManager().GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
+		Subscribe(gameplaySystem->GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
+		Subscribe(gameplaySystem->GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
+		Subscribe(gameplaySystem->GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
+		Subscribe(gameplaySystem->GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
 
+		//Add visual feedback event for pattern GUI
+		for (int i = 0; i < gameplaySystem->GUI_Pattern_Button_List.size(); ++i) {
+			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
+			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
+			Subscribe(gameplaySystem->GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
+		}
+
+		//Initialize abilities GUI
+		GameplayInterface::InitializeAbilitiesGUI(gameplaySystem->GUI_Abilities_Button_List);
 
 		//Add events for abilities Button
-		Subscribe(getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
-		Subscribe(getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
+		Subscribe(gameplaySystem->GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
+		Subscribe(gameplaySystem->GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
 
+		//Add visual feedback event for abilities GUI
+		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
+			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
+			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
+			Subscribe(gameplaySystem->GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
+		}
 		
 		//Set a few blocks to be inaccessible
 		ToggleCellAccessibility(gameplaySystem->m_Room, 1, 0, false);
@@ -572,12 +633,34 @@ namespace ALEngine::ECS
 		ToggleCellAccessibility(gameplaySystem->m_Room, 2, 1, false);
 		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 1, false);
 		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 2, false);
-		
-		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
+
+		//Set abilities UI off
+		gameplaySystem->ToggleAbilitiesGUI(false);
+
+		//Initialize GUI Text and Sprites
+		gameplaySystem->GUI_Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
+		gameplaySystem->GUI_Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
+		gameplaySystem->GUI_Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
+		gameplaySystem->GUI_Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
+		gameplaySystem->GUI_Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
+		gameplaySystem->GUI_Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
+		gameplaySystem->GUI_Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
+		gameplaySystem->GUI_Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
+
+		gameplaySystem->GUI_Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+		gameplaySystem->GUI_Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+
+		ECS::SetActive(false, gameplaySystem->endTurnBtnEntity);
+		ECS::SetActive(false, gameplaySystem->GUI_Win_Clear);
+
+		CreateEventTrigger(gameplaySystem->GUI_Win_Button);
+
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
+		Subscribe(gameplaySystem->GUI_Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
 
 		gameplaySystem->Toggle_Gameplay_State(true);
-		ToggleAbilitiesGUI(false);
-		TogglePatternGUI(true);
 	}
 
 	void UpdateGameplaySystem(void)
@@ -605,7 +688,7 @@ namespace ALEngine::ECS
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 				gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 
-				TogglePatternGUI(true);
+				gameplaySystem->TogglePatternGUI(true);
 			}
 			//Deselect Abilities
 			else if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
@@ -614,8 +697,8 @@ namespace ALEngine::ECS
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 				gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 
-				TogglePatternGUI(false);
-				ToggleAbilitiesGUI(true);
+				gameplaySystem->TogglePatternGUI(false);
+				gameplaySystem->ToggleAbilitiesGUI(true);
 			}
 		}
 
@@ -695,7 +778,7 @@ namespace ALEngine::ECS
 		currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 
 		//Disable the end turn button
-		ECS::SetActive(false, getGuiManager().endTurnBtnEntity);
+		ECS::SetActive(false, gameplaySystem->endTurnBtnEntity);
 
 		//Set the turn accordingly
 		switch (currentPhaseStatus) {
@@ -833,66 +916,9 @@ namespace ALEngine::ECS
 					sprite.color = { 1.f, 1.f, 1.f, 1.f };
 				}
 			}
-			UpdateGUI_OnSelectUnit(playerEntity);
-
-			scanRoomCellArray();
-
-			checkPlayerPlacement();
-
-			break;
+			else
+				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
-	}
-
-	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile
-	void GameplaySystem::scanRoomCellArray() {
-		s32 resetCounter;
-		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
-		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->roomSize[0]); ++i) {
-			for (s32 j = 0; j < static_cast<s32>(gameplaySystem->roomSize[1]); ++j) {
-				s32 cellIndex = i * gameplaySystem->roomSize[0] + j;
-				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
-
-				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				resetCounter = checkTileCounters(cell);
-
-				if (resetCounter == 1) {
-
-					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/CloseButton.png");
-
-				}
-				if (resetCounter == 0) {
-					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
-				}
-
-			}
-		}
-	}
-
-	//Check the tile the player is currently on to check if the tile is supposed to be destroyed
-	void GameplaySystem::checkPlayerPlacement() {
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
-		Entity cellEntity = playerUnit.m_CurrentCell_Entity;
-		Cell& playerUnitCell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-
-		if (playerUnitCell.m_canWalk == false) {
-			playerUnit.health = 0;
-		}
-	}
-
-
-	//Check the selected tile counters and to make amendments to them at the end of the turn
-	s32 GameplaySystem::checkTileCounters(Cell& selectedCell) {
-		if (selectedCell.m_resetCounter > 0) {
-			selectedCell.m_resetCounter--;
-		}
-
-		if (selectedCell.m_resetCounter == 0) {
-			selectedCell.m_canWalk = false;	
-		}
-
-		return selectedCell.m_resetCounter;
 	}
 
 	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
@@ -1091,7 +1117,6 @@ namespace ALEngine::ECS
 
 		//Add events
 		EventTrigger eventTrigger;
-		eventTrigger.layer = 1;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 	}
@@ -1133,7 +1158,6 @@ namespace ALEngine::ECS
 
 		//Set enemy events
 		EventTrigger eventTrigger;
-		eventTrigger.layer = 1;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 	}
@@ -1171,7 +1195,7 @@ namespace ALEngine::ECS
 		movingUnitEntity = playerEntity;
 		UpdateGUI_OnSelectUnit(movingUnitEntity);
 
-		ECS::SetActive(true, getGuiManager().endTurnBtnEntity);
+		ECS::SetActive(true, gameplaySystem->endTurnBtnEntity);
 	}	
 	
 	void GameplaySystem::MoveEnemy() {
@@ -1362,22 +1386,40 @@ namespace ALEngine::ECS
 	}
 
 	void GameplaySystem::InitializeEndTurnButton() {
-		getGuiManager().endTurnBtnEntity = Coordinator::Instance()->GetEntityByTag("end_turn");
-		CreateButton(getGuiManager().endTurnBtnEntity);
+		endTurnBtnEntity = Coordinator::Instance()->GetEntityByTag("end_turn");
+		
+		EventTrigger eventTrigger;		
+		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
+		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
+		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
+		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
+		Coordinator::Instance()->AddComponent(endTurnBtnEntity, eventTrigger);
+	}
 
-		Subscribe(getGuiManager().endTurnBtnEntity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
+	void GameplaySystem::DisableToolTip() {
+		Entity en_tooltip = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
+		Entity en_skillicon = Coordinator::Instance()->GetEntityByTag("skill_icon");
+		Entity en_textskill = Coordinator::Instance()->GetEntityByTag("text_skillname");
+		Entity en_hard_drop = Coordinator::Instance()->GetEntityByTag("hard_drop_des1");
+		Entity en_life_drain = Coordinator::Instance()->GetEntityByTag("life_drain_des1");
+
+		ECS::SetActive(false, en_tooltip);
+		ECS::SetActive(false, en_skillicon);
+		ECS::SetActive(false, en_textskill);
+		ECS::SetActive(false, en_hard_drop);
+		ECS::SetActive(false, en_life_drain);
 	}
 
 	void GameplaySystem::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
-		Text& health_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Health);
-		Text& name_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Name);
-		Text& attack_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Attack);
-		Text& defense_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Defense);
-		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Movement);
-		Text& range_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Range);
-		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
+		Text& health_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Health);
+		Text& name_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Name);
+		Text& attack_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Attack);
+		Text& defense_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Defense);
+		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Movement);
+		Text& range_text = Coordinator::Instance()->GetComponent<Text>(GUI_Unit_Range);
+		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(GUI_Unit_Profile);
 
 		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
 		attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
@@ -1388,8 +1430,9 @@ namespace ALEngine::ECS
 		
 		profile.id = AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
 
-		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Unit_Healthbar);
+		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(GUI_Unit_Healthbar);
 		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
+		AL_CORE_CRITICAL("SIZE " + std::to_string(healthbar_transform.scale.x));
 	}
 
 	void GameplaySystem::Cheat_ToggleGodMode() {
@@ -1447,7 +1490,7 @@ namespace ALEngine::ECS
 		}
 
 		for (s32 i = 0; i < 2; ++i) {
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().GUI_Abilities_Button_List[i]);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(GUI_Abilities_Button_List[i]);
 
 			if (cheat_abilitiesDoubleDamage) {
 				sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
@@ -1476,7 +1519,7 @@ namespace ALEngine::ECS
 			GameplayInterface::DoDamageToUnit(enemyEntityList[i], unit.maxHealth);
 		}
 
-		ECS::SetActive(true, getGuiManager().Win_Clear);
+		ECS::SetActive(true, gameplaySystem->GUI_Win_Clear);
 	}
 
 	void GameplaySystem::Cheat_ResetAllEnemiesHealth() {
@@ -1569,8 +1612,8 @@ namespace ALEngine::ECS
 		Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
 	
 		//Draw the Pattern GUI
-		for (int i = 0; i < getGuiManager().GUI_Pattern_Button_List.size(); ++i) {
-			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().GUI_Pattern_Button_List[i]);
+		for (int i = 0; i < gameplaySystem->GUI_Pattern_Button_List.size(); ++i) {
+			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->GUI_Pattern_Button_List[i]);
 
 			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
 			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
@@ -1583,8 +1626,8 @@ namespace ALEngine::ECS
 		}
 
 		//Draw the Pattern GUI
-		for (int i = 0; i < getGuiManager().GUI_Abilities_Button_List.size(); ++i) {
-			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().GUI_Abilities_Button_List[i]);
+		for (int i = 0; i < gameplaySystem->GUI_Abilities_Button_List.size(); ++i) {
+			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->GUI_Abilities_Button_List[i]);
 
 			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
 			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
@@ -1596,15 +1639,4 @@ namespace ALEngine::ECS
 			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
 		}
 	}
-}
-
-void ALEngine::Engine::GameplayInterface_Management_Enemy::Event_Unit_OnSelect([[maybe_unused]] Entity invoker)
-{
-	if (utils::IsEqual(Time::m_Scale, 0.f))
-	{
-		return;
-	}
-
-	AL_CORE_INFO("DISPLAY UNIT");
-	ALEngine::ECS::gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
 }

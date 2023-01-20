@@ -14,7 +14,7 @@ brief:	This file contain all the header files that are will be precompiled inste
 #define NOMINMAX
 #define _USE_MATH_DEFINES
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))	// find the number of elements in an array
-#define EDITOR 1
+#define EDITOR 0
 
 // C++ standard library
 #include <iostream>

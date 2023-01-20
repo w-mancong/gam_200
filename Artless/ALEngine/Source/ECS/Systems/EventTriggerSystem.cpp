@@ -29,13 +29,19 @@ namespace ALEngine::ECS
 		\brief
 			Invoke the listeners from a trigger
 		***********************************************************************************/
-		void InvokeActiveEventTriggers();
+		void InvokeTriggerListeners(Entity invokerEntity, EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type);
 
 		/*!*********************************************************************************
 		\brief
 			Invoke an Event
 		***********************************************************************************/
 		void InvokeEvent(Entity invokerEntity, Event& event_trigger);
+
+		/*!*********************************************************************************
+		\brief
+			Update the Trigger state for an event
+		***********************************************************************************/
+		void UpdateEventTriggerState(EventTrigger& event_trigger, b8 isCurrentlyPointingOn);
 
 		/*!*********************************************************************************
 		\brief
@@ -47,17 +53,16 @@ namespace ALEngine::ECS
 		\brief
 			Update Trigger Stat from based on input mouse 
 		***********************************************************************************/
-		void UpdatePointerStatus(Entity entity, bool previousStillOverlapping);
-
-		//State of Trigger
-		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
-		Entity m_interactedEventTrigger_Entity;
+		void UpdatePointerStatus(Entity entity);
 	};
 
 	namespace
 	{
 		//Character Controller System to be accessed locally
 		std::shared_ptr<EventTriggerSystem> eventSystem;
+
+		//Keep track of all subscribed functions
+		std::unordered_map <std::string, void (*)()> allSubscribedFunction;
 	}
 
 	void RegisterEventTriggerSystem(void)
@@ -71,52 +76,44 @@ namespace ALEngine::ECS
 	void UpdateEventTriggerSystem() {
 		//Get if triggered
 		bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
-		b8 previousStillOverlapping = false;
-
-		//Do a check in case the current interacted trigger deactivates itself while being used
-		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING) {
-			EventTrigger& current_event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
-
-			//Update the system state to nothing is that is the case
-			if (!current_event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(eventSystem->m_interactedEventTrigger_Entity).active) {
-				eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
-			}
-		}		
-		
-		//If the system was interacting with an eventTrigger
-		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING) {
-			//Keep track of whether it's still being interacted/overlapping
-			EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
-			Transform& previousTransform = Coordinator::Instance()->GetComponent<Transform>(eventSystem->m_interactedEventTrigger_Entity);
-
-			//Get the calcaltion
-			if (Coordinator::Instance()->HasComponent<Collider2D>(eventSystem->m_interactedEventTrigger_Entity)) {
-				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(eventSystem->m_interactedEventTrigger_Entity);
-				previousStillOverlapping = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)previousTransform.position + collider.m_localPosition, collider.scale[0] + previousTransform.scale.x, collider.scale[1] + previousTransform.scale.y);
-			}
-			else {
-				previousStillOverlapping = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)previousTransform.position, previousTransform.scale.x, previousTransform.scale.y);
-			}
-		}
 
 		//Shift through each component
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
 
 			if (!event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+				event_Trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 				continue;
 			}
 
-			//Update the latest interacted event trigger, pass in the check for previous event trigger overlap as well
-			eventSystem->UpdatePointerStatus(*it, previousStillOverlapping);
-		}
+			eventSystem->UpdatePointerStatus(*it);					
+			
+			//Invoke listeners based on trigger type
+			switch (event_Trigger.current_Trigger_State) {
+				case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
+					eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER);
+					break;
+				case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
+					if (isClickTriggered) {
+						eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK);
+					}
+					else {
+						eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_STAY);
+					}
+					break;
+				case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
+					eventSystem->InvokeTriggerListeners(*it, event_Trigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT);
+					break;
+			}
 
-		//Run the invoking of the event trigger that is interacted with
-		//Nothing will happen if the state is nothing
-		eventSystem->InvokeActiveEventTriggers();
+#if EDITOR
+			if (Editor::ALEditor::Instance()->GetGameActive() == false)
+				break;
+#endif
+		}
 	}
 
-	void EventTriggerSystem::UpdatePointerStatus(Entity entity, bool previousStillOverlapping) {
+	void EventTriggerSystem::UpdatePointerStatus(Entity entity) {
 		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(entity);
 		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(entity);
 
@@ -130,68 +127,9 @@ namespace ALEngine::ECS
 		else {
 			isPointingOver = Physics::Physics2D_CheckCollision_Point_To_AABBBox(Input::GetMouseWorldPos(), (Vector2)transform.position, transform.scale.x, transform.scale.y);
 		}
-
-		//If system is currently idle and checked entity is not pointed over
-		if (current_Trigger_State == EVENT_TRIGGER_TYPE::NOTHING && !isPointingOver) {
-			return;
-		}
-
-		//If the system is already interacting with something
-		if (current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING && entity != m_interactedEventTrigger_Entity && isPointingOver) {
-			EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(m_interactedEventTrigger_Entity);
-
-			//Take the entity that has the higher layer
-			if (!previousStillOverlapping || (previousStillOverlapping && eventTrigger.layer > current_interacted_eventTrigger.layer)) {
-				//Run the exit event for previous even trigger
-				eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, current_interacted_eventTrigger.OnPointExit);
-				
-				//Replace and run the on enter event for the next event trigger.
-				m_interactedEventTrigger_Entity = entity;
-				eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, eventTrigger.OnPointEnter);
-				current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_ENTER;
-				return;
-			}
-		}
-
-		//return if the check fails and the check entity is not what the system is already interacting with
-		//In case previous checks fails
-		if (!isPointingOver && entity != m_interactedEventTrigger_Entity) {
-			return;
-		}
-
-		//If reached here, means the pointer entered an entity and the system is fresh.
-		//usual trigger flow
-		switch (current_Trigger_State) {
-		case EVENT_TRIGGER_TYPE::NOTHING:
-			current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_ENTER;
-			m_interactedEventTrigger_Entity = entity;
-			break;
-
-		case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
-			if (isPointingOver) {
-					current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_STAY;
-				}
-			else {
-				current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_EXIT;
-			}
-			break;
-
-		case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
-			if (Input::KeyTriggered(KeyCode::MouseLeftButton)) {
-				current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_CLICK;
-				break;
-			}
-
-			if (!isPointingOver) {
-				current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_EXIT;
-			}
-			break;
-		case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
-				current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
-			break;
-		}
-
-		return;
+	
+		//Set the state
+		UpdateEventTriggerState(eventTrigger, isPointingOver);
 	}
 
 	void EventTriggerSystem::InvokeEvent(Entity invokerEntity, Event& evnt) {
@@ -200,27 +138,20 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void EventTriggerSystem::InvokeActiveEventTriggers() {
-		if (current_Trigger_State == EVENT_TRIGGER_TYPE::NOTHING) {
-			return;
-		}
-
-		EventTrigger& event_trigger = Coordinator::Instance()->GetComponent<EventTrigger>(m_interactedEventTrigger_Entity);
-
+	void EventTriggerSystem::InvokeTriggerListeners(Entity invokerEntity, EventTrigger& event_trigger, EVENT_TRIGGER_TYPE trigger_type) {
 		//Invoke event based on input trigger type
-		switch (current_Trigger_State) {
+		switch (trigger_type) {
 		case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
-			eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, event_trigger.OnPointEnter);
+			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointEnter);
 			break;
 		case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
-			eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, event_trigger.OnPointStay);
+			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointStay);
 			break;
 		case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
-			eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, event_trigger.OnPointExit);
+			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointExit);
 			break;
 		case EVENT_TRIGGER_TYPE::ON_POINTER_CLICK:
-			eventSystem->InvokeEvent(m_interactedEventTrigger_Entity, event_trigger.OnPointClick);
-			current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_STAY;
+			eventSystem->InvokeEvent(invokerEntity, event_trigger.OnPointClick);
 			break;
 		}
 	}
@@ -243,6 +174,32 @@ namespace ALEngine::ECS
 
 			default:
 				return event_trigger.OnPointEnter;
+		}
+	}
+
+	void EventTriggerSystem::UpdateEventTriggerState(EventTrigger& event_trigger, b8 isCurrentlyPointingOn) {
+		//Update trigger event according to mouse pointer
+		switch (event_trigger.current_Trigger_State)
+		{
+		case EVENT_TRIGGER_TYPE::NOTHING:
+			if (isCurrentlyPointingOn)
+				event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_ENTER;
+			break;
+
+		case EVENT_TRIGGER_TYPE::ON_POINTER_ENTER:
+			if (isCurrentlyPointingOn)
+				event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_STAY;
+			else
+				event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_EXIT;
+			break;
+
+		case EVENT_TRIGGER_TYPE::ON_POINTER_STAY:
+			if (!isCurrentlyPointingOn)
+				event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::ON_POINTER_EXIT;
+			break;
+		case EVENT_TRIGGER_TYPE::ON_POINTER_EXIT:
+			event_trigger.current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+			break;
 		}
 	}
 

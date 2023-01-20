@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition that starts the flow of the entire program
 
-		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
@@ -214,14 +214,6 @@ namespace ALEngine::Engine
 		Console::StopConsole();
 #endif
 
-		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-		
-		//Create Button Entity
-		Entity buttonEntity = Coordinator::Instance()->CreateEntity();
-		sceneGraph.Push(-1, buttonEntity);
-		Coordinator::Instance()->GetComponent<EntityData>(buttonEntity).tag = "NewButton";
-		CreateButton(buttonEntity);
-
 		//Scene::LoadScene("Assets\\test.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
@@ -286,6 +278,7 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
+		UpdateEventTriggerSystem();
 	}
 
 	void Engine::FixedUpdate(void)
@@ -294,9 +287,6 @@ namespace ALEngine::Engine
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
 		UpdateGameplaySystem();
-
-		UpdateEventTriggerSystem();
-		UpdateButtonSystem();
 
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();

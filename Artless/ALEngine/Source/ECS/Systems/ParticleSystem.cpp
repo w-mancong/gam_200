@@ -4,7 +4,7 @@ author:	Mohamed Zafir
 email:	m.zafir\@digipen.edu
 brief:	This file contains the function definitions for ParticleSystem
 
-		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
@@ -25,7 +25,6 @@ namespace ALEngine::ECS
 		Signature signature;
 		signature.set(Coordinator::Instance()->GetComponentType<ParticleProperties>());
 		signature.set(Coordinator::Instance()->GetComponentType<Transform>());
-		signature.set(Coordinator::Instance()->GetComponentType<Sprite>());
 		Coordinator::Instance()->SetSystemSignature<ParticleSys>(signature);
 	}
 
@@ -34,7 +33,6 @@ namespace ALEngine::ECS
 		for (auto& x : particleSystem->mEntities)
 		{
 			ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(x);
-			prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(x);
  
 			if (prop.timeCount > prop.spawnRate)
 			{
@@ -78,7 +76,7 @@ namespace ALEngine::ECS
 			Percentage between a and b
 	***********************************************************************************/
 	template<typename T>
-	T ParticleSystem::Lerp(T a, T b, float t)
+	T Lerp(T a, T b, float t)
 	{
 		return (T)(a + (b - a) * t);
 	}
@@ -118,8 +116,6 @@ namespace ALEngine::ECS
 			particle.lifeRemaining -= deltaTime;
 			particle.position += particle.velocity * (float)deltaTime;
 			particle.rotation += particle.rotAmt * deltaTime; // rotate over time
-			if(particle.gravityEnabled)
-				particle.velocity -= Math::Vec2(0.f, 9.8f);
 		}
 	}
 
@@ -187,7 +183,7 @@ namespace ALEngine::ECS
 			Math::Vector4 color = Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
 			f32 size = Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
 
-			//Render
+			// Render
 			particleShader.Set("scale", Math::Matrix4x4::Scale(size, size, 1.0f));
 			particleShader.Set("rotate", Math::Matrix4x4::Rotation(particle.rotation, Math::Vector3(0.0f, 0.0f, 1.0f)));
 			particleShader.Set("translate", Math::Matrix4x4::Translate(particle.position.x, particle.position.y, 0.0f));
@@ -195,10 +191,9 @@ namespace ALEngine::ECS
 			glBindVertexArray(particleVAO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		}
-		//cleanup
+		// cleanup
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		particleCounter = 0;
 	}
 
 	/*!*********************************************************************************
@@ -223,9 +218,6 @@ namespace ALEngine::ECS
 		particle.sizeBegin = particleProperty.sizeStart + particleProperty.sizeVariation * distribution(generator);
 		particle.sizeEnd = particleProperty.sizeEnd;
 		particle.rotAmt = particleProperty.rotation;
-		particle.sprite = particleProperty.sprite;
-		particle.gravityEnabled = particleProperty.gravityEnabled;
-		++particleCounter;
 
 		// cycle to next particle in the particle container
 		particleIndex = --particleIndex % particleContainer.size();
@@ -242,15 +234,5 @@ namespace ALEngine::ECS
 		{
 			particle.active = false;
 		}
-	}
-
-	u32& ParticleSystem::GetParticleCounter()
-	{
-		return particleCounter;
-	}
-
-	std::vector<ParticleSystem::Particle> const& ParticleSystem::GetParticleContainer()
-	{
-		return particleContainer;
 	}
 }

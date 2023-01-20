@@ -89,7 +89,6 @@
     <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\StatsHovering.cpp" />
     <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\PauseLogic.cpp" />
     <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
-    <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -352,8 +351,7 @@
     <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\PauseLogic.h" />
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
-    <ClInclude Include="Include\ECS\Components\Button.h" />
-    <ClInclude Include="Include\ECS\Systems\ButtonSystem.h" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

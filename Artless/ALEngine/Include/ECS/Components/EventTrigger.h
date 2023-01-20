@@ -49,10 +49,11 @@ namespace ALEngine::ECS::Component
 		//Component Enabled
 		b8 isEnabled { true };
 
-		s32 layer = 0;
-
 		//Events
 		Event OnPointEnter, OnPointStay, OnPointExit, OnPointClick;
+		
+		//State of Trigger
+		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 	};
 
 	/*!*********************************************************************************

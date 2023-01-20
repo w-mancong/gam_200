@@ -17,10 +17,8 @@ namespace ALEngine::ECS
 	public:
 #if EDITOR
 		void RenderBatch(Camera const& cam);
-		void RenderParticleBatch(Camera const& cam);
 #else
 		void RenderBatch(void);
-		void RenderParticleBatch(void);
 #endif
 	};
 
@@ -124,53 +122,6 @@ namespace ALEngine::ECS
 		glBindVertexArray(0);
 		indirectShader.unuse();
 	}
-
-	void RenderSystem::RenderParticleBatch(Camera const& cam)
-	{
-		u64 counter{};
-		for (auto const& particle : ParticleSystem::GetParticleSystem().GetParticleContainer())
-		{
-			if (particle.active == false)
-				continue;
-
-			// Interpolate color and size between particle birth and death
-			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
-			Vector4 color = ParticleSystem::Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
-			f32 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
-
-			Transform trans;
-			trans.localPosition = trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
-			trans.localScale = trans.scale = Math::Vector2(size, size);
-			trans.localRotation = trans.rotation = particle.rotation;
-			trans.modelMatrix = Math::mat4::Model(trans);
-
-			*(vMatrix + counter) = trans.modelMatrix.Transpose();
-			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
-			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
-			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
-
-			++counter;
-		}
-
-		indirectShader.use();
-		indirectShader.Set("proj", cam.ProjectionMatrix());
-		indirectShader.Set("view", cam.ViewMatrix());
-
-		glBindVertexArray(GetVao());
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
-		GenerateDrawCall(bd);
-
-		//draw
-		glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
-			GL_UNSIGNED_INT,							//indices represented as unsigned ints
-			(void*)0,									//start with the first draw command
-			static_cast<s32>(counter),					//draw objects
-			0);											//no stride, the draw commands are tightly packed
-
-		glBindVertexArray(0);
-		indirectShader.unuse();
-	}
-
 #else
 	void RenderSystem::RenderBatch(void)
 	{
@@ -224,53 +175,6 @@ namespace ALEngine::ECS
 		glBindVertexArray(0);
 		indirectShader.unuse();
 	}
-
-	void RenderSystem::RenderParticleBatch(void)
-	{
-		u64 counter{};
-		for (auto const& particle : ParticleSystem::GetParticleSystem().GetParticleContainer())
-		{
-			if (particle.active == false)
-				continue;
-
-			// Interpolate color and size between particle birth and death
-			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
-			Vector4 color = ParticleSystem::Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
-			f32 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
-
-			Transform trans;
-			trans.localPosition = trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
-			trans.localScale = trans.scale = Math::Vector2(size, size);
-			trans.localRotation = trans.rotation = particle.rotation;
-			trans.modelMatrix = Math::mat4::Model(trans);
-
-			*(vMatrix + counter) = trans.modelMatrix.Transpose();
-			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
-			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
-			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
-
-			++counter;
-		}
-
-		indirectShader.use();
-		indirectShader.Set("proj", camera.ProjectionMatrix());
-		indirectShader.Set("view", camera.ViewMatrix());
-
-		glBindVertexArray(GetVao());
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
-		GenerateDrawCall(bd);
-
-		//draw
-		glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP,  //type
-			GL_UNSIGNED_INT,							//indices represented as unsigned ints
-			(void*)0,									//start with the first draw command
-			static_cast<s32>(counter),					//draw objects
-			0);											//no stride, the draw commands are tightly packed
-
-		glBindVertexArray(0);
-		indirectShader.unuse();
-	}
-
 #endif
 
 	void RegisterRenderSystem(void)
@@ -342,7 +246,6 @@ namespace ALEngine::ECS
 
 	void RenderGameplay(void)
 	{
-		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
@@ -355,15 +258,19 @@ namespace ALEngine::ECS
 		UpdateParticleSystem();
 #if EDITOR
 		rs->RenderBatch(camera);
-		rs->RenderParticleBatch(camera);
 #else
 		rs->RenderBatch();
-		rs->RenderParticleBatch();
 #endif
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
 		UpdateTextSystem();
+
+		// Update and render particles
+		//if(!Editor::ALEditor::Instance()->GetGameActive())
+		//	particleSystemPanel.OnImGuiRender(particleSys);
+		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
+		ParticleSystem::GetParticleSystem().ParticleRender(camera);
 
 		// Render all text
 		Font::RenderAllText(camera);
@@ -385,7 +292,6 @@ namespace ALEngine::ECS
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear editor framebuffer
 
 		rs->RenderBatch(Editor::ALEditor::Instance()->GetEditorCamera());
-		rs->RenderParticleBatch(Editor::ALEditor::Instance()->GetEditorCamera());
 
 		// This needs to be at the end
 		Gizmos::Gizmo::RenderAllLines();
