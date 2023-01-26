@@ -8,10 +8,6 @@ namespace ALEngine::Script
 		f32 constexpr const PADDING_PERCENTAGE = 0.1f, CAMERA_SPEED = 20.0f;
 	}
 
-	void GameplayCamera::Load([[maybe_unused]] ECS::Entity en) {}
-
-	void GameplayCamera::Init([[maybe_unused]] ECS::Entity en) {}
-
 	void GameplayCamera::Update([[maybe_unused]] ECS::Entity en)
 	{
 		Engine::Camera& camera = ECS::GetCamera();
@@ -50,9 +46,9 @@ namespace ALEngine::Script
 		std::cout << camera.Position() << std::endl;
 	}
 
-	void GameplayCamera::LateUpdate([[maybe_unused]] ECS::Entity en) {}
+	//void GameplayCamera::LateUpdate([[maybe_unused]] ECS::Entity en) {}
 
-	void GameplayCamera::Free([[maybe_unused]] ECS::Entity en) {}
-	
-	void GameplayCamera::Unload([[maybe_unused]] ECS::Entity en) {}
+	//void GameplayCamera::Free([[maybe_unused]] ECS::Entity en) {}
+	//
+	//void GameplayCamera::Unload([[maybe_unused]] ECS::Entity en) {}
 }
