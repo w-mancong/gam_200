@@ -144,6 +144,9 @@ namespace
 
 		stbi_image_free(data);
 
+		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);		// width
+		glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, 0);		// height
+
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 		glDeleteBuffers(1, &pbo);
@@ -240,6 +243,9 @@ namespace
 		glMakeTextureHandleResidentARB(handle);
 
 		stbi_image_free(data);
+
+		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);		// width
+		glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, 0);	// height
 
 		glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
 		glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);

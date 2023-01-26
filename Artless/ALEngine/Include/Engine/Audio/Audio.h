@@ -95,7 +95,7 @@ namespace ALEngine::Engine
 		std::unordered_map<u32, Audio> list;
 		u32 id;
 
-		Audio const& GetAudio(std::string const& audioName) const;
+		Audio& GetAudio(std::string const& audioName);
 	};
 }
 

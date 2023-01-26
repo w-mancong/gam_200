@@ -13,6 +13,12 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/GamePlayInterface.h"
 #include "Engine/GameplayInterface_Management_Enemy.h"
 #include "Engine/GameplayInterface_Management_GUI.h"
+#include <Utility/AudioNames.h>
+
+namespace ALEngine::Engine::GameplayInterface
+{
+	void CreateAudioEntityMasterSource(void);
+}
 
 namespace ALEngine::ECS
 {
@@ -26,6 +32,8 @@ namespace ALEngine::ECS
 	using GameplayInterface::Abilities;
 	using namespace Engine::GameplayInterface_Management_Enemy;
 	using namespace GameplayInterface_Management_GUI;
+
+	
 
 	/*!*********************************************************************************
 	\brief
@@ -272,6 +280,9 @@ namespace ALEngine::ECS
 
 		std::string const sceneName = R"(Assets\test.scene)";
 		s32 base_Layer = 10000;		//Base layer
+
+		Entity masterAudioSource;
+		Audio* buttonClickAudio{ nullptr };
 	}
 
 	//****************EVENTS*****************//
@@ -345,6 +356,7 @@ namespace ALEngine::ECS
 
 		//End turn
 		gameplaySystem->EndTurn();
+		buttonClickAudio->Play();
 	}
 
 	//void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
@@ -578,6 +590,16 @@ namespace ALEngine::ECS
 		gameplaySystem->Toggle_Gameplay_State(true);
 		ToggleAbilitiesGUI(false);
 		TogglePatternGUI(true);
+
+		Engine::GameplayInterface::CreateAudioEntityMasterSource();
+		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+		Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
+		ad.m_Channel = Channel::BGM;
+		ad.Play();
+
+		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
+		buttonClickAudio->m_Channel = Channel::SFX;
 	}
 
 	void UpdateGameplaySystem(void)
@@ -683,6 +705,18 @@ namespace ALEngine::ECS
 		gameplaySystem->m_Room.height = 0;
 		gameplaySystem->godMode = false;
 		gameplaySystem->cheat_abilitiesDoubleDamage = false;
+
+		if (masterAudioSource != ECS::MAX_ENTITIES)
+		{
+			AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+			for (auto& it : as.list)
+			{
+				Audio& ad = it.second;
+				ad.Stop();
+			}
+		}
+		masterAudioSource = ECS::MAX_ENTITIES;
+		buttonClickAudio = nullptr;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {
@@ -979,6 +1013,9 @@ namespace ALEngine::ECS
 
 		CreateSprite(playerUnit.unit_Sprite_Entity, playerSpriteTransform, "Assets/Images/Player v2.png");
 		
+		Animator an = CreateAnimator("Player");
+		Coordinator::Instance()->AddComponent(playerUnit.unit_Sprite_Entity, an);
+
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Player";
 		Coordinator::Instance()->GetComponent<EntityData>(playerUnit.unit_Sprite_Entity).tag = "Player_Sprite";
 

@@ -99,6 +99,10 @@ namespace ALEngine::ECS
 			Coordinator::Instance()->AddComponent(entity, text);
 		}
 
+		if (Coordinator::Instance()->HasComponent<Button>(entity)) {
+			return;
+		}
+		
 		//Setup EventTrigger for custom stats
 		Button button{};
 		button.m_color_Tint_Normal = { 1.f, 1.f, 1.f, 1.f };

@@ -430,18 +430,18 @@ namespace ALEngine::Editor
 				if (m_GameIsActive)
 				{
 					SetSelectedEntity(ECS::MAX_ENTITIES);
-					//Engine::Scene::SaveState();
+					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
-					ECS::StartGameplaySystem();
+					//ECS::StartGameplaySystem();
 				}
 				else
 				{
 					ECS::ParticleSystem::GetParticleSystem().ClearParticles();
-					Coordinator::Instance()->DestroyEntities();
 					ECS::ExitGameplaySystem();
+					Coordinator::Instance()->DestroyEntities();
 
-					//Engine::Scene::LoadState();
+					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
 					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 				}

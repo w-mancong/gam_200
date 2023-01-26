@@ -199,5 +199,7 @@ namespace ALEngine::Engine::GameplayInterface
 		if enemy attacked player and player is adjacent
 	***********************************************************************************/
 	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy);
+
+	void CreateAudioEntityMasterSource(void);
 }
 #endif

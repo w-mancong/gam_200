@@ -70,7 +70,7 @@ namespace ALEngine::Engine
 			Engine::Update();
 
 			// Update Scene graph
-			//ECS::GetSceneGraph().Update();
+			ECS::GetSceneGraph().Update();
 
 			//RenderTransformBox();
 			// Render
@@ -91,13 +91,13 @@ namespace ALEngine::Engine
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
-				//StartGameplaySystem();
+				StartGameplaySystem();
 				ECS::Load();
 			}
 			else
 			{
 				Scene::LoadScene();
-				//StartGameplaySystem();
+				StartGameplaySystem();
 				GameStateManager::current = GameStateManager::previous;
 				GameStateManager::next	  = GameStateManager::previous;
 			}
@@ -145,7 +145,7 @@ namespace ALEngine::Engine
 					}
 
 					// Update Scene graph
-					//ECS::GetSceneGraph().Update();
+					ECS::GetSceneGraph().Update();
 #if EDITOR
 				}
 #endif
@@ -168,12 +168,11 @@ namespace ALEngine::Engine
 			if (GameStateManager::next != GameState::Restart)
 				ECS::Unload();
 			
-#if EDITOR
-			if(ALEditor::Instance()->GetGameActive())
+#if !EDITOR
+			ExitGameplaySystem();
+			Coordinator::Instance()->DestroyEntities();
 #endif
-				Coordinator::Instance()->DestroyEntities();
 
-			//ExitGameplaySystem();
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current = GameStateManager::next;
 
@@ -215,6 +214,24 @@ namespace ALEngine::Engine
 		//StartGameplaySystem();
 		//Console::StopConsole();
 #endif
+		//Animator an = CreateAnimator("Player");
+
+		//Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		//Entity en = Coordinator::Instance()->CreateEntity();
+		//sceneGraph.Push(-1, en);
+
+		//Transform trans;
+		//trans.position = { 0.0f, 0.0f };
+		//trans.scale = { 200.0f, 200.0f };
+		//CreateSprite(en, trans);
+		//Coordinator::Instance()->AddComponent(en, an);
+
+		//CreateAnimationClip("Assets\\Images\\PlayerIdle.png", "PlayerIdle", 2133, 2133, 12, 10);
+		//AddAnimationToAnimator(an, "PlayerIdle");
+		//SaveAnimator(an);
+		
+
 		//Scene::LoadScene("Assets\\test.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");

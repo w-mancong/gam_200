@@ -77,14 +77,14 @@ namespace ALEngine::Engine
 		return IsAudioPlaying(*this);
 	}
 
-	Audio const& AudioSource::GetAudio(std::string const& audioName) const
+	Audio& AudioSource::GetAudio(std::string const& audioName)
 	{
-		for (auto const& it : list)
+		for (auto& it : list)
 		{
-			Audio const& ad = it.second;
-			u64 str_it = ad.m_AudioName.find_last_of("\\");
-			u64 sizeName = ad.m_AudioName.find_last_of(".") - str_it - 1;		
-			if (ad.m_AudioName.substr(str_it + 1, sizeName) == audioName)
+			Audio& ad = it.second;
+			//u64 str_it = ad.m_AudioName.find_last_of("\\");
+			//u64 sizeName = ad.m_AudioName.find_last_of(".") - str_it - 1;		
+			if (ad.m_AudioName == audioName)
 				return ad;
 		}
 		assert(false && "Unable to find audioName within AudioSource's list");

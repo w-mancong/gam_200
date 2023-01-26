@@ -8,6 +8,7 @@ brief:	This file contains the function definition for GamePlayInterface.cpp
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
+#include <Utility/AudioNames.h>
 #include <Engine/GamePlayInterface.h>
 
 namespace ALEngine::Engine::GameplayInterface
@@ -368,5 +369,42 @@ namespace ALEngine::Engine::GameplayInterface
 			}
 		}
 		return false;
+	}
+
+	void CreateAudioEntityMasterSource(void)
+	{
+		using namespace ECS;
+		Entity en	   = Coordinator::Instance()->CreateEntity();
+		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		ed.tag = "Master Audio Source";
+
+		AudioSource as;
+		as.id = 0;
+
+		Audio ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_BGM_1));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_GAMEPLAY_LOOP));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_SELECT_SKILL));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_PLAYER_HURT));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_HIT));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_ENEMY_HURT_1));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_CLICK_1));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
+		as.list[as.id++] = ad;
+
+		Coordinator::Instance()->AddComponent(en, as);
 	}
 }
