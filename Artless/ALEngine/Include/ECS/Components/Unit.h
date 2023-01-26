@@ -22,6 +22,14 @@ namespace ALEngine::ECS::Component
 		ENEMY,
 	};
 	
+	enum class ENEMY_TYPE
+	{
+		ENEMY_MELEE,   //0 Enemy Melee
+		ENEMY_CELL_DESTROYER,   //1 Cell Destroyer
+		ENEMY_TYPE03,   //2
+		ENEMY_TYPE04    //3
+	};
+
 	/*!*********************************************************************************
 		\brief
 			2D Circle Collider for collision detection
@@ -43,7 +51,7 @@ namespace ALEngine::ECS::Component
 
 		//unit type
 		UNIT_TYPE unitType;
-	
+		ENEMY_TYPE enemyUnitType;
 		//int coords, 0 is x, 1 is y
 		u32 coordinate[2];
 

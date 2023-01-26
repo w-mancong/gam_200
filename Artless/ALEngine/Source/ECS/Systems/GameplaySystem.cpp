@@ -58,7 +58,7 @@ namespace ALEngine::ECS
 
 		//Enemy
 		std::vector<Entity> enemyEntityList;
-		Entity enemyMoved = 0;	//Step into enemy that are moving
+		//Entity enemyMoved = 0;	//Step into enemy that are moving
 
 		//Keep track of status
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped
@@ -518,11 +518,11 @@ namespace ALEngine::ECS
 		gameplaySystem->PlaceNewPlayerInRoom(0, 5);
 
 		gameplaySystem->enemyEntityList.clear();
-		PlaceNewEnemyInRoom(0, 1, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
-        PlaceNewEnemyInRoom(4, 4, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+		PlaceNewEnemyInRoom(0, 1, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+        PlaceNewEnemyInRoom(4, 4, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
 
-		PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_TYPE02, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
-
+		PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+	
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
 
@@ -708,7 +708,7 @@ namespace ALEngine::ECS
 		case PHASE_STATUS::PHASE_ACTION:
 			AL_CORE_DEBUG("Loading PHASE ENEMY");
 			currentPhaseStatus = PHASE_STATUS::PHASE_ENEMY;
-			enemyMoved = 0;
+			enemyNeededData.enemyMoved = 0;
 
 			ToggleAbilitiesGUI(false);
 			TogglePatternGUI(false);
@@ -775,7 +775,6 @@ namespace ALEngine::ECS
 		}
 	}
 
-
 	//Check the selected tile counters and to make amendments to them at the end of the turn
 	s32 GameplaySystem::checkTileCounters(Cell& selectedCell) {
 		if (selectedCell.m_resetCounter > 0) {
@@ -819,34 +818,6 @@ namespace ALEngine::ECS
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
 		playerTransform.localPosition = SpawnCellTransform.position;
 	}
-
-	//void GameplaySystem::PlaceNewEnemyInRoom(s32 x, s32 y) {
-	//	//Create Enemy entity 
-	//	Entity newEnemy = Coordinator::Instance()->CreateEntity();
-
-	//	//Add it to the enemy list
-	//	gameplaySystem->enemyEntityList.push_back(newEnemy);
-
-	//	//Craete enemy
-	//	CreateEnemyUnit(newEnemy);
-	//	Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(newEnemy);
-	//	enemyUnit.coordinate[0] = x;
-	//	enemyUnit.coordinate[1] = y;
-
-	//	//Set it's cell
-	//	enemyUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
-
-	//	//Set it's stats
-	//	enemyUnit.health = 20, enemyUnit.maxHealth = 20;
-	//	enemyUnit.minDamage = 8, enemyUnit.maxDamage = 13;
-
-	//	Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).unitEntity = newEnemy;
-	//	Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).hasUnit = true;
-	//	
-	//	Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
-	//	Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(newEnemy);
-	//	enemyTransform.localPosition = SpawnCellTransform.position;
-	//}
 
 	void GameplaySystem::SelectPattern(Pattern pattern) { 
 		//Select pattern 
@@ -990,48 +961,6 @@ namespace ALEngine::ECS
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 	}
 
-	//void CreateEnemyUnit(Entity entity) {
-	//	//Create enemy unit
-	//	Unit unit{};
-	//	unit.unitType = UNIT_TYPE::ENEMY;
-	//	Coordinator::Instance()->AddComponent(entity, unit);
-	//	Coordinator::Instance()->AddComponent(entity, Transform{});
-
-	//	//Set enemy position & size
-	//	Transform& enemytransform = Coordinator::Instance()->GetComponent<Transform>(entity);
-	//	enemytransform.scale = { 50, 50 };
-	//	enemytransform.localScale = { 100, 100 };
-
-	//	//Set enemy stats
-	//	Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(entity);
-	//	enemyUnit.unit_Sprite_Entity = Coordinator::Instance()->CreateEntity();
-	//	enemyUnit.unit_Name = "BISHOP";
-	//	enemyUnit.minRange = 1;
-	//	enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
-	//	enemyUnit.maxMovementPoints = 4;
-	//	enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
-
-	//	//Set enemy sprite position and size
-	//	Transform enemySpriteTransform;
-	//	enemySpriteTransform.localPosition = { 0.f, 0.4f };
-	//	enemySpriteTransform.localScale = { 1.f, 2.f };
-
-	//	CreateSprite(enemyUnit.unit_Sprite_Entity, enemySpriteTransform, "Assets/Images/Bishop v.02.png");
-
-	//	Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Enemy_" + std::to_string(gameplaySystem->enemyEntityList.size() - 1);
-	//	Coordinator::Instance()->GetComponent<EntityData>(enemyUnit.unit_Sprite_Entity).tag = "Enemy_Sprite_" + std::to_string(gameplaySystem->enemyEntityList.size() - 1);
-
-	//	Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-	//	sceneGraph.Push(-1, entity); // first cell is parent
-	//	sceneGraph.Push(entity, enemyUnit.unit_Sprite_Entity);
-
-	//	//Set enemy events
-	//	EventTrigger eventTrigger;
-	//	eventTrigger.layer = 1;
-	//	Coordinator::Instance()->AddComponent(entity, eventTrigger);
-	//	Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
-	//}
-
 	void GameplaySystem::MovePlayerEntityToCell(Entity cellEntity) {
 		//Clear move ord
 		ClearMoveOrder();
@@ -1069,132 +998,43 @@ namespace ALEngine::ECS
 	}	
 	
 	void GameplaySystem::MoveEnemy() {
-
-		
 		//EnemyManager_LoadData();
 
 		//Clear move order
 		ClearMoveOrder();
+		//AL_CORE_INFO("CHECK ENEMY TAG");
+		//AL_CORE_CRITICAL(Coordinator::Instance()->GetComponent<EntityData>(enemyEntityList[enemyNeededData.enemyMoved]).tag);
+
+		//If reached end, end turn
+		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
+			AL_CORE_INFO("All Enemy Made move, ending turn");
+			EndTurn();
+			return;
+		}
+
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
+
+		//Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+	
+		if (enemyUnit.health <= 0)
+		{
+			return;
+		}
 
 		//use enemy logic function pointer
-	    //enemyUnit.logic
+		switch (enemyUnit.enemyUnitType)
+		{
+		case ENEMY_TYPE::ENEMY_MELEE:
+			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			break;
+		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus,  enemyEntityList, m_Room);
+			break;
+		default:
+			break;
+		}
+		AL_CORE_INFO("after enemy move");
 
-		
-
-		Enemy_Logic_Update_Melee(enemyNeededData, enemyEntityList, m_Room);
-
-
-		//Enemy_Logic_Update_CellDestroyer(enemyNeededData, enemyEntityList, m_Room);
-
-		//AL_CORE_INFO("Enemy Making Decision");
-
-		////If reached end, end turn
-		//if (enemyMoved >= enemyEntityList.size()) {
-		//	AL_CORE_INFO("All Enemy Made move, ending turn");
-		//	EndTurn();
-		//	return;
-		//}
-
-		//AL_CORE_INFO("Finding Target Cell");
-		////Find a target cell
-		//Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyMoved]);
-		//Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-
-		//if (enemyUnit.health <= 0) {
-		//	++enemyMoved;
-		//	MoveEnemy();
-		//	return;
-		//}
-
-		//AL_CORE_INFO("Run Adjacent Attack");
-		//bool ifPlayerIsAlreadyBeside = GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
-
-		//AL_CORE_INFO("Check player inside");
-		//if (ifPlayerIsAlreadyBeside) {
-		//	AL_CORE_INFO("Enemy " + std::to_string(enemyMoved) + " Attacked player");
-		//	++enemyMoved;
-		//	MoveEnemy();
-		//	return;
-		//}
-
-		//Entity cellToMoveTo{};
-		//b8 hasFoundCellBesidePlayer = false;
-
-		//AL_CORE_INFO("Checking for cell adjacent to player");
-
-		////Find cell adjacent to player 
-		////Then move to the cell accordingly
-		//if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1])						&&
-		//					   IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1])					&&
-		//	!Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1])).hasUnit) 
-		//{
-		//	hasFoundCellBesidePlayer = true;
-		//	cellToMoveTo = GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0] + 1, playerUnit.coordinate[1]);
-
-		//	AL_CORE_INFO("Enemy " + std::to_string(enemyMoved) + " Found path at player right");
-		//}
-		//else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1])							&&
-		//							IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1])						&&
-		//	!Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1])).hasUnit) 
-		//{
-		//	hasFoundCellBesidePlayer = true;
-		//	cellToMoveTo = GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0] - 1, playerUnit.coordinate[1]);
-
-		//	AL_CORE_INFO("Enemy " + std::to_string(enemyMoved) + " Found path at player left");
-		//}
-		//else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]) + 1							&&
-		//							IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] + 1)						&&
-		//	!Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] + 1)).hasUnit) 
-		//{
-		//	hasFoundCellBesidePlayer = true;
-		//	cellToMoveTo = GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] + 1);
-
-		//	AL_CORE_INFO("Enemy " + std::to_string(enemyMoved) + " Found path at player up");
-		//}
-		//else if (GameplayInterface::IsCoordinateInsideRoom(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]) - 1							&&
-		//							IsCoordinateCellAccessible(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] - 1)						&&
-		//	!Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] - 1)).hasUnit) 
-		//{
-		//	hasFoundCellBesidePlayer = true;
-		//	cellToMoveTo = GameplayInterface::getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1] - 1);
-
-		//	AL_CORE_INFO("Enemy " + std::to_string(enemyMoved) + " Found path at player down");
-		//}
-
-		////If can't find adjacent cell, end turn
-		//if (!hasFoundCellBesidePlayer) {
-		//	AL_CORE_INFO("No Space Beside Player, Moving to next enemy");
-		//	GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
-		//	++enemyMoved;
-		//	MoveEnemy();
-		//	return;
-		//}
-
-		//startCellEntity = getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
-
-		////Find path
-		//std::vector<ECS::Entity> pathList;
-		//b8 isPathFound = Engine::AI::FindPath(m_Room, startCellEntity, cellToMoveTo, pathList, true);
-		//
-		////Path not found then end turn
-		//if (!isPathFound) {
-		//	AL_CORE_INFO("No Path Found");
-		//	++enemyMoved;
-		//	MoveEnemy();
-		//	return;
-		//}
-
-		//AL_CORE_INFO("Path Found");
-
-		////Path found, move the enemy accordingly
-		//SetMoveOrder(pathList);
-
-		//currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
-		//movingUnitEntity = enemyEntityList[enemyMoved];
-
-		//UpdateGUI_OnSelectUnit(movingUnitEntity);
-
-		//++enemyMoved;
 	}
 
 	void GameplaySystem::RunGameStateMoving() {
@@ -1204,6 +1044,7 @@ namespace ALEngine::ECS
 			return;
 		}
 
+		AL_CORE_CRITICAL(Coordinator::Instance()->GetComponent<EntityData>(movingUnitEntity).tag);
 		//Keep track of next cell destination
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
 
@@ -1261,7 +1102,7 @@ namespace ALEngine::ECS
 				}
 				//If enemy, move on to next enemy
 				else if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
-					GameplayInterface::RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyMoved-1]));
+					GameplayInterface::RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]));
 					MoveEnemy();
 				}
 				return;
@@ -1514,12 +1355,12 @@ void ALEngine::Engine::GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(
 
 void ALEngine::Engine::GameplayInterface_Management_Enemy::EnemyManager_LoadData()
 {
-	ALEngine::ECS::gameplaySystem->enemyNeededData.enemyMoved = &ALEngine::ECS::gameplaySystem->enemyMoved;
-	ALEngine::ECS::gameplaySystem->enemyNeededData.playerEntity = &ALEngine::ECS::gameplaySystem->playerEntity;
-	ALEngine::ECS::gameplaySystem->enemyNeededData.startCellEntity = &ALEngine::ECS::gameplaySystem->startCellEntity;
+	ALEngine::ECS::gameplaySystem->enemyNeededData.enemyMoved = 0;
+	ALEngine::ECS::gameplaySystem->enemyNeededData.playerEntity = ALEngine::ECS::gameplaySystem->playerEntity;
+	ALEngine::ECS::gameplaySystem->enemyNeededData.startCellEntity = ALEngine::ECS::gameplaySystem->startCellEntity;
 	//ALEngine::ECS::gameplaySystem->enemyNeededData.m_Room = &ALEngine::ECS::gameplaySystem->m_Room;
-	ALEngine::ECS::gameplaySystem->enemyNeededData.currentUnitControlStatus = &ALEngine::ECS::gameplaySystem->currentUnitControlStatus;
-	ALEngine::ECS::gameplaySystem->enemyNeededData.movingUnitEntity = &ALEngine::ECS::gameplaySystem->movingUnitEntity;
+	//ALEngine::ECS::gameplaySystem->enemyNeededData.currentUnitControlStatus = ALEngine::ECS::gameplaySystem->currentUnitControlStatus;
+	//ALEngine::ECS::gameplaySystem->enemyNeededData.movingUnitEntity = ALEngine::ECS::gameplaySystem->movingUnitEntity;
 	//eel
 	//ALEngine::ECS::gameplaySystem->enemyNeededData.enemyEntityList = &ALEngine::ECS::gameplaySystem->enemyEntityList;
 
@@ -1570,7 +1411,7 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 	case ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_ACTION:
 		AL_CORE_DEBUG("Loading PHASE ENEMY");
 		ALEngine::ECS::gameplaySystem->currentPhaseStatus = ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_ENEMY;
-		ALEngine::ECS::gameplaySystem->enemyMoved = 0;
+		ALEngine::ECS::gameplaySystem->enemyNeededData.enemyMoved = 0;
 
 		ALEngine::Engine::GameplayInterface_Management_GUI::ToggleAbilitiesGUI(false);
 		ALEngine::Engine::GameplayInterface_Management_GUI::TogglePatternGUI(false);
