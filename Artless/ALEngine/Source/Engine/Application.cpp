@@ -303,7 +303,7 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
-		//UpdateGameplaySystem();
+	    UpdateGameplaySystem();
 
 		UpdateEventTriggerSystem();
 		UpdateButtonSystem();

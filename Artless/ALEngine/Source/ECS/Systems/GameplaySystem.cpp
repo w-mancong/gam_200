@@ -60,18 +60,6 @@ namespace ALEngine::ECS
 
 		/*!*********************************************************************************
 		\brief
-			State of phase of game
-		***********************************************************************************/
-		enum class PHASE_STATUS
-		{
-			PHASE_SETUP,
-			PHASE_ACTION,
-			PHASE_ENEMY,
-		};
-
-
-		/*!*********************************************************************************
-		\brief
 			State of controlling/movement of unit
 		***********************************************************************************/
 		enum class UNITS_CONTROL_STATUS {
@@ -401,7 +389,7 @@ namespace ALEngine::ECS
 		//Determine is setup or abilities
 		if (gameplaySystem->currentPatternPlacementStatus != GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING) {
 			//If checking for setup, if so, then filter for placement
-			if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_SETUP) {
+			if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 				b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 			
 				if(canPlace)
@@ -410,7 +398,7 @@ namespace ALEngine::ECS
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
 			}
 			//If checking for abilities, if so, then filter for placement
-			else if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
+			else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 
 				if (canPlace)
@@ -437,7 +425,7 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invokerCell);
 		//If not placing, move character
 		if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING && 
-			gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
+			gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 			//When click on cell, Move the player unit to the selected cell
 			gameplaySystem->MovePlayerEntityToCell(invokerCell);
 		}
@@ -542,7 +530,7 @@ namespace ALEngine::ECS
 		gameplaySystem->m_Room.roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
 
 		gameplaySystem->currentGameplayStatus = GameplaySystem::GAMEPLAY_STATUS::RUNNING;
-		gameplaySystem->currentPhaseStatus = GameplaySystem::PHASE_STATUS::PHASE_SETUP;
+		gameplaySystem->currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
 		gameplaySystem->currentUnitControlStatus = GameplaySystem::UNITS_CONTROL_STATUS::NOTHING;
 		gameplaySystem->currentPatternPlacementStatus = GameplaySystem::PATTERN_PLACEMENT_STATUS::NOTHING;
 		
@@ -687,7 +675,7 @@ namespace ALEngine::ECS
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton)) {
 			//Deselect Pattern
-			if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_SETUP) {
+			if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -696,7 +684,7 @@ namespace ALEngine::ECS
 				TogglePatternGUI(true);
 			}
 			//Deselect Abilities
-			else if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
+			else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -801,7 +789,6 @@ namespace ALEngine::ECS
 		switch (currentPhaseStatus) {
 		case PHASE_STATUS::PHASE_SETUP:
 			currentPhaseStatus = PHASE_STATUS::PHASE_ACTION;
-
 			AL_CORE_DEBUG("Loading PHASE ACTION");
 
 			ToggleAbilitiesGUI(true);
@@ -838,6 +825,7 @@ namespace ALEngine::ECS
 
 			break;
 		}
+		GuiUpdatePhaseIndicator(currentPhaseStatus);
 	}
 
 	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile

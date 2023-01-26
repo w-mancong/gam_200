@@ -137,10 +137,33 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
 		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
 		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
 
 		ECS::CreateButton(guiManager.Win_Button);
+	}
+
+	void GuiUpdatePhaseIndicator(PHASE_STATUS status)
+	{
+		Text& phaseIndicator = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Phase_Indicator);
+		phaseIndicator.colour = Vector3(1.f, 1.f, 1.f);
+
+		switch (status)
+		{
+		case PHASE_STATUS::PHASE_SETUP:
+			phaseIndicator.textString = "Setup Phase";
+			break;
+
+		case PHASE_STATUS::PHASE_ACTION:
+			phaseIndicator.textString = "Action Phase";
+			break;
+
+		case PHASE_STATUS::PHASE_ENEMY:
+			phaseIndicator.textString = "Enemy Phase";
+			phaseIndicator.colour = Vector3(1.f, 0.32f, 0.28f);
+			break;
+		}
 	}
 }

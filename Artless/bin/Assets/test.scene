@@ -75,19 +75,6 @@
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [
-                    "StatsInit"
-                ],
-                "Update": [],
-                "Free": [
-                    "StatsReset"
-                ],
-                "Unload": []
-            }
         ]
     },
     {
@@ -380,7 +367,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.1375732421875,
+                    1547.137939453125,
                     44.69794845581055,
                     0.0
                 ],
@@ -497,13 +484,13 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0,
+                    135.9010009765625,
+                    852.7039794921875,
                     0.0
                 ],
                 "scale": [
-                    300.0,
-                    200.0
+                    281.29998779296875,
+                    95.5
                 ],
                 "rotation": 0.0
             }
@@ -511,11 +498,11 @@
         "EntityData": [
             {
                 "tag": "phase_indicator",
-                "active": false,
-                "localActive": false,
+                "active": true,
+                "localActive": true,
                 "id": 12,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -751,19 +738,6 @@
                 "parentID": 4,
                 "treeNodeFlags": 32
             }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [
-                    "SkillInit"
-                ],
-                "Update": [],
-                "Free": [
-                    "SkillReset"
-                ],
-                "Unload": []
-            }
         ]
     },
     {
@@ -802,17 +776,6 @@
                 "id": 19,
                 "parentID": 4,
                 "treeNodeFlags": 32
-            }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [
-                    "SkillInit"
-                ],
-                "Update": [],
-                "Free": [],
-                "Unload": []
             }
         ]
     },
@@ -853,17 +816,6 @@
                 "parentID": 4,
                 "treeNodeFlags": 32
             }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [
-                    "SkillInit"
-                ],
-                "Update": [],
-                "Free": [],
-                "Unload": []
-            }
         ]
     },
     {
@@ -902,17 +854,6 @@
                 "id": 21,
                 "parentID": 4,
                 "treeNodeFlags": 32
-            }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [
-                    "SkillInit"
-                ],
-                "Update": [],
-                "Free": [],
-                "Unload": []
             }
         ]
     },
@@ -953,17 +894,6 @@
                 "parentID": 4,
                 "treeNodeFlags": 32
             }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [
-                    "SkillInit"
-                ],
-                "Update": [],
-                "Free": [],
-                "Unload": []
-            }
         ]
     },
     {
@@ -1003,17 +933,6 @@
                 "parentID": 4,
                 "treeNodeFlags": 32
             }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [
-                    "SkillInit"
-                ],
-                "Update": [],
-                "Free": [],
-                "Unload": []
-            }
         ]
     },
     {
@@ -1033,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7158813476563,
+                    967.716064453125,
                     41.370445251464844,
                     0.0
                 ],
@@ -1263,21 +1182,21 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0,
+                    135.9010009765625,
+                    852.7037963867188,
                     0.0
                 ],
                 "scale": [
-                    300.0,
-                    200.0
+                    281.29998779296875,
+                    95.5
                 ],
-                "rotation": 0.0
+                "rotation": 179.99989318847656
             }
         ],
         "EntityData": [
             {
                 "tag": "text_phaseindicator",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 30,
                 "parentID": 12,
@@ -1286,7 +1205,7 @@
         ],
         "TextProperty": [
             {
-                "textString": "Phase Indicator",
+                "textString": "Setup Phase",
                 "currentFont": "Arial-italic",
                 "scale": 0.8500000238418579,
                 "color": [
@@ -1295,8 +1214,8 @@
                     1.0
                 ],
                 "position": [
-                    367.5,
-                    236.0
+                    6.5,
+                    455.5
                 ]
             }
         ]
@@ -1987,15 +1906,6 @@
                     87.5
                 ]
             }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [],
-                "Update": [],
-                "Free": [],
-                "Unload": []
-            }
         ]
     },
     {
@@ -2077,21 +1987,6 @@
                 "id": 48,
                 "parentID": -1,
                 "treeNodeFlags": 0
-            }
-        ],
-        "EntityScript": [
-            {
-                "Load": [],
-                "Init": [
-                    "PauseInit"
-                ],
-                "Update": [
-                    "PauseUpdate"
-                ],
-                "Free": [
-                    "PauseReset"
-                ],
-                "Unload": []
             }
         ]
     },
@@ -2195,7 +2090,7 @@
             {
                 "position": [
                     1312.0,
-                    377.99859619140625,
+                    377.99847412109375,
                     0.0
                 ],
                 "scale": [
@@ -2277,7 +2172,7 @@
             {
                 "position": [
                     1312.0,
-                    218.6978302001953,
+                    218.6976776123047,
                     0.0
                 ],
                 "scale": [

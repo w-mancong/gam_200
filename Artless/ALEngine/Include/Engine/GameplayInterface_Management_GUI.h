@@ -11,6 +11,17 @@ brief:	This file contains the function definition for GamePlayInterface.h
 #define GAMEPLAY_INTERFACE_MANAGEMENT_GUI_H
 namespace ALEngine::Engine::GameplayInterface_Management_GUI
 {
+	/*!*********************************************************************************
+	\brief
+		State of phase of game
+	***********************************************************************************/
+	enum class PHASE_STATUS
+	{
+		PHASE_SETUP,
+		PHASE_ACTION,
+		PHASE_ENEMY,
+	};
+
 	struct GUI
 	{
 		//UI
@@ -19,7 +30,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		//Keep track of GUI entities
 		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Range;
 		ECS::Entity Unit_Profile;
-		ECS::Entity Unit_Healthbar;
+		ECS::Entity Unit_Healthbar, Phase_Indicator;
 
 		//Win
 		ECS::Entity Win_Clear, Win_Button;
@@ -64,5 +75,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 	void DisableToolTipGUI();
 
 	void InitializeGUI();
+
+	void GuiUpdatePhaseIndicator(PHASE_STATUS);
 }
 #endif
