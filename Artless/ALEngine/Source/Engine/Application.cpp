@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition that starts the flow of the entire program
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
@@ -215,10 +215,6 @@ namespace ALEngine::Engine
 		//StartGameplaySystem();
 		//Console::StopConsole();
 #endif
-
-		Entity en = Coordinator::Instance()->CreateEntity();
-		ECS::AddLogicComponent<Script::GameplayCamera>(en);
-
 		//Scene::LoadScene("Assets\\test.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
@@ -283,7 +279,6 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
-		UpdateEventTriggerSystem();
 	}
 
 	void Engine::FixedUpdate(void)
@@ -292,6 +287,9 @@ namespace ALEngine::Engine
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
 		//UpdateGameplaySystem();
+
+		UpdateEventTriggerSystem();
+		UpdateButtonSystem();
 
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();

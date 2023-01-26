@@ -7,7 +7,7 @@ email:		w.mancong\@digipen.edu
 			m.zafir\@digipen.edu
 brief:		This file contain functions that registers all components and systesm for ECS
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
@@ -30,6 +30,7 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->RegisterComponent<Text>();
 		Coordinator::Instance()->RegisterComponent<Engine::AudioSource>();
 		Coordinator::Instance()->RegisterComponent<LogicComponent>();
+		Coordinator::Instance()->RegisterComponent<Button>();
 	}
 
 	void RegisterSystem(void)
@@ -45,6 +46,7 @@ namespace ALEngine::ECS
 		RegisterParticleSystem();
 		RegisterTextSystem();
 		RegisterLogicSystem();
+		RegisterButtonSystem();
 
 #if EDITOR
 		//RegisterTransformSystem();

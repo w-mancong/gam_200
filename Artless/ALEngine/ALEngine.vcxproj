@@ -161,6 +161,7 @@
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
     <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
@@ -175,6 +176,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Development|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
+    <ClCompile Include="Source\Engine\GameplayInterface_Management_Enemy.cpp" />
+    <ClCompile Include="Source\Engine\GameplayInterface_Management_GUI.cpp" />
     <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
@@ -292,6 +295,8 @@
     <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
     <ClInclude Include="Include\ECS\Components\UniBehaviour.h" />
     <ClInclude Include="Include\ECS\Systems\LogicSystem.h" />
+    <ClInclude Include="Include\ECS\Components\Button.h" />
+    <ClInclude Include="Include\ECS\Systems\ButtonSystem.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
     <ClInclude Include="Include\Commands\EditorCommandManager.h" />
@@ -305,6 +310,8 @@
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
+    <ClInclude Include="Include\Engine\GameplayInterface_Management_Enemy.h" />
+    <ClInclude Include="Include\Engine\GameplayInterface_Management_GUI.h" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />

@@ -656,6 +656,7 @@ namespace ALEngine::Editor
 			ImGui::DragFloat2("Velocity", vel, 0.02f);
 			ImGui::DragFloat2("Velocity Variation", velVariation, 0.02f);
 			ImGui::DragFloat("Rotation", &particleProperty.rotation, 0.1f, 0.0f, 1000.0f);
+			ImGui::Checkbox("Enable Gravity", &particleProperty.gravityEnabled);
 
 			particleProperty.velocity.x = vel[0];
 			particleProperty.velocity.y = vel[1];

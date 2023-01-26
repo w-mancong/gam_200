@@ -4,7 +4,7 @@ author:	Mohamed Zafir
 email:	m.zafir\@digipen.edu
 brief:	This file contains the function declarations for ParticleSystem.h
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #ifndef	PARTICLESYSTEM_H
@@ -84,6 +84,11 @@ namespace ALEngine::ECS
 
 		void ClearParticles();
 
+		u32& GetParticleCounter();
+
+		template <typename T>
+		static T Lerp(T a, T b, float t);
+
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -95,12 +100,19 @@ namespace ALEngine::ECS
 			Math::Vector4 colorStart{}, colorEnd{};
 			f32 sizeBegin{ 1.f }, sizeEnd{ 10.f }, rotation{ 0.f }, lifeTime{ 1.0f };
 			f32 lifeRemaining{ 0.0f }, rotAmt{};
-			bool active{ false };
+			b8 active{ false };
+			Sprite sprite;
+			b8 gravityEnabled{ false };
 		};
 		std::vector<Particle> particleContainer;
 		u32 particleIndex = 999; // max index of particles container
+		u32 particleCounter{};
+
 		u32 particleVAO{ 0 }, particleVBO{}, particleEBO{};
 		Graphics::Shader particleShader;
+
+	public:
+		std::vector<Particle> const& GetParticleContainer();
 	};
 }
 #endif
