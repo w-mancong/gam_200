@@ -69,6 +69,7 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
 		newPattern.coordinate_occupied.push_back({ -1, 0 });
 		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.file_path = "Assets\\Images\\T.png";
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 
@@ -77,6 +78,7 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
 		newPattern.coordinate_occupied.push_back({ 2, 0 });
 		newPattern.coordinate_occupied.push_back({ 3, 0 });
+		newPattern.file_path = "Assets\\Images\\I.png";
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 
@@ -85,6 +87,16 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
 		newPattern.coordinate_occupied.push_back({ 0, 1 });
 		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		newPattern.file_path = "Assets\\Images\\L.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+		
+		//J Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ -1, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		newPattern.file_path = "Assets\\Images\\J.png";
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 
@@ -93,6 +105,25 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
 		newPattern.coordinate_occupied.push_back({ 1, 1 });
 		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.file_path = "Assets\\Images\\O.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+
+		//S Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ -1, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ 1, 1 });
+		newPattern.file_path = "Assets\\Images\\S.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+		
+		//Z Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ -1, 1 });
+		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		newPattern.file_path = "Assets\\Images\\Z.png";
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 	}

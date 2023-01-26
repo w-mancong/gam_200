@@ -30,6 +30,9 @@ namespace ALEngine::Engine::GameplayInterface
 		Container for Pattern
 	***********************************************************************************/
 	struct Pattern {
+		// File Path
+		std::string file_path{};
+
 		//list of grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
 		std::vector<Vector2Int> coordinate_occupied{}
 		;
