@@ -1384,7 +1384,10 @@ namespace ALEngine::ECS
 
 		// Randomize next set
 		tempList = pattern_Default;
-		std::shuffle(tempList.begin(), tempList.end(), mt);
+
+		do {
+			std::shuffle(tempList.begin(), tempList.end(), mt);
+		} while (tempList.front().file_path == pattern_List.back().file_path);
 
 		// Push back into list
 		for (u32 i{ 0 }; i < tempList.size(); ++i)
