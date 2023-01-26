@@ -14,6 +14,10 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/GameplayInterface_Management_Enemy.h"
 #include "Engine/GameplayInterface_Management_GUI.h"
 
+#include <random>
+#include <algorithm>
+#include <iterator>
+
 namespace ALEngine::ECS
 {
 	//Ease of use for ray
@@ -113,8 +117,9 @@ namespace ALEngine::ECS
 		Entity m_Room_Parent_Entity;
 
 		//Patterns
-		std::vector<Pattern> pattern_List;
+		std::vector<Pattern> pattern_Default, pattern_List;
 		Pattern selected_Pattern;
+		u32 selected_Pattern_Index{ 0 };
 
 		//Abilities
 		std::vector<Abilities> Abilities_List;
@@ -224,6 +229,13 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
 
+		// Pattern Stuff
+		/*!*********************************************************************************
+		\brief
+			Randomizes the Pattern List
+		***********************************************************************************/
+		void RandomizePatternList(void);
+
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
 		void Cheat_ToggleGodMode();
@@ -309,6 +321,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
+		gameplaySystem->selected_Pattern_Index = 0;
 	}
 
 	void Event_Button_Select_Pattern_1([[maybe_unused]] Entity invoker) {
@@ -318,6 +331,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Pattern 1");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[1]);
+		gameplaySystem->selected_Pattern_Index = 1;
 	}
 	
 	void Event_Button_Select_Pattern_2([[maybe_unused]] Entity invoker) {
@@ -327,6 +341,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Pattern 2");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[2]);
+		gameplaySystem->selected_Pattern_Index = 2;
 	}
 	
 	void Event_Button_Select_Pattern_3([[maybe_unused]] Entity invoker) {
@@ -336,6 +351,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Pattern 3");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[3]);
+		gameplaySystem->selected_Pattern_Index = 3;
 	}
 
 	void Event_Button_Select_EndTurn([[maybe_unused]] Entity invoker) {
@@ -422,6 +438,24 @@ namespace ALEngine::ECS
 
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
+
+			// Remove from list
+			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
+
+			if (gameplaySystem->pattern_List.size() <= gameplaySystem->pattern_Default.size())
+				gameplaySystem->RandomizePatternList();
+
+			// Set sprites for the Patterns
+			for (u32 i{ 1 }; i <= 4; ++i)
+			{
+				std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+			}
+
 			gameplaySystem->EndTurn();
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
@@ -433,6 +467,24 @@ namespace ALEngine::ECS
 
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+
+			// Remove from list
+			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
+
+			if (gameplaySystem->pattern_List.size() <= gameplaySystem->pattern_Default.size())
+				gameplaySystem->RandomizePatternList();
+
+			// Set sprites for the Patterns
+			for (u32 i{ 1 }; i <= 4; ++i)
+			{
+				std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+			}
+
 			gameplaySystem->EndTurn();
 
 			s8 eliminatedEnemyCount = 0;
@@ -490,7 +542,21 @@ namespace ALEngine::ECS
 		sceneGraph.Push(-1, gameplaySystem->m_Room_Parent_Entity); // first cell is parent
 
 		//Initialize Pattern
-		InitializePatterns(gameplaySystem->pattern_List);
+		InitializePatterns(gameplaySystem->pattern_Default);
+
+		// Randomize Pattern
+		gameplaySystem->RandomizePatternList();
+
+		// Set sprites for the Patterns
+		for (u32 i{ 1 }; i <= 4; ++i)
+		{
+			std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+			ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+			sprite.id = AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+		}
 
 		//Initialize Abilities
 		InitializeAbilities(gameplaySystem->Abilities_List);
@@ -1287,6 +1353,44 @@ namespace ALEngine::ECS
 
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Unit_Healthbar);
 		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
+	}
+
+	void GameplaySystem::RandomizePatternList(void)
+	{
+		u32 num_patterns = pattern_Default.size();
+
+		std::random_device rd;
+		std::mt19937 mt(rd());
+
+		// Create a copy of the first few in list
+		std::vector<Pattern> tempList;
+		if (num_patterns <= pattern_List.size())
+		{	// Copy list to a temp list
+			for (u32 i{ 0 }; i < num_patterns; ++i)
+				tempList.push_back(pattern_List[i]);
+
+			// Empty Pattern List Shown
+			pattern_List.clear();
+
+			// Put the temp values into the pattern
+			for (u32 i{ 0 }; i < num_patterns; ++i)
+				pattern_List.push_back(tempList[i]);
+		}
+		else
+		{	// Randomize
+			pattern_List = pattern_Default;
+			std::shuffle(pattern_List.begin(), pattern_List.end(), mt);
+		}
+
+		// Randomize next set
+		tempList = pattern_Default;
+		std::shuffle(tempList.begin(), tempList.end(), mt);
+
+		// Push back into list
+		for (u32 i{ 0 }; i < tempList.size(); ++i)
+		{
+			pattern_List.push_back(tempList[i]);
+		}
 	}
 
 	void GameplaySystem::Cheat_ToggleGodMode() {
