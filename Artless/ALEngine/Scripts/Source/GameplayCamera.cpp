@@ -45,10 +45,4 @@ namespace ALEngine::Script
 
 		std::cout << camera.Position() << std::endl;
 	}
-
-	//void GameplayCamera::LateUpdate([[maybe_unused]] ECS::Entity en) {}
-
-	//void GameplayCamera::Free([[maybe_unused]] ECS::Entity en) {}
-	//
-	//void GameplayCamera::Unload([[maybe_unused]] ECS::Entity en) {}
 }
