@@ -179,6 +179,16 @@ namespace ALEngine::Engine::GameplayInterface
 
 	/*!*********************************************************************************
 	\brief
+		check if grid is walkable
+	\param [in]
+		room: gameplay room
+	\param [in]
+		coordinate: Coordinate to check if walkable is placed
+	***********************************************************************************/
+	b8 CheckIfWalkableOnGrid(Room& room, u32 gridX, u32 gridY);
+
+	/*!*********************************************************************************
+	\brief
 		Return if pattern can be placed on cell with given coordinate
 	\param [in]
 		room: gameplay room

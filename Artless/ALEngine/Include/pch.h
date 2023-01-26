@@ -14,7 +14,7 @@ brief:	This file contain all the header files that are will be precompiled inste
 #define NOMINMAX
 #define _USE_MATH_DEFINES
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))	// find the number of elements in an array
-#define EDITOR 0
+#define EDITOR 1
 
 // C++ standard library
 #include <iostream>
@@ -86,7 +86,6 @@ brief:	This file contain all the header files that are will be precompiled inste
 #include <Common Header/Random.h>
 #include <Common Header/MyEditor.h>
 #include <Common Header/MyAssetManager.h>
-#include <Common Header/MyAi.h>
 #include <Common Header/MyScene.h>
 #include <Common Header//MyUndoRedo.h>
 #include <Common Header/MyScripting.h>

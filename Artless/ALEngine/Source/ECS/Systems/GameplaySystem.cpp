@@ -47,7 +47,10 @@ namespace ALEngine::ECS
 
 		//******VARIABLES**********//
 		u32 roomSize[2]{ 6, 6 };		//Size to initialize the room with
-		Room m_Room;					//Room COntainer
+		ALEngine::Engine::GameplayInterface::Room m_Room;					//Room COntainer
+		
+		//enemymanager struct object for enemymanagement function to access needed variables
+		ALEngine::Engine::GameplayInterface_Management_Enemy::EnemyManager enemyNeededData;
 
 		//Entities to keep track of
 		Entity playerEntity, startCellEntity, targetCellEntity;
@@ -55,7 +58,7 @@ namespace ALEngine::ECS
 
 		//Enemy
 		std::vector<Entity> enemyEntityList;
-		u32 enemyMoved = 0;	//Step into enemy that are moving
+		Entity enemyMoved = 0;	//Step into enemy that are moving
 
 		//Keep track of status
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped
@@ -162,12 +165,6 @@ namespace ALEngine::ECS
 			Place Player onto room
 		***********************************************************************************/
 		void PlaceNewPlayerInRoom(s32 x, s32 y);
-		
-		/*!*********************************************************************************
-		\brief
-			Place Enemy onto room
-		***********************************************************************************/
-		//void PlaceNewEnemyInRoom(s32 x, s32 y);
 
 		/*!*********************************************************************************
 		\brief
@@ -521,10 +518,10 @@ namespace ALEngine::ECS
 		gameplaySystem->PlaceNewPlayerInRoom(0, 5);
 
 		gameplaySystem->enemyEntityList.clear();
-		//gameplaySystem->PlaceNewEnemyInRoom(0, 1);
-		//gameplaySystem->PlaceNewEnemyInRoom(4, 4);
 		PlaceNewEnemyInRoom(0, 1, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
         PlaceNewEnemyInRoom(4, 4, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+
+		PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_TYPE02, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
 
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
@@ -575,6 +572,8 @@ namespace ALEngine::ECS
 		gameplaySystem->Toggle_Gameplay_State(true);
 		ToggleAbilitiesGUI(false);
 		TogglePatternGUI(true);
+
+		GameplayInterface_Management_Enemy::EnemyManager_LoadData();
 	}
 
 	void UpdateGameplaySystem(void)
@@ -1071,13 +1070,21 @@ namespace ALEngine::ECS
 	
 	void GameplaySystem::MoveEnemy() {
 
+		
+		//EnemyManager_LoadData();
+
 		//Clear move order
 		ClearMoveOrder();
 
 		//use enemy logic function pointer
 	    //enemyUnit.logic
-		Enemy_Logic_Update_Melee(enemyMoved, enemyEntityList, playerEntity, startCellEntity, m_Room, currentUnitControlStatus, movingUnitEntity);
 
+		
+
+		Enemy_Logic_Update_Melee(enemyNeededData, enemyEntityList, m_Room);
+
+
+		//Enemy_Logic_Update_CellDestroyer(enemyNeededData, enemyEntityList, m_Room);
 
 		//AL_CORE_INFO("Enemy Making Decision");
 
@@ -1505,6 +1512,20 @@ void ALEngine::Engine::GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(
 	healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
 }
 
+void ALEngine::Engine::GameplayInterface_Management_Enemy::EnemyManager_LoadData()
+{
+	ALEngine::ECS::gameplaySystem->enemyNeededData.enemyMoved = &ALEngine::ECS::gameplaySystem->enemyMoved;
+	ALEngine::ECS::gameplaySystem->enemyNeededData.playerEntity = &ALEngine::ECS::gameplaySystem->playerEntity;
+	ALEngine::ECS::gameplaySystem->enemyNeededData.startCellEntity = &ALEngine::ECS::gameplaySystem->startCellEntity;
+	//ALEngine::ECS::gameplaySystem->enemyNeededData.m_Room = &ALEngine::ECS::gameplaySystem->m_Room;
+	ALEngine::ECS::gameplaySystem->enemyNeededData.currentUnitControlStatus = &ALEngine::ECS::gameplaySystem->currentUnitControlStatus;
+	ALEngine::ECS::gameplaySystem->enemyNeededData.movingUnitEntity = &ALEngine::ECS::gameplaySystem->movingUnitEntity;
+	//eel
+	//ALEngine::ECS::gameplaySystem->enemyNeededData.enemyEntityList = &ALEngine::ECS::gameplaySystem->enemyEntityList;
+
+}
+
+
 void ALEngine::Engine::GameplayInterface_Management_Enemy::Event_Unit_OnSelect([[maybe_unused]] Entity invoker)
 {
 	if (utils::IsEqual(Time::m_Scale, 0.f))
@@ -1553,7 +1574,7 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 
 		ALEngine::Engine::GameplayInterface_Management_GUI::ToggleAbilitiesGUI(false);
 		ALEngine::Engine::GameplayInterface_Management_GUI::TogglePatternGUI(false);
-		//MoveEnemy();
+		ALEngine::ECS::gameplaySystem->MoveEnemy();
 		break;
 
 	case ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_ENEMY:

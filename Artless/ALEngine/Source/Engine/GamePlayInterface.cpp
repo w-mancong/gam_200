@@ -200,6 +200,25 @@ namespace ALEngine::Engine::GameplayInterface
 		sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 	}
 
+	b8 ALEngine::Engine::GameplayInterface::CheckIfWalkableOnGrid(Room& room, u32 gridX, u32 gridY)
+	{
+		ECS::Entity cellEntity = getEntityCell(room, gridX, gridY);
+
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//if is completely block, dont need set
+		if (!cell.m_isAccessible) {
+			return false;
+		}
+
+		if (cell.m_canWalk == true)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {

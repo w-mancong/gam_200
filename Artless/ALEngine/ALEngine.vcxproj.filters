@@ -50,7 +50,6 @@
     <ClCompile Include="Source\Utility\Timer.cpp" />
     <ClCompile Include="Source\Utility\Profiler.cpp" />
     <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
-    <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
@@ -297,8 +296,6 @@
     <ClInclude Include="Include\Utility\Profiler.h" />
     <ClInclude Include="Include\ECS\Components\EntityData.h" />
     <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
-    <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
-    <ClInclude Include="Include\Common Header\MyAi.h" />
     <ClInclude Include="Include\Common Header\MySerializer.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
