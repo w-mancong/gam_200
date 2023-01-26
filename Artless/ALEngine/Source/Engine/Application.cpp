@@ -285,7 +285,8 @@ namespace ALEngine::Engine
 #endif
 		Input::Update();
 		AssetManager::Instance()->Update();
-		AudioManagerUpdate();
+		AudioManagerUpdate(); 
+		UpdateEventTriggerSystem();
 	}
 
 	void Engine::FixedUpdate(void)
@@ -295,15 +296,12 @@ namespace ALEngine::Engine
 #endif
 		UpdateGameplaySystem();
 
-		UpdateEventTriggerSystem();
 		UpdateButtonSystem();
 
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();
 		UpdatePostRigidbodySystem();
 		
-		UpdateEventTriggerSystem();
-
 #if EDITOR
 		if (!ALEditor::Instance()->GetGameActive())
 			return;

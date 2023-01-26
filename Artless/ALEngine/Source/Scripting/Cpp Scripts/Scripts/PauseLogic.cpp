@@ -157,9 +157,9 @@ namespace ALEngine
 			button_htp = Coordinator::Instance()->GetEntityByTag("button_htp");
 			button_quit = Coordinator::Instance()->GetEntityByTag("button_quit");
 
-			CreateEventTrigger(button_resume);
-			CreateEventTrigger(button_htp);
-			CreateEventTrigger(button_quit);
+			CreateEventTrigger(button_resume, true);
+			CreateEventTrigger(button_htp, true);
+			CreateEventTrigger(button_quit, true);
 
 			Subscribe(button_resume, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenResumeHover);
 			Subscribe(button_resume, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenResumePointerExit);
@@ -175,8 +175,8 @@ namespace ALEngine
 			quit_yes = Coordinator::Instance()->GetEntityByTag("button_quit_yes");
 			quit_no  = Coordinator::Instance()->GetEntityByTag("button_quit_no");
 
-			CreateEventTrigger(quit_yes);
-			CreateEventTrigger(quit_no);
+			CreateEventTrigger(quit_yes, true);
+			CreateEventTrigger(quit_no, true);
 
 			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenQuitYesHover);
 			Subscribe(quit_yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenQuitYesPointerExit);
@@ -188,7 +188,7 @@ namespace ALEngine
 			htp			  = Coordinator::Instance()->GetEntityByTag("htp");
 			htp_cross_btn = Coordinator::Instance()->GetEntityByTag("htp_cross_btn");
 
-			CreateEventTrigger(htp_cross_btn);
+			CreateEventTrigger(htp_cross_btn, true);
 			Subscribe(htp_cross_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenHtpCrossHover);
 			Subscribe(htp_cross_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenHtpCrossPointerExit);
 		}

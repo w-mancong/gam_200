@@ -29,7 +29,7 @@ namespace ALEngine
 			\brief
 			Adds Event Trigger component to the entity
 		***********************************************************************************/
-		void CreateEventTrigger(Entity const& entity);
+		void CreateEventTrigger(Entity const& entity, bool runWhenPaused = false);
 
 		/*!*********************************************************************************
 			\brief Subscribe a function to listen to a Collision based trigger

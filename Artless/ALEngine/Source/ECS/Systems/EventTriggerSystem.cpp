@@ -103,8 +103,16 @@ namespace ALEngine::ECS
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
 
-			if (!event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+			if (!event_Trigger.isEnabled|| !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
 				continue;
+			}
+
+			//If game is paused
+			if (utils::IsEqual(Time::m_Scale, 0.f)) {
+				//If the event trigger cannot run when paused, skip
+				if (!event_Trigger.isRunWhenPaused) {
+					continue;
+				}
 			}
 
 			//Update the latest interacted event trigger, pass in the check for previous event trigger overlap as well
@@ -246,9 +254,10 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void CreateEventTrigger(Entity const& entity) {
+	void CreateEventTrigger(Entity const& entity, bool runWhenPaused) {
 		//Setup EventTrigger for custom stats
 		EventTrigger charControl{};
+		charControl.isRunWhenPaused = runWhenPaused;
 		Coordinator::Instance()->AddComponent(entity, charControl);
 	}
 
