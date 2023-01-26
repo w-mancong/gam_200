@@ -70,7 +70,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		ECS::CreateButton(GUI_Abilities_Button_Entities[4]);
 		ECS::CreateButton(GUI_Abilities_Button_Entities[5]);
 
-		for (int i = 0; i < 2; ++i) {
+		for (int i = 0; i < 3; ++i) {
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
 

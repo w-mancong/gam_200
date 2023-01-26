@@ -107,17 +107,20 @@ namespace ALEngine::Engine::GameplayInterface
 		Abilities new_ability;
 
 		//Fixed damage
-		new_ability.current_type = TYPE_ABILITIES::HARD_DROP;
+		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
+		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 15;
 		abilitiesList.push_back(new_ability);
 
 		//Life steal
-		new_ability.current_type = TYPE_ABILITIES::LIFE_DRAIN;
+		new_ability.current_Ability_Name = ABILITY_NAME::LIFE_DRAIN;
+		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 12;
 		abilitiesList.push_back(new_ability);
 
 		//Construct Wall
-		new_ability.current_type = TYPE_ABILITIES::CONSTRUCT_WALL;
+		new_ability.current_Ability_Name = ABILITY_NAME::CONSTRUCT_WALL;
+		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
 		//TRIGGER THE BUILD WALL FUNCTION HERE!!
 		abilitiesList.push_back(new_ability);
 	}
@@ -229,81 +232,122 @@ namespace ALEngine::Engine::GameplayInterface
 		return true;
 	}
 
-	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern) {
+	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
 			//If the coordinate is within the boundaries of the room
+			//must connect to player
 			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
-				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				//If ability is direct type
+				if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
+					//If inside room, set the cell color to yellow
+					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
-				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				
-				if (cell.hasUnit) {
-					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-					if (unit.unitType == UNIT_TYPE::PLAYER) {
-						return true;
+					if (cell.hasUnit) {
+						Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+						if (unit.unitType == UNIT_TYPE::PLAYER) {
+							return true;
+						}
 					}
 				}
-			}
-		}//End loop through pattern body check
+				//If it's effect type
+				//Must connect to cell that is walkable but no on cells with units
+				else {
+					//If inside room, set the cell color to yellow
+					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
-		return false;
+					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+					if (cell.hasUnit || !cell.m_isAccessible) {
+						return false;
+					} 
+				} 
+			} 
+		} //End loop through pattern body check
+		
+		//If reach here and direct, means not touching player, false
+		if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
+			return false;
+		}
+		//If reach here and effect, means has not touch unit or cell, true
+		else {
+			return true;
+		}
 	}
 
 	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities) {
+		AL_CORE_CRITICAL("USE ABILITY");
+
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
 			//If the coordinate is within the boundaries of the room
 			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
 				//If inside room, set the cell color to yellow
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
-
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				
+				switch (abilities.current_Ability_Type)
+				{
+					//IF DIRECT ABILITY, AFFECT UNITS ONLY
+					case ABILITY_TYPE::DIRECT:
+						if (cell.hasUnit) {
+							AL_CORE_CRITICAL("HAS UNIT");
 
-				if (cell.hasUnit) {
-					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
-					if (unit.health <= 0) {
-						continue;
-					}
-
-					u32 initialHealth = unit.health;
-
-					if (unit.unitType == UNIT_TYPE::ENEMY) {
-						switch (abilities.current_type)
-						{
-						case TYPE_ABILITIES::HARD_DROP:
-							DoDamageToUnit(cell.unitEntity, abilities.damage);
-							break;
-						case TYPE_ABILITIES::LIFE_DRAIN:
-						{
-							DoDamageToUnit(cell.unitEntity, abilities.damage);
-
-							//Life steal 
-							ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
-							Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-
-							u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
-
-							playerUnit.health += healthDrained;
-
-							if (playerUnit.health > playerUnit.maxHealth) {
-								playerUnit.health = playerUnit.maxHealth;
+							Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+							if (unit.health <= 0) {
+								continue;
 							}
 
-							AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
-							break;
-						}
-						case TYPE_ABILITIES::CONSTRUCT_WALL:
-							std ::cout << "CASE CONSTRUCT WALL IS TRIGGERED" << std::endl;
-							constructWall(room, coordinate.x, coordinate.y, true);
+							u32 initialHealth = unit.health;
 
-							break;
-						}
+							//If unit is enemy
+							if (unit.unitType == UNIT_TYPE::ENEMY) {
+								//Check for ability name and run ability accordingly
+								switch (abilities.current_Ability_Name)
+								{
+									case ABILITY_NAME::HARD_DROP:
+										DoDamageToUnit(cell.unitEntity, abilities.damage);
+										break;
+									case ABILITY_NAME::LIFE_DRAIN:
+									{
+										DoDamageToUnit(cell.unitEntity, abilities.damage);
 
+										//Life steal 
+										ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+										Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+										u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
+
+										playerUnit.health += healthDrained;
+
+										if (playerUnit.health > playerUnit.maxHealth) {
+											playerUnit.health = playerUnit.maxHealth;
+										}
+
+										AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
+										break;
+									}
+								}
+							}//End check if unit
+						}
+					break;
+
+				case ABILITY_TYPE::EFFECT:
+					//Check for ability name and run ability accordingly
+					switch (abilities.current_Ability_Name)
+					{
+					case ABILITY_NAME::CONSTRUCT_WALL:
+						constructWall(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y, true);
+						break;
+
+					default:
+						break;
 					}
-				}//End check if unit
+					break;
+				} //End switch check
 			}//End check if it's inside room
 		}//End loop through pattern body check
 	}
@@ -386,18 +430,23 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void constructWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
+		ECS::Entity cellEntity = getEntityCell(currentRoom, x, y);
 
-		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
-		cell.iswall = isTrue;
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		cell.has_Wall = isTrue;
 		cell.m_canWalk = !isTrue;
+		cell.m_resetCounter = 2;
 
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
+		sprite.layer = 1000 - Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y;
+		sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Wall.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
 	}
 
 	void destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
 
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
-		cell.iswall = isTrue;
+		cell.has_Wall = isTrue;
 		cell.m_canWalk = !isTrue;
 
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY

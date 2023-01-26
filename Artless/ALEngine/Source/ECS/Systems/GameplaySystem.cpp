@@ -262,8 +262,6 @@ namespace ALEngine::ECS
 			amendments to them at the end of the turn
 		***********************************************************************************/
 		s32 checkTileCounters(Cell& selectedCell);
-
-
 	};
 
 	namespace
@@ -272,7 +270,6 @@ namespace ALEngine::ECS
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
 		std::string const sceneName = R"(Assets\test.scene)";
-		s32 base_Layer = 10000;		//Base layer
 	}
 
 	//****************EVENTS*****************//
@@ -309,7 +306,7 @@ namespace ALEngine::ECS
 		}
 
 		AL_CORE_INFO("Construct Wall");
-		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[2]);
 		DisableToolTipGUI();
 	}
 
@@ -394,7 +391,7 @@ namespace ALEngine::ECS
 			}
 			//If checking for abilities, if so, then filter for placement
 			else if (gameplaySystem->currentPhaseStatus == GameplaySystem::PHASE_STATUS::PHASE_ACTION) {
-				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
 
 				if (canPlace)
 					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
@@ -436,7 +433,7 @@ namespace ALEngine::ECS
 			gameplaySystem->EndTurn();
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
-			b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+			b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
 
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
@@ -545,7 +542,7 @@ namespace ALEngine::ECS
 
 				Transform child_overlay_transform;
 				child_overlay_transform.scale = transform.scale;
-				child_overlay_transform.scale.y += 50;
+				//child_overlay_transform.scale.y += 50;
 				child_overlay_transform.position = { 550 + (f32)i * 100.f, 300 + (f32)j * 100.f };
 				child_overlay_transform.position.y += 50 >> 2;
 				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
@@ -658,7 +655,6 @@ namespace ALEngine::ECS
 			GameplayInterface::destroyWall(gameplaySystem->m_Room, 2, 0, true);
 		}
 
-
 		//Toggle debug draw
 		if (Input::KeyTriggered(KeyCode::Key_3)) {
 			gameplaySystem->is_DebugDraw = !gameplaySystem->is_DebugDraw;
@@ -770,6 +766,7 @@ namespace ALEngine::ECS
 				Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
 				enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
 			}
+
 			UpdateGUI_OnSelectUnit(playerEntity);
 
 			scanRoomCellArray();
@@ -801,8 +798,11 @@ namespace ALEngine::ECS
 				if (resetCounter == 0) {
 					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
-				}
 
+					if (cell.has_Wall) {
+						GameplayInterface::destroyWall(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y, false);
+					}
+				}
 			}
 		}
 	}
@@ -974,10 +974,12 @@ namespace ALEngine::ECS
 			Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 
 			//If the time is paused, put the enemy layer to the back
-			if (utils::IsEqual(Time::m_Scale, 1.0f))
-				enemySprite.layer = base_Layer - static_cast<s32>(enemyTransform.localPosition.y);
-			else
+			if (utils::IsEqual(Time::m_Scale, 1.0f)) {
+				enemySprite.layer = 1000 - enemyTransform.position.y;
+			}
+			else {
 				enemySprite.layer = 1;
+			}
 		}
 
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
@@ -985,8 +987,9 @@ namespace ALEngine::ECS
 		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
 
 		//If the time is paused, put the player layer to the back
-		if (utils::IsEqual(Time::m_Scale, 1.0f))
-			playerSprite.layer = base_Layer - static_cast<s32>(playerTransform.localPosition.y);
+		if (utils::IsEqual(Time::m_Scale, 1.0f)) {
+			playerSprite.layer = 1000 - playerTransform.position.y;
+		}
 		else
 			playerSprite.layer = 1;
 	}

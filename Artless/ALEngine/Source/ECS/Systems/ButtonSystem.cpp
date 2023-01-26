@@ -35,8 +35,6 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		AL_CORE_CRITICAL("DARK");
-
 		Button button = Coordinator::Instance()->GetComponent<Button>(invoker);
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
 		sprite.color = button.m_color_Tint_OnHover;
@@ -47,7 +45,6 @@ namespace ALEngine::ECS
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
 		}
-		AL_CORE_CRITICAL("LIGHT");
 
 		Button button = Coordinator::Instance()->GetComponent<Button>(invoker);
 		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);

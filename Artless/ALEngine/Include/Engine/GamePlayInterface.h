@@ -11,6 +11,8 @@ brief:	This file contains the function definition for GamePlayInterface.h
 #define GAMEPLAY_INTERFACE_H
 namespace ALEngine::Engine::GameplayInterface
 {
+	#define base_Layer 1000.0f;		//Base layer
+
 	/*!*********************************************************************************
 	\brief
 		Container for Room
@@ -35,7 +37,8 @@ namespace ALEngine::Engine::GameplayInterface
 	};
 
 	//***************For now 2 abilities***************//
-	enum class TYPE_ABILITIES { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL};
+	enum class ABILITY_NAME { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL};
+	enum class ABILITY_TYPE { DIRECT, EFFECT };
 
 	/*!*********************************************************************************
 	\brief
@@ -47,8 +50,10 @@ namespace ALEngine::Engine::GameplayInterface
 		u32 current_Cooldown = 0, max_Cooldown = 2;
 		s32 damage = 15;
 
+		ABILITY_TYPE current_Ability_Type = ABILITY_TYPE::DIRECT;
+
 		//Keep track of ability type
-		TYPE_ABILITIES current_type = TYPE_ABILITIES::HARD_DROP;
+		ABILITY_NAME current_Ability_Name = ABILITY_NAME::HARD_DROP;
 	};
 
 	/*!*********************************************************************************
@@ -161,7 +166,7 @@ namespace ALEngine::Engine::GameplayInterface
 	\return
 		if ability can be used on tile
 	***********************************************************************************/
-	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
+	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities);
 
 	/*!*********************************************************************************
 	\brief
@@ -203,6 +208,5 @@ namespace ALEngine::Engine::GameplayInterface
 	void constructWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
 	void destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
-
 }
 #endif
