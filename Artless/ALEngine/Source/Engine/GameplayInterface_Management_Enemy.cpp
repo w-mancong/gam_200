@@ -140,7 +140,11 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::Enemy_Logic_Update_Melee(EnemyManager& enemyNeededData, Entity &movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room)
 	{
-
+		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
+			AL_CORE_INFO("All Enemy Made move, ending turn");
+			EndTurn();
+			return;
+		}
 		AL_CORE_INFO("Enemy Making Decision");
 
 		AL_CORE_INFO("Finding Target Cell");
@@ -319,7 +323,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		{
 			for(u32 y=0; y<m_Room.height; y++)
 			{
-				if(GameplayInterface::CheckIfWalkableOnGrid(m_Room, x, y))
+				if(GameplayInterface::CheckIfWalkableOnGrid(m_Room, x, y) && !Coordinator::Instance()->GetComponent<Cell>(GameplayInterface::getEntityCell(m_Room,x, y)).hasUnit)
 				{
 					cellsMoveableTo.push_back(GameplayInterface::getEntityCell(m_Room,x, y));
 				}
