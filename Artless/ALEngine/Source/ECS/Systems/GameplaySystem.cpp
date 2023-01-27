@@ -14,6 +14,7 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/GameplayInterface_Management_Enemy.h"
 #include "Engine/GameplayInterface_Management_GUI.h"
 #include <Utility/AudioNames.h>
+#include <GameplayCamera.h>
 
 namespace ALEngine::Engine::GameplayInterface
 {
@@ -555,7 +556,7 @@ namespace ALEngine::ECS
 				s32 cellIndex = i * gameplaySystem->roomSize[0] + j;
 
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->m_Room.roomCellsArray[cellIndex]);
-				transform.position = { 550 + (f32)j * 100.f, 300 + (f32)i * 100.f };
+				transform.position = { 450 + (f32)j * 100.f, 150 + (f32)i * 100.f };
 
 				Cell cell;
 				cell.coordinate = { i,j };
@@ -1078,6 +1079,8 @@ namespace ALEngine::ECS
 		eventTrigger.layer = 1;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
+
+		//AddLogicComponent<Script::GameplayCamera>(entity);
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(Entity cellEntity) {
