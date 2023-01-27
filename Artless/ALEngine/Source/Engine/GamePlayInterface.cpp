@@ -16,6 +16,10 @@ namespace ALEngine::Engine::GameplayInterface
 	u32 getEntityCell(Room& currentRoom,u32 x, u32 y)
 	{
 		//Get required cell's entity
+
+		u32 testValue = currentRoom.roomCellsArray[y * currentRoom.width + x];
+
+		std::cout << testValue << std::endl;
 		return currentRoom.roomCellsArray[y * currentRoom.width + x];
 	}
 

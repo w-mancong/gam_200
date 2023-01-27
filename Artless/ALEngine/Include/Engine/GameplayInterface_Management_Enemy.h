@@ -47,6 +47,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 	***********************************************************************************/
 	void PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection, std::vector<Entity>& enemyEntityList, Room& m_Room);
 
+	void CellDestroyer_CellAttack(EnemyManager& enemyNeededData, Room& m_room, Unit& enemyUnit);
+
 	//void PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection);
 
 	void Event_Unit_OnSelect([[maybe_unused]] Entity invoker);

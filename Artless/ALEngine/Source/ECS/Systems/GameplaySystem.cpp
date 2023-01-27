@@ -1163,7 +1163,6 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		AL_CORE_CRITICAL(Coordinator::Instance()->GetComponent<EntityData>(movingUnitEntity).tag);
 		//Keep track of next cell destination
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
 
