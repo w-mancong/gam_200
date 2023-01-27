@@ -433,13 +433,13 @@ namespace ALEngine::Editor
 					Engine::Scene::SaveState();
 					Engine::GameStateManager::next = Engine::GameState::Gameplay;
 					Engine::GameStateManager::current = Engine::GameState::Gameplay;
-					ECS::StartGameplaySystem();
+					//ECS::StartGameplaySystem();
 				}
 				else
 				{
 					ECS::ParticleSystem::GetParticleSystem().ClearParticles();
-					Coordinator::Instance()->DestroyEntities();
 					ECS::ExitGameplaySystem();
+					Coordinator::Instance()->DestroyEntities();
 
 					Engine::Scene::LoadState();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);

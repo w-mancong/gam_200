@@ -16,13 +16,21 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 	using ALEngine::ECS::Entity;
 	using Engine::GameplayInterface::Room;
 
-	enum class ENEMY_TYPE
-	{
-		ENEMY_TYPE01,   //0
-		ENEMY_TYPE02,   //1
-		ENEMY_TYPE03,   //2
-		ENEMY_TYPE04    //3
+	struct EnemyManager {
+		//std::vector<Entity>* enemyEntityList;
+		Entity enemyMoved;
+		Entity playerEntity;
+		Entity startCellEntity;
+		//Entity movingUnitEntity;
+		//Room* m_Room;
+		//ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS currentUnitControlStatus;
+
 	};
+
+
+	void EnemyManager_LoadData();
+
+
 
 	void SetEnemy01attributes(Unit& enemyUnit);
 
@@ -42,6 +50,17 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 	//void PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection);
 
 	void Event_Unit_OnSelect([[maybe_unused]] Entity invoker);
+
+	void SetMoveOrder(std::vector<Entity> path);
+
+	void EndTurn();
+
+	void Enemy_Logic_Update_Melee(EnemyManager& enemyNeededData, Entity &movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
+
+	//void Enemy_Logic_Update_Melee(EnemyManager enemyNeededData);
+
+	void Enemy_Logic_Update_CellDestroyer(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
+
 }
 #endif
 

@@ -28,12 +28,58 @@ namespace ALEngine::Engine::GameplayInterface
 	};
 
 	/*!*********************************************************************************
+		\brief
+			Status of game, STOP if game is not playing anymore
+							RUNNING if game is still running
+		***********************************************************************************/
+	enum class GAMEPLAY_STATUS
+	{
+		STOP,
+		RUNNING
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of phase of game
+	***********************************************************************************/
+	enum class PHASE_STATUS
+	{
+		PHASE_SETUP,
+		PHASE_ACTION,
+		PHASE_ENEMY,
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of controlling/movement of unit
+	***********************************************************************************/
+	enum class UNITS_CONTROL_STATUS {
+		NOTHING,
+		UNIT_MOVING,
+		UNIT_ATTACKING
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of placing pattern onto room
+	***********************************************************************************/
+	enum class PATTERN_PLACEMENT_STATUS {
+		NOTHING,
+		PLACING_FOR_TILE,
+		PLACING_FOR_ABILITIES
+	};
+
+	/*!*********************************************************************************
 	\brief
 		Container for Pattern
 	***********************************************************************************/
 	struct Pattern {
+		// File Path
+		std::string file_path{};
+
 		//list of grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
-		std::vector<Vector2Int> coordinate_occupied{};
+		std::vector<Vector2Int> coordinate_occupied{}
+		;
 	};
 
 	//***************For now 2 abilities***************//
@@ -142,6 +188,16 @@ namespace ALEngine::Engine::GameplayInterface
 
 	/*!*********************************************************************************
 	\brief
+		check if grid is walkable
+	\param [in]
+		room: gameplay room
+	\param [in]
+		coordinate: Coordinate to check if walkable is placed
+	***********************************************************************************/
+	b8 CheckIfWalkableOnGrid(Room& room, u32 gridX, u32 gridY);
+
+	/*!*********************************************************************************
+	\brief
 		Return if pattern can be placed on cell with given coordinate
 	\param [in]
 		room: gameplay room
@@ -208,5 +264,6 @@ namespace ALEngine::Engine::GameplayInterface
 	void constructWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
 	void destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
+	void CreateAudioEntityMasterSource(void);
 }
 #endif

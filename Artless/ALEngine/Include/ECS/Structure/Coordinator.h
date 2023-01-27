@@ -9,6 +9,8 @@ brief:	This file contains function definitions for Coordinator
 #ifndef	COORDINATOR_H
 #define COORDINATOR_H
 
+#include <ECS/Systems/LogicSystem.h>
+
 namespace ALEngine::ECS
 {
 	/*!*********************************************************************************

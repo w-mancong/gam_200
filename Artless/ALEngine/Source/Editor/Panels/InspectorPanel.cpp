@@ -759,66 +759,6 @@ namespace ALEngine::Editor
 		}
 	}
 
-	void InspectorPanel::DisplayEntityScript(void)
-	{
-		if (ImGui::CollapsingHeader("Script Component##Inspector"))
-		{
-			EntityScript& es = ECS::Coordinator::Instance()->GetComponent<EntityScript>(m_SelectedEntity);
-			/*u64 sizeInit{ es.Init.size() }, sizeUpdate{ es.Update.size() }, sizeExit{ es.Free.size() },
-				sizeLoad{ es.Load.size() }, sizeUnload{ es.Unload.size() };*/
-			std::string init_list{ "" }, update_list{ "" }, free_list{ "" },
-				load_list{ "" }, unload_list{ "" };
-			s32 init_select{ 0 }, update_select{ 0 }, free_select{ 0 },
-				load_select{ 0 }, unload_select{ 0 };
-
-			// Get list of Init Functions
-			for (auto x : es.Init)
-			{
-				init_list += x.first;
-				init_list += '\0';
-			}
-			init_list += '\0';
-
-			ImGui::Combo("Init##Script", &init_select, init_list.c_str());
-
-			// Get list of Init Functions
-			for (auto x : es.Update)
-			{
-				update_list += x.first;
-				update_list += '\0';
-			}
-			update_list += '\0';
-			ImGui::Combo("Update##Script", &update_select, update_list.c_str());
-
-			// Get list of Init Functions
-			for (auto x : es.Free)
-			{
-				free_list += x.first;
-				free_list += '\0';
-			}
-			update_list += '\0';
-			ImGui::Combo("Free##Script", &free_select, free_list.c_str());
-
-			// Get list of Init Functions
-			for (auto x : es.Load)
-			{
-				load_list += x.first;
-				load_list += '\0';
-			}
-			load_list += '\0';
-			ImGui::Combo("Load##Script", &load_select, load_list.c_str());
-
-			// Get list of Init Functions
-			for (auto x : es.Unload)
-			{
-				unload_list += x.first;
-				unload_list += '\0';
-			}
-			unload_list += '\0';
-			ImGui::Combo("Unload##Script", &unload_select, unload_list.c_str());
-		}
-	}
-
 	void InspectorPanel::AddComponentButton(void)
 	{
 		// Get Window size
