@@ -89,7 +89,7 @@ namespace ALEngine::ECS
 		};
 
 		//******VARIABLES**********//
-		u32 roomSize[2]{ 6, 6 };		//Size to initialize the room with
+		u32 roomSize[2]{ 10, 10 };		//Size to initialize the room with
 		Room m_Room;					//Room COntainer
 
 		//Entities to keep track of
@@ -556,13 +556,13 @@ namespace ALEngine::ECS
 		}
 
 		//Create Player
-		gameplaySystem->PlaceNewPlayerInRoom(0, 5);
+		gameplaySystem->PlaceNewPlayerInRoom(0, 2);
 
 		gameplaySystem->enemyEntityList.clear();
 		//gameplaySystem->PlaceNewEnemyInRoom(0, 1);
 		//gameplaySystem->PlaceNewEnemyInRoom(4, 4);
-		PlaceNewEnemyInRoom(0, 1, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
-        PlaceNewEnemyInRoom(4, 4, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+		PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+        PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_TYPE01, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
 
 		////Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
@@ -582,7 +582,6 @@ namespace ALEngine::ECS
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
 
-
 		//Add events for abilities Button
 		Subscribe(getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 		Subscribe(getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
@@ -590,12 +589,25 @@ namespace ALEngine::ECS
 
 		
 		//Set a few blocks to be inaccessible
-		ToggleCellAccessibility(gameplaySystem->m_Room, 1, 0, false);
-		ToggleCellAccessibility(gameplaySystem->m_Room, 1, 1, false);
-		ToggleCellAccessibility(gameplaySystem->m_Room, 1, 2, false);
-		ToggleCellAccessibility(gameplaySystem->m_Room, 2, 1, false);
-		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 1, false);
-		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 2, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 2, 3, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 2, 4, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 3, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 4, false);
+
+		ToggleCellAccessibility(gameplaySystem->m_Room, 4, 0, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 4, 1, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 5, 0, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 6, 1, false);
+		
+		ToggleCellAccessibility(gameplaySystem->m_Room, 0, 7, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 1, 7, false);
+
+		ToggleCellAccessibility(gameplaySystem->m_Room, 5, 7, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 6, 7, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 7, 7, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 7, 6, false);
+		ToggleCellAccessibility(gameplaySystem->m_Room, 7, 5, false);
+		
 		
 		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
 
