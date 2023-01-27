@@ -367,7 +367,7 @@
         "Transform": [
             {
                 "position": [
-                    1547.1409912109375,
+                    1547.1419677734375,
                     44.69794845581055,
                     0.0
                 ],
@@ -640,13 +640,13 @@
         "Transform": [
             {
                 "position": [
-                    642.0,
-                    353.0,
+                    799.4000244140625,
+                    493.0,
                     0.0
                 ],
                 "scale": [
-                    300.0,
-                    200.0
+                    400.0,
+                    350.0
                 ],
                 "rotation": 0.0
             }
@@ -658,7 +658,7 @@
                 "localActive": false,
                 "id": 16,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -679,13 +679,13 @@
         "Transform": [
             {
                 "position": [
-                    542.9996337890625,
-                    415.08172607421875,
+                    667.3992919921875,
+                    601.6416015625,
                     0.0
                 ],
                 "scale": [
-                    60.0,
-                    46.0
+                    80.00000762939453,
+                    80.49999237060547
                 ],
                 "rotation": 0.0
             }
@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7181396484375,
+                    967.7186279296875,
                     41.370445251464844,
                     0.0
                 ],
@@ -1139,13 +1139,13 @@
         "Transform": [
             {
                 "position": [
-                    641.99951171875,
-                    352.99993896484375,
+                    799.4000244140625,
+                    492.9999694824219,
                     0.0
                 ],
                 "scale": [
-                    300.0,
-                    200.0
+                    400.0,
+                    350.0
                 ],
                 "rotation": 0.0
             }
@@ -1171,8 +1171,8 @@
                     1.0
                 ],
                 "position": [
-                    317.0,
-                    218.0
+                    388.0,
+                    319.0
                 ]
             }
         ]
@@ -1652,307 +1652,6 @@
     },
     {
         "id": 41,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "hard_drop_des1",
-                "active": false,
-                "localActive": false,
-                "id": 41,
-                "parentID": -1,
-                "treeNodeFlags": 0
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "Slam your tetromino on enemies",
-                "currentFont": "Arial-italic",
-                "scale": 0.625,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    162.5,
-                    120.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 42,
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.00000762939453,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "hard_drop_des2",
-                "active": false,
-                "localActive": true,
-                "id": 42,
-                "parentID": 41,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "dealing 15 DMG on all enemies",
-                "currentFont": "Arial-italic",
-                "scale": 0.625,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    162.5,
-                    104.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 43,
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.00000762939453,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "hard_drop_des3",
-                "active": false,
-                "localActive": true,
-                "id": 43,
-                "parentID": 41,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "affected.",
-                "currentFont": "Arial-italic",
-                "scale": 0.625,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    162.5,
-                    87.5
-                ]
-            }
-        ]
-    },
-    {
-        "id": 44,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "life_drain_des1",
-                "active": false,
-                "localActive": false,
-                "id": 44,
-                "parentID": -1,
-                "treeNodeFlags": 0
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "Drain the life of your enemies",
-                "currentFont": "Arial-italic",
-                "scale": 0.625,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    210.0,
-                    120.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 45,
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.00000762939453,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "life_drain_des2",
-                "active": false,
-                "localActive": true,
-                "id": 45,
-                "parentID": 44,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "dealing 12 DMG to all enemies",
-                "currentFont": "Arial-italic",
-                "scale": 0.625,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    210.0,
-                    104.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 46,
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.00000762939453,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "life_drain_des3",
-                "active": false,
-                "localActive": true,
-                "id": 46,
-                "parentID": 44,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "and heal for half of damage",
-                "currentFont": "Arial-italic",
-                "scale": 0.625,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    210.0,
-                    87.5
-                ]
-            }
-        ]
-    },
-    {
-        "id": 47,
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.0000114440918,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "life_drain_des4",
-                "active": false,
-                "localActive": true,
-                "id": 47,
-                "parentID": 44,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "dealt",
-                "currentFont": "Arial-italic",
-                "scale": 0.625,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    210.0,
-                    72.0
-                ]
-            }
-        ]
-    },
-    {
-        "id": 48,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\PauseMenu_Backdrop.png",
@@ -1984,14 +1683,14 @@
                 "tag": "pause_menu",
                 "active": false,
                 "localActive": false,
-                "id": 48,
+                "id": 41,
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 49,
+        "id": 42,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Button.png",
@@ -2008,7 +1707,7 @@
             {
                 "position": [
                     1312.0,
-                    497.4989013671875,
+                    497.4985656738281,
                     0.0
                 ],
                 "scale": [
@@ -2023,14 +1722,14 @@
                 "tag": "button_resume",
                 "active": false,
                 "localActive": true,
-                "id": 49,
-                "parentID": 48,
+                "id": 42,
+                "parentID": 41,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 50,
+        "id": 43,
         "Transform": [
             {
                 "position": [
@@ -2050,8 +1749,8 @@
                 "tag": "text_resume",
                 "active": false,
                 "localActive": true,
-                "id": 50,
-                "parentID": 49,
+                "id": 43,
+                "parentID": 42,
                 "treeNodeFlags": 32
             }
         ],
@@ -2073,7 +1772,7 @@
         ]
     },
     {
-        "id": 51,
+        "id": 44,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Button.png",
@@ -2090,7 +1789,7 @@
             {
                 "position": [
                     1312.0,
-                    409.998046875,
+                    409.99774169921875,
                     0.0
                 ],
                 "scale": [
@@ -2105,19 +1804,19 @@
                 "tag": "button_htp",
                 "active": false,
                 "localActive": true,
-                "id": 51,
-                "parentID": 48,
+                "id": 44,
+                "parentID": 41,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 52,
+        "id": 45,
         "Transform": [
             {
                 "position": [
                     2399.99951171875,
-                    949.9970092773438,
+                    949.99609375,
                     0.0
                 ],
                 "scale": [
@@ -2132,8 +1831,8 @@
                 "tag": "text_htp",
                 "active": false,
                 "localActive": true,
-                "id": 52,
-                "parentID": 48,
+                "id": 45,
+                "parentID": 41,
                 "treeNodeFlags": 32
             }
         ],
@@ -2155,7 +1854,7 @@
         ]
     },
     {
-        "id": 53,
+        "id": 46,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Button.png",
@@ -2187,19 +1886,19 @@
                 "tag": "button_quit",
                 "active": false,
                 "localActive": true,
-                "id": 53,
-                "parentID": 48,
+                "id": 46,
+                "parentID": 41,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 54,
+        "id": 47,
         "Transform": [
             {
                 "position": [
                     2399.99951171875,
-                    949.9970092773438,
+                    949.99609375,
                     0.0
                 ],
                 "scale": [
@@ -2214,8 +1913,8 @@
                 "tag": "text_quit",
                 "active": false,
                 "localActive": true,
-                "id": 54,
-                "parentID": 48,
+                "id": 47,
+                "parentID": 41,
                 "treeNodeFlags": 32
             }
         ],
@@ -2237,7 +1936,7 @@
         ]
     },
     {
-        "id": 55,
+        "id": 48,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\GameLogo.png",
@@ -2254,7 +1953,7 @@
             {
                 "position": [
                     1312.0,
-                    605.9985961914063,
+                    605.99853515625,
                     0.0
                 ],
                 "scale": [
@@ -2269,14 +1968,14 @@
                 "tag": "game_logo",
                 "active": false,
                 "localActive": true,
-                "id": 55,
-                "parentID": 48,
+                "id": 48,
+                "parentID": 41,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 56,
+        "id": 49,
         "Transform": [
             {
                 "position": [
@@ -2296,7 +1995,7 @@
                 "tag": "text_bar_hp",
                 "active": true,
                 "localActive": true,
-                "id": 56,
+                "id": 49,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -2319,7 +2018,7 @@
         ]
     },
     {
-        "id": 57,
+        "id": 50,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Confirm_Backdrop.png",
@@ -2351,14 +2050,14 @@
                 "tag": "backdrop_cfm",
                 "active": false,
                 "localActive": false,
-                "id": 57,
+                "id": 50,
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 58,
+        "id": 51,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Btn_Yes.png",
@@ -2390,14 +2089,14 @@
                 "tag": "button_quit_yes",
                 "active": false,
                 "localActive": true,
-                "id": 58,
-                "parentID": 57,
+                "id": 51,
+                "parentID": 50,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 59,
+        "id": 52,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Btn_No.png",
@@ -2429,14 +2128,14 @@
                 "tag": "button_quit_no",
                 "active": false,
                 "localActive": true,
-                "id": 59,
-                "parentID": 57,
+                "id": 52,
+                "parentID": 50,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 60,
+        "id": 53,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\HowToPlay.png",
@@ -2468,14 +2167,14 @@
                 "tag": "htp",
                 "active": false,
                 "localActive": false,
-                "id": 60,
+                "id": 53,
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 61,
+        "id": 54,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\CloseButton.png",
@@ -2507,14 +2206,14 @@
                 "tag": "htp_cross_btn",
                 "active": false,
                 "localActive": true,
-                "id": 61,
-                "parentID": 60,
+                "id": 54,
+                "parentID": 53,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 62,
+        "id": 55,
         "Sprite": [
             {
                 "filePath": "",
@@ -2546,7 +2245,7 @@
                 "tag": "Win_Clear_Text",
                 "active": false,
                 "localActive": false,
-                "id": 62,
+                "id": 55,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -2569,7 +2268,7 @@
         ]
     },
     {
-        "id": 63,
+        "id": 56,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Bar_MenuBackdrop.png",
@@ -2601,14 +2300,14 @@
                 "tag": "Win_Button",
                 "active": false,
                 "localActive": true,
-                "id": 63,
-                "parentID": 62,
+                "id": 56,
+                "parentID": 55,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 64,
+        "id": 57,
         "Sprite": [
             {
                 "filePath": "",
@@ -2640,8 +2339,8 @@
                 "tag": "Win_Button_Text",
                 "active": false,
                 "localActive": true,
-                "id": 64,
-                "parentID": 63,
+                "id": 57,
+                "parentID": 56,
                 "treeNodeFlags": 32
             }
         ],
@@ -2663,7 +2362,7 @@
         ]
     },
     {
-        "id": 65,
+        "id": 58,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\J.png",
@@ -2680,7 +2379,7 @@
             {
                 "position": [
                     -47.894073486328125,
-                    589.7220458984375,
+                    589.7233276367188,
                     0.0
                 ],
                 "scale": [
@@ -2692,10 +2391,10 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #66",
+                "tag": "particle_left_1",
                 "active": true,
                 "localActive": true,
-                "id": 66,
+                "id": 58,
                 "parentID": 0,
                 "treeNodeFlags": 32
             }
@@ -2733,7 +2432,7 @@
         ]
     },
     {
-        "id": 66,
+        "id": 59,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\O.png",
@@ -2750,7 +2449,7 @@
             {
                 "position": [
                     -47.28656005859375,
-                    430.4379577636719,
+                    430.4386291503906,
                     0.0
                 ],
                 "scale": [
@@ -2762,10 +2461,10 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #947",
+                "tag": "particle_left_2",
                 "active": true,
                 "localActive": true,
-                "id": 947,
+                "id": 59,
                 "parentID": 0,
                 "treeNodeFlags": 32
             }
@@ -2803,7 +2502,7 @@
         ]
     },
     {
-        "id": 67,
+        "id": 60,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\T.png",
@@ -2820,7 +2519,7 @@
             {
                 "position": [
                     1649.874755859375,
-                    595.4196166992188,
+                    595.4208374023438,
                     0.0
                 ],
                 "scale": [
@@ -2832,10 +2531,10 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #1503",
+                "tag": "particle_right_1",
                 "active": true,
                 "localActive": true,
-                "id": 1503,
+                "id": 60,
                 "parentID": 0,
                 "treeNodeFlags": 32
             }
@@ -2873,7 +2572,7 @@
         ]
     },
     {
-        "id": 68,
+        "id": 61,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Z.png",
@@ -2890,7 +2589,7 @@
             {
                 "position": [
                     1654.0289306640625,
-                    382.50616455078125,
+                    382.506591796875,
                     0.0
                 ],
                 "scale": [
@@ -2902,10 +2601,10 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #1840",
+                "tag": "particle_right_2",
                 "active": true,
                 "localActive": true,
-                "id": 1840,
+                "id": 61,
                 "parentID": 0,
                 "treeNodeFlags": 32
             }
@@ -2939,6 +2638,226 @@
                 "spawnRate": 2.0,
                 "rotation": 18.799999237060547,
                 "gravityEnabled": false
+            }
+        ]
+    },
+    {
+        "id": 62,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1199.4005126953125,
+                    843.0010986328125,
+                    0.0
+                ],
+                "scale": [
+                    400.0,
+                    350.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "tooltip_skill_line1",
+                "active": false,
+                "localActive": true,
+                "id": 62,
+                "parentID": 16,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[new text]",
+                "currentFont": "Roboto-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    338.5,
+                    267.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 63,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1199.4005126953125,
+                    843.0009155273438,
+                    0.0
+                ],
+                "scale": [
+                    400.0,
+                    350.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "tooltip_skill_line2",
+                "active": false,
+                "localActive": true,
+                "id": 63,
+                "parentID": 16,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[new text]",
+                "currentFont": "Roboto-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    338.5,
+                    243.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 64,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1199.4005126953125,
+                    843.0009155273438,
+                    0.0
+                ],
+                "scale": [
+                    400.0,
+                    350.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "tooltip_skill_line3",
+                "active": false,
+                "localActive": true,
+                "id": 64,
+                "parentID": 16,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[new text]",
+                "currentFont": "Roboto-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    338.5,
+                    219.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 65,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1199.4005126953125,
+                    843.0009155273438,
+                    0.0
+                ],
+                "scale": [
+                    400.0,
+                    350.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "tooltip_skill_line4",
+                "active": false,
+                "localActive": true,
+                "id": 65,
+                "parentID": 16,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "[new text]",
+                "currentFont": "Roboto-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    338.5,
+                    194.0
+                ]
             }
         ]
     }

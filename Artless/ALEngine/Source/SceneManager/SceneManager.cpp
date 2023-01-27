@@ -733,7 +733,7 @@ namespace ALEngine::Engine::Scene
 		ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
 		u32 id{ 0 };
 
-		//ECS::GetSceneGraph().SerializeTree();
+		ECS::GetSceneGraph().SerializeTree();
 
 		writer.StartArray();
 		for (auto it{ entities.begin() }; it != entities.end(); ++it)

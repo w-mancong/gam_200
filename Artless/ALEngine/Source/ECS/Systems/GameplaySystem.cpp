@@ -255,7 +255,6 @@ namespace ALEngine::ECS
 		Scene::Restart();
 	}
 
-
 	void Event_Button_Select_Abilities_0([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
