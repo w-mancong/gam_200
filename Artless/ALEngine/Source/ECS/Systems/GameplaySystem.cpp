@@ -1140,7 +1140,7 @@ namespace ALEngine::ECS
 	
 		if (enemyUnit.health <= 0)
 		{
-			return;
+			EndTurn();
 		}
 
 		//use enemy logic function pointer
