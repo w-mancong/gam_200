@@ -74,7 +74,7 @@ namespace ALEngine::ECS
 
 		//Keep track of status
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped
-		PHASE_STATUS currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;								//Keep track of phase
+		GameplayInterface_Management_GUI::PHASE_STATUS currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP;								//Keep track of phase
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;				//Keep track of status of unit control
 		PATTERN_PLACEMENT_STATUS currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;	//Keep track of what the pattern is being placed for
 
@@ -354,7 +354,7 @@ namespace ALEngine::ECS
 		//Determine is setup or abilities
 		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
 			//If checking for setup, if so, then filter for placement
-			if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+			if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP) {
 				b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 			
 				if(canPlace)
@@ -363,7 +363,7 @@ namespace ALEngine::ECS
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
 			}
 			//If checking for abilities, if so, then filter for placement
-			else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+			else if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
 				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 
 				if (canPlace)
@@ -390,7 +390,7 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invokerCell);
 		//If not placing, move character
 		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING && 
-			gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+			gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
 			//When click on cell, Move the player unit to the selected cell
 			gameplaySystem->MovePlayerEntityToCell(invokerCell);
 		}
@@ -495,7 +495,7 @@ namespace ALEngine::ECS
 		gameplaySystem->m_Room.roomCellsArray = new Entity[gameplaySystem->getRoomSize()];
 
 		gameplaySystem->currentGameplayStatus =GAMEPLAY_STATUS::RUNNING;
-		gameplaySystem->currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
+		gameplaySystem->currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP;
 		gameplaySystem->currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 		gameplaySystem->currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 		
@@ -641,7 +641,7 @@ namespace ALEngine::ECS
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton)) {
 			//Deselect Pattern
-			if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+			if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -650,7 +650,7 @@ namespace ALEngine::ECS
 				TogglePatternGUI(true);
 			}
 			//Deselect Abilities
-			else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+			else if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
 				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -754,17 +754,17 @@ namespace ALEngine::ECS
 
 		//Set the turn accordingly
 		switch (currentPhaseStatus) {
-		case PHASE_STATUS::PHASE_SETUP:
-			currentPhaseStatus = PHASE_STATUS::PHASE_ACTION;
+		case GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP:
+			currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION;
 			AL_CORE_DEBUG("Loading PHASE ACTION");
 
 			ToggleAbilitiesGUI(true);
 			TogglePatternGUI(false);
 			break;
 
-		case PHASE_STATUS::PHASE_ACTION:
+		case GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION:
 			AL_CORE_DEBUG("Loading PHASE ENEMY");
-			currentPhaseStatus = PHASE_STATUS::PHASE_ENEMY;
+			currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ENEMY;
 			enemyNeededData.enemyMoved = 0;
 
 			ToggleAbilitiesGUI(false);
@@ -772,9 +772,9 @@ namespace ALEngine::ECS
 			MoveEnemy();
 			break;
 
-		case PHASE_STATUS::PHASE_ENEMY:
+		case GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ENEMY:
 			AL_CORE_DEBUG("Loading PHASE SETUP");
-			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
+			currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP;
 			TogglePatternGUI(true);
 
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
@@ -879,13 +879,13 @@ namespace ALEngine::ECS
 
 	void GameplaySystem::SelectPattern(Pattern pattern) { 
 		//Select pattern 
-		if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+		if (currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP) {
 			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
 			selected_Pattern = pattern;
 
 			TogglePatternGUI(false);
 		}
-		else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+		else if (currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
 			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
 			selected_Pattern = pattern;
 
@@ -895,7 +895,7 @@ namespace ALEngine::ECS
 
 	void GameplaySystem::SelectAbility(Abilities& ability) {
 		//Select abilities
-		if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+		if (currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
 			selected_Abilities = ability;
 
 			ToggleAbilitiesGUI(false);
@@ -1271,7 +1271,7 @@ namespace ALEngine::ECS
 			Abilities_List[1].damage = 12;
 		}
 
-		if (currentPhaseStatus != PHASE_STATUS::PHASE_ACTION) {
+		if (currentPhaseStatus != GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
 			return;
 		}
 
@@ -1497,8 +1497,8 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 	
 	//Set the turn accordingly
 	switch (ALEngine::ECS::gameplaySystem->currentPhaseStatus) {
-	case ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_SETUP:
-		ALEngine::ECS::gameplaySystem->currentPhaseStatus = ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_ACTION;
+	case GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP:
+		ALEngine::ECS::gameplaySystem->currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION;
 
 		AL_CORE_DEBUG("Loading PHASE ACTION");
 
@@ -1506,9 +1506,9 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 		ALEngine::Engine::GameplayInterface_Management_GUI::TogglePatternGUI(false);
 		break;
 
-	case ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_ACTION:
+	case GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION:
 		AL_CORE_DEBUG("Loading PHASE ENEMY");
-		ALEngine::ECS::gameplaySystem->currentPhaseStatus = ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_ENEMY;
+		ALEngine::ECS::gameplaySystem->currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ENEMY;
 		ALEngine::ECS::gameplaySystem->enemyNeededData.enemyMoved = 0;
 
 		ALEngine::Engine::GameplayInterface_Management_GUI::ToggleAbilitiesGUI(false);
@@ -1516,9 +1516,9 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 		ALEngine::ECS::gameplaySystem->MoveEnemy();
 		break;
 
-	case ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_ENEMY:
+	case GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ENEMY:
 		AL_CORE_DEBUG("Loading PHASE SETUP");
-		ALEngine::ECS::gameplaySystem->currentPhaseStatus = ALEngine::Engine::GameplayInterface::PHASE_STATUS::PHASE_SETUP;
+		ALEngine::ECS::gameplaySystem->currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP;
 		ALEngine::Engine::GameplayInterface_Management_GUI::TogglePatternGUI(true);
 
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(ALEngine::ECS::gameplaySystem->playerEntity);
