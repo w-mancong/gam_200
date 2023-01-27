@@ -59,7 +59,7 @@ namespace ALEngine::ECS
 
 		//******VARIABLES**********//
 		u32 roomSize[2]{ 10, 10 };		//Size to initialize the room with
-		Room m_Room;					//Room COntainer
+		GameplayInterface::Room m_Room;					//Room COntainer
 		
 		//enemymanager struct object for enemymanagement function to access needed variables
 		ALEngine::Engine::GameplayInterface_Management_Enemy::EnemyManager enemyNeededData;
@@ -372,7 +372,7 @@ namespace ALEngine::ECS
 			}
 			//If checking for abilities, if so, then filter for placement
 			else if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
-				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
 
 				if (canPlace)
 					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
@@ -431,7 +431,7 @@ namespace ALEngine::ECS
 
 			gameplaySystem->EndTurn();
 		}
-		else if (gameplaySystem->currentPatternPlacementStatus == GameplaySystem::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
+		else if (gameplaySystem->currentPatternPlacementStatus == GameplayInterface::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
 			b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
 
 			if (!canPlace && !gameplaySystem->godMode) {
