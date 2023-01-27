@@ -86,7 +86,6 @@ brief:	This file contain all the header files that are will be precompiled inste
 #include <Common Header/Random.h>
 #include <Common Header/MyEditor.h>
 #include <Common Header/MyAssetManager.h>
-#include <Common Header/MyAi.h>
 #include <Common Header/MyScene.h>
 #include <Common Header//MyUndoRedo.h>
 

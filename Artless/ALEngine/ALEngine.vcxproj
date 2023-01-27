@@ -163,7 +163,6 @@
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
-    <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
@@ -317,7 +316,6 @@
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
     <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
-    <ClInclude Include="Include\Common Header\MyAi.h" />
     <ClInclude Include="Include\Common Header\MyAudio.h" />
     <ClInclude Include="Include\Common Header\MySerializer.h" />
     <ClInclude Include="Include\ECS\Components\Animation.h" />
