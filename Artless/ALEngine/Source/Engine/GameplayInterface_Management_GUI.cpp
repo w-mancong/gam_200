@@ -26,31 +26,50 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 
 		ECS::SetActive(true, guiManager.Tooltip_Skills_Card);
 		EntityData skill = Coordinator::Instance()->GetComponent<EntityData>(invoker);
-		Sprite sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Skill_Tip_Icon);
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Skill_Tip_Icon);
+		Text& headerText = Coordinator::Instance()->GetComponent<Text>(guiManager.Skill_Tip_Header);
+		Text& line1 = Coordinator::Instance()->GetComponent<Text>(guiManager.Skill_Tip_Line1);
+		Text& line2 = Coordinator::Instance()->GetComponent<Text>(guiManager.Skill_Tip_Line2);
+		Text& line3 = Coordinator::Instance()->GetComponent<Text>(guiManager.Skill_Tip_Line3);
+		Text& line4 = Coordinator::Instance()->GetComponent<Text>(guiManager.Skill_Tip_Line4);
 		
 		if (skill.tag == "skill_icon1")
 		{
-			sprite.filePath = "Assets\Images\HardDrop.png";
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/HardDrop.png");
+			headerText.textString = "Hard Drop";
 		}
 		else if (skill.tag == "skill_icon2")
 		{
-			sprite.filePath = "Assets\Images\LifeDrain.png";
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
+			headerText.textString = "Life Drain";
+			line1.textString = "Deal DMG to enemies and heal";
+			line2.textString = "for half of all DMG dealt.";
+			line3.textString = "";
+			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon3")
 		{
-
+			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Icon_Skill_ConstructTile.png");
+			headerText.textString = "Construct Tile";
+			line1.textString = "Erect a wall that blocks";
+			line2.textString = "enemies from passing.";
+			line3.textString = "";
+			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon4")
 		{
-
+			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
+			headerText.textString = "??";
 		}
 		else if (skill.tag == "skill_icon5")
 		{
-
+			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
+			headerText.textString = "??";
 		}
 		else if (skill.tag == "skill_icon6")
 		{
-
+			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
+			headerText.textString = "??";
 		}
 
 		AL_CORE_CRITICAL("Enter");
