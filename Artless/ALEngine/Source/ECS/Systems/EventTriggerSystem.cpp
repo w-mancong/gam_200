@@ -52,7 +52,6 @@ namespace ALEngine::ECS
 		//State of Trigger
 		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 		Entity m_interactedEventTrigger_Entity;
-
 	};
 
 	namespace

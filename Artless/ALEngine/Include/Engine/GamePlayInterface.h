@@ -72,8 +72,12 @@ namespace ALEngine::Engine::GameplayInterface
 		Container for Pattern
 	***********************************************************************************/
 	struct Pattern {
+		// File Path
+		std::string file_path{};
+
 		//list of grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
-		std::vector<Vector2Int> coordinate_occupied{};
+		std::vector<Vector2Int> coordinate_occupied{}
+		;
 	};
 
 	//***************For now 2 abilities***************//
@@ -250,5 +254,7 @@ namespace ALEngine::Engine::GameplayInterface
 		if enemy attacked player and player is adjacent
 	***********************************************************************************/
 	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy);
+
+	void CreateAudioEntityMasterSource(void);
 }
 #endif

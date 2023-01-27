@@ -132,12 +132,6 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
-			Displays the Script component info on the panel
-		***********************************************************************************/
-		void DisplayEntityScript(void);
-
-		/*!*********************************************************************************
-			\brief
 			Displays the Sprite component info on the panel
 
 			\return

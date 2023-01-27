@@ -67,12 +67,21 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	Animator CreateAnimator(c8 const* animatorName = "");
 
+
 	/*!*********************************************************************************
-		\brief Create a .anim file							 ---------
-															|  s |	s |	All the 's'
-		\param [in] filePath: Path to the spritesheet		|____|____| are sub texture
-		\param [in] clipName: Name of the animation clip	|  s |	s |	of the spritesheet
-		\param [in] width:  Width of the sub texture		|____|____|	-> totalSprites: 4 in this spritesheet
+		 ---------
+		|  s |	s |	All the 's'
+		|____|____| are sub texture
+		|  s |	s |	of the spritesheet
+		|____|____|	-> totalSprites: 4 in this spritesheet
+	***********************************************************************************/
+
+	/*!*********************************************************************************
+		\brief Create a .anim file							
+															
+		\param [in] filePath: Path to the spritesheet		
+		\param [in] clipName: Name of the animation clip	
+		\param [in] width:  Width of the sub texture		
 		\param [in] height: Height of the sub texture		
 		\param [in] sample: Rate at which animation will run (1/sample)
 		\param [in] totalSprites: Total number of sub textures in the spritesheet

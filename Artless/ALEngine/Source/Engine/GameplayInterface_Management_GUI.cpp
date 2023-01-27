@@ -36,19 +36,10 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		transform.position = { 1000.f, 100.f, 0.f };
 		transform.scale = { 100.f, 100.f };
 
-		EventTrigger eventTrigger;
-
-		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[0], eventTrigger);
-
-		//The other 3 will be in queue
-		transform.position = { 1000.f + x_offset, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[1], eventTrigger);
-
-		transform.position = { 1000.f + x_offset * 2.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[2], eventTrigger);
-
-		transform.position = { 1000.f + x_offset * 3.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Pattern_Button_Entities[3], eventTrigger);
+		ECS::CreateButton(GUI_Pattern_Button_Entities[0]);
+		ECS::CreateButton(GUI_Pattern_Button_Entities[1]);
+		ECS::CreateButton(GUI_Pattern_Button_Entities[2]);
+		ECS::CreateButton(GUI_Pattern_Button_Entities[3]);
 	}
 
 	void InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities) {
@@ -72,25 +63,12 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		transform.position = startPos;
 		transform.scale = { 50.f, 50.f };
 
-		EventTrigger eventTrigger;
-
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[0], eventTrigger);
-
-		//The other 3 will be in queue
-		transform.position = { startPos.x + x_offset, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[1], eventTrigger);
-
-		transform.position = { startPos.x + x_offset * 2.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[2], eventTrigger);
-
-		transform.position = { startPos.x + x_offset * 3.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[3], eventTrigger);
-
-		transform.position = { startPos.x + x_offset * 4.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[4], eventTrigger);
-
-		transform.position = { startPos.x + x_offset * 5.f, 100.f, 0.f };
-		Coordinator::Instance()->AddComponent(GUI_Abilities_Button_Entities[5], eventTrigger);
+		ECS::CreateButton(GUI_Abilities_Button_Entities[0]);
+		ECS::CreateButton(GUI_Abilities_Button_Entities[1]);
+		ECS::CreateButton(GUI_Abilities_Button_Entities[2]);
+		ECS::CreateButton(GUI_Abilities_Button_Entities[3]);
+		ECS::CreateButton(GUI_Abilities_Button_Entities[4]);
+		ECS::CreateButton(GUI_Abilities_Button_Entities[5]);
 
 		for (int i = 0; i < 2; ++i) {
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
@@ -160,12 +138,9 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
 		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
 
-		//Set abilities UI off
-		ToggleAbilitiesGUI(false);
-
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
 
-		ECS::CreateEventTrigger(guiManager.Win_Button);
+		ECS::CreateButton(guiManager.Win_Button);
 	}
 }

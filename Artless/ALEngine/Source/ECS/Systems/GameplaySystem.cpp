@@ -13,6 +13,16 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/GamePlayInterface.h"
 #include "Engine/GameplayInterface_Management_Enemy.h"
 #include "Engine/GameplayInterface_Management_GUI.h"
+#include <Utility/AudioNames.h>
+
+namespace ALEngine::Engine::GameplayInterface
+{
+	void CreateAudioEntityMasterSource(void);
+}
+
+#include <random>
+#include <algorithm>
+#include <iterator>
 
 namespace ALEngine::ECS
 {
@@ -27,6 +37,8 @@ namespace ALEngine::ECS
 	using namespace GameplayInterface_Management_Enemy;
 	using namespace GameplayInterface_Management_GUI;
 	using namespace GameplayInterface;
+
+	
 
 	/*!*********************************************************************************
 	\brief
@@ -73,8 +85,9 @@ namespace ALEngine::ECS
 		Entity m_Room_Parent_Entity;
 
 		//Patterns
-		std::vector<Pattern> pattern_List;
+		std::vector<Pattern> pattern_Default, pattern_List;
 		Pattern selected_Pattern;
+		u32 selected_Pattern_Index{ 0 };
 
 		//Abilities
 		std::vector<Abilities> Abilities_List;
@@ -177,6 +190,13 @@ namespace ALEngine::ECS
 			Update the unit information GUI when select the unit
 		***********************************************************************************/
 
+		// Pattern Stuff
+		/*!*********************************************************************************
+		\brief
+			Randomizes the Pattern List
+		***********************************************************************************/
+		void RandomizePatternList(void);
+
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
 		void Cheat_ToggleGodMode();
@@ -225,6 +245,9 @@ namespace ALEngine::ECS
 
 		std::string const sceneName = R"(Assets\test.scene)";
 		s32 base_Layer = 10000;		//Base layer
+
+		Entity masterAudioSource;
+		Audio* buttonClickAudio{ nullptr };
 	}
 
 	//****************EVENTS*****************//
@@ -234,33 +257,6 @@ namespace ALEngine::ECS
 		Scene::Restart();
 	}
 
-	void Event_Button_Darken([[maybe_unused]] Entity invoker) {
-		//Darken the button
-		if (utils::IsEqual(Time::m_Scale, 0.f)) {
-			return;
-		}
-
-		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
-		sprite.color = { 0.6f, 0.6f, 0.6f, 1.f };
-	}
-
-	void Event_Button_Lighten([[maybe_unused]] Entity invoker) {
-		//Return the button to normal color
-		if (utils::IsEqual(Time::m_Scale, 0.f)) {
-			return;
-		}
-
-		[[maybe_unused]] EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
-
-		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
-		
-		if (gameplaySystem->cheat_abilitiesDoubleDamage) {
-			sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
-		}
-		else {
-			sprite.color = { 1.0f, 1.0f, 1.0f, 1.0f };
-		}
-	}
 
 	void Event_Button_Select_Abilities_0([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
@@ -289,6 +285,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
+		gameplaySystem->selected_Pattern_Index = 0;
 	}
 
 	void Event_Button_Select_Pattern_1([[maybe_unused]] Entity invoker) {
@@ -298,6 +295,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Pattern 1");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[1]);
+		gameplaySystem->selected_Pattern_Index = 1;
 	}
 	
 	void Event_Button_Select_Pattern_2([[maybe_unused]] Entity invoker) {
@@ -307,6 +305,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Pattern 2");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[2]);
+		gameplaySystem->selected_Pattern_Index = 2;
 	}
 	
 	void Event_Button_Select_Pattern_3([[maybe_unused]] Entity invoker) {
@@ -316,6 +315,7 @@ namespace ALEngine::ECS
 
 		AL_CORE_INFO("Select Pattern 3");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[3]);
+		gameplaySystem->selected_Pattern_Index = 3;
 	}
 
 	void Event_Button_Select_EndTurn([[maybe_unused]] Entity invoker) {
@@ -325,6 +325,7 @@ namespace ALEngine::ECS
 
 		//End turn
 		gameplaySystem->EndTurn();
+		buttonClickAudio->Play();
 	}
 
 	//void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
@@ -402,6 +403,24 @@ namespace ALEngine::ECS
 
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
+
+			// Remove from list
+			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
+
+			if (gameplaySystem->pattern_List.size() <= gameplaySystem->pattern_Default.size())
+				gameplaySystem->RandomizePatternList();
+
+			// Set sprites for the Patterns
+			for (u32 i{ 1 }; i <= 4; ++i)
+			{
+				std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+			}
+
 			gameplaySystem->EndTurn();
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
@@ -413,6 +432,24 @@ namespace ALEngine::ECS
 
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+
+			// Remove from list
+			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
+
+			if (gameplaySystem->pattern_List.size() <= gameplaySystem->pattern_Default.size())
+				gameplaySystem->RandomizePatternList();
+
+			// Set sprites for the Patterns
+			for (u32 i{ 1 }; i <= 4; ++i)
+			{
+				std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+			}
+
 			gameplaySystem->EndTurn();
 
 			s8 eliminatedEnemyCount = 0;
@@ -469,10 +506,22 @@ namespace ALEngine::ECS
 
 		sceneGraph.Push(-1, gameplaySystem->m_Room_Parent_Entity); // first cell is parent
 
-		ALEngine::Engine::GameplayInterface_Management_GUI::InitializeGUI();
-
 		//Initialize Pattern
-		InitializePatterns(gameplaySystem->pattern_List);
+		InitializePatterns(gameplaySystem->pattern_Default);
+
+		// Randomize Pattern
+		gameplaySystem->RandomizePatternList();
+
+		// Set sprites for the Patterns
+		for (u32 i{ 1 }; i <= 4; ++i)
+		{
+			std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+			ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+			sprite.id = AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+		}
 
 		//Initialize Abilities
 		InitializeAbilities(gameplaySystem->Abilities_List);
@@ -529,32 +578,23 @@ namespace ALEngine::ECS
 		//Initialize Pattern GUI
 		InitializePatternGUI(getGuiManager().GUI_Pattern_Button_List);
 
+		//Initialize abilities GUI
+		InitializeAbilitiesGUI(getGuiManager().GUI_Abilities_Button_List);
+
+		//Initialize General GUI
+		InitializeGUI();
+
 		//Add events for pattern Button
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
 		Subscribe(getGuiManager().GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
 
-		//Add visual feedback event for pattern GUI
-		for (int i = 0; i < getGuiManager().GUI_Pattern_Button_List.size(); ++i) {
-			Subscribe(getGuiManager().GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-			Subscribe(getGuiManager().GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-			Subscribe(getGuiManager().GUI_Pattern_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
-		}
-
-		//Initialize abilities GUI
-		InitializeAbilitiesGUI(getGuiManager().GUI_Abilities_Button_List);
 
 		//Add events for abilities Button
 		Subscribe(getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 		Subscribe(getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
 
-		//Add visual feedback event for abilities GUI
-		for (int i = 0; i < getGuiManager().GUI_Abilities_Button_List.size(); ++i) {
-			Subscribe(getGuiManager().GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-			Subscribe(getGuiManager().GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-			Subscribe(getGuiManager().GUI_Abilities_Button_List[i], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
-		}
 		
 		//Set a few blocks to be inaccessible
 		ToggleCellAccessibility(gameplaySystem->m_Room, 1, 0, false);
@@ -564,9 +604,6 @@ namespace ALEngine::ECS
 		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 1, false);
 		ToggleCellAccessibility(gameplaySystem->m_Room, 3, 2, false);
 		
-		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
 		Subscribe(getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
 
 		gameplaySystem->Toggle_Gameplay_State(true);
@@ -574,6 +611,15 @@ namespace ALEngine::ECS
 		TogglePatternGUI(true);
 
 		GameplayInterface_Management_Enemy::EnemyManager_LoadData();
+		Engine::GameplayInterface::CreateAudioEntityMasterSource();
+		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+		Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
+		ad.m_Channel = Channel::BGM;
+		ad.Play();
+
+		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
+		buttonClickAudio->m_Channel = Channel::SFX;
 	}
 
 	void UpdateGameplaySystem(void)
@@ -679,6 +725,18 @@ namespace ALEngine::ECS
 		gameplaySystem->m_Room.height = 0;
 		gameplaySystem->godMode = false;
 		gameplaySystem->cheat_abilitiesDoubleDamage = false;
+
+		if (masterAudioSource != ECS::MAX_ENTITIES)
+		{
+			AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+			for (auto& it : as.list)
+			{
+				Audio& ad = it.second;
+				ad.Stop();
+			}
+		}
+		masterAudioSource = ECS::MAX_ENTITIES;
+		buttonClickAudio = nullptr;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {
@@ -947,6 +1005,9 @@ namespace ALEngine::ECS
 
 		CreateSprite(playerUnit.unit_Sprite_Entity, playerSpriteTransform, "Assets/Images/Player v2.png");
 		
+		Animator an = CreateAnimator("Player");
+		Coordinator::Instance()->AddComponent(playerUnit.unit_Sprite_Entity, an);
+
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Player";
 		Coordinator::Instance()->GetComponent<EntityData>(playerUnit.unit_Sprite_Entity).tag = "Player_Sprite";
 
@@ -1112,16 +1173,53 @@ namespace ALEngine::ECS
 
 	void GameplaySystem::InitializeEndTurnButton() {
 		getGuiManager().endTurnBtnEntity = Coordinator::Instance()->GetEntityByTag("end_turn");
-		
-		EventTrigger eventTrigger;		
-		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
-		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_Button_Darken);
-		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_Button_Lighten);
-		Subscribe(eventTrigger, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Lighten);
-		Coordinator::Instance()->AddComponent(getGuiManager().endTurnBtnEntity, eventTrigger);
+		CreateButton(getGuiManager().endTurnBtnEntity);
+
+		Subscribe(getGuiManager().endTurnBtnEntity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
 	}
 
 	
+
+	void GameplaySystem::RandomizePatternList(void)
+	{
+		u32 num_patterns = pattern_Default.size();
+
+		std::random_device rd;
+		std::mt19937 mt(rd());
+
+		// Create a copy of the first few in list
+		std::vector<Pattern> tempList;
+		if (num_patterns <= pattern_List.size())
+		{	// Copy list to a temp list
+			for (u32 i{ 0 }; i < num_patterns; ++i)
+				tempList.push_back(pattern_List[i]);
+
+			// Empty Pattern List Shown
+			pattern_List.clear();
+
+			// Put the temp values into the pattern
+			for (u32 i{ 0 }; i < num_patterns; ++i)
+				pattern_List.push_back(tempList[i]);
+		}
+		else
+		{	// Randomize
+			pattern_List = pattern_Default;
+			std::shuffle(pattern_List.begin(), pattern_List.end(), mt);
+		}
+
+		// Randomize next set
+		tempList = pattern_Default;
+
+		do {
+			std::shuffle(tempList.begin(), tempList.end(), mt);
+		} while (tempList.front().file_path == pattern_List.back().file_path);
+
+		// Push back into list
+		for (u32 i{ 0 }; i < tempList.size(); ++i)
+		{
+			pattern_List.push_back(tempList[i]);
+		}
+	}
 
 	void GameplaySystem::Cheat_ToggleGodMode() {
 		godMode = !godMode;

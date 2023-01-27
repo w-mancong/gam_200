@@ -8,6 +8,8 @@ brief:	This file contain function definition that starts the flow of the entire 
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
+#include <GameplayCamera.h>
+#include <ECS/Systems/LogicSystem.h>
 
 namespace ALEngine::Engine
 {
@@ -90,7 +92,7 @@ namespace ALEngine::Engine
 			{				
 				// Call function load
 				StartGameplaySystem();
-				LoadCppScripts();
+				ECS::Load();
 			}
 			else
 			{
@@ -100,7 +102,7 @@ namespace ALEngine::Engine
 				GameStateManager::next	  = GameStateManager::previous;
 			}
 
-			InitCppScripts();
+			ECS::Init();
 
 			while (GameStateManager::current == GameStateManager::next)
 			{
@@ -123,7 +125,7 @@ namespace ALEngine::Engine
 #endif
 					// Normal Update
 					Engine::Update();
-					UpdateCppScripts();
+					ECS::Update();
 					// Physics
 					// Fixed Update (Physics)
 					accumulator += Time::m_DeltaTime;
@@ -138,6 +140,7 @@ namespace ALEngine::Engine
 							break;
 
 						Engine::FixedUpdate();
+						ECS::LateUpdate();
 						accumulator -= Time::m_FixedDeltaTime;
 					}
 
@@ -160,17 +163,16 @@ namespace ALEngine::Engine
 			}
 
 			// Free resources
-			FreeCppScripts();
+			ECS::Free();
 			// unload resource
 			if (GameStateManager::next != GameState::Restart)
-				UnloadCppScripts();
+				ECS::Unload();
 			
-#if EDITOR
-			if(ALEditor::Instance()->GetGameActive())
-#endif
-				Coordinator::Instance()->DestroyEntities();
-
+#if !EDITOR
 			ExitGameplaySystem();
+			Coordinator::Instance()->DestroyEntities();
+#endif
+
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current = GameStateManager::next;
 
@@ -202,17 +204,33 @@ namespace ALEngine::Engine
 
 		Engine::AssetManager::Instance()->Init();
 		GameStateManager::Init();
-		RegisterCppScripts();
 
 		appStatus = 1;
 		RunFileWatcherThread();
 
 #if !EDITOR
-		OpenGLWindow::FullScreen(true);
-		Scene::LoadScene("Assets\\test.scene");
-		StartGameplaySystem();
-		Console::StopConsole();
+		//OpenGLWindow::FullScreen(true);
+		//Scene::LoadScene("Assets\\test.scene");
+		//StartGameplaySystem();
+		//Console::StopConsole();
 #endif
+		//Animator an = CreateAnimator("Player");
+
+		//Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		//Entity en = Coordinator::Instance()->CreateEntity();
+		//sceneGraph.Push(-1, en);
+
+		//Transform trans;
+		//trans.position = { 0.0f, 0.0f };
+		//trans.scale = { 200.0f, 200.0f };
+		//CreateSprite(en, trans);
+		//Coordinator::Instance()->AddComponent(en, an);
+
+		//CreateAnimationClip("Assets\\Images\\PlayerIdle.png", "PlayerIdle", 2133, 2133, 12, 10);
+		//AddAnimationToAnimator(an, "PlayerIdle");
+		//SaveAnimator(an);
+		
 
 		//Scene::LoadScene("Assets\\test.scene");
 
@@ -278,7 +296,6 @@ namespace ALEngine::Engine
 		Input::Update();
 		AssetManager::Instance()->Update();
 		AudioManagerUpdate();
-		UpdateEventTriggerSystem();
 	}
 
 	void Engine::FixedUpdate(void)
@@ -286,7 +303,10 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
-		UpdateGameplaySystem();
+		//UpdateGameplaySystem();
+
+		UpdateEventTriggerSystem();
+		UpdateButtonSystem();
 
 		UpdateRigidbodySystem();
 		UpdateColliderSystem();

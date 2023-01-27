@@ -8,6 +8,7 @@ brief:	This file contains the function definition for GamePlayInterface.cpp
 *//*__________________________________________________________________________________*/
 
 #include "pch.h"
+#include <Utility/AudioNames.h>
 #include <Engine/GamePlayInterface.h>
 
 namespace ALEngine::Engine::GameplayInterface
@@ -68,6 +69,7 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
 		newPattern.coordinate_occupied.push_back({ -1, 0 });
 		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.file_path = "Assets\\Images\\T.png";
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 
@@ -76,6 +78,7 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
 		newPattern.coordinate_occupied.push_back({ 2, 0 });
 		newPattern.coordinate_occupied.push_back({ 3, 0 });
+		newPattern.file_path = "Assets\\Images\\I.png";
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 
@@ -84,6 +87,16 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
 		newPattern.coordinate_occupied.push_back({ 0, 1 });
 		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		newPattern.file_path = "Assets\\Images\\L.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+		
+		//J Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ -1, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		newPattern.file_path = "Assets\\Images\\J.png";
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 
@@ -92,6 +105,25 @@ namespace ALEngine::Engine::GameplayInterface
 		newPattern.coordinate_occupied.push_back({ 1, 0 });
 		newPattern.coordinate_occupied.push_back({ 1, 1 });
 		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.file_path = "Assets\\Images\\O.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+
+		//S Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ -1, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ 1, 1 });
+		newPattern.file_path = "Assets\\Images\\S.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+		
+		//Z Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ -1, 1 });
+		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		newPattern.file_path = "Assets\\Images\\Z.png";
 		patternList.push_back(newPattern);
 		newPattern.coordinate_occupied.clear();
 	}
@@ -387,5 +419,42 @@ namespace ALEngine::Engine::GameplayInterface
 			}
 		}
 		return false;
+	}
+
+	void CreateAudioEntityMasterSource(void)
+	{
+		using namespace ECS;
+		Entity en	   = Coordinator::Instance()->CreateEntity();
+		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		ed.tag = "Master Audio Source";
+
+		AudioSource as;
+		as.id = 0;
+
+		Audio ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_BGM_1));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_GAMEPLAY_LOOP));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_SELECT_SKILL));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_PLAYER_HURT));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_HIT));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_ENEMY_HURT_1));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_CLICK_1));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
+		as.list[as.id++] = ad;
+
+		Coordinator::Instance()->AddComponent(en, as);
 	}
 }

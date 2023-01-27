@@ -1,6 +1,0 @@
-E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\bin\Release\ALEngine-ScriptCore.dll
-E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\bin\Release\ALEngine-ScriptCore.pdb
-E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\obj\Release\ALEngine-ScriptCore.csproj.AssemblyReference.cache
-E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\obj\Release\ALEngine-ScriptCore.csproj.CoreCompileInputs.cache
-E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\obj\Release\ALEngine-ScriptCore.dll
-E:\School\Gam200\gam_200\Artless\ALEngine-ScriptCore\obj\Release\ALEngine-ScriptCore.pdb
