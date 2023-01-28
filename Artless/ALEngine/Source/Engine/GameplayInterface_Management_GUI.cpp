@@ -37,6 +37,10 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		{
 			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/HardDrop.png");
 			headerText.textString = "Hard Drop";
+			line1.textString = "Deal DMG to enemies.";
+			line2.textString = "";
+			line3.textString = "";
+			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon2")
 		{
