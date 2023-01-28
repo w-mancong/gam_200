@@ -37,9 +37,9 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		{
 			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/HardDrop.png");
 			headerText.textString = "Hard Drop";
-			line1.textString = "Deal DMG to enemies.";
-			line2.textString = "";
-			line3.textString = "";
+			line1.textString = "Slam a Tetromino on enemies,";
+			line2.textString = "dealing 15 DMG on each";
+			line3.textString = "impacted enemy.";
 			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon2")
@@ -48,7 +48,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 			headerText.textString = "Life Drain";
 			line1.textString = "Deal DMG to enemies and heal";
 			line2.textString = "for half of all DMG dealt.";
-			line3.textString = "";
+			line3.textString = "[Lifesteal is WIP]";
 			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon3")
@@ -56,9 +56,9 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 			sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Icon_Skill_ConstructTile.png");
 			headerText.textString = "Construct Tile";
 			line1.textString = "Erect a wall that blocks";
-			line2.textString = "enemies from passing.";
-			line3.textString = "";
-			line4.textString = "";
+			line2.textString = "enemies from passing or";
+			line3.textString = "attacking.";
+			line4.textString = "[Lasts for 2 turns]";
 		}
 		else if (skill.tag == "skill_icon4")
 		{
