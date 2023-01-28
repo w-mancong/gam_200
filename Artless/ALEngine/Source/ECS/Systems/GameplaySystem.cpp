@@ -1140,7 +1140,8 @@ namespace ALEngine::ECS
 	
 		if (enemyUnit.health <= 0)
 		{
-			EndTurn();
+			++enemyNeededData.enemyMoved;
+			MoveEnemy();
 		}
 
 		//use enemy logic function pointer
