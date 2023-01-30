@@ -654,6 +654,7 @@ namespace ALEngine::ECS
 		AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
 		Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
 		ad.m_Channel = Channel::BGM;
+		ad.m_Loop = true;
 		ad.Play();
 
 		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
@@ -1108,6 +1109,9 @@ namespace ALEngine::ECS
 			return;
 		}
 
+		// Set the move animation for player
+		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+		ChangeAnimation(an, "PlayerMove");
 		SetMoveOrder(pathList);
 
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
@@ -1215,15 +1219,17 @@ namespace ALEngine::ECS
 			//If reached the end of path
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
-
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+					ChangeAnimation(an, "PlayerIdle");
 					if (movinUnit.movementPoints <= 0) {
 						EndTurn();
 					}
 				}
 				//If enemy, move on to next enemy
 				else if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
+					ChangeAnimation(an, "BishopIdle");
 					GameplayInterface::RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]));
 					MoveEnemy();
 				}

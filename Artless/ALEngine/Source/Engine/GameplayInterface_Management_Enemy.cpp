@@ -45,6 +45,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		enemySpriteTransform.localScale = { 1.f, 2.f };
 
 		ALEngine::ECS::CreateSprite(enemyUnit.unit_Sprite_Entity, enemySpriteTransform, "Assets/Images/Bishop v.02.png");
+		Animator an = ECS::CreateAnimator("Bishop");
+		Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
 
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Enemy_" + std::to_string(enemyEntityList.size() - 1);
 		Coordinator::Instance()->GetComponent<EntityData>(enemyUnit.unit_Sprite_Entity).tag = "Enemy_Sprite_" + std::to_string(enemyEntityList.size() - 1);
@@ -235,6 +237,10 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
+
+		// Setting move animation for bishop
+		Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity);
+		ECS::ChangeAnimation(an, "BishopMove");
 
 		AL_CORE_INFO("Path Found");
 
