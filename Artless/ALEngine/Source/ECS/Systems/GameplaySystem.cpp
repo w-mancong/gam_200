@@ -594,8 +594,7 @@ namespace ALEngine::ECS
 				Coordinator::Instance()->AddComponent(getEntityCell(gameplaySystem->m_Room, i, j), cell);
 				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(i) + "," + std::to_string(j) + "]";
 				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(gameplaySystem->m_Room,i,j)).tag = "Cell[" + std::to_string(i) + "," + std::to_string(j) + "]";
-				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
-			
+				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY	
 			}
 		}
 
@@ -904,7 +903,7 @@ namespace ALEngine::ECS
 		Cell& playerUnitCell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		if (playerUnitCell.m_canWalk == false) {
-			playerUnit.health = 0;
+			DoDamageToUnit(gameplaySystem->playerEntity, playerUnit.maxHealth + 1);
 		}
 	}
 

@@ -10,6 +10,7 @@ brief:	This file contains the function definition for GamePlayInterface.cpp
 #include "pch.h"
 #include <Utility/AudioNames.h>
 #include <Engine/GamePlayInterface.h>
+#include <Engine/GameplayInterface_Management_GUI.h>
 
 namespace ALEngine::Engine::GameplayInterface
 {
@@ -422,6 +423,13 @@ namespace ALEngine::Engine::GameplayInterface
 			//Determinte type
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				AL_CORE_INFO("Unit Died");
+				ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+				Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
+
+				ECS::SetActive(true, GameplayInterface_Management_GUI::getGuiManager().Win_Clear);
+
+				unitData.active = false;
+				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			}
 			else {
 				AL_CORE_INFO("Enemy Died");
