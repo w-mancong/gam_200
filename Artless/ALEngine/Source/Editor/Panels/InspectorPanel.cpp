@@ -641,8 +641,8 @@ namespace ALEngine::Editor
 
 		if (ImGui::CollapsingHeader("Particle Component"))
 		{
-			f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, 1.f };
-			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, 1.f };
+			f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, particleProperty.colorStart.w };
+			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, particleProperty.colorEnd.w };
 			f32 vel[2] = { particleProperty.velocity.x, particleProperty.velocity.y };
 			f32 velVariation[2] = { particleProperty.velocityVariation.x, particleProperty.velocityVariation.y };
 
@@ -657,6 +657,7 @@ namespace ALEngine::Editor
 			ImGui::DragFloat2("Velocity Variation", velVariation, 0.02f);
 			ImGui::DragFloat("Rotation", &particleProperty.rotation, 0.1f, 0.0f, 1000.0f);
 			ImGui::Checkbox("Enable Gravity", &particleProperty.gravityEnabled);
+			ImGui::Checkbox("Active", &particleProperty.active);
 
 			particleProperty.velocity.x = vel[0];
 			particleProperty.velocity.y = vel[1];
@@ -667,10 +668,12 @@ namespace ALEngine::Editor
 			particleProperty.colorStart.x = startClr[0];
 			particleProperty.colorStart.y = startClr[1];
 			particleProperty.colorStart.z = startClr[2];
+			particleProperty.colorStart.w = startClr[3];
 
 			particleProperty.colorEnd.x = endClr[0];
 			particleProperty.colorEnd.y = endClr[1];
 			particleProperty.colorEnd.z = endClr[2];
+			particleProperty.colorEnd.w = endClr[3];
 
 			ImGui::Separator();
 		}
