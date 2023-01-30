@@ -600,8 +600,6 @@ namespace ALEngine::ECS
 		gameplaySystem->PlaceNewPlayerInRoom(0, 2);
 
 		gameplaySystem->enemyEntityList.clear();
-		//gameplaySystem->PlaceNewEnemyInRoom(0, 1);
-		//gameplaySystem->PlaceNewEnemyInRoom(4, 4);
 		Entity enemyEntity = PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
@@ -879,7 +877,7 @@ namespace ALEngine::ECS
 				if (resetCounter == 1) {
 
 					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/CloseButton.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Cracked_Tile.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 
 				}
 				if (resetCounter == 0) {
@@ -1248,7 +1246,13 @@ namespace ALEngine::ECS
 				//If enemy, move on to next enemy
 				else if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
 					ChangeAnimation(an, "BishopIdle");
-					GameplayInterface::RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]));
+					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+						GameplayInterface::RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]));
+					}
+					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+						Enemy_Logic_CellDestroyer_DestroyTile(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+					}
+
 					MoveEnemy();
 				}
 				return;

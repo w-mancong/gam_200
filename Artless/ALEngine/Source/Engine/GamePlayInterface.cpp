@@ -238,6 +238,7 @@ namespace ALEngine::Engine::GameplayInterface
 
 		//Set to canwalk
 		cell.m_canWalk = true;
+		cell.m_resetCounter = 2;
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 		sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);

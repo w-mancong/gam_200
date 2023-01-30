@@ -60,6 +60,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 	//void Enemy_Logic_Update_Melee(EnemyManager enemyNeededData);
 
 	void Enemy_Logic_Update_CellDestroyer(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
+	void Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
 }
 #endif
 
