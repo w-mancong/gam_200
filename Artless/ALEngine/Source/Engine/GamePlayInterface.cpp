@@ -407,6 +407,9 @@ namespace ALEngine::Engine::GameplayInterface
 		[[maybe_unused]]EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
+		Transform& unitTrans = Coordinator::Instance()->GetComponent<Transform>(unitEntity);
+		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(unitTrans.position);
+
 		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
 
 		//Do damage

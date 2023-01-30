@@ -29,12 +29,41 @@ namespace ALEngine::ECS
 		Coordinator::Instance()->SetSystemSignature<ParticleSys>(signature);
 	}
 
+	void ParticleSystem::ManualParticleUpdate()
+	{
+		b8 clearFlag{ true };
+		for (auto& prop : manualParticleContainer)
+		{
+			if (prop.spawnDuration > 0.f)
+			{
+				clearFlag = false;
+				if (prop.timeCount > prop.spawnRate)
+				{
+					particleSystemObj.Emit(prop);
+					prop.timeCount = 0.f;
+				}
+				else
+					prop.timeCount += Time::m_DeltaTime;
+				prop.spawnDuration -= Time::m_DeltaTime;
+			}
+		}
+		if (clearFlag)
+			manualParticleContainer.clear();
+	}
+	
+
+
 	void ParticleSys::Update(void)
 	{
 		for (auto& x : particleSystem->mEntities)
 		{
+			EntityData en = Coordinator::Instance()->GetComponent<EntityData>(x);
+			if (en.active == false)
+				continue;
+
 			ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(x);
 			prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(x);
+			
  
 			if (prop.timeCount > prop.spawnRate)
 			{
@@ -55,6 +84,7 @@ namespace ALEngine::ECS
 				return;
 	#endif
 			particleSystem->Update();
+			particleSystemObj.ManualParticleUpdate();
 	}
 
 	namespace
@@ -180,8 +210,9 @@ namespace ALEngine::ECS
 		for (auto& particle : particleContainer)
 		{
 			if (!particle.active)
+			{
 				continue;
-
+			}
 			// Interpolate color and size between particle birth and death
 			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
 			Math::Vector4 color = Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
@@ -247,6 +278,15 @@ namespace ALEngine::ECS
 	u32& ParticleSystem::GetParticleCounter()
 	{
 		return particleCounter;
+	}
+
+	void ParticleSystem::UnitDmgParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("damage_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.spawnDuration = 1.f;
+		manualParticleContainer.push_back(prop);
 	}
 
 	std::vector<ParticleSystem::Particle> const& ParticleSystem::GetParticleContainer()

@@ -89,6 +89,10 @@ namespace ALEngine::ECS
 		template <typename T>
 		static T Lerp(T a, T b, float t);
 
+		void UnitDmgParticles(Math::Vector2 position);
+
+		void ManualParticleUpdate();
+
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -105,6 +109,7 @@ namespace ALEngine::ECS
 			b8 gravityEnabled{ false };
 		};
 		std::vector<Particle> particleContainer;
+		std::vector<ParticleProperties> manualParticleContainer;
 		u32 particleIndex = 999; // max index of particles container
 		u32 particleCounter{};
 
