@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.721435546875,
+                    967.7218627929688,
                     41.370460510253906,
                     0.0
                 ],
@@ -2426,9 +2426,9 @@
                 "sizeVariation": 20.0,
                 "lifeTime": 15.0,
                 "spawnRate": 2.0,
-                "rotation": 7.0,
+                "rotation": 42.0,
                 "gravityEnabled": false,
-                "active": false
+                "active": true
             }
         ]
     },
@@ -2450,7 +2450,7 @@
             {
                 "position": [
                     -47.28656005859375,
-                    430.43951416015625,
+                    430.4394836425781,
                     0.0
                 ],
                 "scale": [
@@ -2497,9 +2497,9 @@
                 "sizeVariation": 30.0,
                 "lifeTime": 15.0,
                 "spawnRate": 2.0,
-                "rotation": 10.5,
+                "rotation": 18.5,
                 "gravityEnabled": false,
-                "active": false
+                "active": true
             }
         ]
     },
@@ -2570,7 +2570,7 @@
                 "spawnRate": 2.0,
                 "rotation": 10.899999618530273,
                 "gravityEnabled": false,
-                "active": false
+                "active": true
             }
         ]
     },
@@ -2641,7 +2641,7 @@
                 "spawnRate": 2.0,
                 "rotation": 18.799999237060547,
                 "gravityEnabled": false,
-                "active": false
+                "active": true
             }
         ]
     },
@@ -2970,7 +2970,8 @@
                 "lifeTime": 1.2999999523162842,
                 "spawnRate": 0.13600000739097595,
                 "rotation": 0.0,
-                "gravityEnabled": true
+                "gravityEnabled": true,
+                "active": false
             }
         ]
     },
