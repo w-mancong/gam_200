@@ -346,7 +346,6 @@ namespace ALEngine::ECS
 	//}
 
 	
-
 	void Event_MouseEnterCell(Entity invoker) {
 		//Keep track of cell the mouse is interacting with
 		gameplaySystem->current_Moused_Over_Cell = invoker;
@@ -386,6 +385,20 @@ namespace ALEngine::ECS
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 		GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 	}
+
+	
+	void Event_MouseEnterUnit(Entity invoker) {
+		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+			Event_MouseEnterCell(unit.m_CurrentCell_Entity);
+		}
+	}
+
+	void Event_MouseExitUnit(Entity invoker) {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+		Event_MouseExitCell(unit.m_CurrentCell_Entity);
+	}
+
 
 	void Event_ClickCell(Entity invokerCell) {
 		AL_CORE_INFO("Select Cell");
@@ -574,8 +587,8 @@ namespace ALEngine::ECS
 				Transform child_overlay_transform;
 				child_overlay_transform.scale = transform.scale;
 				//child_overlay_transform.scale.y += 50;
-				child_overlay_transform.position = { 550 + (f32)i * 100.f, 300 + (f32)j * 100.f };
-				child_overlay_transform.position.y += 50 >> 2;
+				child_overlay_transform.position = { 450 + (f32)i * 100.f, 150 + (f32)j * 100.f };
+				//child_overlay_transform.position.y += 50 >> 2;
 				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
 
 				Coordinator::Instance()->AddComponent(getEntityCell(gameplaySystem->m_Room, i, j), cell);
@@ -592,11 +605,18 @@ namespace ALEngine::ECS
 		gameplaySystem->enemyEntityList.clear();
 		//gameplaySystem->PlaceNewEnemyInRoom(0, 1);
 		//gameplaySystem->PlaceNewEnemyInRoom(4, 4);
-		PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
-        PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+		Entity enemyEntity = PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
-		PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
-	
+		enemyEntity = PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
+		enemyEntity = PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
 		//Create EndTurn Button
 		gameplaySystem->InitializeEndTurnButton();
 
@@ -654,6 +674,7 @@ namespace ALEngine::ECS
 		AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
 		Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
 		ad.m_Channel = Channel::BGM;
+		ad.m_Loop = true;
 		ad.Play();
 
 		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
@@ -1078,7 +1099,8 @@ namespace ALEngine::ECS
 		eventTrigger.layer = 1;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
-
+		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 		//AddLogicComponent<Script::GameplayCamera>(entity);
 	}
 
@@ -1108,6 +1130,9 @@ namespace ALEngine::ECS
 			return;
 		}
 
+		// Set the move animation for player
+		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+		ChangeAnimation(an, "PlayerMove");
 		SetMoveOrder(pathList);
 
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
@@ -1141,6 +1166,7 @@ namespace ALEngine::ECS
 		{
 			++enemyNeededData.enemyMoved;
 			MoveEnemy();
+			return;
 		}
 
 		//use enemy logic function pointer
@@ -1166,7 +1192,6 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		AL_CORE_CRITICAL(Coordinator::Instance()->GetComponent<EntityData>(movingUnitEntity).tag);
 		//Keep track of next cell destination
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
 
@@ -1215,15 +1240,17 @@ namespace ALEngine::ECS
 			//If reached the end of path
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
-
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+					ChangeAnimation(an, "PlayerIdle");
 					if (movinUnit.movementPoints <= 0) {
 						EndTurn();
 					}
 				}
 				//If enemy, move on to next enemy
 				else if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
+					ChangeAnimation(an, "BishopIdle");
 					GameplayInterface::RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]));
 					MoveEnemy();
 				}
@@ -1533,8 +1560,14 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::Event_Unit_OnSelect([
 		return;
 	}
 
-	AL_CORE_INFO("DISPLAY UNIT");
-	ALEngine::Engine::GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(invoker);
+	if (ECS::gameplaySystem->currentPatternPlacementStatus != ECS::PATTERN_PLACEMENT_STATUS::NOTHING) {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+		ECS::Event_ClickCell(unit.m_CurrentCell_Entity);
+	}
+	else {
+		AL_CORE_INFO("DISPLAY UNIT");
+		ALEngine::Engine::GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(invoker);
+	}
 }
 
 void ALEngine::Engine::GameplayInterface_Management_Enemy::SetMoveOrder(std::vector<Entity> path)
@@ -1597,8 +1630,4 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 
 		break;
 	}
-
-
-
-
 }

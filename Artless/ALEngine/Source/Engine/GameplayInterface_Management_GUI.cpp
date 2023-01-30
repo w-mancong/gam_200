@@ -75,8 +75,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
 			headerText.textString = "??";
 		}
-
-		AL_CORE_CRITICAL("Enter");
 	}
 
 	void Event_Button_Exit_Ability_GUI(ECS::Entity invoker) {
@@ -85,8 +83,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		}
 
 		DisableToolTipGUI();
-
-		AL_CORE_CRITICAL("Exit");
 	}
 
 
