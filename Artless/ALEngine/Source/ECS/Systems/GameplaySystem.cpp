@@ -39,8 +39,6 @@ namespace ALEngine::ECS
 	using namespace GameplayInterface_Management_GUI;
 	using namespace GameplayInterface;
 
-	
-
 	/*!*********************************************************************************
 	\brief
 		Contains most logic and data to run game PAVE

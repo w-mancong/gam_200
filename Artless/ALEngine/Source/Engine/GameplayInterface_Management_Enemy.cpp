@@ -76,8 +76,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 20,
-		enemyUnit.maxHealth = 20;
+		enemyUnit.health = 10,
+		enemyUnit.maxHealth = 10;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
@@ -287,14 +287,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 		AL_CORE_INFO("Run destroy block Attack");
 		bool ifEnemyIsOnWalkableCell = GameplayInterface::CheckIfWalkableOnGrid(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
-
-		//AL_CORE_INFO("Check player inside");
-		//if (ifPlayerIsAlreadyBeside) {
-		//	AL_CORE_INFO("Enemy " + std::to_string(*enemyNeededData.enemyMoved) + " Attacked player");
-		//	++* enemyNeededData.enemyMoved;
-		//	Enemy_Logic_Update_CellDestroyer(enemyNeededData, enemyEntityList, m_Room);
-		//	return;
-		//}
 
 		AL_CORE_INFO("Check enemy on walkable cell");
 		if (ifEnemyIsOnWalkableCell)
