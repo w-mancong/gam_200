@@ -45,8 +45,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		enemySpriteTransform.localScale = { 1.f, 2.f };
 
 		ALEngine::ECS::CreateSprite(enemyUnit.unit_Sprite_Entity, enemySpriteTransform, "Assets/Images/Bishop v.02.png");
-		Animator an = ECS::CreateAnimator("Bishop");
-		Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
 
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Enemy_" + std::to_string(enemyEntityList.size() - 1);
 		Coordinator::Instance()->GetComponent<EntityData>(enemyUnit.unit_Sprite_Entity).tag = "Enemy_Sprite_" + std::to_string(enemyEntityList.size() - 1);
@@ -76,10 +74,12 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 20,
-		enemyUnit.maxHealth = 20;
+		enemyUnit.health = 10,
+		enemyUnit.maxHealth = 10;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
+		enemyUnit.maxMovementPoints = 1;
+		enemyUnit.movementPoints = 1;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
 		//set enemy logic function pointer
 		//enemyUnit.logic
@@ -117,9 +117,18 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		switch (enemySelection)
 		{
 		case ENEMY_TYPE::ENEMY_MELEE:
+			{
+
+				Animator an = ECS::CreateAnimator("Bishop");
+				Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
+			}
 			SetEnemy01attributes(enemyUnit);
 			break;
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
+			}
 			SetEnemy02attributes(enemyUnit);
 			break;
 		case ENEMY_TYPE::ENEMY_TYPE03:
@@ -261,7 +270,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		return;
 	}
 
-	void ALEngine::Engine::GameplayInterface_Management_Enemy::Enemy_Logic_Update_CellDestroyer(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus,  std::vector<Entity>& enemyEntityList, Room& m_Room)
+	void GameplayInterface_Management_Enemy::Enemy_Logic_Update_CellDestroyer(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus,  std::vector<Entity>& enemyEntityList, Room& m_Room)
 	{
 		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
 			AL_CORE_INFO("All Enemy Made move, ending turn");
@@ -274,7 +283,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		AL_CORE_INFO("Finding Target Cell");
 		//Find a target cell
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
-		//Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(*enemyNeededData.playerEntity);
 
 		if (enemyUnit.health <= 0) {
 			++enemyNeededData.enemyMoved;
@@ -284,39 +292,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 		//AL_CORE_INFO("Run Adjacent Attack");
 		//bool ifPlayerIsAlreadyBeside = GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
-
-		AL_CORE_INFO("Run destroy block Attack");
-		bool ifEnemyIsOnWalkableCell = GameplayInterface::CheckIfWalkableOnGrid(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
-
-		//AL_CORE_INFO("Check player inside");
-		//if (ifPlayerIsAlreadyBeside) {
-		//	AL_CORE_INFO("Enemy " + std::to_string(*enemyNeededData.enemyMoved) + " Attacked player");
-		//	++* enemyNeededData.enemyMoved;
-		//	Enemy_Logic_Update_CellDestroyer(enemyNeededData, enemyEntityList, m_Room);
-		//	return;
-		//}
-
-		AL_CORE_INFO("Check enemy on walkable cell");
-		if (ifEnemyIsOnWalkableCell)
-		{
-			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed block");
-			++enemyNeededData.enemyMoved;
-			//destroy the walkable block here important
-			if (GameplayInterface::IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1])) {
-				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
-				cell.m_canWalk = false;
-				
-				s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
-				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
-
-				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
-			}
-
-			//EndTurn(); //remove once destroy block section is in and then uncomment bottom code
-			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
-			return;
-		}
 		
 		//vector to store the adjacent cells with placed tile
 		std::vector<Entity> cellsMoveableTo{};
@@ -415,5 +390,114 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		UpdateGUI_OnSelectUnit(movingUnitEntity);
 
 		++enemyNeededData.enemyMoved;
+	}
+	void GameplayInterface_Management_Enemy::Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room) {
+		//Find a target cell
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]);
+
+		AL_CORE_INFO("Run destroy block Attack");
+		bool ifEnemyIsOnWalkableCell = GameplayInterface::CheckIfWalkableOnGrid(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
+
+		AL_CORE_INFO("Check enemy on walkable cell");
+		if (ifEnemyIsOnWalkableCell)
+		{
+			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed block");
+			//destroy the walkable block here important
+			if (GameplayInterface::IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1])) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
+				cell.m_resetCounter = 0;
+				cell.m_canWalk = false;
+
+				s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
+				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+			}			
+			
+			//up
+			if (GameplayInterface::IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]+1)) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]+1));
+				cell.m_resetCounter = 0;
+				cell.m_canWalk = false;
+
+				s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
+				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					}
+				}
+			}
+
+			//down
+			if (GameplayInterface::IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1)) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
+				cell.m_resetCounter = 0;
+				cell.m_canWalk = false;
+
+				s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
+				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					}
+				}
+			}			
+			
+			//left
+			if (GameplayInterface::IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1])) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
+				cell.m_resetCounter = 0;
+				cell.m_canWalk = false;
+
+				s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
+				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					}
+				}
+			}
+
+			//right
+			if (GameplayInterface::IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1])) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
+				cell.m_resetCounter = 0;
+				cell.m_canWalk = false;
+
+				s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
+				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					}
+				}
+			}
+		}
 	}
 }
