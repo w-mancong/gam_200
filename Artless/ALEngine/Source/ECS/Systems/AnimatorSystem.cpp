@@ -136,7 +136,8 @@ namespace ALEngine::ECS
 			animator.animations[buffer] = animation;
 		}
 		animator.animatorName = animatorName;
-		animator.currClip = animator.animations.begin()->second.clipName;
+		if(animator.animations.size())
+			animator.currClip = animator.animations.begin()->second.clipName;
 		return animator;
 	}
 

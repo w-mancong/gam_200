@@ -210,9 +210,8 @@ namespace ALEngine::Engine
 
 #if !EDITOR
 		//OpenGLWindow::FullScreen(true);
-		//Scene::LoadScene("Assets\\test.scene");
-		//StartGameplaySystem();
-		//Console::StopConsole();
+		Scene::LoadScene("Assets\\test.scene");
+		Console::StopConsole();
 #endif
 		//Animator an = CreateAnimator("Player");
 
