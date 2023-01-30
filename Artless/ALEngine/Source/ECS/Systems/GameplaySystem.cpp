@@ -1623,8 +1623,4 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 
 		break;
 	}
-
-
-
-
 }

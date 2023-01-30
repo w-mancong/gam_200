@@ -187,7 +187,7 @@ namespace ALEngine::Engine::GameplayInterface
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				if (!cell.m_isAccessible) {
+				if (!cell.m_isAccessible || cell.has_Wall) {
 					continue;
 				}
 
@@ -312,10 +312,10 @@ namespace ALEngine::Engine::GameplayInterface
 
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-					if (cell.hasUnit || !cell.m_isAccessible) {
+					if (cell.hasUnit) {
 						return false;
 					} 
-				} 
+				}
 			} 
 		} //End loop through pattern body check
 		
@@ -484,13 +484,18 @@ namespace ALEngine::Engine::GameplayInterface
 		ECS::Entity cellEntity = getEntityCell(currentRoom, x, y);
 
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		if (cell.has_Wall) {
+			return;
+		}
+
 		cell.has_Wall = isTrue;
 		cell.m_canWalk = !isTrue;
 		cell.m_resetCounter = 2;
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
 		sprite.layer = 1000 - Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y;
-		sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Wall.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+		sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/ConstructTile_TileSprite.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
 	}
 
