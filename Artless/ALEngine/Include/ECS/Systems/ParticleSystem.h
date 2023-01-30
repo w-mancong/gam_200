@@ -95,6 +95,8 @@ namespace ALEngine::ECS
 
 		void ManualParticleUpdate();
 
+		void DisplayYourTurn();
+
 	private:
 		/*!*********************************************************************************
 			\brief

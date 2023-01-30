@@ -828,7 +828,6 @@ namespace ALEngine::ECS
 		case GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP:
 			currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION;
 			AL_CORE_DEBUG("Loading PHASE ACTION");
-
 			ToggleAbilitiesGUI(true);
 			TogglePatternGUI(false);
 			break;
@@ -861,6 +860,8 @@ namespace ALEngine::ECS
 			scanRoomCellArray();
 
 			checkPlayerPlacement();
+
+			ECS::ParticleSystem::GetParticleSystem().DisplayYourTurn();
 
 			break;
 		}
@@ -1614,7 +1615,7 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 		AL_CORE_DEBUG("Loading PHASE SETUP");
 		ALEngine::ECS::gameplaySystem->currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP;
 		ALEngine::Engine::GameplayInterface_Management_GUI::TogglePatternGUI(true);
-
+	
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(ALEngine::ECS::gameplaySystem->playerEntity);
 		playerUnit.movementPoints = playerUnit.maxMovementPoints;
 
@@ -1627,6 +1628,10 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 		ALEngine::ECS::gameplaySystem->scanRoomCellArray();
 
 		ALEngine::ECS::gameplaySystem->checkPlayerPlacement();
+
+		ECS::ParticleSystem::GetParticleSystem().DisplayYourTurn();
+
+		GuiUpdatePhaseIndicator(ALEngine::ECS::gameplaySystem->currentPhaseStatus);
 
 		break;
 	}
