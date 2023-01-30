@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7213134765625,
+                    967.721435546875,
                     41.370460510253906,
                     0.0
                 ],
@@ -2378,7 +2378,7 @@
         "Transform": [
             {
                 "position": [
-                    -47.894073486328125,
+                    -47.89404296875,
                     589.7437744140625,
                     0.0
                 ],
@@ -2424,7 +2424,7 @@
                 "sizeStart": 70.0,
                 "sizeEnd": 0.0,
                 "sizeVariation": 20.0,
-                "lifeTime": 20.0,
+                "lifeTime": 15.0,
                 "spawnRate": 2.0,
                 "rotation": 7.0,
                 "gravityEnabled": false
@@ -2494,7 +2494,7 @@
                 "sizeStart": 70.0,
                 "sizeEnd": 0.0,
                 "sizeVariation": 30.0,
-                "lifeTime": 20.0,
+                "lifeTime": 15.0,
                 "spawnRate": 2.0,
                 "rotation": 10.5,
                 "gravityEnabled": false
@@ -2518,7 +2518,7 @@
         "Transform": [
             {
                 "position": [
-                    1649.8746337890625,
+                    1649.87451171875,
                     595.4466552734375,
                     0.0
                 ],
@@ -2564,7 +2564,7 @@
                 "sizeStart": 70.0,
                 "sizeEnd": 0.0,
                 "sizeVariation": 20.0,
-                "lifeTime": 20.0,
+                "lifeTime": 15.0,
                 "spawnRate": 2.0,
                 "rotation": 10.899999618530273,
                 "gravityEnabled": false
@@ -2588,7 +2588,7 @@
         "Transform": [
             {
                 "position": [
-                    1655.6304931640625,
+                    1655.6302490234375,
                     275.3709411621094,
                     0.0
                 ],
@@ -2634,7 +2634,7 @@
                 "sizeStart": 70.0,
                 "sizeEnd": 0.0,
                 "sizeVariation": 20.0,
-                "lifeTime": 20.0,
+                "lifeTime": 15.0,
                 "spawnRate": 2.0,
                 "rotation": 18.799999237060547,
                 "gravityEnabled": false
