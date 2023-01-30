@@ -1162,6 +1162,7 @@ namespace ALEngine::ECS
 		{
 			++enemyNeededData.enemyMoved;
 			MoveEnemy();
+			return;
 		}
 
 		//use enemy logic function pointer

@@ -262,6 +262,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 			EndTurn();
 			return;
 		}
+
 		AL_CORE_INFO("Enemy Making Decision");
 
 		AL_CORE_INFO("Finding Target Cell");
