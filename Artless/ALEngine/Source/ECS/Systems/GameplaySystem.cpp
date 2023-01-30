@@ -574,8 +574,8 @@ namespace ALEngine::ECS
 				Transform child_overlay_transform;
 				child_overlay_transform.scale = transform.scale;
 				//child_overlay_transform.scale.y += 50;
-				child_overlay_transform.position = { 550 + (f32)i * 100.f, 300 + (f32)j * 100.f };
-				child_overlay_transform.position.y += 50 >> 2;
+				child_overlay_transform.position = { 450 + (f32)i * 100.f, 150 + (f32)j * 100.f };
+				//child_overlay_transform.position.y += 50 >> 2;
 				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
 
 				Coordinator::Instance()->AddComponent(getEntityCell(gameplaySystem->m_Room, i, j), cell);
@@ -1166,7 +1166,6 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		AL_CORE_CRITICAL(Coordinator::Instance()->GetComponent<EntityData>(movingUnitEntity).tag);
 		//Keep track of next cell destination
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
 
