@@ -679,7 +679,7 @@
         "Transform": [
             {
                 "position": [
-                    372.3984069824219,
+                    372.39825439453125,
                     372.7284851074219,
                     0.0
                 ],
@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7208251953125,
+                    967.721435546875,
                     41.370460510253906,
                     0.0
                 ],
@@ -1734,7 +1734,7 @@
             {
                 "position": [
                     1312.0,
-                    497.4983825683594,
+                    497.49835205078125,
                     0.0
                 ],
                 "scale": [
@@ -2378,7 +2378,7 @@
         "Transform": [
             {
                 "position": [
-                    -47.894073486328125,
+                    -47.89404296875,
                     589.7437744140625,
                     0.0
                 ],
@@ -2424,7 +2424,7 @@
                 "sizeStart": 70.0,
                 "sizeEnd": 0.0,
                 "sizeVariation": 20.0,
-                "lifeTime": 20.0,
+                "lifeTime": 15.0,
                 "spawnRate": 2.0,
                 "rotation": 7.0,
                 "gravityEnabled": false
@@ -2494,7 +2494,7 @@
                 "sizeStart": 70.0,
                 "sizeEnd": 0.0,
                 "sizeVariation": 30.0,
-                "lifeTime": 20.0,
+                "lifeTime": 15.0,
                 "spawnRate": 2.0,
                 "rotation": 10.5,
                 "gravityEnabled": false
@@ -2518,7 +2518,7 @@
         "Transform": [
             {
                 "position": [
-                    1649.8746337890625,
+                    1649.87451171875,
                     595.4466552734375,
                     0.0
                 ],
@@ -2564,7 +2564,7 @@
                 "sizeStart": 70.0,
                 "sizeEnd": 0.0,
                 "sizeVariation": 20.0,
-                "lifeTime": 20.0,
+                "lifeTime": 15.0,
                 "spawnRate": 2.0,
                 "rotation": 10.899999618530273,
                 "gravityEnabled": false
@@ -2588,7 +2588,7 @@
         "Transform": [
             {
                 "position": [
-                    1655.6304931640625,
+                    1655.6302490234375,
                     275.3709411621094,
                     0.0
                 ],
@@ -2634,7 +2634,7 @@
                 "sizeStart": 70.0,
                 "sizeEnd": 0.0,
                 "sizeVariation": 20.0,
-                "lifeTime": 20.0,
+                "lifeTime": 15.0,
                 "spawnRate": 2.0,
                 "rotation": 18.799999237060547,
                 "gravityEnabled": false
@@ -2967,6 +2967,76 @@
                 "spawnRate": 0.13600000739097595,
                 "rotation": 0.0,
                 "gravityEnabled": true
+            }
+        ]
+    },
+    {
+        "id": 68,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1761.5999755859375,
+                    417.9999694824219,
+                    0.0
+                ],
+                "scale": [
+                    14.800000190734863,
+                    12.800000190734863
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "heal_particles",
+                "active": true,
+                "localActive": true,
+                "id": 68,
+                "parentID": 66,
+                "treeNodeFlags": 32
+            }
+        ],
+        "ParticleProperty": [
+            {
+                "velocity": [
+                    0.0,
+                    100.0
+                ],
+                "velocityVariation": [
+                    60.0,
+                    20.0
+                ],
+                "colorStart": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "colorEnd": [
+                    0.8794215321540833,
+                    0.9964413046836853,
+                    0.8794215321540833,
+                    1.0
+                ],
+                "sizeStart": 15.0,
+                "sizeEnd": 0.0,
+                "sizeVariation": 5.0,
+                "lifeTime": 1.2000000476837158,
+                "spawnRate": 0.06300000101327896,
+                "rotation": 9.800000190734863,
+                "gravityEnabled": false
             }
         ]
     }

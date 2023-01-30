@@ -380,6 +380,9 @@ namespace ALEngine::Engine::GameplayInterface
 											playerUnit.health = playerUnit.maxHealth;
 										}
 
+										Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+										ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
+
 										AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 										break;
 									}
