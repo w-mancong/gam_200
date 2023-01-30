@@ -45,7 +45,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 	\brief
 	 Function for Placing type of Enemy onto room
 	***********************************************************************************/
-	void PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection, std::vector<Entity>& enemyEntityList, Room& m_Room);
+	ECS::Entity PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection, std::vector<Entity>& enemyEntityList, Room& m_Room);
 
 	//void PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection);
 

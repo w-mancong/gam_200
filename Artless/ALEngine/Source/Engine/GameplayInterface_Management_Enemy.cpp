@@ -57,7 +57,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		EventTrigger eventTrigger;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 	
-		ALEngine::ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
+		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 	}
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)
@@ -94,7 +94,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		return;
 	}
 
-	void ALEngine::Engine::GameplayInterface_Management_Enemy::PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection, std::vector<Entity>& enemyEntityList, Room& m_Room)
+	ECS::Entity ALEngine::Engine::GameplayInterface_Management_Enemy::PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection, std::vector<Entity>& enemyEntityList, Room& m_Room)
 	{
 		//Create Enemy entity 
 		Entity newEnemy = Coordinator::Instance()->CreateEntity();
@@ -136,6 +136,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 		Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(newEnemy);
 		enemyTransform.localPosition = SpawnCellTransform.position;
+
+		return newEnemy;
 	}
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::Enemy_Logic_Update_Melee(EnemyManager& enemyNeededData, Entity &movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room)
