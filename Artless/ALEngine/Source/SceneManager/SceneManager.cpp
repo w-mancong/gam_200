@@ -555,10 +555,6 @@ namespace ALEngine::Engine::Scene
 		writer.Key("gravityEnabled");
 		writer.Bool(prop.gravityEnabled);
 
-		// active
-		writer.Key("active");
-		writer.Bool(prop.active);
-
 		writer.EndObject();
 		writer.EndArray();
 	}
@@ -611,9 +607,6 @@ namespace ALEngine::Engine::Scene
 
 		// Getting gravityEnabled
 		prop.gravityEnabled = v[0]["gravityEnabled"].GetBool();
-
-		// Getting active
-		prop.active = v[0]["active"].GetBool();
 
 		Coordinator::Instance()->AddComponent(en, prop);
 	}

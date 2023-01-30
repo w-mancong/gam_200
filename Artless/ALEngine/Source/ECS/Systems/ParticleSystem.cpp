@@ -44,13 +44,14 @@ namespace ALEngine::ECS
 				}
 				else
 					prop.timeCount += Time::m_DeltaTime;
-
 				prop.spawnDuration -= Time::m_DeltaTime;
 			}
 		}
 		if (clearFlag)
 			manualParticleContainer.clear();
 	}
+	
+
 
 	void ParticleSys::Update(void)
 	{
@@ -61,11 +62,8 @@ namespace ALEngine::ECS
 				continue;
 
 			ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(x);
-
-			if (prop.active == false)
-				continue;
-
 			prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(x);
+			
  
 			if (prop.timeCount > prop.spawnRate)
 			{
@@ -287,7 +285,6 @@ namespace ALEngine::ECS
 		Entity en = Coordinator::Instance()->GetEntityByTag("damage_particles");
 		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
 		prop.position = position;
-		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		prop.spawnDuration = 1.f;
 		manualParticleContainer.push_back(prop);
 	}
@@ -297,18 +294,8 @@ namespace ALEngine::ECS
 		Entity en = Coordinator::Instance()->GetEntityByTag("heal_particles");
 		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
 		prop.position = position;
-		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		prop.spawnDuration = 1.f;
 		manualParticleContainer.push_back(prop);
-	}
-
-	void ParticleSystem::DisplayYourTurn()
-	{
-		Entity en = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
-		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
-		prop.position = Coordinator::Instance()->GetComponent<Transform>(en).position;
-		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
-		Emit(prop);
 	}
 
 	std::vector<ParticleSystem::Particle> const& ParticleSystem::GetParticleContainer()
