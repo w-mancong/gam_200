@@ -91,6 +91,8 @@ namespace ALEngine::ECS
 
 		void UnitDmgParticles(Math::Vector2 position);
 
+		void UnitHealParticles(Math::Vector2 position);
+
 		void ManualParticleUpdate();
 
 	private:

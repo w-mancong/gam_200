@@ -289,6 +289,15 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
+	void ParticleSystem::UnitHealParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("heal_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.spawnDuration = 1.f;
+		manualParticleContainer.push_back(prop);
+	}
+
 	std::vector<ParticleSystem::Particle> const& ParticleSystem::GetParticleContainer()
 	{
 		return particleContainer;
