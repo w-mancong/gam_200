@@ -45,8 +45,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		enemySpriteTransform.localScale = { 1.f, 2.f };
 
 		ALEngine::ECS::CreateSprite(enemyUnit.unit_Sprite_Entity, enemySpriteTransform, "Assets/Images/Bishop v.02.png");
-		Animator an = ECS::CreateAnimator("Bishop");
-		Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
 
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Enemy_" + std::to_string(enemyEntityList.size() - 1);
 		Coordinator::Instance()->GetComponent<EntityData>(enemyUnit.unit_Sprite_Entity).tag = "Enemy_Sprite_" + std::to_string(enemyEntityList.size() - 1);
@@ -80,6 +78,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		enemyUnit.maxHealth = 10;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
+		enemyUnit.maxMovementPoints = 1;
+		enemyUnit.movementPoints = 1;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
 		//set enemy logic function pointer
 		//enemyUnit.logic
@@ -117,9 +117,18 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		switch (enemySelection)
 		{
 		case ENEMY_TYPE::ENEMY_MELEE:
+			{
+
+				Animator an = ECS::CreateAnimator("Bishop");
+				Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
+			}
 			SetEnemy01attributes(enemyUnit);
 			break;
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
+			}
 			SetEnemy02attributes(enemyUnit);
 			break;
 		case ENEMY_TYPE::ENEMY_TYPE03:

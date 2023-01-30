@@ -1235,9 +1235,9 @@ namespace ALEngine::ECS
 			//If reached the end of path
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
-				Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 					ChangeAnimation(an, "PlayerIdle");
 					if (movinUnit.movementPoints <= 0) {
 						EndTurn();
@@ -1245,8 +1245,9 @@ namespace ALEngine::ECS
 				}
 				//If enemy, move on to next enemy
 				else if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
-					ChangeAnimation(an, "BishopIdle");
 					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
+						ChangeAnimation(an, "BishopIdle");
 						GameplayInterface::RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]));
 					}
 					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
