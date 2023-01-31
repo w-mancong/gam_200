@@ -119,6 +119,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		case ENEMY_TYPE::ENEMY_MELEE:
 			{
 
+				enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
 				Animator an = ECS::CreateAnimator("Bishop");
 				Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
 			}
@@ -126,6 +127,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 			break;
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
 			{
+				enemyUnit.unit_Profile_Sprite_File = "Assets/Images/TileBreaker.png";
 				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
 			}
