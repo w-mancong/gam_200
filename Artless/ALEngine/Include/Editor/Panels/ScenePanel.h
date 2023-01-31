@@ -70,6 +70,15 @@ namespace ALEngine::Editor
 		Math::Vec2 GetMouseWorldPos();
 
 		/*!*********************************************************************************
+			\brief
+			Returns the cursor's screen space with respect to the Scene Panel.
+
+			\return
+			Cursor Screen Space position with respect to the Scene Panel.
+		***********************************************************************************/
+		Math::Vec2 GetMousePosWRTPanel();
+
+		/*!*********************************************************************************
 			\brief Return editor panel camera's width
 		***********************************************************************************/
 		f32& GetCameraWidth(void);

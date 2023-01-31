@@ -92,11 +92,26 @@ namespace ALEngine::UserInput
 			inv_view = Mat4::InverseT(inv_view);
 
 			mousePos = inv_view * inv_proj * mousePos;
-			std::cout << "Pos: " << mousePos.x << ", " << mousePos.y << std::endl;
 			return Math::Vec2(mousePos.x, mousePos.y);
 		}
 
 		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
+#endif
+	}
+
+	Math::Vec2 Input::GetMousePosWRTPanel()
+	{
+#if EDITOR
+		return Editor::ALEditor::Instance()->GetMousePosWRTPanel();
+#else
+		using namespace Math;
+		Math::Vec2 mousePos;
+		f64 mousePosX{ 0.f }, mousePosY{ 0.f };
+		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
+
+		Math::Vec2 mousePos(mousePosX, mousePosY);
+
+		return mousePos;
 #endif
 	}
 

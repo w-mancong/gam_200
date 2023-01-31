@@ -201,6 +201,16 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Returns the cursor's screen space position with respect to the 
+			game/scene panel.
+
+			\return
+			Cursor Screen Space position with reference to the game/scene panel.
+		***********************************************************************************/
+		Math::Vec2 GetMousePosWRTPanel();
+
+		/*!*********************************************************************************
+			\brief
 			Returns if the game panel is active or not
 
 			\return

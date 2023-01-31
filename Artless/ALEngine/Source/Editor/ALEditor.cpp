@@ -700,6 +700,13 @@ namespace ALEngine::Editor
 		return m_ScenePanel.GetMouseWorldPos();
 	}
 
+	Math::Vec2 ALEditor::GetMousePosWRTPanel()
+	{
+		if (m_GameIsActive)
+			return m_GamePanel.GetMousePosWRTPanel();
+		return m_ScenePanel.GetMousePosWRTPanel();
+	}
+
 	b8 ALEditor::GetGameActive(void)
 	{
 		return m_GameIsActive;
