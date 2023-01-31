@@ -53,6 +53,15 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Returns the cursor's screen space with respect to the Game Panel.
+
+			\return
+			Cursor Screen Space position with respect to the Game Panel.
+		***********************************************************************************/
+		Math::Vec2 GetMousePosWRTPanel();
+
+		/*!*********************************************************************************
+			\brief
 			Set the panel's minimum size
 			\param min
 			Panel's min size
