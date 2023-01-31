@@ -235,6 +235,36 @@ namespace ALEngine::Editor
 		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
 	}
 
+	Math::Vec2 ScenePanel::GetMousePosWRTPanel()
+	{
+		ImGuiStyle style = ImGui::GetStyle();
+		// Set mouse position
+		m_ImGuiMousePos = ImGui::GetMousePos();
+
+		// Find the Editor panel
+		ImGuiWindow* win = ImGui::FindWindowByName("Editor Scene");
+
+		// Get panel position
+		m_ImGuiPanelPos = win->DC.CursorPos;
+
+		// Convert mouse pos from ImGui space to screen space		
+		Math::vec4 mousePos{ m_ImGuiMousePos.x - m_ImGuiPanelPos.x,
+			-m_ImGuiMousePos.y + m_ImGuiPanelPos.y - style.WindowPadding.y * 0.75f, 0.f, 1.f };
+
+		return Math::Vec2(mousePos.x, mousePos.y);
+
+		//// Get NDC coords of mouse pos
+		//mousePos.x = 2.f * (mousePos.x / m_SceneWidth) - 1.f;
+		//mousePos.y = 2.f * (mousePos.y / m_SceneHeight) - 1.f;
+
+		//// Check if within range of scene
+		//if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
+		//	mousePos.y >= -1.f && mousePos.y <= 1.f)
+		//{	return Math::Vec2(mousePos.x, mousePos.y);	}
+
+		//return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
+	}
+
 	f32& ScenePanel::GetCameraWidth(void)
 	{
 		return m_CameraWidth;

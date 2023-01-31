@@ -99,6 +99,16 @@ namespace ALEngine::UserInput
 			Cursor World Space position.
 		***********************************************************************************/
 		static Math::Vec2 GetMouseWorldPos();
+		
+		/*!*********************************************************************************
+			\brief
+			Returns the cursor's position with respect to the Game/Scene Panel.
+
+			\return
+			Cursor World Space position with respect to the Game/Scene Panel.
+			Returns GLFW Mouse Position if not in Editor Mode.
+		***********************************************************************************/
+		static Math::Vec2 GetMousePosWRTPanel();
 
 		/*!*********************************************************************************
 			\brief

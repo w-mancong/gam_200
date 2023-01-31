@@ -621,6 +621,7 @@ namespace ALEngine::Editor
 				Audio ad;
 				ad.m_AudioName = "";
 				ad.m_ID = audioSource.id;
+				ad.m_Channel = Channel::BGM;
 				audioSource.list[audioSource.id++] = ad;
 			}
 		}
