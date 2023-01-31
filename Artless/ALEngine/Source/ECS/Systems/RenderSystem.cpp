@@ -236,11 +236,11 @@ namespace ALEngine::ECS
 			// Interpolate color and size between particle birth and death
 			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
 			Vector4 color = ParticleSystem::Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
-			f32 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
+			Vector2 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
 
 			Transform trans;
 			trans.localPosition = trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
-			trans.localScale = trans.scale = Math::Vector2(size, size);
+			trans.localScale = trans.scale = size;
 			trans.localRotation = trans.rotation = particle.rotation;
 			trans.modelMatrix = Math::mat4::Model(trans);
 
