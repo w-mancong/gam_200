@@ -10,6 +10,7 @@ brief:	This file contains the function definition for GamePlayInterface.cpp
 #include "pch.h"
 #include <Utility/AudioNames.h>
 #include <Engine/GamePlayInterface.h>
+#include <Engine/GameplayInterface_Management_GUI.h>
 
 namespace ALEngine::Engine::GameplayInterface
 {
@@ -191,7 +192,7 @@ namespace ALEngine::Engine::GameplayInterface
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-				if (!cell.m_isAccessible) {
+				if (!cell.m_isAccessible || cell.has_Wall) {
 					continue;
 				}
 
@@ -241,6 +242,7 @@ namespace ALEngine::Engine::GameplayInterface
 
 		//Set to canwalk
 		cell.m_canWalk = true;
+		cell.m_resetCounter = 2;
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 		sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
@@ -316,10 +318,10 @@ namespace ALEngine::Engine::GameplayInterface
 
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-					if (cell.hasUnit || !cell.m_isAccessible) {
+					if (cell.hasUnit) {
 						return false;
 					} 
-				} 
+				}
 			} 
 		} //End loop through pattern body check
 		
@@ -382,6 +384,9 @@ namespace ALEngine::Engine::GameplayInterface
 											playerUnit.health = playerUnit.maxHealth;
 										}
 
+										Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+										ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
+
 										AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 										break;
 									}
@@ -411,6 +416,9 @@ namespace ALEngine::Engine::GameplayInterface
 		[[maybe_unused]]EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
+		Transform& unitTrans = Coordinator::Instance()->GetComponent<Transform>(unitEntity);
+		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(unitTrans.position);
+
 		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
 
 		//Do damage
@@ -423,6 +431,13 @@ namespace ALEngine::Engine::GameplayInterface
 			//Determinte type
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				AL_CORE_INFO("Unit Died");
+				ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+				Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
+
+				ECS::SetActive(true, GameplayInterface_Management_GUI::getGuiManager().Win_Clear);
+
+				unitData.active = false;
+				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			}
 			else {
 				AL_CORE_INFO("Enemy Died");
@@ -488,13 +503,18 @@ namespace ALEngine::Engine::GameplayInterface
 		ECS::Entity cellEntity = getEntityCell(currentRoom, x, y);
 
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		if (cell.has_Wall) {
+			return;
+		}
+
 		cell.has_Wall = isTrue;
 		cell.m_canWalk = !isTrue;
 		cell.m_resetCounter = 2;
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
 		sprite.layer = 1000 - Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y;
-		sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Wall.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+		sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/ConstructTile_TileSprite.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
 	}
 

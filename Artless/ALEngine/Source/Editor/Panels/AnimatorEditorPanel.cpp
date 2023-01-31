@@ -265,7 +265,7 @@ namespace ALEngine::Editor
 					u32 totalSample = static_cast<u32>(atoi(clipTotalSample.c_str()));
 
 					Animator animator = ECS::CreateAnimator(currentAnimatorName.c_str());
-					ECS::CreateAnimationClip(tempAnimation.filePath, tempAnimation.clipName, width, height, 60, totalSample);
+					ECS::CreateAnimationClip(tempAnimation.filePath, tempAnimation.clipName, width, height, 12, totalSample);
 					ECS::AddAnimationToAnimator(animator, tempAnimation.clipName);
 					ECS::SaveAnimator(animator);
 

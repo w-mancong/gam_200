@@ -45,7 +45,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 	\brief
 	 Function for Placing type of Enemy onto room
 	***********************************************************************************/
-	void PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection, std::vector<Entity>& enemyEntityList, Room& m_Room);
+	ECS::Entity PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection, std::vector<Entity>& enemyEntityList, Room& m_Room);
 
 	void CellDestroyer_CellAttack(EnemyManager& enemyNeededData, Room& m_room, Unit& enemyUnit);
 
@@ -62,7 +62,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 	//void Enemy_Logic_Update_Melee(EnemyManager enemyNeededData);
 
 	void Enemy_Logic_Update_CellDestroyer(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
-
+	void Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
 }
 #endif
 

@@ -83,7 +83,7 @@ namespace ALEngine::ECS
 		if (!Coordinator::Instance()->HasComponent<Text>(entity)) {
 			Text text;
 
-			text.textString = "button Text";
+			text.textString = "[]";
 			text.scale = 1.0f;
 			text.currentFont = "Roboto-Bold";
 			text.colour = { 0.f, 0.f, 0.f, 1.f };
