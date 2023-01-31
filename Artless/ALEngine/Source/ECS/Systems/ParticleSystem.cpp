@@ -218,10 +218,10 @@ namespace ALEngine::ECS
 			// Interpolate color and size between particle birth and death
 			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
 			Math::Vector4 color = Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
-			f32 size = Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
+			Math::Vector2 size = Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
 
 			//Render
-			particleShader.Set("scale", Math::Matrix4x4::Scale(size, size, 1.0f));
+			particleShader.Set("scale", Math::Matrix4x4::Scale(size.x, size.y, 1.0f));
 			particleShader.Set("rotate", Math::Matrix4x4::Rotation(particle.rotation, Math::Vector3(0.0f, 0.0f, 1.0f)));
 			particleShader.Set("translate", Math::Matrix4x4::Translate(particle.position.x, particle.position.y, 0.0f));
 			particleShader.Set("color", color.x, color.y, color.z, color.w);
@@ -253,7 +253,8 @@ namespace ALEngine::ECS
 		particle.colorEnd = particleProperty.colorEnd;
 		particle.lifeTime = particleProperty.lifeTime;
 		particle.lifeRemaining = particleProperty.lifeTime;
-		particle.sizeBegin = particleProperty.sizeStart + particleProperty.sizeVariation * distribution(generator);
+		particle.sizeBegin.x = particleProperty.sizeStart.x + particleProperty.sizeVariation * distribution(generator);
+		particle.sizeBegin.y = particleProperty.sizeStart.y + particleProperty.sizeVariation * distribution(generator);
 		particle.sizeEnd = particleProperty.sizeEnd;
 		particle.rotAmt = particleProperty.rotation;
 		particle.sprite = particleProperty.sprite;
