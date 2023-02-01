@@ -275,6 +275,24 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		std::string const& GetCurrentSceneName(void) const;
 
+		/*!*********************************************************************************
+			\brief
+			Sets the current tile map path
+
+			\param sceneName
+			The current tile map path
+		***********************************************************************************/	
+		void SetCurrentTileMapPath(std::string tileMapPath);
+
+		/*!*********************************************************************************
+			\brief
+			Gets the current tile map path
+
+			\Return
+			Returns the current tile map path
+		***********************************************************************************/
+		std::string const& GetCurrentTileMapPath(void) const;
+
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -313,6 +331,7 @@ namespace ALEngine::Editor
 
 		// Scene String
 		std::string m_CurrentSceneName{ "" };
+		std::string m_CurrentTileMapPath{ "" };
 
 		// Booleans
 		b8 m_IsReceivingKBInput{ false };				// Whether ImGui is receiving Input

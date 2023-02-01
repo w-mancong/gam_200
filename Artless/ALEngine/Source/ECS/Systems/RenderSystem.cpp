@@ -296,14 +296,17 @@ namespace ALEngine::ECS
 
 		glGenTextures(1, &fbTexture);
 		glBindTexture(GL_TEXTURE_2D, fbTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+		s32 ScreenResX{ static_cast<s32>(OpenGLWindow::width) }, ScreenResY{ static_cast<s32>(OpenGLWindow::height) };
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ScreenResX, ScreenResY, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		
 		// create render buffer object for depth buffer and stencil attachment
 		glGenRenderbuffers(1, &viewportRenderBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, viewportRenderBuffer);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Input::GetScreenResX(), Input::GetScreenResY()); // Allocate buffer memory
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, ScreenResX, ScreenResY); // Allocate buffer memory
 
 		// attatch framebuffer and render buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -319,7 +322,7 @@ namespace ALEngine::ECS
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo);
 		glGenTextures(1, &editorTexture);
 		glBindTexture(GL_TEXTURE_2D, editorTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ScreenResX, ScreenResY, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, editorTexture, 0);
