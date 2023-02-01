@@ -147,6 +147,8 @@ namespace ALEngine::Editor
 
 			// Check if there is a selected entity for Inspector
 			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
+
+			ImGui::ShowDemoWindow();
 		}
 	}
 
@@ -238,37 +240,37 @@ namespace ALEngine::Editor
 		ImGuiStyle& style = ImGui::GetStyle();
 
 		// Title Colors
-		style.Colors[ImGuiCol_TitleBg] = m_ColorTitleBg;			// Title Background
-		style.Colors[ImGuiCol_TitleBgActive] = m_ColorTitleActiveBg;		// Title Active Background	
+		style.Colors[ImGuiCol_TitleBg] = m_ColorTitleBg;				// Title Background
+		style.Colors[ImGuiCol_TitleBgActive] = m_ColorTitleActiveBg;	// Title Active Background	
 
 		// Window Colors
-		style.Colors[ImGuiCol_WindowBg] = m_ColorWindowBg;			// Window Background
+		style.Colors[ImGuiCol_WindowBg] = m_ColorWindowBg;				// Window Background
 
 		// Frame Backgrounds
-		style.Colors[ImGuiCol_FrameBg] = m_ColorNormal;			// Normal Color
+		style.Colors[ImGuiCol_FrameBg] = m_ColorNormal;					// Normal Color
 		style.Colors[ImGuiCol_FrameBgActive] = m_ColorActive;			// Active Color
 		style.Colors[ImGuiCol_FrameBgHovered] = m_ColorHovered;			// Hovered Color
 
 		// Tab Colors
-		style.Colors[ImGuiCol_Tab] = m_ColorNormal;			// Normal Color
-		style.Colors[ImGuiCol_TabHovered] = m_ColorHovered;			// Hovered Color
-		style.Colors[ImGuiCol_TabActive] = m_ColorActive;			// Active Color
-		style.Colors[ImGuiCol_TabUnfocusedActive] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_Tab] = m_ColorNormal;						// Normal Color
+		style.Colors[ImGuiCol_TabHovered] = m_ColorHovered;				// Hovered Color
+		style.Colors[ImGuiCol_TabActive] = m_ColorActive;				// Active Color
+		style.Colors[ImGuiCol_TabUnfocusedActive] = m_ColorActive;		// Active Color
 
 		// Button Colors
-		style.Colors[ImGuiCol_Button] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_Button] = m_ColorActive;					// Active Color
 		style.Colors[ImGuiCol_ButtonActive] = m_ColorActive2;			// Active Color 2
 		style.Colors[ImGuiCol_ButtonHovered] = m_ColorHovered;			// Hovered Color
 
 		// Header Colors
-		style.Colors[ImGuiCol_Header] = m_ColorActive;			// Active Color
+		style.Colors[ImGuiCol_Header] = m_ColorActive;					// Active Color
 		style.Colors[ImGuiCol_HeaderActive] = m_ColorActive2;			// Active Color 2
 		style.Colors[ImGuiCol_HeaderHovered] = m_ColorHovered;			// Hovered Color
 
 		// Misc.
-		style.Colors[ImGuiCol_CheckMark] = m_ColorInteractive;		// Interactive Color
-		style.Colors[ImGuiCol_SliderGrab] = m_ColorInteractive;		// Interactive Color
-		style.Colors[ImGuiCol_SliderGrabActive] = m_ColorActive3;			// Active Color 3
+		style.Colors[ImGuiCol_CheckMark] = m_ColorInteractive;			// Interactive Color
+		style.Colors[ImGuiCol_SliderGrab] = m_ColorInteractive;			// Interactive Color
+		style.Colors[ImGuiCol_SliderGrabActive] = m_ColorActive3;		// Active Color 3
 
 	}
 
@@ -670,11 +672,15 @@ namespace ALEngine::Editor
 
 	f64 ALEditor::GetSceneWidth(void)
 	{
+		if (m_GameIsActive)
+			return m_GamePanel.GetGamePanelWidth();
 		return m_ScenePanel.GetSceneWidth();
 	}
 
 	f64 ALEditor::GetSceneHeight(void)
 	{
+		if (m_GameIsActive)
+			return m_GamePanel.GetGamePanelHeight();
 		return m_ScenePanel.GetSceneHeight();
 	}
 
@@ -739,6 +745,16 @@ namespace ALEngine::Editor
 	std::string const& ALEditor::GetCurrentSceneName(void) const
 	{
 		return m_CurrentSceneName;
+	}
+
+	void ALEditor::SetCurrentTileMapPath(std::string tileMap)
+	{
+		m_CurrentTileMapPath = tileMap;
+	}
+
+	std::string const& ALEditor::GetCurrentTileMapPath(void) const
+	{
+		return m_CurrentTileMapPath;
 	}
 
 	void HelpMarker(const char* desc)

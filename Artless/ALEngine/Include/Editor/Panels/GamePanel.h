@@ -78,6 +78,24 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void SetDefaults(Math::Vec2 pos, Math::Vec2 size);
 
+		/*!*********************************************************************************
+			\brief
+			Gets the Width of the Scene Panel
+
+			\return
+			Returns the selected Entity
+		***********************************************************************************/
+		f64 GetGamePanelWidth(void);
+
+		/*!*********************************************************************************
+			\brief
+			Gets the Height of the Scene Panel
+
+			\return
+			Returns the selected Entity
+		***********************************************************************************/
+		f64 GetGamePanelHeight(void);
+
 	private:		
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size
@@ -86,11 +104,13 @@ namespace ALEngine::Editor
 		ImVec2 m_DefaultPos{};	// Default Position
 		ImVec2 m_DefaultSize{};	// Default Size
 
-		// Scene Size
-		f32 m_SceneWidth{ 0 }, m_SceneHeight{ 0 };
+		// Panel Size
+		f32 m_PanelWidth{ 0 }, m_PanelHeight{ 0 };
 
 		ImVec2 m_ImGuiMousePos{};
 		ImVec2 m_ImGuiPanelPos{};
+
+
 	};
 }
 
