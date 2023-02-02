@@ -49,6 +49,11 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void UpdatePointerStatus(Entity entity, bool previousStillOverlapping);
 
+		/*!*****************************************************************************
+			\brief Reset member variable to default values
+		*******************************************************************************/
+		void Reset(void);
+
 		//State of Trigger
 		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 		Entity m_interactedEventTrigger_Entity;
@@ -74,7 +79,7 @@ namespace ALEngine::ECS
 		}
 		
 		//Get if triggered
-		bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
+		[[maybe_unused]] bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
 		b8 previousStillOverlapping = false;
 			
 		//Do a check in case the current interacted trigger deactivates itself while being used
@@ -90,7 +95,7 @@ namespace ALEngine::ECS
 		//If the system was interacting with an eventTrigger
 		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING) {
 			//Keep track of whether it's still being interacted/overlapping
-			EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
+			[[maybe_unused]] EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
 			Transform& previousTransform = Coordinator::Instance()->GetComponent<Transform>(eventSystem->m_interactedEventTrigger_Entity);
 
 			//Get the calcaltion
@@ -206,6 +211,11 @@ namespace ALEngine::ECS
 		return;
 	}
 
+	void EventTriggerSystem::Reset(void)
+	{
+		current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+	}
+
 	void EventTriggerSystem::InvokeEvent(Entity invokerEntity, Event& evnt) {
 		for (auto it = evnt.m_Listeners.begin(); it != evnt.m_Listeners.end(); ++it) {
 			it->second.invokeFunction(invokerEntity);
@@ -285,4 +295,11 @@ namespace ALEngine::ECS
 			evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 		}
 	}
+
+#if EDITOR
+	void ResetEventTriggerSystem(void)
+	{
+		eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+	}
+#endif
 }

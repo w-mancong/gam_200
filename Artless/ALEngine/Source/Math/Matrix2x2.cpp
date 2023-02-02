@@ -29,7 +29,7 @@ namespace ALEngine::Math
 
 	typename Matrix2x2::const_reference Matrix2x2::operator()(size_type row, size_type col) const
 	{
-#ifdef _DEBUG
+#ifndef NDEBUG
 		assert(0 <= row && 2 > row && 0 <= col && 2 > col && "Rows and Columns must be a positive integer lesser than 2!");
 #endif
 		return *(&mat[0].x + row * 2 + col);
@@ -42,7 +42,7 @@ namespace ALEngine::Math
 
 	vec2 const& Matrix2x2::operator()(size_type row) const
 	{
-#ifdef _DEBUG
+#ifndef NDEBUG
 		assert(0 <= row && 2 > row && "Rows must be a positive integer lesser than 2!");
 #endif
 		return *(mat + row);
@@ -119,7 +119,7 @@ namespace ALEngine::Math
 
 	Matrix2x2 Matrix2x2::Inverse(Matrix2x2 const& mat)
 	{
-#if _DEBUG
+#ifndef NDEBUG
 		f32 const det = Determinant(mat);
 		assert(!Utility::IsEqual(det, 0.0f) && "Determinant is 0, unable to proceed due to division by 0!!");
 		f32 const oneOverDeterminant = 1.0f / det;

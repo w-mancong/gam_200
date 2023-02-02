@@ -9,6 +9,16 @@ brief:	This file contains the function declarations for LogicSystem
 #ifndef LOGIC_SYSTEM_H
 #define	LOGIC_SYSTEM_H
 
+namespace
+{
+	template <typename T>
+	std::string GetLogicComponentName(void)
+	{
+		std::string logicComponentName{ typeid(T).name() };
+		return logicComponentName.substr(logicComponentName.find_last_of(':') + 1);
+	}
+}
+
 namespace ALEngine::ECS
 {
 	class Coordinator;
@@ -36,8 +46,24 @@ namespace ALEngine::ECS
 				Coordinator::Instance()->AddComponent(en, Component::LogicComponent());
 
 			Component::LogicComponent& lc = Coordinator::Instance()->GetComponent<Component::LogicComponent>(en);
-			lc.logics.emplace_back(std::make_shared<T>());
+			lc.logics[GetLogicComponentName<T>()] = std::make_shared<T>();
 		}
+	}
+
+	/*!*****************************************************************************
+		\brief Get a specific logic component from the entity
+
+		\param [in] en: Entity id to retrieve the logic component from
+		\param [in] name: Class name of the inherited logic component you want to retrieve
+
+		\return The shared pointer of the requested logic component
+	*******************************************************************************/
+	template <typename T>
+	std::shared_ptr<T> GetLogicComponent(Entity en, char const* name)
+	{
+#ifndef NDEBUG
+
+#endif
 	}
 
 	/*!*********************************************************************************

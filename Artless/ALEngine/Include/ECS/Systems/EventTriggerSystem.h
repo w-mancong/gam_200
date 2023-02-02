@@ -57,6 +57,14 @@ namespace ALEngine
 			\param [in] fp: function that will be subscribed to the trigger
 		***********************************************************************************/
 		void Subscribe(Entity const& entity, EVENT_TRIGGER_TYPE eventType, void (*fp)(ECS::Entity));
+
+#if EDITOR
+
+		/*!*****************************************************************************
+			\brief Reset Event Trigger System (Hotfix for editor mode when quit button is clicked)
+		*******************************************************************************/
+		void ResetEventTriggerSystem(void);
+#endif
 	}
 }
 #endif

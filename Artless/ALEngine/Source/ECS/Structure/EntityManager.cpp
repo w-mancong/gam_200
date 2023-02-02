@@ -19,7 +19,7 @@ namespace ALEngine::ECS
 
 	Entity EntityManager::CreateEntity(void)
 	{
-#ifdef _DEBUG
+#ifndef NDEBUG
 		assert(m_LivingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
 #endif	
 		// Take an ID from the front of the queue
@@ -32,7 +32,7 @@ namespace ALEngine::ECS
 
 	void EntityManager::DestroyEntity(Entity entity)
 	{
-#ifdef _DEBUG
+#ifndef NDEBUG
 		assert(entity < MAX_ENTITIES && "Entity out of range.");
 #endif	
 		// Invalidate the destroyed entity's signature
@@ -45,7 +45,7 @@ namespace ALEngine::ECS
 
 	void EntityManager::SetSignature(Entity entity, Signature const& signature)
 	{
-#ifdef _DEBUG
+#ifndef NDEBUG
 		assert(entity < MAX_ENTITIES && "Entity out of range.");
 #endif	
 		// Put this entity's signature into the array
@@ -54,7 +54,7 @@ namespace ALEngine::ECS
 
 	Signature& EntityManager::GetSignature(Entity entity)
 	{
-#ifdef _DEBUG
+#ifndef NDEBUG
 		assert(entity < MAX_ENTITIES && "Entity out of range.");
 #endif	
 		//Get this entity's signature from the array

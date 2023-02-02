@@ -276,6 +276,14 @@ namespace ALEngine::ECS
 			m_SystemManager->SetSignature<T>(signature);
 		}
 
+		/*!*****************************************************************************
+			\brief Reset all system's member variable to it's default value
+		*******************************************************************************/
+		void ResetSystem(void)
+		{
+			m_SystemManager->ResetSystem();
+		}
+
 	private:
 		Coordinator(void) { Init(); }
 		virtual ~Coordinator(void) = default;

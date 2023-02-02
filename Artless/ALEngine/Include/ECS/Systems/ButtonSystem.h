@@ -1,8 +1,8 @@
 /*!
-file:   EventCollisionTriggerSystem.h
+file:   ButtonSystem.h
 author: Tan Zhen Xiong
 email:  t.zhenxiong\@digipen.edu
-brief:	This file contains the function declarations for EventTriggerSystem.h
+brief:	This file contains the function declarations for ButtonSystem.h
 
 		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -32,7 +32,16 @@ namespace ALEngine
 		***********************************************************************************/
 		void CreateButton(Entity const& entity);
 
+		/*!*********************************************************************************
+		\brief
+			Event for darkening button
+		***********************************************************************************/
 		void Event_Button_Darken(Entity invoker);
+
+		/*!*********************************************************************************
+		\brief
+			Event for lightening the button
+		***********************************************************************************/
 		void Event_Button_Lighten(Entity invoker);
 	}
 }
