@@ -621,6 +621,7 @@ namespace ALEngine::Editor
 				Audio ad;
 				ad.m_AudioName = "";
 				ad.m_ID = audioSource.id;
+				ad.m_Channel = Channel::BGM;
 				audioSource.list[audioSource.id++] = ad;
 			}
 		}
@@ -645,9 +646,11 @@ namespace ALEngine::Editor
 			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, particleProperty.colorEnd.w };
 			f32 vel[2] = { particleProperty.velocity.x, particleProperty.velocity.y };
 			f32 velVariation[2] = { particleProperty.velocityVariation.x, particleProperty.velocityVariation.y };
+			f32 startSize[2] = { particleProperty.sizeStart.x, particleProperty.sizeStart.y };
+			f32 endSize[2] = { particleProperty.sizeEnd.x, particleProperty.sizeEnd.y };
 
-			ImGui::DragFloat("Start Size", &particleProperty.sizeStart, 0.1f, 0.0f, 1500.0f);
-			ImGui::DragFloat("End Size", &particleProperty.sizeEnd, 0.1f, 0.0f, 1000.0f);
+			ImGui::DragFloat2("Start Size", startSize, 0.5f);
+			ImGui::DragFloat2("End Size", endSize, 0.5f);
 			ImGui::DragFloat("Size Variation", &particleProperty.sizeVariation, 0.1f, 0.0f, 1000.0f);
 			ImGui::ColorEdit4("Start Color", startClr);
 			ImGui::ColorEdit4("End Color", endClr);
@@ -658,6 +661,12 @@ namespace ALEngine::Editor
 			ImGui::DragFloat("Rotation", &particleProperty.rotation, 0.1f, 0.0f, 1000.0f);
 			ImGui::Checkbox("Enable Gravity", &particleProperty.gravityEnabled);
 			ImGui::Checkbox("Active", &particleProperty.active);
+
+			particleProperty.sizeStart.x = startSize[0];
+			particleProperty.sizeStart.y = startSize[1];
+
+			particleProperty.sizeEnd.x = endSize[0];
+			particleProperty.sizeEnd.y = endSize[1];
 
 			particleProperty.velocity.x = vel[0];
 			particleProperty.velocity.y = vel[1];

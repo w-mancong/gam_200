@@ -42,7 +42,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		//Set enemy sprite position and size
 		Transform enemySpriteTransform;
 		enemySpriteTransform.localPosition = { 0.f, 0.4f };
-		enemySpriteTransform.localScale = { 1.f, 2.f };
+		enemySpriteTransform.localScale = { 1.25f, 1.25f };
 
 		ALEngine::ECS::CreateSprite(enemyUnit.unit_Sprite_Entity, enemySpriteTransform, "Assets/Images/Bishop v.02.png");
 
@@ -62,8 +62,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 20, 
-		enemyUnit.maxHealth = 20;
+		enemyUnit.health = 10, 
+		enemyUnit.maxHealth = 10;
 		enemyUnit.minDamage = 8, 
 		enemyUnit.maxDamage = 13;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_MELEE;
@@ -74,8 +74,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 10,
-		enemyUnit.maxHealth = 10;
+		enemyUnit.health = 5,
+		enemyUnit.maxHealth = 5;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
 		enemyUnit.maxMovementPoints = 1;
@@ -119,6 +119,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		case ENEMY_TYPE::ENEMY_MELEE:
 			{
 
+				enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
 				Animator an = ECS::CreateAnimator("Bishop");
 				Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
 			}
@@ -126,6 +127,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 			break;
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
 			{
+				enemyUnit.unit_Profile_Sprite_File = "Assets/Images/TileBreaker.png";
 				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
 			}

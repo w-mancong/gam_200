@@ -529,11 +529,17 @@ namespace ALEngine::Engine::Scene
 
 		// sizeStart
 		writer.Key("sizeStart");
-		writer.Double(static_cast<f64>(prop.sizeStart));
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.sizeStart.x));
+		writer.Double(static_cast<f64>(prop.sizeStart.y));
+		writer.EndArray();
 
 		// sizeEnd
 		writer.Key("sizeEnd");
-		writer.Double(static_cast<f64>(prop.sizeEnd));
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.sizeEnd.x));
+		writer.Double(static_cast<f64>(prop.sizeEnd.y));
+		writer.EndArray();
 
 		// sizeVariation
 		writer.Key("sizeVariation");
@@ -592,10 +598,14 @@ namespace ALEngine::Engine::Scene
 		prop.colorEnd.w = e[3].GetFloat();
 
 		// Getting sizeStart
-		prop.sizeStart = v[0]["sizeStart"].GetFloat();
+		rjs::Value const& a = v[0]["sizeStart"];
+		prop.sizeStart.x = a[0].GetFloat();
+		prop.sizeStart.y = a[1].GetFloat();
 
 		// Getting sizeEnd
-		prop.sizeEnd = v[0]["sizeEnd"].GetFloat();
+		rjs::Value const& b = v[0]["sizeEnd"];
+		prop.sizeEnd.x = b[0].GetFloat();
+		prop.sizeEnd.y = b[1].GetFloat();
 
 		// Getting sizeVariation
 		prop.sizeVariation = v[0]["sizeVariation"].GetFloat();
@@ -775,6 +785,13 @@ namespace ALEngine::Engine::Scene
 				WriteParticleProperty(writer, en);
 			if (Coordinator::Instance()->HasComponent<Text>(en))
 				WriteTextProperty(writer, en);
+
+			writer.EndObject();
+		}
+
+		// Add TileMap
+		{
+			writer.StartObject();
 
 			writer.EndObject();
 		}

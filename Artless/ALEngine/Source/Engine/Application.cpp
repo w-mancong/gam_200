@@ -53,12 +53,6 @@ namespace ALEngine::Engine
 
 		void EditorUpdate(void)
 		{
-			if (!focus)
-			{
-				glfwPollEvents();
-				return;
-			}
-
 			// Get Current Time
 			Time::ClockTimeNow();
 
@@ -66,6 +60,16 @@ namespace ALEngine::Engine
 			Commands::EditorCommandManager::Update();
 			// Begin new ImGui frame
 			ALEditor::Instance()->Begin();
+
+			if (!focus)
+			{
+				if (!ImGui::IsPopupOpen(0u, ImGuiPopupFlags_AnyPopupId) && (!ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows | ImGuiFocusedFlags_DockHierarchy)))
+				{
+					ALEditor::Instance()->End();
+					glfwPollEvents();
+					return;					
+				}
+			}
 
 			Engine::Update();
 
@@ -209,7 +213,7 @@ namespace ALEngine::Engine
 		RunFileWatcherThread();
 
 #if !EDITOR
-		//OpenGLWindow::FullScreen(true);
+		OpenGLWindow::FullScreen(true);
 		Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif

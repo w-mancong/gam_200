@@ -69,10 +69,14 @@ namespace ALEngine::ECS
 	}
 
 	void UpdateEventTriggerSystem() {
+		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING && !Coordinator::Instance()->HasComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity)) {
+			eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+		}
+		
 		//Get if triggered
 		bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
 		b8 previousStillOverlapping = false;
-
+			
 		//Do a check in case the current interacted trigger deactivates itself while being used
 		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING) {
 			EventTrigger& current_event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
