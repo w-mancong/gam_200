@@ -390,26 +390,16 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 			return;
 		}
 
-		//AL_CORE_INFO("Run Adjacent Attack");
-		//bool ifPlayerIsAlreadyBeside = GameplayInterface::RunEnemyAdjacentAttack(m_Room, enemyUnit);
-
 		AL_CORE_INFO("Run destroy block Attack");
 		bool ifEnemyIsOnWalkableCell = GameplayInterface::CheckIfWalkableOnGrid(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
 
-		//AL_CORE_INFO("Check player inside");
-		//if (ifPlayerIsAlreadyBeside) {
-		//	AL_CORE_INFO("Enemy " + std::to_string(*enemyNeededData.enemyMoved) + " Attacked player");
-		//	++* enemyNeededData.enemyMoved;
-		//	Enemy_Logic_Update_CellDestroyer(enemyNeededData, enemyEntityList, m_Room);
-		//	return;
-		//}
 
 		AL_CORE_INFO("Check enemy on walkable cell");
 		if (ifEnemyIsOnWalkableCell)
 		{
-			CellDestroyer_CellAttack(enemyNeededData, m_Room, enemyUnit);
-
-			//EndTurn(); //remove once destroy block section is in and then uncomment bottom code
+			//CellDestroyer_CellAttack(enemyNeededData, m_Room, enemyUnit);
+			Enemy_Logic_CellDestroyer_DestroyTile(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			++enemyNeededData.enemyMoved;
 			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}

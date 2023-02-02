@@ -187,7 +187,7 @@ namespace ALEngine::Engine::GameplayInterface
 	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName);
 
 	/*!*********************************************************************************
-	\brief
+	\brief (stanley)
 		check if grid is walkable
 	\param [in]
 		room: gameplay room

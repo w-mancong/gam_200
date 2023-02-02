@@ -27,17 +27,35 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	};
 
-
+	/*!*********************************************************************************
+	\brief
+	 Function for setting EnemyManager object variables for references for 
+	 GameplayInterface_Management_Enemy functions
+	***********************************************************************************/
 	void EnemyManager_LoadData();
 
-
-
+	/*!*********************************************************************************
+	\brief
+	 Function for set enemy melee type attribute
+	***********************************************************************************/
 	void SetEnemy01attributes(Unit& enemyUnit);
 
+	/*!*********************************************************************************
+	\brief
+	 Function for set enemy cell destroyer type attribute
+	***********************************************************************************/
 	void SetEnemy02attributes(Unit& enemyUnit);
 
+	/*!*********************************************************************************
+	\brief
+	 Function for set third enemy type attribute (projectile based enemy?)
+	***********************************************************************************/
 	void SetEnemy03attributes(Unit& enemyUnit);
 
+	/*!*********************************************************************************
+	\brief
+	 Function for set boss enemy type attribute (boss enemy?)
+	***********************************************************************************/
 	void SetEnemy04attributes(Unit& enemyUnit);
 
 	//need enum of type of enemy, containers for attributes of different enemy types
@@ -57,11 +75,36 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	void EndTurn();
 
+	/*!*********************************************************************************
+	\brief 
+		enemy melee AI logic function
+	\param [in]
+		
+	\param [in]
+		
+	***********************************************************************************/
 	void Enemy_Logic_Update_Melee(EnemyManager& enemyNeededData, Entity &movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
 
 	//void Enemy_Logic_Update_Melee(EnemyManager enemyNeededData);
 
+	/*!*********************************************************************************
+	\brief
+		enemy cell destroyer AI logic function
+	\param [in]
+
+	\param [in]
+
+	***********************************************************************************/
 	void Enemy_Logic_Update_CellDestroyer(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
+
+	/*!*********************************************************************************
+	\brief
+		enemy cell destroyer destroying of the cell tile logic function
+	\param [in]
+
+	\param [in]
+
+	***********************************************************************************/
 	void Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room);
 }
 #endif
