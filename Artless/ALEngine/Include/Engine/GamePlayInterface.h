@@ -260,10 +260,38 @@ namespace ALEngine::Engine::GameplayInterface
 	***********************************************************************************/
 	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy);
 
-
+	/*!*********************************************************************************
+	\brief
+		Constructs a wall onto a cell, makes the cell unwalkable in pathfinding
+	\param [in]
+		currentRoom: room maintained by the gameplay system 
+	\param [in]
+		x: x coordinate
+	\param [in]
+		y: y coordinate
+	\param [in]
+		isTrue : Whether to build the wall
+	***********************************************************************************/
 	void constructWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+	/*!*********************************************************************************
+	\brief
+		Destroys a wall on a cell
+	\param [in]
+		currentRoom: room maintained by the gameplay system
+	\param [in]
+		x: x coordinate
+	\param [in]
+		y: y coordinate
+	\param [in]
+		isTrue : Whether to destroy the wall
+	***********************************************************************************/
 	void destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
+	
+	/*!*********************************************************************************
+	\brief
+		Creates an audio manager
+	***********************************************************************************/
 	void CreateAudioEntityMasterSource(void);
 }
 #endif
