@@ -792,6 +792,7 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
+		GameplayInterface_Management_GUI::UpdateFpsLabel(); // update fps top right corner of screen
 		#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;

@@ -3158,5 +3158,87 @@
                 "active": false
             }
         ]
-    }
+    },
+    {
+        "id": 70,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1569.2001953125,
+                    873.199951171875,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "FPS_label",
+                "active": true,
+                "localActive": true,
+                "id": 70,
+                "parentID": 66,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "60.99",
+                "currentFont": "Roboto-Regular",
+                "scale": 1.0,
+                "color": [
+                    0.96875,
+                    1.0,
+                    0.0
+                ],
+                "position": [
+                    736.5,
+                    429.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 71,
+        "EntityData": [
+            {
+                "tag": "entity #71",
+                "active": true,
+                "localActive": true,
+                "id": 71,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 72,
+        "EntityData": [
+            {
+                "tag": "entity #72",
+                "active": true,
+                "localActive": true,
+                "id": 72,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {}
 ]
