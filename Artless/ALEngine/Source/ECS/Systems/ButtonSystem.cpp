@@ -1,8 +1,8 @@
 /*!
-file:	EventTriggerSystem.cpp
+file:	ButtonSystem.cpp
 author:	Tan Zhen Xiong
 email:	t.zhenxiong\@digipen.edu
-brief:	This file contains the function definition for EventTriggerSystem.cpp
+brief:	This file contains the function definition for ButtonSystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -16,7 +16,7 @@ namespace ALEngine::ECS
 
 	/*!*********************************************************************************
 		\brief
-			Event Trigger System, contains functions needed to run components for EventTrigger System
+			Button System, contains functions needed to run components for Button System
 	***********************************************************************************/
 	class ButtonSystem : public System
 	{
@@ -62,10 +62,7 @@ namespace ALEngine::ECS
 	}
 
 	void UpdateButtonSystem() {
-		////Shift through each component
-		//for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
-		//	Button& button = Coordinator::Instance()->GetComponent<Button>(*it);
-		//}
+
 	}
 
 	void CreateButton(Entity const& entity) {

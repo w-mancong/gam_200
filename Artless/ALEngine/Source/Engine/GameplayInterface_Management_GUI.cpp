@@ -85,8 +85,6 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		DisableToolTipGUI();
 	}
 
-
-
 	void InitializePatternGUI(std::vector<ECS::Entity>& GUI_Pattern_Button_Entities) {
 		//Clear GUI
 		GUI_Pattern_Button_Entities.clear();
