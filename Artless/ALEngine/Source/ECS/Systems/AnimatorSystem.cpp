@@ -96,7 +96,7 @@ namespace ALEngine::ECS
 	void SaveAnimator(Animator const& animator)
 	{
 		std::ofstream ofs{ "Assets\\Dev\\Animator\\" + animator.animatorName, std::ios::binary };
-#ifdef _DEBUG
+#ifndef NDEBUG
 		if (!ofs)
 		{
 			AL_CORE_CRITICAL("Unable to save animator for: {}", animator.animatorName);
@@ -111,7 +111,7 @@ namespace ALEngine::ECS
 
 	void ChangeAnimation(Animator& animator, c8 const* clipName)
 	{
-#ifdef _DEBUG
+#ifndef NDEBUG
 		if (animator.animations.find(clipName) == animator.animations.end())
 			return;
 #endif

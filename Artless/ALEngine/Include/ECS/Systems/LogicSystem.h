@@ -61,7 +61,7 @@ namespace ALEngine::ECS
 	template <typename T>
 	std::shared_ptr<T> GetLogicComponent(Entity en, char const* name)
 	{
-#if _DEBUG
+#ifndef NDEBUG
 
 #endif
 	}

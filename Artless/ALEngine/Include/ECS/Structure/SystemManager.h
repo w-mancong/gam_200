@@ -47,7 +47,7 @@ namespace ALEngine::ECS
 		std::shared_ptr<T> RegisterSystem(void)
 		{
 			const char* typeName = typeid(T).name();
-#ifdef _DEBUG
+#ifndef NDEBUG
 			assert(m_Systems.find(typeName) == m_Systems.end() && "Registering system more than once.");
 #endif	
 			// Create a pointer to the system and return it so it can be used externally
@@ -67,7 +67,7 @@ namespace ALEngine::ECS
 		void SetSignature(Signature signature)
 		{
 			const char* typeName = typeid(T).name();
-#ifdef _DEBUG
+#ifndef NDEBUG
 			assert(m_Systems.find(typeName) != m_Systems.end() && "System used before registered.");
 #endif	
 			// Set the signature for this system

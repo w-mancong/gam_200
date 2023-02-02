@@ -81,7 +81,7 @@ namespace
 		s32 width, height, nrChannels;
 		stbi_set_flip_vertically_on_load(true);
 		u8* data = stbi_load(filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
-#ifdef _DEBUG
+#ifndef NDEBUG
 		if (!data)
 		{
 			AL_CORE_CRITICAL("Failed to load texture.\nFile path: {}", filePath);
@@ -106,7 +106,7 @@ namespace
 			// I only want to accept files that have RGB/RGBA formats
 			default:
 			{
-#ifdef _DEBUG
+#ifndef NDEBUG
 				AL_CORE_CRITICAL("Wrong file format: Must contain RGB/RGBA channels\n");
 #endif
 				return {};
@@ -159,7 +159,7 @@ namespace
 		s32 width, height, nrChannels;
 		stbi_set_flip_vertically_on_load(true);
 		u8* data = stbi_load(animation.filePath, &width, &height, &nrChannels, STBI_rgb_alpha);
-#ifdef _DEBUG
+#ifndef NDEBUG
 		if (!data)
 		{
 			AL_CORE_CRITICAL("Failed to load texture.\nFile path: {}", animation.filePath);
@@ -184,14 +184,14 @@ namespace
 			// I only want to accept files that have RGB/RGBA formats
 			default:
 			{
-#ifdef _DEBUG
+#ifndef NDEBUG
 				AL_CORE_CRITICAL("Wrong file format: Must contain RGB/RGBA channels\n");
 #endif
 				return {};
 			}
 		}
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 		if (animation.width > width || animation.height > height)
 		{
 			AL_CORE_CRITICAL("Image width/height is smaller than the size to be sampled.\n");
@@ -883,7 +883,7 @@ namespace ALEngine::Engine
 				guidKey = animation.clipName;
 
 				Texture texture = LoadAnimation(animation);
-#ifdef _DEBUG
+#ifndef NDEBUG
 				if (texture.handle)
 #endif 
 					textureList.insert(std::pair<Guid, Texture>{ id, texture });

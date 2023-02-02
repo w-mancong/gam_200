@@ -148,7 +148,9 @@ namespace ALEngine::Editor
 			// Check if there is a selected entity for Inspector
 			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
+#ifndef NDEBUG
 			ImGui::ShowDemoWindow();
+#endif
 		}
 	}
 
