@@ -1097,7 +1097,7 @@ namespace ALEngine::ECS
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
-		//AddLogicComponent<Script::GameplayCamera>(entity);
+		AddLogicComponent<Script::GameplayCamera>(entity);
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(Entity cellEntity) {

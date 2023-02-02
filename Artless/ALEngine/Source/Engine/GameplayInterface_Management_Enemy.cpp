@@ -62,8 +62,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 20, 
-		enemyUnit.maxHealth = 20;
+		enemyUnit.health = 10, 
+		enemyUnit.maxHealth = 10;
 		enemyUnit.minDamage = 8, 
 		enemyUnit.maxDamage = 13;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_MELEE;
@@ -74,8 +74,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 10,
-		enemyUnit.maxHealth = 10;
+		enemyUnit.health = 5,
+		enemyUnit.maxHealth = 5;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
 		enemyUnit.maxMovementPoints = 1;
