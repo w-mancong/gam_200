@@ -220,7 +220,9 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		Text& fps = Coordinator::Instance()->GetComponent<Text>(getGuiManager().FPS_Label);
 		if (guiManager.fpsActive)
 		{
-			fps.textString = std::to_string(Time::m_FPS);
+			std::ostringstream oss{};
+			oss << "FPS: " << (int)Time::m_FPS;
+			fps.textString = oss.str();
 		}
 		else
 		{
