@@ -41,20 +41,20 @@ namespace ALEngine::Editor
 		void OnImGuiRender(void);
 
 		/*!*********************************************************************************
-		\brief
-		Gets the Width of the Scene Panel
+			\brief
+			Gets the Width of the Scene Panel
 
-		\return
-		Returns the selected Entity
+			\return
+			Returns the selected Entity
 		***********************************************************************************/
 		f64 GetSceneWidth(void);
 
 		/*!*********************************************************************************
-		\brief
-		Gets the Height of the Scene Panel
+			\brief
+			Gets the Height of the Scene Panel
 
-		\return
-		Returns the selected Entity
+			\return
+			Returns the selected Entity
 		***********************************************************************************/
 		f64 GetSceneHeight(void);
 

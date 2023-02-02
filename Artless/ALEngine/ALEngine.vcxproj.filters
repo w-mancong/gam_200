@@ -86,6 +86,7 @@
     <ClCompile Include="Source\Engine\GameplayInterface_Management_Enemy.cpp" />
     <ClCompile Include="Source\Engine\GameplayInterface_Management_GUI.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
+    <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />

@@ -40,30 +40,46 @@ namespace ALEngine::UserInput
 
 	s32 Input::GetScreenResX()
 	{
+#if EDITOR
+		return Editor::ALEditor::Instance()->GetSceneWidth();
+#else
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
 		return screenResX;
+#endif
 	}
 
 	s32 Input::GetScreenResY()
 	{
+#if EDITOR
+		return Editor::ALEditor::Instance()->GetSceneHeight();
+#else
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
 		return screenResY;
+#endif
 	}
 
 	f64 Input::GetMousePosX()
 	{
+#if EDITOR
+		return GetMousePosWRTPanel().x;
+#else
 		f64 mousePosX, mousePosY;
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 		return mousePosX;
+#endif
 	}
 
 	f64 Input::GetMousePosY()
 	{
+#if EDITOR
+		return GetMousePosWRTPanel().y;
+#else
 		f64 mousePosX, mousePosY;
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 		return static_cast<f64>(GetScreenResY()) - mousePosY;
+#endif
 	}
 
 	Math::Vec2 Input::GetMouseWorldPos()
@@ -105,7 +121,6 @@ namespace ALEngine::UserInput
 		return Editor::ALEditor::Instance()->GetMousePosWRTPanel();
 #else
 		using namespace Math;
-		Math::Vec2 mousePos;
 		f64 mousePosX{ 0.f }, mousePosY{ 0.f };
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 
