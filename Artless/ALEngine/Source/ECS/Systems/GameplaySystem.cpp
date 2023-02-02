@@ -1,7 +1,13 @@
 /*!
 file:	GameplaySystem.cpp
-author:	Tan Zhen Xiong
-email:	t.zhenxiong\@digipen.edu
+author:	Tan Zhen Xiong (40%)
+co-author:	Mohamed Zafir (20%)
+			Darrion Aw Wei Ting (20%)
+			Chan Jie Ming Stanley (20%)
+email:	t.zhenxiong@digipen.edu 
+		m.zafir@digipen.edu
+		Weitingdarrion.aw@digipen.edu
+		c.jiemingstanley@digipen.edu
 brief:	This file contains the function definition for GameplaySystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
