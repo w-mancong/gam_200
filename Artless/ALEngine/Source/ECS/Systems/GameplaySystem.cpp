@@ -333,16 +333,6 @@ namespace ALEngine::ECS
 		gameplaySystem->EndTurn();
 		buttonClickAudio->Play();
 	}
-
-	//void Event_Unit_OnSelect([[maybe_unused]] Entity invoker) {
-	//	if (utils::IsEqual(Time::m_Scale, 0.f)) {
-	//		return;
-	//	}
-
-	//	AL_CORE_INFO("DISPLAY UNIT");
-	//	gameplaySystem->UpdateGUI_OnSelectUnit(invoker);
-	//}
-
 	
 	void Event_MouseEnterCell(Entity invoker) {
 		//Keep track of cell the mouse is interacting with
@@ -1076,7 +1066,7 @@ namespace ALEngine::ECS
 		//Set player sprite transform size & position
 		Transform playerSpriteTransform;
 		playerSpriteTransform.localPosition = { 0.f, 0.4f };
-		playerSpriteTransform.localScale = { 1.f, 2.f };
+		playerSpriteTransform.localScale = { 1.35f, 1.35f };
 
 		CreateSprite(playerUnit.unit_Sprite_Entity, playerSpriteTransform, "Assets/Images/Player v2.png");
 		

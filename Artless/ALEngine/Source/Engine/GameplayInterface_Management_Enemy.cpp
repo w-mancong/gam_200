@@ -42,7 +42,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		//Set enemy sprite position and size
 		Transform enemySpriteTransform;
 		enemySpriteTransform.localPosition = { 0.f, 0.4f };
-		enemySpriteTransform.localScale = { 1.f, 2.f };
+		enemySpriteTransform.localScale = { 1.25f, 1.25f };
 
 		ALEngine::ECS::CreateSprite(enemyUnit.unit_Sprite_Entity, enemySpriteTransform, "Assets/Images/Bishop v.02.png");
 
