@@ -213,7 +213,7 @@ namespace ALEngine::Engine
 		RunFileWatcherThread();
 
 #if !EDITOR
-		OpenGLWindow::FullScreen(true);
+		//OpenGLWindow::FullScreen(true);
 		Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif
@@ -295,9 +295,9 @@ namespace ALEngine::Engine
 	{
 #if EDITOR
 		ZoneScopedN("Normal Delta Time Update");
+		AssetManager::Instance()->Update();
 #endif
 		Input::Update();
-		AssetManager::Instance()->Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
 	}

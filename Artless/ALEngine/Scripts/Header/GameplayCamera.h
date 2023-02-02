@@ -9,7 +9,7 @@ namespace ALEngine::Script
 	{
 	public:
 		/*!*********************************************************************************
-			\brief Updates every frame
+			\brief Updates GameplayCamera every frame
 		***********************************************************************************/
 		void Update(ECS::Entity en);
 	};

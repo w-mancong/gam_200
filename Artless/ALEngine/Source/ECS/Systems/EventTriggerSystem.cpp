@@ -283,4 +283,11 @@ namespace ALEngine::ECS
 			evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 		}
 	}
+
+#if EDITOR
+	void ResetEventTriggerSystem(void)
+	{
+		eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+	}
+#endif
 }

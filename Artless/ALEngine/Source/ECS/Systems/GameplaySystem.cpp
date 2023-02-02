@@ -15,6 +15,7 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/GameplayInterface_Management_GUI.h"
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
+#include <PauseLogic.h>
 
 namespace ALEngine::Engine::GameplayInterface
 {
@@ -243,7 +244,7 @@ namespace ALEngine::ECS
 
 		std::string const sceneName = R"(Assets\test.scene)";
 
-		Entity masterAudioSource;
+		Entity masterAudioSource{ ECS::MAX_ENTITIES };
 		Audio* buttonClickAudio{ nullptr };
 	}
 
@@ -792,17 +793,22 @@ namespace ALEngine::ECS
 		gameplaySystem->godMode = false;
 		gameplaySystem->cheat_abilitiesDoubleDamage = false;
 
-		if (masterAudioSource != ECS::MAX_ENTITIES)
+		Entity const tmpMAS = masterAudioSource;
+
+		masterAudioSource = ECS::MAX_ENTITIES;
+		buttonClickAudio = nullptr;
+
+		if (tmpMAS != ECS::MAX_ENTITIES)
 		{
-			AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+			if (!Coordinator::Instance()->HasComponent<AudioSource>(tmpMAS))
+				return;
+			AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(tmpMAS);
 			for (auto& it : as.list)
 			{
 				Audio& ad = it.second;
 				ad.Stop();
 			}
 		}
-		masterAudioSource = ECS::MAX_ENTITIES;
-		buttonClickAudio = nullptr;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {
@@ -1098,6 +1104,7 @@ namespace ALEngine::ECS
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 		//AddLogicComponent<Script::GameplayCamera>(entity);
+		AddLogicComponent<Script::PauseLogic>(entity);
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(Entity cellEntity) {

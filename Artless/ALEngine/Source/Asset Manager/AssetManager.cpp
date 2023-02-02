@@ -577,9 +577,11 @@ namespace ALEngine::Engine
 
 	void AssetManager::Update()
 	{
+#if EDITOR
 		NewFiles();
 		ModifiedFiles();
 		RemovedFiles();
+#endif
 	}
 
 	void AssetManager::Exit()
