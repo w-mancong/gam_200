@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7225341796875,
+                    967.72265625,
                     41.370460510253906,
                     0.0
                 ],
@@ -3213,32 +3213,5 @@
                 ]
             }
         ]
-    },
-    {
-        "id": 71,
-        "EntityData": [
-            {
-                "tag": "entity #71",
-                "active": true,
-                "localActive": true,
-                "id": 71,
-                "parentID": 0,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 72,
-        "EntityData": [
-            {
-                "tag": "entity #72",
-                "active": true,
-                "localActive": true,
-                "id": 72,
-                "parentID": 0,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {}
+    }
 ]
