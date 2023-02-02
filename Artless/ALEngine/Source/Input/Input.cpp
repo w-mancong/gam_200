@@ -121,7 +121,6 @@ namespace ALEngine::UserInput
 		return Editor::ALEditor::Instance()->GetMousePosWRTPanel();
 #else
 		using namespace Math;
-		Math::Vec2 mousePos;
 		f64 mousePosX{ 0.f }, mousePosY{ 0.f };
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 
