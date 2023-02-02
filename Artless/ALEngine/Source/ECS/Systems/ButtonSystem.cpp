@@ -47,7 +47,7 @@ namespace ALEngine::ECS
 		}
 
 		Button button = Coordinator::Instance()->GetComponent<Button>(invoker);
-		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
+		[[maybe_unused]] EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
 		sprite.color = button.m_color_Tint_Normal;

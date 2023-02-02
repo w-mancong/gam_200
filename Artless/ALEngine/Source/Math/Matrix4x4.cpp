@@ -31,7 +31,7 @@ namespace ALEngine::Math
 
 	Matrix4x4::const_reference Matrix4x4::operator()(size_type row, size_type col) const
 	{
-#ifdef _DEBUG
+#ifndef NDEBUG
 		assert(0 <= row && 4 > row && 0 <= col && 4 > col && "Rows and Columns must be a positive integer lesser than 4!");
 #endif
 		return *(value_ptr() + row * 4 + col);
@@ -272,7 +272,7 @@ namespace ALEngine::Math
 
 	Matrix4x4 Matrix4x4::Perspective(f32 fov, f32 aspect, f32 zNear, f32 zFar)
 	{
-#if _DEBUG
+#ifndef NDEBUG
 		assert(abs(aspect - std::numeric_limits<f32>::epsilon()) > 0.0f);
 #endif
 		f32 const halfTan = std::tanf(DegreeToRadian(fov) / 2.0f);
@@ -331,7 +331,7 @@ namespace ALEngine::Math
 
 	Matrix4x4 Matrix4x4::Inverse(Matrix4x4 const& mat)
 	{
-#if _DEBUG
+#ifndef NDEBUG
 		f32 const det = Determinant(mat);
 		assert(!Utility::IsEqual(det, 0.0f) && "Determinant is 0, unable to proceed due to division by 0!!");
 		f32 const oneOverDeterminant = 1.0f / det;

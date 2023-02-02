@@ -82,7 +82,7 @@ namespace ALEngine::Graphics
 
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 		// Enable OPENGL Debug Context if on debug mode
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #else
@@ -123,7 +123,7 @@ namespace ALEngine::Graphics
 		y = (desktop.y >> 1) - (height >> 1);
 		glfwSetWindowPos(window, x, y);
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 		// Check GL Context
 		s32 flags{ 0 }; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)

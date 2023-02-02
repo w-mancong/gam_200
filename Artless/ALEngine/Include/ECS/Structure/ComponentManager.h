@@ -29,7 +29,7 @@ namespace ALEngine::ECS
 		void RegisterComponent(void)
 		{
 			const char* typeName = typeid(T).name();
-#ifdef _DEBUG
+#ifndef NDEBUG
 			assert(m_ComponentTypes.find(typeName) == m_ComponentTypes.end() && "Registering component type more than once.");
 #endif	
 			// Add this component type to the component type map
@@ -54,7 +54,7 @@ namespace ALEngine::ECS
 		ComponentType GetComponentType(void)
 		{
 			const char* typeName = typeid(T).name();
-#ifdef _DEBUG
+#ifndef NDEBUG
 			assert(m_ComponentTypes.find(typeName) != m_ComponentTypes.end() && "Component not registered before use.");
 #endif	
 			// Return this component's type - used for creating signatures
@@ -154,7 +154,7 @@ namespace ALEngine::ECS
 		std::shared_ptr<ComponentArray<T>> GetComponentArray(void)
 		{
 			const char* typeName = typeid(T).name();
-#ifdef _DEBUG
+#ifndef NDEBUG
 			assert(m_ComponentTypes.find(typeName) != m_ComponentTypes.end() && "Component not registered before use.");
 #endif
 			return std::static_pointer_cast<ComponentArray<T>>(m_ComponentArrays[typeName]);
