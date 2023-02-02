@@ -197,14 +197,54 @@ namespace ALEngine::ECS
 		void RandomizePatternList(void);
 
 		//Cheats
-		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
+		b8 godMode = false, cheat_abilitiesDoubleDamage = false;		
+		
+		/*!*********************************************************************************
+		\brief
+			Make player not take any damage
+		***********************************************************************************/
 		void Cheat_ToggleGodMode();
+
+		/*!*********************************************************************************
+		\brief
+			Increase player health
+		***********************************************************************************/
 		void Cheat_IncreasePlayerHealth(s32 amount);
+
+		/*!*********************************************************************************
+		\brief
+			Adds increase damage to enemy by 2 times
+		***********************************************************************************/
 		void Cheat_ToggleDoubleAbilitiesDoubleDamage();
+
+		/*!*********************************************************************************
+		\brief
+			Decrease all enemy health to 1
+		***********************************************************************************/
 		void Cheat_DecreaseEnemyHealthToOne();
+
+		/*!*********************************************************************************
+		\brief
+			Elimiate all enemy
+		***********************************************************************************/
 		void Cheat_EliminateAllEnemy();
+
+		/*!*********************************************************************************
+		\brief
+			Reset all enemy health to full
+		***********************************************************************************/
 		void Cheat_ResetAllEnemiesHealth();
+
+		/*!*********************************************************************************
+		\brief
+			Reset Player Health
+		***********************************************************************************/
 		void Cheat_ResetPlayerHealth();
+
+		/*!*********************************************************************************
+		\brief
+			Clears all cell to be not walkable
+		***********************************************************************************/
 		void Cheat_ClearFloorWalkability();
 
 
@@ -248,12 +288,20 @@ namespace ALEngine::ECS
 	}
 
 	//****************EVENTS*****************//
+	/*!*********************************************************************************
+	\brief
+		Restart the level
+	***********************************************************************************/
 	void Event_Button_Restart([[maybe_unused]] Entity invoker) {
 		//Restart the gameplay
 		gameplaySystem->Toggle_Gameplay_State(false);
 		Scene::Restart();
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Select Ability 0
+	***********************************************************************************/
 	void Event_Button_Select_Abilities_0([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -264,6 +312,10 @@ namespace ALEngine::ECS
 		DisableToolTipGUI();
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Select Ability 1
+	***********************************************************************************/
 	void Event_Button_Select_Abilities_1([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -274,6 +326,10 @@ namespace ALEngine::ECS
 		DisableToolTipGUI();
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Select Ability 2
+	***********************************************************************************/
 	void Event_Button_Select_Abilities_2([[maybe_unused]] Entity invoker) { //CONSTRUCT WALL SKILL
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -284,6 +340,10 @@ namespace ALEngine::ECS
 		DisableToolTipGUI();
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Select Ability 3
+	***********************************************************************************/
 	void Event_Button_Select_CurrentPattern([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -294,6 +354,10 @@ namespace ALEngine::ECS
 		gameplaySystem->selected_Pattern_Index = 0;
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Select Ability 4
+	***********************************************************************************/
 	void Event_Button_Select_Pattern_1([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -303,7 +367,11 @@ namespace ALEngine::ECS
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[1]);
 		gameplaySystem->selected_Pattern_Index = 1;
 	}
-	
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 5
+	***********************************************************************************/
 	void Event_Button_Select_Pattern_2([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -313,7 +381,11 @@ namespace ALEngine::ECS
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[2]);
 		gameplaySystem->selected_Pattern_Index = 2;
 	}
-	
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 6
+	***********************************************************************************/
 	void Event_Button_Select_Pattern_3([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -324,6 +396,10 @@ namespace ALEngine::ECS
 		gameplaySystem->selected_Pattern_Index = 3;
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Event for GUI button end turn
+	***********************************************************************************/
 	void Event_Button_Select_EndTurn([[maybe_unused]] Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -333,7 +409,11 @@ namespace ALEngine::ECS
 		gameplaySystem->EndTurn();
 		buttonClickAudio->Play();
 	}
-	
+
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse enter cell
+	***********************************************************************************/
 	void Event_MouseEnterCell(Entity invoker) {
 		//Keep track of cell the mouse is interacting with
 		gameplaySystem->current_Moused_Over_Cell = invoker;
@@ -369,12 +449,23 @@ namespace ALEngine::ECS
 		}//End check for pattern placement
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Event for when  mouse exit cell
+	***********************************************************************************/
 	void Event_MouseExitCell(Entity invoker) {
+		//Get Cell Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+	
+		//Filter it's placement 
 		GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 	}
 
-	
+
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse enter unit
+	***********************************************************************************/
 	void Event_MouseEnterUnit(Entity invoker) {
 		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
 			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
@@ -382,12 +473,19 @@ namespace ALEngine::ECS
 		}
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse exit unit
+	***********************************************************************************/
 	void Event_MouseExitUnit(Entity invoker) {
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
 		Event_MouseExitCell(unit.m_CurrentCell_Entity);
 	}
 
-
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse click on cell
+	***********************************************************************************/
 	void Event_ClickCell(Entity invokerCell) {
 		AL_CORE_INFO("Select Cell");
 
@@ -396,21 +494,27 @@ namespace ALEngine::ECS
 			return;
 		}
 
+		//Get cell component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invokerCell);
 		//If not placing, move character
 		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING && 
 			gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
+			//When it's action, for moving player
 			//When click on cell, Move the player unit to the selected cell
 			gameplaySystem->MovePlayerEntityToCell(invokerCell);
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
+			//If can place
 			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
 			}
-
+			
+			//Switch off the display pattern
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			
+			//Place it onto the grid
 			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
 
 			// Remove from list
