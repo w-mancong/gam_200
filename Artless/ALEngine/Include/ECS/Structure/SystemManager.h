@@ -18,6 +18,12 @@ namespace ALEngine::ECS
 	class System
 	{
 	public:
+		/*!*****************************************************************************
+			\brief Reset system's member variable to it's default value
+			(To be overrided if the system has member variables)
+		*******************************************************************************/
+		virtual void Reset(void) {};
+
 		EntityList mEntities;
 	};
 
@@ -110,6 +116,18 @@ namespace ALEngine::ECS
 					system->mEntities.insert(entity);
 				else
 					system->mEntities.erase(entity);
+			}
+		}
+
+		/*!*****************************************************************************
+			\brief Calling all system's reset function
+		*******************************************************************************/
+		void ResetSystem(void)
+		{
+			for (auto& it : m_Systems)
+			{
+				System& sys = *(it.second);
+				sys.Reset();
 			}
 		}
 

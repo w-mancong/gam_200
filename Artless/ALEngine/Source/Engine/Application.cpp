@@ -175,7 +175,12 @@ namespace ALEngine::Engine
 #if !EDITOR
 			ExitGameplaySystem();
 			Coordinator::Instance()->DestroyEntities();
+#else
+			if (Editor::ALEditor::Instance()->GetGameActive())
+				ExitGameplaySystem();
 #endif
+
+			Coordinator::Instance()->ResetSystem();
 
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current = GameStateManager::next;

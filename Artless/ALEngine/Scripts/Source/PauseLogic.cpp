@@ -139,7 +139,7 @@ namespace ALEngine::Script
 		Lighten(en);
 	}
 
-	void PauseLogic::Init(ECS::Entity en)
+	void PauseLogic::Init([[maybe_unused]] ECS::Entity en)
 	{
 		en_paused = Coordinator::Instance()->GetEntityByTag("pause_menu");
 
@@ -184,7 +184,7 @@ namespace ALEngine::Script
 		Subscribe(htp_cross_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenHtpCrossPointerExit);
 	}
 
-	void PauseLogic::Update(ECS::Entity en)
+	void PauseLogic::Update([[maybe_unused]] ECS::Entity en)
 	{
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
@@ -229,7 +229,7 @@ namespace ALEngine::Script
 		}
 	}
 
-	void PauseLogic::Free(ECS::Entity en)
+	void PauseLogic::Free([[maybe_unused]] ECS::Entity en)
 	{
 		button_resume = button_htp = button_quit = MAX_ENTITIES;
 		backdrop = quit_yes = quit_no = MAX_ENTITIES;
