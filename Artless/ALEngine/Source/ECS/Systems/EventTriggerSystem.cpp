@@ -66,11 +66,13 @@ namespace ALEngine::ECS
 		Signature signature;
 		signature.set(Coordinator::Instance()->GetComponentType<EventTrigger>());
 		Coordinator::Instance()->SetSystemSignature<EventTriggerSystem>(signature);
-
-		eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 	}
 
 	void UpdateEventTriggerSystem() {
+		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING && !Coordinator::Instance()->HasComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity)) {
+			eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+		}
+		
 		//Get if triggered
 		bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
 		b8 previousStillOverlapping = false;
