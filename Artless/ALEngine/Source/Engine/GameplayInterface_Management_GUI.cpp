@@ -209,11 +209,28 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		guiManager.Skill_Tip_Line3 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line3");
 		guiManager.Skill_Tip_Line4 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line4");
 		guiManager.Tooltip_Skills_Card = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
+		guiManager.FPS_Label = Coordinator::Instance()->GetEntityByTag("FPS_label");
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
 
 		ECS::CreateButton(guiManager.Win_Button);
+	}
+
+	void UpdateFpsLabel()
+	{
+		Text& fps = Coordinator::Instance()->GetComponent<Text>(getGuiManager().FPS_Label);
+		if (guiManager.fpsActive)
+		{
+			fps.textString = std::to_string(Time::m_FPS);
+		}
+		else
+		{
+			fps.textString = "";
+		}
+
+		if (Input::KeyTriggered(KeyCode::Ctrl))
+			guiManager.fpsActive = !guiManager.fpsActive;
 	}
 
 	void GuiUpdatePhaseIndicator(PHASE_STATUS status)

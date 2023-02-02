@@ -25,9 +25,11 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void ToggleCellAccessibility(Room& currentRoom, u32 x, u32 y, b8 istrue) {
+		//Get cell component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
 		cell.m_isAccessible = istrue;	//set accessible
 
+		//Set it's overlay
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = istrue;
 
 		//Toggle color accordingly
@@ -231,8 +233,10 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName) {
+		//Get Cell Entity
 		ECS::Entity cellEntity = getEntityCell(room, coordinate.x, coordinate.y);
 
+		//Get Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		//if is completely block, dont need set
@@ -244,14 +248,17 @@ namespace ALEngine::Engine::GameplayInterface
 		cell.m_canWalk = true;
 		cell.m_resetCounter = 2;
 
+		//Change the cell sprite to filename sprite
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 		sprite.id = AssetManager::Instance()->GetGuid(sprite_fileName);
 	}
 
 	b8 ALEngine::Engine::GameplayInterface::CheckIfWalkableOnGrid(Room& room, u32 gridX, u32 gridY)
 	{
+		//Get Cell entity
 		ECS::Entity cellEntity = getEntityCell(room, gridX, gridY);
 
+		//Get Cell Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		//if is completely block, dont need set
@@ -259,12 +266,8 @@ namespace ALEngine::Engine::GameplayInterface
 			return false;
 		}
 
-		if (cell.m_canWalk == true)
-		{
-			return true;
-		}
-
-		return false;
+		//Return if it's walkable
+		return cell.m_canWalk;
 	}
 
 	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern) {
@@ -413,10 +416,16 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage) {
+		//Get the unit entity data
 		[[maybe_unused]]EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
+		
+		//Get unit component
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
+		//Get Transform
 		Transform& unitTrans = Coordinator::Instance()->GetComponent<Transform>(unitEntity);
+		
+		//Get Particle System
 		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(unitTrans.position);
 
 		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
@@ -440,6 +449,7 @@ namespace ALEngine::Engine::GameplayInterface
 				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			}
 			else {
+				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
 			}
 
@@ -456,8 +466,11 @@ namespace ALEngine::Engine::GameplayInterface
 		//Check 4 adjacent
 		//If player is beside, do damage to it
 		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0] + 1, enemy.coordinate[1])) {
+			//RIGHT
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0] + 1, enemy.coordinate[1]));
 
+			//Cell has unit
+			//Do damage to player
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					DoDamageToUnit(cell.unitEntity, enemy.minDamage);
@@ -466,8 +479,11 @@ namespace ALEngine::Engine::GameplayInterface
 			}
 		}
 		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0] - 1, enemy.coordinate[1])) {
+			//LEFT
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0] - 1, enemy.coordinate[1]));
 
+			//Cell has unit
+			//Do damage to player
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					DoDamageToUnit(cell.unitEntity, enemy.minDamage);
@@ -475,10 +491,12 @@ namespace ALEngine::Engine::GameplayInterface
 				}
 			}
 		}
-		AL_CORE_INFO("Checking UP");
 		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0], enemy.coordinate[1] + 1)) {
+			//UP
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0], enemy.coordinate[1] + 1));
 
+			//Cell has unit
+			//Do damage to player
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					DoDamageToUnit(cell.unitEntity, enemy.minDamage);
@@ -487,8 +505,11 @@ namespace ALEngine::Engine::GameplayInterface
 			}
 		}
 		if (GameplayInterface::IsCoordinateInsideRoom(room, enemy.coordinate[0], enemy.coordinate[1] - 1)) {
+			//DOWN
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(room, enemy.coordinate[0], enemy.coordinate[1] - 1));
 
+			//Cell has unit
+			//Do damage to player
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					DoDamageToUnit(cell.unitEntity, enemy.minDamage);
@@ -500,18 +521,23 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void constructWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
+		//Get the cell entity
 		ECS::Entity cellEntity = getEntityCell(currentRoom, x, y);
 
+		//Get Cell Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
+		//IF it already has a wall, don't do anything
 		if (cell.has_Wall) {
 			return;
 		}
 
+		//Set stats
 		cell.has_Wall = isTrue;
 		cell.m_canWalk = !isTrue;
 		cell.m_resetCounter = 2;
 
+		//Change it's sprite overlay
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
 		sprite.layer = 1000 - Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y;
 		sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/ConstructTile_TileSprite.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
@@ -519,48 +545,66 @@ namespace ALEngine::Engine::GameplayInterface
 	}
 
 	void destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
-
+		//Get cell component 
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+		
+		//Set Stats
 		cell.has_Wall = isTrue;
 		cell.m_canWalk = !isTrue;
 
+		//Set the overlay sprite to false
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
 	}
 
 	void CreateAudioEntityMasterSource(void)
 	{
 		using namespace ECS;
+		//Create Entity
 		Entity en	   = Coordinator::Instance()->CreateEntity();
+		
+		//Get it's data
 		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		
+		//Change name
 		ed.tag = "Master Audio Source";
 
+		//Prepare audiosource component
 		AudioSource as;
 		as.id = 0;
 
+		//Add BGM
 		Audio ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_BGM_1));
 		as.list[as.id++] = ad;
 
+		//Add Gameplay Loop
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_GAMEPLAY_LOOP));
 		as.list[as.id++] = ad;
 
+		//Add Select Skill
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_SELECT_SKILL));
 		as.list[as.id++] = ad;
 
+		//Add Player hurt
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_PLAYER_HURT));
 		as.list[as.id++] = ad;
 
+		//Add Enemy Hit
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_HIT));
 		as.list[as.id++] = ad;
 
+		//Add Enemy Hit 2
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_ENEMY_HURT_1));
 		as.list[as.id++] = ad;
 
+		//Add Audio Click (Button)
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_CLICK_1));
 		as.list[as.id++] = ad;
 
+		//Add Player Walk
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
 		as.list[as.id++] = ad;
 
+		//Add the audiosource component to the entity
 		Coordinator::Instance()->AddComponent(en, as);
 	}
 }
