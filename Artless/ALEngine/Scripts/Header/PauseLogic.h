@@ -1,3 +1,11 @@
+/*!
+file:	PauseLogic.h
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function declaration for a pause menu
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	PAUSE_LOGIC_H
 #define PAUSE_LOGIC_H
 
@@ -10,17 +18,17 @@ namespace ALEngine::Script
 		/*!*********************************************************************************
 			\brief Used to initialise any values to it's default value
 		***********************************************************************************/
-		void Init([[maybe_unused]] ECS::Entity en);
+		void Init(ECS::Entity en);
 
 		/*!*********************************************************************************
 			\brief Updates every frame
 		***********************************************************************************/
-		void Update([[maybe_unused]] ECS::Entity en);
+		void Update(ECS::Entity en);
 
 		/*!*********************************************************************************
 			\brief Whenever a scene ends, use this function to free any resources
 		**********************************************************************************/
-		void Free([[maybe_unused]] ECS::Entity en);
+		void Free(ECS::Entity en);
 	};
 }
 
