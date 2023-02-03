@@ -211,8 +211,8 @@
         "Transform": [
             {
                 "position": [
-                    137.14804077148438,
-                    206.14283752441406,
+                    137.1480712890625,
+                    206.142822265625,
                     0.0
                 ],
                 "scale": [
@@ -718,7 +718,7 @@
         "Transform": [
             {
                 "position": [
-                    317.03314208984375,
+                    317.0331115722656,
                     43.26409912109375,
                     0.0
                 ],
@@ -757,7 +757,7 @@
         "Transform": [
             {
                 "position": [
-                    387.2769775390625,
+                    387.2769470214844,
                     43.247314453125,
                     0.0
                 ],
@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.723388671875,
+                    967.7234497070313,
                     41.370460510253906,
                     0.0
                 ],
@@ -1996,14 +1996,14 @@
                 "active": true,
                 "localActive": true,
                 "id": 49,
-                "parentID": 2,
+                "parentID": -1,
                 "treeNodeFlags": 32
             }
         ],
         "TextProperty": [
             {
                 "textString": "50/50",
-                "currentFont": "Arial-italic",
+                "currentFont": "SFProverbialGothic",
                 "scale": 0.699999988079071,
                 "color": [
                     1.0,
