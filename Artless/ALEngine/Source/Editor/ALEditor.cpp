@@ -626,11 +626,8 @@ namespace ALEngine::Editor
 				m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());
 			}
 		}
-		else
-		{
-			Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
-			AL_CORE_INFO("Scene {} Saved!", m_CurrentSceneName);
-		}
+		Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
+		AL_CORE_INFO("Scene {} Saved!", m_CurrentSceneName);
 	}
 }
 
