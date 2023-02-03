@@ -1,7 +1,9 @@
 /*!
 file:   GameplayInterface_Management_Enemy.cpp
-author: Chan Jie Ming Stanley
-email:   c.jiemingstanley\@digipen.edu
+author: Chan Jie Ming Stanley (75%)
+co-author:	Tan Zhen Xiong (25%)
+email:  c.jiemingstanley\@digipen.edu
+		t.zhenxiong@digipen.edu
 brief:	This file contains the function definition for GameplayInterface_Management_Enemy.cpp
 
 		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
