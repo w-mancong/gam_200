@@ -409,7 +409,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]);
 
 		AL_CORE_INFO("Run destroy block Attack");
-		bool ifEnemyIsOnWalkableCell = GameplayInterface::CheckIfWalkableOnGrid(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
+		bool ifEnemyIsOnWalkableCell = true;
 
 		AL_CORE_INFO("Check enemy on walkable cell");
 		if (ifEnemyIsOnWalkableCell)

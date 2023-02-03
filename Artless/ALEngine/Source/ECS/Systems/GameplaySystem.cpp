@@ -520,7 +520,15 @@ namespace ALEngine::ECS
 
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
-			}
+			}			
+			
+			//Get the audiosource
+			AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+
+			//Play the sound
+			Audio& ad = as.GetAudio(AUDIO_CLICK_1);
+			ad.m_Channel = Channel::BGM;
+			ad.Play();
 			
 			//Switch off the display pattern
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -1112,6 +1120,14 @@ namespace ALEngine::ECS
 	void GameplaySystem::SelectAbility(Abilities& ability) {
 		//Select abilities
 		if (currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
+			//Get the audiosource
+			AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+
+			//Play the sound
+			Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL);
+			ad.m_Channel = Channel::SFX;
+			ad.Play();
+
 			selected_Abilities = ability;
 
 			//Set the gui
@@ -1290,6 +1306,15 @@ namespace ALEngine::ECS
 		UpdateGUI_OnSelectUnit(movingUnitEntity);
 
 		ECS::SetActive(true, getGuiManager().endTurnBtnEntity);
+		
+		//Get the audiosource
+		AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+
+		//Play the sound
+		Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
+		ad.m_Channel = Channel::SFX;
+		ad.m_Loop = true;
+		ad.Play();
 	}	
 	
 	void GameplaySystem::MoveEnemy() {
@@ -1392,6 +1417,15 @@ namespace ALEngine::ECS
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+					//Get the audiosource
+					AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+
+					//Stop the sound
+					Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
+					ad.m_Channel = Channel::SFX;
+					ad.m_Loop = false;
+					ad.Stop();
+
 					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 					ChangeAnimation(an, "PlayerIdle");
 					if (movinUnit.movementPoints <= 0) {

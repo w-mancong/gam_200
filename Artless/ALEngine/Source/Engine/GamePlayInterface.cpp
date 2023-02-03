@@ -444,6 +444,22 @@ namespace ALEngine::Engine::GameplayInterface
 		unit.health -= damage;
 
 		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
+	
+		//Get the master audio source
+		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+
+		//Play hit sound accordingly
+		if (unit.unitType == UNIT_TYPE::PLAYER) {
+			Audio& ad = as.GetAudio(AUDIO_HIT);
+			ad.m_Channel = Channel::SFX;
+			ad.Play();
+		}
+		else {
+			Audio& ad = as.GetAudio(AUDIO_ENEMY_HURT_1);
+			ad.m_Channel = Channel::SFX;
+			ad.Play();
+		}
 
 		//If no health
 		if (unit.health <= 0) {
