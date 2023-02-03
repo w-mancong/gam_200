@@ -63,17 +63,29 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		else if (skill.tag == "skill_icon4")
 		{
 			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "??";
+			headerText.textString = "TBD";
+			line1.textString = "To be Developed";
+			line2.textString = "";
+			line3.textString = "";
+			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon5")
 		{
 			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "??";
+			headerText.textString = "TBD";
+			line1.textString = "To be Developed";
+			line2.textString = "";
+			line3.textString = "";
+			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon6")
 		{
 			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "??";
+			headerText.textString = "TBD";
+			line1.textString = "To be Developed";
+			line2.textString = "";
+			line3.textString = "";
+			line4.textString = "";
 		}
 	}
 
