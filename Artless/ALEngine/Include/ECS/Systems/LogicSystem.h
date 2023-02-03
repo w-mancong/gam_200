@@ -11,10 +11,14 @@ brief:	This file contains the function declarations for LogicSystem
 
 namespace
 {
+	/*!*****************************************************************************
+		\brief To retrieve the logic component name based on the type T
+	*******************************************************************************/
 	template <typename T>
 	std::string GetLogicComponentName(void)
 	{
 		std::string logicComponentName{ typeid(T).name() };
+		// finding last of ':' because all our Scripts should be encased in a nested namespace ALEngine::Script
 		return logicComponentName.substr(logicComponentName.find_last_of(':') + 1);
 	}
 }
@@ -37,11 +41,11 @@ namespace ALEngine::ECS
 	{
 		if constexpr (std::is_polymorphic<T>::value)
 		{
+#ifndef NDEBUG
 			// This line checks if component is inherited from UniBehaviour
 			T component;
-			if (!dynamic_cast<Component::UniBehaviour*>( &component ))
-				return;
-
+			assert(dynamic_cast<Component::UniBehaviour*>(&component) && "Template T is not inherited from UniBehaviour");
+#endif
 			if (!Coordinator::Instance()->HasComponent<Component::LogicComponent>(en))
 				Coordinator::Instance()->AddComponent(en, Component::LogicComponent());
 
@@ -59,11 +63,17 @@ namespace ALEngine::ECS
 		\return The shared pointer of the requested logic component
 	*******************************************************************************/
 	template <typename T>
-	std::shared_ptr<T> GetLogicComponent(Entity en, char const* name)
+	std::shared_ptr<T> GetLogicComponent(Entity en)
 	{
+		Component::LogicComponent& lc = Coordinator::Instance()->GetComponent<Component::LogicComponent>(en);
+		std::string name = GetLogicComponentName<T>();
 #ifndef NDEBUG
-
+		assert(lc.logics.find(name) != lc.logics.end() && "Retrieving non-exsistent logic component!");
+		// This line checks if component is inherited from UniBehaviour
+		T component;
+		assert(dynamic_cast<Component::UniBehaviour*>(&component) && "Template T is not inherited from UniBehaviour");
 #endif
+		return std::dynamic_pointer_cast<T>(lc.logics[name]);
 	}
 
 	/*!*********************************************************************************
