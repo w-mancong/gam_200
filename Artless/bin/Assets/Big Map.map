@@ -5,19 +5,7 @@
         "Map": [
             [
                 "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty"
-            ],
-            [
-                "Empty",
-                "Empty",
+                "Player",
                 "Empty",
                 "Empty",
                 "Empty",
@@ -40,6 +28,18 @@
                 "Empty"
             ],
             [
+                "Player",
+                "Empty",
+                "Enemy",
+                "Empty",
+                "Empty",
+                "Enemy 4",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
+            ],
+            [
                 "Empty",
                 "Empty",
                 "Empty",
@@ -54,7 +54,7 @@
             [
                 "Empty",
                 "Empty",
-                "Empty",
+                "Player",
                 "Empty",
                 "Empty",
                 "Empty",
@@ -69,7 +69,7 @@
                 "Empty",
                 "Empty",
                 "Empty",
-                "Empty",
+                "Enemy",
                 "Empty",
                 "Empty",
                 "Empty",
