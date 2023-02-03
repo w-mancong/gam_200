@@ -58,6 +58,14 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 	
 		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
+
+		//Add physics
+		ECS::CreateRigidbody(entity);
+		Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(entity);
+		rigidbody.drag = { 0,0 };
+		rigidbody.mass = 0.1f;
+
+		rigidbody.hasGravity = false;
 	}
 
 	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)

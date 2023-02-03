@@ -1267,6 +1267,13 @@ namespace ALEngine::ECS
 
 		//Camera Logic
 		AddLogicComponent<Script::GameplayCamera>(entity);
+
+		//Add physics
+		ECS::CreateRigidbody(entity);
+		Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(entity);
+		rigidbody.drag = { 0,0 };
+		rigidbody.mass = 0.1f;
+		rigidbody.hasGravity = false;
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(Entity cellEntity) {
@@ -1374,10 +1381,18 @@ namespace ALEngine::ECS
 		Vector2 direction = Vector3::Normalize(cellTransform.localPosition - movingTransform.localPosition);
 
 		//Move the transform of the moving to target cel
-		movingTransform.localPosition += direction * 400.0f * Time::m_FixedDeltaTime;
+		//movingTransform.localPosition += direction * 400.0f * Time::m_FixedDeltaTime;
+
+		//Use force
+		Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(movingUnitEntity);
+		ECS::AddForce(rigidbody, direction * 50.0f);
+
 
 		//If reached the cell
 		if (Vector3::Distance(movingTransform.localPosition, cellTransform.localPosition) < 10.0f) {
+			rigidbody.velocity = { 0,0 };
+			rigidbody.acceleration = { 0,0 };
+
 			Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getCurrentEntityCell());
 			Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(movinUnit.m_CurrentCell_Entity);
