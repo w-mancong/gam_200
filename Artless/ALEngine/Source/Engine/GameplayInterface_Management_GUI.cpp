@@ -1,7 +1,9 @@
 /*!
 file:	GamePlayInterface.cpp
-author:	Mohamed Zafir
-email:	m.zafir\@digipen.edu
+author:	Mohamed Zafir (75%)
+co-author:	Tan Zhen Xiong (25%)
+email:	t.zhenxiong@digipen.edu
+		m.zafir@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -63,17 +65,29 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		else if (skill.tag == "skill_icon4")
 		{
 			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "??";
+			headerText.textString = "TBD";
+			line1.textString = "To be Developed";
+			line2.textString = "";
+			line3.textString = "";
+			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon5")
 		{
 			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "??";
+			headerText.textString = "TBD";
+			line1.textString = "To be Developed";
+			line2.textString = "";
+			line3.textString = "";
+			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon6")
 		{
 			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "??";
+			headerText.textString = "TBD";
+			line1.textString = "To be Developed";
+			line2.textString = "";
+			line3.textString = "";
+			line4.textString = "";
 		}
 	}
 

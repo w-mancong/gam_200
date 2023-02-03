@@ -218,7 +218,7 @@ namespace ALEngine::Engine
 		RunFileWatcherThread();
 
 #if !EDITOR
-		//OpenGLWindow::FullScreen(true);
+		OpenGLWindow::FullScreen(true);
 		Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif

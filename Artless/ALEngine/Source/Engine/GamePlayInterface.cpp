@@ -1,13 +1,17 @@
 /*!
 file:	GamePlayInterface.cpp
-author:	Tan Zhen Xiong (40%)
+author:	Tan Zhen Xiong (30%)
 co-author:	Mohamed Zafir (20%)
 			Darrion Aw Wei Ting (20%)
 			Chan Jie Ming Stanley (20%)
+			Lucas Nguyen Thai Vinh (5%)
+			Wong Man Cong (5%)
 email:	t.zhenxiong@digipen.edu
 		m.zafir@digipen.edu
 		Weitingdarrion.aw@digipen.edu
 		c.jiemingstanley@digipen.edu
+		l.nguyen@digipen.edu
+		w.mancong@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.cpp
 
 		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -440,6 +444,22 @@ namespace ALEngine::Engine::GameplayInterface
 		unit.health -= damage;
 
 		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
+	
+		//Get the master audio source
+		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+
+		//Play hit sound accordingly
+		if (unit.unitType == UNIT_TYPE::PLAYER) {
+			Audio& ad = as.GetAudio(AUDIO_HIT);
+			ad.m_Channel = Channel::SFX;
+			ad.Play();
+		}
+		else {
+			Audio& ad = as.GetAudio(AUDIO_ENEMY_HURT_1);
+			ad.m_Channel = Channel::SFX;
+			ad.Play();
+		}
 
 		//If no health
 		if (unit.health <= 0) {

@@ -93,6 +93,10 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 	***********************************************************************************/
 	void GuiUpdatePhaseIndicator(PHASE_STATUS);
 
+	/*!*********************************************************************************
+	\brief
+		Updates the FPS label. Can be toggled on and off using ctrl.
+	***********************************************************************************/
 	void UpdateFpsLabel();
 }
 #endif
