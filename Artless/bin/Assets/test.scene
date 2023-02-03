@@ -718,7 +718,7 @@
         "Transform": [
             {
                 "position": [
-                    317.033203125,
+                    317.03314208984375,
                     43.26409912109375,
                     0.0
                 ],
@@ -757,7 +757,7 @@
         "Transform": [
             {
                 "position": [
-                    387.27703857421875,
+                    387.2769775390625,
                     43.247314453125,
                     0.0
                 ],
@@ -874,7 +874,7 @@
         "Transform": [
             {
                 "position": [
-                    598.0087280273438,
+                    598.0086669921875,
                     43.27197265625,
                     0.0
                 ],
@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7232666015625,
+                    967.723388671875,
                     41.370460510253906,
                     0.0
                 ],
@@ -1668,7 +1668,7 @@
             {
                 "position": [
                     800.0,
-                    450.0001220703125,
+                    450.0001525878906,
                     0.0
                 ],
                 "scale": [
@@ -1789,7 +1789,7 @@
             {
                 "position": [
                     1312.0,
-                    377.993896484375,
+                    399.60015869140625,
                     0.0
                 ],
                 "scale": [
@@ -1816,7 +1816,7 @@
             {
                 "position": [
                     2399.99951171875,
-                    1349.990966796875,
+                    1349.9910888671875,
                     0.0
                 ],
                 "scale": [
@@ -1848,7 +1848,7 @@
                 ],
                 "position": [
                     706.5,
-                    212.0
+                    224.5
                 ]
             }
         ]
@@ -1871,7 +1871,7 @@
             {
                 "position": [
                     1312.0,
-                    218.6983184814453,
+                    132.30023193359375,
                     0.0
                 ],
                 "scale": [
@@ -1898,7 +1898,7 @@
             {
                 "position": [
                     2399.99951171875,
-                    1349.990966796875,
+                    1349.9910888671875,
                     0.0
                 ],
                 "scale": [
@@ -1930,7 +1930,7 @@
                 ],
                 "position": [
                     713.0,
-                    120.5
+                    70.5
                 ]
             }
         ]
@@ -1953,7 +1953,7 @@
             {
                 "position": [
                     1312.0,
-                    730.7984619140625,
+                    730.7985229492188,
                     0.0
                 ],
                 "scale": [
@@ -2152,7 +2152,7 @@
             {
                 "position": [
                     800.0,
-                    450.0,
+                    450.0000305175781,
                     0.0
                 ],
                 "scale": [
@@ -2169,7 +2169,7 @@
                 "localActive": false,
                 "id": 53,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -2190,8 +2190,8 @@
         "Transform": [
             {
                 "position": [
-                    1491.19970703125,
-                    831.60009765625,
+                    1500.0,
+                    830.0000610351563,
                     0.0
                 ],
                 "scale": [
@@ -2247,7 +2247,7 @@
                 "localActive": false,
                 "id": 55,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
@@ -2924,7 +2924,7 @@
                 "localActive": true,
                 "id": 66,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -3211,6 +3211,205 @@
                     706.5,
                     409.0
                 ]
+            }
+        ]
+    },
+    {
+        "id": 71,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Button.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    262.8001708984375,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_story",
+                "active": false,
+                "localActive": true,
+                "id": 71,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 72,
+        "Transform": [
+            {
+                "position": [
+                    2400.0,
+                    1350.0001220703125,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_story",
+                "active": false,
+                "localActive": true,
+                "id": 72,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Story",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    730.0,
+                    145.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 73,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\storyline.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0000915527344,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "story",
+                "active": false,
+                "localActive": true,
+                "id": 73,
+                "parentID": 74,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 74,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.37254902720451355
+                ],
+                "layer": 255
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0000305175781,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "story_bg",
+                "active": false,
+                "localActive": false,
+                "id": 74,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 75,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1500.0,
+                    830.0000610351563,
+                    0.0
+                ],
+                "scale": [
+                    160.0,
+                    90.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "story_cross",
+                "active": false,
+                "localActive": true,
+                "id": 75,
+                "parentID": 74,
+                "treeNodeFlags": 32
             }
         ]
     }

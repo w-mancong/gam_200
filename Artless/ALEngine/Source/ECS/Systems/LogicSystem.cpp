@@ -1,5 +1,5 @@
 /*!
-file:	LogicSystem.h
+file:	LogicSystem.cpp
 author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
 brief:	This file contains the function declarations for LogicSystem

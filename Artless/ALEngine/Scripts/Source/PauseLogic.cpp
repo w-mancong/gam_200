@@ -19,7 +19,9 @@ namespace ALEngine::Script
 		b8 paused{ false };
 		Entity button_resume{ MAX_ENTITIES }, button_htp{ MAX_ENTITIES }, button_quit{ MAX_ENTITIES },	// used for displaying all btns on paused
 			backdrop{ MAX_ENTITIES }, quit_yes{ MAX_ENTITIES }, quit_no{ MAX_ENTITIES },	// used for quit game btn
-			htp{ MAX_ENTITIES }, htp_cross_btn{ MAX_ENTITIES };								// used for how to play
+			htp{ MAX_ENTITIES }, htp_cross_btn{ MAX_ENTITIES },								// used for displaying how to play
+			button_story{ MAX_ENTITIES }, story_bg{ MAX_ENTITIES }, 
+			story_cross{ MAX_ENTITIES };													// used for displaying storyline
 		Entity en_paused{ MAX_ENTITIES }, temp{ MAX_ENTITIES };								// main paused background
 	}
 
@@ -147,6 +149,38 @@ namespace ALEngine::Script
 		Lighten(en);
 	}
 
+	void WhenStoryHover(Entity en)
+	{
+		Darken(en);
+		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
+			Lighten(en);
+			SetActive(false, en_paused);
+			SetActive(true, story_bg);
+		}
+	}
+
+	void WhenStoryPointerExit(Entity en)
+	{
+		Lighten(en);
+	}
+
+	void WhenStoryCrossHover(Entity en)
+	{
+		Darken(en);
+		if (Input::KeyDown(KeyCode::MouseLeftButton))
+		{
+			Lighten(en);
+			SetActive(true, en_paused);
+			SetActive(false, story_bg);
+		}
+	}
+
+	void WhenStoryCrossPointerExit(Entity en)
+	{
+		Lighten(en);
+	}
+
 	void PauseLogic::Init([[maybe_unused]] ECS::Entity en)
 	{
 		en_paused = Coordinator::Instance()->GetEntityByTag("pause_menu");
@@ -190,6 +224,20 @@ namespace ALEngine::Script
 		CreateEventTrigger(htp_cross_btn, true);
 		Subscribe(htp_cross_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenHtpCrossHover);
 		Subscribe(htp_cross_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenHtpCrossPointerExit);
+
+		//*********************************************************************************************************
+		story_bg = Coordinator::Instance()->Instance()->GetEntityByTag("story_bg");
+		story_cross = Coordinator::Instance()->GetEntityByTag("story_cross");
+		button_story = Coordinator::Instance()->GetEntityByTag("button_story");
+
+		CreateEventTrigger(button_story, true);
+		CreateEventTrigger(story_cross, true);
+
+		Subscribe(button_story, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenStoryHover);
+		Subscribe(button_story, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenStoryPointerExit);
+
+		Subscribe(story_cross, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenStoryCrossHover);
+		Subscribe(story_cross, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenStoryCrossPointerExit);
 	}
 
 	void PauseLogic::Update([[maybe_unused]] ECS::Entity en)
