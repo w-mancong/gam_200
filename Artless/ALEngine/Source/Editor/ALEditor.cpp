@@ -623,7 +623,7 @@ namespace ALEngine::Editor
 					m_CurrentSceneName += ".scene";
 
 				u64 str_it = m_CurrentSceneName.rfind("Assets\\");
-				m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());
+				m_CurrentSceneName = m_CurrentSceneName.substr(str_it, m_CurrentSceneName.size());	
 			}
 		}
 		Engine::Scene::SaveScene(m_CurrentSceneName.c_str());

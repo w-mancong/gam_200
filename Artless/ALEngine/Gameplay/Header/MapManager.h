@@ -58,9 +58,9 @@ namespace Gameplay
 			Each string specifies what each tile contains.
 			i.e. "Empty", "Player", etc.
 			\return
-			Returns a string pointer to the Map array
+			Returns a vector of vector of string that is the Map array
 		***********************************************************************************/
-		std::string* GetMap(void);
+		std::vector<std::vector<std::string>> GetMap(void);
 
 	private:
 		/*!*********************************************************************************
@@ -75,9 +75,9 @@ namespace Gameplay
 		***********************************************************************************/
 		~MapManager(void);
 
-		std::string m_MapPath{ "" };				// File Path to the Current Map
-		u32 m_Width{ 0 }, m_Height{ 0 };			// Width and Height of the Map
-		std::string* m_Map{ nullptr };				// Keeps track of the items found within this map
+		std::string m_MapPath{ "" };					// File Path to the Current Map
+		u32 m_Width{ 0 }, m_Height{ 0 };				// Width and Height of the Map
+		std::vector<std::vector<std::string>> m_Map{};	// Keeps track of the items found within this map
 
 		// Required for Singleton to function
 		friend class ALEngine::Templates::Singleton<MapManager>;
