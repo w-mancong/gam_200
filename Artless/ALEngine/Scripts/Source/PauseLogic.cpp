@@ -98,6 +98,8 @@ namespace ALEngine::Script
 #if EDITOR
 			if (Editor::ALEditor::Instance()->GetImGuiEnabled())
 			{
+				Time::m_Scale = 1.0f;
+
 				Editor::ALEditor::Instance()->SetGameActive(false);
 				Engine::ToggleApplicationMode();
 
