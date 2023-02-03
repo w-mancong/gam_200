@@ -1,7 +1,13 @@
 /*!
 file:	GameplaySystem.cpp
-author:	Tan Zhen Xiong
-email:	t.zhenxiong\@digipen.edu
+author:	Tan Zhen Xiong (40%)
+co-author:	Mohamed Zafir (20%)
+			Darrion Aw Wei Ting (20%)
+			Chan Jie Ming Stanley (20%)
+email:	t.zhenxiong@digipen.edu 
+		m.zafir@digipen.edu
+		Weitingdarrion.aw@digipen.edu
+		c.jiemingstanley@digipen.edu
 brief:	This file contains the function definition for GameplaySystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -15,6 +21,7 @@ brief:	This file contains the function definition for GameplaySystem.cpp
 #include "Engine/GameplayInterface_Management_GUI.h"
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
+#include <PauseLogic.h>
 
 namespace ALEngine::Engine::GameplayInterface
 {
@@ -283,7 +290,7 @@ namespace ALEngine::ECS
 
 		std::string const sceneName = R"(Assets\test.scene)";
 
-		Entity masterAudioSource;
+		Entity masterAudioSource{ ECS::MAX_ENTITIES };
 		Audio* buttonClickAudio{ nullptr };
 	}
 
@@ -791,6 +798,7 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
+		GameplayInterface_Management_GUI::UpdateFpsLabel(); // update fps top right corner of screen
 		#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
@@ -893,17 +901,22 @@ namespace ALEngine::ECS
 		gameplaySystem->godMode = false;
 		gameplaySystem->cheat_abilitiesDoubleDamage = false;
 
-		if (masterAudioSource != ECS::MAX_ENTITIES)
+		Entity const tmpMAS = masterAudioSource;
+
+		masterAudioSource = ECS::MAX_ENTITIES;
+		buttonClickAudio = nullptr;
+
+		if (tmpMAS != ECS::MAX_ENTITIES)
 		{
-			AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+			if (!Coordinator::Instance()->HasComponent<AudioSource>(tmpMAS))
+				return;
+			AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(tmpMAS);
 			for (auto& it : as.list)
 			{
 				Audio& ad = it.second;
 				ad.Stop();
 			}
 		}
-		masterAudioSource = ECS::MAX_ENTITIES;
-		buttonClickAudio = nullptr;
 	}
 
 	Entity GameplaySystem::getCurrentEntityCell() {
@@ -1230,6 +1243,7 @@ namespace ALEngine::ECS
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		AddLogicComponent<Script::PauseLogic>(entity);
 
 		//Camera Logic
 		AddLogicComponent<Script::GameplayCamera>(entity);

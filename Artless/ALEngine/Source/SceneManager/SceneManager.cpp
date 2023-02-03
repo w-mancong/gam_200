@@ -691,6 +691,8 @@ namespace ALEngine::Engine::Scene
 
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
 	{
+		//if (!Coordinator::Instance()->HasComponent<Transform>(entity.id))
+		//	return;
 		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
 		if (entity.parent != -1)
 		{

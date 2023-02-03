@@ -1,10 +1,10 @@
 /*!
 file:   GamePlayInterface.h
-author: Tan Zhen Xiong
-email:  t.zhenxiong\@digipen.edu
+author: Mohamed Zafir
+email:  m.zafir\@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.h
 
-		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content :copyright: 2023 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
 #ifndef	GAMEPLAY_INTERFACE_MANAGEMENT_GUI_H
@@ -32,7 +32,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		ECS::Entity Unit_Profile;
 		ECS::Entity Unit_Healthbar, Phase_Indicator;
 		ECS::Entity Skill_Tip_Icon, Skill_Tip_Header, Skill_Tip_Line1, Skill_Tip_Line2, Skill_Tip_Line3, Skill_Tip_Line4;
-		ECS::Entity Tooltip_Skills_Card;
+		ECS::Entity Tooltip_Skills_Card, FPS_Label;
+		b8 fpsActive{ true };
 
 		//Win
 		ECS::Entity Win_Clear, Win_Button;
@@ -74,10 +75,24 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 	***********************************************************************************/
 	void UpdateGUI_OnSelectUnit(ECS::Entity unitEntity);
 
+	/*!*********************************************************************************
+	\brief
+		Disable GUI for tool tips.
+	***********************************************************************************/
 	void DisableToolTipGUI();
 
+	/*!*********************************************************************************
+	\brief
+		Initialize GUI system.
+	***********************************************************************************/
 	void InitializeGUI();
 
+	/*!*********************************************************************************
+	\brief
+		Updates the phase indicator.
+	***********************************************************************************/
 	void GuiUpdatePhaseIndicator(PHASE_STATUS);
+
+	void UpdateFpsLabel();
 }
 #endif

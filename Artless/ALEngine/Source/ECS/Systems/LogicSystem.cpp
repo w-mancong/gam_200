@@ -35,8 +35,8 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
-				ub->Load(en);
+			for (auto& it : lc.logics)
+				it.second->Load(en);
 		}
 	}
 
@@ -46,8 +46,8 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
-				ub->Init(en);
+			for (auto& it : lc.logics)
+				it.second->Init(en);
 		}
 	}
 
@@ -57,8 +57,8 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
-				ub->Update(en);
+			for (auto& it : lc.logics)
+				it.second->Update(en);
 		}
 	}
 
@@ -68,8 +68,8 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
-				ub->LateUpdate(en);
+			for (auto& it : lc.logics)
+				it.second->LateUpdate(en);
 		}
 	}
 
@@ -79,8 +79,8 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
-				ub->Free(en);
+			for (auto& it : lc.logics)
+				it.second->Free(en);
 		}
 	}
 
@@ -90,8 +90,8 @@ namespace ALEngine::ECS
 		{
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
-			for (std::shared_ptr<UniBehaviour> ub : lc.logics)
-				ub->Unload(en);
+			for (auto& it : lc.logics)
+				it.second->Unload(en);
 		}
 	}
 }

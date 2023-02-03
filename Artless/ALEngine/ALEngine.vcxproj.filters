@@ -85,6 +85,7 @@
     <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
     <ClCompile Include="Source\Engine\GameplayInterface_Management_Enemy.cpp" />
     <ClCompile Include="Source\Engine\GameplayInterface_Management_GUI.cpp" />
+    <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
@@ -342,7 +343,6 @@
     <ClInclude Include="Include\ECS\Systems\LogicSystem.h" />
     <ClInclude Include="Include\ECS\Components\UniBehaviour.h" />
     <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
-    <ClInclude Include="Scripts\Header\TestBehaviour.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
     <ClInclude Include="Include\ECS\Components\Button.h" />
     <ClInclude Include="Include\ECS\Systems\ButtonSystem.h" />
@@ -352,6 +352,7 @@
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
     <ClInclude Include="Gameplay\Header\MapManager.h" />
     <ClInclude Include="Include\Commands\EntityCommand.h" />
+    <ClInclude Include="Scripts\Header\PauseLogic.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
