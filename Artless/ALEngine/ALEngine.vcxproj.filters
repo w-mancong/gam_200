@@ -86,6 +86,8 @@
     <ClCompile Include="Source\Engine\GameplayInterface_Management_Enemy.cpp" />
     <ClCompile Include="Source\Engine\GameplayInterface_Management_GUI.cpp" />
     <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Gameplay\Source\MapManager.cpp" />
+    <ClCompile Include="Source\Commands\EntityCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -348,6 +350,8 @@
     <ClInclude Include="Include\Engine\GameplayInterface_Management_GUI.h" />
     <ClInclude Include="Include\Utility\AudioNames.h" />
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Gameplay\Header\MapManager.h" />
+    <ClInclude Include="Include\Commands\EntityCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

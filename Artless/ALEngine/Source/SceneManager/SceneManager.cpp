@@ -788,13 +788,6 @@ namespace ALEngine::Engine::Scene
 
 			writer.EndObject();
 		}
-
-		// Add TileMap
-		{
-			writer.StartObject();
-
-			writer.EndObject();
-		}
 		writer.EndArray();
 	}
 

@@ -44,6 +44,7 @@ namespace ALEngine::Editor
 		// Make Panel Child so panel can have Drag & Drop
 		ImGui::BeginChild("SceneHierarchyPanel##PanelChild", ImGui::GetContentRegionAvail());
 
+		/*
 		//// Add Entity Button
 		//if (ImGui::Button("Add Entity"))
 		//{
@@ -70,6 +71,7 @@ namespace ALEngine::Editor
 		//// Remove Entity Button
 		//if (!m_EntityList->empty() && ImGui::Button("Remove Entity"))
 		//	ImGui::OpenPopup("remove_entity_popup");
+		*/
 
 		b8 remove{ false };
 		// Remove Entity Popup!!
@@ -348,10 +350,9 @@ namespace ALEngine::Editor
 
 	void SceneHierarchyPanel::UpdateSceneInfoDropdown(void)
 	{
-		if (ImGui::CollapsingHeader("Scene Info"))
+		if (ImGui::CollapsingHeader("Scene Info##Scene Information Scene Hierarchy"))
 		{
 			c8* fp = const_cast<c8*>(ALEditor::Instance()->GetCurrentTileMapPath().c_str());
-			ImGui::PushID("FilePath");
 			ImGuiInputTextFlags input_flag = ImGuiInputTextFlags_ReadOnly;
 			ImGui::InputTextWithHint("##TileMapPath_SceneInfo", "Tile Map Path", fp, FILE_BUFFER_SIZE, input_flag);
 
@@ -374,6 +375,9 @@ namespace ALEngine::Editor
 					if (fileString.find(".map") != std::string::npos)
 					{
 						ALEditor::Instance()->SetCurrentTileMapPath(fileString);
+
+						// Add to Map Manager
+						Gameplay::MapManager::Instance()->SetMapPath(fileString);
 					}
 					else
 					{

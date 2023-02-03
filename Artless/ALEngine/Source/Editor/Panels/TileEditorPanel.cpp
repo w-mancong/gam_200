@@ -568,14 +568,14 @@ namespace ALEngine::Editor
 
 		Value const& val{ *doc.Begin() };
 
-		// Get Height
+		// Get Width
 		if (val.HasMember("Width"))
 		{
 			m_MapWidth = val["Width"].GetInt();
 			AL_CORE_INFO("Width Assigned to {}", m_MapWidth);
 		}
 
-		// Get Width
+		// Get Height
 		if (val.HasMember("Height"))
 		{
 			m_MapHeight = val["Height"].GetInt();
