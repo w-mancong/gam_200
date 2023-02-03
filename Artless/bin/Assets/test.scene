@@ -641,7 +641,7 @@
             {
                 "position": [
                     472.4000244140625,
-                    262.0870056152344,
+                    262.0870361328125,
                     0.0
                 ],
                 "scale": [
@@ -654,8 +654,8 @@
         "EntityData": [
             {
                 "tag": "tooltip_skills",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 16,
                 "parentID": -1,
                 "treeNodeFlags": 32
@@ -680,7 +680,7 @@
             {
                 "position": [
                     340.398193359375,
-                    370.728515625,
+                    370.7285461425781,
                     0.0
                 ],
                 "scale": [
@@ -693,7 +693,7 @@
         "EntityData": [
             {
                 "tag": "skill_icon",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 17,
                 "parentID": 16,
@@ -718,7 +718,7 @@
         "Transform": [
             {
                 "position": [
-                    317.03326416015625,
+                    317.0331115722656,
                     43.26409912109375,
                     0.0
                 ],
@@ -757,7 +757,7 @@
         "Transform": [
             {
                 "position": [
-                    387.277099609375,
+                    387.2769470214844,
                     43.247314453125,
                     0.0
                 ],
@@ -874,7 +874,7 @@
         "Transform": [
             {
                 "position": [
-                    598.0087890625,
+                    598.0086669921875,
                     43.27197265625,
                     0.0
                 ],
@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7232055664063,
+                    967.7234497070313,
                     41.370460510253906,
                     0.0
                 ],
@@ -1140,7 +1140,7 @@
             {
                 "position": [
                     472.399658203125,
-                    262.08697509765625,
+                    262.0870056152344,
                     0.0
                 ],
                 "scale": [
@@ -1153,7 +1153,7 @@
         "EntityData": [
             {
                 "tag": "text_skillname",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 29,
                 "parentID": 16,
@@ -2700,7 +2700,7 @@
         "EntityData": [
             {
                 "tag": "tooltip_skill_line1",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 62,
                 "parentID": 16,
@@ -2755,7 +2755,7 @@
         "EntityData": [
             {
                 "tag": "tooltip_skill_line2",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 63,
                 "parentID": 16,
@@ -2810,7 +2810,7 @@
         "EntityData": [
             {
                 "tag": "tooltip_skill_line3",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 64,
                 "parentID": 16,
@@ -2852,7 +2852,7 @@
             {
                 "position": [
                     872.3997802734375,
-                    612.087646484375,
+                    612.0877075195313,
                     0.0
                 ],
                 "scale": [
@@ -2865,7 +2865,7 @@
         "EntityData": [
             {
                 "tag": "tooltip_skill_line4",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 65,
                 "parentID": 16,
