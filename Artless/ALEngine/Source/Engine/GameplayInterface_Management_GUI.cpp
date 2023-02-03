@@ -2,8 +2,8 @@
 file:	GamePlayInterface.cpp
 author:	Mohamed Zafir (75%)
 co-author:	Tan Zhen Xiong (25%)
-email:	t.zhenxiong@digipen.edu
-		m.zafir@digipen.edu
+email:	m.zafir@digipen.edu
+		t.zhenxiong@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

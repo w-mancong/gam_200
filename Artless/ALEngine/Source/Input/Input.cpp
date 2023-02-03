@@ -1,7 +1,9 @@
 /*!
 file:	Input.cpp
-author:	Wong Man Cong
+author:	Wong Man Cong (20%)
+co-author:	Lucas Nguyen (10%)
 email:	w.mancong\@digipen.edu
+		l.nguyen\@digipen.edu
 brief:	This file contain function definition for Input
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.

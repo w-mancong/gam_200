@@ -1,8 +1,11 @@
 /*!
 file:	Input.h
-author:	Wong Man Cong
-co-author: Mohamed Zafir
+author:	Wong Man Cong (90%)
+co-author: Mohamed Zafir (5%)
+		   Lucas Nguyen (5%)
 email:	w.mancong\@digipen.edu
+		m.zafir\@digipen.edu
+		l.nguyen\@digipen.edu
 brief:	This file contain static class declaration for basic key inputs from user.
 		It also contains functions that return mouse cursor position on screen.
 
