@@ -718,7 +718,7 @@
         "Transform": [
             {
                 "position": [
-                    317.033203125,
+                    317.0331115722656,
                     43.26409912109375,
                     0.0
                 ],
@@ -757,7 +757,7 @@
         "Transform": [
             {
                 "position": [
-                    387.27703857421875,
+                    387.27679443359375,
                     43.247314453125,
                     0.0
                 ],
@@ -874,7 +874,7 @@
         "Transform": [
             {
                 "position": [
-                    598.0087280273438,
+                    598.0086669921875,
                     43.27197265625,
                     0.0
                 ],
@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7232666015625,
+                    967.7235107421875,
                     41.370460510253906,
                     0.0
                 ],
@@ -1120,7 +1120,7 @@
         "TextProperty": [
             {
                 "textString": "End Turn",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.8500000238418579,
                 "color": [
                     1.0,
@@ -1128,7 +1128,7 @@
                     1.0
                 ],
                 "position": [
-                    393.0,
+                    396.0,
                     74.5
                 ]
             }
@@ -1163,7 +1163,7 @@
         "TextProperty": [
             {
                 "textString": "Skill Name",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.8500000238418579,
                 "color": [
                     1.0,
@@ -1206,7 +1206,7 @@
         "TextProperty": [
             {
                 "textString": "Setup Phase",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.8500000238418579,
                 "color": [
                     1.0,
@@ -1214,7 +1214,7 @@
                     1.0
                 ],
                 "position": [
-                    6.5,
+                    23.5,
                     455.5
                 ]
             }
@@ -1249,7 +1249,7 @@
         "TextProperty": [
             {
                 "textString": "HP / HP",
-                "currentFont": "Arial-italic",
+                "currentFont": "SFProverbialGothic",
                 "scale": 0.6499999761581421,
                 "color": [
                     1.0,
@@ -1292,7 +1292,7 @@
         "TextProperty": [
             {
                 "textString": "DROR",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 1.0,
                 "color": [
                     1.0,
@@ -1335,7 +1335,7 @@
         "TextProperty": [
             {
                 "textString": "ATTACK             :",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1378,7 +1378,7 @@
         "TextProperty": [
             {
                 "textString": "DEFENSE          :",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1421,7 +1421,7 @@
         "TextProperty": [
             {
                 "textString": "MOVEMENT      :",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1464,7 +1464,7 @@
         "TextProperty": [
             {
                 "textString": "RANGE              :",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1507,7 +1507,7 @@
         "TextProperty": [
             {
                 "textString": "[attack]",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1550,7 +1550,7 @@
         "TextProperty": [
             {
                 "textString": "[defense]",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1593,7 +1593,7 @@
         "TextProperty": [
             {
                 "textString": "[move]",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1636,7 +1636,7 @@
         "TextProperty": [
             {
                 "textString": "[range]",
-                "currentFont": "Arial-italic",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1724,7 +1724,7 @@
                 "localActive": true,
                 "id": 42,
                 "parentID": 41,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -1757,7 +1757,7 @@
         "TextProperty": [
             {
                 "textString": "Resume Game",
-                "currentFont": "Arial-italic",
+                "currentFont": "SFProverbialGothic",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1765,7 +1765,7 @@
                     1.0
                 ],
                 "position": [
-                    698.5,
+                    710.5,
                     301.0
                 ]
             }
@@ -1839,7 +1839,7 @@
         "TextProperty": [
             {
                 "textString": "How To Play",
-                "currentFont": "Arial-italic",
+                "currentFont": "SFProverbialGothic",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1847,7 +1847,7 @@
                     1.0
                 ],
                 "position": [
-                    706.5,
+                    712.5,
                     212.0
                 ]
             }
@@ -1921,7 +1921,7 @@
         "TextProperty": [
             {
                 "textString": "Quit Game",
-                "currentFont": "Arial-italic",
+                "currentFont": "SFProverbialGothic",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1929,7 +1929,7 @@
                     1.0
                 ],
                 "position": [
-                    713.0,
+                    720.0,
                     120.5
                 ]
             }
@@ -2003,7 +2003,7 @@
         "TextProperty": [
             {
                 "textString": "50/50",
-                "currentFont": "Arial-italic",
+                "currentFont": "SFProverbialGothic",
                 "scale": 0.699999988079071,
                 "color": [
                     1.0,
@@ -2347,7 +2347,7 @@
         "TextProperty": [
             {
                 "textString": "Press here to restart",
-                "currentFont": "Roboto-Bold",
+                "currentFont": "SFProverbialGothic",
                 "scale": 0.800000011920929,
                 "color": [
                     1.0,
@@ -2710,7 +2710,7 @@
         "TextProperty": [
             {
                 "textString": "[new text]",
-                "currentFont": "Roboto-Regular",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.699999988079071,
                 "color": [
                     1.0,
@@ -2765,7 +2765,7 @@
         "TextProperty": [
             {
                 "textString": "[new text]",
-                "currentFont": "Roboto-Regular",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.699999988079071,
                 "color": [
                     1.0,
@@ -2820,7 +2820,7 @@
         "TextProperty": [
             {
                 "textString": "[new text]",
-                "currentFont": "Roboto-Regular",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.699999988079071,
                 "color": [
                     1.0,
@@ -2875,7 +2875,7 @@
         "TextProperty": [
             {
                 "textString": "[new text]",
-                "currentFont": "Roboto-Regular",
+                "currentFont": "Almendra-Regular",
                 "scale": 0.699999988079071,
                 "color": [
                     1.0,
@@ -2884,7 +2884,7 @@
                 ],
                 "position": [
                     190.5,
-                    90.0
+                    88.5
                 ]
             }
         ]
