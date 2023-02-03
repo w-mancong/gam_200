@@ -554,7 +554,7 @@ namespace ALEngine::Engine::GameplayInterface
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		//IF it already has a wall, don't do anything
-		if (cell.has_Wall) {
+		if (cell.has_Wall || !cell.m_isAccessible) {
 			return;
 		}
 
@@ -576,7 +576,7 @@ namespace ALEngine::Engine::GameplayInterface
 		
 		//Set Stats
 		cell.has_Wall = isTrue;
-		cell.m_canWalk = !isTrue;
+		cell.m_canWalk = false;
 
 		//Set the overlay sprite to false
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
