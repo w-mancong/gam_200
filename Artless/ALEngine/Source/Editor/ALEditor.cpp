@@ -149,7 +149,7 @@ namespace ALEngine::Editor
 			m_InspectorPanel.OnImGuiRender();	// Inspector Panel
 
 #ifndef NDEBUG
-			ImGui::ShowDemoWindow();
+			//ImGui::ShowDemoWindow();
 #endif
 		}
 	}

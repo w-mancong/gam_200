@@ -41,7 +41,7 @@ namespace ALEngine::UserInput
 	s32 Input::GetScreenResX()
 	{
 #if EDITOR
-		return Editor::ALEditor::Instance()->GetSceneWidth();
+		return static_cast<s32>(Editor::ALEditor::Instance()->GetSceneWidth());
 #else
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
@@ -52,7 +52,7 @@ namespace ALEngine::UserInput
 	s32 Input::GetScreenResY()
 	{
 #if EDITOR
-		return Editor::ALEditor::Instance()->GetSceneHeight();
+		return static_cast<s32>(Editor::ALEditor::Instance()->GetSceneHeight());
 #else
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);

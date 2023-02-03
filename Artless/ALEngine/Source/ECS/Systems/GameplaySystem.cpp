@@ -1197,7 +1197,7 @@ namespace ALEngine::ECS
 
 			//If the time is paused, put the enemy layer to the back
 			if (utils::IsEqual(Time::m_Scale, 1.0f)) {
-				enemySprite.layer = 1000 - enemyTransform.position.y;
+				enemySprite.layer = 1000 - static_cast<u32>(enemyTransform.position.y);
 			}
 			else {
 				enemySprite.layer = 1;
@@ -1211,7 +1211,7 @@ namespace ALEngine::ECS
 
 		//If the time is paused, put the player layer to the back
 		if (utils::IsEqual(Time::m_Scale, 1.0f)) {
-			playerSprite.layer = 1000 - playerTransform.position.y;
+			playerSprite.layer = 1000 - static_cast<u32>(playerTransform.position.y);
 		}
 		else
 			playerSprite.layer = 1;
@@ -1481,7 +1481,7 @@ namespace ALEngine::ECS
 
 	void GameplaySystem::RandomizePatternList(void)
 	{
-		u32 num_patterns = pattern_Default.size();
+		u32 num_patterns = static_cast<u32>(pattern_Default.size());
 
 		std::random_device rd;
 		std::mt19937 mt(rd());
