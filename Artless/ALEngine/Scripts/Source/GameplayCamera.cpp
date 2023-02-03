@@ -1,5 +1,5 @@
 /*!
-file:	GameplayCamera.h
+file:	GameplayCamera.cpp
 author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition for a gameplay camera
