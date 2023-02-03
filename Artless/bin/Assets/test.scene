@@ -211,8 +211,8 @@
         "Transform": [
             {
                 "position": [
-                    137.14804077148438,
-                    206.1428680419922,
+                    137.1480712890625,
+                    206.142822265625,
                     0.0
                 ],
                 "scale": [
@@ -684,7 +684,7 @@
                     0.0
                 ],
                 "scale": [
-                    80.0000228881836,
+                    80.00000762939453,
                     80.49999237060547
                 ],
                 "rotation": 0.0
@@ -718,7 +718,7 @@
         "Transform": [
             {
                 "position": [
-                    317.0325927734375,
+                    317.0331115722656,
                     43.26409912109375,
                     0.0
                 ],
@@ -757,7 +757,7 @@
         "Transform": [
             {
                 "position": [
-                    387.27642822265625,
+                    387.2769470214844,
                     43.247314453125,
                     0.0
                 ],
@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7241821289063,
+                    967.7234497070313,
                     41.370460510253906,
                     0.0
                 ],
@@ -1120,7 +1120,7 @@
         "TextProperty": [
             {
                 "textString": "End Turn",
-                "currentFont": "Almendra-Regular",
+                "currentFont": "Arial-italic",
                 "scale": 0.8500000238418579,
                 "color": [
                     1.0,
@@ -1128,8 +1128,8 @@
                     1.0
                 ],
                 "position": [
-                    397.0,
-                    75.0
+                    393.0,
+                    74.5
                 ]
             }
         ]
@@ -1139,7 +1139,7 @@
         "Transform": [
             {
                 "position": [
-                    472.3994140625,
+                    472.399658203125,
                     262.0870056152344,
                     0.0
                 ],
@@ -1163,16 +1163,16 @@
         "TextProperty": [
             {
                 "textString": "Skill Name",
-                "currentFont": "Almendra-Regular",
-                "scale": 0.949999988079071,
+                "currentFont": "Arial-italic",
+                "scale": 0.8500000238418579,
                 "color": [
                     1.0,
                     1.0,
                     1.0
                 ],
                 "position": [
-                    209.5,
-                    182.0
+                    228.0,
+                    197.0
                 ]
             }
         ]
@@ -1206,16 +1206,16 @@
         "TextProperty": [
             {
                 "textString": "Setup Phase",
-                "currentFont": "Almendra-Regular",
-                "scale": 0.949999988079071,
+                "currentFont": "Arial-italic",
+                "scale": 0.8500000238418579,
                 "color": [
                     1.0,
                     1.0,
                     1.0
                 ],
                 "position": [
-                    14.0,
-                    432.0
+                    6.5,
+                    455.5
                 ]
             }
         ]
@@ -1249,7 +1249,7 @@
         "TextProperty": [
             {
                 "textString": "HP / HP",
-                "currentFont": "SFProverbialGothic",
+                "currentFont": "Arial-italic",
                 "scale": 0.6499999761581421,
                 "color": [
                     1.0,
@@ -1668,7 +1668,7 @@
             {
                 "position": [
                     800.0,
-                    450.0000915527344,
+                    450.0001525878906,
                     0.0
                 ],
                 "scale": [
@@ -1681,8 +1681,8 @@
         "EntityData": [
             {
                 "tag": "pause_menu",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 41,
                 "parentID": -1,
                 "treeNodeFlags": 32
@@ -1720,11 +1720,11 @@
         "EntityData": [
             {
                 "tag": "button_resume",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 42,
                 "parentID": 41,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -1747,7 +1747,7 @@
         "EntityData": [
             {
                 "tag": "text_resume",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 43,
                 "parentID": 42,
@@ -1757,7 +1757,7 @@
         "TextProperty": [
             {
                 "textString": "Resume Game",
-                "currentFont": "SFProverbialGothic",
+                "currentFont": "Arial-italic",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1765,7 +1765,7 @@
                     1.0
                 ],
                 "position": [
-                    712.0,
+                    698.5,
                     301.0
                 ]
             }
@@ -1789,7 +1789,7 @@
             {
                 "position": [
                     1312.0,
-                    377.9938659667969,
+                    399.60015869140625,
                     0.0
                 ],
                 "scale": [
@@ -1802,7 +1802,7 @@
         "EntityData": [
             {
                 "tag": "button_htp",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 44,
                 "parentID": 41,
@@ -1816,7 +1816,7 @@
             {
                 "position": [
                     2399.99951171875,
-                    1349.990966796875,
+                    1349.9910888671875,
                     0.0
                 ],
                 "scale": [
@@ -1829,7 +1829,7 @@
         "EntityData": [
             {
                 "tag": "text_htp",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 45,
                 "parentID": 41,
@@ -1839,7 +1839,7 @@
         "TextProperty": [
             {
                 "textString": "How To Play",
-                "currentFont": "SFProverbialGothic",
+                "currentFont": "Arial-italic",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1847,8 +1847,8 @@
                     1.0
                 ],
                 "position": [
-                    716.0,
-                    210.5
+                    706.5,
+                    224.5
                 ]
             }
         ]
@@ -1871,7 +1871,7 @@
             {
                 "position": [
                     1312.0,
-                    218.69827270507813,
+                    132.30023193359375,
                     0.0
                 ],
                 "scale": [
@@ -1884,7 +1884,7 @@
         "EntityData": [
             {
                 "tag": "button_quit",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 46,
                 "parentID": 41,
@@ -1898,7 +1898,7 @@
             {
                 "position": [
                     2399.99951171875,
-                    1349.990966796875,
+                    1349.9910888671875,
                     0.0
                 ],
                 "scale": [
@@ -1911,7 +1911,7 @@
         "EntityData": [
             {
                 "tag": "text_quit",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 47,
                 "parentID": 41,
@@ -1921,7 +1921,7 @@
         "TextProperty": [
             {
                 "textString": "Quit Game",
-                "currentFont": "SFProverbialGothic",
+                "currentFont": "Arial-italic",
                 "scale": 0.75,
                 "color": [
                     1.0,
@@ -1929,8 +1929,8 @@
                     1.0
                 ],
                 "position": [
-                    723.0,
-                    120.5
+                    713.0,
+                    70.5
                 ]
             }
         ]
@@ -1953,7 +1953,7 @@
             {
                 "position": [
                     1312.0,
-                    730.7984619140625,
+                    730.7985229492188,
                     0.0
                 ],
                 "scale": [
@@ -1966,7 +1966,7 @@
         "EntityData": [
             {
                 "tag": "game_logo",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 48,
                 "parentID": 41,
@@ -1996,7 +1996,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 49,
-                "parentID": 2,
+                "parentID": -1,
                 "treeNodeFlags": 32
             }
         ],
@@ -2152,7 +2152,7 @@
             {
                 "position": [
                     800.0,
-                    450.0,
+                    450.0000305175781,
                     0.0
                 ],
                 "scale": [
@@ -2169,7 +2169,7 @@
                 "localActive": false,
                 "id": 53,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -2190,8 +2190,8 @@
         "Transform": [
             {
                 "position": [
-                    1491.19970703125,
-                    831.60009765625,
+                    1500.0,
+                    830.0000610351563,
                     0.0
                 ],
                 "scale": [
@@ -2247,22 +2247,22 @@
                 "localActive": false,
                 "id": 55,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
             {
                 "textString": "No more enemy, Room Cleared",
-                "currentFont": "Almendra-Regular",
-                "scale": 0.8999999761581421,
+                "currentFont": "Roboto-Bold",
+                "scale": 0.800000011920929,
                 "color": [
                     1.0,
                     0.0,
                     0.0
                 ],
                 "position": [
-                    3.5,
-                    371.0
+                    10.0,
+                    400.0
                 ]
             }
         ]
@@ -2347,7 +2347,7 @@
         "TextProperty": [
             {
                 "textString": "Press here to restart",
-                "currentFont": "SFProverbialGothic",
+                "currentFont": "Roboto-Bold",
                 "scale": 0.800000011920929,
                 "color": [
                     1.0,
@@ -2355,7 +2355,7 @@
                     1.0
                 ],
                 "position": [
-                    63.5,
+                    50.0,
                     342.0
                 ]
             }
@@ -2686,7 +2686,7 @@
         "Transform": [
             {
                 "position": [
-                    872.3995361328125,
+                    872.3997802734375,
                     612.088134765625,
                     0.0
                 ],
@@ -2710,16 +2710,16 @@
         "TextProperty": [
             {
                 "textString": "[new text]",
-                "currentFont": "SFProverbialGothic",
-                "scale": 0.75,
+                "currentFont": "Roboto-Regular",
+                "scale": 0.699999988079071,
                 "color": [
                     1.0,
                     1.0,
                     1.0
                 ],
                 "position": [
-                    175.0,
-                    155.0
+                    190.5,
+                    156.5
                 ]
             }
         ]
@@ -2741,7 +2741,7 @@
         "Transform": [
             {
                 "position": [
-                    872.3995361328125,
+                    872.3997802734375,
                     612.087646484375,
                     0.0
                 ],
@@ -2765,15 +2765,15 @@
         "TextProperty": [
             {
                 "textString": "[new text]",
-                "currentFont": "SFProverbialGothic",
-                "scale": 0.75,
+                "currentFont": "Roboto-Regular",
+                "scale": 0.699999988079071,
                 "color": [
                     1.0,
                     1.0,
                     1.0
                 ],
                 "position": [
-                    175.0,
+                    190.5,
                     133.0
                 ]
             }
@@ -2796,7 +2796,7 @@
         "Transform": [
             {
                 "position": [
-                    872.3995361328125,
+                    872.3997802734375,
                     612.087646484375,
                     0.0
                 ],
@@ -2820,15 +2820,15 @@
         "TextProperty": [
             {
                 "textString": "[new text]",
-                "currentFont": "SFProverbialGothic",
-                "scale": 0.75,
+                "currentFont": "Roboto-Regular",
+                "scale": 0.699999988079071,
                 "color": [
                     1.0,
                     1.0,
                     1.0
                 ],
                 "position": [
-                    175.0,
+                    190.0,
                     110.5
                 ]
             }
@@ -2851,8 +2851,8 @@
         "Transform": [
             {
                 "position": [
-                    872.3995361328125,
-                    612.087646484375,
+                    872.3997802734375,
+                    612.0877075195313,
                     0.0
                 ],
                 "scale": [
@@ -2875,15 +2875,15 @@
         "TextProperty": [
             {
                 "textString": "[new text]",
-                "currentFont": "SFProverbialGothic",
-                "scale": 0.75,
+                "currentFont": "Roboto-Regular",
+                "scale": 0.699999988079071,
                 "color": [
                     1.0,
                     1.0,
                     1.0
                 ],
                 "position": [
-                    175.0,
+                    190.5,
                     90.0
                 ]
             }
@@ -2924,7 +2924,7 @@
                 "localActive": true,
                 "id": 66,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -3022,7 +3022,7 @@
         "Transform": [
             {
                 "position": [
-                    1761.60009765625,
+                    1761.5999755859375,
                     417.9999694824219,
                     0.0
                 ],
@@ -3200,7 +3200,7 @@
         "TextProperty": [
             {
                 "textString": "60",
-                "currentFont": "Almendra-Regular",
+                "currentFont": "Roboto-Regular",
                 "scale": 1.0,
                 "color": [
                     0.96875,
@@ -3211,6 +3211,205 @@
                     706.5,
                     409.0
                 ]
+            }
+        ]
+    },
+    {
+        "id": 71,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Button.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1312.0,
+                    262.8001708984375,
+                    0.0
+                ],
+                "scale": [
+                    288.0,
+                    63.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "button_story",
+                "active": false,
+                "localActive": true,
+                "id": 71,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 72,
+        "Transform": [
+            {
+                "position": [
+                    2400.0,
+                    1350.0001220703125,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "text_story",
+                "active": false,
+                "localActive": true,
+                "id": 72,
+                "parentID": 41,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Story",
+                "currentFont": "Arial-italic",
+                "scale": 0.75,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    730.0,
+                    145.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 73,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\storyline.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0000915527344,
+                    0.0
+                ],
+                "scale": [
+                    450.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "story",
+                "active": false,
+                "localActive": true,
+                "id": 73,
+                "parentID": 74,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 74,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.37254902720451355
+                ],
+                "layer": 255
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0000305175781,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "story_bg",
+                "active": false,
+                "localActive": false,
+                "id": 74,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 75,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1500.0,
+                    830.0000610351563,
+                    0.0
+                ],
+                "scale": [
+                    160.0,
+                    90.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "story_cross",
+                "active": false,
+                "localActive": true,
+                "id": 75,
+                "parentID": 74,
+                "treeNodeFlags": 32
             }
         ]
     }
