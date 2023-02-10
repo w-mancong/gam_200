@@ -554,7 +554,7 @@ namespace ALEngine::Engine::GameplayInterface
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		//IF it already has a wall, don't do anything
-		if (cell.has_Wall) {
+		if (cell.has_Wall || !cell.m_isAccessible) {
 			return;
 		}
 
@@ -565,7 +565,7 @@ namespace ALEngine::Engine::GameplayInterface
 
 		//Change it's sprite overlay
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
-		sprite.layer = 1000 - Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y;
+		sprite.layer = 1000 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
 		sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/ConstructTile_TileSprite.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
 	}
@@ -576,7 +576,7 @@ namespace ALEngine::Engine::GameplayInterface
 		
 		//Set Stats
 		cell.has_Wall = isTrue;
-		cell.m_canWalk = !isTrue;
+		cell.m_canWalk = false;
 
 		//Set the overlay sprite to false
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY

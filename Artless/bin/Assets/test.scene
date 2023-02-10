@@ -952,7 +952,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7269287109375,
+                    967.7273559570313,
                     41.370460510253906,
                     0.0
                 ],
@@ -1685,7 +1685,7 @@
                 "localActive": false,
                 "id": 41,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -2865,10 +2865,10 @@
         "EntityData": [
             {
                 "tag": "tooltip_skill_line4",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 65,
-                "parentID": -1,
+                "parentID": 16,
                 "treeNodeFlags": 32
             }
         ],

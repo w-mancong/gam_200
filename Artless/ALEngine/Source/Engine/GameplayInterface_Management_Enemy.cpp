@@ -96,12 +96,12 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		//enemyUnit.UpdateEnemyLogic = &Enemy_Logic_Update_CellDestroyer;
 	}
 
-	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy03attributes(Unit& enemyUnit)
+	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy03attributes([[maybe_unused]] Unit& enemyUnit)
 	{
 		return;
 	}
 
-	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy04attributes(Unit& enemyUnit)
+	void ALEngine::Engine::GameplayInterface_Management_Enemy::SetEnemy04attributes([[maybe_unused]] Unit& enemyUnit)
 	{
 		return;
 	}
@@ -414,7 +414,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 
 		++enemyNeededData.enemyMoved;
 	}
-	void GameplayInterface_Management_Enemy::Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, Entity& movingUnitEntity, ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room) {
+	void GameplayInterface_Management_Enemy::Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, [[maybe_unused]] Entity& movingUnitEntity, [[maybe_unused]] ALEngine::Engine::GameplayInterface::UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<Entity>& enemyEntityList, Room& m_Room) {
 		//Find a target cell
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved-1]);
 
