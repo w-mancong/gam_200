@@ -403,7 +403,13 @@ namespace ALEngine::ECS
 			return;
 
 		if (Input::KeyTriggered(KeyCode::U))
+		{
 			uiFocus = !uiFocus;
+			if(uiFocus)
+				AL_CORE_INFO("UI attatched");
+			else
+				AL_CORE_INFO("UI detatched");
+		}
 
 		//------------------ Begin editor framebuffer rendering ------------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
