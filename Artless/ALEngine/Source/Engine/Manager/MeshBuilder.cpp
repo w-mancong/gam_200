@@ -212,7 +212,7 @@ namespace ALEngine::Engine
 		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, bd.texHandle, GL_DYNAMIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, batch.ubo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(f32) * ECS::MAX_ENTITIES, bd.isUI, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, bd.isUI, GL_DYNAMIC_DRAW);
 
 		//feed the instance id to the shader.
 		glBindBuffer(GL_ARRAY_BUFFER, batch.ibo);

@@ -61,6 +61,7 @@ namespace ALEngine::ECS
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
 		u64* isUI{ nullptr };
+		b8 uiFocus{ true };
 		
 		Tree::BinaryTree sceneGraph{};
 		std::vector<Transform> prevTransform;
@@ -101,7 +102,11 @@ namespace ALEngine::ECS
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
-			*(isUI + counter) = sprite.isUI;
+			
+			if (uiFocus || Editor::ALEditor::Instance()->GetGameActive())
+				*(isUI + counter) = sprite.isUI;
+			else
+				*(isUI + counter) = 0;
 
 			++counter;
 		}
@@ -363,6 +368,7 @@ namespace ALEngine::ECS
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
+
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
 #endif
@@ -395,6 +401,9 @@ namespace ALEngine::ECS
 	{
 		if (Editor::ALEditor::Instance()->GetGameActive())
 			return;
+
+		if (Input::KeyTriggered(KeyCode::U))
+			uiFocus = !uiFocus;
 
 		//------------------ Begin editor framebuffer rendering ------------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
