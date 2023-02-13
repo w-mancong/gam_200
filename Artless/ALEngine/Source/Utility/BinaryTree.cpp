@@ -644,6 +644,8 @@ namespace ALEngine::Tree
                 en.id = newSerial.serialID;
                 en.parentID = newSerial.parentSerialID;
 
+                //std::cout << en.tag << " " << en.id << " " << en.parentID << "\n";
+
                 ++newID;
             }
             else

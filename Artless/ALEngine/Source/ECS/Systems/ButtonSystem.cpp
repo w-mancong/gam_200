@@ -1,8 +1,8 @@
 /*!
-file:	EventTriggerSystem.cpp
+file:	ButtonSystem.cpp
 author:	Tan Zhen Xiong
 email:	t.zhenxiong\@digipen.edu
-brief:	This file contains the function definition for EventTriggerSystem.cpp
+brief:	This file contains the function definition for ButtonSystem.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -16,7 +16,7 @@ namespace ALEngine::ECS
 
 	/*!*********************************************************************************
 		\brief
-			Event Trigger System, contains functions needed to run components for EventTrigger System
+			Button System, contains functions needed to run components for Button System
 	***********************************************************************************/
 	class ButtonSystem : public System
 	{
@@ -35,8 +35,6 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		AL_CORE_CRITICAL("DARK");
-
 		Button button = Coordinator::Instance()->GetComponent<Button>(invoker);
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
 		sprite.color = button.m_color_Tint_OnHover;
@@ -47,10 +45,9 @@ namespace ALEngine::ECS
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
 		}
-		AL_CORE_CRITICAL("LIGHT");
 
 		Button button = Coordinator::Instance()->GetComponent<Button>(invoker);
-		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
+		[[maybe_unused]] EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(invoker);
 
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(invoker);
 		sprite.color = button.m_color_Tint_Normal;
@@ -65,10 +62,7 @@ namespace ALEngine::ECS
 	}
 
 	void UpdateButtonSystem() {
-		////Shift through each component
-		//for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
-		//	Button& button = Coordinator::Instance()->GetComponent<Button>(*it);
-		//}
+
 	}
 
 	void CreateButton(Entity const& entity) {
@@ -86,7 +80,7 @@ namespace ALEngine::ECS
 		if (!Coordinator::Instance()->HasComponent<Text>(entity)) {
 			Text text;
 
-			text.textString = "button Text";
+			text.textString = "[]";
 			text.scale = 1.0f;
 			text.currentFont = "Roboto-Bold";
 			text.colour = { 0.f, 0.f, 0.f, 1.f };
@@ -99,6 +93,10 @@ namespace ALEngine::ECS
 			Coordinator::Instance()->AddComponent(entity, text);
 		}
 
+		if (Coordinator::Instance()->HasComponent<Button>(entity)) {
+			return;
+		}
+		
 		//Setup EventTrigger for custom stats
 		Button button{};
 		button.m_color_Tint_Normal = { 1.f, 1.f, 1.f, 1.f };

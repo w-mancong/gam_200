@@ -13,6 +13,7 @@ brief:	This file contains the function definitions for the TileEditorPanel class
 
 #if EDITOR
 #include "imgui_internal.h"
+#include <imgui/cpp/imgui_stdlib.h>
 #define MIN_TILES_SHOWN 3
 #define MAX_TILES_SHOWN 10
 #define FILE_BUFFER_SIZE 100
@@ -159,17 +160,62 @@ namespace ALEngine::Editor
 				[[maybe_unused]] f32 winWidth{ ImGui::GetContentRegionAvail().x };
 				f32 width{ (ImGui::GetContentRegionAvail().x / 2.f) - ImGui::GetStyle().FramePadding.x };
 				f32 textLen{ 0.f };
-
+				
+				static std::pair<std::string, std::string> selectedTileImage{ "", "" };
 				u32 count{ 0 };
 				for(auto& type : m_ImageMap)
 				{	
+					if (type.second == "")
+						continue;
+
 					std::string name = type.first + "##TileEditorImage";
 
 					ImGui::BeginChild(name.c_str(), ImVec2(width, width), true);
 
-					textLen = ImGui::CalcTextSize(type.first.c_str()).x ;
-					ImGui::SameLine((width - textLen) * 0.5f);
-					ImGui::Text(type.first.c_str());
+					// Text area
+					if (selectedTileImage.second != type.second)
+					{
+						textLen = ImGui::CalcTextSize(type.first.c_str()).x;
+						ImGui::SameLine((width - textLen) * 0.5f);
+						ImGui::Text(type.first.c_str());
+					}
+					else
+					{
+						ImGui::InputText("##SelectedNameToBeEdited", &selectedTileImage.first);
+
+						// Enter or click outside means exit
+						if (Input::KeyTriggered(KeyCode::Enter) ||
+							(!ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
+						{
+							// Iterate through whole tilemap
+							for (auto& row : m_TileMap)
+							{
+								for (auto& tile : row)
+								{
+									if (tile == type.first)
+										tile = selectedTileImage.first;
+								}
+							}
+
+							SaveMap(m_FilePath.c_str());
+
+							// Change key of Image Map
+							auto node = m_ImageMap.extract(type.first);
+							node.key() = selectedTileImage.first;
+							m_ImageMap.insert(std::move(node));
+							selectedTileImage = { "", "" };
+
+							// Save the Tile Editor Image Data
+							SaveTileEditorData();
+						}
+					}
+
+					// Check if double clicked
+					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+					{
+						selectedTileImage.first = type.first;
+						selectedTileImage.second = type.second;
+					}
 
 					Guid id = Engine::AssetManager::Instance()->GetGuid(type.second.c_str());
 					u64 texture = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
@@ -180,7 +226,7 @@ namespace ALEngine::Editor
 
 					ImGui::EndChild();
 
-					if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+					if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && selectedTileImage.second == "")
 						m_SelectedTile = type.first;
 
 					// Drag Drop for Selectable
@@ -203,6 +249,7 @@ namespace ALEngine::Editor
 								fileString.find(".png") != std::string::npos)
 							{
 								type.second = fileString;
+								selectedTileImage = { "", "" };
 								SaveTileEditorData();
 							}
 							else
@@ -240,7 +287,7 @@ namespace ALEngine::Editor
 
 				ImGui::EndChild();
 
-				if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+				if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && selectedTileImage.second == "")
 					ImGui::OpenPopup("Add Tile##TileEditorPopup");
 				
 				f32 popup_len = ALEditor::Instance()->m_MenuSize.x;
@@ -568,14 +615,14 @@ namespace ALEngine::Editor
 
 		Value const& val{ *doc.Begin() };
 
-		// Get Height
+		// Get Width
 		if (val.HasMember("Width"))
 		{
 			m_MapWidth = val["Width"].GetInt();
 			AL_CORE_INFO("Width Assigned to {}", m_MapWidth);
 		}
 
-		// Get Width
+		// Get Height
 		if (val.HasMember("Height"))
 		{
 			m_MapHeight = val["Height"].GetInt();

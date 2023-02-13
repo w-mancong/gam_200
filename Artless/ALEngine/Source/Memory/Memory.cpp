@@ -47,6 +47,7 @@ namespace ALEngine::Memory
 #endif
 		Engine::MeshBuilder::Free();
 		Engine::AssetManager::Free();
+		Gameplay::MapManager::Free();
 	}
 
 	/*!*********************************************************************************

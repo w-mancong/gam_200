@@ -42,7 +42,7 @@ namespace ALEngine::ECS::Component
 		Entity unitEntity;
 
 		Entity child_overlay;
-		b8 iswall{ false };
+		b8 has_Wall{ false };
 
 		//Coordinate of the cll
 		Math::Vector2Int coordinate = { 0,0 };

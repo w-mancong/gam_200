@@ -47,9 +47,8 @@ namespace ALEngine::ECS::Component
 	struct EventTrigger
 	{
 		//Component Enabled
-		b8 isEnabled { true };
-
 		s32 layer = 0;
+		b8 isEnabled{ true }, isRunWhenPaused{ false };
 
 		//Events
 		Event OnPointEnter, OnPointStay, OnPointExit, OnPointClick;

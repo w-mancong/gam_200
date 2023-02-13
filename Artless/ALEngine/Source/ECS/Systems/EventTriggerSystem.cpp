@@ -49,6 +49,11 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void UpdatePointerStatus(Entity entity, bool previousStillOverlapping);
 
+		/*!*****************************************************************************
+			\brief Reset member variable to default values
+		*******************************************************************************/
+		void Reset(void);
+
 		//State of Trigger
 		EVENT_TRIGGER_TYPE current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
 		Entity m_interactedEventTrigger_Entity;
@@ -69,10 +74,14 @@ namespace ALEngine::ECS
 	}
 
 	void UpdateEventTriggerSystem() {
+		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING && !Coordinator::Instance()->HasComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity)) {
+			eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+		}
+		
 		//Get if triggered
-		bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
+		[[maybe_unused]] bool isClickTriggered = Input::KeyTriggered(KeyCode::MouseLeftButton);
 		b8 previousStillOverlapping = false;
-
+			
 		//Do a check in case the current interacted trigger deactivates itself while being used
 		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING) {
 			EventTrigger& current_event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
@@ -86,7 +95,7 @@ namespace ALEngine::ECS
 		//If the system was interacting with an eventTrigger
 		if (eventSystem->current_Trigger_State != EVENT_TRIGGER_TYPE::NOTHING) {
 			//Keep track of whether it's still being interacted/overlapping
-			EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
+			[[maybe_unused]] EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
 			Transform& previousTransform = Coordinator::Instance()->GetComponent<Transform>(eventSystem->m_interactedEventTrigger_Entity);
 
 			//Get the calcaltion
@@ -103,8 +112,16 @@ namespace ALEngine::ECS
 		for (auto it = eventSystem->mEntities.begin(); it != eventSystem->mEntities.end(); ++it) {
 			EventTrigger& event_Trigger = Coordinator::Instance()->GetComponent<EventTrigger>(*it);
 
-			if (!event_Trigger.isEnabled || !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+			if (!event_Trigger.isEnabled|| !Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
 				continue;
+			}
+
+			//If game is paused
+			if (utils::IsEqual(Time::m_Scale, 0.f)) {
+				//If the event trigger cannot run when paused, skip
+				if (!event_Trigger.isRunWhenPaused) {
+					continue;
+				}
 			}
 
 			//Update the latest interacted event trigger, pass in the check for previous event trigger overlap as well
@@ -194,6 +211,11 @@ namespace ALEngine::ECS
 		return;
 	}
 
+	void EventTriggerSystem::Reset(void)
+	{
+		current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+	}
+
 	void EventTriggerSystem::InvokeEvent(Entity invokerEntity, Event& evnt) {
 		for (auto it = evnt.m_Listeners.begin(); it != evnt.m_Listeners.end(); ++it) {
 			it->second.invokeFunction(invokerEntity);
@@ -246,9 +268,10 @@ namespace ALEngine::ECS
 		}
 	}
 
-	void CreateEventTrigger(Entity const& entity) {
+	void CreateEventTrigger(Entity const& entity, bool runWhenPaused) {
 		//Setup EventTrigger for custom stats
 		EventTrigger charControl{};
+		charControl.isRunWhenPaused = runWhenPaused;
 		Coordinator::Instance()->AddComponent(entity, charControl);
 	}
 
@@ -272,4 +295,11 @@ namespace ALEngine::ECS
 			evnt.m_Listeners.insert(std::pair(listener.m_position, listener));
 		}
 	}
+
+#if EDITOR
+	void ResetEventTriggerSystem(void)
+	{
+		eventSystem->current_Trigger_State = EVENT_TRIGGER_TYPE::NOTHING;
+	}
+#endif
 }

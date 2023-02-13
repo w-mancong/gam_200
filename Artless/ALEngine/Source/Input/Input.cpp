@@ -1,7 +1,9 @@
 /*!
 file:	Input.cpp
-author:	Wong Man Cong
+author:	Wong Man Cong (20%)
+co-author:	Lucas Nguyen (10%)
 email:	w.mancong\@digipen.edu
+		l.nguyen\@digipen.edu
 brief:	This file contain function definition for Input
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -40,30 +42,46 @@ namespace ALEngine::UserInput
 
 	s32 Input::GetScreenResX()
 	{
+#if EDITOR
+		return static_cast<s32>(Editor::ALEditor::Instance()->GetSceneWidth());
+#else
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
 		return screenResX;
+#endif
 	}
 
 	s32 Input::GetScreenResY()
 	{
+#if EDITOR
+		return static_cast<s32>(Editor::ALEditor::Instance()->GetSceneHeight());
+#else
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
 		return screenResY;
+#endif
 	}
 
 	f64 Input::GetMousePosX()
 	{
+#if EDITOR
+		return GetMousePosWRTPanel().x;
+#else
 		f64 mousePosX, mousePosY;
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 		return mousePosX;
+#endif
 	}
 
 	f64 Input::GetMousePosY()
 	{
+#if EDITOR
+		return GetMousePosWRTPanel().y;
+#else
 		f64 mousePosX, mousePosY;
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 		return static_cast<f64>(GetScreenResY()) - mousePosY;
+#endif
 	}
 
 	Math::Vec2 Input::GetMouseWorldPos()
@@ -92,11 +110,24 @@ namespace ALEngine::UserInput
 			inv_view = Mat4::InverseT(inv_view);
 
 			mousePos = inv_view * inv_proj * mousePos;
-			std::cout << "Pos: " << mousePos.x << ", " << mousePos.y << std::endl;
 			return Math::Vec2(mousePos.x, mousePos.y);
 		}
 
 		return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
+#endif
+	}
+
+	Math::Vec2 Input::GetMousePosWRTPanel()
+	{
+#if EDITOR
+		return Editor::ALEditor::Instance()->GetMousePosWRTPanel();
+#else
+		using namespace Math;
+		f64 mousePosX{ 0.f }, mousePosY{ 0.f };
+		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
+
+		return Math::Vec2 (mousePosX, mousePosY);
+
 #endif
 	}
 

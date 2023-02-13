@@ -64,7 +64,7 @@ namespace ALEngine::Memory
 		static T* allocate(u64 size)
 		{
 			Bookmark* bm = (m_Bookmarks + m_BookmarkIndex++); u64 const index = m_Index; m_Index += sizeof(T) * size;
-#ifdef _DEBUG
+#ifndef NDEBUG
 			assert(index < MEMORY_BUFFER && "Size of memory buffer is too small. Change the size of MEMORY_BUFFER");
 #endif
 			bm->head = m_Ptr + index, bm->tail = m_Ptr + m_Index - 1;
@@ -142,7 +142,7 @@ namespace ALEngine::Memory
 		{
 			Bookmark* free_bm = nullptr, * allo_bm = nullptr; u64 const SIZE = sizeof(T) * size; u64 bytesBetweenBookmark{ 0 };
 			u64 index = GetIndex(m_Freed, free_bm, bytesBetweenBookmark, SIZE);	// Get index of where mAllocated head shld be pointing to
-#ifdef _DEBUG
+#ifndef NDEBUG
 			assert(index < MEMORY_BUFFER && "Size of memory buffer is too small. Change the size of MEMORY_BUFFER");
 #endif
 			FindBookmark(m_Allocated, allo_bm);

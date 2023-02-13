@@ -621,6 +621,7 @@ namespace ALEngine::Editor
 				Audio ad;
 				ad.m_AudioName = "";
 				ad.m_ID = audioSource.id;
+				ad.m_Channel = Channel::BGM;
 				audioSource.list[audioSource.id++] = ad;
 			}
 		}
@@ -641,13 +642,15 @@ namespace ALEngine::Editor
 
 		if (ImGui::CollapsingHeader("Particle Component"))
 		{
-			f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, 1.f };
-			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, 1.f };
+			f32 startClr[4] = { particleProperty.colorStart.x, particleProperty.colorStart.y, particleProperty.colorStart.z, particleProperty.colorStart.w };
+			f32 endClr[4] = { particleProperty.colorEnd.x, particleProperty.colorEnd.y, particleProperty.colorEnd.z, particleProperty.colorEnd.w };
 			f32 vel[2] = { particleProperty.velocity.x, particleProperty.velocity.y };
 			f32 velVariation[2] = { particleProperty.velocityVariation.x, particleProperty.velocityVariation.y };
+			f32 startSize[2] = { particleProperty.sizeStart.x, particleProperty.sizeStart.y };
+			f32 endSize[2] = { particleProperty.sizeEnd.x, particleProperty.sizeEnd.y };
 
-			ImGui::DragFloat("Start Size", &particleProperty.sizeStart, 0.1f, 0.0f, 1500.0f);
-			ImGui::DragFloat("End Size", &particleProperty.sizeEnd, 0.1f, 0.0f, 1000.0f);
+			ImGui::DragFloat2("Start Size", startSize, 0.5f);
+			ImGui::DragFloat2("End Size", endSize, 0.5f);
 			ImGui::DragFloat("Size Variation", &particleProperty.sizeVariation, 0.1f, 0.0f, 1000.0f);
 			ImGui::ColorEdit4("Start Color", startClr);
 			ImGui::ColorEdit4("End Color", endClr);
@@ -657,6 +660,13 @@ namespace ALEngine::Editor
 			ImGui::DragFloat2("Velocity Variation", velVariation, 0.02f);
 			ImGui::DragFloat("Rotation", &particleProperty.rotation, 0.1f, 0.0f, 1000.0f);
 			ImGui::Checkbox("Enable Gravity", &particleProperty.gravityEnabled);
+			ImGui::Checkbox("Active", &particleProperty.active);
+
+			particleProperty.sizeStart.x = startSize[0];
+			particleProperty.sizeStart.y = startSize[1];
+
+			particleProperty.sizeEnd.x = endSize[0];
+			particleProperty.sizeEnd.y = endSize[1];
 
 			particleProperty.velocity.x = vel[0];
 			particleProperty.velocity.y = vel[1];
@@ -667,10 +677,12 @@ namespace ALEngine::Editor
 			particleProperty.colorStart.x = startClr[0];
 			particleProperty.colorStart.y = startClr[1];
 			particleProperty.colorStart.z = startClr[2];
+			particleProperty.colorStart.w = startClr[3];
 
 			particleProperty.colorEnd.x = endClr[0];
 			particleProperty.colorEnd.y = endClr[1];
 			particleProperty.colorEnd.z = endClr[2];
+			particleProperty.colorEnd.w = endClr[3];
 
 			ImGui::Separator();
 		}
@@ -756,66 +768,6 @@ namespace ALEngine::Editor
 			prop.position.y = pos[1];
 
 			ImGui::Separator();
-		}
-	}
-
-	void InspectorPanel::DisplayEntityScript(void)
-	{
-		if (ImGui::CollapsingHeader("Script Component##Inspector"))
-		{
-			EntityScript& es = ECS::Coordinator::Instance()->GetComponent<EntityScript>(m_SelectedEntity);
-			/*u64 sizeInit{ es.Init.size() }, sizeUpdate{ es.Update.size() }, sizeExit{ es.Free.size() },
-				sizeLoad{ es.Load.size() }, sizeUnload{ es.Unload.size() };*/
-			std::string init_list{ "" }, update_list{ "" }, free_list{ "" },
-				load_list{ "" }, unload_list{ "" };
-			s32 init_select{ 0 }, update_select{ 0 }, free_select{ 0 },
-				load_select{ 0 }, unload_select{ 0 };
-
-			// Get list of Init Functions
-			for (auto x : es.Init)
-			{
-				init_list += x.first;
-				init_list += '\0';
-			}
-			init_list += '\0';
-
-			ImGui::Combo("Init##Script", &init_select, init_list.c_str());
-
-			// Get list of Init Functions
-			for (auto x : es.Update)
-			{
-				update_list += x.first;
-				update_list += '\0';
-			}
-			update_list += '\0';
-			ImGui::Combo("Update##Script", &update_select, update_list.c_str());
-
-			// Get list of Init Functions
-			for (auto x : es.Free)
-			{
-				free_list += x.first;
-				free_list += '\0';
-			}
-			update_list += '\0';
-			ImGui::Combo("Free##Script", &free_select, free_list.c_str());
-
-			// Get list of Init Functions
-			for (auto x : es.Load)
-			{
-				load_list += x.first;
-				load_list += '\0';
-			}
-			load_list += '\0';
-			ImGui::Combo("Load##Script", &load_select, load_list.c_str());
-
-			// Get list of Init Functions
-			for (auto x : es.Unload)
-			{
-				unload_list += x.first;
-				unload_list += '\0';
-			}
-			unload_list += '\0';
-			ImGui::Combo("Unload##Script", &unload_select, unload_list.c_str());
 		}
 	}
 

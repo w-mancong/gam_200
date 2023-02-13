@@ -1,7 +1,17 @@
 /*!
 file:   GamePlayInterface.h
-author: Tan Zhen Xiong
-email:  t.zhenxiong\@digipen.edu
+author:	Tan Zhen Xiong (30%)
+co-author:	Mohamed Zafir (20%)
+			Darrion Aw Wei Ting (20%)
+			Chan Jie Ming Stanley (20%)
+			Lucas Nguyen Thai Vinh (5%)
+			Wong Man Cong (5%)
+email:	t.zhenxiong@digipen.edu
+		m.zafir@digipen.edu
+		Weitingdarrion.aw@digipen.edu
+		c.jiemingstanley@digipen.edu
+		l.nguyen@digipen.edu
+		w.mancong@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.h
 
 		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -11,6 +21,8 @@ brief:	This file contains the function definition for GamePlayInterface.h
 #define GAMEPLAY_INTERFACE_H
 namespace ALEngine::Engine::GameplayInterface
 {
+	#define base_Layer 1000.0f;		//Base layer
+
 	/*!*********************************************************************************
 	\brief
 		Container for Room
@@ -26,16 +38,63 @@ namespace ALEngine::Engine::GameplayInterface
 	};
 
 	/*!*********************************************************************************
+		\brief
+			Status of game, STOP if game is not playing anymore
+							RUNNING if game is still running
+		***********************************************************************************/
+	enum class GAMEPLAY_STATUS
+	{
+		STOP,
+		RUNNING
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of phase of game
+	***********************************************************************************/
+	enum class PHASE_STATUS
+	{
+		PHASE_SETUP,
+		PHASE_ACTION,
+		PHASE_ENEMY,
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of controlling/movement of unit
+	***********************************************************************************/
+	enum class UNITS_CONTROL_STATUS {
+		NOTHING,
+		UNIT_MOVING,
+		UNIT_ATTACKING
+	};
+
+	/*!*********************************************************************************
+	\brief
+		State of placing pattern onto room
+	***********************************************************************************/
+	enum class PATTERN_PLACEMENT_STATUS {
+		NOTHING,
+		PLACING_FOR_TILE,
+		PLACING_FOR_ABILITIES
+	};
+
+	/*!*********************************************************************************
 	\brief
 		Container for Pattern
 	***********************************************************************************/
 	struct Pattern {
+		// File Path
+		std::string file_path{};
+
 		//list of grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
-		std::vector<Vector2Int> coordinate_occupied{};
+		std::vector<Vector2Int> coordinate_occupied{}
+		;
 	};
 
 	//***************For now 2 abilities***************//
-	enum class TYPE_ABILITIES { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL};
+	enum class ABILITY_NAME { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL};
+	enum class ABILITY_TYPE { DIRECT, EFFECT };
 
 	/*!*********************************************************************************
 	\brief
@@ -47,8 +106,10 @@ namespace ALEngine::Engine::GameplayInterface
 		u32 current_Cooldown = 0, max_Cooldown = 2;
 		s32 damage = 15;
 
+		ABILITY_TYPE current_Ability_Type = ABILITY_TYPE::DIRECT;
+
 		//Keep track of ability type
-		TYPE_ABILITIES current_type = TYPE_ABILITIES::HARD_DROP;
+		ABILITY_NAME current_Ability_Name = ABILITY_NAME::HARD_DROP;
 	};
 
 	/*!*********************************************************************************
@@ -136,6 +197,16 @@ namespace ALEngine::Engine::GameplayInterface
 	void PlaceWalkableOnGrid(Room& room, Vector2Int coordinate, std::string sprite_fileName);
 
 	/*!*********************************************************************************
+	\brief (stanley)
+		check if grid is walkable
+	\param [in]
+		room: gameplay room
+	\param [in]
+		coordinate: Coordinate to check if walkable is placed
+	***********************************************************************************/
+	b8 CheckIfWalkableOnGrid(Room& room, u32 gridX, u32 gridY);
+
+	/*!*********************************************************************************
 	\brief
 		Return if pattern can be placed on cell with given coordinate
 	\param [in]
@@ -161,7 +232,7 @@ namespace ALEngine::Engine::GameplayInterface
 	\return
 		if ability can be used on tile
 	***********************************************************************************/
-	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
+	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities);
 
 	/*!*********************************************************************************
 	\brief
@@ -199,10 +270,38 @@ namespace ALEngine::Engine::GameplayInterface
 	***********************************************************************************/
 	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy);
 
-
+	/*!*********************************************************************************
+	\brief
+		Constructs a wall onto a cell, makes the cell unwalkable in pathfinding
+	\param [in]
+		currentRoom: room maintained by the gameplay system 
+	\param [in]
+		x: x coordinate
+	\param [in]
+		y: y coordinate
+	\param [in]
+		isTrue : Whether to build the wall
+	***********************************************************************************/
 	void constructWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+	/*!*********************************************************************************
+	\brief
+		Destroys a wall on a cell
+	\param [in]
+		currentRoom: room maintained by the gameplay system
+	\param [in]
+		x: x coordinate
+	\param [in]
+		y: y coordinate
+	\param [in]
+		isTrue : Whether to destroy the wall
+	***********************************************************************************/
 	void destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue);
-
+	
+	/*!*********************************************************************************
+	\brief
+		Creates an audio manager
+	***********************************************************************************/
+	void CreateAudioEntityMasterSource(void);
 }
 #endif

@@ -47,7 +47,7 @@ namespace ALEngine::ECS
 		void DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid);
 
 		//Debug settings
-		bool isDebugStep = false, isDebugDraw = true;
+		bool isDebugStep = false, isDebugDraw = false;
 	};
 
 	namespace
@@ -124,19 +124,20 @@ namespace ALEngine::ECS
 
 			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-
 			//If rigidbody isn't enabled, skip
 			if (!rigid.isEnabled) {
 				continue;
 			}
 
 			//Gravity
+			if(rigid.hasGravity)
 			AddForce(rigid, Vector2(0,-earthGravity * rigid.mass), FORCEMODE::FORCE);
 				
 			//Friction
 			Vector2 friction = { -rigid.velocity.x * globalDrag * rigid.drag.x * rigid.mass, 0 };
 			AddForce(rigid, friction, FORCEMODE::FORCE);
 
+			
 			//Update rigidbody from all forces
 			if (Coordinator::Instance()->HasComponent<Collider2D>(*it)) {
 				rigidS->UpdateRigidbody(transform, Coordinator::Instance()->GetComponent<Collider2D>(*it), rigid);

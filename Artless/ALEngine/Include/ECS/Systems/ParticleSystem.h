@@ -82,12 +82,48 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		static ParticleSystem& GetParticleSystem();
 
+		/*!*********************************************************************************
+		\brief
+			Clear all particles.
+		***********************************************************************************/
 		void ClearParticles();
 
+		/*!*********************************************************************************
+		\brief
+			Return the number of particles.
+		***********************************************************************************/
 		u32& GetParticleCounter();
 
+		/*!*********************************************************************************
+		\brief
+			Lerp helper function.
+		***********************************************************************************/
 		template <typename T>
 		static T Lerp(T a, T b, float t);
+
+		/*!*********************************************************************************
+		\brief
+			Spawn particles when unit is hurt.
+		***********************************************************************************/
+		void UnitDmgParticles(Math::Vector2 position);
+
+		/*!*********************************************************************************
+		\brief
+			Spawn particles when unit is healed.
+		***********************************************************************************/
+		void UnitHealParticles(Math::Vector2 position);
+
+		/*!*********************************************************************************
+		\brief
+			Update scripted particle system.
+		***********************************************************************************/
+		void ManualParticleUpdate();
+
+		/*!*********************************************************************************
+		\brief
+			Display "Your Turn" particle.
+		***********************************************************************************/
+		void DisplayYourTurn();
 
 	private:
 		/*!*********************************************************************************
@@ -98,13 +134,15 @@ namespace ALEngine::ECS
 		{
 			Math::Vector2 position{}, velocity{};
 			Math::Vector4 colorStart{}, colorEnd{};
-			f32 sizeBegin{ 1.f }, sizeEnd{ 10.f }, rotation{ 0.f }, lifeTime{ 1.0f };
+			Math::Vector2 sizeBegin{ 10.f, 10.f }, sizeEnd{ 10.f, 10.f };
+			f32 rotation{ 0.f }, lifeTime{ 1.0f };
 			f32 lifeRemaining{ 0.0f }, rotAmt{};
 			b8 active{ false };
 			Sprite sprite;
 			b8 gravityEnabled{ false };
 		};
 		std::vector<Particle> particleContainer;
+		std::vector<ParticleProperties> manualParticleContainer;
 		u32 particleIndex = 999; // max index of particles container
 		u32 particleCounter{};
 
