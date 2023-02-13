@@ -1,26 +1,17 @@
-/*!
-file:	SceneManager.cpp
-author:	Wong Man Cong (80%)
-co-author: Mohamed Zafir (20%)
-email:	w.mancong\@digipen.edu
-brief:	This file contain function definition for saving/loading a scene
-
-		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
-*//*__________________________________________________________________________________*/
 #include <pch.h>
-#include <Engine/GSM/GameStateManager.h>
+#include <Prefabs/Prefabs.h>
 
-namespace ALEngine::Engine::Scene
+namespace ALEngine
 {
 	namespace
 	{
 		namespace rjs = rapidjson;
 		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
 
-		std::string currScene;
-#if EDITOR
-		std::string state;
-#endif
+		ECS::Entity constexpr MAX_PREFABS = 1'000;
+		
+		//std::queue<ECS::Entity> prefabs;
+		std::unordered_map<std::string, std::string> instObjects;
 	}
 
 	void WriteSprite(TWriter& writer, ECS::Entity en)
@@ -32,7 +23,7 @@ namespace ALEngine::Engine::Scene
 		Sprite const& sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		// filePath
 		writer.Key("filePath");
-		writer.String( sprite.filePath.c_str(), static_cast<rjs::SizeType>( sprite.filePath.length() ) );
+		writer.String(sprite.filePath.c_str(), static_cast<rjs::SizeType>(sprite.filePath.length()));
 
 		// Colors
 		writer.Key("color");
@@ -70,7 +61,7 @@ namespace ALEngine::Engine::Scene
 		sprite.layer = v[0]["layer"].GetUint();
 
 		// Initialising value
-		sprite.id = AssetManager::Instance()->GetGuid(sprite.filePath);
+		sprite.id = Engine::AssetManager::Instance()->GetGuid(sprite.filePath);
 		sprite.index = 0;
 
 		Coordinator::Instance()->AddComponent(en, sprite);
@@ -85,7 +76,7 @@ namespace ALEngine::Engine::Scene
 		Animator const& animator = Coordinator::Instance()->GetComponent<Animator>(en);
 		// Saving animatorName
 		writer.Key("animatorName");
-		writer.String( animator.animatorName.c_str(), static_cast<rjs::SizeType>(animator.animatorName.length() ) );
+		writer.String(animator.animatorName.c_str(), static_cast<rjs::SizeType>(animator.animatorName.length()));
 
 		writer.EndObject();
 		writer.EndArray();
@@ -94,7 +85,7 @@ namespace ALEngine::Engine::Scene
 	void ReadAnimator(rjs::Value const& v, ECS::Entity en)
 	{
 		// Getting animatorName
-		c8 const * animatorName = v[0]["animatorName"].GetString();
+		c8 const* animatorName = v[0]["animatorName"].GetString();
 		Animator animator = ECS::CreateAnimator(animatorName);
 		ECS::AttachAnimator(en, animator);
 	}
@@ -161,7 +152,7 @@ namespace ALEngine::Engine::Scene
 
 		// Tag
 		writer.Key("tag");
-		writer.String( entityData.tag.c_str(), static_cast<rjs::SizeType>(entityData.tag.length() ) );
+		writer.String(entityData.tag.c_str(), static_cast<rjs::SizeType>(entityData.tag.length()));
 
 		// Active status
 		writer.Key("active");
@@ -174,7 +165,7 @@ namespace ALEngine::Engine::Scene
 		// Entity ID
 		writer.Key("id");
 		writer.Uint(entityData.id);
-		
+
 		// Entity's parent id for scene graph
 		writer.Key("parentID");
 		writer.Int(entityData.parentID);
@@ -206,7 +197,7 @@ namespace ALEngine::Engine::Scene
 
 #if EDITOR
 		// Getting tree node flags for imgui
-		entityData.treeNodeFlags = static_cast<ImGuiTreeNodeFlags_>( v[0]["treeNodeFlags"].GetUint64() );
+		entityData.treeNodeFlags = static_cast<ImGuiTreeNodeFlags_>(v[0]["treeNodeFlags"].GetUint64());
 #endif
 	}
 
@@ -353,7 +344,7 @@ namespace ALEngine::Engine::Scene
 		writer.StartObject();
 
 		CharacterController const& cc = Coordinator::Instance()->GetComponent<CharacterController>(en);
-		
+
 		// Speed
 		writer.Key("speed");
 		writer.Double(static_cast<f64>(cc.speed));
@@ -642,173 +633,147 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->AddComponent(en, prop);
 	}
 
-	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
+	// To save a prefab
+	void SavePrefab(ECS::Entity en)
 	{
-		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
-		if (entity.parent != -1)
-		{
-			Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
-			trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
-			trans.localRotation = trans.rotation - parentTrans.rotation;
-			trans.localScale = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
-		}
-		else
-		{
-			trans.localPosition = trans.position;
-			trans.localRotation = trans.rotation;
-			trans.localScale	= trans.scale;
-		}
-
-		for (s32 children : entity.children)
-			CalculateLocalCoordinate(sceneGraph.GetMap()[children], sceneGraph);
-	}
-
-	void CalculateLocalCoordinate(void)
-	{
-		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-		std::vector<s32> const& parentsList = sceneGraph.GetParents();
-		for (s32 en : parentsList)
-			CalculateLocalCoordinate(sceneGraph.GetMap()[en], sceneGraph);
-	}
-
-	void SerializeScene(rjs::StringBuffer& sb)
-	{
-		TWriter writer(sb);
-
-		ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
-		u32 id{ 0 };
-
-		ECS::GetSceneGraph().SerializeTree();
+		rjs::StringBuffer sb{};
+		TWriter writer{ sb };
 
 		writer.StartArray();
-		for (auto it{ entities.begin() }; it != entities.end(); ++it)
-		{
-			writer.StartObject();
+		writer.StartObject();
 
-			writer.Key("id");
-			writer.Uint(id++);
+		if (Coordinator::Instance()->HasComponent<Sprite>(en))
+			WriteSprite(writer, en);
+		if (Coordinator::Instance()->HasComponent<Animator>(en))
+			WriteAnimator(writer, en);
+		if (Coordinator::Instance()->HasComponent<Transform>(en))
+			WriteTransform(writer, en);
+		if (Coordinator::Instance()->HasComponent<EntityData>(en))
+			WriteEntityData(writer, en);
+		if (Coordinator::Instance()->HasComponent<Collider2D>(en))
+			WriteCollider2D(writer, en);
+		if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
+			WriteRigidbody2D(writer, en);
+		if (Coordinator::Instance()->HasComponent<CharacterController>(en))
+			WriteCharacterController(writer, en);
+		if (Coordinator::Instance()->HasComponent<Unit>(en))
+			WriteUnit(writer, en);
+		if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
+			WriteParticleProperty(writer, en);
+		if (Coordinator::Instance()->HasComponent<Text>(en))
+			WriteTextProperty(writer, en);
 
-			ECS::Entity en = *it;
-			if (Coordinator::Instance()->HasComponent<Sprite>(en))
-				WriteSprite(writer, en);
-			if (Coordinator::Instance()->HasComponent<Animator>(en))
-				WriteAnimator(writer, en);
-			if (Coordinator::Instance()->HasComponent<Transform>(en))
-				WriteTransform(writer, en);
-			if (Coordinator::Instance()->HasComponent<EntityData>(en))
-				WriteEntityData(writer, en);
-			if (Coordinator::Instance()->HasComponent<Collider2D>(en))
-				WriteCollider2D(writer, en);
-			if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
-				WriteRigidbody2D(writer, en);
-			if (Coordinator::Instance()->HasComponent<CharacterController>(en))
-				WriteCharacterController(writer, en);
-			if (Coordinator::Instance()->HasComponent<Unit>(en))
-				WriteUnit(writer, en);
-			if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
-				WriteParticleProperty(writer, en);
-			if (Coordinator::Instance()->HasComponent<Text>(en))
-				WriteTextProperty(writer, en);
-
-			writer.EndObject();
-		}
+		writer.EndObject();
 		writer.EndArray();
-	}
 
-	void DeserializeScene(rjs::Document& doc)
-	{
-		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)
-		{
-			ECS::Entity en = Coordinator::Instance()->CreateEntity();
-			rjs::Value const& v{ *it };
-			if (v.HasMember("Sprite"))
-				ReadSprite(v["Sprite"], en);
-			if (v.HasMember("Animator"))
-				ReadAnimator(v["Animator"], en);
-			if (v.HasMember("Transform"))
-				ReadTransform(v["Transform"], en);
-			if (v.HasMember("EntityData"))
-				ReadEntityData(v["EntityData"], en);
-			if (v.HasMember("Collider2D"))
-				ReadCollider2D(v["Collider2D"], en);
-			if (v.HasMember("Rigidbody2D"))
-				ReadRigidbody2D(v["Rigidbody2D"], en);
-			if (v.HasMember("CharacterController"))
-				ReadCharacterController(v["CharacterController"], en);
-			if (v.HasMember("Unit"))
-				ReadUnit(v["Unit"], en);
-			if (v.HasMember("ParticleProperty"))
-				ReadParticleProperty(v["ParticleProperty"], en);
-			if (v.HasMember("TextProperty"))
-				ReadTextProperty(v["TextProperty"], en);
-		}
-		ECS::GetSceneGraph().DeserializeTree();
-		CalculateLocalCoordinate();
-	}
-
-	void SaveScene(c8 const* sceneName)
-	{
-		std::string filePath{ sceneName };
-		if(filePath.find(".scene") == std::string::npos)
-			filePath = "Assets\\" + std::string(sceneName) + ".scene";
-		rjs::StringBuffer sb{};
-
-		SerializeScene(sb);
-
-		// save into a file
-		std::ofstream ofs{ filePath };
+		std::string fileName{ "Assets\\Dev\\Prefab\\" + Coordinator::Instance()->GetComponent<EntityData>(en).tag + ".prefab" };
+		std::ofstream ofs{ fileName };
 		if (!ofs)
 		{
-			AL_CORE_WARN("Unable to save into file!");
+			AL_CORE_WARN("Unable to save into file! {}", fileName);
 			return;
 		}
 		ofs.write(sb.GetString(), sb.GetLength());
 	}
 
-	void LoadScene(c8 const* sceneName)
+	ECS::Entity CreateInstance(std::string const& buffer)
 	{
-		c8* buffer = utils::ReadBytes(sceneName);
+		rjs::Document doc;
+		doc.Parse(buffer.c_str());
 
-		if (!buffer)
-		{
-			AL_CORE_CRITICAL("Error: Unable to load scene: {}", sceneName);
-			return;
+		ECS::Entity en = Coordinator::Instance()->CreateEntity();
+
+		// Save the prefab data into a seperate entity id starting from (MAX_ENTITIES + 1) - (MAX_ENTITIES + MAX_PREFABS + 1) 
+		rjs::Value::ValueIterator it{ doc.Begin() };
+		rjs::Value const& v{ *it };
+		if (v.HasMember("Sprite"))
+			ReadSprite(v["Sprite"], en);
+		if (v.HasMember("Animator"))
+			ReadAnimator(v["Animator"], en);
+		if (v.HasMember("Transform"))
+			ReadTransform(v["Transform"], en);
+		if (v.HasMember("EntityData"))
+			ReadEntityData(v["EntityData"], en);
+		if (v.HasMember("Collider2D"))
+			ReadCollider2D(v["Collider2D"], en);
+		if (v.HasMember("Rigidbody2D"))
+			ReadRigidbody2D(v["Rigidbody2D"], en);
+		if (v.HasMember("CharacterController"))
+			ReadCharacterController(v["CharacterController"], en);
+		if (v.HasMember("Unit"))
+			ReadUnit(v["Unit"], en);
+		if (v.HasMember("ParticleProperty"))
+			ReadParticleProperty(v["ParticleProperty"], en);
+		if (v.HasMember("TextProperty"))
+			ReadTextProperty(v["TextProperty"], en);
+
+		return en;
+	}
+
+	// Create a clone of a saved prefab
+	ECS::Entity Instantiate(std::string const& prefabName)
+	{
+		// Check to see if an instance of this object is already made
+		if (instObjects.find(prefabName) == instObjects.end())
+		{	// Making of the prefab and saving it
+			std::string fileName{ "Assets\\Dev\\Prefab\\" + prefabName + ".prefab" };
+			c8* buffer = utils::ReadBytes(fileName);
+
+			if (!buffer)
+			{
+				AL_CORE_CRITICAL("Error: Unable to load prefab: {}", fileName);
+				return ECS::MAX_ENTITIES;
+			}
+
+			// Save a pointer to where buffer is pointing
+			instObjects.insert({ prefabName, buffer });
+			Memory::DynamicMemory::Delete(buffer);
 		}
-
-		currScene = sceneName;
-
-		rjs::Document doc;
-		doc.Parse(buffer);
-		Memory::DynamicMemory::Delete(buffer);
-
-		Coordinator::Instance()->DestroyEntities();
-
-		DeserializeScene(doc);
+		return CreateInstance(instObjects[prefabName]);
 	}
 
-	void LoadScene(void)
+	template <typename T>
+	void CopyComponentData(ECS::Entity dst, ECS::Entity src)
 	{
-		LoadScene(currScene.c_str());
+		// Utilising the copy constructor to copy the data
+		T component{ Coordinator::Instance()->GetComponent<T>(src) };
+		Coordinator::Instance()->AddComponent(dst, component);
 	}
 
-	void Restart(void)
+	void CopyComponentEntityData(ECS::Entity dst, ECS::Entity src)
 	{
-		GameStateManager::next = GameState::Restart;
+		Coordinator::Instance()->GetComponent<EntityData>(dst) = Coordinator::Instance()->GetComponent<EntityData>(src);
 	}
 
-#if EDITOR
-	void SaveState(void)
+	// Create a clone of en
+	ECS::Entity Instantiate(ECS::Entity en)
 	{
-		rjs::StringBuffer sb{};
-		SerializeScene(sb);
-		state = sb.GetString();
+		ECS::Entity clone = Coordinator::Instance()->CreateEntity();
+		if (Coordinator::Instance()->HasComponent<Sprite>(en))
+			CopyComponentData<Sprite>(clone, en);
+		if (Coordinator::Instance()->HasComponent<Animator>(en))
+			CopyComponentData<Animator>(clone, en);
+		if (Coordinator::Instance()->HasComponent<Transform>(en))
+			CopyComponentData<Transform>(clone, en);
+		if (Coordinator::Instance()->HasComponent<EntityData>(en))
+			CopyComponentEntityData(clone, en);
+		if (Coordinator::Instance()->HasComponent<Collider2D>(en))
+			CopyComponentData<Collider2D>(clone, en);
+		if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
+			CopyComponentData<Rigidbody2D>(clone, en);
+		if (Coordinator::Instance()->HasComponent<CharacterController>(en))
+			CopyComponentData<CharacterController>(clone, en);
+		if (Coordinator::Instance()->HasComponent<Unit>(en))
+			CopyComponentData<Unit>(clone, en);
+		if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
+			CopyComponentData<ParticleProperties>(clone, en);
+		if (Coordinator::Instance()->HasComponent<Text>(en))
+			CopyComponentData<Text>(clone, en);
+		return clone;
 	}
 
-	void LoadState(void)
+	void ClearPrefabCollection(void)
 	{
-		rjs::Document doc;
-		doc.Parse(state.c_str());
-		DeserializeScene(doc);
+		instObjects.clear();
 	}
-#endif
 }

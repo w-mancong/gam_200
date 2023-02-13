@@ -36,12 +36,12 @@ namespace ALEngine::ECS::Component
 		Cell* m_ParentCell {nullptr};
 
 		//tint of color for cell
-		Color m_Color_Tint;
+		Color m_Color_Tint{};
 
 		//unit entity that is on the cell
-		Entity unitEntity;
+		Entity unitEntity{};
 
-		Entity child_overlay;
+		Entity child_overlay{};
 		b8 has_Wall{ false };
 
 		//Coordinate of the cll

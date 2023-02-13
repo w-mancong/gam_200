@@ -170,8 +170,10 @@ namespace ALEngine::Engine
 			ECS::Free();
 			// unload resource
 			if (GameStateManager::next != GameState::Restart)
+			{
 				ECS::Unload();
-			
+				ClearPrefabCollection();
+			}
 #if !EDITOR
 			ExitGameplaySystem();
 			Coordinator::Instance()->DestroyEntities();
@@ -222,6 +224,15 @@ namespace ALEngine::Engine
 		Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif
+		//Entity en = Coordinator::Instance()->CreateEntity();
+		//Coordinator::Instance()->GetComponent<EntityData>(en).tag = "entity_test2";
+		//Coordinator::Instance()->AddComponent(en, Transform{});
+		//Coordinator::Instance()->AddComponent(en, Rigidbody2D{});
+		//SavePrefab(en);
+		
+		//Entity en2 = Instantiate(en), 
+		//	en3 = Instantiate("entity_test");
+
 		//Animator an = CreateAnimator("Player");
 
 		//Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();

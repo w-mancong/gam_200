@@ -89,6 +89,7 @@
     <ClCompile Include="Source\Editor\imgui\imgui_demo.cpp" />
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
+    <ClCompile Include="Source\Prefab\Prefab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -353,6 +354,7 @@
     <ClInclude Include="Gameplay\Header\MapManager.h" />
     <ClInclude Include="Include\Commands\EntityCommand.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
+    <ClInclude Include="Include\Prefabs\Prefabs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

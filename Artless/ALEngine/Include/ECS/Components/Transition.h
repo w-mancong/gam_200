@@ -18,9 +18,9 @@ namespace ALEngine::ECS::Component
 	***********************************************************************************/
 	struct Transition
 	{
-		std::string nextClip;	// Name of the next clip
-		FloatConditions fCond;	// List of float conditions
-		BoolConditions  bCond;	// List of bool conditions
+		std::string nextClip{};	// Name of the next clip
+		FloatConditions fCond{};	// List of float conditions
+		BoolConditions  bCond{};	// List of bool conditions
 	};
 }
 

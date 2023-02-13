@@ -28,7 +28,7 @@ namespace ALEngine::ECS::Component
 		Container for a listener (function)
 	***********************************************************************************/
 	struct EventListener {
-		void (*invokeFunction)(u32 EntityInvoking);
+		void (*invokeFunction)(u32 EntityInvoking) {};
 		uint32_t m_position = 0;	//Listener's position in the list
 	};
 
@@ -37,7 +37,7 @@ namespace ALEngine::ECS::Component
 		Container for a event, it's listener will be invoked when event is triggered
 	***********************************************************************************/
 	struct Event {
-		std::unordered_map<uint32_t, EventListener> m_Listeners;
+		std::unordered_map<uint32_t, EventListener> m_Listeners{};
 	};
 
 	/*!*********************************************************************************
@@ -51,7 +51,7 @@ namespace ALEngine::ECS::Component
 		b8 isEnabled{ true }, isRunWhenPaused{ false };
 
 		//Events
-		Event OnPointEnter, OnPointStay, OnPointExit, OnPointClick;
+		Event OnPointEnter{}, OnPointStay{}, OnPointExit{}, OnPointClick{};
 	};
 
 	/*!*********************************************************************************
@@ -59,7 +59,7 @@ namespace ALEngine::ECS::Component
 		Component for EventCollisionListener
 	***********************************************************************************/
 	struct EventCollisionListener {
-		void (*invokeFunction)(u32, u32);
+		void (*invokeFunction)(u32, u32) {};
 		uint32_t m_position = 0;
 	};
 
@@ -68,7 +68,7 @@ namespace ALEngine::ECS::Component
 		Container for a collision event, it's listener will be invoked when event is triggered
 	***********************************************************************************/
 	struct CollisionEvent {
-		std::unordered_map<uint32_t, EventCollisionListener> m_Listeners;
+		std::unordered_map<uint32_t, EventCollisionListener> m_Listeners{};
 	};
 
 	/*!*********************************************************************************
@@ -78,10 +78,10 @@ namespace ALEngine::ECS::Component
 	struct EventCollisionTrigger
 	{
 		//Events
-		CollisionEvent OnCollisionEnter, OnCollisionStay, OnCollisionExit;
+		CollisionEvent OnCollisionEnter{}, OnCollisionStay{}, OnCollisionExit{};
 
 		//State of Trigger
-		std::vector<u32> otherCurrentCollidingPtr, otherPreviousColliderPtr, otherEnterColliderPtr, otherStayColliderPtr, otherExitColliderPtr;
+		std::vector<u32> otherCurrentCollidingPtr{}, otherPreviousColliderPtr{}, otherEnterColliderPtr{}, otherStayColliderPtr{}, otherExitColliderPtr{};
 	};
 }
 #endif

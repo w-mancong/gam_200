@@ -54,9 +54,9 @@ namespace ALEngine::ECS::Component
 		bool isEnabled { true };
 
 		//Keep track of all collision point during simulated frame
-		std::vector<CollisionPointData> collisionPoints;
+		std::vector<CollisionPointData> collisionPoints{};
 
-		std::vector<u32> collidedCollidersPtr;
+		std::vector<u32> collidedCollidersPtr{};
 
 		//Local position (For offsets)
 		Math::Vector2 m_localPosition{ 0.f, 0.f };

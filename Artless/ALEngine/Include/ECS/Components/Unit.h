@@ -37,31 +37,31 @@ namespace ALEngine::ECS::Component
 	struct Unit
 	{
 		//Name of unit
-		std::string unit_Name;
+		std::string unit_Name{};
 
 		//File to profile of unit
-		std::string unit_Profile_Sprite_File;
+		std::string unit_Profile_Sprite_File{};
 
 		//Stats
-		s32 health, maxHealth;
-		s32 defense;
-		s32 minDamage, maxDamage;
-		s32 movementPoints, maxMovementPoints;
-		s32 minRange, maxRange;
+		s32 health{}, maxHealth{};
+		s32 defense{};
+		s32 minDamage, maxDamage{};
+		s32 movementPoints{}, maxMovementPoints{};
+		s32 minRange{}, maxRange{};
 
 		//unit type
-		UNIT_TYPE unitType;
-		ENEMY_TYPE enemyUnitType;
+		UNIT_TYPE unitType{};
+		ENEMY_TYPE enemyUnitType{};
 		//int coords, 0 is x, 1 is y
-		u32 coordinate[2];
+		u32 coordinate[2]{};
 
 		//Entity that acts as the unit's sprite
-		ECS::Entity unit_Sprite_Entity;
+		ECS::Entity unit_Sprite_Entity{};
 		
 		//Current cell unit is on
-		ECS::Entity m_CurrentCell_Entity;
+		ECS::Entity m_CurrentCell_Entity{};
 
-		void(*UpdateEnemyLogic)(struct EnemyManager&, std::vector<Entity>&, struct Room&);
+		void(*UpdateEnemyLogic)(struct EnemyManager&, std::vector<Entity>&, struct Room&) {};
 	};
 }
 #endif

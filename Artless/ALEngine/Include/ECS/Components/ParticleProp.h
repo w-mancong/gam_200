@@ -23,7 +23,7 @@ namespace ALEngine::ECS::Component
 		Math::Vector4 colorStart{ 1.f, 1.f, 1.f, 1.f }, colorEnd{ 1.f, 1.f, 1.f, 1.f };
 		f32 sizeVariation{ 0.f }, lifeTime{ 1.f };
 		f32 timeCount{}, spawnRate{ 1.f }, rotation{}, spawnDuration{};
-		Sprite sprite;
+		Sprite sprite{};
 		b8 gravityEnabled{ false }, active{ true };
 	};
 }
