@@ -11,7 +11,7 @@ brief:	This file contain function definition for MeshBuilder
 namespace
 {
 	// layout location inside vertex shader
-	u32 constexpr POS{ 0 }, TEX{ 1 }, COLOR{ 2 }, HANDLE{ 3 }, DRAW_ID{ 4 }, INSTANCE_MATRIX{ 5 }, UI{ 6 };
+	u32 constexpr POS{ 0 }, TEX{ 1 }, COLOR{ 2 }, HANDLE{ 3 }, DRAW_ID{ 4 }, UI{ 5 }, INSTANCE_MATRIX{ 6 };
 
 	struct Vertex2D
 	{
@@ -149,7 +149,7 @@ namespace
 		glBindBuffer(GL_ARRAY_BUFFER, ubo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, nullptr, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(UI);
-		glVertexAttribLPointer(UI, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (void*)0);
+		glVertexAttribPointer(UI, 1, GL_UNSIGNED_INT, GL_FALSE, sizeof(u64), (void*)0); // GL_UNSIGNED_INT
 		glVertexAttribDivisor(UI, 1);
 
 		glGenBuffers(1, &ibo);
@@ -212,7 +212,7 @@ namespace ALEngine::Engine
 		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, bd.texHandle, GL_DYNAMIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, batch.ubo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, bd.isUI, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(f32) * ECS::MAX_ENTITIES, bd.isUI, GL_DYNAMIC_DRAW);
 
 		//feed the instance id to the shader.
 		glBindBuffer(GL_ARRAY_BUFFER, batch.ibo);
