@@ -166,6 +166,12 @@ namespace ALEngine::ECS
 		void MovePlayerEntityToCell(Entity cellEntity);
 
 		/*!*********************************************************************************
+		\brief
+			Highlight range of walkable tiles, green in range, red out of range
+		***********************************************************************************/
+		void HighlightWalkableCellsRange(Entity cellEntity);
+
+		/*!*********************************************************************************
 			\brief
 				Run enemy decision and move the enemy accordingly	
 		***********************************************************************************/
@@ -1323,7 +1329,12 @@ namespace ALEngine::ECS
 		ad.m_Loop = true;
 		ad.Play();
 	}	
-	
+
+	void ALEngine::ECS::GameplaySystem::HighlightWalkableCellsRange(Entity cellEntity)
+	{
+
+	}
+
 	void GameplaySystem::MoveEnemy() {
 		//EnemyManager_LoadData();
 

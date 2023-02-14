@@ -473,10 +473,16 @@ namespace ALEngine::Engine::GameplayInterface
 
 				unitData.active = false;
 				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+
 			}
 			else {
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
+
+				//enemy death sound
+				Audio& ad = as.GetAudio(AUDIO_TEST_ENEMY_DEATH);
+				ad.m_Channel = Channel::SFX;
+				ad.Play();
 			}
 
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
@@ -628,6 +634,9 @@ namespace ALEngine::Engine::GameplayInterface
 
 		//Add Player Walk
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_TEST_ENEMY_DEATH));
 		as.list[as.id++] = ad;
 
 		//Add the audiosource component to the entity
