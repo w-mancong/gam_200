@@ -402,7 +402,7 @@ namespace ALEngine::ECS
 		if (Editor::ALEditor::Instance()->GetGameActive())
 			return;
 
-		if (Input::KeyTriggered(KeyCode::U))
+		if (Input::KeyTriggered(KeyCode::U) && Input::KeyDown(KeyCode::Ctrl))
 		{
 			uiFocus = !uiFocus;
 			if(uiFocus)

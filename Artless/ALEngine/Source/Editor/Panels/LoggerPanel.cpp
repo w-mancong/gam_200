@@ -23,7 +23,7 @@ namespace ALEngine::Editor
 		ALEngine::Exceptions::Logger::GetCoreLogger()->sinks().push_back(my_sink);
 
 		AL_CORE_INFO("Welcome to ALEngine.");
-		AL_CORE_INFO("Press U to attatch/detatch UI.");
+		AL_CORE_INFO("Press CTRL + U to attatch/detatch UI.");
 
 		// Set logger flags to all
 		m_LogFlags = (u32)LOG_FLAGS::LOG_ALL;
