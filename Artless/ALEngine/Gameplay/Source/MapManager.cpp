@@ -9,10 +9,13 @@ brief:	This file contains function definitions for the MapManager class.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
+#define TILE_DATA_PATH "Assets/Dev/Objects/TileEditorData.json"
+
 namespace Gameplay
 {
 	MapManager::MapManager(void) : m_MapPath(""), m_Width(0), m_Height(0)
 	{
+
 	}
 
 	MapManager::~MapManager(void)
@@ -74,8 +77,27 @@ namespace Gameplay
 
 			m_Map.emplace_back(row_tiles);
 		}
+	}
 
-		std::cout << "H" << std::endl;
+	void MapManager::ReadTileData(void)
+	{
+		using namespace rapidjson;
+
+		std::string filePath_str{ TILE_EDITOR_DATA_PATH };
+		c8* buffer = Utility::ReadBytes(filePath_str.c_str());
+
+		assert(buffer);
+
+		Document doc;
+		doc.Parse(buffer);
+
+		Memory::DynamicMemory::Delete(buffer);
+
+		Value const& val{ *doc.Begin() };
+
+		// Iterate all  values
+		for (Value::ConstMemberIterator it = val.MemberBegin(); it != val.MemberEnd(); ++it)
+			m_ImageMap[it->name.GetString()] = it->value.GetString();
 	}
 
 	u32 MapManager::GetWidth(void)

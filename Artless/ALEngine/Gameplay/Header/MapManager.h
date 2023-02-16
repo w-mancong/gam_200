@@ -75,9 +75,17 @@ namespace Gameplay
 		***********************************************************************************/
 		~MapManager(void);
 
-		std::string m_MapPath{ "" };					// File Path to the Current Map
-		u32 m_Width{ 0 }, m_Height{ 0 };				// Width and Height of the Map
-		std::vector<std::vector<std::string>> m_Map{};	// Keeps track of the items found within this map
+		/*!*********************************************************************************
+			\brief
+			Reads the Saved Tile data, which is the data that links the Tiles to the Tile
+			Images
+		***********************************************************************************/
+		void ReadTileData(void);
+
+		std::string m_MapPath{ "" };						// File Path to the Current Map
+		u32 m_Width{ 0 }, m_Height{ 0 };					// Width and Height of the Map
+		std::vector<std::vector<std::string>> m_Map{};		// Keeps track of the items found within this map
+		std::map<std::string, std::string> m_ImageMap{};	// Map of all the Tile Images
 
 		// Required for Singleton to function
 		friend class ALEngine::Templates::Singleton<MapManager>;
