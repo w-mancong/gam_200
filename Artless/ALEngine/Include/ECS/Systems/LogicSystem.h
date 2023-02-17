@@ -76,6 +76,13 @@ namespace ALEngine::ECS
 		return std::dynamic_pointer_cast<T>(lc.logics[name]);
 	}
 
+	template <typename T>
+	b8 HasLogicComponent(Entity en)
+	{
+		Component::LogicComponent const& lc = Coordinator::Instance()->GetComponent<Component::LogicComponent>(en);
+		return lc.logics.find(GetLogicComponentName<T>()) != lc.logics.end();
+	}
+
 	/*!*********************************************************************************
 		\brief Run all the UniBehaviour's Load function inside LogicComponent
 	***********************************************************************************/

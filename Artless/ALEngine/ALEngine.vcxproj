@@ -159,6 +159,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
@@ -176,18 +177,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Development|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
-    <ClCompile Include="Source\Engine\GameplayInterface_Management_Enemy.cpp" />
-    <ClCompile Include="Source\Engine\GameplayInterface_Management_GUI.cpp" />
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
-    <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
-    <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
     <ClCompile Include="Source\Editor\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
@@ -313,14 +309,10 @@
     <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
-    <ClInclude Include="Include\Engine\GamePlayInterface.h" />
-    <ClInclude Include="Include\Engine\GameplayInterface_Management_Enemy.h" />
-    <ClInclude Include="Include\Engine\GameplayInterface_Management_GUI.h" />
     <ClInclude Include="Gameplay\Header\MapManager.h" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
-    <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
     <ClInclude Include="Include\Common Header\MyAudio.h" />
     <ClInclude Include="Include\Common Header\MySerializer.h" />
@@ -335,7 +327,6 @@
     <ClInclude Include="Include\ECS\Systems\AnimatorSystem.h" />
     <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
     <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
-    <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
     <ClInclude Include="Include\Common Header\MyAssetManager.h" />
@@ -444,6 +435,7 @@
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
+    <ClInclude Include="Scripts\Header\GameplaySystem.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
