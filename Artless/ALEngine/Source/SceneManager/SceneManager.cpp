@@ -649,6 +649,39 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->AddComponent(en, prop);
 	}
 
+	void WriteLogicComponent(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("LogicComponent");
+		writer.StartArray();
+		writer.StartObject();
+
+		LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
+		writer.Key("components");
+		writer.StartArray();
+		for (auto const& it : lc.logics)
+		{
+			std::string const& name = it.first;
+			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+		}
+		writer.EndArray();
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadLogicComponent(rjs::Value const& v, ECS::Entity en)
+	{
+		// Getting the names of the components
+		rjs::Value const& c = v[0]["components"];
+		for (u64 i = 0; i < c.Size(); ++i)
+		{
+			c8 const *name = c[i].GetString();
+			rttr::type class_type = rttr::type::get_by_name(name);
+			rttr::variant var = class_type.create();
+			class_type.invoke("DeserializeComponent", var, { en });
+		}
+	}
+
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
 	{
 		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
@@ -716,6 +749,8 @@ namespace ALEngine::Engine::Scene
 				WriteParticleProperty(writer, en);
 			if (Coordinator::Instance()->HasComponent<Text>(en))
 				WriteTextProperty(writer, en);
+			if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
+				WriteLogicComponent(writer, en);
 
 			writer.EndObject();
 		}
@@ -748,6 +783,8 @@ namespace ALEngine::Engine::Scene
 				ReadParticleProperty(v["ParticleProperty"], en);
 			if (v.HasMember("TextProperty"))
 				ReadTextProperty(v["TextProperty"], en);
+			if (v.HasMember("LogicComponent"))
+				ReadLogicComponent(v["LogicComponent"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
 		CalculateLocalCoordinate();

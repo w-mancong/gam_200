@@ -29,6 +29,13 @@ namespace ALEngine::Script
 			\brief Whenever a scene ends, use this function to free any resources
 		**********************************************************************************/
 		void Free(ECS::Entity en);
+
+		// For RTTR
+		void DeserializeComponent([[maybe_unused]] ECS::Entity en)
+		{
+			ECS::AddLogicComponent<PauseLogic>(en);
+		};
+		RTTR_ENABLE(ECS::Component::UniBehaviour)
 	};
 }
 

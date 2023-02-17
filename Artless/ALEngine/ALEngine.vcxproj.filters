@@ -85,6 +85,7 @@
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Source\Prefab\Prefab.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
+    <ClCompile Include="Scripts\rttr_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />

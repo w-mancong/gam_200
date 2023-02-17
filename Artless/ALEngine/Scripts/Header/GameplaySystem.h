@@ -36,6 +36,13 @@ namespace ALEngine::Script
 			\brief Use this function to unload any resourcecs before changing to the next level
 		***********************************************************************************/
 		void Unload(ECS::Entity en);
+
+		// For RTTR
+		void DeserializeComponent([[maybe_unused]] ECS::Entity en)
+		{
+			ECS::AddLogicComponent<GameplaySystem>(en);
+		};
+		RTTR_ENABLE(ECS::Component::UniBehaviour)
 	};
 }
 
