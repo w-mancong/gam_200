@@ -2,8 +2,8 @@
 file:	GamePlayInterface.cpp
 author:	Mohamed Zafir (75%)
 co-author:	Tan Zhen Xiong (25%)
-email:	t.zhenxiong@digipen.edu
-		m.zafir@digipen.edu
+email:	m.zafir@digipen.edu
+		t.zhenxiong@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.cpp
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -91,7 +91,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		}
 	}
 
-	void Event_Button_Exit_Ability_GUI(ECS::Entity invoker) {
+	void Event_Button_Exit_Ability_GUI([[maybe_unused]] ECS::Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
 		}
@@ -109,7 +109,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		}
 
 		//Set base x
-		u32 x_offset = 150;
+		//u32 x_offset = 150;
 
 		//First one will be the current
 		Transform transform;
@@ -133,7 +133,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 		}
 
 		//Set base x
-		u32 x_offset = 75;
+		//u32 x_offset = 75;
 
 		//Start pos
 		Vector3 startPos = { 50.f, 100.f, 0.f };
@@ -157,7 +157,7 @@ namespace ALEngine::Engine::GameplayInterface_Management_GUI
 
 		for (int i = 0; i < 3; ++i) {
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
+			//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
 
 			eventTrigger.isEnabled = true;
 		}

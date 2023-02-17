@@ -47,6 +47,10 @@ namespace ALEngine::Engine::Scene
 		writer.Key("layer");
 		writer.Uint64(static_cast<u64>(sprite.layer));
 
+		// UI
+		writer.Key("ui");
+		writer.Uint64(static_cast<u64>(sprite.isUI));
+
 		writer.EndObject();
 		writer.EndArray();
 	}
@@ -72,6 +76,9 @@ namespace ALEngine::Engine::Scene
 		// Initialising value
 		sprite.id = AssetManager::Instance()->GetGuid(sprite.filePath);
 		sprite.index = 0;
+
+		// Getting UI
+		sprite.isUI = v[0]["ui"].GetUint();
 
 		Coordinator::Instance()->AddComponent(en, sprite);
 	}

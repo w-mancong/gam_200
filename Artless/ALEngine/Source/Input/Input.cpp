@@ -1,7 +1,9 @@
 /*!
 file:	Input.cpp
-author:	Wong Man Cong
+author:	Wong Man Cong (20%)
+co-author:	Lucas Nguyen (10%)
 email:	w.mancong\@digipen.edu
+		l.nguyen\@digipen.edu
 brief:	This file contain function definition for Input
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
@@ -41,7 +43,7 @@ namespace ALEngine::UserInput
 	s32 Input::GetScreenResX()
 	{
 #if EDITOR
-		return Editor::ALEditor::Instance()->GetSceneWidth();
+		return static_cast<s32>(Editor::ALEditor::Instance()->GetSceneWidth());
 #else
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
@@ -52,7 +54,7 @@ namespace ALEngine::UserInput
 	s32 Input::GetScreenResY()
 	{
 #if EDITOR
-		return Editor::ALEditor::Instance()->GetSceneHeight();
+		return static_cast<s32>(Editor::ALEditor::Instance()->GetSceneHeight());
 #else
 		s32 screenResX, screenResY;
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);

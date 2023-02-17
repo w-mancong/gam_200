@@ -12,12 +12,12 @@ brief:	This file contains the function definitions for the EntityCommand class.
 
 namespace ALEngine::Commands
 {
-	EntityCommand::EntityCommand(Tree::BinaryTree& treeAddress, ECS::Entity selectedEntity)
+	EntityCommand::EntityCommand([[maybe_unused]] Tree::BinaryTree& treeAddress, [[maybe_unused]] ECS::Entity selectedEntity)
 	{
 
 	}
 
-	EntityCommand::EntityCommand(Tree::BinaryTree& treeAddress, ECS::Entity selectedEntity, ECS::Entity entityToAdd)
+	EntityCommand::EntityCommand([[maybe_unused]] Tree::BinaryTree& treeAddress, [[maybe_unused]] ECS::Entity selectedEntity, [[maybe_unused]] ECS::Entity entityToAdd)
 	{
 	}
 

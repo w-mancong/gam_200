@@ -23,6 +23,7 @@ namespace ALEngine::ECS::Component
 		//RenderLayer layer{ RenderLayer::Background };
 		u32 layer{ 0 };
 		u32 index{};	// used to determine which 
+		u32 isUI{ 0 };
 	};
 }
 

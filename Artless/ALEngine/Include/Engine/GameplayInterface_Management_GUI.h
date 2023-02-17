@@ -1,7 +1,9 @@
 /*!
 file:   GamePlayInterface.h
-author: Mohamed Zafir
-email:  m.zafir\@digipen.edu
+author:	Mohamed Zafir (75%)
+co-author:	Tan Zhen Xiong (25%)
+email:	m.zafir@digipen.edu
+		t.zhenxiong@digipen.edu
 brief:	This file contains the function definition for GamePlayInterface.h
 
 		All content :copyright: 2023 DigiPen Institute of Technology Singapore. All rights reserved.

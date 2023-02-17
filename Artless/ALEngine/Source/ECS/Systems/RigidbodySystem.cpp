@@ -47,7 +47,7 @@ namespace ALEngine::ECS
 		void DrawRigidbodyForces(const Transform& transform, const Rigidbody2D& rigid);
 
 		//Debug settings
-		bool isDebugStep = false, isDebugDraw = true;
+		bool isDebugStep = false, isDebugDraw = false;
 	};
 
 	namespace
