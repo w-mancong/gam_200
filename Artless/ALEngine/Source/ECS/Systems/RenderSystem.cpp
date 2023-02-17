@@ -60,6 +60,8 @@ namespace ALEngine::ECS
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
+		u64* isUI{ nullptr };
+		b8 uiFocus{ true };
 		
 		Tree::BinaryTree sceneGraph{};
 		std::vector<Transform> prevTransform;
@@ -100,18 +102,25 @@ namespace ALEngine::ECS
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			
+			if (uiFocus || Editor::ALEditor::Instance()->GetGameActive())
+				*(isUI + counter) = sprite.isUI;
+			else
+				*(isUI + counter) = 0;
 
 			++counter;
 		}
 
 		indirectShader.use();
 		indirectShader.Set("proj", cam.ProjectionMatrix());
+		indirectShader.Set("ortho", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width),
+			0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 		indirectShader.Set("view", cam.ViewMatrix());
 
 		glBindVertexArray(GetVao());
 
 		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -148,16 +157,19 @@ namespace ALEngine::ECS
 			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
+			*(isUI + counter) = particle.sprite.isUI;
 
 			++counter;
 		}
 
 		indirectShader.use();
 		indirectShader.Set("proj", cam.ProjectionMatrix());
+		indirectShader.Set("ortho", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width),
+			0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 		indirectShader.Set("view", cam.ViewMatrix());
 
 		glBindVertexArray(GetVao());
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -200,18 +212,21 @@ namespace ALEngine::ECS
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			*(isUI + counter) = sprite.isUI;
 
 			++counter;
 		}
 
 		indirectShader.use();
 		indirectShader.Set("proj", camera.ProjectionMatrix());
+		indirectShader.Set("ortho", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width),
+			0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 		indirectShader.Set("view", camera.ViewMatrix());
 
 		glBindVertexArray(GetVao());
 
 		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -248,16 +263,19 @@ namespace ALEngine::ECS
 			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
+			*(isUI + counter) = particle.sprite.isUI;
 
 			++counter;
 		}
 
 		indirectShader.use();
 		indirectShader.Set("proj", camera.ProjectionMatrix());
+		indirectShader.Set("ortho", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width),
+			0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 		indirectShader.Set("view", camera.ViewMatrix());
 
 		glBindVertexArray(GetVao());
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -334,6 +352,7 @@ namespace ALEngine::ECS
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
+		isUI = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
 
 		sceneGraph.Init();
 
@@ -349,6 +368,7 @@ namespace ALEngine::ECS
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
+
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
 #endif
@@ -381,6 +401,15 @@ namespace ALEngine::ECS
 	{
 		if (Editor::ALEditor::Instance()->GetGameActive())
 			return;
+
+		if (Input::KeyTriggered(KeyCode::U) && Input::KeyDown(KeyCode::Ctrl))
+		{
+			uiFocus = !uiFocus;
+			if(uiFocus)
+				AL_CORE_INFO("UI attatched");
+			else
+				AL_CORE_INFO("UI detatched");
+		}
 
 		//------------------ Begin editor framebuffer rendering ------------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer

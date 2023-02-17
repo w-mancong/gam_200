@@ -351,6 +351,13 @@ namespace ALEngine::Editor
 				}
 			}
 
+			b8 ui = (b8)spr.isUI;
+			ImGui::Checkbox("UI Canvas", &ui);
+			if (ui == true)
+				spr.isUI = 1;
+			else
+				spr.isUI = 0;
+
 			ImGui::PopItemWidth();
 		}
 
