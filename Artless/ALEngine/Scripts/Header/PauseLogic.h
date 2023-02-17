@@ -31,7 +31,7 @@ namespace ALEngine::Script
 		void Free(ECS::Entity en);
 
 		// For RTTR
-		void DeserializeComponent([[maybe_unused]] ECS::Entity en)
+		void DeserializeComponent(ECS::Entity en)
 		{
 			ECS::AddLogicComponent<PauseLogic>(en);
 		};
