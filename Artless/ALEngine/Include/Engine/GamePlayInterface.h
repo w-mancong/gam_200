@@ -157,6 +157,12 @@ namespace ALEngine::Engine::GameplayInterface
 	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color = { 1.f,1.f,1.f,1.f });
 
 	/*!*********************************************************************************
+    \brief
+	Highlight range of walkable tiles, green in range, red out of range
+    ***********************************************************************************/
+	void HighlightWalkableCellsRange(Room& room, Vector2Int coordinate, bool reachable ,std::vector<ECS::Entity> pathlist);
+
+	/*!*********************************************************************************
 	\brief
 		Place pattern onto grid
 	\param [in]

@@ -195,6 +195,38 @@ namespace ALEngine::Engine::GameplayInterface
 		}//End loop through pattern body check
 	}
 
+	void HighlightWalkableCellsRange(Room& room, Vector2Int coordinate, bool reachable, std::vector<ECS::Entity> pathlist)
+	{
+		Color highlightyellow = { 1.f,1.f,0.f,1.f }; //for reachable parts
+		// testing path shown with tint, need to update to path shown with sprite overlap
+		if (reachable)
+		{
+			for (int i = 0; i < pathlist.size(); ++i)
+			{
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i]); 
+				cell.m_Color_Tint = highlightyellow;
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(pathlist[i]);
+				sprite.color = highlightyellow;
+			}
+		}
+		else
+		{
+			for (int i = 0; i < pathlist.size(); ++i)
+			{
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i]);
+
+				if (pathlist.size()-i <= 5)
+				{
+					cell.m_Color_Tint = highlightyellow;
+					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(pathlist[i]);
+					sprite.color = highlightyellow;
+				}
+			
+			}
+		}
+	}
+
 	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
