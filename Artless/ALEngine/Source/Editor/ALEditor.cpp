@@ -554,6 +554,26 @@ namespace ALEngine::Editor
 
 	}
 
+	void ALEditor::LoadLevel(void)
+	{
+		using namespace Gameplay;
+
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		std::vector<std::vector<std::string>> map = MapManager::Instance()->GetMap();
+
+		// Width and Height of map
+		u32 w{ MapManager::Instance()->GetWidth() }, h{ MapManager::Instance()->GetHeight() };
+
+		for (auto col : map)
+		{
+			for (auto row : col)
+			{
+
+			}
+		}
+	}
+
 	void ALEditor::SetDefaultPanel(void)
 	{
 		// Set default sizes and positions

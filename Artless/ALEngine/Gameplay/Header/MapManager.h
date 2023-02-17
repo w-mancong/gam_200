@@ -22,6 +22,14 @@ namespace Gameplay
 	public:
 		/*!*********************************************************************************
 			\brief
+			Gets the map path
+			\return
+			Returns the File Path of the Map
+		***********************************************************************************/
+		std::string GetMapPath(void);
+
+		/*!*********************************************************************************
+			\brief
 			Sets the map path for the map
 			\param map_path
 			File Path of the Map
@@ -62,6 +70,17 @@ namespace Gameplay
 		***********************************************************************************/
 		std::vector<std::vector<std::string>> GetMap(void);
 
+		/*!*********************************************************************************
+			\brief
+			Gets the Guid for the Tile Image
+			\param tileName
+			Name of the tile to get the image for
+			\return
+			Returns the Guid for the Tile Image.
+			0 is returned if Image cannot be found.
+		***********************************************************************************/
+		Guid GetTileImage(std::string tileName);
+
 	private:
 		/*!*********************************************************************************
 			\brief
@@ -86,6 +105,7 @@ namespace Gameplay
 		u32 m_Width{ 0 }, m_Height{ 0 };					// Width and Height of the Map
 		std::vector<std::vector<std::string>> m_Map{};		// Keeps track of the items found within this map
 		std::map<std::string, std::string> m_ImageMap{};	// Map of all the Tile Images
+		std::map<std::string, Guid> m_ImageGuidMap{};		// Map of the Tile images Guid
 
 		// Required for Singleton to function
 		friend class ALEngine::Templates::Singleton<MapManager>;
