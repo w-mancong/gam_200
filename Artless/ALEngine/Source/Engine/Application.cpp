@@ -72,7 +72,6 @@ namespace ALEngine::Engine
 			}
 
 			Engine::Update();
-			Input::GetVecScreenPos({ Input::GetMouseWorldPos() });
 
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
@@ -214,7 +213,6 @@ namespace ALEngine::Engine
 
 		Engine::AssetManager::Instance()->Init();
 		GameStateManager::Init();
-		Gameplay::MapManager::Instance()->GetMap();
 
 		appStatus = 1;
 		RunFileWatcherThread();
