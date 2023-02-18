@@ -9,6 +9,7 @@ brief:	This file contain function definition for saving/loading a scene
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <Engine/GSM/GameStateManager.h>
+#include <MapManager.h>
 
 namespace ALEngine::Engine::Scene
 {
@@ -721,6 +722,16 @@ namespace ALEngine::Engine::Scene
 		ECS::GetSceneGraph().SerializeTree();
 
 		writer.StartArray();
+
+		// To store the map path for MapManager
+		{	
+			writer.StartObject();
+			writer.Key("map_path");
+			std::string const& map_path = Gameplay::MapManager::Instance()->GetMapPath();
+			writer.String(map_path.c_str(), static_cast<rjs::SizeType>(map_path.length()));
+			writer.EndObject();
+		}
+		
 		for (auto it{ entities.begin() }; it != entities.end(); ++it)
 		{
 			writer.StartObject();
@@ -759,7 +770,9 @@ namespace ALEngine::Engine::Scene
 
 	void DeserializeScene(rjs::Document& doc)
 	{
-		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)
+		rjs::Value::ValueIterator map = doc.Begin();
+		Gameplay::MapManager::Instance()->SetMapPath(map[0].GetString());
+		for (rjs::Value::ValueIterator it{ doc.Begin() + 1 }; it != doc.End(); ++it)
 		{
 			ECS::Entity en = Coordinator::Instance()->CreateEntity();
 			rjs::Value const& v{ *it };

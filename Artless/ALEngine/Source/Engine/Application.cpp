@@ -223,7 +223,8 @@ namespace ALEngine::Engine
 #endif
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//AddLogicComponent<Script::GameplayCamera>(en);
-		Scene::LoadScene("Assets\\test_logic.scene");
+		//Scene::LoadScene("Assets\\test_logic.scene");
+		//Scene::SaveScene("test_map");
 
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//Coordinator::Instance()->GetComponent<EntityData>(en).tag = "entity_test2";
