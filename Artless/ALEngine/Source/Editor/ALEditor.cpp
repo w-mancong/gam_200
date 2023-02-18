@@ -589,17 +589,11 @@ namespace ALEngine::Editor
 		// Do each 
 		for (auto col : map)
 		{
-			// Create a parent for each parent
-			std::string colName = "Column " + std::to_string(h);
-			ECS::Entity columnParent = Coordinator::Instance()->CreateEntity(colName.c_str());
-			Coordinator::Instance()->AddComponent(columnParent, Transform{});
-			sceneGraph.Push((s32)parent, (s32)columnParent);
-
 			w = 0;
 			for (auto row : col)
 			{
 				ECS::Entity tile = Coordinator::Instance()->CreateEntity();
-				sceneGraph.Push((s32)columnParent, (s32)tile);
+				sceneGraph.Push((s32)parent, (s32)tile);
 
 				// Set default transform and scale
 				Transform transform;
