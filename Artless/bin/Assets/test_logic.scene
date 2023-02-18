@@ -1,0 +1,24 @@
+[
+    {
+        "id": 0,
+        "EntityData": [
+            {
+                "tag": "entity #0",
+                "active": true,
+                "localActive": true,
+                "id": 0,
+                "parentID": 0,
+                "treeNodeFlags": 0
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "GameplayCamera",
+                    "GameplaySystem",
+                    "PauseLogic"
+                ]
+            }
+        ]
+    }
+]

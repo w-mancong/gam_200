@@ -347,6 +347,7 @@
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="Include\Prefabs\Prefabs.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />
+    <ClInclude Include="Scripts\MyLogicComponents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

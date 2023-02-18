@@ -38,7 +38,7 @@ namespace ALEngine::Script
 		void Unload(ECS::Entity en);
 
 		// For RTTR
-		void DeserializeComponent([[maybe_unused]] ECS::Entity en)
+		void DeserializeComponent(ECS::Entity en)
 		{
 			ECS::AddLogicComponent<GameplaySystem>(en);
 		};
