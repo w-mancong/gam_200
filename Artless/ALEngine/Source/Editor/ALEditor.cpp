@@ -589,6 +589,8 @@ namespace ALEngine::Editor
 		// Do each 
 		for (auto col : map)
 		{
+
+
 			w = 0;
 			for (auto row : col)
 			{
@@ -603,7 +605,7 @@ namespace ALEngine::Editor
 
 				// Set name
 				EntityData &data = Coordinator::Instance()->GetComponent<EntityData>(tile);
-				data.tag = row;
+				//data.tag = row;
 
 				Coordinator::Instance()->AddComponent(tile, transform);
 
