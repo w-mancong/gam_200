@@ -120,7 +120,16 @@ namespace Gameplay
 		return m_Map;
 	}
 
-	Guid MapManager::GetTileImage(std::string tileName)
+	std::string MapManager::GetTileImage(std::string tileName)
+	{
+		auto it = m_ImageMap.find(tileName);
+		if (it != m_ImageMap.end())
+			return it->second;
+
+		return "";
+	}
+
+	Guid MapManager::GetTileImageGuid(std::string tileName)
 	{
 		auto it = m_ImageGuidMap.find(tileName);
 		if (it != m_ImageGuidMap.end())

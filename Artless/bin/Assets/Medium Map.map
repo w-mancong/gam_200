@@ -4,18 +4,19 @@
         "Height": 10,
         "Map": [
             [
+                "Obstacle",
+                "Obstacle",
+                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
                 "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty"
+                "Obstacle",
+                "Obstacle",
+                "Obstacle"
             ],
             [
+                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
@@ -24,44 +25,19 @@
                 "Empty",
                 "Empty",
                 "Empty",
-                "Empty",
-                "Empty"
+                "Obstacle"
             ],
             [
-                "Empty",
-                "Empty",
-                "Empty",
+                "Obstacle",
+                "Obstacle",
+                "Obstacle",
                 "Tile",
                 "Tile",
                 "Tile",
+                "Obstacle",
+                "Obstacle",
                 "Empty",
-                "Empty",
-                "Empty",
-                "Empty"
-            ],
-            [
-                "Empty",
-                "Empty",
-                "Empty",
-                "Tile",
-                "Wall",
-                "Tile",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty"
-            ],
-            [
-                "Empty",
-                "Empty",
-                "Empty",
-                "Tile",
-                "Tile",
-                "Tile",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty"
+                "Obstacle"
             ],
             [
                 "Empty",
@@ -76,6 +52,30 @@
                 "Empty"
             ],
             [
+                "Obstacle",
+                "Obstacle",
+                "Obstacle",
+                "Tile",
+                "Tile",
+                "Tile",
+                "Obstacle",
+                "Obstacle",
+                "Empty",
+                "Obstacle"
+            ],
+            [
+                "Obstacle",
+                "Obstacle",
+                "Obstacle",
+                "Tile",
+                "Wall",
+                "Tile",
+                "Obstacle",
+                "Obstacle",
+                "Empty",
+                "Obstacle"
+            ],
+            [
                 "Empty",
                 "Empty",
                 "Empty",
@@ -88,18 +88,19 @@
                 "Empty"
             ],
             [
+                "Obstacle",
+                "Empty",
+                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
+                "Obstacle",
                 "Empty",
                 "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty"
+                "Obstacle"
             ],
             [
+                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
@@ -108,20 +109,19 @@
                 "Empty",
                 "Empty",
                 "Empty",
-                "Empty",
-                "Empty"
+                "Obstacle"
             ],
             [
+                "Obstacle",
+                "Obstacle",
+                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
                 "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty",
-                "Empty"
+                "Obstacle",
+                "Obstacle",
+                "Obstacle"
             ]
         ]
     }

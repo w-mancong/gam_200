@@ -554,7 +554,7 @@ namespace ALEngine::Editor
 
 	}
 
-	void ALEditor::LoadLevel(void)
+	void ALEditor::LoadMap(void)
 	{
 		using namespace Gameplay;
 
@@ -563,14 +563,45 @@ namespace ALEngine::Editor
 		std::vector<std::vector<std::string>> map = MapManager::Instance()->GetMap();
 
 		// Width and Height of map
-		u32 w{ MapManager::Instance()->GetWidth() }, h{ MapManager::Instance()->GetHeight() };
+		u32 width{ MapManager::Instance()->GetWidth() }, 
+			height{ MapManager::Instance()->GetHeight() };
+		f32 mapSizeW{ static_cast<f32>(width * 100) }, 
+			mapSizeH{ static_cast<f32>(height * 100) };
+		f32 halfmapSizeW{ mapSizeW * 0.5f },
+			halfMapSizeH{ mapSizeH * 0.5f };
+		u32 w{ 0 }, h{ 0 };
 
+		// Create parent entity that will be invisible
+		ECS::Entity parent = Coordinator::Instance()->CreateEntity("Map Parent");
+		Coordinator::Instance()->AddComponent(parent, Transform{});
+		sceneGraph.Push(-1, parent);
+
+		// Do each 
 		for (auto col : map)
 		{
+			w = 0;
 			for (auto row : col)
 			{
+				ECS::Entity tile = Coordinator::Instance()->CreateEntity();
+				sceneGraph.Push(parent, tile);
 
+				// Set default transform and scale
+				Transform transform;
+				transform.scale = { 100, 100 };
+				transform.localScale = { 100, 100 };
+				transform.position = { -halfmapSizeW + (f32)w * 100.f, -halfMapSizeH + (f32)h * 100.f };
+
+				Coordinator::Instance()->AddComponent(tile, transform);
+
+				if (row != "Empty")
+				{
+					std::string tile_fp = MapManager::Instance()->GetTileImage(row);
+					if (!tile_fp.empty())
+						ECS::CreateSprite(tile, tile_fp.c_str());
+				}
+				++w;
 			}
+			++h;
 		}
 	}
 
@@ -730,6 +761,13 @@ namespace ALEngine::Editor
 		if (m_GameIsActive)
 			return m_GamePanel.GetMousePosWRTPanel();
 		return m_ScenePanel.GetMousePosWRTPanel();
+	}
+
+	Math::Vec2 ALEditor::GetVecScreenPos(Math::Vec2 pos)
+	{
+		if (m_GameIsActive)
+			return m_GamePanel.GetVecScreenPos(pos);
+		return m_ScenePanel.GetVecScreenPos(pos);
 	}
 
 	b8 ALEditor::GetGameActive(void)

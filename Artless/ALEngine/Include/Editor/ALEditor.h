@@ -82,7 +82,7 @@ namespace ALEngine::Editor
 			\brief
 			Load Map Data for the level
 		***********************************************************************************/
-		void LoadLevel(void);
+		void LoadMap(void);
 
 		/*!*************************************************************************************************
 			Getters and Setters
@@ -207,6 +207,18 @@ namespace ALEngine::Editor
 			Cursor Screen Space position with reference to the game/scene panel.
 		***********************************************************************************/
 		Math::Vec2 GetMousePosWRTPanel();
+
+		/*!*********************************************************************************
+			\brief
+			Returns the ImGui screen position of a vector that is in World Space.
+
+			\param [in] pos
+			World Space position, to be converted to screen space
+
+			\return
+			Returns the screen position of a vector that is in World Space.
+		***********************************************************************************/
+		Math::Vec2 GetVecScreenPos(Math::Vec2 pos);
 
 		/*!*********************************************************************************
 			\brief

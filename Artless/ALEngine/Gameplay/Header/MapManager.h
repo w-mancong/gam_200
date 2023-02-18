@@ -72,6 +72,17 @@ namespace Gameplay
 
 		/*!*********************************************************************************
 			\brief
+			Gets the filepath for the Tile Image
+			\param tileName
+			Name of the tile to get the image for
+			\return
+			Returns the filepath for the Tile Image.
+			Empty string is returned if Image cannot be found.
+		***********************************************************************************/
+		std::string GetTileImage(std::string tileName);
+
+		/*!*********************************************************************************
+			\brief
 			Gets the Guid for the Tile Image
 			\param tileName
 			Name of the tile to get the image for
@@ -79,7 +90,7 @@ namespace Gameplay
 			Returns the Guid for the Tile Image.
 			0 is returned if Image cannot be found.
 		***********************************************************************************/
-		Guid GetTileImage(std::string tileName);
+		Guid GetTileImageGuid(std::string tileName);
 
 	private:
 		/*!*********************************************************************************

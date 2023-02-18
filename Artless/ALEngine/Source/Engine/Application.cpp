@@ -72,6 +72,7 @@ namespace ALEngine::Engine
 			}
 
 			Engine::Update();
+			Input::GetVecScreenPos({ Input::GetMouseWorldPos() });
 
 			// Update Scene graph
 			ECS::GetSceneGraph().Update();
