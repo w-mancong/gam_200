@@ -80,10 +80,9 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
-			Sets the default panel positions and sizes
+			Load Map Data for the level
 		***********************************************************************************/
-		void SetDefaultPanel(void);
-
+		void LoadLevel(void);
 
 		/*!*************************************************************************************************
 			Getters and Setters
@@ -292,6 +291,12 @@ namespace ALEngine::Editor
 			Returns the current tile map path
 		***********************************************************************************/
 		std::string const& GetCurrentTileMapPath(void) const;
+
+		/*!*********************************************************************************
+			\brief
+			Sets the default panel positions and sizes
+		***********************************************************************************/
+		void SetDefaultPanel(void);
 
 	private:
 		/*!*********************************************************************************

@@ -46,6 +46,8 @@ namespace ALEngine::Editor
 		m_CurrentLoadStage = LoadStage::CreateOrLoadSelection;
 		m_NumTilesSeen = MIN_TILES_SHOWN;
 
+		m_SelectedTile = m_ImageMap.begin()->first;
+
 		SaveTileEditorData();
 	}
 
@@ -165,15 +167,12 @@ namespace ALEngine::Editor
 				u32 count{ 0 };
 				for(auto& type : m_ImageMap)
 				{	
-					if (type.second == "")
-						continue;
-
 					std::string name = type.first + "##TileEditorImage";
 
 					ImGui::BeginChild(name.c_str(), ImVec2(width, width), true);
 
 					// Text area
-					if (selectedTileImage.second != type.second)
+					if (selectedTileImage.first != type.first)
 					{
 						textLen = ImGui::CalcTextSize(type.first.c_str()).x;
 						ImGui::SameLine((width - textLen) * 0.5f);
@@ -181,7 +180,7 @@ namespace ALEngine::Editor
 					}
 					else
 					{
-						ImGui::InputText("##SelectedNameToBeEdited", &selectedTileImage.first);
+						ImGui::InputText("##SelectedNameToBeEdited", &selectedTileImage.second);
 
 						// Enter or click outside means exit
 						if (Input::KeyTriggered(KeyCode::Enter) ||
@@ -201,7 +200,7 @@ namespace ALEngine::Editor
 
 							// Change key of Image Map
 							auto node = m_ImageMap.extract(type.first);
-							node.key() = selectedTileImage.first;
+							node.key() = selectedTileImage.second;
 							m_ImageMap.insert(std::move(node));
 							selectedTileImage = { "", "" };
 
@@ -214,7 +213,7 @@ namespace ALEngine::Editor
 					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 					{
 						selectedTileImage.first = type.first;
-						selectedTileImage.second = type.second;
+						selectedTileImage.second = type.first;
 					}
 
 					Guid id = Engine::AssetManager::Instance()->GetGuid(type.second.c_str());
@@ -300,23 +299,24 @@ namespace ALEngine::Editor
 					
 					ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 					
-					static c8 name[FILE_BUFFER_SIZE]{};
-					ImGui::InputTextWithHint("##NewTileNameInput_TileEditor", "Tile Name", name, FILE_BUFFER_SIZE);
+					static std::string name;
+					ImGui::InputTextWithHint("##NewTileNameInput_TileEditor", "Tile Name", &name);
 					ImGui::NewLine();
 
 					ImGui::PopItemWidth();
 
-					b8 nameFilled = std::strcmp(name, "") != 0;
+					b8 nameFilled = !name.empty();
 
 					textLen = ImGui::CalcTextSize("Add").x;
 					ImGui::NewLine();  ImGui::SameLine((popup_len - textLen) * 0.5f);					
 					if(nameFilled == false)
-						ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);						
+						ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);	
 
 					if (ImGui::Button("Add") && nameFilled)
 					{
 						m_ImageMap[name] = "";
 						SaveTileEditorData();
+						ImGui::CloseCurrentPopup();
 					}
 					
 					if (nameFilled == false)
