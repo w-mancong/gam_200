@@ -121,7 +121,7 @@ namespace ALEngine::Editor
 		//return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
 	}
 
-	Math::Vec2 GamePanel::GetVecScreenPos(Math::Vec2 pos)
+	Math::Vec2 GamePanel::WorldToScreenPosVec(Math::Vec2 pos)
 	{
 		using namespace Math;
 
@@ -153,7 +153,6 @@ namespace ALEngine::Editor
 		position.x = (position.x + 1.f) * (0.5f * m_PanelWidth);
 		position.y = (position.y + 1.f) * (0.5f * m_PanelHeight);
 
-		AL_CORE_CRITICAL("{}, {}", position.x, position.y);
 		return Math::Vec2(position.x, position.y);
 	}
 

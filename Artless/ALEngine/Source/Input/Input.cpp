@@ -40,10 +40,10 @@ namespace ALEngine::UserInput
 		m_MouseWheelEvent = MouseWheelEvent::MouseWheelIdle;
 	}
 
-	Math::Vec2 Input::GetVecScreenPos(Math::Vec2 pos)
+	Math::Vec2 Input::WorldToScreenPosVec(Math::Vec2 pos)
 	{
 #if EDITOR
-		return Editor::ALEditor::Instance()->GetVecScreenPos(pos);
+		return Editor::ALEditor::Instance()->WorldToScreenPosVec(pos);
 #else
 		using namespace Math;
 		f64 mousePosX{ 0.f }, mousePosY{ 0.f };

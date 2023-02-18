@@ -770,8 +770,6 @@ namespace ALEngine::Engine::Scene
 
 	void DeserializeScene(rjs::Document& doc)
 	{
-		rjs::Value::ValueIterator map = doc.Begin();
-		Gameplay::MapManager::Instance()->SetMapPath(map[0].GetString());
 		for (rjs::Value::ValueIterator it{ doc.Begin() + 1 }; it != doc.End(); ++it)
 		{
 			ECS::Entity en = Coordinator::Instance()->CreateEntity();

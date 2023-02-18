@@ -125,7 +125,7 @@ namespace ALEngine::UserInput
 			Returns ImGui space if in Editor but returns numeric limits if out of Panel,
 			else returns normal screen space
 		***********************************************************************************/
-		static Math::Vec2 GetVecScreenPos(Math::Vec2 pos);
+		static Math::Vec2 WorldToScreenPosVec(Math::Vec2 pos);
 
 		/*!*********************************************************************************
 			\brief

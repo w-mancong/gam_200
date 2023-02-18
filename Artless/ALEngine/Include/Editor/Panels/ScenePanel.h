@@ -89,7 +89,7 @@ namespace ALEngine::Editor
 			Returns the screen position of a vector that is in World Space.
 			Returns numeric limits if out of Panel.
 		***********************************************************************************/
-		Math::Vec2 GetVecScreenPos(Math::Vec2 pos);
+		Math::Vec2 WorldToScreenPosVec(Math::Vec2 pos);
 
 		/*!*********************************************************************************
 			\brief Return editor panel camera's width

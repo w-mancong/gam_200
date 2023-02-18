@@ -83,7 +83,7 @@
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
-    <ClCompile Include="Source\Prefab\Prefab.cpp" />
+    <ClCompile Include="Source\SceneManager\Prefab.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
     <ClCompile Include="Scripts\rttr_main.cpp" />
   </ItemGroup>

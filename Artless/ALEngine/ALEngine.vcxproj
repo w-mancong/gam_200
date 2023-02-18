@@ -276,7 +276,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
-    <ClCompile Include="Source\Prefab\Prefab.cpp" />
+    <ClCompile Include="Source\SceneManager\Prefab.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Commands\Command.cpp" />
