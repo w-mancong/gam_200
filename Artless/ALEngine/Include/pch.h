@@ -89,11 +89,17 @@ brief:	This file contain all the header files that are will be precompiled inste
 #include <Common Header/MyScene.h>
 #include <Common Header//MyUndoRedo.h>
 
+#include <Prefabs/Prefabs.h>
+
 // Serializations
 #include <Serialization/Serializer.h>
 #include <Engine/TurnStateManager.h>
 
 // Gameplay
 #include <MapManager.h>
+
+// Rttr
+#include <rttr\registration>
+#include <rttr\policy.h>
 
 #endif

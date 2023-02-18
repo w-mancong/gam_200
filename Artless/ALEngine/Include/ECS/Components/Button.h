@@ -13,8 +13,8 @@ brief:	This file contains the function declarations for Cell.h
 namespace ALEngine::ECS::Component
 {
 	struct Button {
-		Color m_color_Tint_Normal, m_color_Tint_OnHover, m_color_Tint_OnPress;
-		std::string m_text;
+		Color m_color_Tint_Normal{}, m_color_Tint_OnHover{}, m_color_Tint_OnPress{};
+		std::string m_text{};
 	};
 }
 #endif

@@ -92,8 +92,8 @@ namespace ALEngine::Engine
 	***********************************************************************************/
 	struct AudioSource
 	{
-		std::unordered_map<u32, Audio> list;
-		u32 id;
+		std::unordered_map<u32, Audio> list{};
+		u32 id{};
 
 		Audio& GetAudio(std::string const& audioName);
 	};

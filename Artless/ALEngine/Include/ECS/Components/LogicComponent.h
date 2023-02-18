@@ -17,7 +17,7 @@ namespace ALEngine::ECS::Component
 	{
 		// This unordered map will contain all the UniBehaviour of the entity
 		// Key: Name of the Logic Component, Data Actual Logic Component
-		std::unordered_map<std::string, std::shared_ptr<UniBehaviour>> logics;
+		std::unordered_map<std::string, std::shared_ptr<UniBehaviour>> logics{};
 	};
 }
 

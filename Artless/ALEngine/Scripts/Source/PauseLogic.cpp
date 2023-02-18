@@ -103,7 +103,6 @@ namespace ALEngine::Script
 				Editor::ALEditor::Instance()->SetGameActive(false);
 				Engine::ToggleApplicationMode();
 
-				ECS::ExitGameplaySystem();
 				Coordinator::Instance()->DestroyEntities();
 
 				Engine::Scene::LoadState();

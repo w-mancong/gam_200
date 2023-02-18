@@ -442,7 +442,7 @@ namespace ALEngine::Editor
 				else
 				{
 					ECS::ParticleSystem::GetParticleSystem().ClearParticles();
-					ECS::ExitGameplaySystem();
+					//ECS::ExitGameplaySystem();
 					Coordinator::Instance()->DestroyEntities();
 
 					Engine::Scene::LoadState();
