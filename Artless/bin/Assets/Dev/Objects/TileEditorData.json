@@ -1,12 +1,11 @@
 [
     {
-        "": "",
         "Empty": "Assets\\Images\\InitialTile_v04.png",
         "Enemy": "Assets\\Images\\Profile_Enemy_Unit.png",
-        "Enemy 2": "Assets\\Images\\Bar_HPFull.png",
-        "Enemy 3": "",
-        "Enemy 4": "",
+        "Enemy 2": "Assets\\Images\\Bishop v.02.png",
+        "Obstacle": "Assets\\Images\\Bar_HPFull.png",
         "Player": "Assets\\Images\\Player v2.png",
-        "Wall": "Assets\\Images\\Walkable.png"
+        "Tile": "Assets\\Images\\Walkable.png",
+        "Wall": "Assets\\Images\\CloseButton.png"
     }
 ]
