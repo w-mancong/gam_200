@@ -6,6 +6,8 @@
 
 namespace ALEngine::Script
 {
+	using GAMEPLAY_SYSTEM_INTERFACE_H::Room;
+
 	class GameplaySystem : public ECS::Component::UniBehaviour
 	{
 		/*!*********************************************************************************
@@ -79,6 +81,289 @@ namespace ALEngine::Script
 			End current turn
 		***********************************************************************************/
 		void EndTurn();
+
+		/*!*********************************************************************************
+		\brief
+			Clear the move order
+		***********************************************************************************/
+		void ClearMoveOrder();
+
+		/*!*********************************************************************************
+		\brief
+			Get current cell the unit is moving to
+		***********************************************************************************/
+		ECS::Entity getCurrentEntityCell();
+		void SetMoveOrder(std::vector<ECS::Entity> path);
+
+		/*!*********************************************************************************
+		\brief
+			Select Pattern
+		***********************************************************************************/
+		void SelectPattern(Pattern pattern);
+
+		/*!*********************************************************************************
+		\brief
+			Select Abilities
+		***********************************************************************************/
+		void SelectAbility(Abilities& ability);
+
+		/*!*********************************************************************************
+		\brief
+			Move the step for move order (Take step forward in path)
+		***********************************************************************************/
+		bool StepUpModeOrderPath(MoveOrder& order);
+
+		/*!*********************************************************************************
+		\brief
+			Get size of room
+		***********************************************************************************/
+		u32 getRoomSize();
+
+		/*!*********************************************************************************
+		\brief
+			Run Game State (the update of the game states)
+		***********************************************************************************/
+		void RunGameState();
+
+		/*!*********************************************************************************
+		\brief
+			Update unit sprite layer based on their y position
+		***********************************************************************************/
+		void UpdateUnitSpriteLayer();
+
+		/*!*********************************************************************************
+		\brief
+			Set Move player entity to cell
+		***********************************************************************************/
+		void MovePlayerEntityToCell(ECS::Entity cellEntity);
+
+		/*!*********************************************************************************
+			\brief
+				Run enemy decision and move the enemy accordingly
+		***********************************************************************************/
+		void MoveEnemy();
+
+		/*!*********************************************************************************
+		\brief
+			Run update for moving units
+		***********************************************************************************/
+		void RunGameStateMoving();
+
+		/*!*********************************************************************************
+		\brief
+			Place Player onto room
+		***********************************************************************************/
+		void PlaceNewPlayerInRoom(s32 x, s32 y);
+
+		/*!*********************************************************************************
+		\brief
+			Initialize End turn button
+		***********************************************************************************/
+		void InitializeEndTurnButton();
+
+		/*!*********************************************************************************
+		\brief
+			Update the unit information GUI when select the unit
+		***********************************************************************************/
+
+		// Pattern Stuff
+		/*!*********************************************************************************
+		\brief
+			Randomizes the Pattern List
+		***********************************************************************************/
+		void RandomizePatternList(void);
+
+		/*!*********************************************************************************
+\brief
+	Global function to return the cell entity based on specified position
+***********************************************************************************/
+		u32 getEntityCell(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
+
+		void ToggleCellAccessibility(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 istrue);
+
+		/*!*********************************************************************************
+		\brief
+			Global function to check if list contains cell
+		***********************************************************************************/
+		bool CheckListContainsCell(std::list<ECS::Cell*> cellList, ECS::Cell& cellSearchNode);
+
+		/*!*********************************************************************************
+		\brief
+			Get if cell is inside room of cells
+		***********************************************************************************/
+		bool IsCoordinateInsideRoom(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 gridX, u32 gridY);
+
+		/*!*********************************************************************************
+		\brief
+			Get if the coordinate of cell is Accessible
+		***********************************************************************************/
+		bool IsCoordinateCellAccessible(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 gridX, u32 gridY);
+
+		/*!*********************************************************************************
+		\brief
+			Initialize Patterns
+		***********************************************************************************/
+		void InitializePatterns(std::vector<Pattern>& patternList);
+
+		/*!*********************************************************************************
+		\brief
+			Initialize Abilities
+		***********************************************************************************/
+		void InitializeAbilities(std::vector<Abilities>& abilitiesList);
+
+		/*!*********************************************************************************
+		\brief
+			Filter Grids from Hovering Over cell during pattern select
+		***********************************************************************************/
+		void DisplayFilterPlacementGrid(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern, Color color = { 1.f,1.f,1.f,1.f });
+
+		/*!*********************************************************************************
+		\brief
+			Place pattern onto grid
+		\param [in]
+			room: gameplay room
+		\param [in]
+			coordinate: Coordinate to switch to walkable
+		\param [in]
+			pattern: Range, pattern
+		\param [in]
+			sprite_fileName: sprite to replace the cell of
+		***********************************************************************************/
+		void PlacePatternOntoGrid(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern, std::string sprite_fileName);
+
+		/*!*********************************************************************************
+		\brief
+			Disable pattern onto grid
+		\param [in]
+			room: gameplay room
+		\param [in]
+			coordinate: Coordinate to switch to walkable
+		\param [in]
+			pattern: Range, pattern
+		\param [in]
+			sprite_fileName: sprite to replace the cell of
+		***********************************************************************************/
+		void ToggleCellWalkability(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, ECS::Entity cellEntity, b8 istrue);
+
+		/*!*********************************************************************************
+		\brief
+			Place pattern onto grid, all affected grid will be changed to walkable
+		\param [in]
+			room: gameplay room
+		\param [in]
+			coordinate: Coordinate to switch to walkable
+		\param [in]
+			sprite_fileName: sprite to replace the cell of
+		***********************************************************************************/
+		void PlaceWalkableOnGrid(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, std::string sprite_fileName);
+
+		/*!*********************************************************************************
+		\brief (stanley)
+			check if grid is walkable
+		\param [in]
+			room: gameplay room
+		\param [in]
+			coordinate: Coordinate to check if walkable is placed
+		***********************************************************************************/
+		b8 CheckIfWalkableOnGrid(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, u32 gridX, u32 gridY);
+
+		/*!*********************************************************************************
+		\brief
+			Return if pattern can be placed on cell with given coordinate
+		\param [in]
+			room: gameplay room
+		\param [in]
+			coordinate: Coordinate to check if pattern can be placed on
+		\param [in]
+			pattern: Range, pattern
+		\return
+			if pattern can be placed on tile
+	***********************************************************************************/
+		bool CheckIfPatternCanBePlacedForTile(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern);
+
+		/*!*********************************************************************************
+		\brief
+			Return if ability can be used on cell with given coordinate
+		\param [in]
+			room: gameplay room
+		\param [in]
+			coordinate: Coordinate to check the ability to run on
+		\param [in]
+			pattern: Range, pattern
+		\return
+			if ability can be used on tile
+		***********************************************************************************/
+		bool CheckIfAbilitiesCanBePlacedForTile(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities);
+
+		/*!*********************************************************************************
+		\brief
+			Check ability type and run abilities accordingly on cell
+		\param [in]
+			room: gameplay room
+		\param [in]
+			coordinate: Coordinate to run ability on
+		\param [in]
+			pattern: Range, pattern
+		\param [in]
+			abilities: ability
+		***********************************************************************************/
+		void RunAbilities_OnCells(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities);
+
+		/*!*********************************************************************************
+		\brief
+			Deal damage to a unit entity
+		\param [in]
+			unitEntity: unit entity
+		\param [in]
+			damage: damage amount
+		***********************************************************************************/
+		void DoDamageToUnit(ECS::Entity unitEntity, s32 damage);
+
+		/*!*********************************************************************************
+		\brief
+			Runs process to check adjacent for player and attack if they are adjacent.
+		\param [in]
+			room: room of gameplay
+		\param [in]
+			room: enemy entity
+		\return
+			if enemy attacked player and player is adjacent
+		***********************************************************************************/
+		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
+
+		/*!*********************************************************************************
+		\brief
+			Constructs a wall onto a cell, makes the cell unwalkable in pathfinding
+		\param [in]
+			currentRoom: room maintained by the gameplay system
+		\param [in]
+			x: x coordinate
+		\param [in]
+			y: y coordinate
+		\param [in]
+			isTrue : Whether to build the wall
+		***********************************************************************************/
+		void constructWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
+
+		/*!*********************************************************************************
+		\brief
+			Destroys a wall on a cell
+		\param [in]
+			currentRoom: room maintained by the gameplay system
+		\param [in]
+			x: x coordinate
+		\param [in]
+			y: y coordinate
+		\param [in]
+			isTrue : Whether to destroy the wall
+		***********************************************************************************/
+		void destroyWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
+
+		/*!*********************************************************************************
+		\brief
+			Creates an audio manager
+		***********************************************************************************/
+		void CreateAudioEntityMasterSource(void);
 
 	public:
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped

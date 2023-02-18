@@ -236,6 +236,8 @@ namespace ALEngine::Engine
 
 
 		AddLogicComponent<Script::GameplaySystem>(Entity_GameplaySystem);
+		AddLogicComponent<Script::GameplaySystem_Interface_Management_Enemy>(Entity_GameplaySystem);
+		AddLogicComponent<Script::GameplaySystem_Interface_Management_GUI>(Entity_GameplaySystem);
 
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//Coordinator::Instance()->GetComponent<EntityData>(en).tag = "entity_test2";

@@ -67,11 +67,11 @@ enum class ABILITY_TYPE { DIRECT, EFFECT };
 struct Room
 {
 	//Will contain array to the room's cell's entity
-	u32* roomCellsArray{ nullptr };
+	ALEngine::ECS::Entity* roomCellsArray{ nullptr };
 
 	//Size of room
-	u32 width{}, height{};
-	u32 roomSize{}; //width * height
+	ALEngine::ECS::Entity width{}, height{};
+	ALEngine::ECS::Entity roomSize{}; //width * height
 };
 
 /*!*********************************************************************************
@@ -94,13 +94,23 @@ struct Pattern {
 class Abilities {
 public:
 	//Stats
-	u32 current_Cooldown = 0, max_Cooldown = 2;
-	s32 damage = 15;
+	ALEngine::ECS::Entity current_Cooldown = 0, max_Cooldown = 2;
+	ALEngine::ECS::Entity damage = 15;
 
 	ABILITY_TYPE current_Ability_Type = ABILITY_TYPE::DIRECT;
 
 	//Keep track of ability type
 	ABILITY_NAME current_Ability_Name = ABILITY_NAME::HARD_DROP;
+};	
+
+/*!*********************************************************************************
+\brief
+	Container for a move order
+***********************************************************************************/
+struct MoveOrder {
+	ALEngine::ECS::Entity entity;				//unit
+	std::vector<ALEngine::ECS::Entity> path;	//path, list of cells
+	u32 path_step = 1;			//step into the path
 };
 //***************** Containers End ************************//
 
