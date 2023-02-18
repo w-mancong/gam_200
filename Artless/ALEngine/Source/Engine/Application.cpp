@@ -9,6 +9,9 @@ brief:	This file contain function definition that starts the flow of the entire 
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
 #include <GameplayCamera.h>
+#include <GameplaySystem.h>
+#include <GameplaySystem_Interface_Management_Enemy.h>
+#include <GameplayInterface_Management_GUI.h>
 #include <ECS/Systems/LogicSystem.h>
 
 namespace ALEngine::Engine
@@ -220,6 +223,19 @@ namespace ALEngine::Engine
 		Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif
+
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		Entity Entity_GameplaySystem = Coordinator::Instance()->CreateEntity();
+		Coordinator::Instance()->GetComponent<EntityData>(Entity_GameplaySystem).tag = "Gameplay System";
+
+		Coordinator::Instance()->AddComponent(Entity_GameplaySystem, Transform{});
+		
+		sceneGraph.Push(-1, Entity_GameplaySystem);
+
+
+
+		AddLogicComponent<Script::GameplaySystem>(Entity_GameplaySystem);
 
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//Coordinator::Instance()->GetComponent<EntityData>(en).tag = "entity_test2";

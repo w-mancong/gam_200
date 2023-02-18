@@ -22,5 +22,4 @@ namespace ALEngine::Script
 		void Update(ECS::Entity en);
 	};
 }
-
 #endif

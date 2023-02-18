@@ -160,6 +160,8 @@
     </ClCompile>
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_GUI.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
@@ -178,6 +180,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Development|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
+    <ClCompile Include="Source\Engine\Gameplay_Interface.cpp" />
     <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
@@ -310,6 +313,7 @@
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Gameplay\Header\MapManager.h" />
+    <ClInclude Include="Include\Engine\Gameplay_Interface.h" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
@@ -435,7 +439,9 @@
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
+    <ClInclude Include="Scripts\Header\GameplayInterface_Management_GUI.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />
+    <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_Enemy.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>

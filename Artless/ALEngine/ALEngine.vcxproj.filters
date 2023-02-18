@@ -85,6 +85,9 @@
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Source\Prefab\Prefab.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_GUI.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
+    <ClCompile Include="Source\Engine\Gameplay_Interface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -346,6 +349,9 @@
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="Include\Prefabs\Prefabs.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />
+    <ClInclude Include="Scripts\Header\GameplayInterface_Management_GUI.h" />
+    <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_Enemy.h" />
+    <ClInclude Include="Include\Engine\Gameplay_Interface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
