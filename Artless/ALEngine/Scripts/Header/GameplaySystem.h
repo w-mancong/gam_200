@@ -186,7 +186,7 @@ namespace ALEngine::Script
 		\brief
 			Get if cell is inside room of cells
 		***********************************************************************************/
-		bool IsCoordinateInsideRoom(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 gridX, u32 gridY);
+		bool IsCoordinateInsideRoom(Room& currentRoom, u32 gridX, u32 gridY);
 
 		/*!*********************************************************************************
 		\brief
@@ -362,6 +362,15 @@ namespace ALEngine::Script
 
 		static void Set_GameplayManager_Enemy(void* enemyManagerPtr);
 		static void Set_GameplayManager_GUI(void* GUIManagerPtr);
+
+		void Cheat_ToggleGodMode();
+		void Cheat_IncreasePlayerHealth(s32 amount);
+		void Cheat_ToggleDoubleAbilitiesDoubleDamage();
+		void Cheat_DecreaseEnemyHealthToOne();
+		void Cheat_EliminateAllEnemy();
+		void Cheat_ResetAllEnemiesHealth();
+		void Cheat_ResetPlayerHealth();
+		void Cheat_ClearFloorWalkability();
 
 	public:
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped

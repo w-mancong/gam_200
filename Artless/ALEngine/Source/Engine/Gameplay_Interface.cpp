@@ -179,6 +179,13 @@ namespace ALEngine::Script
 		//Subscribe(getGuiManager().endTurnBtnEntity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
 	}
 
+	bool GameplaySystem::IsCoordinateInsideRoom(Room& currentRoom, u32 gridX, u32 gridY)
+	{
+		//Return if coordinate is inside room
+		return (gridX >= 0) && (gridX < currentRoom.width) && (gridY >= 0) && (gridY < currentRoom.height);
+	}
+
+
 	void GameplaySystem::ToggleCellAccessibility(Room& currentRoom, u32 x, u32 y, b8 istrue) {
 		//Get cell component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
@@ -192,6 +199,335 @@ namespace ALEngine::Script
 			Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 0.f,0.f,0.f,0.f };
 		else
 			Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 1.f,1.f,1.f,1.f };
+	}
+
+	void GameplaySystem::InitializePatterns(std::vector<Pattern>& patternList) {
+		//Clear pattern
+		patternList.clear();
+
+		//Template for pattern
+		Pattern newPattern;
+
+		//upside down T shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		newPattern.coordinate_occupied.push_back({ -1, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.file_path = "Assets\\Images\\T.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+
+		//Straight line
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		newPattern.coordinate_occupied.push_back({ 2, 0 });
+		newPattern.coordinate_occupied.push_back({ 3, 0 });
+		newPattern.file_path = "Assets\\Images\\I.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+
+		//L Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		newPattern.file_path = "Assets\\Images\\L.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+
+		//J Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ -1, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		newPattern.file_path = "Assets\\Images\\J.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+
+		//Box Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		newPattern.coordinate_occupied.push_back({ 1, 1 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.file_path = "Assets\\Images\\O.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+
+		//S Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ -1, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ 1, 1 });
+		newPattern.file_path = "Assets\\Images\\S.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+
+		//Z Shape
+		newPattern.coordinate_occupied.push_back({ 0, 0 });
+		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		newPattern.coordinate_occupied.push_back({ -1, 1 });
+		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		newPattern.file_path = "Assets\\Images\\Z.png";
+		patternList.push_back(newPattern);
+		newPattern.coordinate_occupied.clear();
+	}
+
+	//Initialize Abilities
+	void GameplaySystem::InitializeAbilities(std::vector<Abilities>& abilitiesList) {
+		//Clear abilities
+		abilitiesList.clear();
+
+		//Template for abilities
+		Abilities new_ability;
+
+		//Fixed damage
+		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
+		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
+		new_ability.damage = 15;
+		abilitiesList.push_back(new_ability);
+
+		//Life steal
+		new_ability.current_Ability_Name = ABILITY_NAME::LIFE_DRAIN;
+		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
+		new_ability.damage = 12;
+		abilitiesList.push_back(new_ability);
+
+		//Construct Wall
+		new_ability.current_Ability_Name = ABILITY_NAME::CONSTRUCT_WALL;
+		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
+		//TRIGGER THE BUILD WALL FUNCTION HERE!!
+		abilitiesList.push_back(new_ability);
+	}
+
+	void GameplaySystem::RandomizePatternList(void)
+	{
+		u32 num_patterns = static_cast<u32>(pattern_Default.size());
+
+		std::random_device rd;
+		std::mt19937 mt(rd());
+
+		// Create a copy of the first few in list
+		std::vector<Pattern> tempList;
+		if (num_patterns <= pattern_List.size())
+		{	// Copy list to a temp list
+			for (u32 i{ 0 }; i < num_patterns; ++i)
+				tempList.push_back(pattern_List[i]);
+
+			// Empty Pattern List Shown
+			pattern_List.clear();
+
+			// Put the temp values into the pattern
+			for (u32 i{ 0 }; i < num_patterns; ++i)
+				pattern_List.push_back(tempList[i]);
+		}
+		else
+		{	// Randomize
+			pattern_List = pattern_Default;
+			std::shuffle(pattern_List.begin(), pattern_List.end(), mt);
+		}
+
+		// Randomize next set
+		tempList = pattern_Default;
+
+		do {
+			std::shuffle(tempList.begin(), tempList.end(), mt);
+		} while (tempList.front().file_path == pattern_List.back().file_path);
+
+		// Push back into list
+		for (u32 i{ 0 }; i < tempList.size(); ++i)
+		{
+			pattern_List.push_back(tempList[i]);
+		}
+	}
+
+
+	void GameplaySystem::Cheat_IncreasePlayerHealth(s32 amount) {
+		//Get player unit
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+		//Add health
+		unit.health += amount;
+
+		//Limit to max
+		if (unit.health >= unit.maxHealth) {
+			unit.health = unit.maxHealth;
+		}
+
+		//Select player
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
+	}
+
+	void GameplaySystem::Cheat_ToggleDoubleAbilitiesDoubleDamage() {
+		//Toggle double damage cheat
+		cheat_abilitiesDoubleDamage = !cheat_abilitiesDoubleDamage;
+
+		//Set damage accordingly
+		if (cheat_abilitiesDoubleDamage) {
+			Abilities_List[0].damage = 30;
+			Abilities_List[1].damage = 24;
+		}
+		else {
+			Abilities_List[0].damage = 15;
+			Abilities_List[1].damage = 12;
+		}
+
+		if (currentPhaseStatus != PHASE_STATUS::PHASE_ACTION) {
+			return;
+		}
+
+		//Toggle the color of the abilities
+		for (s32 i = 0; i < 2; ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[i]);
+
+			if (cheat_abilitiesDoubleDamage) {
+				sprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
+			}
+			else {
+				sprite.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			}
+		}
+	}
+
+	void GameplaySystem::Cheat_DecreaseEnemyHealthToOne() {
+		//Reduce all enemy health to 1
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			if (unit.health > 0) {
+				unit.health = 1;
+				gameplaySystem_GUI->UpdateGUI_OnSelectUnit(enemyEntityList[i]);
+			}
+		}
+	}
+
+	void GameplaySystem::Cheat_EliminateAllEnemy() {
+		//Do damage to all enemy
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			DoDamageToUnit(enemyEntityList[i], unit.maxHealth);
+		}
+
+		//ECS::SetActive(true, getGuiManager().Win_Clear);
+	}
+
+	void GameplaySystem::Cheat_ResetAllEnemiesHealth() {
+		//Reset all
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			//Limit enemy health
+			if (unit.health > 0) {
+				unit.health = unit.maxHealth;
+				gameplaySystem_GUI->UpdateGUI_OnSelectUnit(enemyEntityList[i]);
+			}
+		}
+	}
+
+	void GameplaySystem::Cheat_ResetPlayerHealth() {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+		//Reset
+		unit.health = unit.maxHealth;
+
+		//Select player
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
+	}
+
+	void GameplaySystem::Cheat_ClearFloorWalkability() {
+		//Shift through each of the cell and toggle walkability
+		for (s32 i = 0; i < static_cast<s32>(getRoomSize()); ++i) {
+			ToggleCellWalkability(m_Room, m_Room.roomCellsArray[i], false);
+		}
+
+		//Toggle walkability of units
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		ToggleCellWalkability(m_Room, unit.m_CurrentCell_Entity, true);
+	}
+
+	void GameplaySystem::ToggleCellWalkability([[maybe_unused]] Room& room, ECS::Entity cellEntity, b8 istrue) {
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//if is completely block, dont need set
+		if (!cell.m_isAccessible) {
+			return;
+		}
+
+		//Set to toggle
+		cell.m_canWalk = istrue;
+
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+
+		//Set sprite accordingly
+		if (istrue) {
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Walkable.png");
+		}
+		else {
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+		}
+	}
+
+	void GameplaySystem::DoDamageToUnit(ECS::Entity unitEntity, s32 damage) {
+		//Get the unit entity data
+		[[maybe_unused]] EntityData& unitData = Coordinator::Instance()->GetComponent<EntityData>(unitEntity);
+
+		//Get unit component
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
+
+		//Get Transform
+		Transform& unitTrans = Coordinator::Instance()->GetComponent<Transform>(unitEntity);
+
+		//Get Particle System
+		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(unitTrans.position);
+
+		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
+
+		//Do damage
+		unit.health -= damage;
+
+		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
+
+		////Get the master audio source
+		//ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		//AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+
+		////Play hit sound accordingly
+		//if (unit.unitType == UNIT_TYPE::PLAYER) {
+		//	Audio& ad = as.GetAudio(AUDIO_HIT);
+		//	ad.m_Channel = Channel::SFX;
+		//	ad.Play();
+		//}
+		//else {
+		//	Audio& ad = as.GetAudio(AUDIO_ENEMY_HURT_1);
+		//	ad.m_Channel = Channel::SFX;
+		//	ad.Play();
+		//}
+
+		////If no health
+		//if (unit.health <= 0) {
+		//	//Determinte type
+		//	if (unit.unitType == UNIT_TYPE::PLAYER) {
+		//		AL_CORE_INFO("Unit Died");
+		//		ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+		//		Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
+
+		//		ECS::SetActive(true, GameplayInterface_Management_GUI::getGuiManager().Win_Clear);
+
+		//		unitData.active = false;
+		//		Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+		//	}
+		//	else {
+		//		//If enemy unit
+		//		AL_CORE_INFO("Enemy Died");
+		//	}
+
+		//	Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
+		//	Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+		//	unit.health = 0;	//Limit to 0
+
+		//	Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
+		//	cell.hasUnit = false;	//Free it's cell
+		//}
 	}
 
 	void Event_ClickCell(ECS::Entity invoker) {

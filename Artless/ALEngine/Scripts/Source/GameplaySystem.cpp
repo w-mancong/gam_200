@@ -81,10 +81,10 @@ namespace ALEngine::Script
 		sceneGraph.Push(-1, m_Room_Parent_Entity); // first cell is parent
 
 		//Initialize Pattern
-		//InitializePatterns(gameplaySystem->pattern_Default);
+		InitializePatterns(pattern_Default);
 
 		// Randomize Pattern
-		//gameplaySystem->RandomizePatternList();
+		RandomizePatternList();
 
 		//// Set sprites for the Patterns
 		//for (u32 i{ 1 }; i <= 4; ++i)
