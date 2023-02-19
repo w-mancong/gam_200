@@ -378,6 +378,9 @@ namespace ALEngine::Editor
 
 						// Add to Map Manager
 						Gameplay::MapManager::Instance()->SetMapPath(fileString);
+
+						// Load the tile level
+						ALEditor::Instance()->LoadMap();
 					}
 					else
 					{

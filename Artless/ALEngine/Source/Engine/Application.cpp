@@ -211,7 +211,6 @@ namespace ALEngine::Engine
 
 		Engine::AssetManager::Instance()->Init();
 		GameStateManager::Init();
-		Gameplay::MapManager::Instance()->GetMap();
 
 		appStatus = 1;
 		RunFileWatcherThread();
