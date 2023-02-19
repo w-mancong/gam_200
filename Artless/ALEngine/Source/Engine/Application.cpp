@@ -225,6 +225,7 @@ namespace ALEngine::Engine
 		//AddLogicComponent<Script::GameplayCamera>(en);
 		//Scene::LoadScene("Assets\\test_logic.scene");
 		//Scene::SaveScene("test_map");
+		//Scene::LoadScene("Assets\\test_map.scene");
 
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//Coordinator::Instance()->GetComponent<EntityData>(en).tag = "entity_test2";
