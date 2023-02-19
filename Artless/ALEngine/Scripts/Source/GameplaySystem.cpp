@@ -3,19 +3,31 @@
 #include "Engine/PathFindingManager.h"
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
+#include <GameplaySystem_Interface_Management_Enemy.h>
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
 #include <PauseLogic.h>
 
 namespace ALEngine::Script
 {
+	namespace {
+		GameplaySystem_Interface_Management_Enemy* gameplaySystem_Enemy;
+	}
+
+	void GameplaySystem::Set_GameplayManager_Enemy(void* enemyManagerPtr) {
+		gameplaySystem_Enemy = reinterpret_cast<GameplaySystem_Interface_Management_Enemy*>(enemyManagerPtr);
+	}
+
 	void GameplaySystem::Load(ECS::Entity en)
 	{
-		gameplaySystem = this;
+		//Gameplay_Mangement_Singleton::Instance()->Instance()->gameplaySystem = this;
+		GameplaySystem_Interface_Management_Enemy::Set_GameplayManager(this);
+		std::cout << "setting up the system\n";
 	}
 
 	void GameplaySystem::Init(ECS::Entity en)
 	{
+		std::cout << "initializing system\n";
 		StartGameplaySystem();
 	}
 
@@ -137,7 +149,28 @@ namespace ALEngine::Script
 		}
 
 		//Create Player
-		gameplaySystem->PlaceNewPlayerInRoom(0, 2);
+		PlaceNewPlayerInRoom(0, 2);
+
+		//std::cout << (Gameplay_Mangement_Singleton::Instance()->Instance()->gameplaySystem == nullptr ? "system not set up\n" : "system is up\n");
+		//printf("Address of a: %p\n", *this);
+		//Place enemy
+		enemyEntityList.clear();
+		
+		ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
+		//Place enemy
+		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
+		//Place enemy
+		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
+		//std::cout << (gameplaySystem == nullptr ? "system not set up\n" : "system is up\n");
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
@@ -148,7 +181,7 @@ namespace ALEngine::Script
 
 
 	void GameplaySystem::ExitGameplaySystem() {
-		gameplaySystem = nullptr;
+		//gameplaySystem = nullptr;
 	}
 
 

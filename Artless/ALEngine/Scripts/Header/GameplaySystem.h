@@ -10,7 +10,6 @@ namespace ALEngine::Script
 
 	class GameplaySystem : public ECS::Component::UniBehaviour
 	{
-	public:
 		/*!*********************************************************************************
 			\brief Used to load in any resources, will only run once when new scene loads
 		***********************************************************************************/
@@ -41,6 +40,7 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Unload(ECS::Entity en);
 
+	public:
 		/*!*********************************************************************************
 			\brief
 			Start GamePlay System to initialize variables for gameplay logic
@@ -70,12 +70,6 @@ namespace ALEngine::Script
 			create player unit entity
 		***********************************************************************************/
 		void CreatePlayerUnit(ECS::Entity entity);
-
-		/*!*********************************************************************************
-			\brief
-	        create enemy unit entity
-		***********************************************************************************/
-		void CreateEnemyUnit(ECS::Entity entity); 
 
 		/*!*********************************************************************************
 		\brief
@@ -366,6 +360,8 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void CreateAudioEntityMasterSource(void);
 
+		static void Set_GameplayManager_Enemy(void* enemyManagerPtr);
+
 	public:
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped
 		PHASE_STATUS currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;								//Keep track of phase
@@ -395,15 +391,14 @@ namespace ALEngine::Script
 		ECS::Entity playerEntity, startCellEntity, targetCellEntity;
 		ECS::Entity movingUnitEntity;
 
+		//Enemy
+		std::vector<ECS::Entity> enemyEntityList;
+
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = false;
 
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
 	};
-	
-	//Keep track of global gameplaySystem
-	static GameplaySystem* gameplaySystem;
 }
-
 #endif

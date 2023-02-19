@@ -67,10 +67,6 @@ namespace ALEngine::Script
 		rigidbody.hasGravity = false;
 	}
 
-	void GameplaySystem::CreateEnemyUnit(ECS::Entity entity) {
-
-	}
-
 	void GameplaySystem::EndTurn()
 	{
 		//Set the turn accordingly
@@ -129,7 +125,7 @@ namespace ALEngine::Script
 		playerUnit.health = 50;
 
 		//Set the cell the player is on to be walkable
-		PlaceWalkableOnGrid(gameplaySystem->m_Room, { x, y }, "Assets/Images/Walkable.png");
+		PlaceWalkableOnGrid(m_Room, { x, y }, "Assets/Images/Walkable.png");
 
 		//Set the transform
 		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
@@ -138,24 +134,24 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::PlaceWalkableOnGrid(Room& room, Math::Vector2Int coordinate, std::string sprite_fileName) {
-		////Get Cell Entity
-		//ECS::Entity cellEntity = getEntityCell(room, coordinate.x, coordinate.y);
+		//Get Cell Entity
+		ECS::Entity cellEntity = getEntityCell(room, coordinate.x, coordinate.y);
 
-		////Get Component
-		//Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		//Get Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-		////if is completely block, dont need set
-		//if (!cell.m_isAccessible) {
-		//	return;
-		//}
+		//if is completely block, dont need set
+		if (!cell.m_isAccessible) {
+			return;
+		}
 
-		////Set to canwalk
-		//cell.m_canWalk = true;
-		//cell.m_resetCounter = 2;
+		//Set to canwalk
+		cell.m_canWalk = true;
+		cell.m_resetCounter = 2;
 
-		////Change the cell sprite to filename sprite
-		//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-		//sprite.id = Engine::AssetManager::Instance()->GetGuid(sprite_fileName);
+		//Change the cell sprite to filename sprite
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+		sprite.id = Engine::AssetManager::Instance()->GetGuid(sprite_fileName);
 	}
 
 	void Event_ClickCell(ECS::Entity invoker) {
@@ -172,5 +168,13 @@ namespace ALEngine::Script
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 		//Filter it's placement 
 		//DisplayFilterPlacementGrid(gameplaySytem->m_Room, cell.coordinate, gameplaySytem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+	}
+
+	void Event_MouseEnterUnit(ECS::Entity invoker) {
+
+	}
+
+	void Event_MouseExitUnit(ECS::Entity invoker) {
+
 	}
 }
