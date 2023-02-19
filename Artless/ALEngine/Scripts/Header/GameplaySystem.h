@@ -10,6 +10,7 @@ namespace ALEngine::Script
 
 	class GameplaySystem : public ECS::Component::UniBehaviour
 	{
+	public:
 		/*!*********************************************************************************
 			\brief Used to load in any resources, will only run once when new scene loads
 		***********************************************************************************/
@@ -174,9 +175,9 @@ namespace ALEngine::Script
 		void RandomizePatternList(void);
 
 		/*!*********************************************************************************
-\brief
-	Global function to return the cell entity based on specified position
-***********************************************************************************/
+		\brief
+			Global function to return the cell entity based on specified position
+		***********************************************************************************/
 		u32 getEntityCell(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
 
 		void ToggleCellAccessibility(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 istrue);
@@ -371,7 +372,6 @@ namespace ALEngine::Script
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;				//Keep track of status of unit control
 		PATTERN_PLACEMENT_STATUS currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;	//Keep track of what the pattern is being placed for
 	
-
 		//******VARIABLES**********//
 		u32 roomSize[2]{ 10, 10 };		//Size to initialize the room with
 		GAMEPLAY_SYSTEM_INTERFACE_H::Room m_Room;					//Room COntainer
@@ -390,6 +390,10 @@ namespace ALEngine::Script
 
 		//Cell that the mouse is hovering over
 		ECS::Entity current_Moused_Over_Cell;
+
+		//Entities to keep track of
+		ECS::Entity playerEntity, startCellEntity, targetCellEntity;
+		ECS::Entity movingUnitEntity;
 
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = false;

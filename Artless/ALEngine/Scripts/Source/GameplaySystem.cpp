@@ -135,6 +135,9 @@ namespace ALEngine::Script
 				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY	
 			}
 		}
+
+		//Create Player
+		gameplaySystem->PlaceNewPlayerInRoom(0, 2);
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
