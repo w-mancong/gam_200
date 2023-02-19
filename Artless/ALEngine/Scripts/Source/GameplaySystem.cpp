@@ -11,7 +11,7 @@ namespace ALEngine::Script
 {
 	void GameplaySystem::Load(ECS::Entity en)
 	{
-
+		gameplaySystem = this;
 	}
 
 	void GameplaySystem::Init(ECS::Entity en)
@@ -111,10 +111,10 @@ namespace ALEngine::Script
 				cell.coordinate = { i,j };
 
 				//Create the triggers and subscribe the cell related events
-				//ECS::CreateEventTrigger(m_Room.roomCellsArray[cellIndex]);
-				//ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
-				//ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
-				//ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+				ECS::CreateEventTrigger(m_Room.roomCellsArray[cellIndex]);
+				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
+				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
+				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
 
 				//Add the child overlay
 				cell.child_overlay = Coordinator::Instance()->CreateEntity();
@@ -145,7 +145,7 @@ namespace ALEngine::Script
 
 
 	void GameplaySystem::ExitGameplaySystem() {
-
+		gameplaySystem = nullptr;
 	}
 
 

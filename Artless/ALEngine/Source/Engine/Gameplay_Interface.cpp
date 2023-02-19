@@ -1,6 +1,8 @@
 #include <pch.h>
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
+#include <Engine/GameplayInterface_Management_GUI.h>
+#include <Engine/GameplayInterface_Management_Enemy.h>
 
 namespace ALEngine::Script
 {
@@ -47,4 +49,20 @@ namespace ALEngine::Script
 		return currentRoom.roomCellsArray[y * currentRoom.width + x];
 	}
 
+
+	void Event_ClickCell(ECS::Entity invoker) {
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+	}
+	void Event_MouseEnterCell(ECS::Entity invoker) {
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+	}
+
+	void Event_MouseExitCell(ECS::Entity invoker) {
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+		//Filter it's placement 
+		//DisplayFilterPlacementGrid(gameplaySytem->m_Room, cell.coordinate, gameplaySytem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+	}
 }

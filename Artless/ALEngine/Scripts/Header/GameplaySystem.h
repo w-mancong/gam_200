@@ -397,6 +397,9 @@ namespace ALEngine::Script
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
 	};
+	
+	//Keep track of global gameplaySystem
+	static GameplaySystem* gameplaySystem;
 }
 
 #endif
