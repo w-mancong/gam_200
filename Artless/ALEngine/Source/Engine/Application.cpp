@@ -233,8 +233,6 @@ namespace ALEngine::Engine
 		
 		sceneGraph.Push(-1, Entity_GameplaySystem);
 
-
-
 		AddLogicComponent<Script::GameplaySystem>(Entity_GameplaySystem);
 		AddLogicComponent<Script::GameplaySystem_Interface_Management_Enemy>(Entity_GameplaySystem);
 		AddLogicComponent<Script::GameplaySystem_Interface_Management_GUI>(Entity_GameplaySystem);

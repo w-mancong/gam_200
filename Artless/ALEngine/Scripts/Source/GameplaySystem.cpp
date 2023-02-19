@@ -4,6 +4,7 @@
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
+#include <GameplayInterface_Management_GUI.h>
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
 #include <PauseLogic.h>
@@ -12,10 +13,15 @@ namespace ALEngine::Script
 {
 	namespace {
 		GameplaySystem_Interface_Management_Enemy* gameplaySystem_Enemy;
+		GameplaySystem_Interface_Management_GUI* gameplaySystem_GUI;
 	}
 
 	void GameplaySystem::Set_GameplayManager_Enemy(void* enemyManagerPtr) {
 		gameplaySystem_Enemy = reinterpret_cast<GameplaySystem_Interface_Management_Enemy*>(enemyManagerPtr);
+	}
+
+	void GameplaySystem::Set_GameplayManager_GUI(void* GUIManagerPtr) {
+		gameplaySystem_GUI = reinterpret_cast<GameplaySystem_Interface_Management_GUI*>(GUIManagerPtr);
 	}
 
 	void GameplaySystem::Load(ECS::Entity en)
@@ -170,7 +176,28 @@ namespace ALEngine::Script
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
-		//std::cout << (gameplaySystem == nullptr ? "system not set up\n" : "system is up\n");
+		//Create EndTurn Button
+		//InitializeEndTurnButton();
+
+		//******* Set inaccessible cells ********//
+		ToggleCellAccessibility(m_Room, 2, 3, false);
+		ToggleCellAccessibility(m_Room, 2, 4, false);
+		ToggleCellAccessibility(m_Room, 3, 3, false);
+		ToggleCellAccessibility(m_Room, 3, 4, false);
+
+		ToggleCellAccessibility(m_Room, 4, 0, false);
+		ToggleCellAccessibility(m_Room, 4, 1, false);
+		ToggleCellAccessibility(m_Room, 5, 0, false);
+		ToggleCellAccessibility(m_Room, 6, 1, false);
+
+		ToggleCellAccessibility(m_Room, 0, 7, false);
+		ToggleCellAccessibility(m_Room, 1, 7, false);
+
+		ToggleCellAccessibility(m_Room, 5, 7, false);
+		ToggleCellAccessibility(m_Room, 6, 7, false);
+		ToggleCellAccessibility(m_Room, 7, 7, false);
+		ToggleCellAccessibility(m_Room, 7, 6, false);
+		ToggleCellAccessibility(m_Room, 7, 5, false);
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {

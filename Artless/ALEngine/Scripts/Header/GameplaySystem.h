@@ -361,6 +361,7 @@ namespace ALEngine::Script
 		void CreateAudioEntityMasterSource(void);
 
 		static void Set_GameplayManager_Enemy(void* enemyManagerPtr);
+		static void Set_GameplayManager_GUI(void* GUIManagerPtr);
 
 	public:
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped

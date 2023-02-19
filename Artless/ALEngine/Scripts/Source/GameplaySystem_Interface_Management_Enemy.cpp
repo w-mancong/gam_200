@@ -13,13 +13,10 @@ namespace ALEngine::Script
 		gameplaySystem = reinterpret_cast<GameplaySystem*>(gameplayerSystemPtr);
 	}
 
-	void GameplaySystem_Interface_Management_Enemy::Set_GameplayManager_GUI(void* GUIManagerPtr) {
-
-	}
-
 	void GameplaySystem_Interface_Management_Enemy::Load(ECS::Entity en)
 	{
 		GameplaySystem::Set_GameplayManager_Enemy(this);
+		Set_GameplayInterface_Enemy(this);
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Init(ECS::Entity en) {

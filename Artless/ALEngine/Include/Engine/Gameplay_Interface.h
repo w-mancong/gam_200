@@ -116,6 +116,10 @@ struct MoveOrder {
 
 namespace ALEngine::Script
 {
+	void Set_GameplayInterface_Enemy(void* enemyManagerPtr);
+	void Set_GameplayInterface_GUI(void* GUIManagerPtr);
+	void Set_GameplayInterface_GameplayManager(void* GUIManagerPtr);
+
 	//***************** Events  ************************//
 		/*!*********************************************************************************
 	\brief

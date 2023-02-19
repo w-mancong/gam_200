@@ -1,13 +1,29 @@
 #include <pch.h>
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
-#include <Engine/GameplayInterface_Management_GUI.h>
-#include <Engine/GameplayInterface_Management_Enemy.h>
-#include <ECS/Systems/LogicSystem.h>
+#include <GameplaySystem_Interface_Management_Enemy.h>
+#include <GameplayInterface_Management_GUI.h>
 #include <GameplayCamera.h>
 
 namespace ALEngine::Script
 {
+	namespace {
+		GameplaySystem_Interface_Management_Enemy* gameplaySystem_Enemy;
+		GameplaySystem_Interface_Management_GUI* gameplaySystem_GUI;
+	}
+
+	void ALEngine::Script::Set_GameplayInterface_Enemy(void* enemyManagerPtr) {
+		gameplaySystem_Enemy = reinterpret_cast<GameplaySystem_Interface_Management_Enemy*>(enemyManagerPtr);
+	}
+
+	void ALEngine::Script::Set_GameplayInterface_GUI(void* GUIManagerPtr) {
+		gameplaySystem_GUI = reinterpret_cast<GameplaySystem_Interface_Management_GUI*>(GUIManagerPtr);
+	}
+
+	void Set_GameplayInterface_GameplayManager(void* GUIManagerPtr) {
+
+	}
+
 	void GameplaySystem::CreatePlayerUnit(ECS::Entity entity) {
 		//Create new unit
 		Unit unit{};
@@ -152,6 +168,30 @@ namespace ALEngine::Script
 		//Change the cell sprite to filename sprite
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 		sprite.id = Engine::AssetManager::Instance()->GetGuid(sprite_fileName);
+	}
+
+	void GameplaySystem::InitializeEndTurnButton() {
+		//Get the end turn entity
+		gameplaySystem_GUI->getGuiManager().endTurnBtnEntity = Coordinator::Instance()->GetEntityByTag("end_turn");
+		//CreateButton(getGuiManager().endTurnBtnEntity);
+
+		//Subscribe the end turn function
+		//Subscribe(getGuiManager().endTurnBtnEntity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
+	}
+
+	void GameplaySystem::ToggleCellAccessibility(Room& currentRoom, u32 x, u32 y, b8 istrue) {
+		//Get cell component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+		cell.m_isAccessible = istrue;	//set accessible
+
+		//Set it's overlay
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = istrue;
+
+		//Toggle color accordingly
+		if (!cell.m_isAccessible)
+			Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 0.f,0.f,0.f,0.f };
+		else
+			Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 1.f,1.f,1.f,1.f };
 	}
 
 	void Event_ClickCell(ECS::Entity invoker) {
