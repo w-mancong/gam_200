@@ -588,15 +588,23 @@ namespace ALEngine::Editor
 		// Do each 
 		for (auto col : map)
 		{
+			/*
 			ECS::Entity rowTiles = Coordinator::Instance()->CreateEntity();
 			Coordinator::Instance()->AddComponent(rowTiles, Transform{});
-			sceneGraph.Push((s32)parent, (s32)rowTiles);			
+
+			// Set name
+			EntityData& rowEnttData = Coordinator::Instance()->GetComponent<EntityData>(rowTiles);
+			rowEnttData.tag = "Col " + std::to_string(h);
+
+			sceneGraph.Push((s32)parent, (s32)rowTiles);	
+			*/
 
 			w = 0;
 			for (auto row : col)
 			{
 				ECS::Entity tile = Coordinator::Instance()->CreateEntity();
-				sceneGraph.Push((s32)rowTiles, (s32)tile);
+				//sceneGraph.Push((s32)rowTiles, (s32)tile);
+				sceneGraph.Push(parent, tile);
 
 				// Set default transform and scale
 				Transform transform;
@@ -606,7 +614,7 @@ namespace ALEngine::Editor
 
 				// Set name
 				EntityData &data = Coordinator::Instance()->GetComponent<EntityData>(tile);
-				//data.tag = row;
+				data.tag = row;
 
 				Coordinator::Instance()->AddComponent(tile, transform);
 

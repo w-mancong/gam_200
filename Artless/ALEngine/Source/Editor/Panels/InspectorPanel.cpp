@@ -791,6 +791,8 @@ namespace ALEngine::Editor
 			std::vector<std::string> scripts = Script::GetAllScripts();
 
 			static b8 LogicsArrowBtnPressed{ false };
+			ImGui::Text("Logic Components   ");
+			ImGui::SameLine();
 			if (ImGui::ArrowButton("##Logic Components", ImGuiDir_Down))
 				LogicsArrowBtnPressed = !LogicsArrowBtnPressed;
 			std::string to_remove{ "" };
