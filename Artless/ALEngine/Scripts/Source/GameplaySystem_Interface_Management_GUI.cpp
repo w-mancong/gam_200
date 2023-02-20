@@ -65,4 +65,51 @@ namespace ALEngine::Script
 		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
 	}
 
+	void GameplaySystem_Interface_Management_GUI::InitializeGUI()
+	{
+		//Initialize GUI Text and Sprites zafir
+		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
+		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
+		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
+		guiManager.Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
+		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
+		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
+		guiManager.Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
+		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
+		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
+		guiManager.Skill_Tip_Icon = Coordinator::Instance()->GetEntityByTag("skill_icon");
+		guiManager.Skill_Tip_Header = Coordinator::Instance()->GetEntityByTag("text_skillname");
+		guiManager.Skill_Tip_Line1 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line1");
+		guiManager.Skill_Tip_Line2 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line2");
+		guiManager.Skill_Tip_Line3 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line3");
+		guiManager.Skill_Tip_Line4 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line4");
+		guiManager.Tooltip_Skills_Card = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
+		guiManager.FPS_Label = Coordinator::Instance()->GetEntityByTag("FPS_label");
+
+		ECS::SetActive(false, guiManager.endTurnBtnEntity);
+		ECS::SetActive(false, guiManager.Win_Clear);
+
+		ECS::CreateButton(guiManager.Win_Button);
+	}
+
+	void GameplaySystem_Interface_Management_GUI::UpdateFpsLabel()
+	{
+		Text& fps = Coordinator::Instance()->GetComponent<Text>(getGuiManager().FPS_Label);
+		if (guiManager.fpsActive)
+		{
+			AL_CORE_CRITICAL("DISPLAY FPS");
+			std::ostringstream oss{};
+			oss << "FPS: " << (int)Time::m_FPS;
+			fps.textString = oss.str();
+		}
+		else
+		{
+			fps.textString = "";
+		}
+
+		if (Input::KeyTriggered(KeyCode::Ctrl))
+			guiManager.fpsActive = !guiManager.fpsActive;
+	}
 }

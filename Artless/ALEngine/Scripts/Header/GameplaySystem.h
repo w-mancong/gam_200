@@ -404,8 +404,10 @@ namespace ALEngine::Script
 		//Enemy
 		std::vector<ECS::Entity> enemyEntityList;
 
+		ECS::Entity masterAudioSource{ ECS::MAX_ENTITIES };
+
 		//Tracks debug drawing for room
-		b8 is_DebugDraw = false;
+		b8 is_DebugDraw = true;
 
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;

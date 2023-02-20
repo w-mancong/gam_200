@@ -4,6 +4,7 @@
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <GameplayInterface_Management_GUI.h>
 #include <GameplayCamera.h>
+#include <Utility/AudioNames.h>
 
 namespace ALEngine::Script
 {
@@ -488,9 +489,9 @@ namespace ALEngine::Script
 
 		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
 
-		////Get the master audio source
-		//ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
-		//AudioSource& as = Coordinator::Instance()->GetComponent<AudioSource>(masterAudioSource);
+		//Get the master audio source
+		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
 		////Play hit sound accordingly
 		//if (unit.unitType == UNIT_TYPE::PLAYER) {
@@ -573,5 +574,57 @@ namespace ALEngine::Script
 			AL_CORE_INFO("DISPLAY UNIT");
 			//GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(invoker);
 		}
+	}
+
+	void GameplaySystem::CreateAudioEntityMasterSource(void)
+	{
+		using namespace ECS;
+		//Create Entity
+		Entity en = Coordinator::Instance()->CreateEntity();
+
+		//Get it's data
+		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+
+		//Change name
+		ed.tag = "Master Audio Source";
+
+		//Prepare audiosource component
+		Engine::AudioSource as;
+		as.id = 0;
+
+		//Add BGM
+		Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_BGM_1));
+		as.list[as.id++] = ad;
+
+		//Add Gameplay Loop
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GAMEPLAY_LOOP));
+		as.list[as.id++] = ad;
+
+		//Add Select Skill
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_SELECT_SKILL));
+		as.list[as.id++] = ad;
+
+		//Add Player hurt
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_PLAYER_HURT));
+		as.list[as.id++] = ad;
+
+		//Add Enemy Hit
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_HIT));
+		as.list[as.id++] = ad;
+
+		//Add Enemy Hit 2
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_ENEMY_HURT_1));
+		as.list[as.id++] = ad;
+
+		//Add Audio Click (Button)
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_CLICK_1));
+		as.list[as.id++] = ad;
+
+		//Add Player Walk
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
+		as.list[as.id++] = ad;
+
+		//Add the audiosource component to the entity
+		Coordinator::Instance()->AddComponent(en, as);
 	}
 }

@@ -45,12 +45,12 @@ namespace ALEngine::Script
 	void GameplaySystem::LateUpdate(ECS::Entity en)
 	{
 		UpdateGameplaySystem();
-		DrawGameplaySystem();
+		DrawGameplaySystem();	
 	}
 
 	void GameplaySystem::Free(ECS::Entity en)
 	{
-
+	
 	}
 
 	void GameplaySystem::Unload(ECS::Entity en)
@@ -198,21 +198,114 @@ namespace ALEngine::Script
 		ToggleCellAccessibility(m_Room, 7, 7, false);
 		ToggleCellAccessibility(m_Room, 7, 6, false);
 		ToggleCellAccessibility(m_Room, 7, 5, false);
+
+
+		//***** AUDIO Initialization ******//
+		//GameplayInterface_Management_Enemy::EnemyManager_LoadData();
+		CreateAudioEntityMasterSource();
+		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		Engine::Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
+		ad.m_Channel = Engine::Channel::BGM;
+		ad.m_Loop = true;
+		ad.Play();
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
+		//gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
+
 		if (Input::KeyTriggered(KeyCode::E)) {
 			EndTurn();
 		}
 	}
 
-
 	void GameplaySystem::ExitGameplaySystem() {
-		//gameplaySystem = nullptr;
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		for (auto& it : as.list)
+		{
+			Engine::Audio& ad = it.second;
+			ad.Stop();
+		}
 	}
 
 
 	void GameplaySystem::DrawGameplaySystem() {
 
+		if (currentGameplayStatus == GAMEPLAY_STATUS::STOP) {
+			return;
+		}
+
+		if (!is_DebugDraw)
+		{
+			return;
+		}
+
+		//Box holder
+		Engine::Vector2 bottomleft;
+		Engine::Vector2 topright;
+
+		Color color = { 0.f,0.f ,0.f ,0.f };
+
+		//Draw all cells
+		for (s32 i = 0; i < static_cast<s32>(m_Room.roomSize); ++i) {
+			Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(m_Room.roomCellsArray[i]);
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(m_Room.roomCellsArray[i]);
+
+			if (!cell.m_isAccessible) {
+				color = { 1.f, 0.f, 0.f, 1.f };
+			}
+			else {
+				color = cell.m_Color_Tint;
+			}
+
+			bottomleft = { cellTransform.position.x - cellTransform.scale.x * 0.5f, cellTransform.position.y - cellTransform.scale.y * 0.5f };
+			topright = { cellTransform.position.x + cellTransform.scale.x * 0.5f, cellTransform.position.y + cellTransform.scale.y * 0.5f };
+
+			//Draw 4 lines
+			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+		}
+
+		//Draw the pathfinder 
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+		bottomleft = { playerTransform.position.x - playerTransform.scale.x * 0.5f, playerTransform.position.y - playerTransform.scale.y * 0.5f };
+		topright = { playerTransform.position.x + playerTransform.scale.x * 0.5f, playerTransform.position.y + playerTransform.scale.y * 0.5f };
+
+		color = { 1.f, 1.f, 0.f, 1.f };
+
+		Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+		Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+		Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+		Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+
+		//Draw the Pattern GUI
+		for (int i = 0; i < gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List.size(); ++i) {
+			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[i]);
+
+			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
+			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
+
+			//Draw 4 lines
+			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+		}
+
+		//Draw the Pattern GUI
+		for (int i = 0; i < gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List.size(); ++i) {
+			Transform& buttonTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[i]);
+
+			bottomleft = { buttonTransform.position.x - buttonTransform.scale.x * 0.5f, buttonTransform.position.y - buttonTransform.scale.y * 0.5f };
+			topright = { buttonTransform.position.x + buttonTransform.scale.x * 0.5f, buttonTransform.position.y + buttonTransform.scale.y * 0.5f };
+
+			//Draw 4 lines
+			Gizmos::Gizmo::RenderLine(bottomleft, { topright.x, bottomleft.y }, color);	//Bottom
+			Gizmos::Gizmo::RenderLine({ bottomleft.x, topright.y }, topright, color);	//top
+			Gizmos::Gizmo::RenderLine(bottomleft, { bottomleft.x, topright.y }, color);	//left
+			Gizmos::Gizmo::RenderLine({ topright.x, bottomleft.y }, topright, color);	//right
+		}
 	}
 }
