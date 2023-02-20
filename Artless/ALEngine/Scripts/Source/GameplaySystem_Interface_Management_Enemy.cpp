@@ -82,7 +82,7 @@ namespace ALEngine::Script
 		EventTrigger eventTrigger;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
 
-		//ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
+		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 
 		//Add physics
 		ECS::CreateRigidbody(entity);

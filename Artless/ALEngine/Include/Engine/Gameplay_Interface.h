@@ -206,6 +206,13 @@ namespace ALEngine::Script
 		Event for when mouse exit unit
 	***********************************************************************************/
 	void Event_MouseExitUnit(ECS::Entity invoker);
+	
+
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse exit unit
+	***********************************************************************************/
+	void Event_Unit_OnSelect(ECS::Entity invoker);
 	//***************** Events End  ************************//
 }
 #endif

@@ -26,7 +26,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Load(ECS::Entity en)
 	{
-		//Gameplay_Mangement_Singleton::Instance()->Instance()->gameplaySystem = this;
+		Set_GameplayInterface_GameplayManager(this);
 		GameplaySystem_Interface_Management_Enemy::Set_GameplayManager(this);
 		std::cout << "setting up the system\n";
 	}

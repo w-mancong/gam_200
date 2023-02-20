@@ -10,18 +10,19 @@ namespace ALEngine::Script
 	namespace {
 		GameplaySystem_Interface_Management_Enemy* gameplaySystem_Enemy;
 		GameplaySystem_Interface_Management_GUI* gameplaySystem_GUI;
+		GameplaySystem* gameplaySystem;
 	}
 
-	void ALEngine::Script::Set_GameplayInterface_Enemy(void* enemyManagerPtr) {
+	void Set_GameplayInterface_Enemy(void* enemyManagerPtr) {
 		gameplaySystem_Enemy = reinterpret_cast<GameplaySystem_Interface_Management_Enemy*>(enemyManagerPtr);
 	}
 
-	void ALEngine::Script::Set_GameplayInterface_GUI(void* GUIManagerPtr) {
+	void Set_GameplayInterface_GUI(void* GUIManagerPtr) {
 		gameplaySystem_GUI = reinterpret_cast<GameplaySystem_Interface_Management_GUI*>(GUIManagerPtr);
 	}
-
-	void Set_GameplayInterface_GameplayManager(void* GUIManagerPtr) {
-
+	
+	void Set_GameplayInterface_GameplayManager(void* ManagerPtr) {
+		gameplaySystem = reinterpret_cast<GameplaySystem*>(ManagerPtr);
 	}
 
 	void GameplaySystem::CreatePlayerUnit(ECS::Entity entity) {
@@ -67,9 +68,9 @@ namespace ALEngine::Script
 		EventTrigger eventTrigger;
 		eventTrigger.layer = 1;
 		Coordinator::Instance()->AddComponent(entity, eventTrigger);
-		//Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
-		//Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		//Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
+		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 		//AddLogicComponent<Script::PauseLogic>(entity);
 
 		//Camera Logic
@@ -552,5 +553,25 @@ namespace ALEngine::Script
 
 	void Event_MouseExitUnit(ECS::Entity invoker) {
 
+	}
+
+
+	void Event_Unit_OnSelect(ECS::Entity invoker)
+	{
+		//If paused then don't do anything
+		if (utils::IsEqual(Time::m_Scale, 0.f))
+		{
+			return;
+		}
+
+		//If placement is doing something
+		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+			Event_ClickCell(unit.m_CurrentCell_Entity);
+		}
+		else {
+			AL_CORE_INFO("DISPLAY UNIT");
+			//GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(invoker);
+		}
 	}
 }
