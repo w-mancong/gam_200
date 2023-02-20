@@ -86,6 +86,7 @@
     <ClCompile Include="Source\SceneManager\Prefab.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
     <ClCompile Include="Scripts\rttr_main.cpp" />
+    <ClCompile Include="Scripts\others\ScriptManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
@@ -348,6 +349,7 @@
     <ClInclude Include="Include\Prefabs\Prefabs.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
+    <ClInclude Include="Scripts\others\ScriptManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
