@@ -408,6 +408,13 @@ namespace ALEngine::Script
 
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;
+		
+		// For RTTR
+		void DeserializeComponent(ECS::Entity en)
+		{
+			ECS::AddLogicComponent<GameplaySystem>(en);
+		};
+		RTTR_ENABLE(ECS::Component::UniBehaviour)
 	};
 }
 #endif

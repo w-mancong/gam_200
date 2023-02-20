@@ -1,29 +1,5 @@
 [
     {
-        "id": 0,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Gameplay System",
-                "active": true,
-                "localActive": true,
-                "id": 0,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
+        "map_path": ""
     }
 ]

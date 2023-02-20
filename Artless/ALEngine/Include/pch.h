@@ -98,4 +98,8 @@ brief:	This file contain all the header files that are will be precompiled inste
 // Gameplay
 #include <MapManager.h>
 
+// Rttr
+#include <rttr\registration>
+#include <rttr\policy.h>
+
 #endif

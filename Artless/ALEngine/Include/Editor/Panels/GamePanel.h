@@ -49,7 +49,7 @@ namespace ALEngine::Editor
 			Returns a Vec2 containing std::numeric_limits::max for x and y if the mouse
 			position was handled outside of the Scene viewport
 		***********************************************************************************/
-		Math::Vec2 GetMouseWorldPos();
+		Math::Vec2 GetMouseWorldPos(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -58,7 +58,20 @@ namespace ALEngine::Editor
 			\return
 			Cursor Screen Space position with respect to the Game Panel.
 		***********************************************************************************/
-		Math::Vec2 GetMousePosWRTPanel();
+		Math::Vec2 GetMousePosWRTPanel(void);
+
+		/*!*********************************************************************************
+			\brief
+			Returns the ImGui screen position of a vector that is in World Space.
+
+			\param [in] pos
+			World Space position, to be converted to screen space
+
+			\return
+			Returns the screen position of a vector that is in World Space.
+			Returns numeric limits if out of Panel.
+		***********************************************************************************/
+		Math::Vec2 WorldToScreenPosVec(Math::Vec2 pos);
 
 		/*!*********************************************************************************
 			\brief

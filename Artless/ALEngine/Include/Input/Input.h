@@ -115,6 +115,20 @@ namespace ALEngine::UserInput
 
 		/*!*********************************************************************************
 			\brief
+			Returns the screen position of a vector that is in World Space.
+
+			\param [in] pos
+			World Space position, to be converted to screen space
+
+			\return
+			Returns the screen position of a vector that is in World Space.
+			Returns ImGui space if in Editor but returns numeric limits if out of Panel,
+			else returns normal screen space
+		***********************************************************************************/
+		static Math::Vec2 WorldToScreenPosVec(Math::Vec2 pos);
+
+		/*!*********************************************************************************
+			\brief
 			Returns the screen's X axis resolution.
 
 			\return

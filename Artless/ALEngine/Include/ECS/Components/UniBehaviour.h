@@ -25,6 +25,8 @@ brief:	This file contains the class declaration for UniBehaviour, a component fo
 #define UNI_BEHAVIOUR_H
 
 #include <ECS/Structure/entity.h>
+#include <rttr\registration>
+#include <rttr\policy.h>
 
 namespace ALEngine::ECS::Component
 {
@@ -68,6 +70,11 @@ namespace ALEngine::ECS::Component
 			\brief Pure virtual destructor 
 		***********************************************************************************/
 		virtual ~UniBehaviour(void) = 0 {};
+
+		// For RTTR
+		virtual void DeserializeComponent([[maybe_unused]] Entity en) {};
+
+		RTTR_ENABLE()
 	};
 }
 

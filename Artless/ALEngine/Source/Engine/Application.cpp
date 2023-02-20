@@ -223,6 +223,11 @@ namespace ALEngine::Engine
 		Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif
+		//Entity en = Coordinator::Instance()->CreateEntity();
+		//AddLogicComponent<Script::GameplayCamera>(en);
+		//Scene::LoadScene("Assets\\test_logic.scene");
+		//Scene::SaveScene("test_map");
+		//Scene::LoadScene("Assets\\test_map.scene");
 
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
