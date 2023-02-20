@@ -234,16 +234,16 @@ namespace ALEngine::Engine
 /*
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
-		Entity Entity_GameplaySystem = Coordinator::Instance()->CreateEntity();
-		Coordinator::Instance()->GetComponent<EntityData>(Entity_GameplaySystem).tag = "Gameplay System";
+		//Entity Entity_GameplaySystem = Coordinator::Instance()->CreateEntity();
+		//Coordinator::Instance()->GetComponent<EntityData>(Entity_GameplaySystem).tag = "Gameplay System";
 
-		Coordinator::Instance()->AddComponent(Entity_GameplaySystem, Transform{});
-		
-		sceneGraph.Push(-1, Entity_GameplaySystem);
+		//Coordinator::Instance()->AddComponent(Entity_GameplaySystem, Transform{});
+		//
+		//sceneGraph.Push(-1, Entity_GameplaySystem);
 
-		AddLogicComponent<Script::GameplaySystem>(Entity_GameplaySystem);
-		AddLogicComponent<Script::GameplaySystem_Interface_Management_Enemy>(Entity_GameplaySystem);
-		AddLogicComponent<Script::GameplaySystem_Interface_Management_GUI>(Entity_GameplaySystem);
+		//AddLogicComponent<Script::GameplaySystem>(Entity_GameplaySystem);
+		//AddLogicComponent<Script::GameplaySystem_Interface_Management_Enemy>(Entity_GameplaySystem);
+		//AddLogicComponent<Script::GameplaySystem_Interface_Management_GUI>(Entity_GameplaySystem);
 
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		*/
