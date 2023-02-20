@@ -440,7 +440,7 @@
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
-    <ClInclude Include="Scripts\Header\GameplayInterface_Management_GUI.h" />
+    <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_GUI.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_Enemy.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />

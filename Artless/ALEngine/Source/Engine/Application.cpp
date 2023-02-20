@@ -11,7 +11,7 @@ brief:	This file contain function definition that starts the flow of the entire 
 #include <GameplayCamera.h>
 #include <GameplaySystem.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
-#include <GameplayInterface_Management_GUI.h>
+#include <GameplaySystem_Interface_Management_GUI.h>
 #include <ECS/Systems/LogicSystem.h>
 
 namespace ALEngine::Engine

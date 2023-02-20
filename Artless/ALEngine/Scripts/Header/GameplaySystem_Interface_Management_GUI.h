@@ -119,6 +119,13 @@ namespace ALEngine::Script
 		{
 			return guiManager;
 		}
+
+		// For RTTR
+		void DeserializeComponent(ECS::Entity en)
+		{
+			ECS::AddLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
+		};
+		RTTR_ENABLE(ECS::Component::UniBehaviour)
 	};
 }
 

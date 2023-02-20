@@ -60,6 +60,13 @@ namespace ALEngine::Script
 			create enemy unit entity
 		***********************************************************************************/
 		void CreateEnemyUnit(ECS::Entity entity, std::vector<ECS::Entity>& enemyEntityList);
+
+		// For RTTR
+		void DeserializeComponent(ECS::Entity en)
+		{
+			ECS::AddLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
+		};
+		RTTR_ENABLE(ECS::Component::UniBehaviour)
 	};
 }
 
