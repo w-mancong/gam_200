@@ -12,6 +12,14 @@ RTTR_REGISTRATION
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 
+	registration::class_<GameplaySystem_Interface_Management_Enemy>("GameplaySystem_Interface_Management_Enemy")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<GameplaySystem_Interface_Management_GUI>("GameplaySystem_Interface_Management_GUI")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
 	registration::class_<PauseLogic>("PauseLogic")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);

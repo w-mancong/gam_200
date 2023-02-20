@@ -29,5 +29,4 @@ namespace ALEngine::Script
 		RTTR_ENABLE(ECS::Component::UniBehaviour)
 	};
 }
-
 #endif
