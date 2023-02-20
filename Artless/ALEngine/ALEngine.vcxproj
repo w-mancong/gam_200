@@ -158,6 +158,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Scripts\others\ScriptManager.cpp" />
     <ClCompile Include="Scripts\rttr_main.cpp" />
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
@@ -445,6 +446,7 @@
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_Enemy.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
+    <ClInclude Include="Scripts\others\ScriptManager.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>

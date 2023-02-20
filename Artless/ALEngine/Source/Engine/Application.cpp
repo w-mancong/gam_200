@@ -13,6 +13,7 @@ brief:	This file contain function definition that starts the flow of the entire 
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <ECS/Systems/LogicSystem.h>
+#include <../Scripts/others/ScriptManager.h>
 
 namespace ALEngine::Engine
 {
@@ -198,7 +199,7 @@ namespace ALEngine::Engine
 		focus = glfwGetWindowAttrib(OpenGLWindow::Window(), GLFW_VISIBLE);
 		ECS::InitSystem();
 		AudioManagerInit();
-		//ScriptEngine::Init();
+		Script::InitScriptManager();
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
@@ -268,7 +269,6 @@ namespace ALEngine::Engine
 		//AddAnimationToAnimator(an, "PlayerIdle");
 		//SaveAnimator(an);
 		
-
 		//Scene::LoadScene("Assets\\test.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");

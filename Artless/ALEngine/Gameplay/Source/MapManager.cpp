@@ -38,7 +38,8 @@ namespace Gameplay
 		using namespace rapidjson;
 
 		c8* buffer = Utility::ReadBytes(map_path.c_str());
-		assert(buffer != nullptr);
+		if (!buffer) return;
+		//assert(buffer != nullptr);
 
 		// Set the map path
 		m_MapPath = map_path;
