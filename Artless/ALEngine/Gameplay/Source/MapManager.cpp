@@ -30,9 +30,6 @@ namespace Gameplay
 	void MapManager::SetMapPath(std::string map_path)
 	{
 		m_MapPath = map_path;
-		
-		// Deserialize the Map
-		DeserializeMap(map_path);
 	}
 
 	void MapManager::DeserializeMap(std::string map_path)

@@ -582,20 +582,21 @@ namespace ALEngine::Editor
 		}
 
 		parent = Coordinator::Instance()->CreateEntity(PARENT_NAME.c_str());
-
 		Coordinator::Instance()->AddComponent(parent, Transform{});
 		sceneGraph.Push(-1, parent);
 
 		// Do each 
 		for (auto col : map)
 		{
-
+			ECS::Entity rowTiles = Coordinator::Instance()->CreateEntity();
+			Coordinator::Instance()->AddComponent(rowTiles, Transform{});
+			sceneGraph.Push((s32)parent, (s32)rowTiles);			
 
 			w = 0;
 			for (auto row : col)
 			{
 				ECS::Entity tile = Coordinator::Instance()->CreateEntity();
-				sceneGraph.Push((s32)parent, (s32)tile);
+				sceneGraph.Push((s32)rowTiles, (s32)tile);
 
 				// Set default transform and scale
 				Transform transform;

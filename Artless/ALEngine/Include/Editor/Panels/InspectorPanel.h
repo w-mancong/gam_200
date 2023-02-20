@@ -132,6 +132,12 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Displays the Logic Component on the panel
+		***********************************************************************************/
+		void DisplayLogic(void);
+
+		/*!*********************************************************************************
+			\brief
 			Displays the Sprite component info on the panel
 
 			\return

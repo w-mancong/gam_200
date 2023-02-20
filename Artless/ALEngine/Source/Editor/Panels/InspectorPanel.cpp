@@ -778,6 +778,10 @@ namespace ALEngine::Editor
 		}
 	}
 
+	void InspectorPanel::DisplayLogic(void)
+	{
+	}
+
 	void InspectorPanel::AddComponentButton(void)
 	{
 		// Get Window size
