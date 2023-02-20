@@ -6,16 +6,12 @@
 namespace ALEngine::Script
 {
 	namespace {
-		GameplaySystem* gameplaySystem;
-	}
-
-	void GameplaySystem_Interface_Management_Enemy::Set_GameplayManager(void* gameplayerSystemPtr) {
-		gameplaySystem = reinterpret_cast<GameplaySystem*>(gameplayerSystemPtr);
+		std::shared_ptr<GameplaySystem> gameplaySystem;
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Load(ECS::Entity en)
 	{
-		GameplaySystem::Set_GameplayManager_Enemy(this);
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
 		Set_GameplayInterface_Enemy(this);
 	}
 

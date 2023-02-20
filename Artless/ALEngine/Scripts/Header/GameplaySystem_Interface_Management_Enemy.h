@@ -60,8 +60,6 @@ namespace ALEngine::Script
 			create enemy unit entity
 		***********************************************************************************/
 		void CreateEnemyUnit(ECS::Entity entity, std::vector<ECS::Entity>& enemyEntityList);
-
-		static void Set_GameplayManager(void* ManagerPtr);
 	};
 }
 

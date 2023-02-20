@@ -12,22 +12,16 @@
 namespace ALEngine::Script
 {
 	namespace {
-		GameplaySystem_Interface_Management_Enemy* gameplaySystem_Enemy;
-		GameplaySystem_Interface_Management_GUI* gameplaySystem_GUI;
-	}
-
-	void GameplaySystem::Set_GameplayManager_Enemy(void* enemyManagerPtr) {
-		gameplaySystem_Enemy = reinterpret_cast<GameplaySystem_Interface_Management_Enemy*>(enemyManagerPtr);
-	}
-
-	void GameplaySystem::Set_GameplayManager_GUI(void* GUIManagerPtr) {
-		gameplaySystem_GUI = reinterpret_cast<GameplaySystem_Interface_Management_GUI*>(GUIManagerPtr);
+		std::shared_ptr < GameplaySystem_Interface_Management_Enemy> gameplaySystem_Enemy;
+		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 	}
 
 	void GameplaySystem::Load(ECS::Entity en)
 	{
-		Set_GameplayInterface_GameplayManager(this);
-		GameplaySystem_Interface_Management_Enemy::Set_GameplayManager(this);
+		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
+		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
+		//Set_GameplayInterface_GameplayManager(this);
+		//GameplaySystem_Interface_Management_Enemy::Set_GameplayManager(this);
 		std::cout << "setting up the system\n";
 	}
 

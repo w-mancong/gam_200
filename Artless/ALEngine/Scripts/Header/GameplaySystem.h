@@ -360,9 +360,6 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void CreateAudioEntityMasterSource(void);
 
-		static void Set_GameplayManager_Enemy(void* enemyManagerPtr);
-		static void Set_GameplayManager_GUI(void* GUIManagerPtr);
-
 		void Cheat_ToggleGodMode();
 		void Cheat_IncreasePlayerHealth(s32 amount);
 		void Cheat_ToggleDoubleAbilitiesDoubleDamage();

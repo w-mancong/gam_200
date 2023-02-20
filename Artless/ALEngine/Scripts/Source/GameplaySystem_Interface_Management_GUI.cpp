@@ -7,13 +7,13 @@
 namespace ALEngine::Script
 {
 	namespace {
-		GameplaySystem* gameplaySystem;
+		std::shared_ptr<GameplaySystem> gameplaySystem;
 	}
 
 
 	void GameplaySystem_Interface_Management_GUI::Load(ECS::Entity en)
 	{
-		GameplaySystem::Set_GameplayManager_GUI(this);
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
 		Set_GameplayInterface_GUI(this);
 	}
 
