@@ -189,6 +189,7 @@ namespace ALEngine::Editor
 		InComp_Text,
 		InComp_Script,
 		InComp_Audio,
+		InComp_Logic,
 		InComp_Total
 	};
 }

@@ -15,6 +15,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 
 #include "imgui_internal.h"
 #include <../Scripts/others/ScriptManager.h>
+#include <ECS/Systems/LogicSystem.h>
 
 namespace ALEngine::Editor
 {
@@ -107,6 +108,9 @@ namespace ALEngine::Editor
 		// Check if there is Audio component
 		if (Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
 			DisplayAudio();
+
+		if (Coordinator::Instance()->HasComponent<ECS::LogicComponent>(m_SelectedEntity))
+			DisplayLogic();
 
 		//// Check if there is Animator component
 		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
@@ -786,28 +790,61 @@ namespace ALEngine::Editor
 		{
 			std::vector<std::string> scripts = Script::GetAllScripts();
 
-			static b8 ArrowBtnPressed{ false };
-			if (ImGui::ArrowButton("##Animator Arrow Button", ImGuiDir_Down))
+			static b8 LogicsArrowBtnPressed{ false };
+			if (ImGui::ArrowButton("##Logic Components", ImGuiDir_Down))
+				LogicsArrowBtnPressed = !LogicsArrowBtnPressed;
+			std::string to_remove{ "" };
+			if (LogicsArrowBtnPressed)
 			{
-				ArrowBtnPressed = !ArrowBtnPressed;
-			}
-
-			if (ArrowBtnPressed)
-			{
-				ImGui::BeginListBox("##Animator List Box");
-				for (u64 i{}; i < scripts.size(); ++i)
+				ImGui::BeginListBox("##Logic List Box", ImVec2(ImGui::GetContentRegionAvail().x, 0));
+				for (auto it = logic.logics.begin(); it != logic.logics.end(); ++it)
 				{
-					std::string const& str = scripts[i] + "##" + std::to_string(i);
-
-					ImGui::SameLine();
-					ImGui::SetItemAllowOverlap();
+					std::string const& str = it->first;
 					ImGui::PushID(str.c_str());
 					if (ImGui::SmallButton("X"))
 					{
-						
-
-
+						to_remove = it->first;
 					}
+					ImGui::SameLine();
+					ImGui::Selectable(str.c_str());
+					ImGui::SetItemAllowOverlap();
+					ImGui::PopID();
+				}
+
+				ImGui::EndListBox();
+			}
+
+			if (to_remove != "")
+				logic.logics.erase(to_remove);
+
+			static b8 AddLogicButton{ false };
+			if (ImGui::Button("Add Logic Component"))
+				AddLogicButton = !AddLogicButton;
+
+			if (AddLogicButton)
+			{
+				ImGui::BeginListBox("##Given Logic List Box", ImVec2(ImGui::GetContentRegionAvail().x, 0));
+				for (u64 i{}; i < scripts.size(); ++i)
+				{
+					b8 skip_comp{ false };
+					for (auto it = logic.logics.begin(); it != logic.logics.end(); ++it)
+						if (it->first == scripts[i])
+							skip_comp = true;
+
+					if (skip_comp)
+						continue;
+
+					std::string const& str = scripts[i] + "##" + std::to_string(i);
+					if (ImGui::Selectable(str.c_str()))
+					{
+						c8 const* name = scripts[i].c_str();
+						rttr::type class_type = rttr::type::get_by_name(name);
+						rttr::variant var = class_type.create();
+						class_type.invoke("DeserializeComponent", var, { m_SelectedEntity });
+						AddLogicButton = false;
+					}
+					ImGui::SetItemAllowOverlap();
+					ImGui::PushID(str.c_str());
 					ImGui::PopID();
 				}
 
@@ -920,19 +957,6 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
-				//case InspectorComponents::InComp_Script:
-				//	// Check if has component
-				//	if (!ECS::Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
-				//	{
-				//		if (ImGui::Selectable("Script Component") &&
-				//			m_SelectedEntity != ECS::MAX_ENTITIES)
-				//		{
-				//			// Add Script Component
-				//			ECS::Coordinator::Instance()->AddComponent<EntityScript>(m_SelectedEntity, EntityScript());
-				//		}
-				//		++count;
-				//	}
-				//	break;
 				case InspectorComponents::InComp_Audio:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
@@ -946,7 +970,20 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				case InspectorComponents::InComp_Logic:
+					if (!ECS::Coordinator::Instance()->HasComponent<ECS::LogicComponent>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Logic Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Collider Component
+							ECS::Coordinator::Instance()->AddComponent<ECS::LogicComponent>(m_SelectedEntity, ECS::LogicComponent());
+						}
+						++count;
+					}
+					break;
 				}
+					
 			}
 
 			// Check how many
