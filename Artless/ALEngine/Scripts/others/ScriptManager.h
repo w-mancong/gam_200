@@ -1,3 +1,5 @@
+#if EDITOR
+
 #ifndef	SCRIPT_MANAGER_H
 #define SCRIPT_MANAGER_H
 
@@ -9,5 +11,7 @@ namespace ALEngine::Script
 	void InitScriptManager(void);
 	std::vector<std::string> const& GetAllScripts(void);
 }
+
+#endif
 
 #endif

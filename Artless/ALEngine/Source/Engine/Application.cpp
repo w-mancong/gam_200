@@ -199,7 +199,9 @@ namespace ALEngine::Engine
 		focus = glfwGetWindowAttrib(OpenGLWindow::Window(), GLFW_VISIBLE);
 		ECS::InitSystem();
 		AudioManagerInit();
+#if EDITOR
 		Script::InitScriptManager();
+#endif
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();

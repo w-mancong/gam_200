@@ -483,6 +483,7 @@
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Objects Files\Bishop.json" />
