@@ -14,6 +14,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 #if EDITOR
 
 #include "imgui_internal.h"
+#include <../Scripts/others/ScriptManager.h>
 
 namespace ALEngine::Editor
 {
@@ -780,6 +781,39 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayLogic(void)
 	{
+		LogicComponent& logic = Coordinator::Instance()->GetComponent<LogicComponent>(m_SelectedEntity);
+		if (ImGui::CollapsingHeader("Logic Component"))
+		{
+			std::vector<std::string> scripts = Script::GetAllScripts();
+
+			static b8 ArrowBtnPressed{ false };
+			if (ImGui::ArrowButton("##Animator Arrow Button", ImGuiDir_Down))
+			{
+				ArrowBtnPressed = !ArrowBtnPressed;
+			}
+
+			if (ArrowBtnPressed)
+			{
+				ImGui::BeginListBox("##Animator List Box");
+				for (u64 i{}; i < scripts.size(); ++i)
+				{
+					std::string const& str = scripts[i] + "##" + std::to_string(i);
+
+					ImGui::SameLine();
+					ImGui::SetItemAllowOverlap();
+					ImGui::PushID(str.c_str());
+					if (ImGui::SmallButton("X"))
+					{
+						
+
+
+					}
+					ImGui::PopID();
+				}
+
+				ImGui::EndListBox();
+			}
+		}
 	}
 
 	void InspectorPanel::AddComponentButton(void)
