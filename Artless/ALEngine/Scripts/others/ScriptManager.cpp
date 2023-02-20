@@ -1,4 +1,6 @@
 #include <pch.h>
+
+#if EDITOR
 #include "ScriptManager.h"
 
 namespace ALEngine::Script
@@ -34,3 +36,5 @@ namespace ALEngine::Script
 		return scriptNamesList;
 	}
 }
+
+#endif
