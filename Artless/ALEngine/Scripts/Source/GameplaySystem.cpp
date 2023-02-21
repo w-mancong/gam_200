@@ -77,21 +77,27 @@ namespace ALEngine::Script
 		//Initialize Pattern
 		InitializePatterns(pattern_Default);
 
+		//Initialize Pattern GUI
+		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
+
+		//Initialize abilities GUI
+		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
+
 		//Initialize General GUI
 		gameplaySystem_GUI->InitializeGUI();
 
 		// Randomize Pattern
 		RandomizePatternList();
 
-		//// Set sprites for the Patterns
-		//for (u32 i{ 1 }; i <= 4; ++i)
-		//{
-		//	std::string tile_icon = "next_tile_icon" + std::to_string(i);
+		// Set sprites for the Patterns
+		for (u32 i{ 1 }; i <= 4; ++i)
+		{
+			std::string tile_icon = "next_tile_icon" + std::to_string(i);
 
-		//	ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
-		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
-		//	sprite.id = Engine::AssetManager::Instance()->GetGuid(pattern_List[i - 1].file_path);
-		//}
+			ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid(pattern_List[i - 1].file_path);
+		}
 
 		//Initialize the room and cells
 		for (uint32_t i = 0; i < getRoomSize(); ++i) {
