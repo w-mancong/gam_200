@@ -88,8 +88,9 @@ namespace ALEngine::Engine::GameplayInterface
 		std::string file_path{};
 
 		//list of grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
-		std::vector<Vector2Int> coordinate_occupied{}
-		;
+		//std::vector<Vector2Int> coordinate_occupied{} //REMOVED
+		std::vector<std::vector<Vector2Int>> offsetGroup;
+		
 	};
 
 	//***************For now 2 abilities***************//
@@ -154,7 +155,7 @@ namespace ALEngine::Engine::GameplayInterface
 	\brief
 		Filter Grids from Hovering Over cell during pattern select
 	***********************************************************************************/
-	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color = { 1.f,1.f,1.f,1.f });
+	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color = { 1.f,1.f,1.f,1.f }, int rotation = 0);
 
 	/*!*********************************************************************************
 	\brief
@@ -168,7 +169,7 @@ namespace ALEngine::Engine::GameplayInterface
 	\param [in]
 		sprite_fileName: sprite to replace the cell of
 	***********************************************************************************/
-	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName);
+	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName, int rotation = 0);
 
 	/*!*********************************************************************************
 	\brief
@@ -218,7 +219,7 @@ namespace ALEngine::Engine::GameplayInterface
 	\return
 		if pattern can be placed on tile
 ***********************************************************************************/
-	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern);
+	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, int rotation = 0);
 
 	/*!*********************************************************************************
 	\brief
@@ -232,7 +233,7 @@ namespace ALEngine::Engine::GameplayInterface
 	\return
 		if ability can be used on tile
 	***********************************************************************************/
-	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities);
+	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities, int rotation = 0);
 
 	/*!*********************************************************************************
 	\brief
@@ -246,7 +247,7 @@ namespace ALEngine::Engine::GameplayInterface
 	\param [in]
 		abilities: ability
 	***********************************************************************************/
-	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities);
+	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities, int rotation = 0);
 
 	/*!*********************************************************************************
 	\brief

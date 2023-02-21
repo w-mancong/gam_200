@@ -50,8 +50,6 @@ namespace ALEngine::ECS::Component
 		s32 layer = 0;
 		b8 isEnabled{ true }, isRunWhenPaused{ false };
 
-		s32 layer = 0;
-
 		//Events
 		Event OnPointEnter, OnPointStay, OnPointExit, OnPointClick;
 	};

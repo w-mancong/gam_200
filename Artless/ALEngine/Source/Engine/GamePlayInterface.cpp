@@ -82,69 +82,219 @@ namespace ALEngine::Engine::GameplayInterface
 
 		//Template for pattern
 		Pattern newPattern;
+		std::vector<Vector2Int> offset;
 		
-		//upside down T shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.coordinate_occupied.push_back({ -1, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		//****** T SHAPE START *****//
 		newPattern.file_path = "Assets\\Images\\T.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//Straight line
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.coordinate_occupied.push_back({ 2, 0 });
-		newPattern.coordinate_occupied.push_back({ 3, 0 });
+		//Upside down T shape (Ʇ)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 0, 1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//rightside T shape (|-)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 1, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//downside T shape (T)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, -1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//leftside T shape (-|)s
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** T SHAPE END *****//
+
+		//****** LINE SHAPE START *****//
 		newPattern.file_path = "Assets\\Images\\I.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//L Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
-		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		//Horizontal Straight line(---)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 2, 0 });
+		offset.push_back({ 3, 0 });
+		offset.clear();
+
+		//Vertical Straight line(|)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, 2 });
+		offset.push_back({ 0, 3 });
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** LINE SHAPE END *****//
+		
+		//****** L SHAPE START*****//
 		newPattern.file_path = "Assets\\Images\\L.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
+
+		//L Shape (L)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, 2 });
+		offset.clear();
+
+		//90° clockwise rotation L Shape (Г)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 2, 0 });
+		offset.clear();
+
+		//180° clockwise rotation L Shape (ꓶ)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 0, -2 });
+		offset.clear();
 		
-		//J Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ -1, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
-		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		//270° clockwise rotation L Shape (⅃)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 0, -2 });
+		offset.clear();
+		
+
+		patternList.push_back(newPattern);
+
+		//****** L SHAPE END *****//
+
+		//****** J SHAPE START*****//
 		newPattern.file_path = "Assets\\Images\\J.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//Box Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 1 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		//J Shape (⅃)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, 2 });
+		offset.clear();
+
+		//90° clockwise Shape (L)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 2, 0 });
+		offset.clear();
+
+		//180° clockwise Shape (Г)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 0, -2});
+		offset.clear();
+
+		//270° clockwise Shape (ꓶ)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ -2, 0});
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** J SHAPE END *****//
+
+		//****** BOX SHAPE START*****//
 		newPattern.file_path = "Assets\\Images\\O.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//S Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ -1, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
-		newPattern.coordinate_occupied.push_back({ 1, 1 });
+		//Box Shape (☐)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 1, 1 });
+		offset.push_back({ 0, 1 });
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** BOX SHAPE END *****//
+
+		//****** S SHAPE START*****//
 		newPattern.file_path = "Assets\\Images\\S.png";
+
+		//S Shape (S)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, -1 });
+		offset.clear();
+
+		//S Shape ([
+		//  	    ])
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ -1,	1 });
+		offset.clear();
+
+		//S Shape (S) (0,0 point moved down)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 1, 1 });
+		offset.clear();
+
+		//S Shape ([
+		//  	    ]) (0,0 point moved left)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 1, -1 });
+		offset.clear();
+
 		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
-		
-		//Z Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
-		newPattern.coordinate_occupied.push_back({ -1, 1 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
+		//****** S SHAPE END *****//
 		newPattern.file_path = "Assets\\Images\\Z.png";
+
+		//****** Z SHAPE START*****//
+		
+		//Z Shape (Z)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 1, -1 });
+		offset.clear();
+
+		//Z Shape (N)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, -1 });
+		offset.clear();
+
+		//Z Shape (Z) (0,0 point moved down)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ -1, 1 });
+		offset.clear();
+
+		//Z Shape (N) (0,0 point moved left)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 1, 1 });
+		offset.clear();
+
 		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
+		//****** Z SHAPE END *****//
+
 	}
 
 	//Initialize Abilities
@@ -174,13 +324,15 @@ namespace ALEngine::Engine::GameplayInterface
 		abilitiesList.push_back(new_ability);
 	}
 
-	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color) {
+	void DisplayFilterPlacementGrid(Room& room, Vector2Int coordinate, Pattern pattern, Color color, int rotationIndex) {
+		std::cout << " PATTERN OFFSET SIZE : " << pattern.offsetGroup.size() << std::endl;
+		std::cout << "ROTATION INDEX : " << rotationIndex << std::endl;
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[rotationIndex].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y)) {
 				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				if (!cell.m_isAccessible) {
@@ -195,13 +347,13 @@ namespace ALEngine::Engine::GameplayInterface
 		}//End loop through pattern body check
 	}
 
-	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName) {
+	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName, int rotationIndex) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[rotationIndex].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y)) {
 				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				if (!cell.m_isAccessible || cell.has_Wall) {
@@ -280,13 +432,13 @@ namespace ALEngine::Engine::GameplayInterface
 		return cell.m_canWalk;
 	}
 
-	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern) {
+	bool CheckIfPatternCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, int rotationIndex) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[rotationIndex].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y)) {
 				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				if (!cell.m_isAccessible) {
@@ -302,16 +454,16 @@ namespace ALEngine::Engine::GameplayInterface
 		return true;
 	}
 
-	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities) {
+	bool CheckIfAbilitiesCanBePlacedForTile(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities, int rotationIndex) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[rotationIndex].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
 			//must connect to player
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y)) {
 				//If ability is direct type
 				if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
 					//If inside room, set the cell color to yellow
-					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y);
 
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
@@ -327,7 +479,7 @@ namespace ALEngine::Engine::GameplayInterface
 				//Must connect to cell that is walkable but no on cells with units
 				else {
 					//If inside room, set the cell color to yellow
-					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y);
 
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
@@ -348,15 +500,15 @@ namespace ALEngine::Engine::GameplayInterface
 		}
 	}
 
-	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities) {
+	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities, int rotationIndex) {
 		AL_CORE_CRITICAL("USE ABILITY");
 
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[rotationIndex].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y)) {
 				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y);
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				
 				switch (abilities.current_Ability_Type)
@@ -413,7 +565,7 @@ namespace ALEngine::Engine::GameplayInterface
 					switch (abilities.current_Ability_Name)
 					{
 					case ABILITY_NAME::CONSTRUCT_WALL:
-						constructWall(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y, true);
+						constructWall(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y, true);
 						break;
 
 					default:

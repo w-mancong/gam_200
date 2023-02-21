@@ -109,6 +109,8 @@ namespace ALEngine::ECS
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = false;
 
+		int rotationIndex = 0;
+
 		//******FUNCTIONS**********//
 		/*!*********************************************************************************
 		\brief
@@ -435,6 +437,8 @@ namespace ALEngine::ECS
 		if (!cell.m_isAccessible) {
 			return;
 		}
+
+		return;
 
 		//If placement status is being used
 		//Determine is setup or abilities
@@ -891,6 +895,27 @@ namespace ALEngine::ECS
 		}
 		//******END CHEAT KEYS******//
 
+		//if (Input::KeyTriggered(KeyCode::E)) {
+		//	Event_MouseExitCell(gameplaySystem->getCurrentEntityCell());
+		//	gameplaySystem->rotationIndex++;
+		//
+		//	if (gameplaySystem->rotationIndex > gameplaySystem->selected_Pattern.offsetGroup[gameplaySystem->rotationIndex].size()) {
+		//		gameplaySystem->rotationIndex = 0;
+		//	}
+		//	AL_CORE_CRITICAL(std::to_string(gameplaySystem->rotationIndex));
+		//	Event_MouseEnterCell(gameplaySystem->getCurrentEntityCell());
+		//}
+		//else if (Input::KeyTriggered(KeyCode::Q)) {
+		//	Event_MouseExitCell(gameplaySystem->getCurrentEntityCell());
+		//	gameplaySystem->rotationIndex--;
+
+		//	if (gameplaySystem->rotationIndex < 0) {
+		//		gameplaySystem->rotationIndex = gameplaySystem->selected_Pattern.offsetGroup[gameplaySystem->rotationIndex].size();
+		//	}
+
+		//	AL_CORE_CRITICAL(std::to_string(gameplaySystem->rotationIndex));
+		//	Event_MouseEnterCell(gameplaySystem->getCurrentEntityCell());
+		//}
 		gameplaySystem->RunGameState();
 		gameplaySystem->UpdateUnitSpriteLayer();
 	}
