@@ -442,7 +442,7 @@ namespace ALEngine::Editor
 				else
 				{
 					ECS::ParticleSystem::GetParticleSystem().ClearParticles();
-					ECS::ExitGameplaySystem();
+					//ECS::ExitGameplaySystem();
 					Coordinator::Instance()->DestroyEntities();
 
 					Engine::Scene::LoadState();
@@ -552,6 +552,82 @@ namespace ALEngine::Editor
 		// Tile Editor Panel
 		m_TileEditor.SetPanelMin(panel_min);
 
+	}
+
+	void ALEditor::LoadMap(void)
+	{
+		using namespace Gameplay;
+		const std::string PARENT_NAME{ "Map Parent" };
+
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		std::vector<std::vector<std::string>> map = MapManager::Instance()->GetMap();
+
+		// Width and Height of map
+		u32 width{ MapManager::Instance()->GetWidth() }, 
+			height{ MapManager::Instance()->GetHeight() };
+		f32 mapSizeW{ static_cast<f32>(width * 100) }, 
+			mapSizeH{ static_cast<f32>(height * 100) };
+		f32 halfmapSizeW{ mapSizeW * 0.5f },
+			halfMapSizeH{ mapSizeH * 0.5f };
+		u32 w{ 0 }, h{ 0 };
+
+		// Create parent entity that will be invisible
+		ECS::Entity parent = Coordinator::Instance()->GetEntityByTag(PARENT_NAME.c_str());
+
+		// Destroy previous parent
+		if (parent != ECS::MAX_ENTITIES)
+		{
+			sceneGraph.Destruct((s32)parent);
+		}
+
+		parent = Coordinator::Instance()->CreateEntity(PARENT_NAME.c_str());
+		Coordinator::Instance()->AddComponent(parent, Transform{});
+		sceneGraph.Push(-1, parent);
+
+		// Do each 
+		for (auto col : map)
+		{
+			/*
+			ECS::Entity rowTiles = Coordinator::Instance()->CreateEntity();
+			Coordinator::Instance()->AddComponent(rowTiles, Transform{});
+
+			// Set name
+			EntityData& rowEnttData = Coordinator::Instance()->GetComponent<EntityData>(rowTiles);
+			rowEnttData.tag = "Col " + std::to_string(h);
+
+			sceneGraph.Push((s32)parent, (s32)rowTiles);	
+			*/
+
+			w = 0;
+			for (auto row : col)
+			{
+				ECS::Entity tile = Coordinator::Instance()->CreateEntity();
+				//sceneGraph.Push((s32)rowTiles, (s32)tile);
+				sceneGraph.Push(parent, tile);
+
+				// Set default transform and scale
+				Transform transform;
+				transform.scale = { 100, 100 };
+				transform.localScale = { 100, 100 };
+				transform.position = { -halfmapSizeW + (f32)w * 100.f, -halfMapSizeH + (f32)h * 100.f };
+
+				// Set name
+				EntityData &data = Coordinator::Instance()->GetComponent<EntityData>(tile);
+				data.tag = row;
+
+				Coordinator::Instance()->AddComponent(tile, transform);
+
+				if (row != "Empty")
+				{
+					std::string tile_fp = MapManager::Instance()->GetTileImage(row);
+					if (!tile_fp.empty())
+						ECS::CreateSprite(tile, tile_fp.c_str());
+				}
+				++w;
+			}
+			++h;
+		}
 	}
 
 	void ALEditor::SetDefaultPanel(void)
@@ -710,6 +786,13 @@ namespace ALEngine::Editor
 		if (m_GameIsActive)
 			return m_GamePanel.GetMousePosWRTPanel();
 		return m_ScenePanel.GetMousePosWRTPanel();
+	}
+
+	Math::Vec2 ALEditor::WorldToScreenPosVec(Math::Vec2 pos)
+	{
+		if (m_GameIsActive)
+			return m_GamePanel.WorldToScreenPosVec(pos);
+		return m_ScenePanel.WorldToScreenPosVec(pos);
 	}
 
 	b8 ALEditor::GetGameActive(void)

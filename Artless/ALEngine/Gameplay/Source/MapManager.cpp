@@ -9,22 +9,27 @@ brief:	This file contains function definitions for the MapManager class.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
+#define TILE_DATA_PATH "Assets/Dev/Objects/TileEditorData.json"
+
 namespace Gameplay
 {
 	MapManager::MapManager(void) : m_MapPath(""), m_Width(0), m_Height(0)
 	{
+		ReadTileData();
 	}
 
 	MapManager::~MapManager(void)
 	{
 	}
 
+	std::string MapManager::GetMapPath(void)
+	{
+		return m_MapPath;
+	}
+
 	void MapManager::SetMapPath(std::string map_path)
 	{
 		m_MapPath = map_path;
-		
-		// Deserialize the Map
-		DeserializeMap(map_path);
 	}
 
 	void MapManager::DeserializeMap(std::string map_path)
@@ -33,7 +38,8 @@ namespace Gameplay
 		using namespace rapidjson;
 
 		c8* buffer = Utility::ReadBytes(map_path.c_str());
-		assert(buffer != nullptr);
+		if (!buffer) return;
+		//assert(buffer != nullptr);
 
 		// Set the map path
 		m_MapPath = map_path;
@@ -74,8 +80,27 @@ namespace Gameplay
 
 			m_Map.emplace_back(row_tiles);
 		}
+	}
 
-		std::cout << "H" << std::endl;
+	void MapManager::ReadTileData(void)
+	{
+		using namespace rapidjson;
+
+		std::string filePath_str{ TILE_DATA_PATH };
+		c8* buffer = ALEngine::Utility::ReadBytes(filePath_str.c_str());
+
+		assert(buffer);
+
+		Document doc;
+		doc.Parse(buffer);
+
+		ALEngine::Memory::DynamicMemory::Delete(buffer);
+
+		Value const& val{ *doc.Begin() };
+
+		// Iterate all  values
+		for (Value::ConstMemberIterator it = val.MemberBegin(); it != val.MemberEnd(); ++it)
+			m_ImageMap[it->name.GetString()] = it->value.GetString();
 	}
 
 	u32 MapManager::GetWidth(void)
@@ -91,5 +116,23 @@ namespace Gameplay
 	std::vector<std::vector<std::string>> MapManager::GetMap(void)
 	{
 		return m_Map;
+	}
+
+	std::string MapManager::GetTileImage(std::string tileName)
+	{
+		auto it = m_ImageMap.find(tileName);
+		if (it != m_ImageMap.end())
+			return it->second;
+
+		return "";
+	}
+
+	Guid MapManager::GetTileImageGuid(std::string tileName)
+	{
+		auto it = m_ImageGuidMap.find(tileName);
+		if (it != m_ImageGuidMap.end())
+			return it->second;
+
+		return 0;
 	}
 }

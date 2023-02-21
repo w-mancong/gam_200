@@ -9,6 +9,7 @@ brief:	This file contain function definition for saving/loading a scene
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <Engine/GSM/GameStateManager.h>
+#include <MapManager.h>
 
 namespace ALEngine::Engine::Scene
 {
@@ -47,6 +48,10 @@ namespace ALEngine::Engine::Scene
 		writer.Key("layer");
 		writer.Uint64(static_cast<u64>(sprite.layer));
 
+		// UI
+		writer.Key("ui");
+		writer.Uint64(static_cast<u64>(sprite.isUI));
+
 		writer.EndObject();
 		writer.EndArray();
 	}
@@ -72,6 +77,9 @@ namespace ALEngine::Engine::Scene
 		// Initialising value
 		sprite.id = AssetManager::Instance()->GetGuid(sprite.filePath);
 		sprite.index = 0;
+
+		// Getting UI
+		sprite.isUI = v[0]["ui"].GetUint();
 
 		Coordinator::Instance()->AddComponent(en, sprite);
 	}
@@ -400,43 +408,6 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->AddComponent(en, cc);
 	}
 
-	//void WriteEventTrigger(TWriter& writer, ECS::Entity en)
-	//{
-	//	/*
-	//		Event Trigger
-
-	//		OnPointerEnter
-	//		OnPointerStay
-	//		OnPointerExit
-	//		OnPointerClick
-	//	*/
-	//	writer.Key("EventTrigger");
-	//	writer.StartArray();
-	//	writer.StartObject();
-
-	//	EventTrigger const& et = Coordinator::Instance()->GetComponent<EventTrigger>(en);
-
-	//	// OnPointerEnter	
-
-	//	writer.EndObject();
-	//	writer.EndArray();
-	//}
-
-	//void ReadEventTrigger(rjs::Value const& v, ECS::Entity en)
-	//{
-
-	//}
-
-	//void WriteEventCollisionTrigger(TWriter& writer, ECS::Entity en)
-	//{
-
-	//}
-
-	//void ReadEventCollisionTrigger(rjs::Value const& v, ECS::Entity en)
-	//{
-
-	//}
-
 	void WriteUnit(TWriter& writer, ECS::Entity en)
 	{
 		writer.Key("Unit");
@@ -476,16 +447,6 @@ namespace ALEngine::Engine::Scene
 
 		Coordinator::Instance()->AddComponent(en, unit);
 	}
-
-	//void WriteCell(TWriter& writer, ECS::Entity en)
-	//{
-
-	//}
-
-	//void ReadCell(rjs::Value const& v, ECS::Entity en)
-	//{
-
-	//}
 
 	void WriteParticleProperty(TWriter& writer, ECS::Entity en)
 	{
@@ -689,10 +650,41 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->AddComponent(en, prop);
 	}
 
+	void WriteLogicComponent(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("LogicComponent");
+		writer.StartArray();
+		writer.StartObject();
+
+		LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
+		writer.Key("components");
+		writer.StartArray();
+		for (auto const& it : lc.logics)
+		{
+			std::string const& name = it.first;
+			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+		}
+		writer.EndArray();
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadLogicComponent(rjs::Value const& v, ECS::Entity en)
+	{
+		// Getting the names of the components
+		rjs::Value const& c = v[0]["components"];
+		for (u64 i = 0; i < c.Size(); ++i)
+		{
+			c8 const *name = c[i].GetString();
+			rttr::type class_type = rttr::type::get_by_name(name);
+			rttr::variant var = class_type.create();
+			class_type.invoke("DeserializeComponent", var, { en });
+		}
+	}
+
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
 	{
-		//if (!Coordinator::Instance()->HasComponent<Transform>(entity.id))
-		//	return;
 		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
 		if (entity.parent != -1)
 		{
@@ -718,31 +710,6 @@ namespace ALEngine::Engine::Scene
 		std::vector<s32> const& parentsList = sceneGraph.GetParents();
 		for (s32 en : parentsList)
 			CalculateLocalCoordinate(sceneGraph.GetMap()[en], sceneGraph);
-
-		//ECS::EntityList const& list = Coordinator::Instance()->GetEntities();
-		//for (ECS::Entity en : list)
-		//{
-		//	EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
-		//	Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-		//	if (ed.parentID != -1)
-		//	{	// this entity has a parent
-		//		Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(ed.parentID);
-		//		trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
-		//		trans.localRotation = trans.rotation - parentTrans.rotation;
-		//		trans.localScale = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
-		//	}
-		//	else
-		//	{
-		//		trans.localPosition = trans.position;
-		//		trans.localRotation = trans.rotation;
-		//		trans.localScale	= trans.scale;
-		//	}
-		//}
-	}
-
-	void test(TWriter writer)
-	{
-
 	}
 
 	void SerializeScene(rjs::StringBuffer& sb)
@@ -755,6 +722,16 @@ namespace ALEngine::Engine::Scene
 		ECS::GetSceneGraph().SerializeTree();
 
 		writer.StartArray();
+
+		// To store the map path for MapManager
+		{	
+			writer.StartObject();
+			writer.Key("map_path");
+			std::string const& map_path = Gameplay::MapManager::Instance()->GetMapPath();
+			writer.String(map_path.c_str(), static_cast<rjs::SizeType>(map_path.length()));
+			writer.EndObject();
+		}
+		
 		for (auto it{ entities.begin() }; it != entities.end(); ++it)
 		{
 			writer.StartObject();
@@ -777,16 +754,14 @@ namespace ALEngine::Engine::Scene
 				WriteRigidbody2D(writer, en);
 			if (Coordinator::Instance()->HasComponent<CharacterController>(en))
 				WriteCharacterController(writer, en);
-			//if (Coordinator::Instance()->HasComponent<EventTrigger>(en))
-			//	WriteEventTrigger(writer, en);
-			//if (Coordinator::Instance()->HasComponent<EventCollisionTrigger>(en))
-			//	WriteEventCollisionTrigger(writer, en);
 			if (Coordinator::Instance()->HasComponent<Unit>(en))
 				WriteUnit(writer, en);
 			if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
 				WriteParticleProperty(writer, en);
 			if (Coordinator::Instance()->HasComponent<Text>(en))
 				WriteTextProperty(writer, en);
+			if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
+				WriteLogicComponent(writer, en);
 
 			writer.EndObject();
 		}
@@ -795,7 +770,11 @@ namespace ALEngine::Engine::Scene
 
 	void DeserializeScene(rjs::Document& doc)
 	{
-		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)
+		{	// To retrieve the map path for Map Manager
+			rjs::Value::ValueIterator map_it = doc.Begin();
+			Gameplay::MapManager::Instance()->SetMapPath((*map_it)["map_path"].GetString());
+		}
+		for (rjs::Value::ValueIterator it{ doc.Begin() + 1 }; it != doc.End(); ++it)
 		{
 			ECS::Entity en = Coordinator::Instance()->CreateEntity();
 			rjs::Value const& v{ *it };
@@ -813,16 +792,14 @@ namespace ALEngine::Engine::Scene
 				ReadRigidbody2D(v["Rigidbody2D"], en);
 			if (v.HasMember("CharacterController"))
 				ReadCharacterController(v["CharacterController"], en);
-			//if (v.HasMember("EventTrigger"))
-			//	ReadEventTrigger(v["EventTrigger"], en);
-			//if (v.HasMember("EventCollisionTrigger"))
-			//	ReadEventCollisionTrigger(v["EventCollisionTrigger"], en);
 			if (v.HasMember("Unit"))
 				ReadUnit(v["Unit"], en);
 			if (v.HasMember("ParticleProperty"))
 				ReadParticleProperty(v["ParticleProperty"], en);
 			if (v.HasMember("TextProperty"))
 				ReadTextProperty(v["TextProperty"], en);
+			if (v.HasMember("LogicComponent"))
+				ReadLogicComponent(v["LogicComponent"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
 		CalculateLocalCoordinate();

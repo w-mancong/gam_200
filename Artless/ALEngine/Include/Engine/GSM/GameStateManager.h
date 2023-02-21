@@ -14,14 +14,14 @@ namespace ALEngine::Engine
 	enum class GameState
 	{
 		Invalid = -1,
-		Running,
-		LevelSwitch,
-		Restart,
+		Running,		// By default this shld be the case in game mode
+		LevelSwitch,	// When scene switches
+		Restart,		// Used when the level restarts
 #if EDITOR
 		Editor,
 		Gameplay,
 #endif
-		Quit,
+		Quit,			// Used when it's supposed to be exiting the game/app
 	};
 
 	class GameStateManager

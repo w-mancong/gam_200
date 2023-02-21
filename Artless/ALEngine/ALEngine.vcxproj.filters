@@ -1,12 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="..\Extern\include\imgui\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="Scripts\rttr_main.cpp" />
+    <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_GUI.cpp" />
+    <ClCompile Include="Source\Commands\EntityCommand.cpp" />
+    <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
+    <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
+    <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
+    <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
+    <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
+    <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
+    <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
+    <ClCompile Include="Gameplay\Source\MapManager.cpp" />
+    <ClCompile Include="Source\Engine\Gameplay_Interface.cpp" />
+    <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
+    <ClCompile Include="Source\Engine\GameStateManager.cpp" />
+    <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
+    <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
     <ClCompile Include="Source\Editor\Panels\ContentBrowserPanel.cpp" />
+    <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
+    <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
     <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp" />
     <ClCompile Include="Source\Editor\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\InspectorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\LoggerPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\SceneHierarchyPanel.cpp" />
+    <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
+    <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
+    <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Engine\Physics2D.cpp" />
     <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp" />
     <ClCompile Include="Source\Editor\ALEditor.cpp" />
@@ -31,68 +65,90 @@
     <ClCompile Include="Source\Math\inverse_sqrt.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
     <ClCompile Include="Source\Math\matrix.cpp" />
+    <ClCompile Include="Source\Math\Matrix2x2.cpp" />
     <ClCompile Include="Source\Math\Matrix3x3.cpp" />
     <ClCompile Include="Source\Math\Matrix4x4.cpp" />
     <ClCompile Include="Source\Math\Vector2.cpp" />
+    <ClCompile Include="Source\Math\Vector2Int.cpp" />
     <ClCompile Include="Source\Math\Vector3.cpp" />
+    <ClCompile Include="Source\Math\Vector3Int.cpp" />
     <ClCompile Include="Source\Math\Vector4.cpp" />
     <ClCompile Include="Source\Memory\Memory.cpp" />
     <ClCompile Include="Source\misc\main.cpp" />
     <ClCompile Include="Source\misc\pch.cpp" />
     <ClCompile Include="Source\misc\Random.cpp" />
+    <ClCompile Include="Source\SceneManager\Prefab.cpp" />
+    <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Source\Serialization\Serializer.cpp" />
+    <ClCompile Include="Source\Commands\Command.cpp" />
+    <ClCompile Include="Source\Utility\BinaryTree.cpp" />
     <ClCompile Include="Source\Utility\console.cpp" />
     <ClCompile Include="Source\Utility\Gizmo.cpp" />
     <ClCompile Include="Source\Utility\HelperFunction.cpp" />
-    <ClCompile Include="Source\Utility\Time.cpp" />
-    <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
-    <ClCompile Include="Source\ECS\Systems\CharacterControllerSystem.cpp" />
-    <ClCompile Include="Source\Asset Manager\FileWatcher.cpp" />
-    <ClCompile Include="Source\Utility\Timer.cpp" />
     <ClCompile Include="Source\Utility\Profiler.cpp" />
-    <ClCompile Include="Source\Editor\Panels\ProfilerPanel.cpp" />
-    <ClCompile Include="Source\Serialization\Serializer.cpp" />
-    <ClCompile Include="Source\Editor\Panels\ScenePanel.cpp" />
-    <ClCompile Include="Source\ECS\Systems\AnimatorSystem.cpp" />
-    <ClCompile Include="Source\Editor\Panels\GamePanel.cpp" />
-    <ClCompile Include="Source\Utility\BinaryTree.cpp" />
-    <ClCompile Include="Source\Math\Matrix2x2.cpp" />
-    <ClCompile Include="Source\ECS\Systems\EventCollisionTriggerSystem.cpp" />
-    <ClCompile Include="Source\ECS\Systems\EventTriggerSystem.cpp" />
-    <ClCompile Include="Source\ECS\Systems\GameplaySystem.cpp" />
-    <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
-    <ClCompile Include="Source\Math\Vector2Int.cpp" />
-    <ClCompile Include="Source\Math\Vector3Int.cpp" />
-    <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
-    <ClCompile Include="Source\Engine\Audio\Audio.cpp" />
-    <ClCompile Include="Source\Engine\Audio\AudioManager.cpp" />
-    <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
-    <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
-    <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
-    <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
-    <ClCompile Include="Source\Commands\Command.cpp" />
-    <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
-    <ClCompile Include="Source\Engine\GameStateManager.cpp" />
-    <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
-    <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
-    <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
-    <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
-    <ClCompile Include="..\Extern\include\imgui\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="Source\Utility\Time.cpp" />
+    <ClCompile Include="Source\Utility\Timer.cpp" />
     <ClCompile Include="Source\Utility\WindowsFileDialog.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\Editor\tracy\TracyClient.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
-    <ClCompile Include="Source\Engine\GameplayInterface_Management_Enemy.cpp" />
-    <ClCompile Include="Source\Engine\GameplayInterface_Management_GUI.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
+    <ClCompile Include="Source\SceneManager\Prefab.cpp" />
+    <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
+    <ClCompile Include="Scripts\rttr_main.cpp" />
+    <ClCompile Include="Scripts\others\ScriptManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
+    <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\Commands\EntityCommand.h" />
+    <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
+    <ClInclude Include="Include\ECS\Components\UniBehaviour.h" />
+    <ClInclude Include="Include\ECS\Systems\LogicSystem.h" />
+    <ClInclude Include="Include\ECS\Components\Button.h" />
+    <ClInclude Include="Include\ECS\Systems\ButtonSystem.h" />
+    <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
+    <ClInclude Include="Include\Commands\EditorCommandManager.h" />
+    <ClInclude Include="Include\Common Header\MyScene.h" />
+    <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
+    <ClInclude Include="Include\Commands\Command.h" />
+    <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
+    <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
+    <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
+    <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
+    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
+    <ClInclude Include="Gameplay\Header\MapManager.h" />
+    <ClInclude Include="Include\Engine\Gameplay_Interface.h" />
+    <ClInclude Include="Include\Engine\TurnStateManager.h" />
+    <ClInclude Include="Include\Engine\GameStateManager.h" />
+    <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
+    <ClInclude Include="Include\Asset Manager\AssetManager.h" />
+    <ClInclude Include="Include\Common Header\MyAudio.h" />
+    <ClInclude Include="Include\Common Header\MySerializer.h" />
+    <ClInclude Include="Include\ECS\Components\Animation.h" />
+    <ClInclude Include="Include\ECS\Components\Cell.h" />
+    <ClInclude Include="Include\ECS\Components\CellLoader.h" />
+    <ClInclude Include="Include\ECS\Components\EntityData.h" />
+    <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
+    <ClInclude Include="Include\ECS\Components\Transition.h" />
+    <ClInclude Include="Include\ECS\Components\Unit.h" />
+    <ClInclude Include="Include\ECS\RoomBuilder.h" />
+    <ClInclude Include="Include\ECS\Systems\AnimatorSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
+    <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
     <ClInclude Include="Include\Editor\Panels\ContentBrowserPanel.h" />
+    <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
+    <ClInclude Include="Include\Common Header\MyAssetManager.h" />
     <ClInclude Include="Include\Common Header\MyEditor.h" />
+    <ClInclude Include="Include\ECS\Components\CharacterController.h" />
     <ClInclude Include="Include\ECS\Components\Rigidbody.h" />
+    <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
     <ClInclude Include="Include\ECS\Systems\ColliderSystem.h" />
     <ClInclude Include="Include\Common Header\ECS.h" />
     <ClInclude Include="Include\Common Header\MyEngine.h" />
@@ -128,9 +184,14 @@
     <ClInclude Include="Include\Editor\imstb_rectpack.h" />
     <ClInclude Include="Include\Editor\imstb_textedit.h" />
     <ClInclude Include="Include\Editor\imstb_truetype.h" />
+    <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
     <ClInclude Include="Include\Editor\Panels\InspectorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneHierarchyPanel.h" />
+    <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
+    <ClInclude Include="Include\Engine\Audio\Audio.h" />
+    <ClInclude Include="Include\Engine\Audio\AudioManager.h" />
     <ClInclude Include="Include\Engine\Camera.h" />
     <ClInclude Include="Include\Engine\Manager\MeshBuilder.h" />
     <ClInclude Include="Include\Exceptions\GLDebug.h" />
@@ -144,6 +205,8 @@
     <ClInclude Include="Include\ECS\Structure\SystemManager.h" />
     <ClInclude Include="Include\Engine\Application.h" />
     <ClInclude Include="Include\ECS\Components\Color.h" />
+    <ClInclude Include="Include\ECS\Components\Animator.h" />
+    <ClInclude Include="Include\Graphics\fonts.h" />
     <ClInclude Include="Include\Exceptions\Logger.h" />
     <ClInclude Include="Include\Graphics\Gizmo.h" />
     <ClInclude Include="Include\Graphics\OpenGLWindow.h" />
@@ -153,205 +216,43 @@
     <ClInclude Include="Include\Input\Input.h" />
     <ClInclude Include="Include\Math\Math.h" />
     <ClInclude Include="Include\Math\matrix.h" />
+    <ClInclude Include="Include\Math\Matrix2x2.h" />
     <ClInclude Include="Include\Math\Matrix3x3.h" />
     <ClInclude Include="Include\Math\Matrix4x4.h" />
+    <ClInclude Include="Include\Math\Vector2Int.h" />
     <ClInclude Include="Include\Math\Vector3.h" />
     <ClInclude Include="Include\Common Header\MyMath.h" />
     <ClInclude Include="Include\Common Header\Random.h" />
+    <ClInclude Include="Include\Math\Vector3Int.h" />
     <ClInclude Include="Include\Math\Vector4.h" />
     <ClInclude Include="Include\Memory\Memory.h" />
     <ClInclude Include="Include\Memory\MemoryLeak.h" />
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
+    <ClInclude Include="Include\Prefabs\Prefabs.h" />
+    <ClInclude Include="Include\SceneManager\SceneManager.h" />
+    <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
+    <ClInclude Include="Include\Commands\UpdateComponentCommand.h" />
+    <ClInclude Include="Include\Utility\AudioNames.h" />
+    <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
+    <ClInclude Include="Include\Utility\Profiler.h" />
     <ClInclude Include="Include\Utility\Time.h" />
+    <ClInclude Include="Include\Utility\Timer.h" />
     <ClInclude Include="Include\Utility\Type.h" />
     <ClInclude Include="Include\Engine\Physics2D.h" />
-    <ClCompile Include="Source\misc\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\misc\pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\inverse_sqrt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\matrix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Matrix3x3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility\console.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Structure\EntityManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\misc\Random.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility\Time.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Memory\Memory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\GLAD\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\OpenGLWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility\HelperFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Exceptions\GLDebug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Manager\MeshBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Matrix4x4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Structure\EcsSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Systems\RenderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Systems\ColliderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Physics2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ECS\Systems\RigidbodySystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Exceptions\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_impl_glfw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\imgui\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\ALEditor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility\Gizmo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClInclude Include="Include\Asset Manager\AssetManager.h" />
-    <ClInclude Include="Include\Asset Manager\FileWatcher.h" />
-    <ClInclude Include="Include\ECS\Components\CharacterController.h" />
-    <ClInclude Include="Include\ECS\Systems\CharacterControllerSystem.h" />
-    <ClInclude Include="Include\Graphics\fonts.h" />
-    <ClInclude Include="Include\Common Header\MyAssetManager.h" />
-    <ClInclude Include="Include\Utility\Timer.h" />
-    <ClInclude Include="Include\Utility\Profiler.h" />
-    <ClInclude Include="Include\ECS\Components\EntityData.h" />
-    <ClInclude Include="Include\Editor\Panels\ProfilerPanel.h" />
-    <ClInclude Include="Include\Common Header\MySerializer.h" />
-    <ClInclude Include="Include\Serialization\Serializer.h" />
-    <ClInclude Include="Include\Editor\Panels\ScenePanel.h" />
-    <ClInclude Include="Include\ECS\Components\Animation.h" />
-    <ClInclude Include="Include\ECS\Components\Animator.h" />
-    <ClInclude Include="Include\ECS\Components\Transition.h" />
-    <ClInclude Include="Include\ECS\Systems\AnimatorSystem.h" />
-    <ClInclude Include="Include\Editor\Panels\GamePanel.h" />
-    <ClInclude Include="Include\Utility\BinaryTree.h" />
-    <ClInclude Include="tracy\Tracy.hpp" />
-    <ClInclude Include="Include\Math\Matrix2x2.h" />
-    <ClInclude Include="Include\Common Header\MyAudio.h" />
-    <ClInclude Include="Include\Engine\Audio\AudioManager.h" />
-    <ClInclude Include="Include\Engine\Audio\Audio.h" />
-    <ClInclude Include="Include\ECS\Systems\EventCollisionTriggerSystem.h" />
-    <ClInclude Include="Include\ECS\Systems\EventTriggerSystem.h" />
-    <ClInclude Include="Include\ECS\Systems\GameplaySystem.h" />
-    <ClInclude Include="Include\ECS\Components\Cell.h" />
-    <ClInclude Include="Include\ECS\Components\EventTrigger.h" />
-    <ClInclude Include="Include\ECS\Components\Unit.h" />
-    <ClInclude Include="Include\Engine\PathFindingManager.h" />
-    <ClInclude Include="Include\ECS\RoomBuilder.h" />
-    <ClInclude Include="Include\ECS\Components\CellLoader.h" />
-    <ClInclude Include="Include\Math\Vector2Int.h" />
-    <ClInclude Include="Include\Math\Vector3Int.h" />
-    <ClInclude Include="Include\Engine\GamePlayInterface.h" />
-    <ClInclude Include="Include\Editor\Panels\AudioEditorPanel.h" />
-    <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
-    <ClInclude Include="Include\SceneManager\SceneManager.h" />
-    <ClInclude Include="Include\Common Header\MyScene.h" />
-    <ClInclude Include="Include\Commands\Command.h" />
-    <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
-    <ClInclude Include="Include\Commands\UpdateComponentCommand.h" />
-    <ClInclude Include="Include\Commands\EditorCommandManager.h" />
-    <ClInclude Include="Include\Engine\GameStateManager.h" />
-    <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
-    <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
-    <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
-    <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
-    <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
-    <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
-    <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
-    <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
-    <ClInclude Include="Include\Engine\TurnStateManager.h" />
-    <ClInclude Include="Include\ECS\Systems\LogicSystem.h" />
-    <ClInclude Include="Include\ECS\Components\UniBehaviour.h" />
-    <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
-    <ClInclude Include="Include\ECS\Components\Button.h" />
-    <ClInclude Include="Include\ECS\Systems\ButtonSystem.h" />
-    <ClInclude Include="Include\Engine\GameplayInterface_Management_Enemy.h" />
-    <ClInclude Include="Include\Engine\GameplayInterface_Management_GUI.h" />
-    <ClInclude Include="Include\Utility\AudioNames.h" />
-    <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
-    <ClInclude Include="Gameplay\Header\MapManager.h" />
-    <ClInclude Include="Include\Commands\EntityCommand.h" />
+    <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_GUI.h" />
+    <ClInclude Include="Scripts\Header\GameplaySystem.h" />
+    <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_Enemy.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
+    <ClInclude Include="Scripts\MyLogicComponents.h" />
+    <ClInclude Include="tracy\Tracy.hpp" />
+    <ClInclude Include="Scripts\others\ScriptManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
@@ -582,6 +483,7 @@
     <ClInclude Include="Include\Editor\Panels\LoggerPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Objects Files\Bishop.json" />

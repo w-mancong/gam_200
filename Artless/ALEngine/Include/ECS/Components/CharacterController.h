@@ -19,11 +19,11 @@ namespace ALEngine::ECS::Component
 	struct CharacterController
 	{
 	public:
-		f32 speed;			//Acceleration of object
-		f32 jumpStrength;	//Velocity of jump
+		f32 speed{};			//Acceleration of object
+		f32 jumpStrength{};		//Velocity of jump
 
 		//Interface for custom keys for control
-		u64 leftKey, rightKey, jumpKey, rotateLeftKey, rotateRightKey;
+		u64 leftKey{}, rightKey{}, jumpKey{}, rotateLeftKey{}, rotateRightKey{};
 	};
 }
 #endif

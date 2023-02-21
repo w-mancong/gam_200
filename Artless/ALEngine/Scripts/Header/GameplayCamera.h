@@ -20,7 +20,13 @@ namespace ALEngine::Script
 			\brief Updates GameplayCamera every frame
 		***********************************************************************************/
 		void Update(ECS::Entity en);
+
+		// For RTTR
+		void DeserializeComponent(ECS::Entity en)
+		{
+			ECS::AddLogicComponent<GameplayCamera>(en);
+		};
+		RTTR_ENABLE(ECS::Component::UniBehaviour)
 	};
 }
-
 #endif

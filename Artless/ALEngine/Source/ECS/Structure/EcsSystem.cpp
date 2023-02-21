@@ -42,7 +42,7 @@ namespace ALEngine::ECS
 		RegisterCharacterControllerSystem();
 		RegisterEventTriggerSystem();
 		RegisterEventCollisionTriggerSystem();
-		RegisterGameplaySystem();
+		//RegisterGameplaySystem();
 		RegisterParticleSystem();
 		RegisterTextSystem();
 		RegisterLogicSystem();

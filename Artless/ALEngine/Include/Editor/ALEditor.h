@@ -80,10 +80,9 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
-			Sets the default panel positions and sizes
+			Load Map Data for the level
 		***********************************************************************************/
-		void SetDefaultPanel(void);
-
+		void LoadMap(void);
 
 		/*!*************************************************************************************************
 			Getters and Setters
@@ -211,6 +210,18 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Returns the ImGui screen position of a vector that is in World Space.
+
+			\param [in] pos
+			World Space position, to be converted to screen space
+
+			\return
+			Returns the screen position of a vector that is in World Space.
+		***********************************************************************************/
+		Math::Vec2 WorldToScreenPosVec(Math::Vec2 pos);
+
+		/*!*********************************************************************************
+			\brief
 			Returns if the game panel is active or not
 
 			\return
@@ -292,6 +303,12 @@ namespace ALEngine::Editor
 			Returns the current tile map path
 		***********************************************************************************/
 		std::string const& GetCurrentTileMapPath(void) const;
+
+		/*!*********************************************************************************
+			\brief
+			Sets the default panel positions and sizes
+		***********************************************************************************/
+		void SetDefaultPanel(void);
 
 	private:
 		/*!*********************************************************************************

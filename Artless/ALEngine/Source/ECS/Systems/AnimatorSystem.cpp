@@ -38,10 +38,16 @@ namespace ALEngine::ECS
 			animator.time += Time::m_DeltaTime;
 
 			if (animator.time < changeTime)
-				continue;
+			{
+				if( (++animator.frames) % animation.frames[animator.currSprite] )
+					continue;
+			}
 
 			(++sprite.index) %= animation.totalSprites;
+
+			(++animator.currSprite) %= animation.totalSprites;
 			animator.time = 0.0f;
+			animator.frames = 0;
 		}
 	}
 
@@ -117,6 +123,8 @@ namespace ALEngine::ECS
 #endif
 		animator.currClip = clipName;
 		animator.time = 0.0f;
+		animator.frames = 0;
+		animator.currSprite = 0;
 	}
 
 	Animator CreateAnimator(c8 const* animatorName)
@@ -132,6 +140,13 @@ namespace ALEngine::ECS
 			iss >> buffer;
 			Guid id = Engine::AssetManager::Instance()->GetGuid(buffer);
 			Animation animation = Engine::AssetManager::Instance()->GetAnimation(id);
+
+			for ( u64 i{}; i < ARRAY_SIZE(animation.frames); ++i )
+			{
+				if (*(animation.frames + i) != 1) continue;
+				*(animation.frames + i) = 1;
+			}
+			
 			animation.id = id;
 			animator.animations[buffer] = animation;
 		}
@@ -144,6 +159,10 @@ namespace ALEngine::ECS
 	void CreateAnimationClip(c8 const* filePath, c8 const* clipName, s32 width, s32 height, u32 sample, u32 totalSprites, c8 const* savePath)
 	{
 		Animation animation{ width, height, sample, totalSprites };
+
+		for (u64 i{}; i < ARRAY_SIZE(animation.frames); ++i)
+			*(animation.frames + i) = 1;
+
 		// Set the clip name
 		strcpy_s(animation.clipName, sizeof(animation.clipName), clipName);
 		// Set the path to the sprite sheet

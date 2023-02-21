@@ -265,6 +265,41 @@ namespace ALEngine::Editor
 		//return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
 	}
 
+	Math::Vec2 ScenePanel::WorldToScreenPosVec(Math::Vec2 pos)
+	{
+		using namespace Math;
+
+		// Find the Game panel
+		ImGuiWindow* win = ImGui::FindWindowByName("Editor Scene");
+
+		// Get panel position
+		m_ImGuiPanelPos = win->DC.CursorPos;
+
+		// Convert pos from world space to screen space
+		// Projection mtx
+		Mat4 proj = ECS::GetProjection();
+
+		// View matrix
+		Mat4 view = ECS::GetView();
+
+		Vec4 position = { pos.x, pos.y, 0.f, 1.f };
+
+		// Pos
+		position = proj * view * position;
+
+		// Check if within range of scene
+		if (position.x < -1.f || position.x > 1.f ||
+			position.y < -1.f || position.y > 1.f)
+		{
+			return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
+		}
+
+		position.x = (position.x + 1.f) * (0.5f * m_SceneWidth);
+		position.y = (position.y + 1.f) * (0.5f * m_SceneHeight);
+
+		return Math::Vec2(position.x, position.y);
+	}
+
 	f32& ScenePanel::GetCameraWidth(void)
 	{
 		return m_CameraWidth;

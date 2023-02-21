@@ -98,6 +98,18 @@ namespace ALEngine::ECS
 			[[maybe_unused]] EventTrigger& current_interacted_eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(eventSystem->m_interactedEventTrigger_Entity);
 			Transform& previousTransform = Coordinator::Instance()->GetComponent<Transform>(eventSystem->m_interactedEventTrigger_Entity);
 
+			//Vector2 position;
+			//Vector2 scale;
+
+			//if (Coordinator::Instance()->HasComponent<Sprite>(eventSystem->m_interactedEventTrigger_Entity)) {
+			//	if (Coordinator::Instance()->GetComponent<Sprite>(eventSystem->m_interactedEventTrigger_Entity).isUI) {
+
+			//	}
+			//}
+			//else {
+			//	position = previousTransform.po + collider.m_localPosition;
+			//}
+
 			//Get the calcaltion
 			if (Coordinator::Instance()->HasComponent<Collider2D>(eventSystem->m_interactedEventTrigger_Entity)) {
 				Collider2D& collider = Coordinator::Instance()->GetComponent<Collider2D>(eventSystem->m_interactedEventTrigger_Entity);

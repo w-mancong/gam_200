@@ -54,6 +54,25 @@ namespace ALEngine::ECS
 		}
 	}
 
+	/*!*********************************************************************************
+		\brief Remove a logic component that is inherited from UniBehaviour
+	***********************************************************************************/
+	template <typename T>
+	void RemoveLogicComponent(Entity en)
+	{
+		if constexpr (std::is_polymorphic<T>::value)
+		{
+#ifndef NDEBUG
+			// This line checks if component is inherited from UniBehaviour
+			T component;
+			assert(dynamic_cast<Component::UniBehaviour*>(&component) && "Template T is not inherited from UniBehaviour");
+#endif
+
+			Component::LogicComponent& lc = Coordinator::Instance()->GetComponent<Component::LogicComponent>(en);
+			lc.logics.erase(GetLogicComponentName<T>());
+		}
+	}
+
 	/*!*****************************************************************************
 		\brief Get a specific logic component from the entity
 
@@ -74,6 +93,13 @@ namespace ALEngine::ECS
 		assert(dynamic_cast<Component::UniBehaviour*>(&component) && "Template T is not inherited from UniBehaviour");
 #endif
 		return std::dynamic_pointer_cast<T>(lc.logics[name]);
+	}
+
+	template <typename T>
+	b8 HasLogicComponent(Entity en)
+	{
+		Component::LogicComponent const& lc = Coordinator::Instance()->GetComponent<Component::LogicComponent>(en);
+		return lc.logics.find(GetLogicComponentName<T>()) != lc.logics.end();
 	}
 
 	/*!*********************************************************************************

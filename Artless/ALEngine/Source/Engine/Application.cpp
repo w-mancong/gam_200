@@ -9,7 +9,11 @@ brief:	This file contain function definition that starts the flow of the entire 
 #include "pch.h"
 #include <Engine/GSM/GameStateManager.h>
 #include <GameplayCamera.h>
+#include <GameplaySystem.h>
+#include <GameplaySystem_Interface_Management_Enemy.h>
+#include <GameplaySystem_Interface_Management_GUI.h>
 #include <ECS/Systems/LogicSystem.h>
+#include <../Scripts/others/ScriptManager.h>
 
 namespace ALEngine::Engine
 {
@@ -95,13 +99,13 @@ namespace ALEngine::Engine
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
-				StartGameplaySystem();
+				//StartGameplaySystem();
 				ECS::Load();
 			}
 			else
 			{
 				Scene::LoadScene();
-				StartGameplaySystem();
+				//StartGameplaySystem();
 				GameStateManager::current = GameStateManager::previous;
 				GameStateManager::next	  = GameStateManager::previous;
 			}
@@ -153,7 +157,6 @@ namespace ALEngine::Engine
 #if EDITOR
 				}
 #endif
-
 				// Render
 				Render();
 
@@ -170,14 +173,13 @@ namespace ALEngine::Engine
 			ECS::Free();
 			// unload resource
 			if (GameStateManager::next != GameState::Restart)
+			{
 				ECS::Unload();
-			
+				ClearPrefabCollection();
+			}
+
 #if !EDITOR
-			ExitGameplaySystem();
 			Coordinator::Instance()->DestroyEntities();
-#else
-			if (Editor::ALEditor::Instance()->GetGameActive())
-				ExitGameplaySystem();
 #endif
 
 			Coordinator::Instance()->ResetSystem();
@@ -197,7 +199,9 @@ namespace ALEngine::Engine
 		focus = glfwGetWindowAttrib(OpenGLWindow::Window(), GLFW_VISIBLE);
 		ECS::InitSystem();
 		AudioManagerInit();
-		//ScriptEngine::Init();
+#if EDITOR
+		Script::InitScriptManager();
+#endif
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
@@ -222,6 +226,35 @@ namespace ALEngine::Engine
 		Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif
+		//Entity en = Coordinator::Instance()->CreateEntity();
+		//AddLogicComponent<Script::GameplayCamera>(en);
+		//Scene::LoadScene("Assets\\test_logic.scene");
+		//Scene::SaveScene("test_map");
+		//Scene::LoadScene("Assets\\test_map.scene");
+/*
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		//Entity Entity_GameplaySystem = Coordinator::Instance()->CreateEntity();
+		//Coordinator::Instance()->GetComponent<EntityData>(Entity_GameplaySystem).tag = "Gameplay System";
+
+		//Coordinator::Instance()->AddComponent(Entity_GameplaySystem, Transform{});
+		//
+		//sceneGraph.Push(-1, Entity_GameplaySystem);
+
+		//AddLogicComponent<Script::GameplaySystem>(Entity_GameplaySystem);
+		//AddLogicComponent<Script::GameplaySystem_Interface_Management_Enemy>(Entity_GameplaySystem);
+		//AddLogicComponent<Script::GameplaySystem_Interface_Management_GUI>(Entity_GameplaySystem);
+
+		//Entity en = Coordinator::Instance()->CreateEntity();
+		*/
+		//Coordinator::Instance()->GetComponent<EntityData>(en).tag = "entity_test2";
+		//Coordinator::Instance()->AddComponent(en, Transform{});
+		//Coordinator::Instance()->AddComponent(en, Rigidbody2D{});
+		//SavePrefab(en);
+		
+		//Entity en2 = Instantiate(en), 
+		//	en3 = Instantiate("entity_test");
+
 		//Animator an = CreateAnimator("Player");
 
 		//Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
@@ -239,7 +272,6 @@ namespace ALEngine::Engine
 		//AddAnimationToAnimator(an, "PlayerIdle");
 		//SaveAnimator(an);
 		
-
 		//Scene::LoadScene("Assets\\test.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
@@ -273,7 +305,7 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
-		ExitGameplaySystem();
+		//ExitGameplaySystem();
 #if EDITOR
 		ALEditor::Instance()->Exit();		// Exit ImGui
 #endif
@@ -312,7 +344,7 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
-		UpdateGameplaySystem();
+		//UpdateGameplaySystem();
 
 		UpdateButtonSystem();
 
@@ -329,7 +361,7 @@ namespace ALEngine::Engine
 
 		DebugDrawRigidbody();
 		DebugDrawCollider();
-		DrawGameplaySystem();
+		//DrawGameplaySystem();
 	}
 
 	int GetAppStatus(void)
