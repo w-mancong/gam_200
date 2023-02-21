@@ -18,9 +18,9 @@ namespace ALEngine::Engine::Scene
 		namespace rjs = rapidjson;
 		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
 
-		std::string currScene;
+		std::string currScene{};
 #if EDITOR
-		std::string state;
+		std::string state{};
 #endif
 	}
 
@@ -843,6 +843,7 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->DestroyEntities();
 
 		DeserializeScene(doc);
+		GameStateManager::Next(GameState::LevelSwitch);
 	}
 
 	void LoadScene(void)

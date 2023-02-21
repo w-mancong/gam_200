@@ -80,17 +80,31 @@ namespace ALEngine::Engine
 		***********************************************************************************/
 		Guid GetGuid(std::string fileName);
 
+#if EDITOR
 		/*!*********************************************************************************
 		\brief
 	     function for filewatcher to alert assetmanager of file changers
 		***********************************************************************************/
 		void Alert(std::string const& filePath, FileStatus status);
+#endif
 
 		void Reset(void);
 
 		std::unordered_map<Guid, ALEngine::ECS::Font>& GetFontList();
 
 	private:
+#if EDITOR
+		/*!*****************************************************************************
+			\brief Used for initializing asset manager in editor mode
+		*******************************************************************************/
+		void EditorModeInit(void);
+#else
+		/*!*****************************************************************************
+			\brief Used for initializing asset manager in game mode
+		*******************************************************************************/
+		void GameModeInit(void);
+#endif
+
 		/*!*********************************************************************************
 		 \brief
 		 get timestamp in 3 16 bit parts and assign to vector container before return

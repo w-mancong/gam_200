@@ -1,5 +1,8 @@
 [
     {
+        "map_path": "Assets\\Medium Map.map"
+    },
+    {
         "id": 0,
         "Sprite": [
             {

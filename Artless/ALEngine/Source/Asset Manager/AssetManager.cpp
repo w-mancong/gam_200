@@ -37,7 +37,16 @@ namespace
 		Scene,
 	};
 
+#if !EDITOR
+	struct GUID_LIST
+	{
+		Guid id{};
+		b8 loaded{ false };
+	};
+	std::unordered_map<std::string, GUID_LIST> guidList{};
+#else
 	std::unordered_map<std::string, Guid> guidList{};
+#endif
 	std::unordered_map<Guid, Texture> textureList{};
 	std::unordered_map<Guid, Animation> animationList{};
 	std::unordered_map<Guid, Audio> audioList{};
@@ -52,6 +61,7 @@ namespace
 		metaFile.write(reinterpret_cast<char*>(&id), sizeof(Guid));
 	}
 
+#if EDITOR
 	void FolderEntry(std::filesystem::path const& checkPath, std::vector<std::string>& metaFiles, std::vector<std::string>& fileNames)
 	{
 		for (auto const& innerDirectoryEntry : std::filesystem::directory_iterator(checkPath))
@@ -75,6 +85,31 @@ namespace
 			}
 		}
 	}
+#else
+	void FolderEntry(std::filesystem::path const& checkPath, std::vector<std::string>& metaFiles, std::vector<std::string>& fontFiles)
+	{
+		for (auto const& innerDirectoryEntry : std::filesystem::directory_iterator(checkPath))
+		{
+			if (innerDirectoryEntry.is_directory())// check if entry is sub folder
+			{
+				FolderEntry(innerDirectoryEntry.path(), metaFiles, fontFiles);
+			}
+			else // if entry is a file
+			{
+				std::string const& fileName = checkPath.string() + "\\" + std::filesystem::relative(innerDirectoryEntry.path(), checkPath).filename().string();
+				//check if is meta
+				if (fileName.find(".meta") != std::string::npos)
+				{
+					metaFiles.push_back(fileName);
+				}
+				else if(fileName.find(".ttf") != std::string::npos) // file is a font type
+				{
+					fontFiles.push_back(fileName);
+				}
+			}
+		}
+	}
+#endif
 
 	Texture LoadTexture(char const* filePath)
 	{
@@ -391,188 +426,10 @@ namespace ALEngine::Engine
 	void AssetManager::Init()
 	{
 #if EDITOR
-		{
-			Guid id{ 0 }; u32 icon{ 0 };
-			// Folder icon
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Folder.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-
-			// Prefab icon
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Prefab.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Prefab.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-
-			// Scene icon
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Scene.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Scene.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-
-			// Script icon
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Script.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Script.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-
-			// Font icon
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-
-			// Audio icon
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Sound.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_TileEditor.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_TileEditor.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-
-			// Play icon
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\button_play.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-
-			// Stop icon
-			id = PrepareGuid();
-			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_stop.png", id });
-			icon = LoadButtonImage("Assets\\Dev\\Images\\button_stop.png");
-			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
-		}
+		EditorModeInit();
+#else
+		GameModeInit();
 #endif
-
-		std::vector<std::string> metaFiles, fileNames;
-
-		//initialize 
-		const std::filesystem::path basePath = "Assets"; //base file path
-
-		//check the assets files if got meta
-		for (auto const& directoryEntry : std::filesystem::directory_iterator(basePath))
-		{
-			std::filesystem::path currentCheckPath = basePath;
-			//file default path
-			const auto& path = directoryEntry.path();
-
-			//file relative path
-			std::filesystem::path const& relativePath = std::filesystem::relative(path, basePath);
-
-			//file name from relative path 
-			std::string const& fileNamestring = relativePath.filename().string();
-
-			if (fileNamestring == "Dev")
-				continue;
-
-			if (path.filename().string().find(".") != std::string::npos)
-				continue;
-
-			currentCheckPath /= path.filename();
-			FolderEntry(currentCheckPath, metaFiles, fileNames);
-		}
-
-		for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
-		{
-			std::string const& meta = *it + ".meta";
-			auto it2 = std::find(metaFiles.begin(), metaFiles.end(), meta);
-
-			Guid id{};
-
-			FileType fileType = GetFileType(*it);
-
-			if (it2 == metaFiles.end())// no meta file, generate meta file 
-			{
-				id = PrepareGuid();
-				if(fileType != FileType::Scene)
-					GenerateMetaFile(it->c_str(), id);
-			}
-			else
-			{
-				//open and read meta file
-				std::ifstream mFile(meta, std::ios_base::binary);
-				mFile.read(reinterpret_cast<c8*>(&id), sizeof(Guid));
-				// Remove .meta files from the vector, so that whatever files is left inside metaFiles vector are considered as orphans
-				metaFiles.erase(it2);
-			}
-
-			std::string guidKey{ *it };
-			switch (fileType)
-			{
-				case FileType::Image:
-				{
-					//into memory/stream
-					Texture texture = LoadTexture(it->c_str());
-					// Insert into texture list
-#if		EDITOR
-					if (texture.handle)
-#endif
-						textureList.insert(std::pair<Guid, Texture>{ id, texture });
-#if		EDITOR
-					u32 button = LoadButtonImage(it->c_str());
-					if (button)
-						buttonImageList.insert(std::pair<Guid, u32>{ id, button });
-#endif
-					break;
-				}
-				case FileType::Audio:
-				{
-					// load into memory stream
-					Audio audio = LoadAudio(it->c_str());
-#if EDITOR
-					if (audio.m_Sound)
-#endif
-						audioList.insert(std::pair<Guid, Audio>{id, audio});
-
-					break;
-				}
-				case FileType::Animation:
-				{
-					Animation animation;
-					std::ifstream ifs{ *it, std::ios::binary };
-					ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
-
-					animationList.insert(std::pair<Guid, Animation>{ id, animation });
-
-					Texture texture = LoadAnimation(animation);
-#if	EDITOR
-					if (texture.handle)
-#endif
-						textureList.insert(std::pair<Guid, Texture>{ id, texture });
-					guidKey = animation.clipName;
-					break;
-				}
-				case FileType::Font:
-				{
-					std::string filePath{ *it };
-					fontList.insert(std::pair<Guid, ALEngine::ECS::Font>{ id, LoadFont(filePath) });
-					break;
-				}
-				default:
-					break;
-			}
-
-			// Get a list of Guid inserted into an unordered_map
-			guidList.insert(std::pair<std::string, Guid>{ guidKey, id });
-		}
-
-		//if orphan meta file, then delete
-		for (auto it = metaFiles.begin(); it != metaFiles.end(); ++it)
-		{
-			if (remove(it->c_str()))
-			{
-				char error[1024];
-				strerror_s(error, errno); strcat_s(error, "\n");
-				std::cerr << "Remove Error: " << error;
-			}
-		}
-
-		// Load white image
-		textureList.insert(std::pair<Guid, Texture>{ std::numeric_limits<Guid>::max(), LoadWhiteImage() });
 	}
 
 	void AssetManager::Update()
@@ -647,10 +504,14 @@ namespace ALEngine::Engine
 #if	 EDITOR	// In release mode, files should already exist and thus this check is not needed
 		if (guidList.find(fileName) == guidList.end())
 			return 0;
-#endif
 		return guidList[fileName];
+#else
+		// Load the resource if it's not already loaded
+
+#endif
 	}
 
+#if EDITOR
 	void AssetManager::Alert(std::string const& filePath, FileStatus status)
 	{
 		std::lock_guard<std::mutex> guard{ m_Resource };
@@ -669,13 +530,245 @@ namespace ALEngine::Engine
 				break;
 		}
 	}
+#endif
 
 	void AssetManager::Reset(void)
 	{
 		std::lock_guard<std::mutex> guard{ m_Resource };
 		for (auto const& texture : textureList)
+		{
 			glMakeTextureHandleNonResidentARB(texture.second.handle);
+			glDeleteTextures(1, &texture.second.texture);
+		}
+
+		for (auto& audio : audioList)
+		{
+			fmod::Sound*& sound = audio.second.m_Sound;
+			FMOD_RESULT res = sound->release();
+		}
+
+		animationList.clear(), textureList.clear(), audioList.clear();
 	}
+
+#if EDITOR
+	void AssetManager::EditorModeInit(void)
+	{
+		{
+			Guid id{ 0 }; u32 icon{ 0 };
+			// Folder icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Folder.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Folder.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Prefab icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Prefab.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Prefab.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Scene icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Scene.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Scene.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Script icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Script.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Script.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Font icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Text.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Text.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Audio icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_Sound.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_Sound.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\Icon_TileEditor.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\Icon_TileEditor.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Play icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_play.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\button_play.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+
+			// Stop icon
+			id = PrepareGuid();
+			guidList.insert(std::pair<std::string, Guid>{ "Assets\\Dev\\Images\\button_stop.png", id });
+			icon = LoadButtonImage("Assets\\Dev\\Images\\button_stop.png");
+			buttonImageList.insert(std::pair<Guid, u32>{ id, icon });
+		}
+
+		std::vector<std::string> metaFiles, fileNames;
+
+		//initialize 
+		const std::filesystem::path basePath = "Assets"; //base file path
+
+		//check the assets files if got meta
+		for (auto const& directoryEntry : std::filesystem::directory_iterator(basePath))
+		{
+			std::filesystem::path currentCheckPath = basePath;
+			//file default path
+			const auto& path = directoryEntry.path();
+
+			//file relative path
+			std::filesystem::path const& relativePath = std::filesystem::relative(path, basePath);
+
+			//file name from relative path 
+			std::string const& fileNamestring = relativePath.filename().string();
+
+			if (fileNamestring == "Dev")
+				continue;
+
+			if (path.filename().string().find(".") != std::string::npos)
+				continue;
+
+			currentCheckPath /= path.filename();
+			FolderEntry(currentCheckPath, metaFiles, fileNames);
+		}
+
+		for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
+		{
+			std::string const& meta = *it + ".meta";
+			auto it2 = std::find(metaFiles.begin(), metaFiles.end(), meta);
+
+			Guid id{};
+
+			FileType fileType = GetFileType(*it);
+
+			if (it2 == metaFiles.end())// no meta file, generate meta file 
+			{
+				id = PrepareGuid();
+				if (fileType != FileType::Scene)
+					GenerateMetaFile(it->c_str(), id);
+			}
+			else
+			{
+				//open and read meta file
+				std::ifstream mFile(meta, std::ios_base::binary);
+				mFile.read(reinterpret_cast<c8*>(&id), sizeof(Guid));
+				// Remove .meta files from the vector, so that whatever files is left inside metaFiles vector are considered as orphans
+				metaFiles.erase(it2);
+			}
+
+			std::string guidKey{ *it };
+			switch (fileType)
+			{
+			case FileType::Image:
+			{
+				//into memory/stream
+				Texture texture = LoadTexture(it->c_str());
+				// Insert into texture list
+
+				if (texture.handle)
+					textureList.insert(std::pair<Guid, Texture>{ id, texture });
+
+				u32 button = LoadButtonImage(it->c_str());
+				if (button)
+					buttonImageList.insert(std::pair<Guid, u32>{ id, button });
+				break;
+			}
+			case FileType::Audio:
+			{
+				// load into memory stream
+				Audio audio = LoadAudio(it->c_str());
+
+				if (audio.m_Sound)
+					audioList.insert(std::pair<Guid, Audio>{id, audio});
+
+				break;
+			}
+			case FileType::Animation:
+			{
+				Animation animation;
+				std::ifstream ifs{ *it, std::ios::binary };
+				ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
+
+				animationList.insert(std::pair<Guid, Animation>{ id, animation });
+
+				Texture texture = LoadAnimation(animation);
+
+				if (texture.handle)
+					textureList.insert(std::pair<Guid, Texture>{ id, texture });
+				guidKey = animation.clipName;
+				break;
+			}
+			case FileType::Font:
+			{
+				std::string filePath{ *it };
+				fontList.insert(std::pair<Guid, ALEngine::ECS::Font>{ id, LoadFont(filePath) });
+				break;
+			}
+			default:
+				break;
+			}
+
+			// Get a list of Guid inserted into an unordered_map
+			guidList.insert(std::pair<std::string, Guid>{ guidKey, id });
+		}
+
+		//if orphan meta file, then delete
+		for (auto it = metaFiles.begin(); it != metaFiles.end(); ++it)
+		{
+			if (remove(it->c_str()))
+			{
+				char error[1024];
+				strerror_s(error, errno); strcat_s(error, "\n");
+				std::cerr << "Remove Error: " << error;
+			}
+		}
+
+		// Load white image
+		textureList.insert(std::pair<Guid, Texture>{ std::numeric_limits<Guid>::max(), LoadWhiteImage() });
+	}
+#else
+	void AssetManager::GameModeInit(void)
+	{
+		std::vector<std::string> metaFiles, fontFiles;
+
+		//initialize 
+		const std::filesystem::path basePath = "Assets"; //base file path
+
+		// Get all the meta files from the directory
+		for (auto const& directoryEntry : std::filesystem::directory_iterator(basePath))
+		{
+			std::filesystem::path currentCheckPath = basePath;
+			//file default path
+			const auto& path = directoryEntry.path();
+
+			//file relative path
+			std::filesystem::path const& relativePath = std::filesystem::relative(path, basePath);
+
+			//file name from relative path 
+			std::string const& fileNamestring = relativePath.filename().string();
+
+			if (fileNamestring == "Dev")
+				continue;
+
+			if (path.filename().string().find(".") != std::string::npos)
+				continue;
+
+			currentCheckPath /= path.filename();
+			FolderEntry(currentCheckPath, metaFiles, fontFiles);
+		}
+
+		// Load all the font files into fontList
+		for (auto it = fontFiles.begin(); it != fontFiles.end(); ++it)
+			fontList.insert(std::pair<Guid, ALEngine::ECS::Font>{ 0, LoadFont(*it) });
+
+		// 
+	}
+#endif
 
 	std::vector<u16> AssetManager::GetTimeStamp(void)
 	{

@@ -99,13 +99,11 @@ namespace ALEngine::Engine
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
-				//StartGameplaySystem();
+				Scene::LoadScene();
 				ECS::Load();
 			}
 			else
 			{
-				Scene::LoadScene();
-				//StartGameplaySystem();
 				GameStateManager::current = GameStateManager::previous;
 				GameStateManager::next	  = GameStateManager::previous;
 			}
@@ -176,6 +174,10 @@ namespace ALEngine::Engine
 			{
 				ECS::Unload();
 				ClearPrefabCollection();
+#if !EDITOR
+				if (GameStateManager::next != GameState::Quit)
+					AssetManager::Instance()->Reset();
+#endif
 			}
 
 #if !EDITOR
@@ -185,8 +187,7 @@ namespace ALEngine::Engine
 			Coordinator::Instance()->ResetSystem();
 
 			GameStateManager::previous = GameStateManager::current;
-			GameStateManager::current = GameStateManager::next;
-
+			GameStateManager::current  = GameStateManager::next;
 		}
 	}
 
@@ -216,12 +217,13 @@ namespace ALEngine::Engine
 #endif
 
 		Engine::AssetManager::Instance()->Init();
+		Engine::AssetManager::Instance()->Reset();
 		GameStateManager::Init();
 
+#if EDITOR
 		appStatus = 1;
-		RunFileWatcherThread();
-
-#if !EDITOR
+		//RunFileWatcherThread();
+#else
 		OpenGLWindow::FullScreen(true);
 		Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
