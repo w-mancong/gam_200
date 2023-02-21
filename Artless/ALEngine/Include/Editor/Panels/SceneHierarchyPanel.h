@@ -75,6 +75,12 @@ namespace ALEngine::Editor
 		***********************************************************************************/
 		void UpdateMenuBar(void);
 
+		/*!*********************************************************************************
+			\brief
+			Updates the Scene Info Dropdown for the Scene Hierarchy Panel
+		***********************************************************************************/
+		void UpdateSceneInfoDropdown(void);
+
 		// Panel sizes
 		ImVec2 m_PanelMin{};	// Min Size
 

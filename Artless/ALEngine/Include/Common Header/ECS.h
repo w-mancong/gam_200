@@ -29,6 +29,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Components/Cell.h>
 #include <ECS/Components/CellLoader.h>
 #include <ECS/Components/ParticleProp.h> 
+#include <ECS/Components/LogicComponent.h>
 #include <ECS/Components/Button.h>
 #include <Engine/Audio/Audio.h>
 
@@ -53,6 +54,7 @@ brief:	This file contains all the relevant ECS header files to be included in pc
 #include <ECS/Systems/ParticleSystem.h>
 #include <ECS/Systems/TextSystem.h>
 #include <ECS/Systems/TransformSystem.h>
+#include <ECS/Systems/LogicSystem.h>
 #include <ECS/Systems/ButtonSystem.h>
 
 

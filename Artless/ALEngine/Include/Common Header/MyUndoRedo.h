@@ -11,6 +11,7 @@ brief:	This file contains all the relevant Editor header files to be included in
 
 #include <Commands/Command.h>
 #include <Commands/UpdateComponentCommand.h>
+#include <Commands/EntityCommand.h>
 #include <Commands/EditorCommandManager.h>
 
 #endif

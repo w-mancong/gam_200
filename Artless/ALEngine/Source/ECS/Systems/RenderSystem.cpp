@@ -60,6 +60,8 @@ namespace ALEngine::ECS
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
+		u64* isUI{ nullptr };
+		b8 uiFocus{ true };
 		
 		Tree::BinaryTree sceneGraph{};
 		std::vector<Transform> prevTransform;
@@ -100,18 +102,25 @@ namespace ALEngine::ECS
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			
+			if (uiFocus || Editor::ALEditor::Instance()->GetGameActive())
+				*(isUI + counter) = sprite.isUI;
+			else
+				*(isUI + counter) = 0;
 
 			++counter;
 		}
 
 		indirectShader.use();
 		indirectShader.Set("proj", cam.ProjectionMatrix());
+		indirectShader.Set("ortho", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width),
+			0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 		indirectShader.Set("view", cam.ViewMatrix());
 
 		glBindVertexArray(GetVao());
 
 		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -136,11 +145,11 @@ namespace ALEngine::ECS
 			// Interpolate color and size between particle birth and death
 			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
 			Vector4 color = ParticleSystem::Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
-			f32 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
+			Vector2 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
 
 			Transform trans;
 			trans.localPosition = trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
-			trans.localScale = trans.scale = Math::Vector2(size, size);
+			trans.localScale = trans.scale = size;
 			trans.localRotation = trans.rotation = particle.rotation;
 			trans.modelMatrix = Math::mat4::Model(trans);
 
@@ -148,16 +157,19 @@ namespace ALEngine::ECS
 			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
+			*(isUI + counter) = particle.sprite.isUI;
 
 			++counter;
 		}
 
 		indirectShader.use();
 		indirectShader.Set("proj", cam.ProjectionMatrix());
+		indirectShader.Set("ortho", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width),
+			0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 		indirectShader.Set("view", cam.ViewMatrix());
 
 		glBindVertexArray(GetVao());
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -200,18 +212,21 @@ namespace ALEngine::ECS
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
+			*(isUI + counter) = sprite.isUI;
 
 			++counter;
 		}
 
 		indirectShader.use();
 		indirectShader.Set("proj", camera.ProjectionMatrix());
+		indirectShader.Set("ortho", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width),
+			0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 		indirectShader.Set("view", camera.ViewMatrix());
 
 		glBindVertexArray(GetVao());
 
 		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -236,11 +251,11 @@ namespace ALEngine::ECS
 			// Interpolate color and size between particle birth and death
 			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
 			Vector4 color = ParticleSystem::Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
-			f32 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
+			Vector2 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
 
 			Transform trans;
 			trans.localPosition = trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
-			trans.localScale = trans.scale = Math::Vector2(size, size);
+			trans.localScale = trans.scale = size;
 			trans.localRotation = trans.rotation = particle.rotation;
 			trans.modelMatrix = Math::mat4::Model(trans);
 
@@ -248,16 +263,19 @@ namespace ALEngine::ECS
 			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
+			*(isUI + counter) = particle.sprite.isUI;
 
 			++counter;
 		}
 
 		indirectShader.use();
 		indirectShader.Set("proj", camera.ProjectionMatrix());
+		indirectShader.Set("ortho", Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width),
+			0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height)));
 		indirectShader.Set("view", camera.ViewMatrix());
 
 		glBindVertexArray(GetVao());
-		BatchData bd{ vColor, vMatrix, texHandle, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -296,14 +314,17 @@ namespace ALEngine::ECS
 
 		glGenTextures(1, &fbTexture);
 		glBindTexture(GL_TEXTURE_2D, fbTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+		s32 ScreenResX{ static_cast<s32>(OpenGLWindow::width) }, ScreenResY{ static_cast<s32>(OpenGLWindow::height) };
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ScreenResX, ScreenResY, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		
 		// create render buffer object for depth buffer and stencil attachment
 		glGenRenderbuffers(1, &viewportRenderBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, viewportRenderBuffer);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Input::GetScreenResX(), Input::GetScreenResY()); // Allocate buffer memory
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, ScreenResX, ScreenResY); // Allocate buffer memory
 
 		// attatch framebuffer and render buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -319,7 +340,7 @@ namespace ALEngine::ECS
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo);
 		glGenTextures(1, &editorTexture);
 		glBindTexture(GL_TEXTURE_2D, editorTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Input::GetScreenResX(), Input::GetScreenResY(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ScreenResX, ScreenResY, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, editorTexture, 0);
@@ -331,6 +352,7 @@ namespace ALEngine::ECS
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
+		isUI = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
 
 		sceneGraph.Init();
 
@@ -346,6 +368,7 @@ namespace ALEngine::ECS
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
+
 		//----------------- Begin viewport framebuffer rendering -----------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo); // begin viewport framebuffer rendering
 #endif
@@ -378,6 +401,15 @@ namespace ALEngine::ECS
 	{
 		if (Editor::ALEditor::Instance()->GetGameActive())
 			return;
+
+		if (Input::KeyTriggered(KeyCode::U) && Input::KeyDown(KeyCode::Ctrl))
+		{
+			uiFocus = !uiFocus;
+			if(uiFocus)
+				AL_CORE_INFO("UI attatched");
+			else
+				AL_CORE_INFO("UI detatched");
+		}
 
 		//------------------ Begin editor framebuffer rendering ------------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer
@@ -523,6 +555,11 @@ namespace ALEngine::ECS
 	void CameraFov(f32 fov)
 	{
 		camera.Fov(fov);
+	}
+
+	Engine::Camera& GetCamera(void)
+	{
+		return camera;
 	}
 
 	Tree::BinaryTree& GetSceneGraph(void)

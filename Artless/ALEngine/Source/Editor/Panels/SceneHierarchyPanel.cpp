@@ -14,6 +14,8 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 
 namespace ALEngine::Editor
 {
+	// File buffer size
+	const u32 FILE_BUFFER_SIZE{ 1024 };
 
 	SceneHierarchyPanel::SceneHierarchyPanel(void)
 	{
@@ -36,9 +38,13 @@ namespace ALEngine::Editor
 		// Menu Bar
 		UpdateMenuBar();
 
+		// Scene Info Dropdown
+		UpdateSceneInfoDropdown();
+
 		// Make Panel Child so panel can have Drag & Drop
 		ImGui::BeginChild("SceneHierarchyPanel##PanelChild", ImGui::GetContentRegionAvail());
 
+		/*
 		//// Add Entity Button
 		//if (ImGui::Button("Add Entity"))
 		//{
@@ -65,6 +71,7 @@ namespace ALEngine::Editor
 		//// Remove Entity Button
 		//if (!m_EntityList->empty() && ImGui::Button("Remove Entity"))
 		//	ImGui::OpenPopup("remove_entity_popup");
+		*/
 
 		b8 remove{ false };
 		// Remove Entity Popup!!
@@ -339,6 +346,50 @@ namespace ALEngine::Editor
 			}
 			ImGui::EndMenuBar();
 		}
+	}
+
+	void SceneHierarchyPanel::UpdateSceneInfoDropdown(void)
+	{
+		if (ImGui::CollapsingHeader("Scene Info##Scene Information Scene Hierarchy"))
+		{
+			c8* fp = const_cast<c8*>(ALEditor::Instance()->GetCurrentTileMapPath().c_str());
+			ImGuiInputTextFlags input_flag = ImGuiInputTextFlags_ReadOnly;
+			ImGui::InputTextWithHint("##TileMapPath_SceneInfo", "Tile Map Path", fp, FILE_BUFFER_SIZE, input_flag);
+
+			// Drag Drop!
+			if (ImGui::BeginDragDropTarget())
+			{
+				// Payload flag
+				ImGuiDragDropFlags payload_flag{ 0 };
+				//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+				// Get Drag and Drop Payload
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
+				{
+					// Get filepath
+					size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
+					wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+					// Check if image (png or jpg)
+					std::string fileString = filePath;
+					if (fileString.find(".map") != std::string::npos)
+					{
+						ALEditor::Instance()->SetCurrentTileMapPath(fileString);
+
+						// Add to Map Manager
+						Gameplay::MapManager::Instance()->SetMapPath(fileString);
+					}
+					else
+					{
+						AL_CORE_ERROR("A .map file is required!");
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+		}
+
+		ImGui::Separator();
+		ImGui::NewLine();
 	}
 
 	void SceneHierarchyPanel::SetPanelMin(Math::Vec2 min)

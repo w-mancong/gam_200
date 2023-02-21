@@ -47,6 +47,10 @@ namespace ALEngine::Engine::Scene
 		writer.Key("layer");
 		writer.Uint64(static_cast<u64>(sprite.layer));
 
+		// UI
+		writer.Key("ui");
+		writer.Uint64(static_cast<u64>(sprite.isUI));
+
 		writer.EndObject();
 		writer.EndArray();
 	}
@@ -72,6 +76,9 @@ namespace ALEngine::Engine::Scene
 		// Initialising value
 		sprite.id = AssetManager::Instance()->GetGuid(sprite.filePath);
 		sprite.index = 0;
+
+		// Getting UI
+		sprite.isUI = v[0]["ui"].GetUint();
 
 		Coordinator::Instance()->AddComponent(en, sprite);
 	}
@@ -529,11 +536,17 @@ namespace ALEngine::Engine::Scene
 
 		// sizeStart
 		writer.Key("sizeStart");
-		writer.Double(static_cast<f64>(prop.sizeStart));
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.sizeStart.x));
+		writer.Double(static_cast<f64>(prop.sizeStart.y));
+		writer.EndArray();
 
 		// sizeEnd
 		writer.Key("sizeEnd");
-		writer.Double(static_cast<f64>(prop.sizeEnd));
+		writer.StartArray();
+		writer.Double(static_cast<f64>(prop.sizeEnd.x));
+		writer.Double(static_cast<f64>(prop.sizeEnd.y));
+		writer.EndArray();
 
 		// sizeVariation
 		writer.Key("sizeVariation");
@@ -554,6 +567,10 @@ namespace ALEngine::Engine::Scene
 		// gravityEnabled
 		writer.Key("gravityEnabled");
 		writer.Bool(prop.gravityEnabled);
+
+		// active
+		writer.Key("active");
+		writer.Bool(prop.active);
 
 		writer.EndObject();
 		writer.EndArray();
@@ -588,10 +605,14 @@ namespace ALEngine::Engine::Scene
 		prop.colorEnd.w = e[3].GetFloat();
 
 		// Getting sizeStart
-		prop.sizeStart = v[0]["sizeStart"].GetFloat();
+		rjs::Value const& a = v[0]["sizeStart"];
+		prop.sizeStart.x = a[0].GetFloat();
+		prop.sizeStart.y = a[1].GetFloat();
 
 		// Getting sizeEnd
-		prop.sizeEnd = v[0]["sizeEnd"].GetFloat();
+		rjs::Value const& b = v[0]["sizeEnd"];
+		prop.sizeEnd.x = b[0].GetFloat();
+		prop.sizeEnd.y = b[1].GetFloat();
 
 		// Getting sizeVariation
 		prop.sizeVariation = v[0]["sizeVariation"].GetFloat();
@@ -607,6 +628,9 @@ namespace ALEngine::Engine::Scene
 
 		// Getting gravityEnabled
 		prop.gravityEnabled = v[0]["gravityEnabled"].GetBool();
+
+		// Getting active
+		prop.active = v[0]["active"].GetBool();
 
 		Coordinator::Instance()->AddComponent(en, prop);
 	}
@@ -672,107 +696,10 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->AddComponent(en, prop);
 	}
 
-	void WriteEntityScript(TWriter& writer, ECS::Entity en)
-	{
-		writer.Key("EntityScript");
-		writer.StartArray();
-		writer.StartObject();
-
-		EntityScript const& es = Coordinator::Instance()->GetComponent<EntityScript>(en);
-
-		// load function names
-		writer.Key("Load");
-		writer.StartArray();
-		for (auto const& v : es.Load)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		// init function names
-		writer.Key("Init");
-		writer.StartArray();
-		for (auto const& v : es.Init)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		// load function names
-		writer.Key("Update");
-		writer.StartArray();
-		for (auto const& v : es.Update)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		// load function names
-		writer.Key("Free");
-		writer.StartArray();
-		for (auto const& v : es.Free)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		// load function names
-		writer.Key("Unload");
-		writer.StartArray();
-		for (auto const& v : es.Unload)
-		{
-			std::string const& funcName = v.first;
-			writer.String(funcName.c_str(), static_cast<rjs::SizeType>(funcName.length() ) );
-		}
-		writer.EndArray();
-
-		writer.EndObject();
-		writer.EndArray();
-	}
-
-	void ReadEntityScript(rjs::Value const& v, ECS::Entity en)
-	{
-		EntityScript es{};
-
-		// Load
-		rjs::SizeType index = 0;
-		rjs::Value const& load = v[0]["Load"];
-		for (auto it = load.Begin(); it != load.End(); ++it, ++index)
-			es.AddLoadFunction(load[index].GetString());
-
-		// Init
-		index = 0;
-		rjs::Value const& init = v[0]["Init"];
-		for (auto it = init.Begin(); it != init.End(); ++it, ++index)
-			es.AddInitFunction(init[index].GetString());
-
-		// Update
-		index = 0;
-		rjs::Value const& update = v[0]["Update"];
-		for (auto it = update.Begin(); it != update.End(); ++it, ++index)
-			es.AddUpdateFunction(update[index].GetString());
-
-		// Free
-		index = 0;
-		rjs::Value const& free = v[0]["Free"];
-		for (auto it = free.Begin(); it != free.End(); ++it, ++index)
-			es.AddFreeFunction(free[index].GetString());
-
-		// Unload
-		index = 0;
-		rjs::Value const& unload = v[0]["Unload"];
-		for (auto it = unload.Begin(); it != unload.End(); ++it, ++index)
-			es.AddUnloadFunction(unload[index].GetString());
-
-		Coordinator::Instance()->AddComponent(en, es);
-	}
-
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
 	{
+		//if (!Coordinator::Instance()->HasComponent<Transform>(entity.id))
+		//	return;
 		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
 		if (entity.parent != -1)
 		{
@@ -867,8 +794,6 @@ namespace ALEngine::Engine::Scene
 				WriteParticleProperty(writer, en);
 			if (Coordinator::Instance()->HasComponent<Text>(en))
 				WriteTextProperty(writer, en);
-			if (Coordinator::Instance()->HasComponent<EntityScript>(en))
-				WriteEntityScript(writer, en);
 
 			writer.EndObject();
 		}
@@ -905,8 +830,6 @@ namespace ALEngine::Engine::Scene
 				ReadParticleProperty(v["ParticleProperty"], en);
 			if (v.HasMember("TextProperty"))
 				ReadTextProperty(v["TextProperty"], en);
-			if (v.HasMember("EntityScript"))
-				ReadEntityScript(v["EntityScript"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
 		CalculateLocalCoordinate();

@@ -9,16 +9,6 @@ brief: This file contains function definition for PathFindingManager
 All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
-/*!
-file: PathFindingManager.cpp
-author:		Chan Jie Ming Stanley	(50%)
-co-author:	Tan Zhen Xiong			(50%)
-email: c.jiemingstanley\@digipen.edu
-       t.zhenxiong\@digipen.edu
-brief: This file contains function declaration for PathFindingManager
-
-All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
-*//*__________________________________________________________________________________*/
 #include <Engine/PathFindingManager.h>
 
 namespace  ALEngine::Engine::AI
@@ -35,7 +25,7 @@ namespace  ALEngine::Engine::AI
         Cell& startNode = Coordinator::Instance()->GetComponent<Cell>(startCell);
         Cell& endNode = Coordinator::Instance()->GetComponent<Cell>(endCell);
 
-        if (!endNode.m_isAccessible || (!canWalkOverUnwalkable && !endNode.m_canWalk)) {
+        if (!endNode.m_isAccessible || (!canWalkOverUnwalkable && !endNode.m_canWalk) || endNode.has_Wall) {
             return false;
         }      
         
@@ -106,7 +96,7 @@ namespace  ALEngine::Engine::AI
                 }
                 //If it's not end
                 //then check if the current neighbour node exist inside closed list or it is blocked
-                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || !neighbourNode->m_isAccessible || (!canWalkOverUnwalkable && !neighbourNode->m_canWalk) || neighbourNode->hasUnit)
+                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || neighbourNode->has_Wall || !neighbourNode->m_isAccessible || (!canWalkOverUnwalkable && !neighbourNode->m_canWalk) || neighbourNode->hasUnit)
                 {
                     continue;
                 }

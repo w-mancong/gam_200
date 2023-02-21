@@ -1,8 +1,11 @@
 /*!
 file:	Input.h
-author:	Wong Man Cong
-co-author: Mohamed Zafir
+author:	Wong Man Cong (90%)
+co-author: Mohamed Zafir (5%)
+		   Lucas Nguyen (5%)
 email:	w.mancong\@digipen.edu
+		m.zafir\@digipen.edu
+		l.nguyen\@digipen.edu
 brief:	This file contain static class declaration for basic key inputs from user.
 		It also contains functions that return mouse cursor position on screen.
 
@@ -99,6 +102,16 @@ namespace ALEngine::UserInput
 			Cursor World Space position.
 		***********************************************************************************/
 		static Math::Vec2 GetMouseWorldPos();
+		
+		/*!*********************************************************************************
+			\brief
+			Returns the cursor's position with respect to the Game/Scene Panel.
+
+			\return
+			Cursor World Space position with respect to the Game/Scene Panel.
+			Returns GLFW Mouse Position if not in Editor Mode.
+		***********************************************************************************/
+		static Math::Vec2 GetMousePosWRTPanel();
 
 		/*!*********************************************************************************
 			\brief

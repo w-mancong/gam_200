@@ -9,6 +9,8 @@ brief:	This file contains function definitions for Coordinator
 #ifndef	COORDINATOR_H
 #define COORDINATOR_H
 
+#include <ECS/Systems/LogicSystem.h>
+
 namespace ALEngine::ECS
 {
 	/*!*********************************************************************************
@@ -272,6 +274,14 @@ namespace ALEngine::ECS
 		void SetSystemSignature(Signature signature)
 		{
 			m_SystemManager->SetSignature<T>(signature);
+		}
+
+		/*!*****************************************************************************
+			\brief Reset all system's member variable to it's default value
+		*******************************************************************************/
+		void ResetSystem(void)
+		{
+			m_SystemManager->ResetSystem();
 		}
 
 	private:

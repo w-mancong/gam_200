@@ -39,7 +39,10 @@ namespace ALEngine::ECS::Component
 		Color m_Color_Tint;
 
 		//unit entity that is on the cell
-		u32 unitEntity;
+		Entity unitEntity;
+
+		Entity child_overlay;
+		b8 has_Wall{ false };
 
 		//Coordinate of the cll
 		Math::Vector2Int coordinate = { 0,0 };

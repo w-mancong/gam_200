@@ -41,20 +41,20 @@ namespace ALEngine::Editor
 		void OnImGuiRender(void);
 
 		/*!*********************************************************************************
-		\brief
-		Gets the Width of the Scene Panel
+			\brief
+			Gets the Width of the Scene Panel
 
-		\return
-		Returns the selected Entity
+			\return
+			Returns the selected Entity
 		***********************************************************************************/
 		f64 GetSceneWidth(void);
 
 		/*!*********************************************************************************
-		\brief
-		Gets the Height of the Scene Panel
+			\brief
+			Gets the Height of the Scene Panel
 
-		\return
-		Returns the selected Entity
+			\return
+			Returns the selected Entity
 		***********************************************************************************/
 		f64 GetSceneHeight(void);
 
@@ -68,6 +68,15 @@ namespace ALEngine::Editor
 			position was handled outside of the Scene viewport
 		***********************************************************************************/
 		Math::Vec2 GetMouseWorldPos();
+
+		/*!*********************************************************************************
+			\brief
+			Returns the cursor's screen space with respect to the Scene Panel.
+
+			\return
+			Cursor Screen Space position with respect to the Scene Panel.
+		***********************************************************************************/
+		Math::Vec2 GetMousePosWRTPanel();
 
 		/*!*********************************************************************************
 			\brief Return editor panel camera's width

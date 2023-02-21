@@ -63,7 +63,7 @@
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
+    <IncludePath>$(SolutionDir)\ALEngine\Include;$(SolutionDir)\AlEngine\Scripts\Header</IncludePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
@@ -71,7 +71,7 @@
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
+    <IncludePath>$(SolutionDir)\ALEngine\Include;$(SolutionDir)\AlEngine\Scripts\Header</IncludePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -79,7 +79,7 @@
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
     <LibraryPath>$(SolutionDir)\Extern\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\ALEngine\Include</IncludePath>
+    <IncludePath>$(SolutionDir)\ALEngine\Include;$(SolutionDir)\AlEngine\Scripts\Header</IncludePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\ALEngine\Gameplay\Header;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\ALEngine\Gameplay\Header;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Extern\include\;$(SolutionDir)\ALEngine\Include\Editor\imgui;$(SolutionDir)\ALEngine\Include\Editor\ImGuizmo;$(SolutionDir)\ALEngine\Gameplay\Header;$(SolutionDir)\Extern\include\spdlog\include;$(SolutionDir)\Extern\include\tracy\public;$(SolutionDir)\Extern\include\tracy\public\tracy;$(SolutionDir)\Extern\include\mono</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -158,10 +158,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
+    <ClCompile Include="Source\Commands\EntityCommand.cpp" />
+    <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
+    <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\TransformSystem.cpp" />
-    <ClCompile Include="Source\AI\AiFiniteStateMachine.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\AudioEditorPanel.cpp" />
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
@@ -176,6 +179,7 @@
     <ClCompile Include="Source\Engine\GamePlayInterface.cpp" />
     <ClCompile Include="Source\Engine\GameplayInterface_Management_Enemy.cpp" />
     <ClCompile Include="Source\Engine\GameplayInterface_Management_GUI.cpp" />
+    <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
@@ -276,14 +280,6 @@
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptInterface.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\CppScriptSystem.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\EntityScript.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\PauseLogic.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\SkillHovering.cpp" />
-    <ClCompile Include="Source\Scripting\Cpp Scripts\Scripts\StatsHovering.cpp" />
-    <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
-    <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
     <ClCompile Include="Source\Commands\Command.cpp" />
     <ClCompile Include="Source\Utility\BinaryTree.cpp" />
@@ -298,6 +294,10 @@
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
+    <ClInclude Include="Include\Commands\EntityCommand.h" />
+    <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
+    <ClInclude Include="Include\ECS\Components\UniBehaviour.h" />
+    <ClInclude Include="Include\ECS\Systems\LogicSystem.h" />
     <ClInclude Include="Include\ECS\Components\Button.h" />
     <ClInclude Include="Include\ECS\Systems\ButtonSystem.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorEditorPanel.h" />
@@ -306,7 +306,6 @@
     <ClInclude Include="Include\Common Header\MyScene.h" />
     <ClInclude Include="Include\Common Header\MyUndoRedo.h" />
     <ClInclude Include="Include\Commands\Command.h" />
-    <ClInclude Include="Include\Common Header\MyScripting.h" />
     <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
     <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
     <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
@@ -316,12 +315,12 @@
     <ClInclude Include="Include\Engine\GamePlayInterface.h" />
     <ClInclude Include="Include\Engine\GameplayInterface_Management_Enemy.h" />
     <ClInclude Include="Include\Engine\GameplayInterface_Management_GUI.h" />
+    <ClInclude Include="Gameplay\Header\MapManager.h" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
     <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Asset Manager\AssetManager.h" />
-    <ClInclude Include="Include\Common Header\MyAi.h" />
     <ClInclude Include="Include\Common Header\MyAudio.h" />
     <ClInclude Include="Include\Common Header\MySerializer.h" />
     <ClInclude Include="Include\ECS\Components\Animation.h" />
@@ -429,16 +428,10 @@
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptInterface.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\CppScriptSystem.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\EntityScript.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\PauseLogic.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\SkillHovering.h" />
-    <ClInclude Include="Include\Scripting\Cpp Scripts\Scripts\StatsHovering.h" />
-    <ClInclude Include="Include\Scripting\ScriptGlue.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
     <ClInclude Include="Include\Commands\UpdateComponentCommand.h" />
+    <ClInclude Include="Include\Utility\AudioNames.h" />
     <ClInclude Include="Include\Utility\BinaryTree.h" />
     <ClInclude Include="Include\Utility\console.h" />
     <ClInclude Include="Include\Utility\HelperFunctions.h" />
@@ -447,8 +440,9 @@
     <ClInclude Include="Include\Utility\Timer.h" />
     <ClInclude Include="Include\Utility\Type.h" />
     <ClInclude Include="Include\Engine\Physics2D.h" />
-    <ClInclude Include="Include\Scripting\ScriptEngine.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
+    <ClInclude Include="Scripts\Header\GameplayCamera.h" />
+    <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
