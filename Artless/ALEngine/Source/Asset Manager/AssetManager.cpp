@@ -98,11 +98,11 @@ namespace
 			{
 				std::string const& fileName = checkPath.string() + "\\" + std::filesystem::relative(innerDirectoryEntry.path(), checkPath).filename().string();
 				//check if is meta
-				if (fileName.find(".meta") != std::string::npos)
+				if (fileName.find(".meta") != std::string::npos && fileName.find(".ttf") == std::string::npos)
 				{
 					metaFiles.push_back(fileName);
 				}
-				else if(fileName.find(".ttf") != std::string::npos) // file is a font type
+				else if(fileName.find(".meta") == std::string::npos && fileName.find(".ttf") != std::string::npos) // file is a font type
 				{
 					fontFiles.push_back(fileName);
 				}
@@ -507,7 +507,9 @@ namespace ALEngine::Engine
 		return guidList[fileName];
 #else
 		// Load the resource if it's not already loaded
-
+		if (!guidList[fileName].loaded)
+			LoadResource(fileName, guidList[fileName].id);
+		return guidList[fileName].id;
 #endif
 	}
 
@@ -547,6 +549,10 @@ namespace ALEngine::Engine
 			FMOD_RESULT res = sound->release();
 		}
 
+		std::for_each(guidList.begin(), guidList.end(), [](std::unordered_map<std::string, GUID_LIST>::value_type& item)
+		{
+			item.second.loaded = false;
+		});
 		animationList.clear(), textureList.clear(), audioList.clear();
 	}
 
@@ -763,10 +769,76 @@ namespace ALEngine::Engine
 		}
 
 		// Load all the font files into fontList
-		for (auto it = fontFiles.begin(); it != fontFiles.end(); ++it)
-			fontList.insert(std::pair<Guid, ALEngine::ECS::Font>{ 0, LoadFont(*it) });
+		{
+			Guid tmp_id{};
+			for (auto it = fontFiles.begin(); it != fontFiles.end(); ++it)
+				fontList.insert(std::pair<Guid, ALEngine::ECS::Font>{ tmp_id++, LoadFont(*it) });
+		}
 
-		// 
+		// Load in all the guid from meta files
+		for (auto it = metaFiles.begin(); it != metaFiles.end(); ++it)
+		{
+			Guid id{};
+			std::ifstream mFile(*it, std::ios_base::binary);
+			mFile.read(reinterpret_cast<c8*>(&id), sizeof(Guid));
+
+			std::string const& guidKey = it->substr(0, it->find_last_of('.'));
+			if(it->find(".anim") != std::string::npos)
+			{
+				Animation animation;
+				std::ifstream ifs{ guidKey, std::ios::binary };
+				ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
+				guidList.insert(std::pair<std::string, Guid>{ animation.clipName, id });
+			}
+			else
+				guidList.insert(std::pair<std::string, Guid>{ guidKey, id });
+		}
+	}
+
+	void AssetManager::LoadResource(std::string const& filePath, Guid id)
+	{
+		FileType fileType = GetFileType(filePath);
+		switch (fileType)
+		{
+		case FileType::Image:
+		{
+			//into memory/stream
+			Texture texture = LoadTexture(filePath.c_str());
+			// Insert into texture list
+
+			if (texture.handle)
+				textureList.insert(std::pair<Guid, Texture>{ id, texture });
+
+			break;
+		}
+		case FileType::Audio:
+		{
+			// load into memory stream
+			Audio audio = LoadAudio(filePath.c_str());
+
+			if (audio.m_Sound)
+				audioList.insert(std::pair<Guid, Audio>{id, audio});
+
+			break;
+		}
+		case FileType::Animation:
+		{
+			Animation animation;
+			std::ifstream ifs{ filePath, std::ios::binary };
+			ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
+
+			animationList.insert(std::pair<Guid, Animation>{ id, animation });
+
+			Texture texture = LoadAnimation(animation);
+
+			if (texture.handle)
+				textureList.insert(std::pair<Guid, Texture>{ id, texture });
+			break;
+		}
+		default:
+			break;
+		}
+		guidList[filePath].loaded = true;
 	}
 #endif
 

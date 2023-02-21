@@ -217,15 +217,15 @@ namespace ALEngine::Engine
 #endif
 
 		Engine::AssetManager::Instance()->Init();
-		Engine::AssetManager::Instance()->Reset();
+		//Engine::AssetManager::Instance()->Reset();
 		GameStateManager::Init();
 
-#if EDITOR
 		appStatus = 1;
+#if EDITOR
 		//RunFileWatcherThread();
 #else
-		OpenGLWindow::FullScreen(true);
-		Scene::LoadScene("Assets\\test.scene");
+		//OpenGLWindow::FullScreen(true);
+		//Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif
 		//Entity en = Coordinator::Instance()->CreateEntity();

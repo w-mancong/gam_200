@@ -103,6 +103,8 @@ namespace ALEngine::Engine
 			\brief Used for initializing asset manager in game mode
 		*******************************************************************************/
 		void GameModeInit(void);
+
+		void LoadResource(std::string const& filePath, Guid id);
 #endif
 
 		/*!*********************************************************************************
