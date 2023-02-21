@@ -99,10 +99,10 @@ namespace ALEngine::Script
 		Text& fps = Coordinator::Instance()->GetComponent<Text>(getGuiManager().FPS_Label);
 		if (guiManager.fpsActive)
 		{
-			AL_CORE_CRITICAL("DISPLAY FPS");
 			std::ostringstream oss{};
 			oss << "FPS: " << (int)Time::m_FPS;
 			fps.textString = oss.str();
+			
 		}
 		else
 		{

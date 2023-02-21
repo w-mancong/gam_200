@@ -77,6 +77,9 @@ namespace ALEngine::Script
 		//Initialize Pattern
 		InitializePatterns(pattern_Default);
 
+		//Initialize General GUI
+		gameplaySystem_GUI->InitializeGUI();
+
 		// Randomize Pattern
 		RandomizePatternList();
 
@@ -206,7 +209,7 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
-		//gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
+		gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
 
 		if (Input::KeyTriggered(KeyCode::E)) {
 			EndTurn();
