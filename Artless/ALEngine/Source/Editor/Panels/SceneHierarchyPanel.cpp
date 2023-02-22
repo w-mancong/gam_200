@@ -378,6 +378,7 @@ namespace ALEngine::Editor
 
 						// Add to Map Manager
 						Gameplay::MapManager::Instance()->SetMapPath(fileString);
+						Gameplay::MapManager::Instance()->DeserializeMap(fileString);
 
 						// Load the tile level
 						ALEditor::Instance()->LoadMap();
@@ -392,7 +393,6 @@ namespace ALEngine::Editor
 		}
 
 		ImGui::Separator();
-		ImGui::NewLine();
 	}
 
 	void SceneHierarchyPanel::SetPanelMin(Math::Vec2 min)

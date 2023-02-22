@@ -132,6 +132,12 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Displays the Logic Component on the panel
+		***********************************************************************************/
+		void DisplayLogic(void);
+
+		/*!*********************************************************************************
+			\brief
 			Displays the Sprite component info on the panel
 
 			\return
@@ -183,6 +189,7 @@ namespace ALEngine::Editor
 		InComp_Text,
 		InComp_Script,
 		InComp_Audio,
+		InComp_Logic,
 		InComp_Total
 	};
 }

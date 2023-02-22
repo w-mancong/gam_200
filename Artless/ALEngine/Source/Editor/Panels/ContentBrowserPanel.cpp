@@ -271,6 +271,7 @@ namespace ALEngine::Editor
 				else if (fileNamestring.find(".map") != std::string::npos)
 				{
 					Gameplay::MapManager::Instance()->SetMapPath(directoryEntry.path().string());
+					Gameplay::MapManager::Instance()->DeserializeMap(directoryEntry.path().string());
 					ALEditor::Instance()->LoadMap();
 				}
 				else if (directoryEntry.is_directory())

@@ -251,6 +251,7 @@
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_Enemy.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
+    <ClInclude Include="tracy\Tracy.hpp" />
     <ClInclude Include="Scripts\others\ScriptManager.h" />
   </ItemGroup>
   <ItemGroup>
