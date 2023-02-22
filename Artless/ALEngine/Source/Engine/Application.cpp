@@ -99,7 +99,6 @@ namespace ALEngine::Engine
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
-				Scene::LoadScene();
 				ECS::Load();
 				GameStateManager::next = GameStateManager::current = GameState::Running;
 			}
@@ -153,6 +152,7 @@ namespace ALEngine::Engine
 
 					// Update Scene graph
 					ECS::GetSceneGraph().Update();
+
 #if EDITOR
 				}
 #endif
@@ -173,8 +173,8 @@ namespace ALEngine::Engine
 			// unload resource
 			if (GameStateManager::next != GameState::Restart)
 			{
-				ECS::Unload();
-				ClearPrefabCollection();
+				//ECS::Unload();
+				//ClearPrefabCollection();
 #if !EDITOR
 				if (GameStateManager::next != GameState::Quit)
 					AssetManager::Instance()->Reset();
@@ -217,8 +217,8 @@ namespace ALEngine::Engine
 		UpdateLoop[1] = GameUpdate;
 #endif
 
-		Scene::InitSceneManager();
 		Engine::AssetManager::Instance()->Init();
+		Scene::InitSceneManager();
 		GameStateManager::Init();
 
 		appStatus = 1;
@@ -339,11 +339,6 @@ namespace ALEngine::Engine
 		Input::Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
-
-		if (Input::KeyTriggered(KeyCode::Key_1))
-			Scene::LoadScene("Assets\\test_logic.scene");
-		if (Input::KeyTriggered(KeyCode::Key_2))
-			Scene::LoadScene(0);
 	}
 
 	void Engine::FixedUpdate(void)

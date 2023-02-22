@@ -816,6 +816,7 @@ namespace ALEngine::Engine::Scene
 		while (std::getline(ifs, buffer))
 			scenes.emplace_back(buffer);
 		currScene = scenes[0];
+		LoadScene();
 	}
 
 	void SaveScene(c8 const* sceneName)

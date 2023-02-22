@@ -1,0 +1,41 @@
+[
+    {
+        "map_path": ""
+    },
+    {
+        "id": 0,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "logic_components",
+                "active": true,
+                "localActive": true,
+                "id": 0,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "PauseLogic",
+                    "GameplayCamera",
+                    "GameplaySystem"
+                ]
+            }
+        ]
+    }
+]
