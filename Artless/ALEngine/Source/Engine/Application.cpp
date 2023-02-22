@@ -101,6 +101,7 @@ namespace ALEngine::Engine
 				// Call function load
 				Scene::LoadScene();
 				ECS::Load();
+				GameStateManager::next = GameStateManager::current = GameState::Running;
 			}
 			else
 			{
@@ -216,16 +217,15 @@ namespace ALEngine::Engine
 		UpdateLoop[1] = GameUpdate;
 #endif
 
+		Scene::InitSceneManager();
 		Engine::AssetManager::Instance()->Init();
-		//Engine::AssetManager::Instance()->Reset();
 		GameStateManager::Init();
 
 		appStatus = 1;
 #if EDITOR
-		//RunFileWatcherThread();
+		RunFileWatcherThread();
 #else
 		//OpenGLWindow::FullScreen(true);
-		//Scene::LoadScene("Assets\\test.scene");
 		Console::StopConsole();
 #endif
 		//Entity en = Coordinator::Instance()->CreateEntity();
@@ -338,6 +338,11 @@ namespace ALEngine::Engine
 		Input::Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
+
+		if (Input::KeyTriggered(KeyCode::Key_1))
+			Scene::LoadScene("Assets\\test_logic.scene");
+		if (Input::KeyTriggered(KeyCode::Key_2))
+			Scene::LoadScene(0);
 	}
 
 	void Engine::FixedUpdate(void)

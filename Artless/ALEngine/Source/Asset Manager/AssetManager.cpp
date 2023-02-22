@@ -534,6 +534,7 @@ namespace ALEngine::Engine
 	}
 #endif
 
+#if !EDITOR
 	void AssetManager::Reset(void)
 	{
 		std::lock_guard<std::mutex> guard{ m_Resource };
@@ -555,6 +556,7 @@ namespace ALEngine::Engine
 		});
 		animationList.clear(), textureList.clear(), audioList.clear();
 	}
+#endif
 
 #if EDITOR
 	void AssetManager::EditorModeInit(void)

@@ -86,9 +86,9 @@ namespace ALEngine::Engine
 	     function for filewatcher to alert assetmanager of file changers
 		***********************************************************************************/
 		void Alert(std::string const& filePath, FileStatus status);
-#endif
-
+#else
 		void Reset(void);
+#endif
 
 		std::unordered_map<Guid, ALEngine::ECS::Font>& GetFontList();
 
