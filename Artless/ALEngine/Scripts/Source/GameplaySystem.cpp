@@ -31,6 +31,68 @@ namespace ALEngine::Script
 		StartGameplaySystem();
 	}
 
+	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
+	{
+		using namespace Gameplay;
+		MapManager::Instance()->SetMapPath(map_fp);
+		if (!MapManager::Instance()->DeserializeMap(map_fp))
+			return false;
+
+		// Get tree
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		m_Room.width = MapManager::Instance()->GetWidth();
+		m_Room.height = MapManager::Instance()->GetHeight();
+		m_Room.roomSize = m_Room.width * m_Room.height;
+		m_Room.roomCellsArray = new ECS::Entity[m_Room.roomSize];
+
+		//Initialize Room Parent 
+		m_Room_Parent_Entity = Coordinator::Instance()->CreateEntity();
+		Coordinator::Instance()->AddComponent(m_Room_Parent_Entity, Transform{});
+		Coordinator::Instance()->GetComponent<EntityData>(m_Room_Parent_Entity).tag = "Room";
+		sceneGraph.Push(-1, m_Room_Parent_Entity); // first cell is parent
+
+		// Keep track of index of current tile in the Room
+		u32 counter{ 0 };
+		u32 c{ 0 }, r{ 0 };
+
+		// Iterate every Map
+		for (auto col : MapManager::Instance()->GetMap())
+		{
+			r = 0;
+			for (auto row : col)
+			{
+				assert(counter < m_Room.roomSize);
+				m_Room.roomCellsArray[counter] = Coordinator::Instance()->CreateEntity();
+
+				sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[counter]);
+
+				//Set default transform and scale
+				Transform transform;
+				transform.scale = { 100, 100 };
+				transform.localScale = { 100, 100 };
+				Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[counter], transform);
+
+				// Put player tile
+				if (row == "Player")
+				{
+					// Make sure to put tile on player's position
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Tile");
+					m_Room.playerX = r;
+					m_Room.playerY = c;
+				}
+				// Skip "Empty" tiles
+				else if(row != "Empty")
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], MapManager::Instance()->GetTileImage(row).c_str());
+			
+				++counter;
+				++r;
+			}
+			++c;
+		}
+		return true;
+	}
+
 	void GameplaySystem::Update(ECS::Entity en)
 	{
 
@@ -149,7 +211,7 @@ namespace ALEngine::Script
 		}
 
 		//Create Player
-		PlaceNewPlayerInRoom(0, 2);
+		PlaceNewPlayerInRoom(m_Room.playerX, m_Room.playerY);
 
 		//std::cout << (Gameplay_Mangement_Singleton::Instance()->Instance()->gameplaySystem == nullptr ? "system not set up\n" : "system is up\n");
 		//printf("Address of a: %p\n", *this);

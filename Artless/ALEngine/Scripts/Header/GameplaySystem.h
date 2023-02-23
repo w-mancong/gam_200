@@ -73,6 +73,17 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
+			Initializes the Room based on the .map file that is given
+		\param [in]
+			map_fp:		File Path to the .map file
+		\return
+			Returns true when filepath can be found,
+			else returns false
+		***********************************************************************************/
+		bool InitializeRoom(std::string map_fp);
+
+		/*!*********************************************************************************
+		\brief
 			End current turn
 		***********************************************************************************/
 		void EndTurn();

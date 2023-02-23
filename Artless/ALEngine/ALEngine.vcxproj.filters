@@ -101,6 +101,7 @@
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
     <ClCompile Include="Scripts\rttr_main.cpp" />
     <ClCompile Include="Scripts\others\ScriptManager.cpp" />
+    <ClCompile Include="Source\SceneManager\CutsceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -253,6 +254,7 @@
     <ClInclude Include="Scripts\MyLogicComponents.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
     <ClInclude Include="Scripts\others\ScriptManager.h" />
+    <ClInclude Include="Include\SceneManager\CutsceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
