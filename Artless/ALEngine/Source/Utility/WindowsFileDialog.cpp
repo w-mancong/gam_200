@@ -20,8 +20,9 @@ namespace ALEngine::Utility
 {
 	std::string WindowsFileDialog::LoadFile(const c8* filter)
 	{
+#if EDITOR
 		Engine::FileWatcher::SetPause(true);
-
+#endif
 		// A stands for the ASCII OPENFILENAME,
 			// Common Dialog box structure
 		OPENFILENAMEA openFileName;
@@ -41,17 +42,23 @@ namespace ALEngine::Utility
 		openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;		// OFN_NOCHANGEDIR is cause this may change the working directory if this isn't here
 		if (GetOpenFileNameA(&openFileName) == TRUE)
 		{
+#if EDITOR
 			Engine::FileWatcher::SetPause(false);
+#endif
 			return openFileName.lpstrFile;
 		}
 
+#if EDITOR
 		Engine::FileWatcher::SetPause(false);
+#endif
 		return std::string();
 	}
 
 	std::string WindowsFileDialog::SaveFile(const c8* filter)
 	{
+#if EDITOR
 		Engine::FileWatcher::SetPause(true);
+#endif
 		// A stands for the ASCII OPENFILENAME,
 			// Common Dialog box structure
 		OPENFILENAMEA openFileName;
@@ -71,11 +78,15 @@ namespace ALEngine::Utility
 		openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;		// OFN_NOCHANGEDIR is cause this may change the working directory if this isn't here
 		if (GetSaveFileNameA(&openFileName) == TRUE)
 		{
+#if EDITOR
 			Engine::FileWatcher::SetPause(false);
+#endif
 			return openFileName.lpstrFile;
 		}
 
+#if EDITOR
 		Engine::FileWatcher::SetPause(false);
+#endif
 		return std::string();
 	}
 }

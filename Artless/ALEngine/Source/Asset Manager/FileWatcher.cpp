@@ -11,6 +11,7 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 *//*__________________________________________________________________________________*/
 #include "pch.h"
 
+#if EDITOR
 namespace
 {
 	const std::filesystem::path basePath = "Assets"; //base file path
@@ -128,3 +129,4 @@ namespace ALEngine::Engine
 	}
 }
 
+#endif

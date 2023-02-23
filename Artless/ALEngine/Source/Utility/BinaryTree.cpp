@@ -668,7 +668,7 @@ namespace ALEngine::Tree
         ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
         std::vector<Serial> serialVect;
         std::vector<s32> insertedVect;
-        std::unordered_map<s32, s32> parentsID{};
+        std::unordered_map<s32, ECS::Entity> parentsID{};
         for (auto it{ entities.begin() }; it != entities.end(); ++it)
         {
             EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(*it);

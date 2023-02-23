@@ -18,9 +18,12 @@ namespace ALEngine::Engine::Scene
 		namespace rjs = rapidjson;
 		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
 
-		std::string currScene;
+		c8 const* sceneBuildIndexFilePath = "Assets\\Dev\\SceneManager\\scenesBuildIndex";
+
+		std::string currScene{};
+		std::vector<std::string> scenes{};	// this scenes will be storing the path to the .scene file
 #if EDITOR
-		std::string state;
+		std::string state{};
 #endif
 	}
 
@@ -805,6 +808,20 @@ namespace ALEngine::Engine::Scene
 		CalculateLocalCoordinate();
 	}
 
+	void InitSceneManager(void)
+	{
+		std::ifstream ifs{ sceneBuildIndexFilePath, std::ios::binary };
+
+		std::string buffer{};
+		while (std::getline(ifs, buffer))
+		{
+			buffer = buffer.substr(0, buffer.find_last_of("\r\n"));
+			scenes.emplace_back(buffer);
+		}
+		currScene = scenes[0];
+		LoadScene();
+	}
+
 	void SaveScene(c8 const* sceneName)
 	{
 		std::string filePath{ sceneName };
@@ -824,7 +841,7 @@ namespace ALEngine::Engine::Scene
 		ofs.write(sb.GetString(), sb.GetLength());
 	}
 
-	void LoadScene(c8 const* sceneName)
+	void LoadScene(std::string const& sceneName)
 	{
 		c8* buffer = utils::ReadBytes(sceneName);
 
@@ -843,11 +860,18 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->DestroyEntities();
 
 		DeserializeScene(doc);
+		GameStateManager::Next(GameState::LevelSwitch);
+	}
+
+	void LoadScene(u64 sceneIndex)
+	{
+		LoadScene(scenes[sceneIndex]);
 	}
 
 	void LoadScene(void)
 	{
 		LoadScene(currScene.c_str());
+		GameStateManager::next = GameStateManager::current;
 	}
 
 	void Restart(void)
@@ -868,6 +892,27 @@ namespace ALEngine::Engine::Scene
 		rjs::Document doc;
 		doc.Parse(state.c_str());
 		DeserializeScene(doc);
+	}
+
+	void SaveScenesBuildIndex(void)
+	{
+		std::ofstream ofs{ sceneBuildIndexFilePath, std::ios::binary };
+		std::string str{};
+		for (auto const& scene : scenes)
+			str += scene + "\n";
+		ofs.write(str.c_str(), str.length());
+	}
+
+	void AddScene(c8 const* sceneName)
+	{
+		scenes.emplace_back(sceneName);
+		SaveScenesBuildIndex();
+	}
+
+	void RemoveScene(c8 const* sceneName)
+	{
+		scenes.erase(std::find(scenes.begin(), scenes.end(), sceneName));
+		SaveScenesBuildIndex();
 	}
 #endif
 }
