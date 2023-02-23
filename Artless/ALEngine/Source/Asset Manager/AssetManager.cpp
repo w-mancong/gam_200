@@ -802,43 +802,42 @@ namespace ALEngine::Engine
 		FileType fileType = GetFileType(filePath);
 		switch (fileType)
 		{
-		case FileType::Image:
-		{
-			//into memory/stream
-			Texture texture = LoadTexture(filePath.c_str());
-			// Insert into texture list
+			case FileType::Image:
+			{
+				//into memory/stream
+				Texture texture = LoadTexture(filePath.c_str());
+				// Insert into texture list
 
-			if (texture.handle)
-				textureList.insert(std::pair<Guid, Texture>{ id, texture });
+				if (texture.handle)
+					textureList.insert(std::pair<Guid, Texture>{ id, texture });
 
-			break;
-		}
-		case FileType::Audio:
-		{
-			// load into memory stream
-			Audio audio = LoadAudio(filePath.c_str());
+				break;
+			}
+			case FileType::Audio:
+			{
+				// load into memory stream
+				Audio audio = LoadAudio(filePath.c_str());
 
-			if (audio.m_Sound)
-				audioList.insert(std::pair<Guid, Audio>{id, audio});
+				if (audio.m_Sound)
+					audioList.insert(std::pair<Guid, Audio>{id, audio});
 
-			break;
-		}
-		case FileType::Animation:
-		{
-			Animation animation;
-			std::ifstream ifs{ filePath, std::ios::binary };
-			ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
+				break;
+			}
+			case FileType::Animation:
+			default:
+			{
+				Animation animation;
+				std::ifstream ifs{ "Assets\\Animation\\" + filePath + ".anim", std::ios::binary };
+				ifs.read(reinterpret_cast<char*>(&animation), sizeof(Animation));
 
-			animationList.insert(std::pair<Guid, Animation>{ id, animation });
+				animationList.insert(std::pair<Guid, Animation>{ id, animation });
 
-			Texture texture = LoadAnimation(animation);
+				Texture texture = LoadAnimation(animation);
 
-			if (texture.handle)
-				textureList.insert(std::pair<Guid, Texture>{ id, texture });
-			break;
-		}
-		default:
-			break;
+				if (texture.handle)
+					textureList.insert(std::pair<Guid, Texture>{ id, texture });
+				break;
+			}
 		}
 		guidList[filePath].loaded = true;
 	}

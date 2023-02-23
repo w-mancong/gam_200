@@ -226,8 +226,17 @@ namespace ALEngine::Engine
 		RunFileWatcherThread();
 #else
 		//OpenGLWindow::FullScreen(true);
-		Console::StopConsole();
+		//Console::StopConsole();
 #endif
+		//Animator animator = CreateAnimator("Player");
+		//Entity en = Coordinator::Instance()->CreateEntity();
+		//Transform trans{};
+		//trans.scale = { 250.0f, 250.0f };
+		//Coordinator::Instance()->AddComponent(en, trans);
+		//Coordinator::Instance()->AddComponent(en, Sprite{});
+		//Coordinator::Instance()->AddComponent(en, animator);
+		//ECS::GetSceneGraph().Push(-1, en);
+
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//AddLogicComponent<Script::GameplayCamera>(en);
 		//Scene::LoadScene("Assets\\test_logic.scene");
@@ -320,7 +329,7 @@ namespace ALEngine::Engine
 	void Run(void)
 	{		
 #if !EDITOR
-		Console::StopConsole();
+		//Console::StopConsole();
 #endif
 		if (SetConsoleCtrlHandler(CtrlHandler, TRUE))
 		{
