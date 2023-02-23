@@ -28,7 +28,8 @@ namespace ALEngine::Script
 	void GameplaySystem::Init(ECS::Entity en)
 	{
 		std::cout << "initializing system\n";
-		StartGameplaySystem();
+//		StartGameplaySystem();
+		InitializeRoom("Assets\\Medium Map.map");
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -69,9 +70,39 @@ namespace ALEngine::Script
 
 				//Set default transform and scale
 				Transform transform;
-				transform.scale = { 100, 100 };
-				transform.localScale = { 100, 100 };
+				transform.scale = { 50, 50 };
+				transform.localScale = { 50, 50 };
+				transform.position = { 450 + (f32)r * 50.f, 150 + (f32)c * 50.f };
 				Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[counter], transform);
+
+				// Cell coordinates
+				Cell cell;
+				cell.coordinate = { (s32)r, (s32)c };
+
+				//Create the triggers and subscribe the cell related events
+				ECS::CreateEventTrigger(m_Room.roomCellsArray[counter]);
+				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
+				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
+				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+
+				// Add the child overlay
+				cell.child_overlay = Coordinator::Instance()->CreateEntity();
+
+				Transform child_overlay_transform;
+				child_overlay_transform.scale = transform.scale;
+				//child_overlay_transform.scale.y += 50;
+				child_overlay_transform.position = { 450 + (f32)r * 50.f, 150 + (f32)c * 50.f };
+				//child_overlay_transform.position.y += 50 >> 2;
+				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
+
+				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c + 1), cell);
+				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(r) + "," + std::to_string(c) + "]";
+				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(m_Room, r, c)).tag = "Cell[" + std::to_string(r) + "," + std::to_string(c) + "]";
+				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY	
+				sceneGraph.Push(m_Room_Parent_Entity, cell.child_overlay); // other cells are children of the parent
+
+				// For the bottom
+				///ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 
 				// Put player tile
 				if (row == "Player")
@@ -82,8 +113,10 @@ namespace ALEngine::Script
 					m_Room.playerY = c;
 				}
 				// Skip "Empty" tiles
-				else if(row != "Empty")
-					ECS::CreateSprite(m_Room.roomCellsArray[counter], MapManager::Instance()->GetTileImage(row).c_str());
+				else if (row != "Empty")
+				{
+					ECS::CreateSprite(cell.child_overlay, MapManager::Instance()->GetTileImage(row).c_str());
+				}
 			
 				++counter;
 				++r;
