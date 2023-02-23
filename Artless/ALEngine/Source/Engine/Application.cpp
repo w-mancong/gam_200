@@ -285,6 +285,8 @@ namespace ALEngine::Engine
 		//es.AddFreeFunction("SkillReset");
 
 		//Scene::SaveScene("test");
+
+		Instantiate("entity #3");
 	}
 
 	void Application::Update(void)
