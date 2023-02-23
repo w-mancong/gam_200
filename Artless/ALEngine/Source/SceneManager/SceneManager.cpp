@@ -814,7 +814,10 @@ namespace ALEngine::Engine::Scene
 
 		std::string buffer{};
 		while (std::getline(ifs, buffer))
+		{
+			buffer = buffer.substr(0, buffer.find_last_of("\r\n"));
 			scenes.emplace_back(buffer);
+		}
 		currScene = scenes[0];
 		LoadScene();
 	}
