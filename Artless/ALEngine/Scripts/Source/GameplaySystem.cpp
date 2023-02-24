@@ -28,7 +28,7 @@ namespace ALEngine::Script
 	void GameplaySystem::Init(ECS::Entity en)
 	{
 		std::cout << "initializing system\n";
-//		StartGameplaySystem();
+		//StartGameplaySystem();
 		InitializeRoom("Assets\\Medium Map.map");
 	}
 
@@ -70,9 +70,9 @@ namespace ALEngine::Script
 
 				//Set default transform and scale
 				Transform transform;
-				transform.scale = { 50, 50 };
-				transform.localScale = { 50, 50 };
-				transform.position = { 450 + (f32)r * 50.f, 150 + (f32)c * 50.f };
+				transform.scale = { 100, 100 };
+				transform.localScale = { 100, 100 };
+				transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
 				Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[counter], transform);
 
 				// Cell coordinates
@@ -90,25 +90,21 @@ namespace ALEngine::Script
 
 				Transform child_overlay_transform;
 				child_overlay_transform.scale = transform.scale;
-				//child_overlay_transform.scale.y += 50;
-				child_overlay_transform.position = { 450 + (f32)r * 50.f, 150 + (f32)c * 50.f };
-				//child_overlay_transform.position.y += 50 >> 2;
+				child_overlay_transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
 				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
 
-				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c + 1), cell);
+				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c), cell);
 				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(r) + "," + std::to_string(c) + "]";
 				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(m_Room, r, c)).tag = "Cell[" + std::to_string(r) + "," + std::to_string(c) + "]";
 				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY	
 				sceneGraph.Push(m_Room_Parent_Entity, cell.child_overlay); // other cells are children of the parent
 
 				// For the bottom
-				///ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
+				//ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 
 				// Put player tile
 				if (row == "Player")
 				{
-					// Make sure to put tile on player's position
-					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Tile");
 					m_Room.playerX = r;
 					m_Room.playerY = c;
 				}
@@ -123,6 +119,8 @@ namespace ALEngine::Script
 			}
 			++c;
 		}
+
+		PlaceNewPlayerInRoom(m_Room.playerX, m_Room.playerY);
 		return true;
 	}
 
