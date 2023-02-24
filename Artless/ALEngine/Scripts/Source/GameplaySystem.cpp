@@ -20,8 +20,7 @@ namespace ALEngine::Script
 	{
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
-		//Set_GameplayInterface_GameplayManager(this);
-		//GameplaySystem_Interface_Management_Enemy::Set_GameplayManager(this);
+		Set_GameplayInterface_GameplayManager(this);
 		std::cout << "setting up the system\n";
 	}
 
@@ -76,6 +75,9 @@ namespace ALEngine::Script
 
 		//Initialize Pattern
 		InitializePatterns(pattern_Default);
+
+		//Initialize Abilities
+		InitializeAbilities(Abilities_List);
 
 		//Initialize Pattern GUI
 		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
@@ -160,11 +162,7 @@ namespace ALEngine::Script
 		//Create Player
 		PlaceNewPlayerInRoom(0, 2);
 
-		//std::cout << (Gameplay_Mangement_Singleton::Instance()->Instance()->gameplaySystem == nullptr ? "system not set up\n" : "system is up\n");
-		//printf("Address of a: %p\n", *this);
-		//Place enemy
-		enemyEntityList.clear();
-		
+		enemyEntityList.clear();		
 		ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
@@ -180,7 +178,21 @@ namespace ALEngine::Script
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
 		//Create EndTurn Button
-		//InitializeEndTurnButton();
+		InitializeEndTurnButton();
+
+		std::cout << "pattern list size : " << pattern_List.size() << std::endl;
+
+		//Add events for pattern Button
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_3);
+
+		//Add events for abilities Button
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_2);
+
 
 		//******* Set inaccessible cells ********//
 		ToggleCellAccessibility(m_Room, 2, 3, false);
@@ -202,6 +214,14 @@ namespace ALEngine::Script
 		ToggleCellAccessibility(m_Room, 7, 6, false);
 		ToggleCellAccessibility(m_Room, 7, 5, false);
 
+		//Subscribe the restart button
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
+
+		Toggle_Gameplay_State(true);
+
+		//Toggle the gui 
+		gameplaySystem_GUI->ToggleAbilitiesGUI(false);
+		gameplaySystem_GUI->TogglePatternGUI(true);
 
 		//***** AUDIO Initialization ******//
 		//GameplayInterface_Management_Enemy::EnemyManager_LoadData();
@@ -217,9 +237,72 @@ namespace ALEngine::Script
 	void GameplaySystem::UpdateGameplaySystem() {
 		gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
 
-		if (Input::KeyTriggered(KeyCode::E)) {
+		//If right mouse button
+		if (Input::KeyDown(KeyCode::MouseRightButton)) {
+			//Deselect Pattern
+			if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
+
+				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
+				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+
+				gameplaySystem_GUI->TogglePatternGUI(true);
+			}
+			//Deselect Abilities
+			else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
+
+				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
+				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+
+				gameplaySystem_GUI->TogglePatternGUI(false);
+				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+			}
+		}
+
+		//Toggle debug draw
+		if (Input::KeyTriggered(KeyCode::Ctrl)) {
+			is_DebugDraw = !is_DebugDraw;
+		}
+
+		//******CHEAT KEYS******//
+		if (Input::KeyTriggered(KeyCode::F1)) {
+			Cheat_ToggleGodMode();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F2)) {
+			Cheat_ToggleDoubleAbilitiesDoubleDamage();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F3)) {
+			Cheat_ResetPlayerHealth();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F4)) {
+			Cheat_ResetAllEnemiesHealth();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F5)) {
+			Cheat_DecreaseEnemyHealthToOne();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F6)) {
+			Cheat_IncreasePlayerHealth(10);
+		}
+
+		if (Input::KeyTriggered(KeyCode::F7)) {
 			EndTurn();
 		}
+
+		if (Input::KeyTriggered(KeyCode::F8)) {
+			Cheat_EliminateAllEnemy();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F9)) {
+			Cheat_ClearFloorWalkability();
+		}
+		//******END CHEAT KEYS******//
+
 	}
 
 	void GameplaySystem::ExitGameplaySystem() {

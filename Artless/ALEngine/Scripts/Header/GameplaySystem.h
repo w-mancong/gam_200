@@ -354,6 +354,13 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void destroyWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+
+		/*!*********************************************************************************
+		\brief
+			Set gameplay system to running or not
+		***********************************************************************************/
+		void Toggle_Gameplay_State(b8 istrue);
+
 		/*!*********************************************************************************
 		\brief
 			Creates an audio manager

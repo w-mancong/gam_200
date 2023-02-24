@@ -72,7 +72,7 @@ namespace ALEngine::Script
 		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Unit_OnSelect);
 		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		ECS::Subscribe(entity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
-		//AddLogicComponent<Script::PauseLogic>(entity);
+		//AddLogicComponent<Script::PauseLogic>(entity)
 
 		//Camera Logic
 		ECS::AddLogicComponent<Script::GameplayCamera>(entity);
@@ -343,6 +343,41 @@ namespace ALEngine::Script
 	}
 
 
+
+	void GameplaySystem::Cheat_ToggleGodMode() {
+		//Toggle the boolean
+		godMode = !godMode;
+
+		//Get the components
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
+
+		//Toggle the color accordingly from the godmode
+		if (godMode) {
+			playerSprite.color = { 1.0f, 1.0f, 0.2f, 1.0f };
+		}
+		else {
+			playerSprite.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		}
+
+		//Reduce al enemy damage to 0 if godmode
+		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+
+			if (godMode) {
+				unit.minDamage = 0;
+				unit.maxDamage = 0;
+			}
+			else {
+				unit.minDamage = 5;
+				unit.maxDamage = 5;
+			}
+		}
+
+		//Select the player
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
+	}
+
 	void GameplaySystem::Cheat_IncreasePlayerHealth(s32 amount) {
 		//Get player unit
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
@@ -532,6 +567,31 @@ namespace ALEngine::Script
 		//}
 	}
 
+	void GameplaySystem::DisplayFilterPlacementGrid(Room& room, Math::Vector2Int coordinate, Pattern pattern, Color color) {
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			if (gameplaySystem->IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+				//If inside room, set the cell color to yellow
+				ECS::Entity cellEntity = gameplaySystem->getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				if (!cell.m_isAccessible) {
+					continue;
+				}
+
+				cell.m_Color_Tint = color;
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+				sprite.color = color;
+			}
+		}//End loop through pattern body check
+	}
+
+	void GameplaySystem::Toggle_Gameplay_State(b8 istrue) {
+		currentGameplayStatus = (istrue ? GAMEPLAY_STATUS::RUNNING : GAMEPLAY_STATUS::STOP);
+	}
+
 	void Event_ClickCell(ECS::Entity invoker) {
 		//Get Cell Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
@@ -573,6 +633,151 @@ namespace ALEngine::Script
 		else {
 			AL_CORE_INFO("DISPLAY UNIT");
 			//GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(invoker);
+		}
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Restart the level
+	***********************************************************************************/
+	void Event_Button_Restart([[maybe_unused]] ECS::Entity invoker) {
+		//Restart the gameplay
+		gameplaySystem->Toggle_Gameplay_State(false);
+		Engine::Scene::Restart();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 0
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_0([[maybe_unused]] ECS::Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Select Abilities 0");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 1
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_1([[maybe_unused]] ECS::Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Select Abilities 1");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 2
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_2([[maybe_unused]] ECS::Entity invoker) { //CONSTRUCT WALL SKILL
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Construct Wall");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[2]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 3
+	***********************************************************************************/
+	void Event_Button_Select_CurrentPattern([[maybe_unused]] ECS::Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Select Current Pattern");
+		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
+		gameplaySystem->selected_Pattern_Index = 0;
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 4
+	***********************************************************************************/
+	void Event_Button_Select_Pattern_1([[maybe_unused]] ECS::Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Select Pattern 1");
+		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[1]);
+		gameplaySystem->selected_Pattern_Index = 1;
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 5
+	***********************************************************************************/
+	void Event_Button_Select_Pattern_2([[maybe_unused]] ECS::Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Select Pattern 2");
+		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[2]);
+		gameplaySystem->selected_Pattern_Index = 2;
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 6
+	***********************************************************************************/
+	void Event_Button_Select_Pattern_3([[maybe_unused]] ECS::Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Select Pattern 3");
+		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[3]);
+		gameplaySystem->selected_Pattern_Index = 3;
+	}
+
+	void GameplaySystem::SelectPattern(Pattern pattern) {
+		//Select pattern 
+		if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+			//Set the placement status to be for tile
+			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+			selected_Pattern = pattern;
+
+			gameplaySystem_GUI->TogglePatternGUI(false);
+		}
+		else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+			//Set the placement status to be for abilities
+			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
+			selected_Pattern = pattern;
+
+			gameplaySystem_GUI->TogglePatternGUI(false);
+		}
+	}
+
+	void GameplaySystem::SelectAbility(Abilities& ability) {
+		//Select abilities
+		if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+			//Get the audiosource
+			Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+
+			//Play the sound
+			Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.Play();
+
+			selected_Abilities = ability;
+
+			//Set the gui
+			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
+			gameplaySystem_GUI->TogglePatternGUI(true);
 		}
 	}
 
