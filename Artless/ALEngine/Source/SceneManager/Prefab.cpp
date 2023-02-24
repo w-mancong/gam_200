@@ -675,6 +675,8 @@ namespace ALEngine
 		writer.StartArray();
 		writer.StartObject();
 
+		// TODO: Add code to support parent child relationship
+
 		if (Coordinator::Instance()->HasComponent<Sprite>(en))
 			WriteSprite(writer, en);
 		if (Coordinator::Instance()->HasComponent<Animator>(en))

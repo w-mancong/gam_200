@@ -67,6 +67,16 @@ namespace ALEngine::Engine::Scene
 		\brief A helper function to remove scene from the scene vector
 	***********************************************************************************/
 	void RemoveScene(c8 const* sceneName);
+
+	/*!*********************************************************************************
+		\brief A helper function to move a scene to another position on the editor
+
+		\example 
+		List: 7 8 4 3 2 (Before)
+			-> newIndex: 1, oldIndex: 3
+		List: 7 3 8 4 2 (After)
+	***********************************************************************************/
+	void InsertScene(u64 newIndex, u64 oldIndex);
 #endif
 }
 

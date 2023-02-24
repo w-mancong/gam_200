@@ -225,8 +225,8 @@ namespace ALEngine::Engine
 #if EDITOR
 		RunFileWatcherThread();
 #else
-		//OpenGLWindow::FullScreen(true);
-		//Console::StopConsole();
+		OpenGLWindow::FullScreen(true);
+		Console::StopConsole();
 #endif
 		//Animator animator = CreateAnimator("Player");
 		//Entity en = Coordinator::Instance()->CreateEntity();
