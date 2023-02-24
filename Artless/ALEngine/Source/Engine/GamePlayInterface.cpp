@@ -123,6 +123,7 @@ namespace ALEngine::Engine::GameplayInterface
 		//****** T SHAPE END *****//
 
 		//****** LINE SHAPE START *****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\I.png";
 
 		//Horizontal Straight line(---)
@@ -130,6 +131,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 2, 0 });
 		offset.push_back({ 3, 0 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//Vertical Straight line(|)
@@ -137,12 +139,14 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 0, 1 });
 		offset.push_back({ 0, 2 });
 		offset.push_back({ 0, 3 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		patternList.push_back(newPattern);
 		//****** LINE SHAPE END *****//
 		
 		//****** L SHAPE START*****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\L.png";
 
 		//L Shape (L)
@@ -150,6 +154,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 0, 1 });
 		offset.push_back({ 0, 2 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//90° clockwise rotation L Shape (Г)
@@ -157,6 +162,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 0, -1 });
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 2, 0 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//180° clockwise rotation L Shape (ꓶ)
@@ -164,6 +170,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ -1, 0 });
 		offset.push_back({ 0, -1 });
 		offset.push_back({ 0, -2 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 		
 		//270° clockwise rotation L Shape (⅃)
@@ -171,6 +178,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ -1, 0 });
 		offset.push_back({ 0, -1 });
 		offset.push_back({ 0, -2 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 		
 
@@ -179,6 +187,7 @@ namespace ALEngine::Engine::GameplayInterface
 		//****** L SHAPE END *****//
 
 		//****** J SHAPE START*****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\J.png";
 
 		//J Shape (⅃)
@@ -186,6 +195,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ -1, 0 });
 		offset.push_back({ 0, 1 });
 		offset.push_back({ 0, 2 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//90° clockwise Shape (L)
@@ -193,6 +203,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 0, 1 });
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 2, 0 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//180° clockwise Shape (Г)
@@ -200,6 +211,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 0, -1 });
 		offset.push_back({ 0, -2});
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//270° clockwise Shape (ꓶ)
@@ -207,12 +219,14 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 0, -1 });
 		offset.push_back({ -1, 0 });
 		offset.push_back({ -2, 0});
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		patternList.push_back(newPattern);
 		//****** J SHAPE END *****//
 
 		//****** BOX SHAPE START*****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\O.png";
 
 		//Box Shape (☐)
@@ -220,12 +234,14 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 1, 1 });
 		offset.push_back({ 0, 1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		patternList.push_back(newPattern);
 		//****** BOX SHAPE END *****//
 
 		//****** S SHAPE START*****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\S.png";
 
 		//S Shape (S)
@@ -233,6 +249,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 0, -1 });
 		offset.push_back({ -1, -1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//S Shape ([
@@ -241,6 +258,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 0, -1 });
 		offset.push_back({ -1, 0 });
 		offset.push_back({ -1,	1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//S Shape (S) (0,0 point moved down)
@@ -248,6 +266,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 0, -1 });
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 1, 1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//S Shape ([
@@ -256,19 +275,22 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 0, 1 });
 		offset.push_back({ 1, -1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		patternList.push_back(newPattern);
 		//****** S SHAPE END *****//
-		newPattern.file_path = "Assets\\Images\\Z.png";
 
 		//****** Z SHAPE START*****//
+		newPattern = Pattern{};
+		newPattern.file_path = "Assets\\Images\\Z.png";
 		
 		//Z Shape (Z)
 		offset.push_back({ 0, 0 });
 		offset.push_back({ 0, -1 });
 		offset.push_back({ -1, 0 });
 		offset.push_back({ 1, -1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//Z Shape (N)
@@ -276,6 +298,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 0, -1 });
 		offset.push_back({ -1, -1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//Z Shape (Z) (0,0 point moved down)
@@ -283,6 +306,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 0, 1 });
 		offset.push_back({ -1, 1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		//Z Shape (N) (0,0 point moved left)
@@ -290,6 +314,7 @@ namespace ALEngine::Engine::GameplayInterface
 		offset.push_back({ 0, -1 });
 		offset.push_back({ 1, 0 });
 		offset.push_back({ 1, 1 });
+		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
 		patternList.push_back(newPattern);

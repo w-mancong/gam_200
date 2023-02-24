@@ -438,28 +438,26 @@ namespace ALEngine::ECS
 			return;
 		}
 
-		return;
-
 		//If placement status is being used
 		//Determine is setup or abilities
 		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
 			//If checking for setup, if so, then filter for placement
 			if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP) {
-				b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+				b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->rotationIndex);
 			
 				if(canPlace)
-				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f }, gameplaySystem->rotationIndex);
 				else
-				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f }, gameplaySystem->rotationIndex);
 			}
 			//If checking for abilities, if so, then filter for placement
 			else if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
 				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
 
 				if (canPlace)
-					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f }, gameplaySystem->rotationIndex);
 				else
-					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
+					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f }, gameplaySystem->rotationIndex);
 			}
 		}//End check for pattern placement
 	}
@@ -469,6 +467,10 @@ namespace ALEngine::ECS
 		Event for when  mouse exit cell
 	***********************************************************************************/
 	void Event_MouseExitCell(Entity invoker) {
+		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING) {
+			return;
+		}//End check for pattern placement
+
 		//Get Cell Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
 	
@@ -520,7 +522,7 @@ namespace ALEngine::ECS
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
 			//If can place
-			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+			b8 canPlace = GameplayInterface::CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->rotationIndex);
 
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
@@ -535,7 +537,7 @@ namespace ALEngine::ECS
 			ad.Play();
 			
 			//Switch off the display pattern
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f }, gameplaySystem->rotationIndex);
 			
 			//Place it onto the grid
 			GameplayInterface::PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
@@ -569,7 +571,7 @@ namespace ALEngine::ECS
 			}
 				
 			//Disable the filter
-			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f }, gameplaySystem->rotationIndex);
 			
 			//Run the abilities on the cell
 			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
@@ -835,7 +837,7 @@ namespace ALEngine::ECS
 			if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
-				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f }, gameplaySystem->rotationIndex);
 				gameplaySystem->currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
 				TogglePatternGUI(true);
@@ -844,7 +846,7 @@ namespace ALEngine::ECS
 			else if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->current_Moused_Over_Cell);
 
-				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+				GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f }, gameplaySystem->rotationIndex);
 				gameplaySystem->currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
 				TogglePatternGUI(false);
@@ -895,27 +897,27 @@ namespace ALEngine::ECS
 		}
 		//******END CHEAT KEYS******//
 
-		//if (Input::KeyTriggered(KeyCode::E)) {
-		//	Event_MouseExitCell(gameplaySystem->getCurrentEntityCell());
-		//	gameplaySystem->rotationIndex++;
-		//
-		//	if (gameplaySystem->rotationIndex > gameplaySystem->selected_Pattern.offsetGroup[gameplaySystem->rotationIndex].size()) {
-		//		gameplaySystem->rotationIndex = 0;
-		//	}
-		//	AL_CORE_CRITICAL(std::to_string(gameplaySystem->rotationIndex));
-		//	Event_MouseEnterCell(gameplaySystem->getCurrentEntityCell());
-		//}
-		//else if (Input::KeyTriggered(KeyCode::Q)) {
-		//	Event_MouseExitCell(gameplaySystem->getCurrentEntityCell());
-		//	gameplaySystem->rotationIndex--;
+		if (Input::KeyTriggered(KeyCode::E)) {
+			Event_MouseExitCell(gameplaySystem->current_Moused_Over_Cell);
+			gameplaySystem->rotationIndex++;
+		
+			if (gameplaySystem->rotationIndex >= gameplaySystem->selected_Pattern.offsetGroup.size()) {
+				gameplaySystem->rotationIndex = 0;
+			}
+			AL_CORE_CRITICAL(std::to_string(gameplaySystem->rotationIndex));
+			Event_MouseEnterCell(gameplaySystem->current_Moused_Over_Cell);
+		}
+		else if (Input::KeyTriggered(KeyCode::Q)) {
+			Event_MouseExitCell(gameplaySystem->current_Moused_Over_Cell);
+			gameplaySystem->rotationIndex--;
 
-		//	if (gameplaySystem->rotationIndex < 0) {
-		//		gameplaySystem->rotationIndex = gameplaySystem->selected_Pattern.offsetGroup[gameplaySystem->rotationIndex].size();
-		//	}
+			if (gameplaySystem->rotationIndex < 0) {
+				gameplaySystem->rotationIndex = gameplaySystem->selected_Pattern.offsetGroup.size() - 1;
+			}
 
-		//	AL_CORE_CRITICAL(std::to_string(gameplaySystem->rotationIndex));
-		//	Event_MouseEnterCell(gameplaySystem->getCurrentEntityCell());
-		//}
+			AL_CORE_CRITICAL(std::to_string(gameplaySystem->rotationIndex));
+			//Event_MouseEnterCell(gameplaySystem->current_Moused_Over_Cell);
+		}
 		gameplaySystem->RunGameState();
 		gameplaySystem->UpdateUnitSpriteLayer();
 	}
