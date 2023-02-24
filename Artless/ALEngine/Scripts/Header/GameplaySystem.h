@@ -386,6 +386,9 @@ namespace ALEngine::Script
 		u32 roomSize[2]{ 10, 10 };		//Size to initialize the room with
 		GAMEPLAY_SYSTEM_INTERFACE_H::Room m_Room;					//Room COntainer
 
+		//Keep track of what move order the unit has
+		MoveOrder currentModeOrder;
+
 		//Keep track of the parent of all the cells
 		ECS::Entity m_Room_Parent_Entity;
 
