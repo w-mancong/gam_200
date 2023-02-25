@@ -96,23 +96,24 @@ namespace ALEngine::Script
 				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c), cell);
 				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(r) + "," + std::to_string(c) + "]";
 				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(m_Room, r, c)).tag = "Cell[" + std::to_string(r) + "," + std::to_string(c) + "]";
-				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY	
+				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY	
 				sceneGraph.Push(m_Room_Parent_Entity, cell.child_overlay); // other cells are children of the parent
 
 				// For the bottom
-				//ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
+				ECS::CreateSprite(cell.child_overlay, "Assets/Images/InitialTile_v04.png");
 
 				// Put player tile
 				if (row == "Player")
 				{
 					m_Room.playerX = r;
 					m_Room.playerY = c;
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "");
 				}
 				// Skip "Empty" tiles
 				else if (row != "Empty")
-				{
-					ECS::CreateSprite(cell.child_overlay, MapManager::Instance()->GetTileImage(row).c_str());
-				}
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], MapManager::Instance()->GetTileImage(row).c_str());
+				else
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 			
 				++counter;
 				++r;
