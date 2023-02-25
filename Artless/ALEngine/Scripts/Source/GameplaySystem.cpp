@@ -8,6 +8,7 @@
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
 #include <PauseLogic.h>
+#include <ranges>
 
 namespace ALEngine::Script
 {
@@ -57,8 +58,15 @@ namespace ALEngine::Script
 		u32 counter{ 0 };
 		u32 c{ 0 }, r{ 0 };
 
+		// Sprite for empty
+		Sprite empty_sprite;
+		empty_sprite.color.a = 0;
+
+		// Clear enemy list
+		enemyEntityList.clear();
+
 		// Iterate every Map
-		for (auto col : MapManager::Instance()->GetMap())
+		for (auto col : MapManager::Instance()->GetMap() | std::views::reverse)
 		{
 			r = 0;
 			for (auto row : col)
@@ -106,21 +114,53 @@ namespace ALEngine::Script
 				if (row == "Player")
 				{
 					m_Room.playerX = r;
-					m_Room.playerY = c;
-					ECS::CreateSprite(m_Room.roomCellsArray[counter], "");
+					m_Room.playerY = c; 
+					Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+
 				}
 				// Skip "Empty" tiles
 				else if (row != "Empty")
-					ECS::CreateSprite(m_Room.roomCellsArray[counter], MapManager::Instance()->GetTileImage(row).c_str());
+				{
+					// Tile image file path
+					std::string tile_image{ MapManager::Instance()->GetTileImage(row) };
+
+					// Check for enemy
+					if (row == "Enemy Melee" || 
+						row == "Enemy Cell Destroyer")
+					{
+						ENEMY_TYPE enemy_type{};
+
+						if (row == "Enemy Melee")
+							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
+						else if (row == "Enemy Cell Destroyer")
+							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
+						// Place Enemy
+						ECS::Entity enemyEntt = gameplaySystem_Enemy->PlaceNewEnemyInRoom(r, c, enemy_type, enemyEntityList, m_Room);
+						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
+						// Empty Tile under enemy
+						Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+						ToggleCellAccessibility(m_Room, r, c, false);
+					}
+					else
+					{
+						ECS::CreateSprite(m_Room.roomCellsArray[counter], tile_image.c_str());
+					}
+				}
 				else
-					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
-			
+				{
+					Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+					ToggleCellAccessibility(m_Room, r, c, false);
+				}
+
 				++counter;
 				++r;
 			}
 			++c;
 		}
 
+		// Place Player and Tile Below Player
 		PlaceNewPlayerInRoom(m_Room.playerX, m_Room.playerY);
 		return true;
 	}
