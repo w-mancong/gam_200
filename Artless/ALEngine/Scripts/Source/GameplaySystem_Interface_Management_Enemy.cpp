@@ -93,6 +93,42 @@ namespace ALEngine::Script
 		rigidbody.hasGravity = false;
 	}
 
+	void GameplaySystem_Interface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)
+	{
+		enemyUnit.health = 10,
+			enemyUnit.maxHealth = 10;
+		enemyUnit.minDamage = 8,
+			enemyUnit.maxDamage = 13;
+		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_MELEE;
+		//set enemy logic function pointer
+		//enemyUnit.logic
+		//enemyUnit.UpdateEnemyLogic = &Enemy_Logic_Update_Melee;
+	}
+
+	void GameplaySystem_Interface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
+	{
+		enemyUnit.health = 5,
+			enemyUnit.maxHealth = 5;
+		enemyUnit.minDamage = 8,
+			enemyUnit.maxDamage = 13;
+		enemyUnit.maxMovementPoints = 1;
+		enemyUnit.movementPoints = 1;
+		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
+		//set enemy logic function pointer
+		//enemyUnit.logic
+		//enemyUnit.UpdateEnemyLogic = &Enemy_Logic_Update_CellDestroyer;
+	}
+
+	void GameplaySystem_Interface_Management_Enemy::SetEnemy03attributes([[maybe_unused]] Unit& enemyUnit)
+	{
+		return;
+	}
+
+	void GameplaySystem_Interface_Management_Enemy::SetEnemy04attributes([[maybe_unused]] Unit& enemyUnit)
+	{
+		return;
+	}
+
 	ECS::Entity GameplaySystem_Interface_Management_Enemy::PlaceNewEnemyInRoom(s32 x, s32 y, ENEMY_TYPE enemySelection, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room)
 	{
 		//std::cout << (GameplaySystem::Instance() == nullptr ? "Enemy : system not set up\n" : "Enemy : system is up\n");
@@ -111,35 +147,35 @@ namespace ALEngine::Script
 		//Set it's cell
 		enemyUnit.m_CurrentCell_Entity = gameplaySystem->getEntityCell(m_Room, x, y);
 
-		////switch based on enemy for calling respective function for setting respective enemy unit
-		//switch (enemySelection)
-		//{
-		//case ENEMY_TYPE::ENEMY_MELEE:
-		//{
+		//switch based on enemy for calling respective function for setting respective enemy unit
+		switch (enemySelection)
+		{
+		case ENEMY_TYPE::ENEMY_MELEE:
+		{
 
-		//	enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
-		//	Animator an = ECS::CreateAnimator("Bishop");
-		//	Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
-		//}
-		////SetEnemy01attributes(enemyUnit);
-		//break;
-		//case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
-		//{
-		//	enemyUnit.unit_Profile_Sprite_File = "Assets/Images/TileBreaker.png";
-		//	Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
-		//	sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
-		//}
-		////SetEnemy02attributes(enemyUnit);
-		//break;
-		//case ENEMY_TYPE::ENEMY_TYPE03:
-		//	//SetEnemy03attributes(enemyUnit);
-		//	break;
-		//case ENEMY_TYPE::ENEMY_TYPE04:
-		//	//SetEnemy04attributes(enemyUnit);
-		//	break;
-		//default:
-		//	break;
-		//}
+			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
+			Animator an = ECS::CreateAnimator("Bishop");
+			Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
+		}
+		SetEnemy01attributes(enemyUnit);
+		break;
+		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+		{
+			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/TileBreaker.png";
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
+		}
+		SetEnemy02attributes(enemyUnit);
+		break;
+		case ENEMY_TYPE::ENEMY_TYPE03:
+			SetEnemy03attributes(enemyUnit);
+			break;
+		case ENEMY_TYPE::ENEMY_TYPE04:
+			SetEnemy04attributes(enemyUnit);
+			break;
+		default:
+			break;
+		}
 
 		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).unitEntity = newEnemy;
 		Coordinator::Instance()->GetComponent<Cell>(enemyUnit.m_CurrentCell_Entity).hasUnit = true;
