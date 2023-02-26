@@ -183,6 +183,7 @@
     </ClCompile>
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Engine\Gameplay_Interface.cpp" />
+    <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
@@ -317,6 +318,7 @@
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Gameplay\Header\MapManager.h" />
     <ClInclude Include="Include\Engine\Gameplay_Interface.h" />
+    <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />

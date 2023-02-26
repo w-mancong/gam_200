@@ -65,6 +65,8 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void DrawGameplaySystem();
 
+
+
 		/*!*********************************************************************************
 			\brief
 			create player unit entity
@@ -327,18 +329,6 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-			Runs process to check adjacent for player and attack if they are adjacent.
-		\param [in]
-			room: room of gameplay
-		\param [in]
-			room: enemy entity
-		\return
-			if enemy attacked player and player is adjacent
-		***********************************************************************************/
-		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
-
-		/*!*********************************************************************************
-		\brief
 			Constructs a wall onto a cell, makes the cell unwalkable in pathfinding
 		\param [in]
 			currentRoom: room maintained by the gameplay system
@@ -426,6 +416,8 @@ namespace ALEngine::Script
 
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = true;
+
+		Engine::Audio* buttonClickAudio{ nullptr };
 
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;

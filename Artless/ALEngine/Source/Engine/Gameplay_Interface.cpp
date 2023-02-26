@@ -5,6 +5,7 @@
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <GameplayCamera.h>
 #include <Utility/AudioNames.h>
+#include <Engine/PathFindingManager.h>
 
 namespace ALEngine::Script
 {
@@ -12,6 +13,8 @@ namespace ALEngine::Script
 		GameplaySystem_Interface_Management_Enemy* gameplaySystem_Enemy;
 		GameplaySystem_Interface_Management_GUI* gameplaySystem_GUI;
 		GameplaySystem* gameplaySystem;
+
+		std::shared_ptr<GameplaySystem> gameplaySystem_SharedPtr;
 	}
 
 	void Set_GameplayInterface_Enemy(void* enemyManagerPtr) {
@@ -24,6 +27,7 @@ namespace ALEngine::Script
 	
 	void Set_GameplayInterface_GameplayManager(void* ManagerPtr) {
 		gameplaySystem = reinterpret_cast<GameplaySystem*>(ManagerPtr);
+		gameplaySystem_SharedPtr.reset(gameplaySystem);
 	}
 
 	void GameplaySystem::CreatePlayerUnit(ECS::Entity entity) {
@@ -55,8 +59,8 @@ namespace ALEngine::Script
 
 		ECS::CreateSprite(playerUnit.unit_Sprite_Entity, playerSpriteTransform, "Assets/Images/Player v2.png");
 
-		//Animator an = ECS::CreateAnimator("Player");
-		//Coordinator::Instance()->AddComponent(playerUnit.unit_Sprite_Entity, an);
+		Animator an = ECS::CreateAnimator("Player");
+		Coordinator::Instance()->AddComponent(playerUnit.unit_Sprite_Entity, an);
 
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Player";
 		Coordinator::Instance()->GetComponent<EntityData>(playerUnit.unit_Sprite_Entity).tag = "Player_Sprite";
@@ -528,43 +532,43 @@ namespace ALEngine::Script
 		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
-		////Play hit sound accordingly
-		//if (unit.unitType == UNIT_TYPE::PLAYER) {
-		//	Audio& ad = as.GetAudio(AUDIO_HIT);
-		//	ad.m_Channel = Channel::SFX;
-		//	ad.Play();
-		//}
-		//else {
-		//	Audio& ad = as.GetAudio(AUDIO_ENEMY_HURT_1);
-		//	ad.m_Channel = Channel::SFX;
-		//	ad.Play();
-		//}
+		//Play hit sound accordingly
+		if (unit.unitType == UNIT_TYPE::PLAYER) {
+			Engine::Audio& ad = as.GetAudio(AUDIO_HIT);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.Play();
+		}
+		else {
+			Engine::Audio& ad = as.GetAudio(AUDIO_ENEMY_HURT_1);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.Play();
+		}
 
-		////If no health
-		//if (unit.health <= 0) {
-		//	//Determinte type
-		//	if (unit.unitType == UNIT_TYPE::PLAYER) {
-		//		AL_CORE_INFO("Unit Died");
-		//		ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
-		//		Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
+		//If no health
+		if (unit.health <= 0) {
+			//Determinte type
+			if (unit.unitType == UNIT_TYPE::PLAYER) {
+				AL_CORE_INFO("Unit Died");
+				ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+				Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
 
-		//		ECS::SetActive(true, GameplayInterface_Management_GUI::getGuiManager().Win_Clear);
+				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
 
-		//		unitData.active = false;
-		//		Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
-		//	}
-		//	else {
-		//		//If enemy unit
-		//		AL_CORE_INFO("Enemy Died");
-		//	}
+				unitData.active = false;
+				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+			}
+			else {
+				//If enemy unit
+				AL_CORE_INFO("Enemy Died");
+			}
 
-		//	Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
-		//	Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
-		//	unit.health = 0;	//Limit to 0
+			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
+			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+			unit.health = 0;	//Limit to 0
 
-		//	Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
-		//	cell.hasUnit = false;	//Free it's cell
-		//}
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
+			cell.hasUnit = false;	//Free it's cell
+		}
 	}
 
 	void GameplaySystem::DisplayFilterPlacementGrid(Room& room, Math::Vector2Int coordinate, Pattern pattern, Color color) {
@@ -782,8 +786,7 @@ namespace ALEngine::Script
 
 		//Get path
 		std::vector<ECS::Entity> pathList;
-		//bool isPathFound = Engine::AI::FindPath(m_Room, startCellEntity, targetCellEntity, pathList, false);
-		bool isPathFound = false;
+		bool isPathFound = Engine::AI::FindPath(gameplaySystem_SharedPtr, m_Room, startCellEntity, targetCellEntity, pathList, false);
 
 		//If path not found then stop
 		if (!isPathFound) {
@@ -856,186 +859,192 @@ namespace ALEngine::Script
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
 	}
 
-	void Event_ClickCell(ECS::Entity invoker) {		
-		AL_CORE_INFO("Select Cell");
-
-		//If the unit control is currently moving unit, ignore click order
-		if (gameplaySystem->currentUnitControlStatus != UNITS_CONTROL_STATUS::NOTHING) {
-			return;
-		}
-
-		//Get cell component
-		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
-		//If not placing, move character
-		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING &&
-			gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
-			//When it's action, for moving player
-			//When click on cell, Move the player unit to the selected cell
-			gameplaySystem->MovePlayerEntityToCell(invoker);
-		}
-		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
-			//If can place
-			b8 canPlace = gameplaySystem->CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
-
-			if (!canPlace && !gameplaySystem->godMode) {
-				return;
+	bool GameplaySystem::CheckListContainsCell(std::list<ECS::Cell*> cellList, ECS::Cell& cellSearchNode)
+	{
+		//If contain, returns true
+		for (auto it = cellList.begin(); it != cellList.end(); ++it) {
+			if (*it == &cellSearchNode) {
+				return true;
 			}
+		}
 
+		//Else false
+		return false;
+	}
+
+
+	void GameplaySystem::SelectPattern(Pattern pattern) {
+		//Select pattern 
+		if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+			//Set the placement status to be for tile
+			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+			selected_Pattern = pattern;
+
+			gameplaySystem_GUI->TogglePatternGUI(false);
+		}
+		else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+			//Set the placement status to be for abilities
+			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
+			selected_Pattern = pattern;
+
+			gameplaySystem_GUI->TogglePatternGUI(false);
+		}
+	}
+
+	void GameplaySystem::SelectAbility(Abilities& ability) {
+		//Select abilities
+		if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 			//Get the audiosource
-			Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+			Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
 			//Play the sound
-			Engine::Audio& ad = as.GetAudio(AUDIO_CLICK_1);
-			ad.m_Channel = Engine::Channel::BGM;
+			Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL);
+			ad.m_Channel = Engine::Channel::SFX;
 			ad.Play();
 
-			//Switch off the display pattern
-			gameplaySystem-> DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+			selected_Abilities = ability;
 
-			//Place it onto the grid
-			gameplaySystem->PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
-
-			// Remove from list
-			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
-
-			if (gameplaySystem->pattern_List.size() <= gameplaySystem->pattern_Default.size())
-				gameplaySystem->RandomizePatternList();
-
-			// Set sprites for the Patterns
-			for (u32 i{ 1 }; i <= 4; ++i)
-			{
-				std::string tile_icon = "next_tile_icon" + std::to_string(i);
-
-				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
-
-				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
-				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
-			}
-
-			//End turn
-			gameplaySystem->EndTurn();
-		}
-		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
-			//If placing patern for abilities
-			b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
-
-			if (!canPlace && !gameplaySystem->godMode) {
-				return;
-			}
-
-			//Disable the filter
-			gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
-
-			//Run the abilities on the cell
-			gameplaySystem->RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
-
-			// Remove from list
-			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
-
-			if (gameplaySystem->pattern_List.size() <= gameplaySystem->pattern_Default.size())
-				gameplaySystem->RandomizePatternList();
-
-			// Set sprites for the Patterns
-			for (u32 i{ 1 }; i <= 4; ++i)
-			{
-				std::string tile_icon = "next_tile_icon" + std::to_string(i);
-
-				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
-
-				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
-				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
-			}
-
-			gameplaySystem->EndTurn();
-
-			s8 eliminatedEnemyCount = 0;
-			//Check if all enemies are eliminated
-			for (s8 i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
-				Unit& enemy = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
-
-				if (enemy.health <= 0) {
-					++eliminatedEnemyCount;
-				}
-			}
-
-			//If all enemy is cleared, set the win to true
-			if (eliminatedEnemyCount >= gameplaySystem->enemyEntityList.size()) {
-				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
-			}
+			//Set the gui
+			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
+			gameplaySystem_GUI->TogglePatternGUI(true);
 		}
 	}
-	
-	void Event_MouseEnterCell(ECS::Entity invoker) {
-		//Keep track of cell the mouse is interacting with
-		gameplaySystem->current_Moused_Over_Cell = invoker;
 
-		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
-
-		//If cell is not accessible, then ignore
-		if (!cell.m_isAccessible) {
-			return;
-		}
-
-		//If placement status is being used
-		//Determine is setup or abilities
-		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
-			//If checking for setup, if so, then filter for placement
-			if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
-				b8 canPlace = gameplaySystem->CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
-
-				if (canPlace)
-					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
-				else
-					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
-			}
-			//If checking for abilities, if so, then filter for placement
-			else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
-				b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
-
-				if (canPlace)
-					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
-				else
-					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
-			}
-		}//End check for pattern placement
-	}
-
-	void Event_MouseExitCell(ECS::Entity invoker) {
-		//Get Cell Component
-		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
-
-		//Filter it's placement 
-		gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
-	}
-
-	void Event_MouseEnterUnit(ECS::Entity invoker) {
-
-	}
-
-	void Event_MouseExitUnit(ECS::Entity invoker) {
-
-	}
-
-
-	void Event_Unit_OnSelect(ECS::Entity invoker)
+	void GameplaySystem::SetMoveOrder(std::vector<ECS::Entity> path)
 	{
-		//If paused then don't do anything
-		if (utils::IsEqual(Time::m_Scale, 0.f))
-		{
-			return;
-		}
+		gameplaySystem->currentModeOrder.path.clear();
+		gameplaySystem->currentModeOrder.path_step = 1;
 
-		//If placement is doing something
-		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
-			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
-			Event_ClickCell(unit.m_CurrentCell_Entity);
+		for (s32 i = static_cast<s32>(path.size()) - 1; i >= 0; --i) {
+			gameplaySystem->currentModeOrder.path.push_back(path[i]);
+		}
+	}
+
+	void GameplaySystem::CreateAudioEntityMasterSource(void)
+	{
+		using namespace ECS;
+		//Create Entity
+		ECS::Entity en = Coordinator::Instance()->CreateEntity();
+
+		//Get it's data
+		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+
+		//Change name
+		ed.tag = "Master Audio Source";
+
+		//Prepare audiosource component
+		Engine::AudioSource as;
+		as.id = 0;
+
+		//Add BGM
+		Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_BGM_1));
+		as.list[as.id++] = ad;
+
+		//Add Gameplay Loop
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GAMEPLAY_LOOP));
+		as.list[as.id++] = ad;
+
+		//Add Select Skill
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_SELECT_SKILL));
+		as.list[as.id++] = ad;
+
+		//Add Player hurt
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_PLAYER_HURT));
+		as.list[as.id++] = ad;
+
+		//Add Enemy Hit
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_HIT));
+		as.list[as.id++] = ad;
+
+		//Add Enemy Hit 2
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_ENEMY_HURT_1));
+		as.list[as.id++] = ad;
+
+		//Add Audio Click (Button)
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_CLICK_1));
+		as.list[as.id++] = ad;
+
+		//Add Player Walk
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
+		as.list[as.id++] = ad;
+
+		//Add the audiosource component to the entity
+		Coordinator::Instance()->AddComponent(en, as);
+	}
+
+	ECS::Entity GameplaySystem::getCurrentEntityCell() {
+		return currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
+	}
+
+	bool GameplaySystem::StepUpModeOrderPath(MoveOrder& order) {
+		++order.path_step;
+
+		if (order.path_step >= order.path.size()) {
+			order.path_step = 1;
+			return true;
 		}
 		else {
-			AL_CORE_INFO("DISPLAY UNIT");
-			//GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(invoker);
+			return false;
 		}
 	}
 
+	void GameplaySystem::UpdateUnitSpriteLayer() {
+		//Update unit sprite layer accordingly from their y position
+		for (s32 i = 0; i < static_cast<s32>(enemyEntityList.size()); ++i) {
+			//Get the enemy component
+			Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(enemyEntityList[i]);
+			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+			Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+
+			//If the time is paused, put the enemy layer to the back
+			if (utils::IsEqual(Time::m_Scale, 1.0f)) {
+				enemySprite.layer = 1000 - static_cast<u32>(enemyTransform.position.y);
+			}
+			else {
+				enemySprite.layer = 1;
+			}
+		}
+
+		//Get the player components
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
+
+		//If the time is paused, put the player layer to the back
+		if (utils::IsEqual(Time::m_Scale, 1.0f)) {
+			playerSprite.layer = 1000 - static_cast<u32>(playerTransform.position.y);
+		}
+		else
+			playerSprite.layer = 1;
+	}
+
+	b8 GameplaySystem::CheckIfWalkableOnGrid(Room& room, u32 gridX, u32 gridY)
+	{
+		//Get Cell entity
+		ECS::Entity cellEntity = getEntityCell(room, gridX, gridY);
+
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//if is completely block, dont need set
+		if (!cell.m_isAccessible) {
+			return false;
+		}
+
+		//Return if it's walkable
+		return cell.m_canWalk;
+	}
+
+	bool GameplaySystem::IsCoordinateCellAccessible(Room& currentRoom, u32 gridX, u32 gridY) {
+		//Return if Coordinate is accessible/walkable
+		if (IsCoordinateInsideRoom(currentRoom, gridX, gridY)) {
+			return Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, gridX, gridY)).m_isAccessible;
+		}
+		return false;
+	}
+
+
+	//****************EVENTS*****************//
 	/*!*********************************************************************************
 	\brief
 		Restart the level
@@ -1144,102 +1153,222 @@ namespace ALEngine::Script
 		gameplaySystem->selected_Pattern_Index = 3;
 	}
 
-	void GameplaySystem::SelectPattern(Pattern pattern) {
-		//Select pattern 
-		if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
-			//Set the placement status to be for tile
-			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
-			selected_Pattern = pattern;
-
-			gameplaySystem_GUI->TogglePatternGUI(false);
+	/*!*********************************************************************************
+	\brief
+		Event for GUI button end turn
+	***********************************************************************************/
+	void Event_Button_Select_EndTurn([[maybe_unused]] ECS::Entity invoker) {
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
 		}
-		else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
-			//Set the placement status to be for abilities
-			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
-			selected_Pattern = pattern;
 
-			gameplaySystem_GUI->TogglePatternGUI(false);
+		//End turn
+		gameplaySystem->EndTurn();
+		gameplaySystem->buttonClickAudio->Play();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse enter cell
+	***********************************************************************************/
+	void Event_MouseEnterCell(ECS::Entity invoker) {
+		//Keep track of cell the mouse is interacting with
+		gameplaySystem->current_Moused_Over_Cell = invoker;
+
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+
+		//If cell is not accessible, then ignore
+		if (!cell.m_isAccessible) {
+			return;
+		}
+
+		//If placement status is being used
+		//Determine is setup or abilities
+		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
+			//If checking for setup, if so, then filter for placement
+			if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+				b8 canPlace = gameplaySystem->CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+
+				if (canPlace)
+					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+				else
+					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
+			}
+			//If checking for abilities, if so, then filter for placement
+			else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+				b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+
+				if (canPlace)
+					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
+				else
+					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,0.f,0.f,1.f });
+			}
+		}//End check for pattern placement
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Event for when  mouse exit cell
+	***********************************************************************************/
+	void Event_MouseExitCell(ECS::Entity invoker) {
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+
+		//Filter it's placement 
+		gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+	}
+
+
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse enter unit
+	***********************************************************************************/
+	void Event_MouseEnterUnit(ECS::Entity invoker) {
+		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+			Event_MouseEnterCell(unit.m_CurrentCell_Entity);
 		}
 	}
 
-	void GameplaySystem::SelectAbility(Abilities& ability) {
-		//Select abilities
-		if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse exit unit
+	***********************************************************************************/
+	void Event_MouseExitUnit(ECS::Entity invoker) {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+		Event_MouseExitCell(unit.m_CurrentCell_Entity);
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse click on cell
+	***********************************************************************************/
+	void Event_ClickCell(ECS::Entity invokerCell) {
+		AL_CORE_INFO("Select Cell");
+
+		//If the unit control is currently moving unit, ignore click order
+		if (gameplaySystem->currentUnitControlStatus != UNITS_CONTROL_STATUS::NOTHING) {
+			return;
+		}
+
+		//Get cell component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invokerCell);
+		//If not placing, move character
+		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING &&
+			gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+			//When it's action, for moving player
+			//When click on cell, Move the player unit to the selected cell
+			gameplaySystem->MovePlayerEntityToCell(invokerCell);
+		}
+		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE) {
+			//If can place
+			b8 canPlace = gameplaySystem->CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
+
+			if (!canPlace && !gameplaySystem->godMode) {
+				return;
+			}
+
 			//Get the audiosource
-			Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+			Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
 
 			//Play the sound
-			Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL);
-			ad.m_Channel = Engine::Channel::SFX;
+			Engine::Audio& ad = as.GetAudio(AUDIO_CLICK_1);
+			ad.m_Channel = Engine::Channel::BGM;
 			ad.Play();
 
-			selected_Abilities = ability;
+			//Switch off the display pattern
+			gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 
-			//Set the gui
-			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
-			gameplaySystem_GUI->TogglePatternGUI(true);
+			//Place it onto the grid
+			gameplaySystem->PlacePatternOntoGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, "Assets/Images/Walkable.png");
+
+			// Remove from list
+			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
+
+			if (gameplaySystem->pattern_List.size() <= gameplaySystem->pattern_Default.size())
+				gameplaySystem->RandomizePatternList();
+
+			// Set sprites for the Patterns
+			for (u32 i{ 1 }; i <= 4; ++i)
+			{
+				std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+			}
+
+			//End turn
+			gameplaySystem->EndTurn();
+		}
+		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
+			//If placing patern for abilities
+			b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+
+			if (!canPlace && !gameplaySystem->godMode) {
+				return;
+			}
+
+			//Disable the filter
+			gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+
+			//Run the abilities on the cell
+			gameplaySystem->RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+
+			// Remove from list
+			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
+
+			if (gameplaySystem->pattern_List.size() <= gameplaySystem->pattern_Default.size())
+				gameplaySystem->RandomizePatternList();
+
+			// Set sprites for the Patterns
+			for (u32 i{ 1 }; i <= 4; ++i)
+			{
+				std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+			}
+
+			gameplaySystem->EndTurn();
+
+			s8 eliminatedEnemyCount = 0;
+			//Check if all enemies are eliminated
+			for (s8 i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+				Unit& enemy = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
+
+				if (enemy.health <= 0) {
+					++eliminatedEnemyCount;
+				}
+			}
+
+			//If all enemy is cleared, set the win to true
+			if (eliminatedEnemyCount >= gameplaySystem->enemyEntityList.size()) {
+				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
+			}
 		}
 	}
 
-	void GameplaySystem::SetMoveOrder(std::vector<ECS::Entity> path)
+	void Event_Unit_OnSelect([[maybe_unused]] ECS::Entity invoker)
 	{
-		gameplaySystem->currentModeOrder.path.clear();
-		gameplaySystem->currentModeOrder.path_step = 1;
+		//If paused then don't do anything
+		if (utils::IsEqual(Time::m_Scale, 0.f))
+		{
+			return;
+		}
 
-		for (s32 i = static_cast<s32>(path.size()) - 1; i >= 0; --i) {
-			gameplaySystem->currentModeOrder.path.push_back(path[i]);
+		//If placement is doing something
+		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+			Event_ClickCell(unit.m_CurrentCell_Entity);
+		}
+		else {
+			AL_CORE_INFO("DISPLAY UNIT");
+			gameplaySystem_GUI->UpdateGUI_OnSelectUnit(invoker);
 		}
 	}
-
-	void GameplaySystem::CreateAudioEntityMasterSource(void)
-	{
-		using namespace ECS;
-		//Create Entity
-		Entity en = Coordinator::Instance()->CreateEntity();
-
-		//Get it's data
-		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
-
-		//Change name
-		ed.tag = "Master Audio Source";
-
-		//Prepare audiosource component
-		Engine::AudioSource as;
-		as.id = 0;
-
-		//Add BGM
-		Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_BGM_1));
-		as.list[as.id++] = ad;
-
-		//Add Gameplay Loop
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GAMEPLAY_LOOP));
-		as.list[as.id++] = ad;
-
-		//Add Select Skill
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_SELECT_SKILL));
-		as.list[as.id++] = ad;
-
-		//Add Player hurt
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_PLAYER_HURT));
-		as.list[as.id++] = ad;
-
-		//Add Enemy Hit
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_HIT));
-		as.list[as.id++] = ad;
-
-		//Add Enemy Hit 2
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_ENEMY_HURT_1));
-		as.list[as.id++] = ad;
-
-		//Add Audio Click (Button)
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_CLICK_1));
-		as.list[as.id++] = ad;
-
-		//Add Player Walk
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
-		as.list[as.id++] = ad;
-
-		//Add the audiosource component to the entity
-		Coordinator::Instance()->AddComponent(en, as);
-	}
+	//Event End
 }

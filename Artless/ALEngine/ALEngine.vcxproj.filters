@@ -102,6 +102,7 @@
     <ClCompile Include="Scripts\rttr_main.cpp" />
     <ClCompile Include="Scripts\others\ScriptManager.cpp" />
     <ClCompile Include="Source\SceneManager\CutsceneManager.cpp" />
+    <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -255,6 +256,7 @@
     <ClInclude Include="tracy\Tracy.hpp" />
     <ClInclude Include="Scripts\others\ScriptManager.h" />
     <ClInclude Include="Include\SceneManager\CutsceneManager.h" />
+    <ClInclude Include="Include\Engine\PathFindingManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
