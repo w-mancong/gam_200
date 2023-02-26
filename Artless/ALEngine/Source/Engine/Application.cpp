@@ -99,13 +99,11 @@ namespace ALEngine::Engine
 			if (GameStateManager::current != GameState::Restart)
 			{				
 				// Call function load
-				//StartGameplaySystem();
 				ECS::Load();
+				GameStateManager::next = GameStateManager::current = GameState::Running;
 			}
 			else
 			{
-				Scene::LoadScene();
-				//StartGameplaySystem();
 				GameStateManager::current = GameStateManager::previous;
 				GameStateManager::next	  = GameStateManager::previous;
 			}
@@ -154,6 +152,7 @@ namespace ALEngine::Engine
 
 					// Update Scene graph
 					ECS::GetSceneGraph().Update();
+
 #if EDITOR
 				}
 #endif
@@ -174,8 +173,12 @@ namespace ALEngine::Engine
 			// unload resource
 			if (GameStateManager::next != GameState::Restart)
 			{
-				ECS::Unload();
-				ClearPrefabCollection();
+				//ECS::Unload();
+				//ClearPrefabCollection();
+#if !EDITOR
+				if (GameStateManager::next != GameState::Quit)
+					AssetManager::Instance()->Reset();
+#endif
 			}
 
 #if !EDITOR
@@ -185,8 +188,7 @@ namespace ALEngine::Engine
 			Coordinator::Instance()->ResetSystem();
 
 			GameStateManager::previous = GameStateManager::current;
-			GameStateManager::current = GameStateManager::next;
-
+			GameStateManager::current  = GameStateManager::next;
 		}
 	}
 
@@ -216,16 +218,26 @@ namespace ALEngine::Engine
 #endif
 
 		Engine::AssetManager::Instance()->Init();
+		Scene::InitSceneManager();
 		GameStateManager::Init();
 
 		appStatus = 1;
+#if EDITOR
 		RunFileWatcherThread();
-
-#if !EDITOR
-		OpenGLWindow::FullScreen(true);
-		Scene::LoadScene("Assets\\test.scene");
+#else
+		//Console::ShowConsole();
 		Console::StopConsole();
+		OpenGLWindow::FullScreen(true);
 #endif
+		//Animator animator = CreateAnimator("Player");
+		//Entity en = Coordinator::Instance()->CreateEntity();
+		//Transform trans{};
+		//trans.scale = { 250.0f, 250.0f };
+		//Coordinator::Instance()->AddComponent(en, trans);
+		//Coordinator::Instance()->AddComponent(en, Sprite{});
+		//Coordinator::Instance()->AddComponent(en, animator);
+		//ECS::GetSceneGraph().Push(-1, en);
+
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//AddLogicComponent<Script::GameplayCamera>(en);
 		//Scene::LoadScene("Assets\\test_logic.scene");
@@ -285,6 +297,8 @@ namespace ALEngine::Engine
 		//es.AddFreeFunction("SkillReset");
 
 		//Scene::SaveScene("test");
+
+		Instantiate("entity #3");
 	}
 
 	void Application::Update(void)
@@ -318,7 +332,7 @@ namespace ALEngine::Engine
 	void Run(void)
 	{		
 #if !EDITOR
-		Console::StopConsole();
+		//Console::StopConsole();
 #endif
 		if (SetConsoleCtrlHandler(CtrlHandler, TRUE))
 		{

@@ -185,18 +185,27 @@ namespace ALEngine::Graphics
 	{
 		s32 w{ 0 }, h{ 0 }, x{ 0 }, y{ 0 };
 		math::Vec2Int desktop = GetMonitorSize();
-		if (fullScreen)
-		{
-			w = desktop.x;
-			h = desktop.y;
-		}
-		else
-		{
-			w = width;
-			h = height;
-			x = (desktop.x >> 1) - (width  >> 1);
-			y = (desktop.y >> 1) - (height >> 1);
-		}
+		//if (fullScreen)
+		//{
+		//	w = desktop.x;
+		//	h = desktop.y;
+		//}
+		//else
+		//{
+		//	w = width;
+		//	h = height;
+		//	x = (desktop.x >> 1) - (width  >> 1);
+		//	y = (desktop.y >> 1) - (height >> 1);
+		//}
+		
+		////////////// temp fix////////////////
+		w = width;
+		h = height;
+		x = (desktop.x >> 1) - (width >> 1);
+		y = (desktop.y >> 1) - (height >> 1);
+		////////////// temp fix////////////////
+
+
 		glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : nullptr, x, y, w, h, GLFW_DONT_CARE);
 		glfwGetWindowSize(window, &w, &h);
 		width = static_cast<u32>(w), height = static_cast<u32>(h);

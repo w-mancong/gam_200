@@ -8,6 +8,7 @@
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
 #include <PauseLogic.h>
+#include <ranges>
 
 namespace ALEngine::Script
 {
@@ -27,7 +28,140 @@ namespace ALEngine::Script
 	void GameplaySystem::Init(ECS::Entity en)
 	{
 		std::cout << "initializing system\n";
-		StartGameplaySystem();
+		//StartGameplaySystem();
+		InitializeRoom("Assets\\Medium Map.map");
+	}
+
+	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
+	{
+		using namespace Gameplay;
+		MapManager::Instance()->SetMapPath(map_fp);
+		if (!MapManager::Instance()->DeserializeMap(map_fp))
+			return false;
+
+		// Get tree
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		m_Room.width = MapManager::Instance()->GetWidth();
+		m_Room.height = MapManager::Instance()->GetHeight();
+		m_Room.roomSize = m_Room.width * m_Room.height;
+		m_Room.roomCellsArray = new ECS::Entity[m_Room.roomSize];
+
+		//Initialize Room Parent 
+		m_Room_Parent_Entity = Coordinator::Instance()->CreateEntity();
+		Coordinator::Instance()->AddComponent(m_Room_Parent_Entity, Transform{});
+		Coordinator::Instance()->GetComponent<EntityData>(m_Room_Parent_Entity).tag = "Room";
+		sceneGraph.Push(-1, m_Room_Parent_Entity); // first cell is parent
+
+		// Keep track of index of current tile in the Room
+		u32 counter{ 0 };
+		u32 c{ 0 }, r{ 0 };
+
+		// Sprite for empty
+		Sprite empty_sprite;
+		empty_sprite.color.a = 0;
+
+		// Clear enemy list
+		enemyEntityList.clear();
+
+		// Iterate every Map
+		for (auto col : MapManager::Instance()->GetMap() | std::views::reverse)
+		{
+			r = 0;
+			for (auto row : col)
+			{
+				assert(counter < m_Room.roomSize);
+				m_Room.roomCellsArray[counter] = Coordinator::Instance()->CreateEntity();
+
+				sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[counter]);
+
+				//Set default transform and scale
+				Transform transform;
+				transform.scale = { 100, 100 };
+				transform.localScale = { 100, 100 };
+				transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
+				Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[counter], transform);
+
+				// Cell coordinates
+				Cell cell;
+				cell.coordinate = { (s32)r, (s32)c };
+
+				//Create the triggers and subscribe the cell related events
+				ECS::CreateEventTrigger(m_Room.roomCellsArray[counter]);
+				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
+				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
+				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+
+				// Add the child overlay
+				cell.child_overlay = Coordinator::Instance()->CreateEntity();
+
+				Transform child_overlay_transform;
+				child_overlay_transform.scale = transform.scale;
+				child_overlay_transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
+				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
+
+				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c), cell);
+				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(r) + "," + std::to_string(c) + "]";
+				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(m_Room, r, c)).tag = "Cell[" + std::to_string(r) + "," + std::to_string(c) + "]";
+				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY	
+				sceneGraph.Push(m_Room_Parent_Entity, cell.child_overlay); // other cells are children of the parent
+
+				// For the bottom
+				ECS::CreateSprite(cell.child_overlay, "Assets/Images/InitialTile_v04.png");
+
+				// Put player tile
+				if (row == "Player")
+				{
+					m_Room.playerX = r;
+					m_Room.playerY = c; 
+					Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+
+				}
+				// Skip "Empty" tiles
+				else if (row != "Empty")
+				{
+					// Tile image file path
+					std::string tile_image{ MapManager::Instance()->GetTileImage(row) };
+
+					// Check for enemy
+					if (row == "Enemy Melee" || 
+						row == "Enemy Cell Destroyer")
+					{
+						ENEMY_TYPE enemy_type{};
+
+						if (row == "Enemy Melee")
+							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
+						else if (row == "Enemy Cell Destroyer")
+							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
+						// Place Enemy
+						ECS::Entity enemyEntt = gameplaySystem_Enemy->PlaceNewEnemyInRoom(r, c, enemy_type, enemyEntityList, m_Room);
+						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
+						// Empty Tile under enemy
+						Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+						ToggleCellAccessibility(m_Room, r, c, false);
+					}
+					else
+					{
+						ECS::CreateSprite(m_Room.roomCellsArray[counter], tile_image.c_str());
+					}
+				}
+				else
+				{
+					Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+					ToggleCellAccessibility(m_Room, r, c, false);
+				}
+
+				++counter;
+				++r;
+			}
+			++c;
+		}
+
+		// Place Player and Tile Below Player
+		PlaceNewPlayerInRoom(m_Room.playerX, m_Room.playerY);
+		return true;
 	}
 
 	void GameplaySystem::Update(ECS::Entity en)
@@ -160,7 +294,7 @@ namespace ALEngine::Script
 		}
 
 		//Create Player
-		PlaceNewPlayerInRoom(0, 2);
+		PlaceNewPlayerInRoom(m_Room.playerX, m_Room.playerY);
 
 		enemyEntityList.clear();		
 		ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);

@@ -72,6 +72,9 @@ struct Room
 	//Size of room
 	ALEngine::ECS::Entity width{}, height{};
 	ALEngine::ECS::Entity roomSize{}; //width * height
+
+	// Player Position
+	u32 playerX{ 0 }, playerY{ 0 };
 };
 
 /*!*********************************************************************************

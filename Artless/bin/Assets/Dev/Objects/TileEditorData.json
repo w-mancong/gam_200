@@ -1,8 +1,8 @@
 [
     {
         "Empty": "Assets\\Images\\InitialTile_v04.png",
-        "Enemy": "Assets\\Images\\Profile_Enemy_Unit.png",
-        "Enemy 2": "Assets\\Images\\Bishop v.02.png",
+        "Enemy Cell Destroyer": "Assets\\Images\\TileBreaker.png",
+        "Enemy Melee": "Assets\\Images\\Bishop v.02.png",
         "Obstacle": "Assets\\Images\\Bar_HPFull.png",
         "Player": "Assets\\Images\\Player v2.png",
         "Tile": "Assets\\Images\\Walkable.png",

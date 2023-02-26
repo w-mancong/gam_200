@@ -14,8 +14,7 @@ brief: This file contains function declaration for FileWatcher. FileWatcher hand
 		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 
-
-
+#if EDITOR
 namespace ALEngine::Engine
 {
 	enum class FileStatus
@@ -68,3 +67,4 @@ namespace ALEngine::Engine
 	void RunFileWatcherThread(void);
 }
 #endif // !FILE_WATCHER_H
+#endif

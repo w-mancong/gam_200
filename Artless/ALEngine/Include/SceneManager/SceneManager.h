@@ -12,6 +12,11 @@ brief:	This file provides interface for loading and saving of scenes/state
 namespace ALEngine::Engine::Scene
 {
 	/*!*********************************************************************************
+		\brief Initialize scene manager
+	***********************************************************************************/
+	void InitSceneManager(void);
+
+	/*!*********************************************************************************
 		\brief Save scene into a file
 
 		\param [in] sceneName: Name of the scene you want to save it as
@@ -23,10 +28,17 @@ namespace ALEngine::Engine::Scene
 
 		\param [in] sceneName: Name of the scene to be loaded
 	***********************************************************************************/
-	void LoadScene(c8 const* sceneName);
+	void LoadScene(std::string const& sceneName);
 
 	/*!*********************************************************************************
-		\brief This function will be used when the game restarts
+		\brief Load a scene using scene index
+
+		\param [in] index: Load scene based on the scene index
+	***********************************************************************************/
+	void LoadScene(u64 sceneIndex);
+
+	/*!*********************************************************************************
+		\brief This function will be used when the game restarts (loads current scene opened)
 	***********************************************************************************/
 	void LoadScene(void);
 
@@ -45,6 +57,16 @@ namespace ALEngine::Engine::Scene
 		\brief An interface to load the state for the editor when user press the stop button
 	***********************************************************************************/
 	void LoadState(void);
+
+	/*!*********************************************************************************
+		\brief A helper function to add scenes into the scene vector
+	***********************************************************************************/
+	void AddScene(c8 const* sceneName);
+
+	/*!*********************************************************************************
+		\brief A helper function to remove scene from the scene vector
+	***********************************************************************************/
+	void RemoveScene(c8 const* sceneName);
 #endif
 }
 
