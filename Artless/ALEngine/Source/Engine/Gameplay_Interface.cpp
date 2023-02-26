@@ -15,6 +15,9 @@ namespace ALEngine::Script
 		GameplaySystem* gameplaySystem;
 
 		std::shared_ptr<GameplaySystem> gameplaySystem_SharedPtr;
+
+		//enemymanager struct object for enemymanagement function to access needed variables
+		Script::GameplaySystem_Interface_Management_Enemy::EnemyManager enemyNeededData;
 	}
 
 	void Set_GameplayInterface_Enemy(void* enemyManagerPtr) {
@@ -91,23 +94,66 @@ namespace ALEngine::Script
 
 	void GameplaySystem::EndTurn()
 	{
+		//Reset the statuses
+		currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
+		currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+
+		//Disable the end turn button
+		ECS::SetActive(false, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+
 		//Set the turn accordingly
 		switch (currentPhaseStatus) {
 		case PHASE_STATUS::PHASE_SETUP:
+			//Load action phase
 			currentPhaseStatus = PHASE_STATUS::PHASE_ACTION;
 			AL_CORE_DEBUG("Loading PHASE ACTION");
+			gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+			gameplaySystem_GUI->TogglePatternGUI(false);
 			break;
 
 		case PHASE_STATUS::PHASE_ACTION:
-			currentPhaseStatus = PHASE_STATUS::PHASE_ENEMY;
+			//Load enemy phase
 			AL_CORE_DEBUG("Loading PHASE ENEMY");
+			currentPhaseStatus = PHASE_STATUS::PHASE_ENEMY;
+			enemyNeededData.enemyMoved = 0;
+
+			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
+			gameplaySystem_GUI->TogglePatternGUI(false);
+			MoveEnemy();	//Start enemy logic
 			break;
 
 		case PHASE_STATUS::PHASE_ENEMY:
-			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
+			//Load setup phase
 			AL_CORE_DEBUG("Loading PHASE SETUP");
+			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
+			gameplaySystem_GUI->TogglePatternGUI(true);
+
+			//Reset player movement points
+			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+			playerUnit.movementPoints = playerUnit.maxMovementPoints;
+
+
+			//Reset enemy move ment points
+			for (int i = 0; i < enemyEntityList.size(); ++i) {
+				Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+				enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+			}
+
+			//Update the GUI to select player
+			gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
+
+			//Do an update for all walkable cell on the map
+			scanRoomCellArray();
+
+			//Check if player cell is destroyed, if yes then eliminate player
+			checkPlayerPlacement();
+
+			//Display the your turn animation 
+			ECS::ParticleSystem::GetParticleSystem().DisplayYourTurn();
+
 			break;
 		}
+		gameplaySystem_GUI->GuiUpdatePhaseIndicator(currentPhaseStatus);
 	}
 
 	uint32_t GameplaySystem::getRoomSize() {
@@ -191,6 +237,70 @@ namespace ALEngine::Script
 		return (gridX >= 0) && (gridX < currentRoom.width) && (gridY >= 0) && (gridY < currentRoom.height);
 	}
 
+
+	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile
+	void GameplaySystem::scanRoomCellArray() {
+		//Keep track of reset counter
+		s32 resetCounter;
+		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
+		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->roomSize[0]); ++i) {
+			for (s32 j = 0; j < static_cast<s32>(gameplaySystem->roomSize[1]); ++j) {
+				//Get the cell index
+				s32 cellIndex = i * gameplaySystem->roomSize[0] + j;
+				ECS::Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				//Get the cell component
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				resetCounter = checkTileCounters(cell);
+
+				//If 1 then set to crack
+				if (resetCounter == 1) {
+
+					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+					sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Cracked_Tile.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+
+				}
+				if (resetCounter == 0) {
+					//If 0 then reset the cell sprite
+					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+					sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+
+					//If it's wall then destroy the wall
+					if (cell.has_Wall) {
+						destroyWall(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y, false);
+					}
+				}
+			}
+		}
+	}
+
+	//Check the selected tile counters and to make amendments to them at the end of the turn
+	s32 GameplaySystem::checkTileCounters(Cell& selectedCell) {
+		//Decrement the rset counter
+		if (selectedCell.m_resetCounter > 0) {
+			selectedCell.m_resetCounter--;
+		}
+
+		if (selectedCell.m_resetCounter == 0) {
+			selectedCell.m_canWalk = false;
+		}
+
+		//Return the reset counter
+		return selectedCell.m_resetCounter;
+	}
+
+	//Check the tile the player is currently on to check if the tile is supposed to be destroyed
+	void GameplaySystem::checkPlayerPlacement() {
+		//Get the components
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		ECS::Entity cellEntity = playerUnit.m_CurrentCell_Entity;
+		Cell& playerUnitCell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//If the cell is not walkable, do damage tot he player
+		if (playerUnitCell.m_canWalk == false) {
+			DoDamageToUnit(gameplaySystem->playerEntity, playerUnit.maxHealth + 1);
+		}
+	}
 
 	void GameplaySystem::ToggleCellAccessibility(Room& currentRoom, u32 x, u32 y, b8 istrue) {
 		//Get cell component
@@ -1043,6 +1153,150 @@ namespace ALEngine::Script
 		return false;
 	}
 
+
+	void GameplaySystem::RunGameStateMoving() {
+		//If the gameplay system is not running anymore
+		//Don't continue
+		if (currentGameplayStatus == GAMEPLAY_STATUS::STOP) {
+			return;
+		}
+
+		//Keep track of next cell destination
+		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
+
+		//Keep track of player transform
+		Transform& movingTransform = Coordinator::Instance()->GetComponent<Transform>(movingUnitEntity);
+
+		//Move player transform to it's iterated waypoint
+		Math::Vector2 direction = Math::Vector3::Normalize(cellTransform.localPosition - movingTransform.localPosition);
+
+		//Move the transform of the moving to target cel
+		//movingTransform.localPosition += direction * 400.0f * Time::m_FixedDeltaTime;
+
+		//Use force
+		Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(movingUnitEntity);
+		ECS::AddForce(rigidbody, direction * 50.0f);
+
+
+		//If reached the cell
+		if (Math::Vector3::Distance(movingTransform.localPosition, cellTransform.localPosition) < 10.0f) {
+			rigidbody.velocity = { 0,0 };
+			rigidbody.acceleration = { 0,0 };
+
+			Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getCurrentEntityCell());
+			Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(movinUnit.m_CurrentCell_Entity);
+
+			//Free cell unit was on
+			OriginCell.hasUnit = false;
+
+			//Update player cell to current
+			movinUnit.m_CurrentCell_Entity = getCurrentEntityCell();
+			cell.unitEntity = movingUnitEntity;
+			cell.hasUnit = true;
+
+			//Set the position
+			movingTransform.localPosition = cellTransform.localPosition;
+			movinUnit.coordinate[0] = cell.coordinate.x;
+			movinUnit.coordinate[1] = cell.coordinate.y;
+
+			//Keep track of end of path
+			bool isEndOfPath = true;
+
+			//minus movement points for enemy
+			--movinUnit.movementPoints;
+
+			//If no more movement point
+			//Stop the movement
+			if (movinUnit.movementPoints <= 0) {
+				isEndOfPath = true;
+			}
+			else {
+				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
+			}
+
+			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.movementPoints));
+
+			//If reached the end of path
+			if (isEndOfPath) {
+				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
+				//If player, end turn
+				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+					//Get the audiosource
+					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+
+					//Stop the sound
+					Engine::Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
+					ad.m_Channel = Engine::Channel::SFX;
+					ad.m_Loop = false;
+					ad.Stop();
+
+					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
+					ECS::ChangeAnimation(an, "PlayerIdle");
+					if (movinUnit.movementPoints <= 0) {
+						EndTurn();
+					}
+				}
+				//If enemy, move on to next enemy
+				else if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
+					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+						//Stop movement
+						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
+						ECS::ChangeAnimation(an, "BishopIdle");
+						gameplaySystem_Enemy->RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved - 1]));
+					}
+					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+						//Destroy the tiles when reached destination
+						gameplaySystem_Enemy->Enemy_Logic_CellDestroyer_DestroyTile(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+					}
+
+					//Run enemy logic
+					MoveEnemy();
+				}
+				return;
+			}
+		}
+	}
+
+	void GameplaySystem::MoveEnemy() {
+		//EnemyManager_LoadData();
+
+		//Clear move order
+		ClearMoveOrder();
+
+		//If reached end, end turn
+		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
+			AL_CORE_INFO("All Enemy Made move, ending turn");
+			EndTurn();
+			return;
+		}
+
+		//Get enemy unit component
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
+
+		//if the health is gone
+		if (enemyUnit.health <= 0)
+		{
+			//MOve on to the next enemy
+			++enemyNeededData.enemyMoved;
+			MoveEnemy();
+			return;
+		}
+
+		//use enemy logic function pointer
+		switch (enemyUnit.enemyUnitType)
+		{
+		case ENEMY_TYPE::ENEMY_MELEE:
+			gameplaySystem_Enemy->Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			break;
+		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+			gameplaySystem_Enemy->Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			break;
+		default:
+			break;
+		}
+		AL_CORE_INFO("after enemy move");
+	}
 
 	//****************EVENTS*****************//
 	/*!*********************************************************************************

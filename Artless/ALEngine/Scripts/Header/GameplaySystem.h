@@ -362,6 +362,18 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Toggle_Gameplay_State(b8 istrue);
 
+
+		/*!*********************************************************************************
+		\brief
+			Check the selected tile counters and to make
+			amendments to them at the end of the turn
+		***********************************************************************************/
+		s32 checkTileCounters(Cell& selectedCell);
+
+		void scanRoomCellArray();
+		void checkPlayerPlacement();
+
+
 		/*!*********************************************************************************
 		\brief
 			Creates an audio manager
