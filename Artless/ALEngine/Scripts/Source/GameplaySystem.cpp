@@ -15,6 +15,8 @@ namespace ALEngine::Script
 	namespace {
 		std::shared_ptr < GameplaySystem_Interface_Management_Enemy> gameplaySystem_Enemy;
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
+
+		Engine::Audio* buttonClickAudio{ nullptr };
 	}
 
 	void GameplaySystem::Load(ECS::Entity en)
@@ -28,8 +30,8 @@ namespace ALEngine::Script
 	void GameplaySystem::Init(ECS::Entity en)
 	{
 		std::cout << "initializing system\n";
-		//StartGameplaySystem();
-		InitializeRoom("Assets\\Medium Map.map");
+		StartGameplaySystem();
+		//InitializeRoom("Assets\\Medium Map.map");
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -187,6 +189,7 @@ namespace ALEngine::Script
 
 
 	void GameplaySystem::StartGameplaySystem() {
+
 		AL_CORE_INFO("GAME START");
 		//Set up scene
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
@@ -210,18 +213,6 @@ namespace ALEngine::Script
 		//Initialize Pattern
 		InitializePatterns(pattern_Default);
 
-		//Initialize Abilities
-		InitializeAbilities(Abilities_List);
-
-		//Initialize Pattern GUI
-		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
-
-		//Initialize abilities GUI
-		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
-
-		//Initialize General GUI
-		gameplaySystem_GUI->InitializeGUI();
-
 		// Randomize Pattern
 		RandomizePatternList();
 
@@ -231,9 +222,13 @@ namespace ALEngine::Script
 			std::string tile_icon = "next_tile_icon" + std::to_string(i);
 
 			ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
 			sprite.id = Engine::AssetManager::Instance()->GetGuid(pattern_List[i - 1].file_path);
 		}
+
+		//Initialize Abilities
+		InitializeAbilities(Abilities_List);
 
 		//Initialize the room and cells
 		for (uint32_t i = 0; i < getRoomSize(); ++i) {
@@ -294,9 +289,10 @@ namespace ALEngine::Script
 		}
 
 		//Create Player
-		PlaceNewPlayerInRoom(m_Room.playerX, m_Room.playerY);
+		PlaceNewPlayerInRoom(0, 2);
 
-		enemyEntityList.clear();		
+		//Place enemy
+		enemyEntityList.clear();
 		ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
@@ -314,7 +310,14 @@ namespace ALEngine::Script
 		//Create EndTurn Button
 		InitializeEndTurnButton();
 
-		std::cout << "pattern list size : " << pattern_List.size() << std::endl;
+		//Initialize Pattern GUI
+		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
+
+		//Initialize abilities GUI
+		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
+
+		//Initialize General GUI
+		gameplaySystem_GUI->InitializeGUI();
 
 		//Add events for pattern Button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
@@ -344,9 +347,9 @@ namespace ALEngine::Script
 
 		ToggleCellAccessibility(m_Room, 5, 7, false);
 		ToggleCellAccessibility(m_Room, 6, 7, false);
+		ToggleCellAccessibility(m_Room, 7, 5, false);
 		ToggleCellAccessibility(m_Room, 7, 7, false);
 		ToggleCellAccessibility(m_Room, 7, 6, false);
-		ToggleCellAccessibility(m_Room, 7, 5, false);
 
 		//Subscribe the restart button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
@@ -366,6 +369,9 @@ namespace ALEngine::Script
 		ad.m_Channel = Engine::Channel::BGM;
 		ad.m_Loop = true;
 		ad.Play();
+
+		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
+		buttonClickAudio->m_Channel = Engine::Channel::SFX;
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {

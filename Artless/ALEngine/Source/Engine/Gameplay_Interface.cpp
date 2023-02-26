@@ -1181,6 +1181,16 @@ namespace ALEngine::Script
 		}
 	}
 
+	void GameplaySystem::SetMoveOrder(std::vector<ECS::Entity> path)
+	{
+		gameplaySystem->currentModeOrder.path.clear();
+		gameplaySystem->currentModeOrder.path_step = 1;
+
+		for (s32 i = static_cast<s32>(path.size()) - 1; i >= 0; --i) {
+			gameplaySystem->currentModeOrder.path.push_back(path[i]);
+		}
+	}
+
 	void GameplaySystem::CreateAudioEntityMasterSource(void)
 	{
 		using namespace ECS;
