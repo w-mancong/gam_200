@@ -225,10 +225,10 @@ namespace ALEngine::Script
 	void GameplaySystem::InitializeEndTurnButton() {
 		//Get the end turn entity
 		gameplaySystem_GUI->getGuiManager().endTurnBtnEntity = Coordinator::Instance()->GetEntityByTag("end_turn");
-		//CreateButton(getGuiManager().endTurnBtnEntity);
+		ECS::CreateButton(gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 
 		//Subscribe the end turn function
-		//Subscribe(getGuiManager().endTurnBtnEntity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().endTurnBtnEntity, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_EndTurn);
 	}
 
 	bool GameplaySystem::IsCoordinateInsideRoom(Room& currentRoom, u32 gridX, u32 gridY)
@@ -237,6 +237,12 @@ namespace ALEngine::Script
 		return (gridX >= 0) && (gridX < currentRoom.width) && (gridY >= 0) && (gridY < currentRoom.height);
 	}
 
+	void GameplaySystem::EnemyManager_LoadData()
+	{
+		enemyNeededData.enemyMoved = 0;
+		enemyNeededData.playerEntity = playerEntity;
+		enemyNeededData.startCellEntity = startCellEntity;
+	}
 
 	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile
 	void GameplaySystem::scanRoomCellArray() {

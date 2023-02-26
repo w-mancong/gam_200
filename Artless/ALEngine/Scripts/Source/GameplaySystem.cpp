@@ -359,7 +359,7 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->TogglePatternGUI(true);
 
 		//***** AUDIO Initialization ******//
-		//GameplayInterface_Management_Enemy::EnemyManager_LoadData();
+		EnemyManager_LoadData();
 		CreateAudioEntityMasterSource();
 		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);

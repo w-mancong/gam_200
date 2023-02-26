@@ -70,13 +70,6 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-		 Function for setting EnemyManager object variables for references for
-		 GameplayInterface_Management_Enemy functions
-		***********************************************************************************/
-		void EnemyManager_LoadData();
-
-		/*!*********************************************************************************
-		\brief
 		 Function for set enemy melee type attribute
 		\param [in] enemyUnit
 		 Reference to enemyUnit to set the attribtues variables in enemyUnit

@@ -370,6 +370,14 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		s32 checkTileCounters(Cell& selectedCell);
 
+		/*!*********************************************************************************
+		\brief
+		 Function for setting EnemyManager object variables for references for
+		 GameplayInterface_Management_Enemy functions
+		***********************************************************************************/
+		void EnemyManager_LoadData();
+
+
 		void scanRoomCellArray();
 		void checkPlayerPlacement();
 
