@@ -61,6 +61,107 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void CreateEnemyUnit(ECS::Entity entity, std::vector<ECS::Entity>& enemyEntityList);
 
+
+		struct EnemyManager {
+			ECS::Entity enemyMoved;
+			ECS::Entity playerEntity;
+			ECS::Entity startCellEntity;
+		};
+
+		/*!*********************************************************************************
+		\brief
+		 Function for set enemy melee type attribute
+		\param [in] enemyUnit
+		 Reference to enemyUnit to set the attribtues variables in enemyUnit
+		***********************************************************************************/
+		void SetEnemy01attributes(Unit& enemyUnit);
+
+		/*!*********************************************************************************
+		\brief
+		 Function for set enemy cell destroyer type attribute
+		 \param [in] enemyUnit
+		 Reference to enemyUnit to set the attribtues variables in enemyUnit
+		***********************************************************************************/
+		void SetEnemy02attributes(Unit& enemyUnit);
+
+		/*!*********************************************************************************
+		\brief
+		 Function for set third enemy type attribute (future projectile based enemy?)
+		\param [in] enemyUnit
+		 Reference to enemyUnit to set the attribtues variables in enemyUnit
+		***********************************************************************************/
+		void SetEnemy03attributes(Unit& enemyUnit);
+
+		/*!*********************************************************************************
+		\brief
+		 Function for set boss enemy type attribute (future boss enemy?)
+		\param [in] enemyUnit
+		 Reference to enemyUnit to set the attribtues variables in enemyUnit
+		***********************************************************************************/
+		void SetEnemy04attributes(Unit& enemyUnit);
+
+		/*!*********************************************************************************
+		\brief
+		 enemy melee AI logic function for handling update of enemy AI
+		\param [in] enemyNeededData
+		Reference to enemy Struct object of datas from the level
+		\param [in] movingUnitEntity
+		Reference to enemyunit that is moving
+		\param [in] currentUnitControlStatus
+		Reference the level unit control statis
+		\param [in] enemyEntityList
+		 Reference to enemyEntityList for use
+		\param [in] m_Room
+		 Reference to m_Room which is the game room variables for use
+		***********************************************************************************/
+		void Enemy_Logic_Update_Melee(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
+
+		//void Enemy_Logic_Update_Melee(EnemyManager enemyNeededData);
+
+		/*!*********************************************************************************
+		\brief
+		enemy cell destroyer AI logic function
+		\param [in] enemyNeededData
+		Reference to enemy Struct object of datas from the level
+		\param [in] movingUnitEntity
+		Reference to enemyunit that is moving
+		\param [in] currentUnitControlStatus
+		Reference the level unit control statis
+		\param [in] enemyEntityList
+		 Reference to enemyEntityList for use
+		\param [in] m_Room
+		 Reference to m_Room which is the game room variables for use
+		***********************************************************************************/
+		void Enemy_Logic_Update_CellDestroyer(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
+
+		/*!*********************************************************************************
+		\brief
+		enemy cell destroyer destroying of the placed walkable cell tile logic function
+		\param [in] enemyNeededData
+		Reference to enemy Struct object of datas from the level
+		\param [in] movingUnitEntity
+		Reference to enemyunit that is moving
+		\param [in] currentUnitControlStatus
+		Reference the level unit control statis
+		\param [in] enemyEntityList
+		 Reference to enemyEntityList for use
+		\param [in] m_Room
+		 Reference to m_Room which is the game room variables for use
+		***********************************************************************************/
+		void Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
+
+		/*!*********************************************************************************
+		\brief
+			Runs process to check adjacent for player and attack if they are adjacent.
+		\param [in]
+			room: room of gameplay
+		\param [in]
+			room: enemy entity
+		\return
+			if enemy attacked player and player is adjacent
+		***********************************************************************************/
+		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
+
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)
 		{

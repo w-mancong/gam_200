@@ -65,11 +65,24 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void DrawGameplaySystem();
 
+
+
 		/*!*********************************************************************************
 			\brief
 			create player unit entity
 		***********************************************************************************/
 		void CreatePlayerUnit(ECS::Entity entity);
+
+		/*!*********************************************************************************
+		\brief
+			Initializes the Room based on the .map file that is given
+		\param [in]
+			map_fp:		File Path to the .map file
+		\return
+			Returns true when filepath can be found,
+			else returns false
+		***********************************************************************************/
+		bool InitializeRoom(std::string map_fp);
 
 		/*!*********************************************************************************
 		\brief
@@ -316,18 +329,6 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-			Runs process to check adjacent for player and attack if they are adjacent.
-		\param [in]
-			room: room of gameplay
-		\param [in]
-			room: enemy entity
-		\return
-			if enemy attacked player and player is adjacent
-		***********************************************************************************/
-		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
-
-		/*!*********************************************************************************
-		\brief
 			Constructs a wall onto a cell, makes the cell unwalkable in pathfinding
 		\param [in]
 			currentRoom: room maintained by the gameplay system
@@ -354,6 +355,33 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void destroyWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+
+		/*!*********************************************************************************
+		\brief
+			Set gameplay system to running or not
+		***********************************************************************************/
+		void Toggle_Gameplay_State(b8 istrue);
+
+
+		/*!*********************************************************************************
+		\brief
+			Check the selected tile counters and to make
+			amendments to them at the end of the turn
+		***********************************************************************************/
+		s32 checkTileCounters(Cell& selectedCell);
+
+		/*!*********************************************************************************
+		\brief
+		 Function for setting EnemyManager object variables for references for
+		 GameplayInterface_Management_Enemy functions
+		***********************************************************************************/
+		void EnemyManager_LoadData();
+
+
+		void scanRoomCellArray();
+		void checkPlayerPlacement();
+
+
 		/*!*********************************************************************************
 		\brief
 			Creates an audio manager
@@ -378,6 +406,9 @@ namespace ALEngine::Script
 		//******VARIABLES**********//
 		u32 roomSize[2]{ 10, 10 };		//Size to initialize the room with
 		GAMEPLAY_SYSTEM_INTERFACE_H::Room m_Room;					//Room COntainer
+
+		//Keep track of what move order the unit has
+		MoveOrder currentModeOrder;
 
 		//Keep track of the parent of all the cells
 		ECS::Entity m_Room_Parent_Entity;
@@ -405,6 +436,8 @@ namespace ALEngine::Script
 
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = true;
+
+		Engine::Audio* buttonClickAudio{ nullptr };
 
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;

@@ -348,6 +348,55 @@ namespace ALEngine::Engine::GameplayInterface
 		}
 	}
 
+	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile
+	void GameplaySystem::scanRoomCellArray() {
+		//Keep track of reset counter
+		s32 resetCounter;
+		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
+		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->roomSize[0]); ++i) {
+			for (s32 j = 0; j < static_cast<s32>(gameplaySystem->roomSize[1]); ++j) {
+				//Get the cell index
+				s32 cellIndex = i * gameplaySystem->roomSize[0] + j;
+				Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+
+				//Get the cell component
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				resetCounter = checkTileCounters(cell);
+
+				//If 1 then set to crack
+				if (resetCounter == 1) {
+
+					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Cracked_Tile.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+
+				}
+				if (resetCounter == 0) {
+					//If 0 then reset the cell sprite
+					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+					sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+
+					//If it's wall then destroy the wall
+					if (cell.has_Wall) {
+						GameplayInterface::destroyWall(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y, false);
+					}
+				}
+			}
+		}
+	}
+
+	//Check the tile the player is currently on to check if the tile is supposed to be destroyed
+	void GameplaySystem::checkPlayerPlacement() {
+		//Get the components
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Entity cellEntity = playerUnit.m_CurrentCell_Entity;
+		Cell& playerUnitCell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//If the cell is not walkable, do damage tot he player
+		if (playerUnitCell.m_canWalk == false) {
+			DoDamageToUnit(gameplaySystem->playerEntity, playerUnit.maxHealth + 1);
+		}
+	}
+
 	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities) {
 		AL_CORE_CRITICAL("USE ABILITY");
 

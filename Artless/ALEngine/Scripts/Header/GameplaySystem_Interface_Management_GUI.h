@@ -2,6 +2,7 @@
 #define GAMEPLAY_SYSTEM_INTERFACE_GUI_H
 
 #include <ECS/Components/UniBehaviour.h>
+#include <Engine/Gameplay_Interface.h>
 
 namespace ALEngine::Script
 {
@@ -101,11 +102,11 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void InitializeGUI();
 
-		///*!*********************************************************************************
-		//\brief
-		//	Updates the phase indicator.
-		//***********************************************************************************/
-		//void GuiUpdatePhaseIndicator(PHASE_STATUS);
+		/*!*********************************************************************************
+		\brief
+			Updates the phase indicator.
+		***********************************************************************************/
+		void GuiUpdatePhaseIndicator(PHASE_STATUS);
 
 		/*!*********************************************************************************
 		\brief

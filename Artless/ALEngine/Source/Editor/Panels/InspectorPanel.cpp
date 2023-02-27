@@ -641,9 +641,10 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayAnimator(void)
 	{
-		if (ImGui::TreeNodeEx("Animator Component##Inspector"))
+		Animator& anim = Coordinator::Instance()->GetComponent<Animator>(m_SelectedEntity);
+
+		if (ImGui::CollapsingHeader("Animator Component"))
 		{
-			ImGui::TreePop();
 		}
 	}
 

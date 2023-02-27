@@ -13,14 +13,11 @@ All content :copyright: 2022 DigiPen Institute of Technology Singapore. All righ
 
 namespace  ALEngine::Engine::AI
 {
- 
-    using Engine::GameplayInterface::Room;
-
     /*!*********************************************************************************
 	\brief
 	The Astar pathfinding main logic function
 	***********************************************************************************/
-    b8 FindPath(Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, std::vector<ECS::Entity>& pathReturn, bool canWalkOverUnwalkable)
+    b8 FindPath(std::shared_ptr<Script::GameplaySystem> gameplaySystem, GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, std::vector<ECS::Entity>& pathReturn, bool canWalkOverUnwalkable)
     {
         Cell& startNode = Coordinator::Instance()->GetComponent<Cell>(startCell);
         Cell& endNode = Coordinator::Instance()->GetComponent<Cell>(endCell);
@@ -84,19 +81,19 @@ namespace  ALEngine::Engine::AI
             closedList.push_back(&currentNode);
 
             //Check neighbour from current node
-            for (auto neighbourNode : GetNeighbourList(currentNode, currentRoom))
+            for (auto neighbourNode : GetNeighbourList(gameplaySystem, currentNode, currentRoom))
             {
                 //If the neighbour is the end
                 if (neighbourNode == &endNode) {
                     neighbourNode->m_ParentCell = &currentNode;     //Update parent cell    
 
                     //Calculate the path and return it
-                    pathReturn = std::move(CalculatePath(endNode, currentRoom));
+                    pathReturn = std::move(CalculatePath(gameplaySystem, endNode, currentRoom));
                     return true;
                 }
                 //If it's not end
                 //then check if the current neighbour node exist inside closed list or it is blocked
-                else if (Engine::GameplayInterface::CheckListContainsCell(closedList, *neighbourNode) || neighbourNode->has_Wall || !neighbourNode->m_isAccessible || (!canWalkOverUnwalkable && !neighbourNode->m_canWalk) || neighbourNode->hasUnit)
+                else if (gameplaySystem->CheckListContainsCell(closedList, *neighbourNode) || neighbourNode->has_Wall || !neighbourNode->m_isAccessible || (!canWalkOverUnwalkable && !neighbourNode->m_canWalk) || neighbourNode->hasUnit)
                 {
                     continue;
                 }
@@ -104,14 +101,14 @@ namespace  ALEngine::Engine::AI
                 //Otherwise, it's a cell we can check
                 neighbourNode->m_ParentCell = &currentNode;     //Update parent cell  
                 neighbourNode->m_HCost = CalculateDistanceCost(
-                    Engine::GameplayInterface::getEntityCell(currentRoom, neighbourNode->coordinate.x, neighbourNode->coordinate.y),
-                    Engine::GameplayInterface::getEntityCell(currentRoom, endNode.coordinate.x, endNode.coordinate.y));
+                    gameplaySystem->getEntityCell(currentRoom, neighbourNode->coordinate.x, neighbourNode->coordinate.y),
+                    gameplaySystem->getEntityCell(currentRoom, endNode.coordinate.x, endNode.coordinate.y));
                 neighbourNode->m_GCost = currentNode.m_GCost + 1.0f;
                 neighbourNode->m_FCost = neighbourNode->m_GCost + neighbourNode->m_HCost;
 
                 //If the iterated neighbourn node does not exist in the open list 
                 //Add it to the open list
-                if (!Engine::GameplayInterface::CheckListContainsCell(openList, *neighbourNode))
+                if (!gameplaySystem->CheckListContainsCell(openList, *neighbourNode))
                 {
                     openList.push_back(neighbourNode);
                 }
@@ -126,7 +123,7 @@ namespace  ALEngine::Engine::AI
     \brief
     The function to get neighbouring cells
     ***********************************************************************************/
-    std::list<ECS::Cell*> GetNeighbourList(ECS::Cell& currentNode, Engine::GameplayInterface::Room& currentRoom, [[maybe_unused]] bool defaultAstar)
+    std::list<ECS::Cell*> GetNeighbourList(std::shared_ptr<Script::GameplaySystem> gameplaySystem, ECS::Cell& currentNode, GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, [[maybe_unused]] bool defaultAstar)
     {
         std::list<Cell*> neighbourList;
         
@@ -134,24 +131,24 @@ namespace  ALEngine::Engine::AI
 
         //check cell in grid
         //astar without diagonal path, check for all neighbours except diagonal neighbour
-        if (IsCoordinateInsideRoom(currentRoom, currentCoordinate[0] + 1, currentCoordinate[1])) //right 1,0
+        if (gameplaySystem->IsCoordinateInsideRoom(currentRoom, currentCoordinate[0] + 1, currentCoordinate[1])) //right 1,0
         {
-           Cell& c = Coordinator::Instance()->GetComponent<Cell>(Engine::GameplayInterface::getEntityCell(currentRoom,currentCoordinate[0] + 1, currentCoordinate[1]));
+           Cell& c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(currentRoom,currentCoordinate[0] + 1, currentCoordinate[1]));
            neighbourList.push_back(&c);
         }
-        if (IsCoordinateInsideRoom(currentRoom, currentCoordinate[0] - 1, currentCoordinate[1])) //left -1,0
+        if (gameplaySystem->IsCoordinateInsideRoom(currentRoom, currentCoordinate[0] - 1, currentCoordinate[1])) //left -1,0
         {
-            Cell& c = Coordinator::Instance()->GetComponent<Cell>(Engine::GameplayInterface::getEntityCell(currentRoom, currentCoordinate[0] - 1, currentCoordinate[1]));
+            Cell& c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(currentRoom, currentCoordinate[0] - 1, currentCoordinate[1]));
             neighbourList.push_back(&c);
         }
-        if (IsCoordinateInsideRoom(currentRoom, currentCoordinate[0], currentCoordinate[1] + 1)) //up 0,1
+        if (gameplaySystem->IsCoordinateInsideRoom(currentRoom, currentCoordinate[0], currentCoordinate[1] + 1)) //up 0,1
         {
-            Cell& c = Coordinator::Instance()->GetComponent<Cell>(Engine::GameplayInterface::getEntityCell(currentRoom, currentCoordinate[0], currentCoordinate[1] + 1));
+            Cell& c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(currentRoom, currentCoordinate[0], currentCoordinate[1] + 1));
             neighbourList.push_back(&c);
         }
-        if (IsCoordinateInsideRoom(currentRoom, currentCoordinate[0], currentCoordinate[1] - 1)) //down 0,-1
+        if (gameplaySystem->IsCoordinateInsideRoom(currentRoom, currentCoordinate[0], currentCoordinate[1] - 1)) //down 0,-1
         {
-            Cell& c = Coordinator::Instance()->GetComponent<Cell>(Engine::GameplayInterface::getEntityCell(currentRoom, currentCoordinate[0], currentCoordinate[1] -1));
+            Cell& c = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(currentRoom, currentCoordinate[0], currentCoordinate[1] -1));
             neighbourList.push_back(&c);
         }
 
@@ -163,7 +160,7 @@ namespace  ALEngine::Engine::AI
     The function to calculate and slot the number of cells
     It returns a path build from the end node back to the start by iterating through the parent node.
     ***********************************************************************************/
-    std::vector<ECS::Entity> CalculatePath(Cell& endNode, Engine::GameplayInterface::Room& currentRoom)
+    std::vector<ECS::Entity> CalculatePath(std::shared_ptr<Script::GameplaySystem> gameplaySystem, Cell& endNode, GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom)
     {
         std::list<Cell> pathlist;
         std::vector<u32> Path;
@@ -179,7 +176,7 @@ namespace  ALEngine::Engine::AI
 
         for (auto it = pathlist.begin(); it != pathlist.end(); ++it)
         {
-            Path.push_back(Engine::GameplayInterface::getEntityCell(currentRoom, it->coordinate.x, it->coordinate.y));
+            Path.push_back(gameplaySystem->getEntityCell(currentRoom, it->coordinate.x, it->coordinate.y));
         }
 
         return Path;

@@ -10,5 +10,6 @@ brief:	This file contains all the relevant Scene header files to be included in 
 #define MY_SCENE_H
 
 #include <SceneManager/SceneManager.h>
+#include <SceneManager/CutsceneManager.h>
 
 #endif

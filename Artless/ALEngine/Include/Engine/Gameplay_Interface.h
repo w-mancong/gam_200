@@ -72,6 +72,9 @@ struct Room
 	//Size of room
 	ALEngine::ECS::Entity width{}, height{};
 	ALEngine::ECS::Entity roomSize{}; //width * height
+
+	// Player Position
+	u32 playerX{ 0 }, playerY{ 0 };
 };
 
 /*!*********************************************************************************
@@ -213,6 +216,20 @@ namespace ALEngine::Script
 		Event for when mouse exit unit
 	***********************************************************************************/
 	void Event_Unit_OnSelect(ECS::Entity invoker);
+
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse exit ability button
+	***********************************************************************************/
+	void Event_Button_Exit_Ability_GUI(ECS::Entity invoker);
+
+
+	/*!*********************************************************************************
+	\brief
+		Event for when mouse enter ability button
+	***********************************************************************************/
+	void Event_Button_Enter_Ability_GUI(ECS::Entity invoker);
+
 	//***************** Events End  ************************//
 }
 #endif

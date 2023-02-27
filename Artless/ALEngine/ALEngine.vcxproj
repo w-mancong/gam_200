@@ -183,6 +183,7 @@
     </ClCompile>
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Engine\Gameplay_Interface.cpp" />
+    <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Engine\TurnStateManager.cpp" />
     <ClCompile Include="Source\Engine\GameStateManager.cpp" />
     <ClCompile Include="Source\Asset Manager\AssetManager.cpp" />
@@ -280,6 +281,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\misc\Random.cpp" />
+    <ClCompile Include="Source\SceneManager\CutsceneManager.cpp" />
     <ClCompile Include="Source\SceneManager\Prefab.cpp" />
     <ClCompile Include="Source\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Source\Serialization\Serializer.cpp" />
@@ -316,6 +318,7 @@
     <ClInclude Include="Include\Editor\tracy\Tracy.hpp" />
     <ClInclude Include="Gameplay\Header\MapManager.h" />
     <ClInclude Include="Include\Engine\Gameplay_Interface.h" />
+    <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Engine\TurnStateManager.h" />
     <ClInclude Include="Include\Engine\GameStateManager.h" />
     <ClInclude Include="Include\Engine\GSM\GameStateManager.h" />
@@ -426,6 +429,7 @@
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\Prefabs\Prefabs.h" />
+    <ClInclude Include="Include\SceneManager\CutsceneManager.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
