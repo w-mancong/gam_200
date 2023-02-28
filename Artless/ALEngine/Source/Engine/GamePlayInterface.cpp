@@ -334,17 +334,21 @@ namespace ALEngine::Engine::GameplayInterface
 		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 15;
+		new_ability.max_Cooldown = 1;
 		abilitiesList.push_back(new_ability);
 
 		//Life steal
 		new_ability.current_Ability_Name = ABILITY_NAME::LIFE_DRAIN;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 12;
+		new_ability.max_Cooldown = 2;
+
 		abilitiesList.push_back(new_ability);
 
 		//Construct Wall
 		new_ability.current_Ability_Name = ABILITY_NAME::CONSTRUCT_WALL;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
+		new_ability.max_Cooldown = 4;
 		//TRIGGER THE BUILD WALL FUNCTION HERE!!
 		abilitiesList.push_back(new_ability);
 	}
@@ -525,7 +529,7 @@ namespace ALEngine::Engine::GameplayInterface
 		}
 	}
 
-	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities, int rotationIndex) {
+	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities &abilities, int rotationIndex) {
 		AL_CORE_CRITICAL("USE ABILITY");
 
 		//Shift through each grid that the pattern would be in relative to given coordinate
@@ -541,7 +545,7 @@ namespace ALEngine::Engine::GameplayInterface
 					//IF DIRECT ABILITY, AFFECT UNITS ONLY
 					case ABILITY_TYPE::DIRECT:
 						if (cell.hasUnit) {
-							AL_CORE_CRITICAL("HAS UNIT");
+							void reduceCooldown();
 
 							Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
 							if (unit.health <= 0) {
@@ -557,10 +561,18 @@ namespace ALEngine::Engine::GameplayInterface
 								{
 									case ABILITY_NAME::HARD_DROP:
 										DoDamageToUnit(cell.unitEntity, abilities.damage);
+										abilities.current_Cooldown = abilities.max_Cooldown;
+										
+										AL_CORE_CRITICAL("HARD DROPPED USED. CURRENT CD :");
+										AL_CORE_CRITICAL(abilities.current_Cooldown);
+
 										break;
 									case ABILITY_NAME::LIFE_DRAIN:
 									{
 										DoDamageToUnit(cell.unitEntity, abilities.damage);
+										abilities.current_Cooldown = abilities.max_Cooldown;
+										AL_CORE_CRITICAL("LIFE DRAIN USED. CURRENT CD :");
+										AL_CORE_CRITICAL(abilities.current_Cooldown);
 
 										//Life steal 
 										ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
@@ -591,6 +603,10 @@ namespace ALEngine::Engine::GameplayInterface
 					{
 					case ABILITY_NAME::CONSTRUCT_WALL:
 						constructWall(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y, true);
+						abilities.current_Cooldown = abilities.max_Cooldown;
+						AL_CORE_CRITICAL("CONSTRUCT WALL USED.CURRENT CD : ");
+						AL_CORE_CRITICAL(abilities.current_Cooldown);
+
 						break;
 
 					default:
@@ -663,6 +679,41 @@ namespace ALEngine::Engine::GameplayInterface
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
 			cell.hasUnit = false;	//Free it's cell
 		}
+	}
+
+	void reduceCooldown(std::vector<Abilities> &Abilities_List)
+	{
+
+		AL_CORE_CRITICAL("TURN ENDED, REDUCE COOLDOWN");
+		std::cout << "Abilities_List SIZE : " << Abilities_List.size() << std::endl;
+
+		for (int i = 0; i < Abilities_List.size(); i++) {
+
+			if (Abilities_List[i].current_Cooldown > 0) {
+				Abilities_List[i].current_Cooldown--;
+			}
+
+			//if (Abilities_List[i].current_Ability_Name == ABILITY_NAME::HARD_DROP) {
+			//	std::cout << "HARD DROP ABILITY. I = " << i << std::endl;
+			//	std::cout << "HARD DROP ORIGINAL COOLDOWN = " << Abilities_List[i].current_Cooldown << std::endl;
+			//	Abilities_List[i].current_Cooldown--;
+			//	std::cout << "HARD DROP CURRENT COOLDOWN = " << Abilities_List[i].current_Cooldown << std::endl;
+			//}
+			//else if (Abilities_List[i].current_Ability_Name == ABILITY_NAME::LIFE_DRAIN) {
+			//	std::cout << "LIFE DRAIN ABILITY I = " << i << std::endl;
+			//	std::cout << "LIFE DRAIN ORIGINAL COOLDOWN = " << Abilities_List[i].current_Cooldown << std::endl;
+			//	Abilities_List[i].current_Cooldown--;
+			//	std::cout << "LIFE DRAIN CURRENT COOLDOWN = " << Abilities_List[i].current_Cooldown << std::endl;
+			//}
+			//else if (Abilities_List[i].current_Ability_Name == ABILITY_NAME::CONSTRUCT_WALL) {
+			//	std::cout << "CONSTRUCT ABILITY I = " << i << std::endl;
+			//	std::cout << "CONSTRUCT WALL ORIGINAL COOLDOWN = " << Abilities_List[i].current_Cooldown << std::endl;
+			//	Abilities_List[i].current_Cooldown--;
+			//	std::cout << "CONSTRUCT WALL CURRENT COOLDOWN = " << Abilities_List[i].current_Cooldown << std::endl;
+			//}
+
+		}
+
 	}
 
 	bool RunEnemyAdjacentAttack(Room& room, Unit& enemy) {

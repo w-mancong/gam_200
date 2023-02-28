@@ -101,7 +101,7 @@ namespace ALEngine::ECS
 
 		//Abilities
 		std::vector<Abilities> Abilities_List;
-		Abilities selected_Abilities;
+		Abilities* selected_Abilities;
 
 		//Cell that the mouse is hovering over
 		Entity current_Moused_Over_Cell;
@@ -452,7 +452,7 @@ namespace ALEngine::ECS
 			}
 			//If checking for abilities, if so, then filter for placement
 			else if (gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION) {
-				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+				b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
 				if (canPlace)
 					GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f }, gameplaySystem->rotationIndex);
@@ -564,7 +564,7 @@ namespace ALEngine::ECS
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == GameplayInterface::PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
 			//If placing patern for abilities
-			b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+			b8 canPlace = GameplayInterface::CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
@@ -574,7 +574,7 @@ namespace ALEngine::ECS
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f }, gameplaySystem->rotationIndex);
 			
 			//Run the abilities on the cell
-			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
 			// Remove from list
 			gameplaySystem->pattern_List.erase(gameplaySystem->pattern_List.begin() + gameplaySystem->selected_Pattern_Index);
@@ -1001,7 +1001,9 @@ namespace ALEngine::ECS
 			//Reset player movement points
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 			playerUnit.movementPoints = playerUnit.maxMovementPoints;
-
+		
+			//-1 CD
+			GameplayInterface::reduceCooldown(GameplaySystem::Abilities_List);
 
 			//Reset enemy move ment points
 			for (int i = 0; i < enemyEntityList.size(); ++i) {
@@ -1155,7 +1157,7 @@ namespace ALEngine::ECS
 			ad.m_Channel = Channel::SFX;
 			ad.Play();
 
-			selected_Abilities = ability;
+			selected_Abilities = &ability;
 
 			//Set the gui
 			ToggleAbilitiesGUI(false);

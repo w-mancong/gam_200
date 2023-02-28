@@ -104,13 +104,16 @@ namespace ALEngine::Engine::GameplayInterface
 	class Abilities {
 	public:
 		//Stats
-		u32 current_Cooldown = 0, max_Cooldown = 2;
+		u32 current_Cooldown = 0, max_Cooldown = 0;
+		
 		s32 damage = 15;
 
 		ABILITY_TYPE current_Ability_Type = ABILITY_TYPE::DIRECT;
 
 		//Keep track of ability type
 		ABILITY_NAME current_Ability_Name = ABILITY_NAME::HARD_DROP;
+
+
 	};
 
 	/*!*********************************************************************************
@@ -247,7 +250,7 @@ namespace ALEngine::Engine::GameplayInterface
 	\param [in]
 		abilities: ability
 	***********************************************************************************/
-	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities abilities, int rotation = 0);
+	void RunAbilities_OnCells(Room& room, Vector2Int coordinate, Pattern pattern, Abilities &abilities, int rotation = 0);
 
 	/*!*********************************************************************************
 	\brief
@@ -258,6 +261,9 @@ namespace ALEngine::Engine::GameplayInterface
 		damage: damage amount
 	***********************************************************************************/
 	void DoDamageToUnit(ECS::Entity unitEntity, s32 damage);
+
+
+	void reduceCooldown(std::vector<Abilities> &Abilities_List);
 
 	/*!*********************************************************************************
 	\brief
