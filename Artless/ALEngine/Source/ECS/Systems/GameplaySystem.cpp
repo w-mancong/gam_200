@@ -109,6 +109,9 @@ namespace ALEngine::ECS
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = false;
 
+		//For path arrow reset
+		std::vector<std::pair<ECS::Entity, Sprite>> prevPathList;
+
 		//******FUNCTIONS**********//
 		/*!*********************************************************************************
 		\brief
@@ -164,6 +167,12 @@ namespace ALEngine::ECS
 			Set Move player entity to cell
 		***********************************************************************************/
 		void MovePlayerEntityToCell(Entity cellEntity);
+
+		/*!*********************************************************************************
+        \brief
+	    Highlight range of walkable tiles, green in range, red out of range
+        ***********************************************************************************/
+	    void DisplayPlayerEntityPathToCell(Entity cellEntity);
 
 		/*!*********************************************************************************
 			\brief
@@ -285,6 +294,8 @@ namespace ALEngine::ECS
 			amendments to them at the end of the turn
 		***********************************************************************************/
 		s32 checkTileCounters(Cell& selectedCell);
+
+		void ResetHighlightedPath();
 	};
 
 	namespace
@@ -434,6 +445,18 @@ namespace ALEngine::ECS
 		//If cell is not accessible, then ignore
 		if (!cell.m_isAccessible) {
 			return;
+		}
+
+		//highlight walkable path if not placing or using abilities
+		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING && gameplaySystem->currentPhaseStatus == GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION)
+		{
+			//check if able to reach walkable cell then highlight path
+			gameplaySystem->DisplayPlayerEntityPathToCell(invoker);
+			
+		}
+		else if (gameplaySystem->currentPhaseStatus != GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION)
+		{
+			gameplaySystem->ResetHighlightedPath();
 		}
 
 		//If placement status is being used
@@ -810,7 +833,7 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
-		GameplayInterface_Management_GUI::UpdateFpsLabel(); // update fps top right corner of screen
+		//GameplayInterface_Management_GUI::UpdateFpsLabel(); // update fps top right corner of screen
 		#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
@@ -1323,7 +1346,53 @@ namespace ALEngine::ECS
 		ad.m_Loop = true;
 		ad.Play();
 	}	
-	
+
+	void ALEngine::ECS::GameplaySystem::ResetHighlightedPath()
+	{
+		if (!prevPathList.empty())
+		{
+			for (auto& pair : prevPathList)
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(pair.first);
+				sprite.id = pair.second.id;
+			}
+			prevPathList.clear();
+		}
+	}
+
+	void ALEngine::ECS::GameplaySystem::DisplayPlayerEntityPathToCell(Entity cellEntity)
+	{
+		ResetHighlightedPath();
+		targetCellEntity = cellEntity;
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		if (cell.hasUnit) {
+			return;
+		}
+
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		startCellEntity = getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
+
+		//Get path
+		std::vector<ECS::Entity> pathList;
+		bool isPathFound = Engine::AI::FindPath(m_Room, startCellEntity, targetCellEntity, pathList, false);
+
+		//If path not found then stop
+		if (!isPathFound) {
+			//AL_CORE_INFO("No Path Found");
+			return;
+		}
+
+		bool reachable = true;
+
+		if (pathList.size() > 5)
+		{
+			reachable = false;
+		}
+
+		GameplayInterface::HighlightWalkableCellsRange(m_Room, cell.coordinate, reachable, pathList, prevPathList);
+	}
+
 	void GameplaySystem::MoveEnemy() {
 		//EnemyManager_LoadData();
 
