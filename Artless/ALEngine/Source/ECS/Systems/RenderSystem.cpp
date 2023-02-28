@@ -154,7 +154,7 @@ namespace ALEngine::ECS
 			trans.modelMatrix = Math::mat4::Model(trans);
 
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
-			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
+			*(vColor + counter) = Vector4(color.x, color.y, color.z, color.w);
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
 			*(isUI + counter) = particle.sprite.isUI;
@@ -260,7 +260,7 @@ namespace ALEngine::ECS
 			trans.modelMatrix = Math::mat4::Model(trans);
 
 			*(vMatrix + counter) = trans.modelMatrix.Transpose();
-			*(vColor + counter) = Vector4(color.x, color.y, color.z, 1.f);
+			*(vColor + counter) = Vector4(color.x, color.y, color.z, color.w);
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
 			*(isUI + counter) = particle.sprite.isUI;

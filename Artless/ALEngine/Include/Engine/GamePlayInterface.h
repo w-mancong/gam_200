@@ -160,7 +160,7 @@ namespace ALEngine::Engine::GameplayInterface
     \brief
 	Highlight range of walkable tiles, green in range, red out of range
     ***********************************************************************************/
-	void HighlightWalkableCellsRange(Room& room, Vector2Int coordinate, bool reachable ,std::vector<ECS::Entity> pathlist);
+	void HighlightWalkableCellsRange(Room& room, Vector2Int coordinate, bool reachable ,std::vector<ECS::Entity>& pathlist, std::vector<std::pair<ECS::Entity, Sprite>>& prevPathList);
 
 	/*!*********************************************************************************
 	\brief

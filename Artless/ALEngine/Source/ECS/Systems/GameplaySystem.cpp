@@ -109,6 +109,9 @@ namespace ALEngine::ECS
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = false;
 
+		//For path arrow reset
+		std::vector<std::pair<ECS::Entity, Sprite>> prevPathList;
+
 		//******FUNCTIONS**********//
 		/*!*********************************************************************************
 		\brief
@@ -291,6 +294,8 @@ namespace ALEngine::ECS
 			amendments to them at the end of the turn
 		***********************************************************************************/
 		s32 checkTileCounters(Cell& selectedCell);
+
+		void ResetHighlightedPath();
 	};
 
 	namespace
@@ -448,6 +453,10 @@ namespace ALEngine::ECS
 			//check if able to reach walkable cell then highlight path
 			gameplaySystem->DisplayPlayerEntityPathToCell(invoker);
 			
+		}
+		else if (gameplaySystem->currentPhaseStatus != GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_ACTION)
+		{
+			gameplaySystem->ResetHighlightedPath();
 		}
 
 		//If placement status is being used
@@ -824,7 +833,7 @@ namespace ALEngine::ECS
 
 	void UpdateGameplaySystem(void)
 	{
-		GameplayInterface_Management_GUI::UpdateFpsLabel(); // update fps top right corner of screen
+		//GameplayInterface_Management_GUI::UpdateFpsLabel(); // update fps top right corner of screen
 		#if EDITOR
 		if (ALEngine::Editor::ALEditor::Instance()->GetCurrentSceneName() != sceneName) {
 			return;
@@ -1338,8 +1347,22 @@ namespace ALEngine::ECS
 		ad.Play();
 	}	
 
+	void ALEngine::ECS::GameplaySystem::ResetHighlightedPath()
+	{
+		if (!prevPathList.empty())
+		{
+			for (auto& pair : prevPathList)
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(pair.first);
+				sprite.id = pair.second.id;
+			}
+			prevPathList.clear();
+		}
+	}
+
 	void ALEngine::ECS::GameplaySystem::DisplayPlayerEntityPathToCell(Entity cellEntity)
 	{
+		ResetHighlightedPath();
 		targetCellEntity = cellEntity;
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
@@ -1356,7 +1379,7 @@ namespace ALEngine::ECS
 
 		//If path not found then stop
 		if (!isPathFound) {
-			AL_CORE_INFO("No Path Found");
+			//AL_CORE_INFO("No Path Found");
 			return;
 		}
 
@@ -1367,7 +1390,7 @@ namespace ALEngine::ECS
 			reachable = false;
 		}
 
-		GameplayInterface::HighlightWalkableCellsRange(m_Room, cell.coordinate, reachable, pathList);
+		GameplayInterface::HighlightWalkableCellsRange(m_Room, cell.coordinate, reachable, pathList, prevPathList);
 	}
 
 	void GameplaySystem::MoveEnemy() {

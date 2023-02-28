@@ -50,7 +50,5 @@ namespace ALEngine::Script
 		{
 			camera.Position().y += CAMERA_SPEED * Time::m_DeltaTime;
 		}
-
-		std::cout << camera.Position() << std::endl;
 	}
 }
