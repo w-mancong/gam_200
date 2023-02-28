@@ -118,7 +118,7 @@
                 "localActive": true,
                 "id": 2,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -158,7 +158,7 @@
                 "localActive": true,
                 "id": 3,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -180,7 +180,7 @@
         "Transform": [
             {
                 "position": [
-                    493.800048828125,
+                    493.8000183105469,
                     62.02703857421875,
                     0.0
                 ],
@@ -198,7 +198,7 @@
                 "localActive": true,
                 "id": 4,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -278,7 +278,7 @@
                 "localActive": true,
                 "id": 6,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -820,7 +820,7 @@
         "Transform": [
             {
                 "position": [
-                    457.52081298828125,
+                    457.5208435058594,
                     43.2589111328125,
                     0.0
                 ],
@@ -980,7 +980,7 @@
         "Transform": [
             {
                 "position": [
-                    967.7285766601563,
+                    967.728515625,
                     41.370460510253906,
                     0.0
                 ],
@@ -1214,7 +1214,7 @@
             {
                 "position": [
                     135.9010009765625,
-                    852.7029418945313,
+                    852.7030029296875,
                     0.0
                 ],
                 "scale": [
@@ -3471,82 +3471,6 @@
                 "id": 75,
                 "parentID": 74,
                 "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 76,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 76,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 77,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0,
-                "ui": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Gameplay_System",
-                "active": true,
-                "localActive": true,
-                "id": 77,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ],
-        "LogicComponent": [
-            {
-                "components": [
-                    "GameplaySystem_Interface_Management_Enemy",
-                    "GameplaySystem_Interface_Management_GUI",
-                    "GameplaySystem"
-                ]
             }
         ]
     }

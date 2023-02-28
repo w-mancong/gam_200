@@ -694,7 +694,7 @@ namespace ALEngine::Engine::Scene
 			Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(entity.parent);
 			trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
 			trans.localRotation = trans.rotation - parentTrans.rotation;
-			trans.localScale = { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
+			trans.localScale	= { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
 		}
 		else
 		{
@@ -912,6 +912,17 @@ namespace ALEngine::Engine::Scene
 	void RemoveScene(c8 const* sceneName)
 	{
 		scenes.erase(std::find(scenes.begin(), scenes.end(), sceneName));
+		SaveScenesBuildIndex();
+	}
+
+	void InsertScene(u64 newIndex, u64 oldIndex)
+	{
+		std::string const& tmpScene = scenes[oldIndex];
+
+		for (u64 i{ newIndex }; i < oldIndex; ++i)
+			scenes[i + 1] = scenes[i];
+
+		scenes[newIndex] = tmpScene;
 		SaveScenesBuildIndex();
 	}
 #endif

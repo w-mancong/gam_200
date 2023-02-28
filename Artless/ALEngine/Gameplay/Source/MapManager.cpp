@@ -32,13 +32,13 @@ namespace Gameplay
 		m_MapPath = map_path;
 	}
 
-	void MapManager::DeserializeMap(std::string map_path)
+	bool MapManager::DeserializeMap(std::string map_path)
 	{
 		using namespace ALEngine;
 		using namespace rapidjson;
 
 		c8* buffer = Utility::ReadBytes(map_path.c_str());
-		if (!buffer) return;
+		if (!buffer) return false;
 		//assert(buffer != nullptr);
 
 		// Set the map path
@@ -80,6 +80,8 @@ namespace Gameplay
 
 			m_Map.emplace_back(row_tiles);
 		}
+
+		return true;
 	}
 
 	void MapManager::ReadTileData(void)

@@ -41,8 +41,11 @@ namespace Gameplay
 			Deserializes and assigns the specified Map to be the current Map
 			\param map_path
 			File Path of the Map
+			\return
+			Returns true if map can be deserialized,
+			else returns false
 		***********************************************************************************/
-		void DeserializeMap(std::string map_path);
+		bool DeserializeMap(std::string map_path);
 
 		/*!*********************************************************************************
 			\brief

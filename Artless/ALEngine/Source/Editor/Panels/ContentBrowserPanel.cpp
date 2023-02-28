@@ -35,6 +35,7 @@ namespace ALEngine::Editor
 
 	void ContentBrowserPanel::OnImGuiRender(void)
 	{
+		/*
 		//imgui window-------------------------------------------------------------------------
 		ImGui::Begin("Content Browser");
 
@@ -122,9 +123,10 @@ namespace ALEngine::Editor
 		}
 		ImGui::End();
 		//------------------------------------------------------------------------------------
-
+		*/
 		//imgui window 2----------------------------------------------------------------------
 		ImGui::Begin("Assets");
+		ImGui::BeginChild("ContentBrowserPanel##PanelChild", ImGui::GetContentRegionAvail());
 
 		//back button
 		if (m_CurrentDirectory != std::filesystem::path(assetPath))
@@ -353,6 +355,23 @@ namespace ALEngine::Editor
 		//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 		//ImGui::SliderFloat("Padding", &padding, 0, 32);
 
+		ImGui::EndChild();
+
+		// Drag Drop!
+		if (ImGui::BeginDragDropTarget())
+		{
+			// Payload flag
+			ImGuiDragDropFlags payload_flag{ 0 };
+			//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+			// Get Drag and Drop Payload
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY", payload_flag))
+			{
+				ECS::Entity en = *(ECS::Entity*)payload->Data;
+				SavePrefab(en);
+			}
+			ImGui::EndDragDropTarget();
+		}
 
 		ImGui::End();
 		//------------------------------------------------------------------------------------

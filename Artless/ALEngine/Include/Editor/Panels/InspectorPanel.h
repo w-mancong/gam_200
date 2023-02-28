@@ -183,13 +183,14 @@ namespace ALEngine::Editor
 		InComp_EntityData = 0,
 		InComp_Transform,
 		InComp_Sprite,
-		InComp_RigidBody,
-		InComp_Collider,
+		InComp_Logic,
 		InComp_Particles,
 		InComp_Text,
 		InComp_Script,
 		InComp_Audio,
-		InComp_Logic,
+		InComp_Animator,
+		InComp_RigidBody,
+		InComp_Collider,
 		InComp_Total
 	};
 }
