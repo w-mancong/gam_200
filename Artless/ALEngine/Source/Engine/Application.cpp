@@ -205,6 +205,10 @@ namespace ALEngine::Engine
 		Script::InitScriptManager();
 #endif
 
+		Engine::AssetManager::Instance()->Init();
+		Scene::InitSceneManager();
+		GameStateManager::Init();
+
 		// Initialize Time (Framerate Controller)
 		Time::Init();
 
@@ -216,10 +220,6 @@ namespace ALEngine::Engine
 		UpdateLoop[0] = EditorUpdate;
 		UpdateLoop[1] = GameUpdate;
 #endif
-
-		Engine::AssetManager::Instance()->Init();
-		Scene::InitSceneManager();
-		GameStateManager::Init();
 
 		appStatus = 1;
 #if EDITOR
@@ -348,6 +348,12 @@ namespace ALEngine::Engine
 		Input::Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
+
+		if (Input::KeyTriggered(KeyCode::Key_1))
+		{
+			Animator an = CreateAnimator("Player");
+			ChangeAnimationFramesCount(an.animations["PlayerIdle"], 0, 1);
+		}
 	}
 
 	void Engine::FixedUpdate(void)

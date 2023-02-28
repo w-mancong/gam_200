@@ -1136,6 +1136,8 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Animation:
 			{
+				u64 const start = filePath.find_last_of('\\') + 1, num = filePath.find_last_of('.') - start;
+				id = GetGuid( filePath.substr(start, num) );
 				Texture const& oldTexture = textureList[id];
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(oldTexture.handle);
@@ -1216,6 +1218,8 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Animation:
 			{
+				u64 const start = filePath.find_last_of('\\') + 1, num = filePath.find_last_of('.') - start;
+				id = GetGuid(filePath.substr(start, num));
 				Texture const& texture = textureList[id];
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);
