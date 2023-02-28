@@ -126,6 +126,8 @@ namespace ALEngine::Editor
 
 			m_TileEditor.OnImGuiRender();
 
+			m_AnimatorPanel.OnImGuiRender();
+
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -551,6 +553,9 @@ namespace ALEngine::Editor
 
 		// Tile Editor Panel
 		m_TileEditor.SetPanelMin(panel_min);
+
+		// Animator Panel
+		m_AnimatorPanel.SetPanelMin(panel_min);
 
 	}
 

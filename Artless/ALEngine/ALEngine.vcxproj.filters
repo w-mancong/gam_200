@@ -103,6 +103,7 @@
     <ClCompile Include="Scripts\others\ScriptManager.cpp" />
     <ClCompile Include="Source\SceneManager\CutsceneManager.cpp" />
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
+    <ClCompile Include="Source\Editor\Panels\AnimatorPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -257,6 +258,7 @@
     <ClInclude Include="Scripts\others\ScriptManager.h" />
     <ClInclude Include="Include\SceneManager\CutsceneManager.h" />
     <ClInclude Include="Include\Engine\PathFindingManager.h" />
+    <ClInclude Include="Include\Editor\Panels\AnimatorPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">
