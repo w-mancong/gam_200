@@ -136,12 +136,13 @@ namespace ALEngine::Editor
 		Mat4 proj = ECS::GetProjection();
 
 		// View matrix
-		Mat4 view = ECS::GetView();
+		//Mat4 view = ECS::GetView();
 
 		Vec4 position = { pos.x, pos.y, 0.f, 1.f };
 
 		// Pos
-		position = proj * view * position;
+		//position = proj * view * position;
+		position = proj * position;
 
 		// Check if within range of panel
 		if (position.x < -1.f || position.x > 1.f ||

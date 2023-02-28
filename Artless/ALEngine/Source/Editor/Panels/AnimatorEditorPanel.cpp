@@ -17,7 +17,7 @@ namespace ALEngine::Editor
 {
 	namespace
 	{
-		const std::filesystem::path amimatorPath{ "Assets/Dev/Animator" };//base file 
+		const std::filesystem::path animatorPath{ "Assets/Dev/Animator" };//base file 
 		b8 popUpWindow{ false };
 		Animator tempAnimator{};
 		Animation tempAnimation{};
@@ -27,8 +27,12 @@ namespace ALEngine::Editor
 		u64 constexpr FILE_BUFFER_SIZE{ 1024 };
 	}
 
+	std::unordered_map<std::string, Animator> AnimatorEditorPanel::animatorList{};
+
 	AnimatorEditorPanel::AnimatorEditorPanel()
 	{
+		std::vector<std::string> items{};
+		FileContents(animatorPath, items);
 	}
 
 	AnimatorEditorPanel::~AnimatorEditorPanel()
@@ -43,7 +47,7 @@ namespace ALEngine::Editor
 		}
 
 		std::vector<std::string> items{};
-		FileContents(amimatorPath, items);
+		FileContents(animatorPath, items);
 
 		// used for creating animators
 		static b8 animatorText{ false }, animatorError{ false };	
@@ -351,19 +355,21 @@ namespace ALEngine::Editor
 	{
 	}
 
+	std::unordered_map<std::string, Animator> const& AnimatorEditorPanel::GetListOfAnimators(void)
+	{
+		return animatorList;
+	}
+
 	void AnimatorEditorPanel::FileContents(const std::filesystem::path& path, std::vector<std::string>& items)
 	{
 		// Open the folder directory and push the names of file into a vector
 		for (const auto& entry : std::filesystem::directory_iterator(path))
 		{
-			//std::string const& animatorName = entry.path().string();
-			//u64 lastOfSlash = animatorName.find_last_of("/\\") + 1;
-
-			//items.push_back(animatorName.substr(lastOfSlash));
-
 			std::string const& fileNamestring = std::filesystem::relative(entry.path(), path).filename().string();
 
 			items.push_back(fileNamestring);
+			if (animatorList.count(fileNamestring) == 0)
+				animatorList[fileNamestring] = ECS::CreateAnimator(fileNamestring.c_str());
 		}
 	}
 }

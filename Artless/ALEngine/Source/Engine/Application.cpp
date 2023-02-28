@@ -205,6 +205,10 @@ namespace ALEngine::Engine
 		Script::InitScriptManager();
 #endif
 
+		Engine::AssetManager::Instance()->Init();
+		Scene::InitSceneManager();
+		GameStateManager::Init();
+
 		// Initialize Time (Framerate Controller)
 		Time::Init();
 
@@ -217,17 +221,12 @@ namespace ALEngine::Engine
 		UpdateLoop[1] = GameUpdate;
 #endif
 
-		Engine::AssetManager::Instance()->Init();
-		Scene::InitSceneManager();
-		GameStateManager::Init();
-
 		appStatus = 1;
 #if EDITOR
 		RunFileWatcherThread();
 #else
-		//Console::ShowConsole();
-		Console::StopConsole();
 		OpenGLWindow::FullScreen(true);
+		Console::StopConsole();
 #endif
 		//Animator animator = CreateAnimator("Player");
 		//Entity en = Coordinator::Instance()->CreateEntity();
@@ -297,8 +296,6 @@ namespace ALEngine::Engine
 		//es.AddFreeFunction("SkillReset");
 
 		//Scene::SaveScene("test");
-
-		Instantiate("entity #3");
 	}
 
 	void Application::Update(void)
@@ -351,6 +348,12 @@ namespace ALEngine::Engine
 		Input::Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
+
+		if (Input::KeyTriggered(KeyCode::Key_1))
+		{
+			Animator an = CreateAnimator("Player");
+			ChangeAnimationFramesCount(an.animations["PlayerIdle"], 0, 1);
+		}
 	}
 
 	void Engine::FixedUpdate(void)

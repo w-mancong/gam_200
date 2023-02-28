@@ -3473,45 +3473,5 @@
                 "treeNodeFlags": 32
             }
         ]
-    },
-    {
-        "id": 76,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0,
-                "ui": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "entity #3",
-                "active": true,
-                "localActive": true,
-                "id": 3,
-                "parentID": 0,
-                "treeNodeFlags": 32
-            }
-        ]
     }
 ]

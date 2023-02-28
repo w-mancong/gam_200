@@ -67,6 +67,16 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	Animator CreateAnimator(c8 const* animatorName = "");
 
+	/*!*********************************************************************************
+		\brief Helper function to change the frame count of an animation clip based on a specific sprite index
+
+		\param [in, out] animationClip: Reference to the animation clip where changes will be made
+		\param [in] spriteIndex: Index position of of the sprite in the sprite sheet. 
+					0 is bottom left
+		\param [in] framesCount: Number of frames it will stay at the sprite before 
+					changing to the next
+	***********************************************************************************/
+	void ChangeAnimationFramesCount(Animation& animationClip, u64 spriteIndex, u32 framesCount);
 
 	/*!*********************************************************************************
 		 ---------

@@ -40,7 +40,7 @@ namespace ALEngine::UserInput
 		m_MouseWheelEvent = MouseWheelEvent::MouseWheelIdle;
 	}
 
-	Math::Vec2 Input::WorldToScreenPosVec(Math::Vec2 pos)
+	Math::Vec2 Input::WorldToScreenPosVec([[maybe_unused]] Math::Vec2 pos)
 	{
 #if EDITOR
 		return Editor::ALEditor::Instance()->WorldToScreenPosVec(pos);
