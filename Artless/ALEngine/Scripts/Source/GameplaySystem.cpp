@@ -65,7 +65,7 @@ namespace ALEngine::Script
 		enemyEntityList.clear();
 
 		// Iterate every Map
-		for (auto col : MapManager::Instance()->GetMap() | std::views::reverse)
+		for (auto col : MapManager::Instance()->GetMap())
 		{
 			r = 0;
 			for (auto row : col)

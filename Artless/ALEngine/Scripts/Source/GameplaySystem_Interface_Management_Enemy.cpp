@@ -57,7 +57,7 @@ namespace ALEngine::Script
 		//Set enemy stats
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(entity);
 		enemyUnit.unit_Sprite_Entity = Coordinator::Instance()->CreateEntity();
-		enemyUnit.unit_Name = "BISHOP";
+		enemyUnit.unit_Name = "GUARD";
 		enemyUnit.minRange = 1;
 		enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
 		enemyUnit.maxMovementPoints = 4;
@@ -154,7 +154,7 @@ namespace ALEngine::Script
 		{
 
 			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
-			Animator an = ECS::CreateAnimator("Bishop");
+			Animator an = ECS::CreateAnimator("Guard");
 			Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
 		}
 		SetEnemy01attributes(enemyUnit);
