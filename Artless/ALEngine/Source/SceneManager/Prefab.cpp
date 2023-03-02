@@ -678,6 +678,38 @@ namespace ALEngine
 			SerializeEntity(static_cast<ECS::Entity>(child), ++serialID, ed.id);
 	}
 
+	void SaveData(ECS::Entity en, TWriter& writer, u32& id)
+	{
+		writer.StartObject();
+		writer.Key("id");
+		writer.Uint(id++);
+
+		if (Coordinator::Instance()->HasComponent<Sprite>(en))
+			WriteSprite(writer, en);
+		if (Coordinator::Instance()->HasComponent<Animator>(en))
+			WriteAnimator(writer, en);
+		if (Coordinator::Instance()->HasComponent<Transform>(en))
+			WriteTransform(writer, en);
+		if (Coordinator::Instance()->HasComponent<EntityData>(en))
+			WriteEntityData(writer, en);
+		if (Coordinator::Instance()->HasComponent<Collider2D>(en))
+			WriteCollider2D(writer, en);
+		if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
+			WriteRigidbody2D(writer, en);
+		if (Coordinator::Instance()->HasComponent<CharacterController>(en))
+			WriteCharacterController(writer, en);
+		if (Coordinator::Instance()->HasComponent<Unit>(en))
+			WriteUnit(writer, en);
+		if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
+			WriteParticleProperty(writer, en);
+		if (Coordinator::Instance()->HasComponent<Text>(en))
+			WriteTextProperty(writer, en);
+		if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
+			WriteLogicComponent(writer, en);
+
+		writer.EndObject();
+	}
+
 	// To save a prefab
 	void SavePrefab(ECS::Entity en)
 	{
@@ -692,37 +724,9 @@ namespace ALEngine
 
 		writer.StartArray();
 		u32 id{ 0 };
+		SaveData(en, writer, id);
 		for (s32 child : children)
-		{
-			writer.StartObject();
-			writer.Key("id");
-			writer.Uint(id++);
-
-			if (Coordinator::Instance()->HasComponent<Sprite>(en))
-				WriteSprite(writer, en);
-			if (Coordinator::Instance()->HasComponent<Animator>(en))
-				WriteAnimator(writer, en);
-			if (Coordinator::Instance()->HasComponent<Transform>(en))
-				WriteTransform(writer, en);
-			if (Coordinator::Instance()->HasComponent<EntityData>(en))
-				WriteEntityData(writer, en);
-			if (Coordinator::Instance()->HasComponent<Collider2D>(en))
-				WriteCollider2D(writer, en);
-			if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
-				WriteRigidbody2D(writer, en);
-			if (Coordinator::Instance()->HasComponent<CharacterController>(en))
-				WriteCharacterController(writer, en);
-			if (Coordinator::Instance()->HasComponent<Unit>(en))
-				WriteUnit(writer, en);
-			if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
-				WriteParticleProperty(writer, en);
-			if (Coordinator::Instance()->HasComponent<Text>(en))
-				WriteTextProperty(writer, en);
-			if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
-				WriteLogicComponent(writer, en);
-
-			writer.EndObject();
-		}
+			SaveData(child, writer, id);
 
 		writer.EndArray();
 
