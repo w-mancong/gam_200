@@ -60,8 +60,6 @@ namespace ALEngine::ECS
 		Math::mat4* vMatrix{ nullptr };
 		Math::vec4* vColor{ nullptr };
 		u64* texHandle{ nullptr };
-		u64* isUI{ nullptr };
-		b8 uiFocus{ true };
 		
 		Tree::BinaryTree sceneGraph{};
 		std::vector<Transform> prevTransform;
@@ -102,11 +100,6 @@ namespace ALEngine::ECS
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
-			
-			if (uiFocus || Editor::ALEditor::Instance()->GetGameActive())
-				*(isUI + counter) = sprite.isUI;
-			else
-				*(isUI + counter) = 0;
 
 			++counter;
 		}
@@ -120,7 +113,7 @@ namespace ALEngine::ECS
 		glBindVertexArray(GetVao());
 
 		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
-		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -157,7 +150,6 @@ namespace ALEngine::ECS
 			*(vColor + counter) = Vector4(color.x, color.y, color.z, color.w);
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
-			*(isUI + counter) = particle.sprite.isUI;
 
 			++counter;
 		}
@@ -169,7 +161,7 @@ namespace ALEngine::ECS
 		indirectShader.Set("view", cam.ViewMatrix());
 
 		glBindVertexArray(GetVao());
-		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -212,7 +204,6 @@ namespace ALEngine::ECS
 			*(vColor + counter) = sprite.color;
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(sprite.index);
-			*(isUI + counter) = sprite.isUI;
 
 			++counter;
 		}
@@ -226,7 +217,7 @@ namespace ALEngine::ECS
 		glBindVertexArray(GetVao());
 
 		//BatchData bd{ vColor, vMatrix, texHandle, vIndex, counter };
-		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -263,7 +254,6 @@ namespace ALEngine::ECS
 			*(vColor + counter) = Vector4(color.x, color.y, color.z, color.w);
 			*(texHandle + counter) = AssetManager::Instance()->GetTextureHandle(particle.sprite.id);
 			(*(vMatrix + counter))(3, 3) = static_cast<typename mat4::value_type>(particle.sprite.index);
-			*(isUI + counter) = particle.sprite.isUI;
 
 			++counter;
 		}
@@ -275,7 +265,7 @@ namespace ALEngine::ECS
 		indirectShader.Set("view", camera.ViewMatrix());
 
 		glBindVertexArray(GetVao());
-		BatchData bd{ vColor, vMatrix, texHandle, isUI, counter };
+		BatchData bd{ vColor, vMatrix, texHandle, counter };
 		GenerateDrawCall(bd);
 
 		//draw
@@ -352,7 +342,6 @@ namespace ALEngine::ECS
 		vMatrix = Memory::StaticMemory::New<Math::mat4>(ECS::MAX_ENTITIES);
 		vColor = Memory::StaticMemory::New<Math::vec4>(ECS::MAX_ENTITIES);
 		texHandle = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
-		isUI = Memory::StaticMemory::New<u64>(ECS::MAX_ENTITIES);
 
 		sceneGraph.Init();
 
@@ -360,6 +349,36 @@ namespace ALEngine::ECS
 		camera.ProjectionMatrix(Camera::Projection::Orthographic);
 		camera.ProjRight() = static_cast<f32>(Graphics::OpenGLWindow::width);
 		camera.ProjTop() = static_cast<f32>(Graphics::OpenGLWindow::height);
+	}
+
+	void UpdateUIpositions()
+	{
+		for (Entity en : rs->mEntities)
+		{
+			if (!Coordinator::Instance()->HasComponent<Transform>(en))
+				continue;
+
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+
+			if (trans.uiToggle) // save current offset
+			{
+				AL_CORE_INFO("UI toggled.");
+				trans.uiToggle = false;
+				trans.ui = !trans.ui;
+
+				if (trans.ui)
+				{
+					trans.uiOffset = camera.Position() - trans.position;
+					std::cout << "offset saved: " << trans.uiOffset << "\n";
+				}
+			}
+
+			if (trans.ui)
+			{
+				trans.position = camera.Position() - trans.uiOffset;
+				std::cout << "new pos: " << trans.position << "\n";
+			}
+		}	
 	}
 
 	void RenderGameplay(void)
@@ -374,6 +393,7 @@ namespace ALEngine::ECS
 #endif
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		UpdateUIpositions();
 		UpdateAnimatorSystem();
 		UpdateParticleSystem();
 #if EDITOR
@@ -401,15 +421,6 @@ namespace ALEngine::ECS
 	{
 		if (Editor::ALEditor::Instance()->GetGameActive())
 			return;
-
-		if (Input::KeyTriggered(KeyCode::U) && Input::KeyDown(KeyCode::Ctrl))
-		{
-			uiFocus = !uiFocus;
-			if(uiFocus)
-				AL_CORE_INFO("UI attatched");
-			else
-				AL_CORE_INFO("UI detatched");
-		}
 
 		//------------------ Begin editor framebuffer rendering ------------------//
 		glBindFramebuffer(GL_FRAMEBUFFER, editorFbo); // begin editor framebuffer

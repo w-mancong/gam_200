@@ -169,7 +169,11 @@ namespace ALEngine::Editor
 		f64 GetSceneHeight(void);
 
 		/*!*********************************************************************************
-			\brief Return editor panel camera's width
+			\brief Return editor panel 
+			
+			
+			
+			's width
 		***********************************************************************************/
 		f32& GetSceneCameraWidth(void);
 

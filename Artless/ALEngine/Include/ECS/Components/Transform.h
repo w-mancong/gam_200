@@ -33,6 +33,9 @@ namespace ALEngine::ECS::Component
 		math::vec2 scale{ 1.0f, 1.0f };
 		f32	rotation{ 0.0f };
 		Math::mat4 modelMatrix{ 1.0f };
+
+		b8 ui{ false }, uiToggle{ false };
+		math::vec3 uiOffset{ 0.0f, 0.0f, 0.0f };
 	};
 
 	//Math::vec3 GetGlobalPosition(Transform const& trans);

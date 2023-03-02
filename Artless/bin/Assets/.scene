@@ -13,8 +13,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -28,7 +27,8 @@
                     202.5,
                     186.29998779296875
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -53,8 +53,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -68,7 +67,8 @@
                     72.0,
                     186.3000030517578
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -93,8 +93,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -108,7 +107,8 @@
                     270.0,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -133,8 +133,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -148,7 +147,8 @@
                     500.0,
                     125.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -173,8 +173,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -188,7 +187,8 @@
                     450.0,
                     125.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -213,8 +213,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -228,7 +227,8 @@
                     250.71408081054688,
                     33.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -253,8 +253,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -268,7 +267,8 @@
                     182.89999389648438,
                     90.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -293,8 +293,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -308,7 +307,8 @@
                     54.869998931884766,
                     40.499996185302734
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -333,8 +333,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -348,7 +347,8 @@
                     54.869998931884766,
                     40.499996185302734
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -373,8 +373,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -388,7 +387,8 @@
                     38.409000396728516,
                     30.3749942779541
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -413,8 +413,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -428,7 +427,8 @@
                     202.5,
                     186.3000030517578
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -453,8 +453,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 254,
-                "ui": 1
+                "layer": 254
             }
         ],
         "Transform": [
@@ -468,7 +467,8 @@
                     265.0,
                     60.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -493,8 +493,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -508,7 +507,8 @@
                     281.29998779296875,
                     95.5
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -533,8 +533,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -548,7 +547,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -573,8 +573,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -588,7 +587,8 @@
                     450.0,
                     80.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -613,8 +613,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -628,7 +627,8 @@
                     391.5,
                     20.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -653,8 +653,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 1000,
-                "ui": 1
+                "layer": 1000
             }
         ],
         "Transform": [
@@ -668,7 +667,8 @@
                     400.0,
                     350.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -693,8 +693,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 1000,
-                "ui": 1
+                "layer": 1000
             }
         ],
         "Transform": [
@@ -708,7 +707,8 @@
                     80.00000762939453,
                     80.49999237060547
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -733,8 +733,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -748,7 +747,8 @@
                     54.878055572509766,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -773,8 +773,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -788,7 +787,8 @@
                     54.878055572509766,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -813,8 +813,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -828,7 +827,8 @@
                     54.878055572509766,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -853,8 +853,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -868,7 +867,8 @@
                     54.878055572509766,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -893,8 +893,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -908,7 +907,8 @@
                     54.878055572509766,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -933,8 +933,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -948,7 +947,8 @@
                     54.878055572509766,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -973,8 +973,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -988,7 +987,8 @@
                     62.5,
                     62.5
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1013,8 +1013,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -1028,7 +1027,8 @@
                     62.5,
                     62.5
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1053,8 +1053,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -1068,7 +1067,8 @@
                     62.5,
                     62.5
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1093,8 +1093,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -1108,7 +1107,8 @@
                     62.5,
                     62.5
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1135,7 +1135,8 @@
                     265.0,
                     60.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1178,7 +1179,8 @@
                     400.0,
                     350.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1221,7 +1223,8 @@
                     281.29998779296875,
                     95.5
                 ],
-                "rotation": 179.99989318847656
+                "rotation": 179.99989318847656,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1264,7 +1267,8 @@
                     450.0,
                     80.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1307,7 +1311,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1350,7 +1355,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1393,7 +1399,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1436,7 +1443,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1479,7 +1487,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1522,7 +1531,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1565,7 +1575,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1608,7 +1619,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1651,7 +1663,8 @@
                     450.0,
                     275.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1692,8 +1705,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 255,
-                "ui": 1
+                "layer": 255
             }
         ],
         "Transform": [
@@ -1707,7 +1719,8 @@
                     1600.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1732,8 +1745,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -1747,7 +1759,8 @@
                     288.0,
                     63.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1774,7 +1787,8 @@
                     288.0,
                     63.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1815,8 +1829,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -1830,7 +1843,8 @@
                     288.0,
                     63.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1857,7 +1871,8 @@
                     1600.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1898,8 +1913,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -1913,7 +1927,8 @@
                     288.0,
                     63.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1940,7 +1955,8 @@
                     1600.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -1981,8 +1997,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -1996,7 +2011,8 @@
                     288.0,
                     315.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2023,7 +2039,8 @@
                     270.0,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2064,8 +2081,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 0
+                "layer": 256
             }
         ],
         "Transform": [
@@ -2079,7 +2095,8 @@
                     450.0,
                     350.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2104,8 +2121,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -2119,7 +2135,8 @@
                     135.0,
                     52.500003814697266
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2144,8 +2161,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -2159,7 +2175,8 @@
                     135.0,
                     52.500003814697266
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2184,8 +2201,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -2199,7 +2215,8 @@
                     1600.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2224,8 +2241,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -2239,7 +2255,8 @@
                     160.0,
                     90.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2264,8 +2281,7 @@
                     1.0,
                     0.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2279,7 +2295,8 @@
                     50.0,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2320,8 +2337,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2335,7 +2351,8 @@
                     350.0,
                     100.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2360,8 +2377,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2375,7 +2391,8 @@
                     50.000003814697266,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2416,8 +2433,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2431,7 +2447,8 @@
                     52.04052734375,
                     71.05199432373047
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2494,8 +2511,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2509,7 +2525,8 @@
                     61.55999755859375,
                     78.99120330810547
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2572,8 +2589,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2587,7 +2603,8 @@
                     66.41999816894531,
                     129.664794921875
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2650,8 +2667,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2665,7 +2681,8 @@
                     67.06800842285156,
                     93.23942565917969
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2728,8 +2745,7 @@
                     1.0,
                     0.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2743,7 +2759,8 @@
                     400.0,
                     350.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2784,8 +2801,7 @@
                     1.0,
                     0.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2799,7 +2815,8 @@
                     400.0,
                     350.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2840,8 +2857,7 @@
                     1.0,
                     0.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2855,7 +2871,8 @@
                     400.0,
                     350.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2896,8 +2913,7 @@
                     1.0,
                     0.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2911,7 +2927,8 @@
                     400.0,
                     350.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2952,8 +2969,7 @@
                     1.0,
                     0.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -2967,7 +2983,8 @@
                     50.0,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -2992,8 +3009,7 @@
                     0.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -3007,7 +3023,8 @@
                     13.199999809265137,
                     16.399999618530273
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -3070,8 +3087,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -3085,7 +3101,8 @@
                     14.800000190734863,
                     12.800000190734863
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -3148,8 +3165,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0,
-                "ui": 1
+                "layer": 0
             }
         ],
         "Transform": [
@@ -3163,7 +3179,8 @@
                     50.0,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -3226,8 +3243,7 @@
                     1.0,
                     0.0
                 ],
-                "layer": 0,
-                "ui": 0
+                "layer": 0
             }
         ],
         "Transform": [
@@ -3241,7 +3257,8 @@
                     50.0,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -3282,8 +3299,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -3297,7 +3313,8 @@
                     288.0,
                     63.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -3324,7 +3341,8 @@
                     1600.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -3365,8 +3383,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -3380,7 +3397,8 @@
                     450.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -3405,8 +3423,7 @@
                     0.0,
                     0.37254902720451355
                 ],
-                "layer": 255,
-                "ui": 0
+                "layer": 255
             }
         ],
         "Transform": [
@@ -3420,7 +3437,8 @@
                     1600.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
@@ -3445,8 +3463,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256,
-                "ui": 1
+                "layer": 256
             }
         ],
         "Transform": [
@@ -3460,7 +3477,8 @@
                     160.0,
                     90.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false
             }
         ],
         "EntityData": [
