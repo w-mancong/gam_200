@@ -164,14 +164,14 @@ namespace ALEngine::Engine::Scene
 		// Getting rotation
 		transform.rotation = v[0]["rotation"].GetFloat();
 
-		//// Getting UI status
-		//transform.ui = v[0]["ui"].GetBool();
+		// Getting UI status
+		transform.ui = v[0]["ui"].GetBool();
 
-		//// Getting uiOffset
-		//rjs::Value const& t = v[0]["uiOffset"];
-		//transform.uiOffset.x = t[0].GetFloat();
-		//transform.uiOffset.y = t[1].GetFloat();
-		//transform.uiOffset.z = t[2].GetFloat();
+		// Getting uiOffset
+		rjs::Value const& t = v[0]["uiOffset"];
+		transform.uiOffset.x = t[0].GetFloat();
+		transform.uiOffset.y = t[1].GetFloat();
+		transform.uiOffset.z = t[2].GetFloat();
 
 		Coordinator::Instance()->AddComponent(en, transform);
 	}

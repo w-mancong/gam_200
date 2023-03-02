@@ -362,21 +362,19 @@ namespace ALEngine::ECS
 
 			if (trans.uiToggle) // save current offset
 			{
-				AL_CORE_INFO("UI toggled.");
+				trans.ui = true;
 				trans.uiToggle = false;
-				trans.ui = !trans.ui;
 
 				if (trans.ui)
 				{
 					trans.uiOffset = camera.Position() - trans.position;
-					std::cout << "offset saved: " << trans.uiOffset << "\n";
+					AL_CORE_INFO("UI offset updated.");
 				}
 			}
 
 			if (trans.ui)
 			{
 				trans.position = camera.Position() - trans.uiOffset;
-				std::cout << "new pos: " << trans.position << "\n";
 			}
 		}	
 	}
@@ -384,6 +382,7 @@ namespace ALEngine::ECS
 	void RenderGameplay(void)
 	{
 		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
+		UpdateUIpositions();
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
@@ -393,7 +392,6 @@ namespace ALEngine::ECS
 #endif
 		glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a); // clear viewport framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		UpdateUIpositions();
 		UpdateAnimatorSystem();
 		UpdateParticleSystem();
 #if EDITOR

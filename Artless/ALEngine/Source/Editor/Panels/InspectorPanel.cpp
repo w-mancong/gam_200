@@ -240,9 +240,19 @@ namespace ALEngine::Editor
 			ImGui::DragFloat2("Sc", mtx_scale, v_speed);			// Scale
 			//EDITOR_KEYBOARD_CHECK
 
+			if(xform.ui)
+				ImGui::Text("Offset saved");
+			else
+				ImGui::Text("No Offset");
+
 			if (ImGui::Button("Save UI offset"))
 			{
 				xform.uiToggle = true;
+			}
+
+			if (ImGui::Button("Remove UI offset"))
+			{
+				xform.ui = false;
 			}
 
 			// Set changes

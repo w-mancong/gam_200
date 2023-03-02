@@ -28,7 +28,12 @@
                     186.29998779296875
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -68,7 +73,12 @@
                     186.3000030517578
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -108,7 +118,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -148,7 +163,12 @@
                     125.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -188,7 +208,12 @@
                     125.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -228,7 +253,12 @@
                     33.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -268,7 +298,12 @@
                     90.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -308,7 +343,12 @@
                     40.499996185302734
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -348,7 +388,12 @@
                     40.499996185302734
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -388,7 +433,12 @@
                     30.3749942779541
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -428,7 +478,12 @@
                     186.3000030517578
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -468,7 +523,12 @@
                     60.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -508,7 +568,12 @@
                     95.5
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -548,7 +613,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -588,7 +658,12 @@
                     80.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -628,7 +703,12 @@
                     20.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -668,7 +748,12 @@
                     350.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -708,7 +793,12 @@
                     80.49999237060547
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -748,7 +838,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -788,7 +883,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -828,7 +928,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -868,7 +973,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -908,7 +1018,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -948,7 +1063,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -979,7 +1099,7 @@
         "Transform": [
             {
                 "position": [
-                    967.728515625,
+                    967.7285766601563,
                     41.370460510253906,
                     0.0
                 ],
@@ -988,7 +1108,12 @@
                     62.5
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1028,7 +1153,12 @@
                     62.5
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1068,7 +1198,12 @@
                     62.5
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1108,7 +1243,12 @@
                     62.5
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1136,7 +1276,12 @@
                     60.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1180,7 +1325,12 @@
                     350.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1216,7 +1366,7 @@
             {
                 "position": [
                     135.9010009765625,
-                    852.7030029296875,
+                    852.7029418945313,
                     0.0
                 ],
                 "scale": [
@@ -1224,7 +1374,12 @@
                     95.5
                 ],
                 "rotation": 179.99989318847656,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1268,7 +1423,12 @@
                     80.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1312,7 +1472,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1356,7 +1521,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1400,7 +1570,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1444,7 +1619,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1488,7 +1668,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1532,7 +1717,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1576,7 +1766,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1620,7 +1815,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1664,7 +1864,12 @@
                     275.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1720,7 +1925,12 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1760,7 +1970,12 @@
                     63.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1788,7 +2003,12 @@
                     63.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1844,7 +2064,12 @@
                     63.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1872,7 +2097,12 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1928,7 +2158,12 @@
                     63.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -1956,7 +2191,12 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2012,7 +2252,12 @@
                     315.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2040,7 +2285,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2096,7 +2346,12 @@
                     350.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2136,7 +2391,12 @@
                     52.500003814697266
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2176,7 +2436,12 @@
                     52.500003814697266
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2216,7 +2481,12 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2256,7 +2526,12 @@
                     90.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2296,7 +2571,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2352,7 +2632,12 @@
                     100.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2392,7 +2677,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2448,7 +2738,12 @@
                     71.05199432373047
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2526,7 +2821,12 @@
                     78.99120330810547
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2604,7 +2904,12 @@
                     129.664794921875
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2682,7 +2987,12 @@
                     93.23942565917969
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2760,7 +3070,12 @@
                     350.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2816,7 +3131,12 @@
                     350.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2872,7 +3192,12 @@
                     350.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2928,7 +3253,12 @@
                     350.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -2984,7 +3314,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3024,7 +3359,12 @@
                     16.399999618530273
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3102,7 +3442,12 @@
                     12.800000190734863
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3180,7 +3525,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3258,7 +3608,12 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3314,7 +3669,12 @@
                     63.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3342,7 +3702,12 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3398,7 +3763,12 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3438,7 +3808,12 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3478,7 +3853,12 @@
                     90.0
                 ],
                 "rotation": 0.0,
-                "ui": false
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -3488,6 +3868,39 @@
                 "localActive": true,
                 "id": 75,
                 "parentID": 74,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 76,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Map Parent",
+                "active": true,
+                "localActive": true,
+                "id": 76,
+                "parentID": -1,
                 "treeNodeFlags": 32
             }
         ]

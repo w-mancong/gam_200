@@ -355,7 +355,7 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Fixed Delta Time Update");
 #endif
-		UpdateGameplaySystem();
+		//UpdateGameplaySystem();
 
 		UpdateButtonSystem();
 
@@ -372,7 +372,7 @@ namespace ALEngine::Engine
 
 		DebugDrawRigidbody();
 		DebugDrawCollider();
-		DrawGameplaySystem();
+		//DrawGameplaySystem();
 	}
 
 	int GetAppStatus(void)
