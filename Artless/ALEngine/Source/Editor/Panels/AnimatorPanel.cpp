@@ -18,11 +18,15 @@ namespace ALEngine::Editor
 	namespace
 	{
 		u64 SelectorImageGuid{};
-		const std::filesystem::path AnimatorPath{ "Assets/Dev/Animator" };
+		const u32 MAX_SPRITES_ROW{ 4 };
 	}
 
 	AnimatorPanel::AnimatorPanel(void)
 	{
+		m_SelectedAnimator = AnimatorEditorPanel::GetListOfAnimators().begin()->second;
+		m_SelectedAnimation = m_SelectedAnimator.animations.begin()->second;
+		m_SelectedAnimatorIndex = 0;
+		m_SelectedAnimationIndex = 0;
 	}
 
 	AnimatorPanel::~AnimatorPanel(void)
@@ -30,8 +34,7 @@ namespace ALEngine::Editor
 	}
 
 	void AnimatorPanel::OnImGuiRender(void)
-	{
-		
+	{		
 		// Set constraints
 		ImGui::SetNextWindowSizeConstraints(ImVec2(static_cast<f32>(ALEditor::Instance()->GetSceneWidth()),
 			static_cast<f32>(ALEditor::Instance()->GetSceneHeight())), ImGui::GetMainViewport()->WorkSize);
@@ -80,16 +83,38 @@ namespace ALEngine::Editor
 	void AnimatorPanel::Update(void)
 	{
 		// Check if no animations or animation has no filepath
-	//	if (m_SelectedAnimation.filePath != "" && !m_SelectedAnimator.animations.empty()) 
+		if (m_SelectedAnimation.filePath != "" && !m_SelectedAnimator.animations.empty()) 
 		{
-			ImVec2 animationsArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.6f, ImGui::GetContentRegionAvail().y);
+			ImVec2 animationsArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.6f, ImGui::GetContentRegionAvail().x * 0.6f);
+
+			// Up
+			if (Input::KeyTriggered(KeyCode::Up))
+			{
+				u32 nextY{ (m_SelectedFrame.y + 1) * MAX_SPRITES_ROW + m_SelectedFrame.x };
+				m_SelectedFrame.y = nextY > (m_SelectedAnimation.totalSprites - 1) ? m_SelectedFrame.y : m_SelectedFrame.y + 1;
+			}
+
+			// Down
+			if(Input::KeyTriggered(KeyCode::Down))
+				m_SelectedFrame.y = m_SelectedFrame.y <= 0 ? 0 : m_SelectedFrame.y - 1;
+
+			// Right
+			if (Input::KeyTriggered(KeyCode::Right))
+			{
+				u32 nextX{ (m_SelectedFrame.y) * MAX_SPRITES_ROW + (m_SelectedFrame.x + 1) };
+				m_SelectedFrame.x = (nextX < (m_SelectedAnimation.totalSprites) && m_SelectedFrame.x + 1 < MAX_SPRITES_ROW) ? m_SelectedFrame.x + 1 :  m_SelectedFrame.x;
+			}
+
+			// Left
+			if (Input::KeyTriggered(KeyCode::Left))
+				m_SelectedFrame.x = m_SelectedFrame.x <= 0 ? 0 : m_SelectedFrame.x - 1;
 
 			if (ImGui::BeginChild("##AnimatorPanel_AnimationsArea", animationsArea, true))
 			{
 				// Render the Animation
 				std::string fp = m_SelectedAnimation.filePath;
 
-				Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Images\\Spritesheet_Guard_Hurt.png");
+				Guid id = Engine::AssetManager::Instance()->GetGuid(fp);
 				u64 tex = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
 				ImGui::Image(reinterpret_cast<ImTextureID>(tex), { animationsArea.x * 0.9f, animationsArea.y * 0.9f }, { 0, 1 }, { 1, 0 });
 
@@ -100,8 +125,8 @@ namespace ALEngine::Editor
 				id = Engine::AssetManager::Instance()->GetGuid(SELECTOR_IMAGE_PATH);
 				SelectorImageGuid = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
 
-				ImVec2 selectorPos = { ImGui::GetCursorScreenPos().x, 
-					ImGui::GetCursorScreenPos().y - selectorSize.y * 4.f};
+				ImVec2 selectorPos = { ImGui::GetCursorScreenPos().x + selectorSize.x * m_SelectedFrame.x,
+					ImGui::GetCursorScreenPos().y - selectorSize.y * (m_SelectedFrame.y + 1)};
 
 				ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<ImTextureID>(SelectorImageGuid), selectorPos,
 					{ selectorPos.x + selectorSize.x, selectorPos.y + selectorSize.y }, ImVec2(0, 1), ImVec2(1, 0));
@@ -112,37 +137,49 @@ namespace ALEngine::Editor
 			}
 		}
 
-		std::vector<std::string> items{};
-		for (const auto& entry : std::filesystem::directory_iterator(AnimatorPath))
-		{
-			//std::string const& animatorName = entry.path().string();
-			//u64 lastOfSlash = animatorName.find_last_of("/\\") + 1;
-
-			//items.push_back(animatorName.substr(lastOfSlash));
-
-			std::string const& fileNamestring = std::filesystem::relative(entry.path(), AnimatorPath).filename().string();
-
-			items.push_back(fileNamestring);
-		}
-
+		auto animator_list = AnimatorEditorPanel::GetListOfAnimators();
+		//ECS::ChangeAnimationFramesCount();
 		if (ImGui::BeginChild("##AnimatorPanel_InfoArea", ImGui::GetContentRegionAvail()))
 		{
-			const char* animator_preview = m_SelectedAnimator.animatorName.empty() ? items.begin()->c_str() : m_SelectedAnimator.animatorName.c_str();
+			const char* animator_preview = m_SelectedAnimator.animatorName.empty() ? animator_list.begin()->first.c_str() : m_SelectedAnimator.animatorName.c_str();
 			if (ImGui::BeginCombo("Animator##AnimatorPanel", animator_preview))
 			{
-				for (u32 i{ 0 }; i < items.size(); ++i)
+				u32 counter{ 0 };
+				for (auto i : animator_list)
 				{
-					if (ImGui::Selectable(items[i].c_str(), m_SelectedAnimatorIndex == i))
+					if (ImGui::Selectable(i.first.c_str(), m_SelectedAnimatorIndex == counter))
 					{
-						m_SelectedAnimatorIndex = i;
-						//m_SelectedAnimator = ;
+						m_SelectedAnimatorIndex = counter;
+						m_SelectedAnimator = i.second;
+
+						// Set default to first animations
+						m_SelectedAnimation = m_SelectedAnimator.animations.begin()->second;
+						m_SelectedAnimationIndex = 0;
 					}
 				}
 
 				ImGui::EndCombo();
 			}
 
+			if (m_SelectedAnimation.clipName != "")
+			{
+				const char* animation_preview = m_SelectedAnimation.clipName;
+				if (ImGui::BeginCombo("Animation##AnimatorPanel", animation_preview))
+				{
+					u32 counter{ 0 };
+					for (auto i : m_SelectedAnimator.animations)
+					{
+						if (ImGui::Selectable(i.first.c_str(), m_SelectedAnimationIndex == counter))
+						{
+							m_SelectedAnimation = i.second;
+							m_SelectedAnimationIndex = counter;
+							m_SelectedFrame = { 0, 0 };
+						}
+					}
 
+					ImGui::EndCombo();
+				}
+			}
 
 			ImGui::EndChild();
 		}

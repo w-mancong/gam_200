@@ -4,19 +4,6 @@
         "Height": 10,
         "Map": [
             [
-                "Obstacle",
-                "Obstacle",
-                "Obstacle",
-                "Empty",
-                "Empty",
-                "Enemy Cell Destroyer",
-                "Empty",
-                "Obstacle",
-                "Obstacle",
-                "Obstacle"
-            ],
-            [
-                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
@@ -25,82 +12,82 @@
                 "Empty",
                 "Empty",
                 "Empty",
-                "Obstacle"
-            ],
-            [
-                "Obstacle",
-                "Obstacle",
-                "Obstacle",
-                "Tile",
-                "Tile",
-                "Tile",
-                "Obstacle",
-                "Obstacle",
                 "Empty",
-                "Obstacle"
+                "Empty"
             ],
             [
                 "Empty",
                 "Empty",
                 "Empty",
-                "Tile",
-                "Wall",
-                "Tile",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
+            ],
+            [
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
+            ],
+            [
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
+            ],
+            [
+                "Empty",
+                "Empty",
+                "Horizontal",
+                "Horizontal",
+                "Horizontal",
+                "Top",
                 "Empty",
                 "Empty",
                 "Empty",
                 "Empty"
             ],
             [
-                "Obstacle",
-                "Obstacle",
-                "Obstacle",
-                "Tile",
-                "Player",
-                "Tile",
-                "Obstacle",
-                "Obstacle",
-                "Empty",
-                "Obstacle"
-            ],
-            [
-                "Obstacle",
-                "Obstacle",
-                "Obstacle",
-                "Tile",
-                "Wall",
-                "Tile",
-                "Obstacle",
-                "Obstacle",
-                "Empty",
-                "Obstacle"
-            ],
-            [
                 "Empty",
                 "Empty",
-                "Empty",
-                "Tile",
-                "Tile",
-                "Tile",
+                "Bottom",
+                "Bottom",
+                "Bottom",
+                "Vertical",
                 "Empty",
                 "Empty",
                 "Empty",
                 "Empty"
             ],
             [
-                "Obstacle",
-                "Enemy Melee",
-                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
-                "Obstacle",
                 "Empty",
-                "Enemy Melee",
-                "Obstacle"
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
             ],
             [
-                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
@@ -109,19 +96,32 @@
                 "Empty",
                 "Empty",
                 "Empty",
-                "Obstacle"
+                "Empty",
+                "Empty"
             ],
             [
-                "Obstacle",
-                "Obstacle",
-                "Obstacle",
                 "Empty",
                 "Empty",
                 "Empty",
                 "Empty",
-                "Obstacle",
-                "Obstacle",
-                "Obstacle"
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
+            ],
+            [
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty",
+                "Empty"
             ]
         ]
     }

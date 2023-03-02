@@ -101,6 +101,7 @@ namespace ALEngine::Editor
 		Animation m_SelectedAnimation{};		// Reference to the selected Animation
 		Math::Vec2Int m_SelectedFrame{};		// The X and Y of the selected frame
 		u32 m_SelectedAnimatorIndex{ 0 };		// Selected Animator Index
+		u32 m_SelectedAnimationIndex{ 0 };		//
 
 		b8 m_PanelIsOpen{ false };				// Keeps track of whether the Panel is open
 
