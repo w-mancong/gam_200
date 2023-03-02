@@ -29,11 +29,11 @@
         "id": 2,
         "EntityData": [
             {
-                "tag": "test_grandchild_entity1",
+                "tag": "test_child_entity2",
                 "active": true,
                 "localActive": true,
-                "id": 3,
-                "parentID": 2,
+                "id": 2,
+                "parentID": 0,
                 "treeNodeFlags": 0
             }
         ]
@@ -42,11 +42,11 @@
         "id": 3,
         "EntityData": [
             {
-                "tag": "test_child_entity2",
+                "tag": "test_grandchild_entity1",
                 "active": true,
                 "localActive": true,
-                "id": 2,
-                "parentID": 0,
+                "id": 3,
+                "parentID": 2,
                 "treeNodeFlags": 0
             }
         ]
