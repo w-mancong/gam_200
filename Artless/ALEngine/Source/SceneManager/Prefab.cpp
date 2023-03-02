@@ -666,41 +666,64 @@ namespace ALEngine
 		}
 	}
 
+	void SerializeEntity(ECS::Entity en, s32& serialID, s32 parentID)
+	{
+		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		ed.id = serialID;
+		ed.parentID = parentID;
+
+		ECS::GetSceneGraph().FindImmediateChildren(en);
+		std::vector<s32> children = ECS::GetSceneGraph().GetChildren();
+		for (s32 child : children)
+			SerializeEntity(static_cast<ECS::Entity>(child), ++serialID, ed.id);
+	}
+
 	// To save a prefab
 	void SavePrefab(ECS::Entity en)
 	{
 		rjs::StringBuffer sb{};
 		TWriter writer{ sb };
 
+		s32 serialID{};
+		SerializeEntity(en, serialID, -1);
+		
+		ECS::GetSceneGraph().FindChildren(en);
+		std::vector<s32> const& children = ECS::GetSceneGraph().GetChildren();
+
 		writer.StartArray();
-		writer.StartObject();
+		u32 id{ 0 };
+		for (s32 child : children)
+		{
+			writer.StartObject();
+			writer.Key("id");
+			writer.Uint(id++);
 
-		// TODO: Add code to support parent child relationship
+			if (Coordinator::Instance()->HasComponent<Sprite>(en))
+				WriteSprite(writer, en);
+			if (Coordinator::Instance()->HasComponent<Animator>(en))
+				WriteAnimator(writer, en);
+			if (Coordinator::Instance()->HasComponent<Transform>(en))
+				WriteTransform(writer, en);
+			if (Coordinator::Instance()->HasComponent<EntityData>(en))
+				WriteEntityData(writer, en);
+			if (Coordinator::Instance()->HasComponent<Collider2D>(en))
+				WriteCollider2D(writer, en);
+			if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
+				WriteRigidbody2D(writer, en);
+			if (Coordinator::Instance()->HasComponent<CharacterController>(en))
+				WriteCharacterController(writer, en);
+			if (Coordinator::Instance()->HasComponent<Unit>(en))
+				WriteUnit(writer, en);
+			if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
+				WriteParticleProperty(writer, en);
+			if (Coordinator::Instance()->HasComponent<Text>(en))
+				WriteTextProperty(writer, en);
+			if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
+				WriteLogicComponent(writer, en);
 
-		if (Coordinator::Instance()->HasComponent<Sprite>(en))
-			WriteSprite(writer, en);
-		if (Coordinator::Instance()->HasComponent<Animator>(en))
-			WriteAnimator(writer, en);
-		if (Coordinator::Instance()->HasComponent<Transform>(en))
-			WriteTransform(writer, en);
-		if (Coordinator::Instance()->HasComponent<EntityData>(en))
-			WriteEntityData(writer, en);
-		if (Coordinator::Instance()->HasComponent<Collider2D>(en))
-			WriteCollider2D(writer, en);
-		if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
-			WriteRigidbody2D(writer, en);
-		if (Coordinator::Instance()->HasComponent<CharacterController>(en))
-			WriteCharacterController(writer, en);
-		if (Coordinator::Instance()->HasComponent<Unit>(en))
-			WriteUnit(writer, en);
-		if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
-			WriteParticleProperty(writer, en);
-		if (Coordinator::Instance()->HasComponent<Text>(en))
-			WriteTextProperty(writer, en);
-		if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
-			WriteLogicComponent(writer, en);
+			writer.EndObject();
+		}
 
-		writer.EndObject();
 		writer.EndArray();
 
 		std::string fileName{ "Assets\\Dev\\Prefab\\" + Coordinator::Instance()->GetComponent<EntityData>(en).tag + ".prefab" };

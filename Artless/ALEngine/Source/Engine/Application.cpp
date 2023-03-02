@@ -228,6 +228,13 @@ namespace ALEngine::Engine
 		OpenGLWindow::FullScreen(true);
 		Console::StopConsole();
 #endif
+		Entity en = Coordinator::Instance()->CreateEntity();
+		ECS::GetSceneGraph().Push(-1, en);
+
+		en = Coordinator::Instance()->CreateEntity();
+		ECS::GetSceneGraph().Push(-1, en);
+
+
 		//Animator animator = CreateAnimator("Player");
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//Transform trans{};
