@@ -521,10 +521,32 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Finding Target Cell");
 		//Find a target cell
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
+
+		std::vector<ECS::Entity> pathdistance;
+		ECS::Entity cellplayerin = gameplaySystem->getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
+
+		enemyNeededData.startCellEntity = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
 
 		if (enemyUnit.health <= 0) {
 			++enemyNeededData.enemyMoved;
 			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			return;
+		}
+
+		//check distance from player
+		if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true))
+		{
+			if (pathdistance.size() < 7)
+			{
+				enemyUnit.TriggeredByPlayer = true;
+			}
+		}
+
+		if (!enemyUnit.TriggeredByPlayer)
+		{
+			++enemyNeededData.enemyMoved;
+			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
