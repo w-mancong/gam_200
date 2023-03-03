@@ -105,6 +105,8 @@ namespace ALEngine::Engine::GameplayInterface
 	public:
 		//Stats
 		u32 current_Cooldown = 0, max_Cooldown = 0;
+
+		u32 apCost = 0;
 		
 		s32 damage = 15;
 

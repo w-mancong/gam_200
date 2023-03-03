@@ -335,6 +335,7 @@ namespace ALEngine::Engine::GameplayInterface
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 15;
 		new_ability.max_Cooldown = 1;
+		new_ability.apCost = 2;
 		abilitiesList.push_back(new_ability);
 
 		//Life steal
@@ -342,14 +343,14 @@ namespace ALEngine::Engine::GameplayInterface
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 12;
 		new_ability.max_Cooldown = 2;
-
+		new_ability.apCost = 2;
 		abilitiesList.push_back(new_ability);
 
 		//Construct Wall
 		new_ability.current_Ability_Name = ABILITY_NAME::CONSTRUCT_WALL;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
 		new_ability.max_Cooldown = 4;
-		//TRIGGER THE BUILD WALL FUNCTION HERE!!
+		new_ability.apCost = 2;
 		abilitiesList.push_back(new_ability);
 	}
 
@@ -560,37 +561,61 @@ namespace ALEngine::Engine::GameplayInterface
 								switch (abilities.current_Ability_Name)
 								{
 									case ABILITY_NAME::HARD_DROP:
-										DoDamageToUnit(cell.unitEntity, abilities.damage);
-										abilities.current_Cooldown = abilities.max_Cooldown;
-										
-										AL_CORE_CRITICAL("HARD DROPPED USED. CURRENT CD :");
+									{
+										AL_CORE_CRITICAL("HARD DROP CURRENT COOLDOWN : ");
 										AL_CORE_CRITICAL(abilities.current_Cooldown);
 
-										break;
+										if (abilities.current_Cooldown > 0) {
+											AL_CORE_CRITICAL("HARD DROP IS CURRENTLY IN COOLDOWN");
+											//  TO-DO : RE-SELECT THE OTHER SKILLS THAT ARE NOT IN COOLDOWN
+											return;
+										}
+										else {
+											DoDamageToUnit(cell.unitEntity, abilities.damage);
+											abilities.current_Cooldown = abilities.max_Cooldown;
+
+
+											AL_CORE_CRITICAL("HARD DROPPED USED. CURRENT CD :");
+											AL_CORE_CRITICAL(abilities.current_Cooldown);
+
+											break;
+										}
+									}
 									case ABILITY_NAME::LIFE_DRAIN:
 									{
-										DoDamageToUnit(cell.unitEntity, abilities.damage);
-										abilities.current_Cooldown = abilities.max_Cooldown;
-										AL_CORE_CRITICAL("LIFE DRAIN USED. CURRENT CD :");
+										AL_CORE_CRITICAL("LIFE DRAIN CURRENT COOLDOWN : ");
 										AL_CORE_CRITICAL(abilities.current_Cooldown);
 
-										//Life steal 
-										ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
-										Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+										if (abilities.current_Cooldown > 0) {
+											AL_CORE_CRITICAL("LIFE DRAIN IS CURRENTLY IN COOLDOWN");
+											//  TO-DO : RE-SELECT THE OTHER SKILLS THAT ARE NOT IN COOLDOWN
+											return;
+										}
+										else {
+											DoDamageToUnit(cell.unitEntity, abilities.damage);
+											abilities.current_Cooldown = abilities.max_Cooldown;
+											AL_CORE_CRITICAL("LIFE DRAIN USED. CURRENT CD :");
+											AL_CORE_CRITICAL(abilities.current_Cooldown);
 
-										u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
+											//Life steal 
+											ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+											Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
-										playerUnit.health += healthDrained;
+											u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
 
-										if (playerUnit.health > playerUnit.maxHealth) {
-											playerUnit.health = playerUnit.maxHealth;
+											playerUnit.health += healthDrained;
+
+											if (playerUnit.health > playerUnit.maxHealth) {
+												playerUnit.health = playerUnit.maxHealth;
+											}
+
+											Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+											ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
+
+											AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
+											break;
 										}
 
-										Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-										ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
-
-										AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
-										break;
 									}
 								}
 							}//End check if unit
@@ -602,12 +627,24 @@ namespace ALEngine::Engine::GameplayInterface
 					switch (abilities.current_Ability_Name)
 					{
 					case ABILITY_NAME::CONSTRUCT_WALL:
-						constructWall(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y, true);
-						abilities.current_Cooldown = abilities.max_Cooldown;
-						AL_CORE_CRITICAL("CONSTRUCT WALL USED.CURRENT CD : ");
+					{
+						AL_CORE_CRITICAL("CONSTRUCT WALL CURRENT COOLDOWN : ");
 						AL_CORE_CRITICAL(abilities.current_Cooldown);
 
-						break;
+						if (abilities.current_Cooldown > 0) {
+							AL_CORE_CRITICAL("CONSTRUCT WALL IS CURRENTLY IN COOLDOWN");
+							//  TO-DO : RE-SELECT THE OTHER SKILLS THAT ARE NOT IN COOLDOWN
+							return;
+						}
+						else {
+							constructWall(room, coordinate.x + pattern.offsetGroup[rotationIndex][i].x, coordinate.y + pattern.offsetGroup[rotationIndex][i].y, true);
+							abilities.current_Cooldown = abilities.max_Cooldown;
+							AL_CORE_CRITICAL("CONSTRUCT WALL USED.CURRENT CD : ");
+							AL_CORE_CRITICAL(abilities.current_Cooldown);
+
+							break;
+						}
+					}
 
 					default:
 						break;

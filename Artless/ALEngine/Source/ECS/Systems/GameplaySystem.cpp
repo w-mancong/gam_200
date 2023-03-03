@@ -287,6 +287,13 @@ namespace ALEngine::ECS
 			amendments to them at the end of the turn
 		***********************************************************************************/
 		s32 checkTileCounters(Cell& selectedCell);
+
+		/*!*********************************************************************************
+		\brief
+			Check if the player has enough AP to use any ability or move
+		***********************************************************************************/
+		b8 checkAP(Unit& playerUnit, s32 apCost);
+
 	};
 
 	namespace
@@ -572,6 +579,8 @@ namespace ALEngine::ECS
 				
 			//Disable the filter
 			GameplayInterface::DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f }, gameplaySystem->rotationIndex);
+			
+			//checkAP() // TO BE DONE
 			
 			//Run the abilities on the cell
 			GameplayInterface::RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
@@ -998,17 +1007,17 @@ namespace ALEngine::ECS
 			currentPhaseStatus = GameplayInterface_Management_GUI::PHASE_STATUS::PHASE_SETUP;
 			TogglePatternGUI(true);
 
-			//Reset player movement points
+			//Reset player AP
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-			playerUnit.movementPoints = playerUnit.maxMovementPoints;
+			playerUnit.currentAP = playerUnit.maxAP;
 		
 			//-1 CD
 			GameplayInterface::reduceCooldown(GameplaySystem::Abilities_List);
 
-			//Reset enemy move ment points
+			//Reset enemy AP
 			for (int i = 0; i < enemyEntityList.size(); ++i) {
 				Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
-				enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+				enemyUnit.currentAP = enemyUnit.maxAP;
 			}
 
 			//Update the GUI to select player
@@ -1092,6 +1101,16 @@ namespace ALEngine::ECS
 		return selectedCell.m_resetCounter;
 	}
 
+	//Check if the player has enough AP to use any ability
+	b8 checkAP(Unit& playerUnit, s32 apCost){
+		if (playerUnit.currentAP == 0 || playerUnit.currentAP < apCost) {
+			return false;
+		}
+		else if (playerUnit.currentAP > apCost) {
+			playerUnit.currentAP - apCost;
+		}
+	}
+
 
 	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
 		//Create a new player entity
@@ -1109,8 +1128,8 @@ namespace ALEngine::ECS
 		playerUnit.m_CurrentCell_Entity = GameplayInterface::getEntityCell(gameplaySystem->m_Room, x, y);
 
 		//Set movement points
-		playerUnit.maxMovementPoints = 4;
-		playerUnit.movementPoints = playerUnit.maxMovementPoints;
+		playerUnit.maxAP = 4;
+		playerUnit.currentAP = playerUnit.maxAP;
 
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity;
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).hasUnit = true;
@@ -1323,6 +1342,9 @@ namespace ALEngine::ECS
 
 		//Get path
 		std::vector<ECS::Entity> pathList;
+
+		std::cout << "PATH LIST SIZE : " << pathList.size() << std::endl;
+
 		bool isPathFound = Engine::AI::FindPath(m_Room, startCellEntity, targetCellEntity, pathList, false);
 
 		//If path not found then stop
@@ -1443,18 +1465,18 @@ namespace ALEngine::ECS
 			bool isEndOfPath = true;
 
 			//minus movement points for enemy
-			--movinUnit.movementPoints;
+			--movinUnit.currentAP;
 			
 			//If no more movement point
 			//Stop the movement
-			if (movinUnit.movementPoints <= 0) {
+			if (movinUnit.currentAP <= 0) {
 				isEndOfPath = true;
 			}
 			else {
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 			}
 
-			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.movementPoints));
+			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.currentAP));
 
 			//If reached the end of path
 			if (isEndOfPath) {
@@ -1472,7 +1494,7 @@ namespace ALEngine::ECS
 
 					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 					ChangeAnimation(an, "PlayerIdle");
-					if (movinUnit.movementPoints <= 0) {
+					if (movinUnit.currentAP <= 0) {
 						EndTurn();
 					}
 				}
@@ -1794,7 +1816,7 @@ void ALEngine::Engine::GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(
 	health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
 	attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
 	defense_text.textString = std::to_string(unit.defense);
-	movement_text.textString = std::to_string(unit.movementPoints) + "/" + std::to_string(unit.maxMovementPoints);
+	movement_text.textString = std::to_string(unit.currentAP) + "/" + std::to_string(unit.maxAP);
 	range_text.textString = std::to_string(unit.minRange);
 	name_text.textString = unit.unit_Name;
 
@@ -1883,11 +1905,11 @@ void ALEngine::Engine::GameplayInterface_Management_Enemy::EndTurn()
 		ALEngine::Engine::GameplayInterface_Management_GUI::TogglePatternGUI(true);
 	
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(ALEngine::ECS::gameplaySystem->playerEntity);
-		playerUnit.movementPoints = playerUnit.maxMovementPoints;
+		playerUnit.currentAP = playerUnit.maxAP;
 
 		for (int i = 0; i < ALEngine::ECS::gameplaySystem->enemyEntityList.size(); ++i) {
 			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(ALEngine::ECS::gameplaySystem->enemyEntityList[i]);
-			enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+			enemyUnit.currentAP = enemyUnit.maxAP;
 		}
 		ALEngine::Engine::GameplayInterface_Management_GUI::UpdateGUI_OnSelectUnit(ALEngine::ECS::gameplaySystem->playerEntity);
 

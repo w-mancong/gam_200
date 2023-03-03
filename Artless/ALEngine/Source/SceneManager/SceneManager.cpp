@@ -457,8 +457,8 @@ namespace ALEngine::Engine::Scene
 		writer.Int(unit.maxHealth);
 
 		// Max movement points
-		writer.Key("maxMovementPoints");
-		writer.Int(unit.maxMovementPoints);
+		writer.Key("maxAP");
+		writer.Int(unit.maxAP);
 
 		// Unit type
 		writer.Key("unitType");
@@ -476,7 +476,7 @@ namespace ALEngine::Engine::Scene
 		unit.maxHealth = v[0]["maxHealth"].GetInt();
 
 		// Getting max movement points
-		unit.maxMovementPoints = v[0]["maxMovementPoints"].GetInt();
+		unit.maxAP = v[0]["maxAP"].GetInt();
 
 		// Getting unit type
 		unit.unitType = static_cast<UNIT_TYPE>(v[0]["unitType"].GetUint64());

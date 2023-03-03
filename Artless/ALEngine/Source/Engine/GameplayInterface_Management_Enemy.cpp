@@ -38,8 +38,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		enemyUnit.unit_Name = "BISHOP";
 		enemyUnit.minRange = 1;
 		enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
-		enemyUnit.maxMovementPoints = 4;
-		enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+		enemyUnit.maxAP = 4;
+		enemyUnit.currentAP = enemyUnit.maxAP;
 
 		//Set enemy sprite position and size
 		Transform enemySpriteTransform;
@@ -88,8 +88,8 @@ namespace ALEngine::Engine::GameplayInterface_Management_Enemy
 		enemyUnit.maxHealth = 5;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
-		enemyUnit.maxMovementPoints = 1;
-		enemyUnit.movementPoints = 1;
+		enemyUnit.maxAP = 1;
+		enemyUnit.currentAP = 1;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
 		//set enemy logic function pointer
 		//enemyUnit.logic

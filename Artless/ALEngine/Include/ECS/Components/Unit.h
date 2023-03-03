@@ -46,7 +46,7 @@ namespace ALEngine::ECS::Component
 		s32 health, maxHealth;
 		s32 defense;
 		s32 minDamage, maxDamage;
-		s32 movementPoints, maxMovementPoints;
+		s32 currentAP, maxAP;
 		s32 minRange, maxRange;
 
 		//unit type
