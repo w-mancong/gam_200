@@ -373,6 +373,7 @@ namespace ALEngine::Editor
 		AudioEditorPanel m_AudioEditorPanel;            // Audio Editor Panel
 		TileEditorPanel m_TileEditor;					// Tile Editor Panel
 		AnimatorPanel m_AnimatorPanel;					// Animator Panel
+		SceneBuildOrderPanel m_SceneBuildOrderPanel;	// Scene Build Order Panel
 
 		// Gizmo Operation
 		ImGuizmo::OPERATION m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };

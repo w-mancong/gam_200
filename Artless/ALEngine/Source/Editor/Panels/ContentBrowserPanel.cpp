@@ -179,6 +179,11 @@ namespace ALEngine::Editor
 				continue;
 			}
 
+			if (fileNamestring == "Dev")
+			{
+				continue;
+			}
+
 			if (fileNamestring.find(".meta") != std::string::npos)
 			{
 				continue;

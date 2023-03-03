@@ -188,8 +188,7 @@ namespace ALEngine::Editor
 				u64 const start = fileString.find_last_of('\\') + 1, num = fileString.find_last_of('.') - start;
 
 				// Create Prefab
-				ECS::Entity prefabEntt = Instantiate(fileString.substr(start, num));
-				sceneGraph.Push(prefabEntt, -1);
+				Instantiate(fileString.substr(start, num));
 			}
 			ImGui::EndDragDropTarget();
 		}
