@@ -11,6 +11,7 @@ brief:	This file contains function definitions for the AnimatorPanel class.
 #include "pch.h"
 
 #if EDITOR
+#include "imgui/cpp/imgui_stdlib.h"
 #define SELECTOR_IMAGE_PATH "Assets/Images/InitialTile_v04.png"
 
 namespace ALEngine::Editor
@@ -163,6 +164,7 @@ namespace ALEngine::Editor
 
 			if (m_SelectedAnimation.clipName != "")
 			{
+				static std::string clipName{}, oldClipName{};
 				const char* animation_preview = m_SelectedAnimation.clipName;
 				if (ImGui::BeginCombo("Animation##AnimatorPanel", animation_preview))
 				{
@@ -174,10 +176,25 @@ namespace ALEngine::Editor
 							m_SelectedAnimation = i.second;
 							m_SelectedAnimationIndex = counter;
 							m_SelectedFrame = { 0, 0 };
+							clipName = oldClipName = m_SelectedAnimation.clipName;
 						}
 					}
 
 					ImGui::EndCombo();
+				}
+								
+				ImGui::InputTextWithHint("Clip Name##Animation Panel Clip Name", "Animation Clip Name", &clipName);
+				
+				if (Input::KeyTriggered(KeyCode::Enter) && oldClipName != clipName)
+				{
+					ECS::ChangeAnimationClipName(m_SelectedAnimator, clipName.c_str(), oldClipName.c_str());
+					oldClipName = clipName;
+				}
+
+				s32 sampleRate = m_SelectedAnimation.sample;
+				if (ImGui::DragInt("Sample Rate##InspectorPanelAnimatorSampleRate", &sampleRate, 1.f, 1, 60))
+				{
+					ECS::ChangeAnimationSampleRate(m_SelectedAnimation, static_cast<u32>(sampleRate));
 				}
 			}
 

@@ -845,7 +845,7 @@ namespace ALEngine
 			if (v.HasMember("LogicComponent"))
 				ReadLogicComponent(v["LogicComponent"], en);
 			if (v.HasMember("AudioSource"))
-				ReadLogicComponent(v["AudioSource"], en);
+				ReadAudioComponent(v["AudioSource"], en);
 
 			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
 			entities[ed.id] = { en, ed.parentID };

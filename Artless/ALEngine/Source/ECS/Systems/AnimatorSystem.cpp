@@ -169,6 +169,30 @@ namespace ALEngine::ECS
 		SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
 	}
 
+	void ChangeAnimationSampleRate(Animation& animationClip, u32 sampleRate)
+	{
+		animationClip.sample = sampleRate;
+		SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
+	}
+
+	void ChangeAnimationClipName(ECS::Animator& animator, c8 const* newClipName, c8 const* oldClipName)
+	{
+		Animation animationClip = animator.animations[oldClipName];
+
+		remove( ("Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim").c_str() );
+		animator.animations.erase(oldClipName);
+
+		strcpy_s(animationClip.clipName, sizeof(animationClip.clipName), newClipName);
+		SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
+		animator.animations[newClipName] = animationClip;
+	}
+
+	void ChangeAnimationFilePath(Animation& animationClip, c8 const* filePath)
+	{
+		strcpy_s(animationClip.filePath, sizeof(animationClip.filePath), filePath);
+		SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
+	}
+
 	void CreateAnimationClip(c8 const* filePath, c8 const* clipName, s32 width, s32 height, u32 sample, u32 totalSprites, c8 const* savePath)
 	{
 		Animation animation{ width, height, sample, totalSprites };

@@ -853,7 +853,7 @@ namespace ALEngine::Engine::Scene
 			if (v.HasMember("LogicComponent"))
 				ReadLogicComponent(v["LogicComponent"], en);
 			if (v.HasMember("AudioSource"))
-				ReadLogicComponent(v["AudioSource"], en);
+				ReadAudioComponent(v["AudioSource"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
 		CalculateLocalCoordinate();
@@ -979,12 +979,15 @@ namespace ALEngine::Engine::Scene
 
 	void InsertScene(u64 newIndex, u64 oldIndex)
 	{
-		std::string const& tmpScene = scenes[oldIndex];
+		// Remove old scene, but store the file path temporary
+		std::string sceneName_OldIndex = scenes[oldIndex], sceneName_NewIndex = scenes[newIndex];
+		std::vector<std::string>::const_iterator it2 = std::find(scenes.begin(), scenes.end(), sceneName_OldIndex);
+		scenes.erase(it2);
 
-		for (u64 i{ newIndex }; i < oldIndex; ++i)
-			scenes[i + 1] = scenes[i];
+		// Find the iterator where the file path for new index, then insert sceneName at that position
+		std::vector<std::string>::const_iterator it1 = std::find(scenes.begin(), scenes.end(), sceneName_NewIndex);
+		scenes.insert(it1, sceneName_OldIndex);
 
-		scenes[newIndex] = tmpScene;
 		SaveScenesBuildIndex();
 	}
 #endif
