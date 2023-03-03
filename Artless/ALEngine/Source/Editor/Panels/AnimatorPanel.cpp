@@ -27,6 +27,7 @@ namespace ALEngine::Editor
 	{
 		m_SelectedAnimator = AnimatorEditorPanel::GetListOfAnimators().begin()->second;
 		m_SelectedAnimation = m_SelectedAnimator.animations.begin()->second;
+		m_CurrClipName = m_CurrClipName = m_SelectedAnimation.clipName;
 		m_SelectedAnimatorIndex = 0;
 		m_SelectedAnimationIndex = 0;
 	}
@@ -37,10 +38,6 @@ namespace ALEngine::Editor
 
 	void AnimatorPanel::OnImGuiRender(void)
 	{		
-		// Set constraints
-		ImGui::SetNextWindowSizeConstraints(ImVec2(static_cast<f32>(ALEditor::Instance()->GetSceneWidth()),
-			static_cast<f32>(ALEditor::Instance()->GetSceneHeight())), ImGui::GetMainViewport()->WorkSize);
-
 		ImGuiWindowFlags winFlags{ 0 };
 
 		if (!ImGui::Begin("Animator Panel", &m_PanelIsOpen, winFlags))
@@ -65,6 +62,7 @@ namespace ALEngine::Editor
 	void AnimatorPanel::SetSelectedAnimation(Animation& animationSelected)
 	{
 		m_SelectedAnimation = animationSelected;
+		m_CurrClipName = m_OldCurrClipName = m_SelectedAnimation.clipName;
 	}
 	
 	void AnimatorPanel::SetPanelIsOpen(b8 panelIsOpen)
@@ -138,21 +136,7 @@ namespace ALEngine::Editor
 					ImGui::GetCursorScreenPos().y - selectorSize.y * (m_SelectedFrame.y + 1)};
 				ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<ImTextureID>(SelectorImageGuid), selectorPos,
 					{ selectorPos.x + selectorSize.x, selectorPos.y + selectorSize.y }, ImVec2(0, 1), ImVec2(1, 0));
-				/*
-				int r{ 0 }, c{ 0 };
-				for (int i{ 0 }; i < m_SelectedAnimation.totalSprites; ++i)
-				{
-					ImVec2 selectorPos = { ImGui::GetCursorScreenPos().x + selectorSize.x * r++,
-											ImGui::GetCursorScreenPos().y - selectorSize.y * (c + 1) };
-					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<ImTextureID>(SelectorImageGuid), selectorPos,
-						{ selectorPos.x + selectorSize.x, selectorPos.y + selectorSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 
-					if (r == 4)
-					{
-						r = 0;
-						c++;
-					}
-				}*/
 				ImGui::PopStyleVar();
 
 				ImGui::EndChild();
@@ -187,7 +171,6 @@ namespace ALEngine::Editor
 
 			if (m_SelectedAnimation.clipName != "")
 			{
-				static std::string clipName{}, oldClipName{};
 				const char* animation_preview = m_SelectedAnimation.clipName;
 				if (ImGui::BeginCombo("Animation##AnimatorPanel", animation_preview))
 				{
@@ -199,7 +182,7 @@ namespace ALEngine::Editor
 							m_SelectedAnimation = i.second;
 							m_SelectedAnimationIndex = counter;
 							m_SelectedFrame = { 0, 0 };
-							clipName = oldClipName = m_SelectedAnimation.clipName;
+							m_CurrClipName = m_OldCurrClipName = m_SelectedAnimation.clipName;
 						}
 					}
 
@@ -215,19 +198,20 @@ namespace ALEngine::Editor
 					if (selectedFrame.y * MAX_SPRITES_ROW + selectedFrame.x < m_SelectedAnimation.totalSprites)
 						m_SelectedFrame = selectedFrame;
 				}
+				
 				s32 frameNum{ static_cast<s32>(m_SelectedAnimation.frames[m_SelectedFrame.y * MAX_SPRITES_ROW + m_SelectedFrame.y]) };
 				if (ImGui::DragInt("Frame Count", &frameNum))
 				{
 					u64 frameIndex{ static_cast<u64>(m_SelectedFrame.y) * static_cast<u64>(MAX_SPRITES_ROW) + static_cast<u64>(m_SelectedFrame.x) };
-					ECS::ChangeAnimationFramesCount(m_SelectedAnimation, frameIndex, frameNum);
+					ECS::ChangeAnimationFramesCount(m_SelectedAnimation, frameIndex, static_cast<u32>(frameNum));
 				}
 								
-				ImGui::InputTextWithHint("Clip Name##Animation Panel Clip Name", "Animation Clip Name", &clipName);
+				ImGui::InputTextWithHint("Clip Name##Animation Panel Clip Name", "Animation Clip Name", &m_CurrClipName);
 				
-				if (Input::KeyTriggered(KeyCode::Enter) && oldClipName != clipName)
+				if (Input::KeyTriggered(KeyCode::Enter) && m_OldCurrClipName != m_CurrClipName)
 				{
-					ECS::ChangeAnimationClipName(m_SelectedAnimator, clipName.c_str(), oldClipName.c_str());
-					oldClipName = clipName;
+					ECS::ChangeAnimationClipName(m_SelectedAnimator, m_CurrClipName.c_str(), m_OldCurrClipName.c_str());
+					m_OldCurrClipName = m_CurrClipName;
 				}
 
 				s32 sampleRate = m_SelectedAnimation.sample;

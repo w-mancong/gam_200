@@ -360,7 +360,7 @@ namespace ALEngine::Editor
 		b8 m_DockingEnabled{ false };					// Set to true if docking is to be enabled
 		b8 m_GameIsActive{ false };						// Set to true if in Game Mode
 		b8 m_FullScreen{ false };						// Set to true if game mode full screen
-		b8 m_AnimatorPanelEnabled{ false };				// Set to true if Animator Panel is enabled
+		b8 m_AnimatorEditorPanelEnabled{ false };				// Set to true if Animator Panel is enabled
 		b8 m_AudioPanelEnabled{ false };				// Set to true if Audio Panel is enabled
 		b8 m_EditorInFocus{ true };						// Bool to keep track of whether the editor is in focus
 		b8 m_ProfilerRunning{ false };					// Keep track of whether profiler is running
