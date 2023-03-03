@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition for a gameplay camera
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <GameplayCamera.h>
@@ -50,7 +50,5 @@ namespace ALEngine::Script
 		{
 			camera.Position().y += CAMERA_SPEED * Time::m_DeltaTime;
 		}
-
-		//std::cout << camera.Position() << std::endl;
 	}
 }

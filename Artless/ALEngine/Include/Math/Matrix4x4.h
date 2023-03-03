@@ -291,7 +291,13 @@ namespace ALEngine::Math
 			\param [in] aspect:
 			Aspect ratio of the view matrix -> width / height
 			\param [in] zNear:
-			Distance of how near the camera can see
+			Distance of how near the 
+			
+			
+			
+			
+			
+			can see
 			\param [in] zFar:
 			Distance of how far the camera can see
 			\return

@@ -9,5 +9,6 @@
 #define AUDIO_ENEMY_HURT_1	"Assets\\Audio\\EnemyHurt-1.wav"
 #define AUDIO_CLICK_1		"Assets\\Audio\\Click_1.wav"
 #define AUDIO_PLAYER_WALK_1	"Assets\\Audio\\DrorWalking_1.wav"
+#define AUDIO_TEST_ENEMY_DEATH "Assets\\Audio\\testenemydeathsound.wav"
 
 #endif

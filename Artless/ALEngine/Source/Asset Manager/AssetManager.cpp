@@ -35,6 +35,7 @@ namespace
 		Animation,
 		Font,
 		Scene,
+		Prefab,
 	};
 
 #if !EDITOR
@@ -411,6 +412,8 @@ namespace
 			return FileType::Font;
 		if (fileName.find(".scene") != std::string::npos)
 			return FileType::Scene;
+		if (fileName.find(".prefab") != std::string::npos)
+			return FileType::Prefab;
 		return FileType::Not_A_File;
 	};
 }
@@ -657,7 +660,7 @@ namespace ALEngine::Engine
 			if (it2 == metaFiles.end())// no meta file, generate meta file 
 			{
 				id = PrepareGuid();
-				if (fileType != FileType::Scene)
+				if (fileType != FileType::Scene && fileType != FileType::Prefab)
 					GenerateMetaFile(it->c_str(), id);
 			}
 			else

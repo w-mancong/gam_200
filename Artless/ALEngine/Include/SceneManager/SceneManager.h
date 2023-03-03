@@ -49,6 +49,11 @@ namespace ALEngine::Engine::Scene
 
 #if EDITOR
 	/*!*********************************************************************************
+		\brief Returns the list of scenes
+	***********************************************************************************/
+	std::vector<std::string> const& GetScenesList(void);
+
+	/*!*********************************************************************************
 		\brief An interface to save the state of the editor when user press the play button
 	***********************************************************************************/
 	void SaveState(void);
