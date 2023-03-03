@@ -666,16 +666,24 @@ namespace ALEngine
 		}
 	}
 
-	// To save a prefab
-	void SavePrefab(ECS::Entity en)
+#if EDITOR
+	void SerializeEntity(ECS::Entity en, s32& serialID, s32 parentID)
 	{
-		rjs::StringBuffer sb{};
-		TWriter writer{ sb };
+		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		ed.id = serialID;
+		ed.parentID = parentID;
 
-		writer.StartArray();
+		ECS::GetSceneGraph().FindImmediateChildren(en);
+		std::vector<s32> children = ECS::GetSceneGraph().GetChildren();
+		for (s32 child : children)
+			SerializeEntity(static_cast<ECS::Entity>(child), ++serialID, ed.id);
+	}
+
+	void SaveData(ECS::Entity en, TWriter& writer, u32& id)
+	{
 		writer.StartObject();
-
-		// TODO: Add code to support parent child relationship
+		writer.Key("id");
+		writer.Uint(id++);
 
 		if (Coordinator::Instance()->HasComponent<Sprite>(en))
 			WriteSprite(writer, en);
@@ -701,6 +709,27 @@ namespace ALEngine
 			WriteLogicComponent(writer, en);
 
 		writer.EndObject();
+	}
+
+	// To save a prefab
+	void SavePrefab(ECS::Entity en)
+	{
+		rjs::StringBuffer sb{};
+		TWriter writer{ sb };
+
+		s32 serialID{};
+		SerializeEntity(en, serialID, -1);
+		
+		ECS::GetSceneGraph().FindChildren(en);
+		std::vector<s32> children = ECS::GetSceneGraph().GetChildren();
+
+		writer.StartArray();
+		u32 id{ 0 };
+		SaveData(en, writer, id);
+		std::sort(children.begin(), children.end());
+		for (s32 child : children)
+			SaveData(child, writer, id);
+
 		writer.EndArray();
 
 		std::string fileName{ "Assets\\Dev\\Prefab\\" + Coordinator::Instance()->GetComponent<EntityData>(en).tag + ".prefab" };
@@ -712,39 +741,89 @@ namespace ALEngine
 		}
 		ofs.write(sb.GetString(), sb.GetLength());
 	}
+#endif
+
+	void CalculateLocalPosition(ECS::Entity en, s32 parent)
+	{
+		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+		if (parent != -1)
+		{
+			Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(parent);
+			trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
+			trans.localRotation = trans.rotation - parentTrans.rotation;
+			trans.localScale	= { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
+		}
+		else
+		{
+			trans.localPosition = trans.position;
+			trans.localRotation = trans.rotation;
+			trans.localScale	= trans.scale;
+		}
+
+		ECS::GetSceneGraph().FindImmediateChildren(en);
+		std::vector<s32> children{ ECS::GetSceneGraph().GetChildren() };
+		for (s32 child : children)
+			CalculateLocalPosition(child, en);
+	}
 
 	ECS::Entity CreateInstance(std::string const& buffer)
 	{
 		rjs::Document doc;
 		doc.Parse(buffer.c_str());
 
-		ECS::Entity en = Coordinator::Instance()->CreateEntity();
+		using SerialID = s32;
+
+		struct DeserializeID
+		{
+			ECS::Entity en;
+			SerialID parent;
+		};
+
+		std::unordered_map<SerialID, DeserializeID> entities;
 
 		// Save the prefab data into a seperate entity id starting from (MAX_ENTITIES + 1) - (MAX_ENTITIES + MAX_PREFABS + 1) 
-		rjs::Value::ValueIterator it{ doc.Begin() };
-		rjs::Value const& v{ *it };
-		if (v.HasMember("Sprite"))
-			ReadSprite(v["Sprite"], en);
-		if (v.HasMember("Animator"))
-			ReadAnimator(v["Animator"], en);
-		if (v.HasMember("Transform"))
-			ReadTransform(v["Transform"], en);
-		if (v.HasMember("EntityData"))
-			ReadEntityData(v["EntityData"], en);
-		if (v.HasMember("Collider2D"))
-			ReadCollider2D(v["Collider2D"], en);
-		if (v.HasMember("Rigidbody2D"))
-			ReadRigidbody2D(v["Rigidbody2D"], en);
-		if (v.HasMember("CharacterController"))
-			ReadCharacterController(v["CharacterController"], en);
-		if (v.HasMember("Unit"))
-			ReadUnit(v["Unit"], en);
-		if (v.HasMember("ParticleProperty"))
-			ReadParticleProperty(v["ParticleProperty"], en);
-		if (v.HasMember("TextProperty"))
-			ReadTextProperty(v["TextProperty"], en);
-		if (v.HasMember("LogicComponent"))
-			ReadLogicComponent(v["LogicComponent"], en);
+		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)
+		{
+			ECS::Entity en = Coordinator::Instance()->CreateEntity();
+
+			rjs::Value const& v{ *it };
+			if (v.HasMember("Sprite"))
+				ReadSprite(v["Sprite"], en);
+			if (v.HasMember("Animator"))
+				ReadAnimator(v["Animator"], en);
+			if (v.HasMember("Transform"))
+				ReadTransform(v["Transform"], en);
+			if (v.HasMember("EntityData"))
+				ReadEntityData(v["EntityData"], en);
+			if (v.HasMember("Collider2D"))
+				ReadCollider2D(v["Collider2D"], en);
+			if (v.HasMember("Rigidbody2D"))
+				ReadRigidbody2D(v["Rigidbody2D"], en);
+			if (v.HasMember("CharacterController"))
+				ReadCharacterController(v["CharacterController"], en);
+			if (v.HasMember("Unit"))
+				ReadUnit(v["Unit"], en);
+			if (v.HasMember("ParticleProperty"))
+				ReadParticleProperty(v["ParticleProperty"], en);
+			if (v.HasMember("TextProperty"))
+				ReadTextProperty(v["TextProperty"], en);
+			if (v.HasMember("LogicComponent"))
+				ReadLogicComponent(v["LogicComponent"], en);
+
+			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+			entities[ed.id] = { en, ed.parentID };
+		}
+
+		for (auto it : entities)
+		{
+			DeserializeID const& data = it.second;
+			s32 const parent = data.parent >= 0 ? static_cast<s32>(entities[data.parent].en) : -1;
+			ECS::GetSceneGraph().Push(parent, data.en);
+		}
+
+		// calculate the local position of entities
+		ECS::Entity en = entities.begin()->second.en;
+		CalculateLocalPosition(en, -1);
 
 		return en;
 	}
@@ -771,45 +850,45 @@ namespace ALEngine
 		return CreateInstance(instObjects[prefabName]);
 	}
 
-	template <typename T>
-	void CopyComponentData(ECS::Entity dst, ECS::Entity src)
-	{
-		// Utilising the copy constructor to copy the data
-		T component{ Coordinator::Instance()->GetComponent<T>(src) };
-		Coordinator::Instance()->AddComponent(dst, component);
-	}
+	//template <typename T>
+	//void CopyComponentData(ECS::Entity dst, ECS::Entity src)
+	//{
+	//	// Utilising the copy constructor to copy the data
+	//	T component{ Coordinator::Instance()->GetComponent<T>(src) };
+	//	Coordinator::Instance()->AddComponent(dst, component);
+	//}
 
-	void CopyComponentEntityData(ECS::Entity dst, ECS::Entity src)
-	{
-		Coordinator::Instance()->GetComponent<EntityData>(dst) = Coordinator::Instance()->GetComponent<EntityData>(src);
-	}
+	//void CopyComponentEntityData(ECS::Entity dst, ECS::Entity src)
+	//{
+	//	Coordinator::Instance()->GetComponent<EntityData>(dst) = Coordinator::Instance()->GetComponent<EntityData>(src);
+	//}
 
-	// Create a clone of en
-	ECS::Entity Instantiate(ECS::Entity en)
-	{
-		ECS::Entity clone = Coordinator::Instance()->CreateEntity();
-		if (Coordinator::Instance()->HasComponent<Sprite>(en))
-			CopyComponentData<Sprite>(clone, en);
-		if (Coordinator::Instance()->HasComponent<Animator>(en))
-			CopyComponentData<Animator>(clone, en);
-		if (Coordinator::Instance()->HasComponent<Transform>(en))
-			CopyComponentData<Transform>(clone, en);
-		if (Coordinator::Instance()->HasComponent<EntityData>(en))
-			CopyComponentEntityData(clone, en);
-		if (Coordinator::Instance()->HasComponent<Collider2D>(en))
-			CopyComponentData<Collider2D>(clone, en);
-		if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
-			CopyComponentData<Rigidbody2D>(clone, en);
-		if (Coordinator::Instance()->HasComponent<CharacterController>(en))
-			CopyComponentData<CharacterController>(clone, en);
-		if (Coordinator::Instance()->HasComponent<Unit>(en))
-			CopyComponentData<Unit>(clone, en);
-		if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
-			CopyComponentData<ParticleProperties>(clone, en);
-		if (Coordinator::Instance()->HasComponent<Text>(en))
-			CopyComponentData<Text>(clone, en);
-		return clone;
-	}
+	//// Create a clone of en
+	//ECS::Entity Instantiate(ECS::Entity en)
+	//{
+	//	ECS::Entity clone = Coordinator::Instance()->CreateEntity();
+	//	if (Coordinator::Instance()->HasComponent<Sprite>(en))
+	//		CopyComponentData<Sprite>(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<Animator>(en))
+	//		CopyComponentData<Animator>(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<Transform>(en))
+	//		CopyComponentData<Transform>(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<EntityData>(en))
+	//		CopyComponentEntityData(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<Collider2D>(en))
+	//		CopyComponentData<Collider2D>(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
+	//		CopyComponentData<Rigidbody2D>(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<CharacterController>(en))
+	//		CopyComponentData<CharacterController>(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<Unit>(en))
+	//		CopyComponentData<Unit>(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
+	//		CopyComponentData<ParticleProperties>(clone, en);
+	//	if (Coordinator::Instance()->HasComponent<Text>(en))
+	//		CopyComponentData<Text>(clone, en);
+	//	return clone;
+	//}
 
 	void ClearPrefabCollection(void)
 	{

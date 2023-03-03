@@ -173,8 +173,8 @@ namespace ALEngine::Engine
 			// unload resource
 			if (GameStateManager::next != GameState::Restart)
 			{
-				//ECS::Unload();
-				//ClearPrefabCollection();
+				ECS::Unload();
+				ClearPrefabCollection();
 #if !EDITOR
 				if (GameStateManager::next != GameState::Quit)
 					AssetManager::Instance()->Reset();
@@ -228,6 +228,31 @@ namespace ALEngine::Engine
 		OpenGLWindow::FullScreen(true);
 		Console::StopConsole();
 #endif
+		//EntityData ed; ed.tag = "test_entity1";
+		//Coordinator::Instance()->AddComponent<EntityData>(0, ed);
+		//ECS::GetSceneGraph().Push(-1, 0);
+
+		//ed.tag = "test_child_entity1";
+		//Coordinator::Instance()->AddComponent<EntityData>(1, ed);
+		//ECS::GetSceneGraph().Push(0, 1);
+
+		//ed.tag = "test_child_entity2";
+		//Coordinator::Instance()->AddComponent<EntityData>(2, ed);
+		//ECS::GetSceneGraph().Push(0, 2);
+
+		//ed.tag = "test_grandchild_entity1";
+		//Coordinator::Instance()->AddComponent<EntityData>(3, ed);
+		//ECS::GetSceneGraph().Push(2, 3);
+
+		//SavePrefab(0);
+
+		//Instantiate("test_entity1");
+		//Entity en = Instantiate("test_entity1");
+		//ECS::GetSceneGraph().FindImmediateChildren(6);
+		//std::vector<s32> const& children{ ECS::GetSceneGraph().GetChildren() };
+
+		//std::cout << std::endl;
+
 		//Animator animator = CreateAnimator("Player");
 		//Entity en = Coordinator::Instance()->CreateEntity();
 		//Transform trans{};
