@@ -686,6 +686,18 @@ namespace ALEngine::Engine::Scene
 		}
 	}
 
+	void WriterAudioComponent(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("AudioSource");
+		writer.StartArray();
+		writer.StartObject();
+
+		AudioSource const& as = Coordinator::Instance()->GetComponent<AudioSource>(en);
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
 	{
 		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);

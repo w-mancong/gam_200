@@ -743,6 +743,29 @@ namespace ALEngine
 	}
 #endif
 
+	void CalculateLocalPosition(ECS::Entity en, s32 parent)
+	{
+		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+		if (parent != -1)
+		{
+			Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(parent);
+			trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
+			trans.localRotation = trans.rotation - parentTrans.rotation;
+			trans.localScale	= { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
+		}
+		else
+		{
+			trans.localPosition = trans.position;
+			trans.localRotation = trans.rotation;
+			trans.localScale	= trans.scale;
+		}
+
+		ECS::GetSceneGraph().FindImmediateChildren(en);
+		std::vector<s32> children{ ECS::GetSceneGraph().GetChildren() };
+		for (s32 child : children)
+			CalculateLocalPosition(child, en);
+	}
+
 	ECS::Entity CreateInstance(std::string const& buffer)
 	{
 		rjs::Document doc;
@@ -798,7 +821,11 @@ namespace ALEngine
 			ECS::GetSceneGraph().Push(parent, data.en);
 		}
 
-		return entities.begin()->second.en;
+		// calculate the local position of entities
+		ECS::Entity en = entities.begin()->second.en;
+		CalculateLocalPosition(en, -1);
+
+		return en;
 	}
 
 	// Create a clone of a saved prefab
