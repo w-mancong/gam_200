@@ -111,25 +111,40 @@ namespace ALEngine::Editor
 
 			if (ImGui::BeginChild("##AnimatorPanel_AnimationsArea", animationsArea, true))
 			{
-				// Render the Animation
+				// Render the Spritesheet
 				std::string fp = m_SelectedAnimation.filePath;
 
+				u32 numCol{ m_SelectedAnimation.totalSprites / MAX_SPRITES_ROW };
+				f32 aspectRatio{ static_cast<f32>(numCol) / static_cast<f32>(MAX_SPRITES_ROW) };
 				Guid id = Engine::AssetManager::Instance()->GetGuid(fp);
 				u64 tex = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
-				ImGui::Image(reinterpret_cast<ImTextureID>(tex), { animationsArea.x * 0.9f, animationsArea.y * 0.9f }, { 0, 1 }, { 1, 0 });
+				ImGui::Image(reinterpret_cast<ImTextureID>(tex), { animationsArea.x, animationsArea.y * aspectRatio }, { 0, 1 }, { 1, 0 });
 
 				// X and Y size is the same
-				ImVec2 selectorSize = { animationsArea.x * 0.9f / static_cast<f32>(m_SelectedAnimation.width), animationsArea.x * 0.9f / static_cast<f32>(m_SelectedAnimation.height) };
-				selectorSize = { (animationsArea.x * 0.9f) / 4.f, (animationsArea.x * 0.9f) / 4.f };
+				ImVec2 selectorSize { (animationsArea.x) / static_cast<f32>(MAX_SPRITES_ROW),
+					(animationsArea.y * aspectRatio) / static_cast<f32>(numCol) };
 
 				id = Engine::AssetManager::Instance()->GetGuid(SELECTOR_IMAGE_PATH);
 				SelectorImageGuid = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
 
-				ImVec2 selectorPos = { ImGui::GetCursorScreenPos().x + selectorSize.x * m_SelectedFrame.x,
-					ImGui::GetCursorScreenPos().y - selectorSize.y * (m_SelectedFrame.y + 1)};
+				ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1.f, 1.f));
+				//ImVec2 selectorPos = { ImGui::GetCursorScreenPos().x + selectorSize.x * m_SelectedFrame.x,
+				//	ImGui::GetCursorScreenPos().y - selectorSize.y * (m_SelectedFrame.y + 1)};
+				int r{ 0 }, c{ 0 };
+				for (int i{ 0 }; i < m_SelectedAnimation.totalSprites; ++i)
+				{
+					ImVec2 selectorPos = { ImGui::GetCursorScreenPos().x + selectorSize.x * r++,
+											ImGui::GetCursorScreenPos().y - selectorSize.y * (c + 1) };
+					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<ImTextureID>(SelectorImageGuid), selectorPos,
+						{ selectorPos.x + selectorSize.x, selectorPos.y + selectorSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 
-				ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<ImTextureID>(SelectorImageGuid), selectorPos,
-					{ selectorPos.x + selectorSize.x, selectorPos.y + selectorSize.y }, ImVec2(0, 1), ImVec2(1, 0));
+					if (r == 4)
+					{
+						r = 0;
+						c++;
+					}
+				}
+				ImGui::PopStyleVar();
 
 				ImGui::EndChild();
 
@@ -179,6 +194,20 @@ namespace ALEngine::Editor
 
 					ImGui::EndCombo();
 				}
+
+				Math::Vec2Int selectedFrame = m_SelectedFrame;
+				ImGui::InputInt("Row No.", &selectedFrame.x);
+				ImGui::InputInt("Col No.", &selectedFrame.y);
+
+				if (selectedFrame.x < MAX_SPRITES_ROW)
+				{
+					if (selectedFrame.y * MAX_SPRITES_ROW + selectedFrame.x < m_SelectedAnimation.totalSprites)
+						m_SelectedFrame = selectedFrame;
+				}
+				s32 frameNum{ static_cast<s32>(m_SelectedAnimation.frames[m_SelectedFrame.y * MAX_SPRITES_ROW + m_SelectedFrame.y]) };
+				ImGui::InputInt("Num Frames", &frameNum);
+				m_SelectedAnimation.frames[m_SelectedFrame.y * MAX_SPRITES_ROW + m_SelectedFrame.y] = static_cast<u32>(frameNum);
+
 			}
 
 			ImGui::EndChild();
