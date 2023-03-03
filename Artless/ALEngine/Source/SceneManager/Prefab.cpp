@@ -666,6 +666,39 @@ namespace ALEngine
 		}
 	}
 
+	void WriterAudioComponent(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("AudioSource");
+		writer.StartArray();
+		writer.StartObject();
+
+		Engine::AudioSource const& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(en);
+		writer.Key("audioClips");
+		writer.StartArray();
+		for (auto const& it : as.list)
+		{
+			std::string const& name = it.second.m_AudioName;
+			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+		}
+		writer.EndArray();
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadAudioComponent(rjs::Value const& v, ECS::Entity en)
+	{
+		rjs::Value const& c = v[0]["audioClips"];
+		Engine::AudioSource as;
+		for (u64 i = 0; i < c.Size(); ++i)
+		{
+			c8 const* name = c[i].GetString();
+			Guid id = Engine::AssetManager::Instance()->GetGuid(name);
+			as.list[as.id++] = Engine::AssetManager::Instance()->GetAudio(id);
+		}
+		Coordinator::Instance()->AddComponent(en, as);
+	}
+
 #if EDITOR
 	void SerializeEntity(ECS::Entity en, s32& serialID, s32 parentID)
 	{
@@ -707,6 +740,8 @@ namespace ALEngine
 			WriteTextProperty(writer, en);
 		if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
 			WriteLogicComponent(writer, en);
+		if (Coordinator::Instance()->HasComponent<Engine::AudioSource>(en))
+			WriterAudioComponent(writer, en);
 
 		writer.EndObject();
 	}
@@ -809,6 +844,8 @@ namespace ALEngine
 				ReadTextProperty(v["TextProperty"], en);
 			if (v.HasMember("LogicComponent"))
 				ReadLogicComponent(v["LogicComponent"], en);
+			if (v.HasMember("AudioSource"))
+				ReadLogicComponent(v["AudioSource"], en);
 
 			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
 			entities[ed.id] = { en, ed.parentID };

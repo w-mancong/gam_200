@@ -228,6 +228,7 @@ namespace ALEngine::Engine
 		OpenGLWindow::FullScreen(true);
 		Console::StopConsole();
 #endif
+
 		//EntityData ed; ed.tag = "test_entity1";
 		//Coordinator::Instance()->AddComponent<EntityData>(0, ed);
 		//ECS::GetSceneGraph().Push(-1, 0);

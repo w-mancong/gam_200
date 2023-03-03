@@ -722,11 +722,15 @@ namespace ALEngine::Engine::Scene
 
 	void ReadAudioComponent(rjs::Value const& v, ECS::Entity en)
 	{
-		rjs::Value const& c = v[0]["components"];
+		rjs::Value const& c = v[0]["audioClips"];
+		AudioSource as;
 		for (u64 i = 0; i < c.Size(); ++i)
 		{
-			c8 const* name = ( "" + std::string( c[i].GetString() ) ).c_str();
+			c8 const* name = c[i].GetString();
+			Guid id = AssetManager::Instance()->GetGuid(name);
+			as.list[as.id++] = AssetManager::Instance()->GetAudio(id);
 		}
+		Coordinator::Instance()->AddComponent(en, as);
 	}
 
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
@@ -808,6 +812,8 @@ namespace ALEngine::Engine::Scene
 				WriteTextProperty(writer, en);
 			if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
 				WriteLogicComponent(writer, en);
+			if (Coordinator::Instance()->HasComponent<AudioSource>(en))
+				WriterAudioComponent(writer, en);
 
 			writer.EndObject();
 		}
@@ -846,6 +852,8 @@ namespace ALEngine::Engine::Scene
 				ReadTextProperty(v["TextProperty"], en);
 			if (v.HasMember("LogicComponent"))
 				ReadLogicComponent(v["LogicComponent"], en);
+			if (v.HasMember("AudioSource"))
+				ReadLogicComponent(v["AudioSource"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
 		CalculateLocalCoordinate();
@@ -861,7 +869,7 @@ namespace ALEngine::Engine::Scene
 			buffer = buffer.substr(0, buffer.find_last_of("\r\n"));
 			scenes.emplace_back(buffer);
 		}
-		currScene = scenes[0];
+		currScene = scenes.size() ? scenes[0] : "Assets\\Dev\\SceneManager\\empty.scene";
 		LoadScene();
 	}
 
@@ -960,6 +968,12 @@ namespace ALEngine::Engine::Scene
 	void RemoveScene(c8 const* sceneName)
 	{
 		scenes.erase(std::find(scenes.begin(), scenes.end(), sceneName));
+		SaveScenesBuildIndex();
+	}
+
+	void ClearSceneList(void)
+	{
+		scenes.clear();
 		SaveScenesBuildIndex();
 	}
 
