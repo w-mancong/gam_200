@@ -15,7 +15,13 @@
                     50.0,
                     50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -35,6 +41,39 @@
                     "GameplayCamera",
                     "GameplaySystem"
                 ]
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Map Parent",
+                "active": true,
+                "localActive": true,
+                "id": 1,
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ]
     }

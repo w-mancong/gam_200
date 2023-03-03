@@ -30,7 +30,7 @@ namespace ALEngine::Engine::GameplayInterface
 
 		u32 testValue = currentRoom.roomCellsArray[y * currentRoom.width + x];
 
-		std::cout << testValue << std::endl;
+		//std::cout << testValue << std::endl;
 		return currentRoom.roomCellsArray[y * currentRoom.width + x];
 	}
 
@@ -193,6 +193,157 @@ namespace ALEngine::Engine::GameplayInterface
 				sprite.color = color;
 			}
 		}//End loop through pattern body check
+	}
+
+	void HighlightWalkableCellsRange(Room& room, Vector2Int coordinate, bool reachable, std::vector<ECS::Entity>& pathlist, std::vector<std::pair<ECS::Entity, Sprite>>& prevPathList)
+	{
+		enum class PATHSTATUS
+		{
+			UP,
+			LEFT,
+			RIGHT,
+			DOWN,
+			UPRIGHT,
+			UPLEFT,
+			DOWNRIGHT,
+			DOWNLEFT,
+			LEFTUP,
+			RIGHTUP,
+			LEFTDOWN,
+			RIGHTDOWN,
+			END
+		};
+
+		prevPathList.clear();
+		for (ECS::Entity& en : pathlist)
+		{
+			prevPathList.push_back(std::pair<ECS::Entity, Sprite>(en, Coordinator::Instance()->GetComponent<Sprite>(en)));
+		}
+		Color highlightyellow = { 1.f,1.f,0.f,1.f }; //for reachable parts
+		// testing path shown with tint, need to update to path shown with sprite overlap
+
+		PATHSTATUS path{ PATHSTATUS::END };
+		for (int i{ (int)pathlist.size() - 1 }; i >= 0; --i)
+		{
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i]);
+			if (i - 1 >= 0 && i + 1 < pathlist.size()) // corner block
+			{
+				Cell& next_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i - 1]);
+				Cell& prev_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i + 1]);
+				if (prev_cell.coordinate.y + 1 == next_cell.coordinate.y && prev_cell.coordinate.x + 1 == next_cell.coordinate.x && prev_cell.coordinate.y + 1 == cell.coordinate.y)
+					path = PATHSTATUS::UPRIGHT; 
+				else if (prev_cell.coordinate.y + 1 == next_cell.coordinate.y && prev_cell.coordinate.x - 1 == next_cell.coordinate.x && prev_cell.coordinate.y + 1 == cell.coordinate.y)
+					path = PATHSTATUS::UPLEFT;
+				else if (prev_cell.coordinate.y - 1 == next_cell.coordinate.y && prev_cell.coordinate.x + 1 == next_cell.coordinate.x && prev_cell.coordinate.y - 1 == cell.coordinate.y)
+					path = PATHSTATUS::DOWNRIGHT;
+				else if (prev_cell.coordinate.y - 1 == next_cell.coordinate.y && prev_cell.coordinate.x - 1 == next_cell.coordinate.x && prev_cell.coordinate.y - 1 == cell.coordinate.y)
+					path = PATHSTATUS::DOWNLEFT;
+				else if (prev_cell.coordinate.y + 1 == next_cell.coordinate.y && prev_cell.coordinate.x - 1 == next_cell.coordinate.x && prev_cell.coordinate.y == cell.coordinate.y)
+					path = PATHSTATUS::LEFTUP;
+				else if (prev_cell.coordinate.y - 1 == next_cell.coordinate.y && prev_cell.coordinate.x - 1 == next_cell.coordinate.x && prev_cell.coordinate.y == cell.coordinate.y)
+					path = PATHSTATUS::LEFTDOWN;
+				else if (prev_cell.coordinate.y + 1 == next_cell.coordinate.y && prev_cell.coordinate.x + 1 == next_cell.coordinate.x && prev_cell.coordinate.y == cell.coordinate.y)
+					path = PATHSTATUS::RIGHTUP;
+				else if (prev_cell.coordinate.y - 1 == next_cell.coordinate.y && prev_cell.coordinate.x + 1 == next_cell.coordinate.x && prev_cell.coordinate.y == cell.coordinate.y)
+					path = PATHSTATUS::RIGHTDOWN;
+				else if (cell.coordinate.y + 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::UP;
+				else if (cell.coordinate.x + 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::RIGHT;
+				else if (cell.coordinate.x - 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::LEFT;
+				else if (cell.coordinate.y - 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::DOWN;
+			}
+			else if (i - 1 >= 0)
+			{
+				Cell& next_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i - 1]);
+				if (cell.coordinate.y + 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::UP;
+				else if (cell.coordinate.x + 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::RIGHT;
+				else if (cell.coordinate.x - 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::LEFT;
+				else if (cell.coordinate.y - 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::DOWN;
+			}
+			else
+			{
+				path = PATHSTATUS::END;
+			}
+
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(pathlist[i]);
+			switch (path)
+			{
+			case PATHSTATUS::RIGHT:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/right.png");
+				break;
+			case PATHSTATUS::LEFT:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/left.png");
+				break;
+			case PATHSTATUS::UP:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/up.png");
+				break;
+			case PATHSTATUS::DOWN:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/down.png");
+				break;
+			case PATHSTATUS::END:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Btn_Yes.png");
+				break;
+			case PATHSTATUS::UPRIGHT:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/upright.png");
+				break;
+			case PATHSTATUS::UPLEFT:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/upleft.png");
+				break;
+			case PATHSTATUS::DOWNRIGHT:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/downright.png");
+				break;
+			case PATHSTATUS::DOWNLEFT:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/downleft.png");
+				break;
+			case PATHSTATUS::RIGHTUP:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/rightup.png");
+				break;
+			case PATHSTATUS::RIGHTDOWN:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/rightdown.png");
+				break;
+			case PATHSTATUS::LEFTUP:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/leftup.png");
+				break;
+			case PATHSTATUS::LEFTDOWN:
+				sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/leftdown.png");
+				break;
+			}
+		}
+
+
+		//if (reachable)
+		//{
+		//	for (int i = 0; i < pathlist.size(); ++i)
+		//	{
+		//		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i]); 
+		//		cell.m_Color_Tint = highlightyellow;
+
+		//		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(pathlist[i]);
+		//		sprite.color = highlightyellow;
+		//	}
+		//}
+		//else
+		//{
+		//	for (int i = 0; i < pathlist.size(); ++i)
+		//	{
+		//		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i]);
+
+		//		if (pathlist.size()-i <= 5)
+		//		{
+		//			cell.m_Color_Tint = highlightyellow;
+		//			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(pathlist[i]);
+		//			sprite.color = highlightyellow;
+		//		}
+		//	
+		//	}
+		//}
 	}
 
 	void PlacePatternOntoGrid(Room& room, Vector2Int coordinate, Pattern pattern, std::string sprite_fileName) {
@@ -522,10 +673,16 @@ namespace ALEngine::Engine::GameplayInterface
 
 				unitData.active = false;
 				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+
 			}
 			else {
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
+
+				//enemy death sound
+				Audio& ad = as.GetAudio(AUDIO_TEST_ENEMY_DEATH);
+				ad.m_Channel = Channel::SFX;
+				ad.Play();
 			}
 
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
@@ -677,6 +834,9 @@ namespace ALEngine::Engine::GameplayInterface
 
 		//Add Player Walk
 		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
+		as.list[as.id++] = ad;
+
+		ad = AssetManager::Instance()->GetAudio(AssetManager::Instance()->GetGuid(AUDIO_TEST_ENEMY_DEATH));
 		as.list[as.id++] = ad;
 
 		//Add the audiosource component to the entity

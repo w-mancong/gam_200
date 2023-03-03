@@ -24,6 +24,8 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	void Render(void);
 
+	void UpdateUIpositions();
+
 #if EDITOR
 	/*!*********************************************************************************
 		\brief Renders any entities with Sprite and Transform components, to be used

@@ -240,8 +240,23 @@ namespace ALEngine::Editor
 			ImGui::DragFloat2("Sc", mtx_scale, v_speed);			// Scale
 			//EDITOR_KEYBOARD_CHECK
 
-				// Set changes
-				Transform a(xform);
+			if(xform.ui)
+				ImGui::Text("Offset saved");
+			else
+				ImGui::Text("No Offset");
+
+			if (ImGui::Button("Save UI offset"))
+			{
+				xform.uiToggle = true;
+			}
+
+			if (ImGui::Button("Remove UI offset"))
+			{
+				xform.ui = false;
+			}
+
+			// Set changes
+			Transform a(xform);
 			a.localPosition.x = mtx_translate[0];
 			a.localPosition.y = mtx_translate[1];
 
@@ -355,13 +370,6 @@ namespace ALEngine::Editor
 					EditorCommandManager::AddCommand(cmd);
 				}
 			}
-
-			b8 ui = (b8)spr.isUI;
-			ImGui::Checkbox("UI Canvas", &ui);
-			if (ui == true)
-				spr.isUI = 1;
-			else
-				spr.isUI = 0;
 
 			ImGui::PopItemWidth();
 		}
