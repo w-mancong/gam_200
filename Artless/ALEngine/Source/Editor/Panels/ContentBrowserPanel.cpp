@@ -255,7 +255,10 @@ namespace ALEngine::Editor
 			if (ImGui::BeginDragDropSource())
 			{
 				const wchar_t* itemPath = path.c_str();
-				ImGui::SetDragDropPayload("ASSET_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				if (fileNamestring.find(".prefab") != std::string::npos)
+					ImGui::SetDragDropPayload("PREFAB_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				else
+					ImGui::SetDragDropPayload("ASSET_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();
 			}
 

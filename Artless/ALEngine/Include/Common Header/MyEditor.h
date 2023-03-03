@@ -21,6 +21,7 @@ brief:	This file contains all the relevant Editor header files to be included in
 #include "Editor/Panels/AnimatorEditorPanel.h"
 #include "Editor/Panels/TileEditorPanel.h"
 #include "Editor/Panels/AnimatorPanel.h"
+#include "Editor/Panels/SceneBuildOrderPanel.h"
 #include "Editor/ALEditor.h"
 #include "Editor/tracy/Tracy.hpp"
 
