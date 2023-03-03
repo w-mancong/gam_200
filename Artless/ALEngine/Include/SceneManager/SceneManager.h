@@ -73,6 +73,11 @@ namespace ALEngine::Engine::Scene
 	***********************************************************************************/
 	void RemoveScene(c8 const* sceneName);
 
+	/*!*****************************************************************************
+		\brief Helper function to clear the list of scenes
+	*******************************************************************************/
+	void ClearSceneList(void);
+
 	/*!*********************************************************************************
 		\brief A helper function to move a scene to another position on the editor
 
