@@ -707,9 +707,26 @@ namespace ALEngine::Engine::Scene
 		writer.StartObject();
 
 		AudioSource const& as = Coordinator::Instance()->GetComponent<AudioSource>(en);
+		writer.Key("audioClips");
+		writer.StartArray();
+		for (auto const& it : as.list)
+		{
+			std::string const& name = it.second.m_AudioName;
+			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+		}
+		writer.EndArray();
 
 		writer.EndObject();
 		writer.EndArray();
+	}
+
+	void ReadAudioComponent(rjs::Value const& v, ECS::Entity en)
+	{
+		rjs::Value const& c = v[0]["components"];
+		for (u64 i = 0; i < c.Size(); ++i)
+		{
+			c8 const* name = ( "" + std::string( c[i].GetString() ) ).c_str();
+		}
 	}
 
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
@@ -906,6 +923,11 @@ namespace ALEngine::Engine::Scene
 	}
 
 #if EDITOR
+	std::vector<std::string> const& GetScenesList(void)
+	{
+		return scenes;
+	}
+
 	void SaveState(void)
 	{
 		rjs::StringBuffer sb{};

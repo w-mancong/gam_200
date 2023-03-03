@@ -834,7 +834,7 @@ namespace ALEngine
 		// Check to see if an instance of this object is already made
 		if (instObjects.find(prefabName) == instObjects.end())
 		{	// Making of the prefab and saving it
-			std::string fileName{ "Assets\\Dev\\Prefab\\" + prefabName + ".prefab" };
+			std::string fileName{ "Assets\\Prefab\\" + prefabName + ".prefab" };
 			c8* buffer = utils::ReadBytes(fileName);
 
 			if (!buffer)
