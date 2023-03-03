@@ -100,6 +100,7 @@ namespace ALEngine::Script
 		enemyUnit.minDamage = 8,
 			enemyUnit.maxDamage = 13;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_MELEE;
+		enemyUnit.TriggeredByPlayer = false;
 		//set enemy logic function pointer
 		//enemyUnit.logic
 		//enemyUnit.UpdateEnemyLogic = &Enemy_Logic_Update_Melee;
@@ -114,6 +115,7 @@ namespace ALEngine::Script
 		enemyUnit.maxMovementPoints = 1;
 		enemyUnit.movementPoints = 1;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
+		enemyUnit.TriggeredByPlayer = false;
 		//set enemy logic function pointer
 		//enemyUnit.logic
 		//enemyUnit.UpdateEnemyLogic = &Enemy_Logic_Update_CellDestroyer;
@@ -121,6 +123,16 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy03attributes([[maybe_unused]] Unit& enemyUnit)
 	{
+		enemyUnit.health = 10,
+		enemyUnit.maxHealth = 10;
+		enemyUnit.minDamage = 0,
+		enemyUnit.maxDamage = 0;
+		enemyUnit.maxMovementPoints = 4;
+		enemyUnit.movementPoints = 4;
+		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SPAWNER;
+		enemyUnit.TriggeredByPlayer = false;
+		enemyUnit.m_CurrentStateId = SPAWNER_ENEMY_STATE::SES_START;
+		enemyUnit.TurnCounter = 0;
 		return;
 	}
 
@@ -167,7 +179,7 @@ namespace ALEngine::Script
 		}
 		SetEnemy02attributes(enemyUnit);
 		break;
-		case ENEMY_TYPE::ENEMY_TYPE03:
+		case ENEMY_TYPE::ENEMY_SPAWNER:
 			SetEnemy03attributes(enemyUnit);
 			break;
 		case ENEMY_TYPE::ENEMY_TYPE04:
@@ -243,6 +255,11 @@ namespace ALEngine::Script
 			}
 		}
 		return false;
+	}
+
+	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Spawner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room)
+	{
+
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, [[maybe_unused]] ECS::Entity& movingUnitEntity, [[maybe_unused]] UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room) {
@@ -366,9 +383,30 @@ namespace ALEngine::Script
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
 
+		std::vector<ECS::Entity> pathdistance;
+		ECS::Entity cellplayerin = gameplaySystem->getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
+		
+		enemyNeededData.startCellEntity = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
+
 		if (enemyUnit.health <= 0) {
 			++enemyNeededData.enemyMoved;
 			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
+			return;
+		}
+
+		//check distance from player
+		if (ALEngine::Engine::AI::FindPath(gameplaySystem,m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true))
+		{
+			if (pathdistance.size() < 7)
+			{
+				enemyUnit.TriggeredByPlayer = true;
+			}
+		}
+
+		if (!enemyUnit.TriggeredByPlayer)
+		{
+			++enemyNeededData.enemyMoved;
+			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -436,7 +474,6 @@ namespace ALEngine::Script
 			return;
 		}
 
-		enemyNeededData.startCellEntity = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
 
 		//Find path
 		std::vector<ECS::Entity> pathList;

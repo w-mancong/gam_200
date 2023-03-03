@@ -26,8 +26,19 @@ namespace ALEngine::ECS::Component
 	{
 		ENEMY_MELEE,   //0 Enemy Melee
 		ENEMY_CELL_DESTROYER,   //1 Cell Destroyer
-		ENEMY_TYPE03,   //2
+		ENEMY_SPAWNER,   //2
 		ENEMY_TYPE04    //3
+	};
+
+	enum class SPAWNER_ENEMY_STATE
+	{
+		//list of all spawnerenemystate
+		SES_START = 0, //start and decision state
+		SES_MOVE,      //move to player state once triggered
+		SES_SUMMON,    //summon enemy state
+		SES_RETREAT,   //retreat from player state
+		SES_HEAL,      //heal itself state
+		SES_DEAD       //enemy died state 
 	};
 
 	/*!*********************************************************************************
@@ -48,6 +59,21 @@ namespace ALEngine::ECS::Component
 		s32 minDamage, maxDamage{};
 		s32 movementPoints{}, maxMovementPoints{};
 		s32 minRange{}, maxRange{};
+
+		//spawner enemy state stuff
+		//current state
+		SPAWNER_ENEMY_STATE m_CurrentStateId{};
+		//next state
+		SPAWNER_ENEMY_STATE m_NextStateId{};
+		//previous state
+		SPAWNER_ENEMY_STATE m_PreviousStateId{};
+		//turncounte to keep track
+		s32 TurnCounter{};
+		//keep track that turn ended
+		bool TurnEnded{};
+
+		//bool to trigger when player in specified range of enemy
+		bool TriggeredByPlayer;
 
 		//unit type
 		UNIT_TYPE unitType{};
