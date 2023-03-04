@@ -48,6 +48,7 @@ namespace ALEngine::ECS
 			{
 				if( (++animator.frames) % animation.frames[animator.currSprite] )
 					continue;
+				animator.time = 0.0f;
 			}
 
 			(++sprite.index) %= animation.totalSprites;

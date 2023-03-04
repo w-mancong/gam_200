@@ -374,12 +374,6 @@ namespace ALEngine::Engine
 		Input::Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
-
-		if (Input::KeyTriggered(KeyCode::Key_1))
-		{
-			Animator an = CreateAnimator("Player");
-			ChangeAnimationFramesCount(an.animations["PlayerIdle"], 0, 1);
-		}
 	}
 
 	void Engine::FixedUpdate(void)
