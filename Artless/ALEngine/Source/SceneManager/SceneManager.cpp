@@ -700,6 +700,39 @@ namespace ALEngine::Engine::Scene
 		}
 	}
 
+	void WriterAudioComponent(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("AudioSource");
+		writer.StartArray();
+		writer.StartObject();
+
+		AudioSource const& as = Coordinator::Instance()->GetComponent<AudioSource>(en);
+		writer.Key("audioClips");
+		writer.StartArray();
+		for (auto const& it : as.list)
+		{
+			std::string const& name = it.second.m_AudioName;
+			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+		}
+		writer.EndArray();
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadAudioComponent(rjs::Value const& v, ECS::Entity en)
+	{
+		rjs::Value const& c = v[0]["audioClips"];
+		AudioSource as;
+		for (u64 i = 0; i < c.Size(); ++i)
+		{
+			c8 const* name = c[i].GetString();
+			Guid id = AssetManager::Instance()->GetGuid(name);
+			as.list[as.id++] = AssetManager::Instance()->GetAudio(id);
+		}
+		Coordinator::Instance()->AddComponent(en, as);
+	}
+
 	void CalculateLocalCoordinate(Tree::BinaryTree::NodeData const& entity, Tree::BinaryTree& sceneGraph)
 	{
 		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(entity.id);
@@ -779,6 +812,8 @@ namespace ALEngine::Engine::Scene
 				WriteTextProperty(writer, en);
 			if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
 				WriteLogicComponent(writer, en);
+			if (Coordinator::Instance()->HasComponent<AudioSource>(en))
+				WriterAudioComponent(writer, en);
 
 			writer.EndObject();
 		}
@@ -817,6 +852,8 @@ namespace ALEngine::Engine::Scene
 				ReadTextProperty(v["TextProperty"], en);
 			if (v.HasMember("LogicComponent"))
 				ReadLogicComponent(v["LogicComponent"], en);
+			if (v.HasMember("AudioSource"))
+				ReadAudioComponent(v["AudioSource"], en);
 		}
 		ECS::GetSceneGraph().DeserializeTree();
 		CalculateLocalCoordinate();
@@ -832,7 +869,7 @@ namespace ALEngine::Engine::Scene
 			buffer = buffer.substr(0, buffer.find_last_of("\r\n"));
 			scenes.emplace_back(buffer);
 		}
-		currScene = scenes[0];
+		currScene = scenes.size() ? scenes[0] : "Assets\\Dev\\SceneManager\\empty.scene";
 		LoadScene();
 	}
 
@@ -894,6 +931,11 @@ namespace ALEngine::Engine::Scene
 	}
 
 #if EDITOR
+	std::vector<std::string> const& GetScenesList(void)
+	{
+		return scenes;
+	}
+
 	void SaveState(void)
 	{
 		rjs::StringBuffer sb{};
@@ -929,14 +971,25 @@ namespace ALEngine::Engine::Scene
 		SaveScenesBuildIndex();
 	}
 
+	void ClearSceneList(void)
+	{
+		scenes.clear();
+		SaveScenesBuildIndex();
+	}
+
 	void InsertScene(u64 newIndex, u64 oldIndex)
 	{
-		std::string const& tmpScene = scenes[oldIndex];
+		// Remove old scene, but store the file path temporary
+		u64 const L = std::max(newIndex, oldIndex), S = std::min(newIndex, oldIndex);
 
-		for (u64 i{ newIndex }; i < oldIndex; ++i)
-			scenes[i + 1] = scenes[i];
+		std::string sceneName_OldIndex = scenes[L], sceneName_NewIndex = scenes[S];
+		std::vector<std::string>::const_iterator it2 = std::find(scenes.begin(), scenes.end(), sceneName_OldIndex);
+		scenes.erase(it2);
 
-		scenes[newIndex] = tmpScene;
+		// Find the iterator where the file path for new index, then insert sceneName at that position
+		std::vector<std::string>::const_iterator it1 = std::find(scenes.begin(), scenes.end(), sceneName_NewIndex);
+		scenes.insert(it1, sceneName_OldIndex);
+
 		SaveScenesBuildIndex();
 	}
 #endif

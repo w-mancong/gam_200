@@ -22,6 +22,10 @@ brief:	This file contains the function definitions for the ALEditor class.
 
 namespace ALEngine::Editor
 {
+	namespace 
+	{
+		const c8* EMPTY_SCENE_FP{ "Assets/Dev/SceneManager/empty.scene" };
+	}
 	ALEditor::ALEditor(void)
 	{
 		// Initialize the editor
@@ -114,9 +118,9 @@ namespace ALEngine::Editor
 			// Logger Panel
 			m_LoggerPanel.OnImGuiRender();
 
-			if (m_AnimatorPanelEnabled)
+			if (m_AnimatorEditorPanelEnabled)
 			{
-				m_AnimatorEditorPanel.OnImGuiRender(m_AnimatorPanelEnabled);
+				m_AnimatorEditorPanel.OnImGuiRender(m_AnimatorEditorPanelEnabled);
 			}
 
 			if (m_AudioPanelEnabled)
@@ -125,6 +129,12 @@ namespace ALEngine::Editor
 			}
 
 			m_TileEditor.OnImGuiRender();
+
+			if (m_SceneBuildOrderPanel.GetPanelIsOpen())
+				m_SceneBuildOrderPanel.OnImGuiRender();
+
+			if(m_AnimatorPanel.GetPanelIsOpen())
+				m_AnimatorPanel.OnImGuiRender();
 
 			// Check if game is running
 			if (m_GameIsActive)
@@ -284,6 +294,11 @@ namespace ALEngine::Editor
 			// Settings
 			if (ImGui::BeginMenu("File"))
 			{
+				if (ImGui::Selectable("Create New Scene##MainMenuBar"))
+				{
+					CreateScene();
+				}
+
 				if (ImGui::Selectable("Save Scene##MainMenuBar"))
 					SaveScene();
 
@@ -325,16 +340,22 @@ namespace ALEngine::Editor
 				ImGuiSelectableFlags flag = 0;
 
 				// Set active for animator panel
-				ImGui::Selectable("Create Clips/Animation", &m_AnimatorPanelEnabled, flag);
+				ImGui::Selectable("Create Clips/Animation", &m_AnimatorEditorPanelEnabled, flag);
 
 				//  Set active for audio panel
 				ImGui::Selectable("Audio Mixer", &m_AudioPanelEnabled, flag);
 
 				//  Set active for audio panel
 				if (ImGui::MenuItem("Tile Editor"))
-				{
 					m_TileEditor.SetPanelIsOpen(true);
-				}
+
+				// Set Active for Scene Build Order
+				if (ImGui::MenuItem("Scene Build Order"))
+					m_SceneBuildOrderPanel.SetPanelIsOpen(true);
+
+				// Set active for animator panel
+				if (ImGui::MenuItem("Animator Editor"))
+					m_AnimatorPanel.SetPanelIsOpen(true);
 
 #ifdef TRACY_ENABLE
 				if (ImGui::MenuItem("Tracy Profiler"))
@@ -552,6 +573,9 @@ namespace ALEngine::Editor
 		// Tile Editor Panel
 		m_TileEditor.SetPanelMin(panel_min);
 
+		// Animator Panel
+		m_AnimatorPanel.SetPanelMin(panel_min);
+
 	}
 
 	void ALEditor::LoadMap(void)
@@ -704,6 +728,12 @@ namespace ALEngine::Editor
 		}
 		Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
 		AL_CORE_INFO("Scene {} Saved!", m_CurrentSceneName);
+	}
+	
+	void ALEngine::Editor::ALEditor::CreateScene(void)
+	{
+		m_CurrentSceneName = "";
+		Engine::Scene::LoadScene(EMPTY_SCENE_FP);
 	}
 }
 

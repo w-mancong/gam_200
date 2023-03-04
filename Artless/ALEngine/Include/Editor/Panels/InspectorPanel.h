@@ -186,9 +186,9 @@ namespace ALEngine::Editor
 		InComp_Logic,
 		InComp_Particles,
 		InComp_Text,
+		InComp_Animator,
 		InComp_Script,
 		InComp_Audio,
-		InComp_Animator,
 		InComp_RigidBody,
 		InComp_Collider,
 		InComp_Total

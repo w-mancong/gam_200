@@ -35,6 +35,7 @@ namespace
 		Animation,
 		Font,
 		Scene,
+		Prefab,
 	};
 
 #if !EDITOR
@@ -411,6 +412,8 @@ namespace
 			return FileType::Font;
 		if (fileName.find(".scene") != std::string::npos)
 			return FileType::Scene;
+		if (fileName.find(".prefab") != std::string::npos)
+			return FileType::Prefab;
 		return FileType::Not_A_File;
 	};
 }
@@ -657,7 +660,7 @@ namespace ALEngine::Engine
 			if (it2 == metaFiles.end())// no meta file, generate meta file 
 			{
 				id = PrepareGuid();
-				if (fileType != FileType::Scene)
+				if (fileType != FileType::Scene && fileType != FileType::Prefab)
 					GenerateMetaFile(it->c_str(), id);
 			}
 			else
@@ -999,8 +1002,10 @@ namespace ALEngine::Engine
 			std::string const& filePath{ files.created.back() };
 			std::string guidKey{};
 			Guid id{ PrepareGuid() };
-			GenerateMetaFile(filePath.c_str(), id);
-			switch (GetFileType(filePath))
+			FileType type = GetFileType(filePath);
+			if(type != FileType::Scene && type != FileType::Prefab)
+				GenerateMetaFile(filePath.c_str(), id);
+			switch (type)
 			{
 			/******************************************************************************
 												Image
@@ -1136,6 +1141,8 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Animation:
 			{
+				u64 const start = filePath.find_last_of('\\') + 1, num = filePath.find_last_of('.') - start;
+				id = GetGuid( filePath.substr(start, num) );
 				Texture const& oldTexture = textureList[id];
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(oldTexture.handle);
@@ -1216,6 +1223,8 @@ namespace ALEngine::Engine
 			******************************************************************************/
 			case FileType::Animation:
 			{
+				u64 const start = filePath.find_last_of('\\') + 1, num = filePath.find_last_of('.') - start;
+				id = GetGuid(filePath.substr(start, num));
 				Texture const& texture = textureList[id];
 				// Unload memory
 				glMakeTextureHandleNonResidentARB(texture.handle);

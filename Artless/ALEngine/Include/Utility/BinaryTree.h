@@ -119,7 +119,7 @@ namespace ALEngine::Tree
             \return 
             Vector of node IDs
         ***********************************************************************************/
-        std::vector<s32> GetChildren() const;
+        std::vector<s32> const& GetChildren() const;
 
         /*!*********************************************************************************
             \brief

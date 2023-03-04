@@ -67,7 +67,42 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	Animator CreateAnimator(c8 const* animatorName = "");
 
+	/*!*********************************************************************************
+		\brief Helper function to change the frame count of an animation clip based on a specific sprite index
 
+		\param [in, out] animationClip: Reference to the animation clip where changes will be made
+		\param [in] spriteIndex: Index position of of the sprite in the sprite sheet. 
+					0 is bottom left
+		\param [in] framesCount: Number of frames it will stay at the sprite before 
+					changing to the next
+	***********************************************************************************/
+	void ChangeAnimationFramesCount(Animation& animationClip, u64 spriteIndex, u32 framesCount);
+
+	/*!*****************************************************************************
+		\brief Helper function to change the sample rate of an animation clip
+
+		\param [in, out]: animationClip: Reference to the animation clip where changes will be made
+		\param [in] sampleRate: New sample rate for animation clip
+	*******************************************************************************/
+	void ChangeAnimationSampleRate(Animation& animationClip, u32 sampleRate);
+
+	/*!*****************************************************************************
+		\brief Helper function to change the clip name of an animation clip
+
+		\param [in, out]: animationClip: Reference to the animation clip where changes will be made
+		\param [in] sampleRate: New clip name for animation clip
+	*******************************************************************************/
+	void ChangeAnimationClipName(ECS::Animator& animator, c8 const* newClipName, c8 const* oldClipName);
+
+	/*!*****************************************************************************
+		\brief Helper function to change the file path of an animation clip
+
+		\param [in, out]: animationClip: Reference to the animation clip where changes will be made
+		\param [in] sampleRate: New file path for animation clip
+	*******************************************************************************/
+	void ChangeAnimationFilePath(Animation& animationClip, c8 const* filePath);
+
+		//sample, clipname filepath
 	/*!*********************************************************************************
 		 ---------
 		|  s |	s |	All the 's'

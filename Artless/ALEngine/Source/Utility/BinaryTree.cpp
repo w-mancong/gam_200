@@ -374,7 +374,7 @@ namespace ALEngine::Tree
         }
     }
 
-    std::vector<s32> BinaryTree::GetChildren() const
+    std::vector<s32> const& BinaryTree::GetChildren() const
     {
         return childrenVect;
     }

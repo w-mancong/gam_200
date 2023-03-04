@@ -1,0 +1,80 @@
+[
+    {
+        "id": 0,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Bar_HPEmpty.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    137.14801025390625,
+                    206.14300537109375,
+                    0.0
+                ],
+                "scale": [
+                    270.0,
+                    50.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "empty_health_bar",
+                "active": true,
+                "localActive": true,
+                "id": 0,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Bar_HPFull.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    137.1480712890625,
+                    206.142822265625,
+                    0.0
+                ],
+                "scale": [
+                    250.71408081054688,
+                    33.0
+                ],
+                "rotation": 0.0
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "red health bar",
+                "active": true,
+                "localActive": true,
+                "id": 1,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    }
+]
