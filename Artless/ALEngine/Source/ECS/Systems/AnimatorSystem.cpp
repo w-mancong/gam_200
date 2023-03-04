@@ -22,6 +22,13 @@ namespace ALEngine::ECS
 	namespace
 	{
 		std::shared_ptr<AnimatorSystem> as;
+
+		void SaveAnimationClip(Animation& clip, std::string const& filePath)
+		{
+			// Creating a new anim file
+			std::ofstream ofs{ filePath, std::ios::binary };
+			ofs.write(reinterpret_cast<char*>(&clip), sizeof(Animation));
+		}
 	}
 
 	void AnimatorSystem::Update(void)
@@ -41,6 +48,7 @@ namespace ALEngine::ECS
 			{
 				if( (++animator.frames) % animation.frames[animator.currSprite] )
 					continue;
+				animator.time = 0.0f;
 			}
 
 			(++sprite.index) %= animation.totalSprites;
@@ -156,6 +164,36 @@ namespace ALEngine::ECS
 		return animator;
 	}
 
+	void ChangeAnimationFramesCount(Animation& animationClip, u64 spriteIndex, u32 framesCount)
+	{
+		animationClip.frames[spriteIndex] = framesCount;
+		SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
+	}
+
+	void ChangeAnimationSampleRate(Animation& animationClip, u32 sampleRate)
+	{
+		animationClip.sample = sampleRate;
+		SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
+	}
+
+	void ChangeAnimationClipName(ECS::Animator& animator, c8 const* newClipName, c8 const* oldClipName)
+	{
+		Animation animationClip = animator.animations[oldClipName];
+
+		remove( ("Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim").c_str() );
+		animator.animations.erase(oldClipName);
+
+		strcpy_s(animationClip.clipName, sizeof(animationClip.clipName), newClipName);
+		SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
+		animator.animations[newClipName] = animationClip;
+	}
+
+	void ChangeAnimationFilePath(Animation& animationClip, c8 const* filePath)
+	{
+		strcpy_s(animationClip.filePath, sizeof(animationClip.filePath), filePath);
+		SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
+	}
+
 	void CreateAnimationClip(c8 const* filePath, c8 const* clipName, s32 width, s32 height, u32 sample, u32 totalSprites, c8 const* savePath)
 	{
 		Animation animation{ width, height, sample, totalSprites };
@@ -169,9 +207,6 @@ namespace ALEngine::ECS
 		strcpy_s(animation.filePath, sizeof(animation.filePath), filePath);
 
 		std::string saveFileName = std::string(savePath) + std::string(clipName) + ".anim";
-
-		// Creating a new anim file
-		std::ofstream ofs{ saveFileName, std::ios::binary };
-		ofs.write(reinterpret_cast<char*>(&animation), sizeof(Animation));
+		SaveAnimationClip(animation, saveFileName);
 	}
 }

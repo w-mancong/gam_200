@@ -49,6 +49,11 @@ namespace ALEngine::Engine::Scene
 
 #if EDITOR
 	/*!*********************************************************************************
+		\brief Returns the list of scenes
+	***********************************************************************************/
+	std::vector<std::string> const& GetScenesList(void);
+
+	/*!*********************************************************************************
 		\brief An interface to save the state of the editor when user press the play button
 	***********************************************************************************/
 	void SaveState(void);
@@ -67,6 +72,11 @@ namespace ALEngine::Engine::Scene
 		\brief A helper function to remove scene from the scene vector
 	***********************************************************************************/
 	void RemoveScene(c8 const* sceneName);
+
+	/*!*****************************************************************************
+		\brief Helper function to clear the list of scenes
+	*******************************************************************************/
+	void ClearSceneList(void);
 
 	/*!*********************************************************************************
 		\brief A helper function to move a scene to another position on the editor

@@ -1,5 +1,9 @@
 [
     {
+        "map_path": ""
+    },
+    {
+        "id": 0,
         "Sprite": [
             {
                 "filePath": "",
@@ -20,31 +24,33 @@
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    50.0,
+                    50.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
             {
-                "tag": "entity_test",
+                "tag": "entity #0",
                 "active": true,
                 "localActive": true,
                 "id": 0,
-                "parentID": 0,
-                "treeNodeFlags": 0
+                "parentID": -1,
+                "treeNodeFlags": 32
             }
         ],
-        "Rigidbody2D": [
+        "AudioSource": [
             {
-                "drag": [
-                    1.0,
-                    1.0
-                ],
-                "mass": 1.0,
-                "hasGravity": true,
-                "isEnabled": true
+                "audioClips": [
+                    "Assets\\Audio\\DrorWalking_1.wav"
+                ]
             }
         ]
     }

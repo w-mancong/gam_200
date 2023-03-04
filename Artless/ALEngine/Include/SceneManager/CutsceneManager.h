@@ -43,6 +43,8 @@ namespace ALEngine::Engine::Scene
 	struct Cutscene
 	{
 		std::string m_CutsceneText{};				// Text for cutscene
+		b8 m_HasImage{ true };						// Whether this cutscene has an image, or it is just the text
+		b8 m_HasTimer{ true };						// Whether this cutscene is timed or based on user click
 		std::string m_CutsceneImageFilePath{};		// Filepath to the Image for the FilePath
 		f32	m_TimeTaken{};							// Time taken to show cutscene
 

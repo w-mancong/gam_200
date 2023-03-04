@@ -84,7 +84,7 @@ namespace ALEngine::Engine
 			Audio& ad = it.second;
 			//u64 str_it = ad.m_AudioName.find_last_of("\\");
 			//u64 sizeName = ad.m_AudioName.find_last_of(".") - str_it - 1;		
-			if (ad.m_AudioName == audioName)
+			if (ad.m_AudioName.find(audioName) != std::string::npos)
 				return ad;
 		}
 		assert(false && "Unable to find audioName within AudioSource's list");

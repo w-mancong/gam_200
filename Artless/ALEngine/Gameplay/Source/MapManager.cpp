@@ -78,7 +78,7 @@ namespace Gameplay
 			for (u32 j{ 0 }; j < m_Width; ++j)
 				row_tiles.emplace_back(row_val[j].GetString());
 
-			m_Map.emplace_back(row_tiles);
+			m_Map.emplace(m_Map.begin(), row_tiles);
 		}
 
 		return true;
