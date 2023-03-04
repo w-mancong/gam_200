@@ -60,8 +60,8 @@ namespace ALEngine::Script
 		enemyUnit.unit_Name = "GUARD";
 		enemyUnit.minRange = 1;
 		enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
-		enemyUnit.maxMovementPoints = 4;
-		enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+		enemyUnit.maxActionPoints = 4;
+		enemyUnit.actionPoints = enemyUnit.maxActionPoints;
 
 		//Set enemy sprite position and size
 		Transform enemySpriteTransform;
@@ -111,8 +111,8 @@ namespace ALEngine::Script
 			enemyUnit.maxHealth = 5;
 		enemyUnit.minDamage = 8,
 			enemyUnit.maxDamage = 13;
-		enemyUnit.maxMovementPoints = 1;
-		enemyUnit.movementPoints = 1;
+		enemyUnit.maxActionPoints = 1;
+		enemyUnit.actionPoints = 1;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
 		//set enemy logic function pointer
 		//enemyUnit.logic

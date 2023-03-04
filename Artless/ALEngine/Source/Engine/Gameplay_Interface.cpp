@@ -130,13 +130,15 @@ namespace ALEngine::Script
 
 			//Reset player movement points
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-			playerUnit.movementPoints = playerUnit.maxMovementPoints;
-
+			playerUnit.actionPoints += 4;
+			if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
+				playerUnit.actionPoints = playerUnit.maxActionPoints;
+			}
 
 			//Reset enemy move ment points
 			for (int i = 0; i < enemyEntityList.size(); ++i) {
 				Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
-				enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+				enemyUnit.actionPoints = enemyUnit.maxActionPoints;
 			}
 
 			//Update the GUI to select player
@@ -182,8 +184,10 @@ namespace ALEngine::Script
 		playerUnit.m_CurrentCell_Entity = getEntityCell(m_Room, x, y);
 
 		//Set movement points
-		playerUnit.maxMovementPoints = 4;
-		playerUnit.movementPoints = playerUnit.maxMovementPoints;
+		playerUnit.maxActionPoints = 6;
+		playerUnit.actionPoints = playerUnit.maxActionPoints;
+
+		gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = playerEntity;
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).hasUnit = true;
@@ -1049,9 +1053,9 @@ namespace ALEngine::Script
 			return;
 		}
 
-		// Set the move animation for player
-		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
-		ECS::ChangeAnimation(an, "PlayerMove");
+		//// Set the move animation for player
+		//Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+		//ECS::ChangeAnimation(an, "PlayerMove");
 		SetMoveOrder(pathList);
 
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
@@ -1163,6 +1167,10 @@ namespace ALEngine::Script
 			//Set the gui
 			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
 			gameplaySystem_GUI->TogglePatternGUI(true);
+
+
+			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+			gameplaySystem_GUI->Update_AP_UI_For_Cost(playerunit.actionPoints, 2);
 		}
 	}
 
@@ -1350,18 +1358,22 @@ namespace ALEngine::Script
 			bool isEndOfPath = true;
 
 			//minus movement points for enemy
-			--movinUnit.movementPoints;
+			--movinUnit.actionPoints;
+
+			if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+				gameplaySystem_GUI->Update_AP_UI(movinUnit.actionPoints);
+			}
 
 			//If no more movement point
 			//Stop the movement
-			if (movinUnit.movementPoints <= 0) {
+			if (movinUnit.actionPoints <= 0) {
 				isEndOfPath = true;
 			}
 			else {
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 			}
 
-			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.movementPoints));
+			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.actionPoints));
 
 			//If reached the end of path
 			if (isEndOfPath) {
@@ -1379,7 +1391,7 @@ namespace ALEngine::Script
 
 					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 					ECS::ChangeAnimation(an, "PlayerIdle");
-					if (movinUnit.movementPoints <= 0) {
+					if (movinUnit.actionPoints <= 0) {
 						EndTurn();
 					}
 				}
@@ -1461,7 +1473,6 @@ namespace ALEngine::Script
 			selected_Pattern_Rotation = 0;
 		}
 
-		AL_CORE_CRITICAL("PATTERN SIZE : " + std::to_string(selected_Pattern.offsetGroup.size()) + " : ROT = " + std::to_string(selected_Pattern_Rotation));
 		Event_MouseEnterCell(current_Moused_Over_Cell);
 	}
 
@@ -1759,7 +1770,25 @@ namespace ALEngine::Script
 				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
 			}
 
-			gameplaySystem->EndTurn();
+			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+
+			playerUnit.actionPoints -= 2;
+			if (playerUnit.actionPoints < 0) {
+				playerUnit.actionPoints = 0;
+			}
+
+			gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
+			if (playerUnit.actionPoints <= 0) {
+				gameplaySystem->EndTurn();
+			}
+			else {
+				//Reset the statuses
+				gameplaySystem->currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
+				gameplaySystem->currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+				gameplaySystem_GUI->TogglePatternGUI(false);
+			}
 
 			s8 eliminatedEnemyCount = 0;
 			//Check if all enemies are eliminated

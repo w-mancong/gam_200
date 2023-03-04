@@ -57,7 +57,7 @@ namespace ALEngine::Script
 		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
 		attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
 		defense_text.textString = std::to_string(unit.defense);
-		movement_text.textString = std::to_string(unit.movementPoints) + "/" + std::to_string(unit.maxMovementPoints);
+		movement_text.textString = std::to_string(unit.actionPoints) + "/" + std::to_string(unit.maxActionPoints);
 		range_text.textString = std::to_string(unit.minRange);
 		name_text.textString = unit.unit_Name;
 
@@ -247,6 +247,42 @@ namespace ALEngine::Script
 			break;
 		}
 	}
+
+
+	void GameplaySystem_Interface_Management_GUI::Update_AP_UI(int AP_count) {
+		//Disable all
+		for (int i = 0; i < guiManager.AP_Indicators.size(); ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Empty.png");
+		}
+
+		//Enable set amount
+		for (int i = 0; i < AP_count; ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Green.png");
+		}
+	}
+
+	void GameplaySystem_Interface_Management_GUI::Update_AP_UI_For_Cost(int AP_count, int AP_Cost) {
+		//Disable all
+		for (int i = 0; i < guiManager.AP_Indicators.size(); ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Empty.png");
+		}
+
+		//Enable set amount
+		for (int i = 0; i < AP_count - AP_Cost; ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Green.png");
+		}
+
+		//Enable set amount
+		for (int i = AP_count - AP_Cost; i < guiManager.AP_Indicators.size(); ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Red.png");
+		}
+	}
+
 
 	void Event_Button_Enter_Ability_GUI(ECS::Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {

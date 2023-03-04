@@ -228,6 +228,17 @@ namespace ALEngine::Script
 		//Initialize Abilities
 		InitializeAbilities(Abilities_List);
 
+
+		//Initialize Pattern GUI
+		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
+
+		//Initialize abilities GUI
+		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
+
+		//Initialize General GUI
+		gameplaySystem_GUI->InitializeGUI();
+
+
 		//Initialize the room and cells
 		for (uint32_t i = 0; i < getRoomSize(); ++i) {
 			m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
@@ -308,15 +319,6 @@ namespace ALEngine::Script
 		//Create EndTurn Button
 		InitializeEndTurnButton();
 
-		//Initialize Pattern GUI
-		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
-
-		//Initialize abilities GUI
-		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
-
-		//Initialize General GUI
-		gameplaySystem_GUI->InitializeGUI();
-
 		//Add events for pattern Button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
@@ -370,6 +372,7 @@ namespace ALEngine::Script
 
 		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
 		buttonClickAudio->m_Channel = Engine::Channel::SFX;
+
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
@@ -395,6 +398,10 @@ namespace ALEngine::Script
 
 				gameplaySystem_GUI->TogglePatternGUI(false);
 				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+
+				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+				gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 			}
 		}
 

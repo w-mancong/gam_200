@@ -116,6 +116,18 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void UpdateFpsLabel();
 
+		/*!*********************************************************************************
+		\brief
+			Updates the Action point UI
+		***********************************************************************************/
+		void Update_AP_UI(int AP_count);
+
+		/*!*********************************************************************************
+		\brief
+			Updates the Action point UI to visualize cost
+		***********************************************************************************/
+		void Update_AP_UI_For_Cost(int AP_count, int AP_Cost);
+
 		GUI guiManager;	
 		
 		GUI& getGuiManager()
