@@ -22,6 +22,10 @@ brief:	This file contains the function definitions for the ALEditor class.
 
 namespace ALEngine::Editor
 {
+	namespace 
+	{
+		const c8* EMPTY_SCENE_FP{ "Assets/Dev/SceneManager/empty.scene" };
+	}
 	ALEditor::ALEditor(void)
 	{
 		// Initialize the editor
@@ -290,6 +294,11 @@ namespace ALEngine::Editor
 			// Settings
 			if (ImGui::BeginMenu("File"))
 			{
+				if (ImGui::Selectable("Create New Scene##MainMenuBar"))
+				{
+					CreateScene();
+				}
+
 				if (ImGui::Selectable("Save Scene##MainMenuBar"))
 					SaveScene();
 
@@ -719,6 +728,12 @@ namespace ALEngine::Editor
 		}
 		Engine::Scene::SaveScene(m_CurrentSceneName.c_str());
 		AL_CORE_INFO("Scene {} Saved!", m_CurrentSceneName);
+	}
+	
+	void ALEngine::Editor::ALEditor::CreateScene(void)
+	{
+		m_CurrentSceneName = "";
+		Engine::Scene::LoadScene(EMPTY_SCENE_FP);
 	}
 }
 
