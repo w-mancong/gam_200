@@ -34,12 +34,10 @@ namespace ALEngine::ECS::Component
 	{
 		//list of all spawnerenemystate
 		SES_IDLE = 0,    //Idle state
-		SES_MOVE,        //move to player state once triggered
 		SES_MOVE_CLOSER, //move closer to player state once check if too far from player
 		SES_MOVE_AWAY,   //move away from player state once once check if player too close to enemy
 		SES_RETREAT,     //retreat away from player state
-		SES_HEAL,        //heal itself state
-		SES_DEAD         //enemy died state 
+		SES_HEAL         //heal itself state
 	};
 
 	/*!*********************************************************************************
