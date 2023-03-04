@@ -205,8 +205,8 @@ namespace ALEngine::Engine
 		Script::InitScriptManager();
 #endif
 
-		//Engine::AssetManager::Instance()->Init();
-		//Scene::InitSceneManager();
+		Engine::AssetManager::Instance()->Init();
+		Scene::InitSceneManager();
 		GameStateManager::Init();
 
 		// Initialize Time (Framerate Controller)
@@ -228,6 +228,7 @@ namespace ALEngine::Engine
 		OpenGLWindow::FullScreen(true);
 		Console::StopConsole();
 #endif
+
 		//EntityData ed; ed.tag = "test_entity1";
 		//Coordinator::Instance()->AddComponent<EntityData>(0, ed);
 		//ECS::GetSceneGraph().Push(-1, 0);
@@ -246,11 +247,12 @@ namespace ALEngine::Engine
 
 		//SavePrefab(0);
 
-		Entity en = Instantiate("test_entity1");
-		ECS::GetSceneGraph().FindImmediateChildren(2);
-		std::vector<s32> const& children{ ECS::GetSceneGraph().GetChildren() };
+		//Instantiate("test_entity1");
+		//Entity en = Instantiate("test_entity1");
+		//ECS::GetSceneGraph().FindImmediateChildren(6);
+		//std::vector<s32> const& children{ ECS::GetSceneGraph().GetChildren() };
 
-		std::cout << std::endl;
+		//std::cout << std::endl;
 
 		//Animator animator = CreateAnimator("Player");
 		//Entity en = Coordinator::Instance()->CreateEntity();

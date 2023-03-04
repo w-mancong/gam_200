@@ -126,6 +126,11 @@ namespace ALEngine::Editor
 
 			m_TileEditor.OnImGuiRender();
 
+			if (m_SceneBuildOrderPanel.GetPanelIsOpen())
+				m_SceneBuildOrderPanel.OnImGuiRender();
+
+			m_AnimatorPanel.OnImGuiRender();
+
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -334,6 +339,12 @@ namespace ALEngine::Editor
 				if (ImGui::MenuItem("Tile Editor"))
 				{
 					m_TileEditor.SetPanelIsOpen(true);
+				}
+
+				// Set Active for Scene Build Order
+				if (ImGui::MenuItem("Scene Build Order"))
+				{
+					m_SceneBuildOrderPanel.SetPanelIsOpen(true);
 				}
 
 #ifdef TRACY_ENABLE
@@ -551,6 +562,9 @@ namespace ALEngine::Editor
 
 		// Tile Editor Panel
 		m_TileEditor.SetPanelMin(panel_min);
+
+		// Animator Panel
+		m_AnimatorPanel.SetPanelMin(panel_min);
 
 	}
 

@@ -666,6 +666,39 @@ namespace ALEngine
 		}
 	}
 
+	void WriterAudioComponent(TWriter& writer, ECS::Entity en)
+	{
+		writer.Key("AudioSource");
+		writer.StartArray();
+		writer.StartObject();
+
+		Engine::AudioSource const& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(en);
+		writer.Key("audioClips");
+		writer.StartArray();
+		for (auto const& it : as.list)
+		{
+			std::string const& name = it.second.m_AudioName;
+			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+		}
+		writer.EndArray();
+
+		writer.EndObject();
+		writer.EndArray();
+	}
+
+	void ReadAudioComponent(rjs::Value const& v, ECS::Entity en)
+	{
+		rjs::Value const& c = v[0]["audioClips"];
+		Engine::AudioSource as;
+		for (u64 i = 0; i < c.Size(); ++i)
+		{
+			c8 const* name = c[i].GetString();
+			Guid id = Engine::AssetManager::Instance()->GetGuid(name);
+			as.list[as.id++] = Engine::AssetManager::Instance()->GetAudio(id);
+		}
+		Coordinator::Instance()->AddComponent(en, as);
+	}
+
 #if EDITOR
 	void SerializeEntity(ECS::Entity en, s32& serialID, s32 parentID)
 	{
@@ -707,6 +740,8 @@ namespace ALEngine
 			WriteTextProperty(writer, en);
 		if (Coordinator::Instance()->HasComponent<LogicComponent>(en))
 			WriteLogicComponent(writer, en);
+		if (Coordinator::Instance()->HasComponent<Engine::AudioSource>(en))
+			WriterAudioComponent(writer, en);
 
 		writer.EndObject();
 	}
@@ -742,6 +777,29 @@ namespace ALEngine
 		ofs.write(sb.GetString(), sb.GetLength());
 	}
 #endif
+
+	void CalculateLocalPosition(ECS::Entity en, s32 parent)
+	{
+		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+		if (parent != -1)
+		{
+			Transform const& parentTrans = Coordinator::Instance()->GetComponent<Transform>(parent);
+			trans.localPosition = math::mat4::Model({}, { parentTrans.scale.x, parentTrans.scale.y, 1.0f }, trans.rotation).Inverse() * (trans.position - parentTrans.position);
+			trans.localRotation = trans.rotation - parentTrans.rotation;
+			trans.localScale	= { trans.scale.x / parentTrans.scale.x, trans.scale.y / parentTrans.scale.y };
+		}
+		else
+		{
+			trans.localPosition = trans.position;
+			trans.localRotation = trans.rotation;
+			trans.localScale	= trans.scale;
+		}
+
+		ECS::GetSceneGraph().FindImmediateChildren(en);
+		std::vector<s32> children{ ECS::GetSceneGraph().GetChildren() };
+		for (s32 child : children)
+			CalculateLocalPosition(child, en);
+	}
 
 	ECS::Entity CreateInstance(std::string const& buffer)
 	{
@@ -786,6 +844,8 @@ namespace ALEngine
 				ReadTextProperty(v["TextProperty"], en);
 			if (v.HasMember("LogicComponent"))
 				ReadLogicComponent(v["LogicComponent"], en);
+			if (v.HasMember("AudioSource"))
+				ReadAudioComponent(v["AudioSource"], en);
 
 			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
 			entities[ed.id] = { en, ed.parentID };
@@ -798,7 +858,11 @@ namespace ALEngine
 			ECS::GetSceneGraph().Push(parent, data.en);
 		}
 
-		return entities.begin()->second.en;
+		// calculate the local position of entities
+		ECS::Entity en = entities.begin()->second.en;
+		CalculateLocalPosition(en, -1);
+
+		return en;
 	}
 
 	// Create a clone of a saved prefab
@@ -807,7 +871,7 @@ namespace ALEngine
 		// Check to see if an instance of this object is already made
 		if (instObjects.find(prefabName) == instObjects.end())
 		{	// Making of the prefab and saving it
-			std::string fileName{ "Assets\\Dev\\Prefab\\" + prefabName + ".prefab" };
+			std::string fileName{ "Assets\\Prefab\\" + prefabName + ".prefab" };
 			c8* buffer = utils::ReadBytes(fileName);
 
 			if (!buffer)

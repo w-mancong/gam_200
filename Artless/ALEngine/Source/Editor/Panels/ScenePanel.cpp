@@ -16,6 +16,12 @@ brief:	This file contains function definitions for the ScenePanel class.
 
 namespace ALEngine::Editor
 {
+	namespace
+	{
+		// File buffer size
+		const u32 FILE_BUFFER_SIZE{ 1024 };
+	}
+
 	ScenePanel::ScenePanel(void)
 	{
 		// Set camera to ortho projection
@@ -62,6 +68,24 @@ namespace ALEngine::Editor
 		// Draw Scene
 		u64 tex = (u64)ECS::GetEditorTexture();
 		ImGui::Image((void*)tex, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+
+		if(ImGui::BeginDragDropTarget())
+		{
+			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB_ITEM"))
+			{
+				// Get filepath
+				size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
+				wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+				std::string fileString = filePath;
+				u64 const start = fileString.find_last_of('\\') + 1, num = fileString.find_last_of('.') - start;
+
+				// Create Prefab
+				Instantiate(fileString.substr(start, num));
+			}
+		}
 
 		// Only render gizmos if an entity is selected
 		if (hasSelectedEntity && Coordinator::Instance()->HasComponent<Transform>(selectedEntity))

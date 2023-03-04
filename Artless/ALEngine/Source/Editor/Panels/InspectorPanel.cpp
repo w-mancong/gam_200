@@ -87,14 +87,6 @@ namespace ALEngine::Editor
 			DisplaySprite();
 
 		// Check if there is sprite component
-		if (Coordinator::Instance()->HasComponent<Rigidbody2D>(m_SelectedEntity))
-			DisplayRigidBody();
-
-		// Check if there is sprite component
-		if (Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
-			DisplayCollider();
-
-		// Check if there is sprite component
 		if (Coordinator::Instance()->HasComponent<ParticleProperties>(m_SelectedEntity))
 			DisplayParticleProperty();
 
@@ -112,9 +104,17 @@ namespace ALEngine::Editor
 		if (Coordinator::Instance()->HasComponent<ECS::LogicComponent>(m_SelectedEntity))
 			DisplayLogic();
 
-		//// Check if there is Animator component
-		//if (Coordinator::Instance()->HasComponent<______>(m_SelectedEntity))
-		//	DisplayAnimator();
+		// Check if there is Animator component
+		if (Coordinator::Instance()->HasComponent<Animator>(m_SelectedEntity))
+			DisplayAnimator();
+
+		// Check if there is sprite component
+		if (Coordinator::Instance()->HasComponent<Rigidbody2D>(m_SelectedEntity))
+			DisplayRigidBody();
+
+		// Check if there is sprite component
+		if (Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
+			DisplayCollider();
 
 		//// Check if there is Script component
 		//if (Coordinator::Instance()->HasComponent<EntityScript>(m_SelectedEntity))
@@ -649,10 +649,25 @@ namespace ALEngine::Editor
 
 	void InspectorPanel::DisplayAnimator(void)
 	{
-		Animator& anim = Coordinator::Instance()->GetComponent<Animator>(m_SelectedEntity);
-
 		if (ImGui::CollapsingHeader("Animator Component"))
 		{
+			Animator& anim = Coordinator::Instance()->GetComponent<Animator>(m_SelectedEntity);
+			
+			if (ImGui::BeginCombo("Animators##InspectorAnimatorCombo", anim.animatorName.c_str()))
+			{
+				auto animatorList = AnimatorEditorPanel::GetListOfAnimators();
+				for (auto i : animatorList)
+				{
+					b8 isSelected{ anim.animatorName == i.first };
+
+					if (ImGui::Selectable(i.first.c_str(), &isSelected))
+					{
+						anim = ECS::CreateAnimator(i.first.c_str());
+					}
+				}
+
+				ImGui::EndCombo();
+			}
 		}
 	}
 
@@ -890,6 +905,7 @@ namespace ALEngine::Editor
 				// Check which component
 				switch ((InspectorComponents)i)
 				{
+				// ==================== Transform ====================
 				case InspectorComponents::InComp_Transform:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Transform>(m_SelectedEntity))
@@ -903,6 +919,7 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				// ==================== Sprite ====================
 				case InspectorComponents::InComp_Sprite:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Sprite>(m_SelectedEntity))
@@ -916,6 +933,7 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				// ==================== RigidBody ====================
 				case InspectorComponents::InComp_RigidBody:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Rigidbody2D>(m_SelectedEntity))
@@ -929,6 +947,7 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				// ==================== Collider ====================
 				case InspectorComponents::InComp_Collider:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
@@ -942,6 +961,7 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				// ==================== Particles ====================
 				case InspectorComponents::InComp_Particles:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<ParticleProperties>(m_SelectedEntity))
@@ -955,6 +975,7 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				// ==================== Text ====================
 				case InspectorComponents::InComp_Text:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Text>(m_SelectedEntity))
@@ -968,6 +989,7 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				// ==================== Audio ====================
 				case InspectorComponents::InComp_Audio:
 					// Check if has component
 					if (!ECS::Coordinator::Instance()->HasComponent<Engine::AudioSource>(m_SelectedEntity))
@@ -981,16 +1003,29 @@ namespace ALEngine::Editor
 						++count;
 					}
 					break;
+				// ==================== Logic ====================
 				case InspectorComponents::InComp_Logic:
 					if (!ECS::Coordinator::Instance()->HasComponent<ECS::LogicComponent>(m_SelectedEntity))
 					{
 						if (ImGui::Selectable("Logic Component") &&
 							m_SelectedEntity != ECS::MAX_ENTITIES)
 						{
-							// Add Collider Component
+							// Add Logic Component
 							ECS::Coordinator::Instance()->AddComponent<ECS::LogicComponent>(m_SelectedEntity, ECS::LogicComponent());
 						}
 						++count;
+					}
+					break;
+				// ==================== Animator ====================
+				case InspectorComponents::InComp_Animator:
+					if (!ECS::Coordinator::Instance()->HasComponent<Animator>(m_SelectedEntity))
+					{
+						if (ImGui::Selectable("Animator Component") &&
+							m_SelectedEntity != ECS::MAX_ENTITIES)
+						{
+							// Add Animator Component
+							ECS::Coordinator::Instance()->AddComponent<Animator>(m_SelectedEntity, Animator());
+						}
 					}
 					break;
 				}
