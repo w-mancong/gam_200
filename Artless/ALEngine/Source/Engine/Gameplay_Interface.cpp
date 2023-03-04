@@ -1298,10 +1298,21 @@ namespace ALEngine::Script
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
 			gameplaySystem_Enemy->Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			break;
+		case ENEMY_TYPE::ENEMY_SUMMONER:
+			gameplaySystem_Enemy->Enemy_Logic_Update_Summoner(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			break;
 		default:
 			break;
 		}
 		AL_CORE_INFO("after enemy move");
+
+		//if (enemyNeededData.enemyMoved < enemyEntityList.size()) {
+		//	
+		//	MoveEnemy();
+		//}
+
+		//MoveEnemy();
+		//return;
 	}
 
 	//****************EVENTS*****************//

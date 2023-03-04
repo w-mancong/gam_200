@@ -26,11 +26,11 @@ namespace ALEngine::ECS::Component
 	{
 		ENEMY_MELEE,   //0 Enemy Melee
 		ENEMY_CELL_DESTROYER,   //1 Cell Destroyer
-		ENEMY_SPAWNER,   //2
+		ENEMY_SUMMONER,   //2
 		ENEMY_TYPE04    //3
 	};
 
-	enum class SPAWNER_ENEMY_STATE
+	enum class SUMMONER_ENEMY_STATE
 	{
 		//list of all spawnerenemystate
 		SES_START = 0, //start and decision state
@@ -62,11 +62,11 @@ namespace ALEngine::ECS::Component
 
 		//spawner enemy state stuff
 		//current state
-		SPAWNER_ENEMY_STATE m_CurrentStateId{};
+		SUMMONER_ENEMY_STATE m_CurrentStateId{};
 		//next state
-		SPAWNER_ENEMY_STATE m_NextStateId{};
+		SUMMONER_ENEMY_STATE m_NextStateId{};
 		//previous state
-		SPAWNER_ENEMY_STATE m_PreviousStateId{};
+		SUMMONER_ENEMY_STATE m_PreviousStateId{};
 		//turncounte to keep track
 		s32 TurnCounter{};
 		//keep track that turn ended

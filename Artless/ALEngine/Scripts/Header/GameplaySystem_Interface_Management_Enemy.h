@@ -164,7 +164,7 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-		 enemy melee AI logic function for handling update of enemy AI
+		 enemy summoner AI logic function for handling update of enemy AI
 		\param [in] enemyNeededData
 		Reference to enemy Struct object of datas from the level
 		\param [in] movingUnitEntity
@@ -176,7 +176,7 @@ namespace ALEngine::Script
 		\param [in] m_Room
 		 Reference to m_Room which is the game room variables for use
 		***********************************************************************************/
-		void Enemy_Logic_Update_Spawner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
+		void Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
 
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)

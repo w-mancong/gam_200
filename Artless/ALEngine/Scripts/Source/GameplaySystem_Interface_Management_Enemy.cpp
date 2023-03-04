@@ -129,9 +129,9 @@ namespace ALEngine::Script
 		enemyUnit.maxDamage = 0;
 		enemyUnit.maxMovementPoints = 4;
 		enemyUnit.movementPoints = 4;
-		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SPAWNER;
+		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
 		enemyUnit.TriggeredByPlayer = false;
-		enemyUnit.m_CurrentStateId = SPAWNER_ENEMY_STATE::SES_START;
+		enemyUnit.m_CurrentStateId = SUMMONER_ENEMY_STATE::SES_START;
 		enemyUnit.TurnCounter = 0;
 		return;
 	}
@@ -179,7 +179,7 @@ namespace ALEngine::Script
 		}
 		SetEnemy02attributes(enemyUnit);
 		break;
-		case ENEMY_TYPE::ENEMY_SPAWNER:
+		case ENEMY_TYPE::ENEMY_SUMMONER:
 			SetEnemy03attributes(enemyUnit);
 			break;
 		case ENEMY_TYPE::ENEMY_TYPE04:
@@ -255,11 +255,6 @@ namespace ALEngine::Script
 			}
 		}
 		return false;
-	}
-
-	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Spawner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room)
-	{
-
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, [[maybe_unused]] ECS::Entity& movingUnitEntity, [[maybe_unused]] UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room) {
@@ -368,7 +363,6 @@ namespace ALEngine::Script
 		}
 	}
 
-
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Melee(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room)
 	{
 		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
@@ -390,7 +384,7 @@ namespace ALEngine::Script
 
 		if (enemyUnit.health <= 0) {
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
 			return;
 		}
 
@@ -406,7 +400,7 @@ namespace ALEngine::Script
 		if (!enemyUnit.TriggeredByPlayer)
 		{
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
 			return;
 		}
 
@@ -417,7 +411,7 @@ namespace ALEngine::Script
 		if (ifPlayerIsAlreadyBeside) {
 			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " Attacked player");
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
 			return;
 		}
 
@@ -470,7 +464,7 @@ namespace ALEngine::Script
 			AL_CORE_INFO("No Space Beside Player, Moving to next enemy");
 			RunEnemyAdjacentAttack(m_Room, enemyUnit);
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
 			return;
 		}
 
@@ -483,7 +477,7 @@ namespace ALEngine::Script
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
 			return;
 		}
 
@@ -530,7 +524,8 @@ namespace ALEngine::Script
 
 		if (enemyUnit.health <= 0) {
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -546,7 +541,8 @@ namespace ALEngine::Script
 		if (!enemyUnit.TriggeredByPlayer)
 		{
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -580,7 +576,8 @@ namespace ALEngine::Script
 		if (!hasFoundWalkableCells) {
 			AL_CORE_INFO("No walkable cells");
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -618,7 +615,8 @@ namespace ALEngine::Script
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -647,5 +645,142 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
 
 		++enemyNeededData.enemyMoved;
+		return;
+	}
+
+	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room)
+	{
+		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
+			AL_CORE_INFO("All Enemy Made move, ending turn");
+			gameplaySystem->EndTurn();
+			return;
+		}
+
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
+		if (enemyUnit.health <= 0)
+		{
+			++enemyNeededData.enemyMoved;
+			return;
+		}
+
+		ECS::Entity cellplayerin{};
+		cellplayerin = gameplaySystem->getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
+		std::vector<ECS::Entity> pathList;
+		std::vector<ECS::Entity> pathdistance;
+
+		//check distance from player
+		if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true))
+		{
+			if (pathdistance.size() < 7)
+			{
+				enemyUnit.TriggeredByPlayer = true;
+			}
+		}
+
+		if (!enemyUnit.TriggeredByPlayer)
+		{
+			++enemyNeededData.enemyMoved;
+			return;
+		}
+
+		switch (enemyUnit.m_CurrentStateId)
+		{
+		case SUMMONER_ENEMY_STATE::SES_START:
+
+			if(enemyUnit.m_PreviousStateId == SUMMONER_ENEMY_STATE::SES_SUMMON)
+			{
+
+			}
+
+			if (enemyUnit.TurnCounter == 3)
+			{
+				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_SUMMON;
+				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+			}
+
+			//if enemy healed this turn and not 3 turns since last summon
+			if (enemyUnit.m_PreviousStateId == SUMMONER_ENEMY_STATE::SES_RETREAT && enemyUnit.TurnCounter!=3)
+			{
+				++enemyNeededData.enemyMoved;
+				Enemy_Logic_Update_Summoner(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+				return;
+			}
+
+			//if health <=3
+			if (enemyUnit.health <= 3)
+			{
+				if (enemyUnit.m_PreviousStateId == SUMMONER_ENEMY_STATE::SES_RETREAT && enemyNeededData.enemyMoved <1)
+				{
+					AL_CORE_INFO("Spawner transit to Heal State");
+					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_HEAL;
+					enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+				}
+				else
+				{
+					AL_CORE_INFO("Spawner transit to Retreat State");
+					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_RETREAT;
+					enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+				}
+			}
+
+			break;
+		case SUMMONER_ENEMY_STATE::SES_MOVE:
+
+			break;
+		case SUMMONER_ENEMY_STATE::SES_RETREAT:
+			AL_CORE_INFO("Spawner Retreat State");
+			//move to tile furthest from player
+
+			++enemyNeededData.enemyMoved;
+			AL_CORE_INFO("Spawner Retreating");
+
+			//no moves left end turn
+			if (enemyNeededData.enemyMoved >= enemyEntityList.size()) 
+			{
+				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_START;
+				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+				AL_CORE_INFO("All Enemy Made move, ending turn");
+				gameplaySystem->EndTurn();
+				return;
+			}
+			//transit to next state if have moves remaining
+			enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_START;
+			enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+			enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+		
+			break;
+		case SUMMONER_ENEMY_STATE::SES_SUMMON:
+			//do the spawning of enemy 60% for tile destroyer & 40% for melee enemy
+			
+			AL_CORE_INFO("Summoner Summoned an enemy");
+
+			++enemyNeededData.enemyMoved;
+			//reset turn counter
+			enemyUnit.TurnCounter = 0;
+			enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_START;
+			enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+			enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+			break;
+		case SUMMONER_ENEMY_STATE::SES_HEAL:
+			AL_CORE_INFO("Summoner Heal State");
+			//heal itself by 3 hp
+			enemyUnit.health += 3;
+
+			++enemyNeededData.enemyMoved;
+			//transit to next state
+			enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_START;
+			enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+			enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+			break;
+
+		default:
+			break;
+
+		}
 	}
 }
