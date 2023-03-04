@@ -11,7 +11,7 @@ brief:	This file contain function definition for MeshBuilder
 namespace
 {
 	// layout location inside vertex shader
-	u32 constexpr POS{ 0 }, TEX{ 1 }, COLOR{ 2 }, HANDLE{ 3 }, DRAW_ID{ 4 }, UI{ 5 }, INSTANCE_MATRIX{ 6 };
+	u32 constexpr POS{ 0 }, TEX{ 1 }, COLOR{ 2 }, HANDLE{ 3 }, DRAW_ID{ 4 }, INSTANCE_MATRIX{ 5 };
 
 	struct Vertex2D
 	{
@@ -49,8 +49,6 @@ namespace
 		u32 cbo;	// color buffer
 		u32 hbo;	// texture handle buffer
 		u32 ibo;	// indirect buffer
-		u32 ubo;	// UI buffer
-
 	} batch;
 
 	using namespace ALEngine;
@@ -70,7 +68,7 @@ namespace
 
 		vDrawCommand = Memory::StaticMemory::New<DrawElementsCommand>(ECS::MAX_ENTITIES);
 
-		u32 vao{}, vbo{}, ebo{}, mbo{}, cbo{}, hbo{}, ibo{}, ubo{};
+		u32 vao{}, vbo{}, ebo{}, mbo{}, cbo{}, hbo{}, ibo{};
 		/***********************************************************
 									VAO
 		***********************************************************/
@@ -141,24 +139,13 @@ namespace
 		glVertexAttribLPointer(HANDLE, 1, GL_UNSIGNED_INT64_ARB, sizeof(u64), (void*)0);
 		glVertexAttribDivisor(HANDLE, 1);
 
-
-		/***********************************************************
-							UBO
-		***********************************************************/
-		glGenBuffers(1, &ubo);
-		glBindBuffer(GL_ARRAY_BUFFER, ubo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, nullptr, GL_DYNAMIC_DRAW);
-		glEnableVertexAttribArray(UI);
-		glVertexAttribPointer(UI, 1, GL_UNSIGNED_INT, GL_FALSE, sizeof(u64), (void*)0); // GL_UNSIGNED_INT
-		glVertexAttribDivisor(UI, 1);
-
 		glGenBuffers(1, &ibo);
 		/***********************************************************
 								 Unbind VAO
 		***********************************************************/
 		glBindVertexArray(0);
 
-		batch.vao = vao, batch.vbo = vbo, batch.ebo = ebo, batch.mbo = mbo, batch.cbo = cbo, batch.hbo = hbo, batch.ibo = ibo, batch.ubo = ubo;
+		batch.vao = vao, batch.vbo = vbo, batch.ebo = ebo, batch.mbo = mbo, batch.cbo = cbo, batch.hbo = hbo, batch.ibo = ibo;
 	}
 }
 
@@ -178,7 +165,6 @@ namespace ALEngine::Engine
 		glDeleteBuffers(1, &batch.cbo);
 		glDeleteBuffers(1, &batch.hbo);
 		glDeleteBuffers(1, &batch.ibo);
-		glDeleteBuffers(1, &batch.ubo);
 	}
 
 	void MeshBuilder::Init(void)
@@ -210,9 +196,6 @@ namespace ALEngine::Engine
 
 		glBindBuffer(GL_ARRAY_BUFFER, batch.hbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, bd.texHandle, GL_DYNAMIC_DRAW);
-
-		glBindBuffer(GL_ARRAY_BUFFER, batch.ubo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(u64) * ECS::MAX_ENTITIES, bd.isUI, GL_DYNAMIC_DRAW);
 
 		//feed the instance id to the shader.
 		glBindBuffer(GL_ARRAY_BUFFER, batch.ibo);
