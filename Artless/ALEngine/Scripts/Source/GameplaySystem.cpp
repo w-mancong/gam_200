@@ -439,6 +439,13 @@ namespace ALEngine::Script
 		if (Input::KeyTriggered(KeyCode::F9)) {
 			Cheat_ClearFloorWalkability();
 		}
+
+		if (Input::KeyTriggered(KeyCode::E)) {
+			RotatePattern(1);
+		}
+		else if (Input::KeyTriggered(KeyCode::Q)) {
+			RotatePattern(-1);
+		}
 		//******END CHEAT KEYS******//
 
 		RunGameState();

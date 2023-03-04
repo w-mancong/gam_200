@@ -86,8 +86,7 @@ struct Pattern {
 	std::string file_path{};
 
 	//list of grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
-	std::vector<ALEngine::Math::Vector2Int> coordinate_occupied{}
-	;
+	std::vector<std::vector<ALEngine::Math::Vector2Int>> offsetGroup;
 };
 
 /*!*********************************************************************************

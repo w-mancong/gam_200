@@ -377,7 +377,7 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void EnemyManager_LoadData();
 
-
+		void RotatePattern(int patternRotationAmount);
 		void scanRoomCellArray();
 		void checkPlayerPlacement();
 
@@ -417,6 +417,7 @@ namespace ALEngine::Script
 		std::vector<Pattern> pattern_Default, pattern_List;
 		Pattern selected_Pattern;
 		u32 selected_Pattern_Index{ 0 };
+		s32 selected_Pattern_Rotation{ 0 };
 
 		//Abilities
 		std::vector<Abilities> Abilities_List;
