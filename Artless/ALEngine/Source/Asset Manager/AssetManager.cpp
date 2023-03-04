@@ -1002,8 +1002,10 @@ namespace ALEngine::Engine
 			std::string const& filePath{ files.created.back() };
 			std::string guidKey{};
 			Guid id{ PrepareGuid() };
-			GenerateMetaFile(filePath.c_str(), id);
-			switch (GetFileType(filePath))
+			FileType type = GetFileType(filePath);
+			if(type != FileType::Scene && type != FileType::Prefab)
+				GenerateMetaFile(filePath.c_str(), id);
+			switch (type)
 			{
 			/******************************************************************************
 												Image

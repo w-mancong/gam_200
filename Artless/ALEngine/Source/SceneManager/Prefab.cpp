@@ -767,7 +767,7 @@ namespace ALEngine
 
 		writer.EndArray();
 
-		std::string fileName{ "Assets\\Dev\\Prefab\\" + Coordinator::Instance()->GetComponent<EntityData>(en).tag + ".prefab" };
+		std::string fileName{ "Assets\\Prefab\\" + Coordinator::Instance()->GetComponent<EntityData>(en).tag + ".prefab" };
 		std::ofstream ofs{ fileName };
 		if (!ofs)
 		{
