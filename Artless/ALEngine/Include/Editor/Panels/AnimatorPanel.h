@@ -104,7 +104,8 @@ namespace ALEngine::Editor
 		u32 m_SelectedAnimationIndex{ 0 };		//
 
 		b8 m_PanelIsOpen{ false };				// Keeps track of whether the Panel is open
-
+		std::string m_CurrClipName{},			// Current Clip Name
+			m_OldCurrClipName{};				// Current Clip Name but old
 	};
 }
 
