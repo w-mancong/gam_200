@@ -137,8 +137,9 @@ namespace ALEngine::Editor
 				ImGui::PushID(str.c_str());
 				if (ImGui::SmallButton("X"))
 				{
-					std::string fileName = "Assets\\Dev\\Animator\\" + items[i];
+					std::string const& fileName = "Assets\\Dev\\Animator\\" + items[i];
 					std::remove(fileName.c_str());
+					animatorList.erase(items[i]);
 				}
 				ImGui::PopID();
 			}

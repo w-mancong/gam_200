@@ -980,7 +980,9 @@ namespace ALEngine::Engine::Scene
 	void InsertScene(u64 newIndex, u64 oldIndex)
 	{
 		// Remove old scene, but store the file path temporary
-		std::string sceneName_OldIndex = scenes[oldIndex], sceneName_NewIndex = scenes[newIndex];
+		u64 const L = std::max(newIndex, oldIndex), S = std::min(newIndex, oldIndex);
+
+		std::string sceneName_OldIndex = scenes[L], sceneName_NewIndex = scenes[S];
 		std::vector<std::string>::const_iterator it2 = std::find(scenes.begin(), scenes.end(), sceneName_OldIndex);
 		scenes.erase(it2);
 
