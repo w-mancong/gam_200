@@ -131,7 +131,7 @@ namespace ALEngine::Script
 		enemyUnit.movementPoints = 4;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
 		enemyUnit.TriggeredByPlayer = false;
-		enemyUnit.m_CurrentStateId = SUMMONER_ENEMY_STATE::SES_START;
+		enemyUnit.m_CurrentStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
 		enemyUnit.TurnCounter = 0;
 		return;
 	}
@@ -389,7 +389,7 @@ namespace ALEngine::Script
 		}
 
 		//check distance from player
-		if (ALEngine::Engine::AI::FindPath(gameplaySystem,m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true))
+		if (ALEngine::Engine::AI::FindPath(gameplaySystem,m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true) && !enemyUnit.TriggeredByPlayer)
 		{
 			if (pathdistance.size() < 7)
 			{
@@ -530,7 +530,7 @@ namespace ALEngine::Script
 		}
 
 		//check distance from player
-		if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true))
+		if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true) && !enemyUnit.TriggeredByPlayer)
 		{
 			if (pathdistance.size() < 7)
 			{
@@ -669,8 +669,8 @@ namespace ALEngine::Script
 		std::vector<ECS::Entity> pathList;
 		std::vector<ECS::Entity> pathdistance;
 
-		//check distance from player
-		if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true))
+		//check distance from player to see if player triggered enemy
+		if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true) && !enemyUnit.TriggeredByPlayer)
 		{
 			if (pathdistance.size() < 7)
 			{
@@ -680,38 +680,33 @@ namespace ALEngine::Script
 
 		if (!enemyUnit.TriggeredByPlayer)
 		{
+			if (enemyUnit.TurnCounter >= 3)
+			{
+				//do the spawning of enemy 60% for tile destroyer & 40% for melee enemy
+				
+				//reset counter
+				enemyUnit.TurnCounter = 0;
+			}
+
+			++enemyUnit.TurnCounter;
 			++enemyNeededData.enemyMoved;
+			gameplaySystem->MoveEnemy();
 			return;
 		}
-
-		switch (enemyUnit.m_CurrentStateId)
+		else  //if player in range which triggered the summoner to follow player
 		{
-		case SUMMONER_ENEMY_STATE::SES_START:
-
-			if(enemyUnit.m_PreviousStateId == SUMMONER_ENEMY_STATE::SES_SUMMON)
+			if (enemyUnit.TurnCounter >= 3)
 			{
+				//do the spawning of enemy 60% for tile destroyer & 40% for melee enemy
 
-			}
-
-			if (enemyUnit.TurnCounter == 3)
-			{
-				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_SUMMON;
-				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
-				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-			}
-
-			//if enemy healed this turn and not 3 turns since last summon
-			if (enemyUnit.m_PreviousStateId == SUMMONER_ENEMY_STATE::SES_RETREAT && enemyUnit.TurnCounter!=3)
-			{
-				++enemyNeededData.enemyMoved;
-				Enemy_Logic_Update_Summoner(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
-				return;
+				//reset counter
+				enemyUnit.TurnCounter = 0;
 			}
 
 			//if health <=3
 			if (enemyUnit.health <= 3)
 			{
-				if (enemyUnit.m_PreviousStateId == SUMMONER_ENEMY_STATE::SES_RETREAT && enemyNeededData.enemyMoved <1)
+				if (enemyUnit.m_PreviousStateId == SUMMONER_ENEMY_STATE::SES_RETREAT)
 				{
 					AL_CORE_INFO("Spawner transit to Heal State");
 					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_HEAL;
@@ -727,60 +722,64 @@ namespace ALEngine::Script
 				}
 			}
 
-			break;
-		case SUMMONER_ENEMY_STATE::SES_MOVE:
-
-			break;
-		case SUMMONER_ENEMY_STATE::SES_RETREAT:
-			AL_CORE_INFO("Spawner Retreat State");
-			//move to tile furthest from player
-
-			++enemyNeededData.enemyMoved;
-			AL_CORE_INFO("Spawner Retreating");
-
-			//no moves left end turn
-			if (enemyNeededData.enemyMoved >= enemyEntityList.size()) 
+			//check distance from player
+			if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true))
 			{
-				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_START;
+				if (pathdistance.size() < 7) //player close to enemy
+				{
+					AL_CORE_INFO("Spawner transit to Move away State");
+					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_MOVE_AWAY;
+					enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+				}
+
+				if (pathdistance.size() > 7)//player far from from enemy
+				{
+					AL_CORE_INFO("Spawner transit to Move closer State");
+					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_MOVE_CLOSER;
+					enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+				}
+			}
+
+			switch (enemyUnit.m_CurrentStateId)
+			{
+			    case SUMMONER_ENEMY_STATE::SES_IDLE:
+				break;
+				case SUMMONER_ENEMY_STATE::SES_MOVE_CLOSER:
+
+				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
 				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
 				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-				AL_CORE_INFO("All Enemy Made move, ending turn");
-				gameplaySystem->EndTurn();
-				return;
+				break;
+				case SUMMONER_ENEMY_STATE::SES_MOVE_AWAY:
+
+				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
+				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+				break;
+				case SUMMONER_ENEMY_STATE::SES_RETREAT:
+				AL_CORE_INFO("Spawner Retreat State");
+				//move to tile furthest from player
+
+				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
+				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+				break;
+				case SUMMONER_ENEMY_STATE::SES_HEAL:
+			    //enemy heals
+				enemyUnit.health += 3;
+
+				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
+				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+				break;
+				default:
+				break;
 			}
-			//transit to next state if have moves remaining
-			enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_START;
-			enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
-			enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-		
-			break;
-		case SUMMONER_ENEMY_STATE::SES_SUMMON:
-			//do the spawning of enemy 60% for tile destroyer & 40% for melee enemy
-			
-			AL_CORE_INFO("Summoner Summoned an enemy");
 
 			++enemyNeededData.enemyMoved;
-			//reset turn counter
-			enemyUnit.TurnCounter = 0;
-			enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_START;
-			enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
-			enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-			break;
-		case SUMMONER_ENEMY_STATE::SES_HEAL:
-			AL_CORE_INFO("Summoner Heal State");
-			//heal itself by 3 hp
-			enemyUnit.health += 3;
-
-			++enemyNeededData.enemyMoved;
-			//transit to next state
-			enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_START;
-			enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
-			enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-			break;
-
-		default:
-			break;
-
+			return;
 		}
 	}
 }
