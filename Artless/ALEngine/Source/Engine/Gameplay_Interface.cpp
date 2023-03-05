@@ -135,6 +135,8 @@ namespace ALEngine::Script
 				playerUnit.actionPoints = playerUnit.maxActionPoints;
 			}
 
+			gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
 			//Reset enemy move ment points
 			for (int i = 0; i < enemyEntityList.size(); ++i) {
 				Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
@@ -302,7 +304,16 @@ namespace ALEngine::Script
 
 				//Get offset cell component 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x + i, y + j));
-						
+				
+				//Skip if cell is not navigable
+				if (!cell.m_isAccessible) {
+					continue;
+				}
+				
+				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x + i, y + j));
+
+				ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+
 				//Do damage to cells without bombs
 				if (cell.hasBomb) {
 					continue;
@@ -318,6 +329,9 @@ namespace ALEngine::Script
 
 		//Get center cell component 
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x, y));
+
+		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
 
 		if (cell.hasUnit) {
 			DoDamageToUnit(cell.unitEntity, 13);
