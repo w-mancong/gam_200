@@ -345,6 +345,8 @@ namespace ALEngine::Script
 
 		void constructBomb(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
 
+		void ResetCell(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
+
 		/*!*********************************************************************************
 		\brief
 			Destroys a wall on a cell

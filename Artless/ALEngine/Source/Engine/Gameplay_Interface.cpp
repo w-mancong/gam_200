@@ -942,7 +942,7 @@ namespace ALEngine::Script
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				
-				if (!cell.m_isAccessible) {
+				if (!cell.m_isAccessible || cell.hasBomb || cell.hasTrap || cell.has_Wall) {
 					//return false;
 					canPlace = false;
 					touchedEmpty = true;
@@ -1071,11 +1071,11 @@ namespace ALEngine::Script
 						break;
 
 					case ABILITY_NAME::MATRIX_TRAP:
-
+						constructTrap(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 						break;
 
 					case ABILITY_NAME::VOLATILE:
-				
+						constructBomb(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 						break;
 
 					default:
@@ -1156,6 +1156,8 @@ namespace ALEngine::Script
 
 		//Set stats
 		cell.has_Wall = isTrue;
+		cell.hasTrap = false;
+		cell.hasBomb = false;
 		cell.m_canWalk = !isTrue;
 		cell.m_resetCounter = 2;
 
@@ -1164,6 +1166,72 @@ namespace ALEngine::Script
 		sprite.layer = 1000 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
 		sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/ConstructTile_TileSprite.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
+	}
+
+	void GameplaySystem::constructTrap(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y) {
+		//Get the cell entity
+		ECS::Entity cellEntity = getEntityCell(currentRoom, x, y);
+
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//IF it already has a wall, don't do anything
+		if (cell.has_Wall || !cell.m_isAccessible) {
+			return;
+		}
+
+		//Set stats
+		cell.has_Wall = false;
+		cell.hasTrap = true;
+		cell.hasBomb = false;
+		cell.m_canWalk = false;
+		cell.m_resetCounter = 100;
+
+		//Change it's sprite overlay
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
+		sprite.layer = 1000 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
+		sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tile_Overlay_Trap.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
+	}
+
+	void GameplaySystem::constructBomb(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y) {
+		//Get the cell entity
+		ECS::Entity cellEntity = getEntityCell(currentRoom, x, y);
+
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//IF it already has a wall, don't do anything
+		if (cell.has_Wall || !cell.m_isAccessible) {
+			return;
+		}
+
+		//Set stats
+		cell.has_Wall = false;
+		cell.hasTrap = true;
+		cell.hasBomb = false;
+		cell.m_canWalk = false;
+		cell.m_resetCounter = 100;
+
+		//Change it's sprite overlay
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
+		sprite.layer = 1000 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
+		sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tile_Overlay_Bomb.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
+	}
+
+	void GameplaySystem::ResetCell(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y) {
+		//Get cell component 
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+
+		//Set Stats
+		cell.has_Wall = false;
+		cell.hasBomb = false;
+		cell.hasTrap = false;
+		cell.m_canWalk = false;
+
+		//Set the overlay sprite to false
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
 	}
 
 	void GameplaySystem::destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
