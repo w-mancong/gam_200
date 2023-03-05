@@ -550,6 +550,7 @@ namespace ALEngine::Script
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 15;
 		new_ability.max_Cooldown = 1;
+		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
 		//Life steal
@@ -557,6 +558,7 @@ namespace ALEngine::Script
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 12;
 		new_ability.max_Cooldown = 2;
+		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
 		//Overhang
@@ -570,18 +572,21 @@ namespace ALEngine::Script
 		new_ability.current_Ability_Name = ABILITY_NAME::CONSTRUCT_WALL;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
 		new_ability.max_Cooldown = 4;
+		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 	
 		//Matrix Trap
 		new_ability.current_Ability_Name = ABILITY_NAME::MATRIX_TRAP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
 		new_ability.max_Cooldown = 3;
+		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 	
 		//Matrix Trap
 		new_ability.current_Ability_Name = ABILITY_NAME::VOLATILE;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
 		new_ability.max_Cooldown = 5;
+		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 	}
 
