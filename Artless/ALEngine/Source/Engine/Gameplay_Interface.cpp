@@ -1003,31 +1003,42 @@ namespace ALEngine::Script
 							//Check for ability name and run ability accordingly
 							switch (abilities->current_Ability_Name)
 							{
-							case ABILITY_NAME::HARD_DROP:
-								DoDamageToUnit(cell.unitEntity, abilities->damage);
-								break;
-							case ABILITY_NAME::LIFE_DRAIN:
-							{
-								DoDamageToUnit(cell.unitEntity, abilities->damage);
+								case ABILITY_NAME::HARD_DROP:
+									DoDamageToUnit(cell.unitEntity, abilities->damage);
+									break;
+								case ABILITY_NAME::LIFE_DRAIN:
+								{
+									DoDamageToUnit(cell.unitEntity, abilities->damage);
 
-								//Life steal 
-								ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
-								Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+									//Life steal 
+									ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+									Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
-								u32 healthDrained = unit.health < 0 ? initialHealth : abilities->damage;
+									u32 healthDrained = unit.health < 0 ? initialHealth : abilities->damage;
 
-								playerUnit.health += healthDrained;
+									playerUnit.health += healthDrained;
 
-								if (playerUnit.health > playerUnit.maxHealth) {
-									playerUnit.health = playerUnit.maxHealth;
+									if (playerUnit.health > playerUnit.maxHealth) {
+										playerUnit.health = playerUnit.maxHealth;
+									}
+
+									Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+									ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
+
+									AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
+									break;
 								}
+								case ABILITY_NAME::OVERHANG:
+									DoDamageToUnit(playerEntity, 8);
+									Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+									
+									playerUnit.actionPoints += 1;
+									if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
+										playerUnit.actionPoints = playerUnit.maxActionPoints;
+									}
 
-								Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-								ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
-
-								AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
-								break;
-							}
+									gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+									break;
 							}
 						}//End check if unit
 					}
@@ -1763,6 +1774,12 @@ namespace ALEngine::Script
 			gameplaySystem->EndTurn();
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
+			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+			
+			if (playerUnit.actionPoints < 2) {
+				return;
+			}
+			
 			//If placing patern for abilities
 			b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
@@ -1794,8 +1811,6 @@ namespace ALEngine::Script
 				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
 				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
 			}
-
-			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 
 			playerUnit.actionPoints -= 2;
 			if (playerUnit.actionPoints < 0) {
