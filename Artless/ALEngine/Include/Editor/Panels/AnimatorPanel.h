@@ -15,67 +15,67 @@ namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
 		\brief
-		Class that aids in the display of the Animator Panel for the editor
+			Class that aids in the display of the Animator Panel for the editor
 	***********************************************************************************/
 	class AnimatorPanel
 	{
 	public:
 		/*!*********************************************************************************
 			\brief
-			Default constructor for the AnimatorPanel
+				Default constructor for the AnimatorPanel
 		***********************************************************************************/
 		AnimatorPanel(void);
 
 		/*!*********************************************************************************
 			\brief
-			Default destructor for the AnimatorPanel
+				Default destructor for the AnimatorPanel
 		***********************************************************************************/
 		~AnimatorPanel(void);
 
 		/*!*********************************************************************************
 			\brief
-			Updates the Animator Panel
+				Updates the Animator Panel
 		***********************************************************************************/
 		void OnImGuiRender(void);
 
 		/*!*********************************************************************************
 			\brief
-			Set the Selected Animator
+				Set the Selected Animator
 			\param [in] animatorSelected
-			Animator to be Selected
+				Animator to be Selected
 		***********************************************************************************/
 		void SetSelectedAnimator(Animator& animatorSelected);
 
 		/*!*********************************************************************************
 			\brief
-			Set the Selected Animation
+				Set the Selected Animation
 			\param [in] animationSelected
-			Animation to be Selected
+				Animation to be Selected
 		***********************************************************************************/
 		void SetSelectedAnimation(Animation& animationSelected);
 
 		/*!*********************************************************************************
 			\brief
-			Set whether the Animator Panel is open
+				Set whether the Animator Panel is open
 			\param [in] panelIsOpen
-			Boolean for whether Panel is Open
+				Boolean for whether Panel is Open
 		***********************************************************************************/
 		void SetPanelIsOpen(b8 panelIsOpen);
 
 		/*!*********************************************************************************
 			\brief
-			Get whether the Animator Panel is open
+				Get whether the Animator Panel is open
 			\return
-			Returns true if Panel is Open,
-			Else returns false
+				Returns true if Panel is Open,
+				Else returns false
 		***********************************************************************************/
 		b8 GetPanelIsOpen(void);
 
 		/*!*********************************************************************************
 			\brief
-			Set the panel's minimum size
+				Set the panel's minimum size
 			\param min
-			Panel's min size
+				Panel's min size
 		***********************************************************************************/
 		void SetPanelMin(Math::Vec2 min);
 
