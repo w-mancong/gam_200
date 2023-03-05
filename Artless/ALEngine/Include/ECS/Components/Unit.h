@@ -49,6 +49,8 @@ namespace ALEngine::ECS::Component
 		s32 actionPoints{}, maxActionPoints{};
 		s32 minRange{}, maxRange{};
 
+		s32 stunDuration{ 0 };
+
 		//unit type
 		UNIT_TYPE unitType{};
 		ENEMY_TYPE enemyUnitType{};

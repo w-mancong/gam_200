@@ -1232,6 +1232,8 @@ namespace ALEngine::Script
 
 		//Set the overlay sprite to false
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
+	
+		ToggleCellWalkability(currentRoom, getEntityCell(currentRoom, x, y), false);
 	}
 
 	void GameplaySystem::destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
@@ -1484,7 +1486,7 @@ namespace ALEngine::Script
 			movinUnit.coordinate[1] = cell.coordinate.y;
 
 			//Keep track of end of path
-			bool isEndOfPath = true;
+			bool isEndOfPath = false;
 
 			//minus movement points for enemy
 			--movinUnit.actionPoints;
@@ -1493,12 +1495,24 @@ namespace ALEngine::Script
 				gameplaySystem_GUI->Update_AP_UI(movinUnit.actionPoints);
 			}
 
+			//Check if enemy stepped on trap
+			if (cell.hasTrap) {
+				if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
+					movinUnit.stunDuration = 1;
+					DoDamageToUnit(movingUnitEntity, 5);
+					isEndOfPath = true;
+
+					ResetCell(m_Room, cell.coordinate.x, cell.coordinate.y);
+				}
+			}
+
 			//If no more movement point
 			//Stop the movement
 			if (movinUnit.actionPoints <= 0) {
 				isEndOfPath = true;
 			}
 			else {
+				if(!isEndOfPath)
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 			}
 
@@ -1519,7 +1533,7 @@ namespace ALEngine::Script
 					ad.Stop();
 
 					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
-					ECS::ChangeAnimation(an, "PlayerIdle");
+					//ECS::ChangeAnimation(an, "PlayerIdle");
 					if (movinUnit.actionPoints <= 0) {
 						EndTurn();
 					}
@@ -1529,7 +1543,7 @@ namespace ALEngine::Script
 					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 						//Stop movement
 						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
-						ECS::ChangeAnimation(an, "BishopIdle");
+						//ECS::ChangeAnimation(an, "BishopIdle");
 						gameplaySystem_Enemy->RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved - 1]));
 					}
 					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
@@ -1564,6 +1578,16 @@ namespace ALEngine::Script
 		//if the health is gone
 		if (enemyUnit.health <= 0)
 		{
+			//MOve on to the next enemy
+			++enemyNeededData.enemyMoved;
+			MoveEnemy();
+			return;
+		}
+
+		//Check stun
+		if (enemyUnit.stunDuration > 0) {
+			enemyUnit.stunDuration--;
+			
 			//MOve on to the next enemy
 			++enemyNeededData.enemyMoved;
 			MoveEnemy();
