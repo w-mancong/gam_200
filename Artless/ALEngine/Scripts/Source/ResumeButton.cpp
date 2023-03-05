@@ -39,6 +39,7 @@ namespace ALEngine::Script
 				pl->paused = false;
 				SetActive(false, bd_pause);
 				Time::m_Scale = 1.0f;
+				Lighten(en);
 			}
 		}
 
@@ -58,14 +59,8 @@ namespace ALEngine::Script
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenExit);
 	}
 
-	void ResumeButton::Update(ECS::Entity en)
-	{
-		//Lighten(en);
-	}
-
 	void ResumeButton::Free(ECS::Entity en)
 	{
-		bd_pause = ECS::MAX_ENTITIES;
-		bd_pause_parent = ECS::MAX_ENTITIES;
+		bd_pause = bd_pause_parent = MAX_ENTITIES;
 	}
 }

@@ -22,7 +22,15 @@ namespace ALEngine::Script
 	void PauseLogic::Init(ECS::Entity en)
 	{
 		GetSceneGraph().FindImmediateChildren(en);
-		bd_pause = GetSceneGraph().GetChildren()[0];
+		std::vector<s32> const& children = GetSceneGraph().GetChildren();
+
+		for (s32 child : children)
+		{
+			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(static_cast<Entity>(child));
+			if (ed.tag == "bd_pause")
+				bd_pause = static_cast<Entity>(child);
+		}
+
 		paused	 = false;
 		SetActive(paused, bd_pause);	// to make sure that bd_pause is always false when init
 	}

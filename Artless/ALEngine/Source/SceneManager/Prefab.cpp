@@ -858,7 +858,7 @@ namespace ALEngine
 			SerialID parent;
 		};
 
-		std::unordered_map<SerialID, DeserializeID> entities;
+		std::map<SerialID, DeserializeID> entities;
 
 		// Save the prefab data into a seperate entity id starting from (MAX_ENTITIES + 1) - (MAX_ENTITIES + MAX_PREFABS + 1) 
 		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)

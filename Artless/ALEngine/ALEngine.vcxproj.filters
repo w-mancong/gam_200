@@ -105,6 +105,7 @@
     <ClCompile Include="Source\Editor\Panels\SceneBuildOrderPanel.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
+    <ClCompile Include="Scripts\Source\HtpButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Include\Editor\Panels\AnimatorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneBuildOrderPanel.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />
+    <ClInclude Include="Scripts\Header\HtpButton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

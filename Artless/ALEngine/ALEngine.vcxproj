@@ -164,6 +164,7 @@
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_GUI.cpp" />
+    <ClCompile Include="Scripts\Source\HtpButton.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
@@ -453,6 +454,7 @@
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_GUI.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_Enemy.h" />
+    <ClInclude Include="Scripts\Header\HtpButton.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
