@@ -742,16 +742,16 @@ namespace ALEngine::Script
 				//do the spawning of enemy with probability of 60% for tile destroyer & 40% for melee enemy
 
 				f64 spawnPercentage = (f64)rand() / RAND_MAX;
-
+				ECS::Entity enemyEntity{};
 				if (spawnPercentage < 0.60)//60% for tile destroyer to spawn
 				{
-					ECS::Entity enemyEntity = PlaceNewEnemyInRoom(spawnUnitPosition.coordinate[0], spawnUnitPosition.coordinate[1], ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
+					enemyEntity = PlaceNewEnemyInRoom(spawnUnitPosition.coordinate[0], spawnUnitPosition.coordinate[1], ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
 					ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 					ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 				}
 				else //  40% for melee enemyto spawn
 				{
-					ECS::Entity enemyEntity = PlaceNewEnemyInRoom(spawnUnitPosition.coordinate[0], spawnUnitPosition.coordinate[1], ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+					enemyEntity = PlaceNewEnemyInRoom(spawnUnitPosition.coordinate[0], spawnUnitPosition.coordinate[1], ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
 					ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 					ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 				}
