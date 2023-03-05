@@ -279,9 +279,51 @@ namespace ALEngine::Script
 					if (cell.has_Wall) {
 						destroyWall(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y, false);
 					}
+					else if (cell.hasBomb) {
+						//explode
+						Bomb_Explode(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y);
+					}
 				}
 			}
 		}
+	}
+
+	void GameplaySystem::Bomb_Explode(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y) {
+		//Range of bomb is 1 cell away
+		//Destroy Walkability/wall, just reset cell
+		//Units on top or adjacent is damaged 13
+
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				//If coordinate is out of bound
+				if (!IsCoordinateInsideRoom(currentRoom, x + i, y + j)) {
+					continue;
+				}
+
+				//Get offset cell component 
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x + i, y + j));
+						
+				//Do damage to cells without bombs
+				if (cell.hasBomb) {
+					continue;
+				}
+
+				if (cell.hasUnit) {
+					DoDamageToUnit(cell.unitEntity, 13);
+				}
+
+				ResetCell(gameplaySystem->m_Room, x + i, y + j);
+			}
+		}
+
+		//Get center cell component 
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+
+		if (cell.hasUnit) {
+			DoDamageToUnit(cell.unitEntity, 13);
+		}
+
+		ResetCell(gameplaySystem->m_Room, x, y);
 	}
 
 	//Check the selected tile counters and to make amendments to them at the end of the turn
@@ -1185,7 +1227,7 @@ namespace ALEngine::Script
 		cell.hasTrap = true;
 		cell.hasBomb = false;
 		cell.m_canWalk = false;
-		cell.m_resetCounter = 100;
+		cell.m_resetCounter = 1000;
 
 		//Change it's sprite overlay
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
@@ -1208,10 +1250,10 @@ namespace ALEngine::Script
 
 		//Set stats
 		cell.has_Wall = false;
-		cell.hasTrap = true;
-		cell.hasBomb = false;
+		cell.hasTrap = false;
+		cell.hasBomb = true;
 		cell.m_canWalk = false;
-		cell.m_resetCounter = 100;
+		cell.m_resetCounter = 1;
 
 		//Change it's sprite overlay
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);

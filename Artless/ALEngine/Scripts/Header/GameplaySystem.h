@@ -361,6 +361,7 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void destroyWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+		void Bomb_Explode(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
 
 		/*!*********************************************************************************
 		\brief
