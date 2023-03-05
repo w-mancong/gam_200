@@ -711,6 +711,7 @@ namespace ALEngine::Script
 		{
 			//check for available cells with no units near summoner
 			std::vector<ECS::Entity> enemyToCellDistance{};
+			bool foundposition{ false };
 			ECS::Entity spawnPosition{};
 			for (std::vector<ECS::Entity>::iterator i = allEmptyCells.begin(); i != allEmptyCells.end(); ++i)
 			{
@@ -725,29 +726,40 @@ namespace ALEngine::Script
 					if (enemyToCellDistance.size() <5)
 					{
 						spawnPosition=*i;
+						foundposition = true;
+						break;
 					}
 				}
 			}
 
-			//do the spawning of enemy with probability of 60% for tile destroyer & 40% for melee enemy
-			
-			f64 spawnPercentage = (f64)rand() / RAND_MAX;
-
-			if (spawnPercentage < 0.60)//60% for tile destroyer to spawn
+			if (!foundposition)
 			{
-				ECS::Entity enemyEntity = PlaceNewEnemyInRoom(3, 7, ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
-				ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-				ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+				AL_CORE_INFO("No available free cell to spawn enemy");
 			}
-			else //  40% for melee enemyto spawn
+			else
 			{
-				 ECS::Entity enemyEntity = PlaceNewEnemyInRoom(3, 7, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
-			     ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-			     ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+				Unit& spawnUnitPosition = Coordinator::Instance()->GetComponent<Unit>(spawnPosition);
+				//do the spawning of enemy with probability of 60% for tile destroyer & 40% for melee enemy
+
+				f64 spawnPercentage = (f64)rand() / RAND_MAX;
+
+				if (spawnPercentage < 0.60)//60% for tile destroyer to spawn
+				{
+					ECS::Entity enemyEntity = PlaceNewEnemyInRoom(spawnUnitPosition.coordinate[0], spawnUnitPosition.coordinate[1], ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
+					ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+					ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+				}
+				else //  40% for melee enemyto spawn
+				{
+					ECS::Entity enemyEntity = PlaceNewEnemyInRoom(spawnUnitPosition.coordinate[0], spawnUnitPosition.coordinate[1], ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+					ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+					ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+				}
+
+				//reset counter
+				enemyUnit.TurnCounter = 0;
 			}
 
-			//reset counter
-			enemyUnit.TurnCounter = 0;
 		}
 
 		if (!enemyUnit.TriggeredByPlayer)
