@@ -98,7 +98,7 @@
             {
                 "position": [
                     800.7979736328125,
-                    61.66033172607422,
+                    123.93279266357422,
                     0.0
                 ],
                 "scale": [
@@ -121,7 +121,7 @@
                 "localActive": true,
                 "id": 2,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -233,7 +233,7 @@
             {
                 "position": [
                     1565.42138671875,
-                    853.9125366210938,
+                    916.1849975585938,
                     0.0
                 ],
                 "scale": [
@@ -323,7 +323,7 @@
             {
                 "position": [
                     797.9000244140625,
-                    44.433326721191406,
+                    106.7057876586914,
                     0.0
                 ],
                 "scale": [
@@ -413,7 +413,7 @@
             {
                 "position": [
                     169.75,
-                    50.92232131958008,
+                    113.19477844238281,
                     0.0
                 ],
                 "scale": [
@@ -458,7 +458,7 @@
             {
                 "position": [
                     250.0,
-                    383.33331298828125,
+                    445.60577392578125,
                     0.0
                 ],
                 "scale": [
@@ -503,7 +503,7 @@
             {
                 "position": [
                     800.0,
-                    783.3333129882813,
+                    845.6057739257813,
                     0.0
                 ],
                 "scale": [
@@ -547,8 +547,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0000610351563,
-                    765.3334350585938,
+                    800.0,
+                    827.60595703125,
                     0.0
                 ],
                 "scale": [
@@ -593,7 +593,7 @@
             {
                 "position": [
                     472.3999938964844,
-                    255.42034912109375,
+                    317.69281005859375,
                     0.0
                 ],
                 "scale": [
@@ -638,7 +638,7 @@
             {
                 "position": [
                     340.39813232421875,
-                    364.0618591308594,
+                    426.3343200683594,
                     0.0
                 ],
                 "scale": [
@@ -683,7 +683,7 @@
             {
                 "position": [
                     601.8599853515625,
-                    30.180938720703125,
+                    92.45624542236328,
                     0.0
                 ],
                 "scale": [
@@ -708,6 +708,22 @@
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
+        ],
+        "TextProperty": [
+            {
+                "textString": "2",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.2000000476837158,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    265.5,
+                    8.5
+                ]
+            }
         ]
     },
     {
@@ -727,8 +743,8 @@
         "Transform": [
             {
                 "position": [
-                    658.281005859375,
-                    32.5345458984375,
+                    658.279052734375,
+                    94.80794525146484,
                     0.0
                 ],
                 "scale": [
@@ -753,6 +769,22 @@
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
+        ],
+        "TextProperty": [
+            {
+                "textString": "2",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.2000000476837158,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    291.5,
+                    8.5
+                ]
+            }
         ]
     },
     {
@@ -772,8 +804,8 @@
         "Transform": [
             {
                 "position": [
-                    718.5943603515625,
-                    32.5345458984375,
+                    718.55322265625,
+                    94.80818176269531,
                     0.0
                 ],
                 "scale": [
@@ -798,6 +830,22 @@
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
+        ],
+        "TextProperty": [
+            {
+                "textString": "2",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.2000000476837158,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    319.0,
+                    8.5
+                ]
+            }
         ]
     },
     {
@@ -817,8 +865,8 @@
         "Transform": [
             {
                 "position": [
-                    880.0792846679688,
-                    32.5345458984375,
+                    880.0279541015625,
+                    94.80841827392578,
                     0.0
                 ],
                 "scale": [
@@ -843,6 +891,22 @@
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
+        ],
+        "TextProperty": [
+            {
+                "textString": "2",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.2000000476837158,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    393.5,
+                    8.5
+                ]
+            }
         ]
     },
     {
@@ -862,8 +926,8 @@
         "Transform": [
             {
                 "position": [
-                    940.8767700195313,
-                    32.5345458984375,
+                    940.816162109375,
+                    94.80794525146484,
                     0.0
                 ],
                 "scale": [
@@ -888,6 +952,22 @@
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
+        ],
+        "TextProperty": [
+            {
+                "textString": "2",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.2000000476837158,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    421.0,
+                    8.5
+                ]
+            }
         ]
     },
     {
@@ -907,8 +987,8 @@
         "Transform": [
             {
                 "position": [
-                    1001.1884155273438,
-                    32.5345458984375,
+                    1001.0943603515625,
+                    94.80835723876953,
                     0.0
                 ],
                 "scale": [
@@ -933,6 +1013,22 @@
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
+        ],
+        "TextProperty": [
+            {
+                "textString": "2",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.2000000476837158,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    448.0,
+                    8.5
+                ]
+            }
         ]
     },
     {
@@ -953,7 +1049,7 @@
             {
                 "position": [
                     1313.647705078125,
-                    122.01998138427734,
+                    184.29244995117188,
                     0.0
                 ],
                 "scale": [
@@ -975,7 +1071,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 21,
-                "parentID": 84,
+                "parentID": 85,
                 "treeNodeFlags": 32
             }
         ]
@@ -998,7 +1094,7 @@
             {
                 "position": [
                     1358.13232421875,
-                    32.215675354003906,
+                    94.4881362915039,
                     0.0
                 ],
                 "scale": [
@@ -1020,7 +1116,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 22,
-                "parentID": 85,
+                "parentID": 86,
                 "treeNodeFlags": 32
             }
         ]
@@ -1043,7 +1139,7 @@
             {
                 "position": [
                     1443.1317138671875,
-                    38.620933532714844,
+                    100.89339447021484,
                     0.0
                 ],
                 "scale": [
@@ -1065,7 +1161,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 23,
-                "parentID": 86,
+                "parentID": 87,
                 "treeNodeFlags": 32
             }
         ]
@@ -1088,7 +1184,7 @@
             {
                 "position": [
                     1523.791748046875,
-                    38.28363800048828,
+                    100.55609893798828,
                     0.0
                 ],
                 "scale": [
@@ -1170,7 +1266,7 @@
             {
                 "position": [
                     472.3995666503906,
-                    255.42031860351563,
+                    317.6927795410156,
                     0.0
                 ],
                 "scale": [
@@ -1219,7 +1315,7 @@
             {
                 "position": [
                     136.34759521484375,
-                    50.92002487182617,
+                    113.1924819946289,
                     0.0
                 ],
                 "scale": [
@@ -1268,7 +1364,7 @@
             {
                 "position": [
                     1250.0,
-                    863.3333129882813,
+                    925.6058349609375,
                     0.0
                 ],
                 "scale": [
@@ -1317,7 +1413,7 @@
             {
                 "position": [
                     250.00003051757813,
-                    383.3333435058594,
+                    445.60577392578125,
                     0.0
                 ],
                 "scale": [
@@ -1365,8 +1461,8 @@
         "Transform": [
             {
                 "position": [
-                    699.9996337890625,
-                    658.3331909179688,
+                    699.9994506835938,
+                    720.6054077148438,
                     0.0
                 ],
                 "scale": [
@@ -1414,8 +1510,8 @@
         "Transform": [
             {
                 "position": [
-                    699.9996337890625,
-                    658.3331909179688,
+                    699.9994506835938,
+                    720.6054077148438,
                     0.0
                 ],
                 "scale": [
@@ -1463,8 +1559,8 @@
         "Transform": [
             {
                 "position": [
-                    699.9996337890625,
-                    658.3331909179688,
+                    699.9994506835938,
+                    720.6054077148438,
                     0.0
                 ],
                 "scale": [
@@ -1512,8 +1608,8 @@
         "Transform": [
             {
                 "position": [
-                    699.9996337890625,
-                    658.3331909179688,
+                    699.9994506835938,
+                    720.6054077148438,
                     0.0
                 ],
                 "scale": [
@@ -1561,8 +1657,8 @@
         "Transform": [
             {
                 "position": [
-                    1149.9990234375,
-                    933.3328857421875,
+                    1149.998291015625,
+                    995.6050415039063,
                     0.0
                 ],
                 "scale": [
@@ -1610,8 +1706,8 @@
         "Transform": [
             {
                 "position": [
-                    1149.9990234375,
-                    933.3328857421875,
+                    1149.998291015625,
+                    995.6050415039063,
                     0.0
                 ],
                 "scale": [
@@ -1659,8 +1755,8 @@
         "Transform": [
             {
                 "position": [
-                    1149.9990234375,
-                    933.3328857421875,
+                    1149.998291015625,
+                    995.6050415039063,
                     0.0
                 ],
                 "scale": [
@@ -1708,8 +1804,8 @@
         "Transform": [
             {
                 "position": [
-                    1149.9990234375,
-                    933.3328857421875,
+                    1149.998291015625,
+                    995.6050415039063,
                     0.0
                 ],
                 "scale": [
@@ -1815,7 +1911,7 @@
             {
                 "position": [
                     800.0,
-                    608.0332641601563,
+                    670.3057250976563,
                     0.0
                 ],
                 "scale": [
@@ -1860,7 +1956,7 @@
             {
                 "position": [
                     800.0,
-                    479.33319091796875,
+                    541.6056518554688,
                     0.0
                 ],
                 "scale": [
@@ -1999,7 +2095,7 @@
             {
                 "position": [
                     800.0,
-                    443.33343505859375,
+                    505.60589599609375,
                     0.0
                 ],
                 "scale": [
@@ -2044,7 +2140,7 @@
             {
                 "position": [
                     703.25,
-                    348.13336181640625,
+                    410.40594482421875,
                     0.0
                 ],
                 "scale": [
@@ -2088,8 +2184,8 @@
         "Transform": [
             {
                 "position": [
-                    896.7498779296875,
-                    348.13336181640625,
+                    896.7496948242188,
+                    410.40594482421875,
                     0.0
                 ],
                 "scale": [
@@ -2134,7 +2230,7 @@
             {
                 "position": [
                     800.0,
-                    443.33331298828125,
+                    505.60577392578125,
                     0.0
                 ],
                 "scale": [
@@ -2179,7 +2275,7 @@
             {
                 "position": [
                     1499.999755859375,
-                    823.33349609375,
+                    885.60595703125,
                     0.0
                 ],
                 "scale": [
@@ -2391,7 +2487,7 @@
             {
                 "position": [
                     -47.89404296875,
-                    583.0770874023438,
+                    645.3495483398438,
                     0.0
                 ],
                 "scale": [
@@ -2474,7 +2570,7 @@
             {
                 "position": [
                     -47.28656005859375,
-                    423.7727355957031,
+                    486.0451965332031,
                     0.0
                 ],
                 "scale": [
@@ -2557,7 +2653,7 @@
             {
                 "position": [
                     1649.874267578125,
-                    588.7799682617188,
+                    651.0524291992188,
                     0.0
                 ],
                 "scale": [
@@ -2723,7 +2819,7 @@
             {
                 "position": [
                     872.3997192382813,
-                    605.4214477539063,
+                    667.6939697265625,
                     0.0
                 ],
                 "scale": [
@@ -2784,7 +2880,7 @@
             {
                 "position": [
                     872.3997192382813,
-                    605.4210205078125,
+                    667.6934814453125,
                     0.0
                 ],
                 "scale": [
@@ -2845,7 +2941,7 @@
             {
                 "position": [
                     872.3997192382813,
-                    605.4210205078125,
+                    667.6934814453125,
                     0.0
                 ],
                 "scale": [
@@ -2906,7 +3002,7 @@
             {
                 "position": [
                     872.3997192382813,
-                    605.4210205078125,
+                    667.6934814453125,
                     0.0
                 ],
                 "scale": [
@@ -3322,7 +3418,7 @@
             {
                 "position": [
                     799.9998779296875,
-                    49.199066162109375,
+                    49.199058532714844,
                     0.0
                 ],
                 "scale": [
@@ -3556,7 +3652,7 @@
                 "tag": "Gameplay_System",
                 "active": true,
                 "localActive": true,
-                "id": 68,
+                "id": 69,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3598,7 +3694,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 69,
+                "id": 70,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3631,7 +3727,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 70,
+                "id": 71,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3664,7 +3760,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 71,
+                "id": 72,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3697,7 +3793,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 72,
+                "id": 73,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3730,7 +3826,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 73,
+                "id": 74,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3763,7 +3859,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 74,
+                "id": 75,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3796,7 +3892,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 75,
+                "id": 76,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3819,8 +3915,8 @@
         "Transform": [
             {
                 "position": [
-                    800.7970581054688,
-                    153.45074462890625,
+                    800.7967529296875,
+                    215.72317504882813,
                     0.0
                 ],
                 "scale": [
@@ -3841,7 +3937,7 @@
                 "tag": "AP holder",
                 "active": true,
                 "localActive": true,
-                "id": 76,
+                "id": 77,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -3864,8 +3960,8 @@
         "Transform": [
             {
                 "position": [
-                    704.4892578125,
-                    161.68832397460938,
+                    704.4889526367188,
+                    223.96072387695313,
                     0.0
                 ],
                 "scale": [
@@ -3886,7 +3982,7 @@
                 "tag": "AP1",
                 "active": true,
                 "localActive": true,
-                "id": 77,
+                "id": 78,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -3909,8 +4005,8 @@
         "Transform": [
             {
                 "position": [
-                    742.424072265625,
-                    162.86514282226563,
+                    742.4237670898438,
+                    225.13754272460938,
                     0.0
                 ],
                 "scale": [
@@ -3931,7 +4027,7 @@
                 "tag": "AP2",
                 "active": true,
                 "localActive": true,
-                "id": 78,
+                "id": 79,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -3954,8 +4050,8 @@
         "Transform": [
             {
                 "position": [
-                    781.328857421875,
-                    162.86514282226563,
+                    781.3285522460938,
+                    225.13754272460938,
                     0.0
                 ],
                 "scale": [
@@ -3976,7 +4072,7 @@
                 "tag": "AP3",
                 "active": true,
                 "localActive": true,
-                "id": 79,
+                "id": 80,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -3999,8 +4095,8 @@
         "Transform": [
             {
                 "position": [
-                    820.2514038085938,
-                    162.86514282226563,
+                    820.2509155273438,
+                    225.13754272460938,
                     0.0
                 ],
                 "scale": [
@@ -4021,7 +4117,7 @@
                 "tag": "AP4",
                 "active": true,
                 "localActive": true,
-                "id": 80,
+                "id": 81,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4044,8 +4140,8 @@
         "Transform": [
             {
                 "position": [
-                    859.1643676757813,
-                    164.0418701171875,
+                    859.1640014648438,
+                    226.31430053710938,
                     0.0
                 ],
                 "scale": [
@@ -4066,7 +4162,7 @@
                 "tag": "AP5",
                 "active": true,
                 "localActive": true,
-                "id": 81,
+                "id": 82,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4089,8 +4185,8 @@
         "Transform": [
             {
                 "position": [
-                    898.0755004882813,
-                    162.86514282226563,
+                    898.074951171875,
+                    225.13754272460938,
                     0.0
                 ],
                 "scale": [
@@ -4111,7 +4207,7 @@
                 "tag": "AP6",
                 "active": true,
                 "localActive": true,
-                "id": 82,
+                "id": 83,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4144,7 +4240,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 83,
+                "id": 84,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4168,7 +4264,7 @@
             {
                 "position": [
                     1314.291748046875,
-                    127.03638458251953,
+                    189.308837890625,
                     0.0
                 ],
                 "scale": [
@@ -4189,7 +4285,7 @@
                 "tag": "current_tile_holder",
                 "active": true,
                 "localActive": true,
-                "id": 84,
+                "id": 85,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
@@ -4213,7 +4309,7 @@
             {
                 "position": [
                     1358.2919921875,
-                    34.03089141845703,
+                    96.30335235595703,
                     0.0
                 ],
                 "scale": [
@@ -4234,7 +4330,7 @@
                 "tag": "next_tile_holder1",
                 "active": true,
                 "localActive": true,
-                "id": 85,
+                "id": 86,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
@@ -4258,7 +4354,7 @@
             {
                 "position": [
                     1442.291748046875,
-                    34.03089141845703,
+                    96.30335235595703,
                     0.0
                 ],
                 "scale": [
@@ -4279,7 +4375,7 @@
                 "tag": "next_tile_holder2",
                 "active": true,
                 "localActive": true,
-                "id": 86,
+                "id": 87,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
@@ -4312,7 +4408,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 87,
+                "id": 88,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4345,7 +4441,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 88,
+                "id": 89,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4378,7 +4474,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 89,
+                "id": 90,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4411,7 +4507,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 90,
+                "id": 91,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4444,7 +4540,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 91,
+                "id": 92,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4477,7 +4573,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 92,
+                "id": 93,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4510,7 +4606,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 93,
+                "id": 94,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4543,7 +4639,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 94,
+                "id": 95,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4576,7 +4672,106 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 95,
+                "id": 96,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 97,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Map Parent",
+                "active": true,
+                "localActive": true,
+                "id": 97,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 98,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Map Parent",
+                "active": true,
+                "localActive": true,
+                "id": 98,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 99,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Map Parent",
+                "active": true,
+                "localActive": true,
+                "id": 99,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }

@@ -49,7 +49,7 @@ enum class PATTERN_PLACEMENT_STATUS {
 \brief
 	Ability names
 ***********************************************************************************/
-enum class ABILITY_NAME { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL };
+enum class ABILITY_NAME { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL, OVERHANG, MATRIX_TRAP, VOLATILE };
 
 /*!*********************************************************************************
 \brief

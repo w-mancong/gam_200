@@ -40,7 +40,8 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::Unload(ECS::Entity en)
 	{
-
+		gameplaySystem.reset();
+		gameplaySystem_GUI.reset();
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
@@ -217,6 +218,8 @@ namespace ALEngine::Script
 			else
 				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
+
+		Update_Ability_Cooldown(gameplaySystem->Abilities_List, istrue);
 	}
 
 
@@ -283,6 +286,31 @@ namespace ALEngine::Script
 		}
 	}
 
+	void GameplaySystem_Interface_Management_GUI::Update_Ability_Cooldown(std::vector<Abilities> ability_set, bool isAbilityGUIActive) {
+		for (int i = 0; i < guiManager.GUI_Abilities_Button_List.size(); ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
+			Text& guiBtn_Text = Coordinator::Instance()->GetComponent<Text>(guiManager.GUI_Abilities_Button_List[i]);
+
+			guiBtn_Text.textString = std::to_string(ability_set[i].current_Cooldown);
+
+			if (ability_set[i].current_Cooldown == 0) {
+				guiBtn_Text.scale = 0;
+			}
+			else {
+				guiBtn_Text.scale = 1.2f;
+			}
+
+			if (ability_set[i].current_Cooldown == 0 && isAbilityGUIActive) {
+				sprite.color = { 1.f, 1.f, 1.f, 1.f };
+				eventTrigger.isEnabled = true;
+			}
+			else {
+				eventTrigger.isEnabled = false;
+				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+			}
+		}//End for loop
+	}
 
 	void Event_Button_Enter_Ability_GUI(ECS::Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {

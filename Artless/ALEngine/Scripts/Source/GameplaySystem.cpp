@@ -460,6 +460,9 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::ExitGameplaySystem() {
+		gameplaySystem_Enemy.reset();
+		gameplaySystem_GUI.reset();
+		
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 		for (auto& it : as.list)
 		{

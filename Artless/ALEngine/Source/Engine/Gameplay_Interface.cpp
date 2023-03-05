@@ -549,18 +549,38 @@ namespace ALEngine::Script
 		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 15;
+		new_ability.max_Cooldown = 1;
 		abilitiesList.push_back(new_ability);
 
 		//Life steal
 		new_ability.current_Ability_Name = ABILITY_NAME::LIFE_DRAIN;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 12;
+		new_ability.max_Cooldown = 2;
+		abilitiesList.push_back(new_ability);
+
+		//Overhang
+		new_ability.current_Ability_Name = ABILITY_NAME::OVERHANG;
+		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
+		new_ability.max_Cooldown = 5;
 		abilitiesList.push_back(new_ability);
 
 		//Construct Wall
 		new_ability.current_Ability_Name = ABILITY_NAME::CONSTRUCT_WALL;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
-		//TRIGGER THE BUILD WALL FUNCTION HERE!!
+		new_ability.max_Cooldown = 4;
+		abilitiesList.push_back(new_ability);
+	
+		//Matrix Trap
+		new_ability.current_Ability_Name = ABILITY_NAME::MATRIX_TRAP;
+		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
+		new_ability.max_Cooldown = 3;
+		abilitiesList.push_back(new_ability);
+	
+		//Matrix Trap
+		new_ability.current_Ability_Name = ABILITY_NAME::VOLATILE;
+		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
+		new_ability.max_Cooldown = 5;
 		abilitiesList.push_back(new_ability);
 	}
 
@@ -950,8 +970,11 @@ namespace ALEngine::Script
 		}
 	}
 
-	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities) {
+	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities) {
 		AL_CORE_CRITICAL("USE ABILITY");
+
+		abilities->current_Cooldown = abilities->max_Cooldown;
+		gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, true);
 
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
@@ -961,7 +984,7 @@ namespace ALEngine::Script
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-				switch (abilities.current_Ability_Type)
+				switch (abilities->current_Ability_Type)
 				{
 					//IF DIRECT ABILITY, AFFECT UNITS ONLY
 				case ABILITY_TYPE::DIRECT:
@@ -978,20 +1001,20 @@ namespace ALEngine::Script
 						//If unit is enemy
 						if (unit.unitType == UNIT_TYPE::ENEMY) {
 							//Check for ability name and run ability accordingly
-							switch (abilities.current_Ability_Name)
+							switch (abilities->current_Ability_Name)
 							{
 							case ABILITY_NAME::HARD_DROP:
-								DoDamageToUnit(cell.unitEntity, abilities.damage);
+								DoDamageToUnit(cell.unitEntity, abilities->damage);
 								break;
 							case ABILITY_NAME::LIFE_DRAIN:
 							{
-								DoDamageToUnit(cell.unitEntity, abilities.damage);
+								DoDamageToUnit(cell.unitEntity, abilities->damage);
 
 								//Life steal 
 								ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 								Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
-								u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
+								u32 healthDrained = unit.health < 0 ? initialHealth : abilities->damage;
 
 								playerUnit.health += healthDrained;
 
@@ -1012,7 +1035,7 @@ namespace ALEngine::Script
 
 				case ABILITY_TYPE::EFFECT:
 					//Check for ability name and run ability accordingly
-					switch (abilities.current_Ability_Name)
+					switch (abilities->current_Ability_Name)
 					{
 					case ABILITY_NAME::CONSTRUCT_WALL:
 						constructWall(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y, true);
@@ -1162,7 +1185,7 @@ namespace ALEngine::Script
 			ad.m_Channel = Engine::Channel::SFX;
 			ad.Play();
 
-			selected_Abilities = ability;
+			selected_Abilities = &ability;
 
 			//Set the gui
 			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
@@ -1629,7 +1652,7 @@ namespace ALEngine::Script
 			}
 			//If checking for abilities, if so, then filter for placement
 			else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
-				b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+				b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
 				if (canPlace)
 					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
@@ -1741,7 +1764,7 @@ namespace ALEngine::Script
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
 			//If placing patern for abilities
-			b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+			b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
@@ -1749,6 +1772,8 @@ namespace ALEngine::Script
 
 			//Disable the filter
 			gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
+
+
 
 			//Run the abilities on the cell
 			gameplaySystem->RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);

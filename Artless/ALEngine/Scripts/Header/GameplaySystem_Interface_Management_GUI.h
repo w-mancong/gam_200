@@ -128,6 +128,9 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Update_AP_UI_For_Cost(int AP_count, int AP_Cost);
 
+
+		void Update_Ability_Cooldown(std::vector<Abilities> ability_set, bool isAbilityGUIActive);
+
 		GUI guiManager;	
 		
 		GUI& getGuiManager()

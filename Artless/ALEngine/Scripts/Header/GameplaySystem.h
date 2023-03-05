@@ -315,7 +315,7 @@ namespace ALEngine::Script
 		\param [in]
 			abilities: ability
 		***********************************************************************************/
-		void RunAbilities_OnCells(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities);
+		void RunAbilities_OnCells(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities);
 
 		/*!*********************************************************************************
 		\brief
@@ -421,7 +421,7 @@ namespace ALEngine::Script
 
 		//Abilities
 		std::vector<Abilities> Abilities_List;
-		Abilities selected_Abilities;
+		Abilities* selected_Abilities;
 
 		//Cell that the mouse is hovering over
 		ECS::Entity current_Moused_Over_Cell;
