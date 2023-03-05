@@ -62,6 +62,7 @@ namespace ALEngine::Script
 		void CreateEnemyUnit(ECS::Entity entity, std::vector<ECS::Entity>& enemyEntityList);
 
 
+
 		struct EnemyManager {
 			ECS::Entity enemyMoved;
 			ECS::Entity playerEntity;

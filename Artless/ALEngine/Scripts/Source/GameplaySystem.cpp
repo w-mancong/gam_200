@@ -444,6 +444,7 @@ namespace ALEngine::Script
 
 		if (Input::KeyTriggered(KeyCode::F8)) {
 			Cheat_EliminateAllEnemy();
+
 		}
 
 		if (Input::KeyTriggered(KeyCode::F9)) {
