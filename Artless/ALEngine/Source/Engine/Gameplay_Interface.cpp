@@ -927,7 +927,8 @@ namespace ALEngine::Script
 
 	bool GameplaySystem::CheckIfAbilitiesCanBePlacedForTile(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities) {
 		bool canPlace = false;
-		
+		bool touchedUnit = false, touchedEmpty = false;
+
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
@@ -939,6 +940,7 @@ namespace ALEngine::Script
 				if (!cell.m_isAccessible) {
 					//return false;
 					canPlace = false;
+					touchedEmpty = true;
 					break;
 				}
 
@@ -961,6 +963,7 @@ namespace ALEngine::Script
 
 					if (cell.hasUnit) {
 						canPlace = false;
+						touchedUnit = true;
 						break;
 						//return false;
 					}
@@ -968,18 +971,14 @@ namespace ALEngine::Script
 			}
 		} //End loop through pattern body check
 
-		//If can place means connected to player
-		return canPlace;
-		
-
-		////If reach here and direct, means not touching player, false
-		//if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
-		//	return false;
-		//}
-		////If reach here and effect, means has not touch unit or cell, true
-		//else {
-		//	return true;
-		//}
+		//If reach here and direct, means not touching player, false
+		if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
+			return canPlace;
+		}
+		//If reach here and effect, means has not touch unit or cell, true
+		else {
+			return !touchedUnit && !touchedEmpty;
+		}
 	}
 
 	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities) {
@@ -1587,6 +1586,47 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->DisableToolTipGUI();
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Select Ability 3
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_3([[maybe_unused]] ECS::Entity invoker) { //CONSTRUCT WALL SKILL
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Construct Wall");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[3]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 4
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_4([[maybe_unused]] ECS::Entity invoker) { //CONSTRUCT WALL SKILL
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Construct Wall");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[4]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 5
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_5([[maybe_unused]] ECS::Entity invoker) { //CONSTRUCT WALL SKILL
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Construct Wall");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[5]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
 	/*!*********************************************************************************
 	\brief
 		Select Ability 3
