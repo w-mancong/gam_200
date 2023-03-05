@@ -87,7 +87,7 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-		 Function for set third enemy type attribute (future projectile based enemy?)
+		 Function for set third enemy type attribute (Summoner)
 		\param [in] enemyUnit
 		 Reference to enemyUnit to set the attribtues variables in enemyUnit
 		***********************************************************************************/
@@ -150,6 +150,23 @@ namespace ALEngine::Script
 		 Reference to m_Room which is the game room variables for use
 		***********************************************************************************/
 		void Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
+		
+		/*!*********************************************************************************
+		\brief
+		 enemy melee AI logic function for handling update of enemy AI
+		\param [in] enemyNeededData
+		Reference to enemy Struct object of datas from the level
+		\param [in] movingUnitEntity
+		Reference to enemyunit that is moving
+		\param [in] currentUnitControlStatus
+		Reference the level unit control statis
+		\param [in] enemyEntityList
+		 Reference to enemyEntityList for use
+		\param [in] m_Room
+		 Reference to m_Room which is the game room variables for use
+		***********************************************************************************/
+		void Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
+
 
 		/*!*********************************************************************************
 		\brief

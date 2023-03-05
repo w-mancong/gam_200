@@ -316,6 +316,11 @@ namespace ALEngine::Script
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
+		//Place enemy
+		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(0, 3, ENEMY_TYPE::ENEMY_SUMMONER, enemyEntityList, m_Room);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
 		//Create EndTurn Button
 		InitializeEndTurnButton();
 

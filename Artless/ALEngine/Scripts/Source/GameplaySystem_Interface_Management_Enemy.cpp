@@ -96,32 +96,32 @@ namespace ALEngine::Script
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)
 	{
 		enemyUnit.health = 10,
-			enemyUnit.maxHealth = 10;
+		enemyUnit.maxHealth = 10;
 		enemyUnit.minDamage = 8,
-			enemyUnit.maxDamage = 13;
+		enemyUnit.maxDamage = 13;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_MELEE;
-		//set enemy logic function pointer
-		//enemyUnit.logic
-		//enemyUnit.UpdateEnemyLogic = &Enemy_Logic_Update_Melee;
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
 	{
 		enemyUnit.health = 5,
-			enemyUnit.maxHealth = 5;
+		enemyUnit.maxHealth = 5;
 		enemyUnit.minDamage = 8,
-			enemyUnit.maxDamage = 13;
+		enemyUnit.maxDamage = 13;
 		enemyUnit.maxActionPoints = 1;
 		enemyUnit.actionPoints = 1;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
-		//set enemy logic function pointer
-		//enemyUnit.logic
-		//enemyUnit.UpdateEnemyLogic = &Enemy_Logic_Update_CellDestroyer;
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy03attributes([[maybe_unused]] Unit& enemyUnit)
 	{
-		return;
+		enemyUnit.health = 10,
+		enemyUnit.maxHealth = 10;
+		enemyUnit.minDamage = 0,
+		enemyUnit.maxDamage = 0;
+		enemyUnit.maxActionPoints = 4;
+		enemyUnit.actionPoints = 4;
+		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy04attributes([[maybe_unused]] Unit& enemyUnit)
@@ -159,6 +159,7 @@ namespace ALEngine::Script
 		}
 		SetEnemy01attributes(enemyUnit);
 		break;
+
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
 		{
 			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/TileBreaker.png";
@@ -167,12 +168,20 @@ namespace ALEngine::Script
 		}
 		SetEnemy02attributes(enemyUnit);
 		break;
-		case ENEMY_TYPE::ENEMY_TYPE03:
-			SetEnemy03attributes(enemyUnit);
-			break;
+
+		case ENEMY_TYPE::ENEMY_SUMMONER:
+		{
+			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Summoner.png";
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Summoner.png");
+		}
+		SetEnemy03attributes(enemyUnit);
+		break;
+
 		case ENEMY_TYPE::ENEMY_TYPE04:
-			SetEnemy04attributes(enemyUnit);
-			break;
+		SetEnemy04attributes(enemyUnit);
+		break;
+
 		default:
 			break;
 		}
@@ -351,6 +360,19 @@ namespace ALEngine::Script
 		}
 	}
 
+	void GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room) {
+		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
+			AL_CORE_INFO("All Enemy Made move, ending turn");
+			gameplaySystem->EndTurn();
+			return;
+		}
+
+		AL_CORE_INFO("SUMMONER Making Decision");
+
+		++enemyNeededData.enemyMoved; 
+		
+		gameplaySystem->MoveEnemy();
+	}
 
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Melee(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room)
 	{
@@ -359,7 +381,7 @@ namespace ALEngine::Script
 			gameplaySystem->EndTurn();
 			return;
 		}
-		AL_CORE_INFO("Enemy Making Decision");
+		AL_CORE_INFO("MELEE Making Decision");
 
 		AL_CORE_INFO("Finding Target Cell");
 		//Find a target cell
@@ -480,7 +502,7 @@ namespace ALEngine::Script
 			return;
 		}
 
-		AL_CORE_INFO("Enemy Making Decision");
+		AL_CORE_INFO("CELL DESTROYER Making Decision");
 
 		AL_CORE_INFO("Finding Target Cell");
 		//Find a target cell

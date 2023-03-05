@@ -24,10 +24,10 @@ namespace ALEngine::ECS::Component
 	
 	enum class ENEMY_TYPE
 	{
-		ENEMY_MELEE,   //0 Enemy Melee
+		ENEMY_MELEE,			//0 Enemy Melee
 		ENEMY_CELL_DESTROYER,   //1 Cell Destroyer
-		ENEMY_TYPE03,   //2
-		ENEMY_TYPE04    //3
+		ENEMY_SUMMONER,			//2 Summoner
+		ENEMY_TYPE04			//3
 	};
 
 	/*!*********************************************************************************
