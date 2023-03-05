@@ -69,7 +69,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::InitializeGUI()
 	{
-		//Initialize GUI Text and Sprites zafir
+		//Initialize GUI Text and Sprites zafir2
 		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
 		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
@@ -77,7 +77,7 @@ namespace ALEngine::Script
 		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
 		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
 		guiManager.Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
-		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red health bar");
+		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red_health_bar");
 		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
 		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
@@ -89,6 +89,13 @@ namespace ALEngine::Script
 		guiManager.Skill_Tip_Line4 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line4");
 		guiManager.Tooltip_Skills_Card = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
 		guiManager.FPS_Label = Coordinator::Instance()->GetEntityByTag("FPS_label");
+		guiManager.Pause_Button = Coordinator::Instance()->GetEntityByTag("pause_button");
+		guiManager.AP_Indicators[0] = Coordinator::Instance()->GetEntityByTag("AP1");
+		guiManager.AP_Indicators[1] = Coordinator::Instance()->GetEntityByTag("AP2");
+		guiManager.AP_Indicators[2] = Coordinator::Instance()->GetEntityByTag("AP3");
+		guiManager.AP_Indicators[3] = Coordinator::Instance()->GetEntityByTag("AP4");
+		guiManager.AP_Indicators[4] = Coordinator::Instance()->GetEntityByTag("AP5");
+		guiManager.AP_Indicators[5] = Coordinator::Instance()->GetEntityByTag("AP6");
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
