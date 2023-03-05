@@ -552,9 +552,9 @@ namespace ALEngine::Script
 
 		//S Shape (S)
 		offset.push_back({ 0, 0 });
-		offset.push_back({ 0, 1 });
 		offset.push_back({ 1, 0 });
-		offset.push_back({ 1, -1 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, -1 });
 		newPattern.offsetGroup.push_back(offset);
 		offset.clear();
 
