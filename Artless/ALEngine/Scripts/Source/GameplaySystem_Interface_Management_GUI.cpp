@@ -153,7 +153,6 @@ namespace ALEngine::Script
 		//There will be a fix of 4 buttons
 		for (int i = 1; i <= 6; ++i) {
 			GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("skill_icon" + std::to_string(i)));
-			//GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->CreateEntity());
 		}
 
 		//Set base x
@@ -179,7 +178,7 @@ namespace ALEngine::Script
 			ECS::Subscribe(GUI_Abilities_Button_Entities[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Script::Event_Button_Exit_Ability_GUI);
 		}
 
-		for (int i = 0; i < 3; ++i) {
+		for (int i = 0; i < 6; ++i) {
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
 			//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
 

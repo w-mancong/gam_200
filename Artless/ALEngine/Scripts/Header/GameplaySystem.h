@@ -341,6 +341,10 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void constructWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+		void constructTrap(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
+
+		void constructBomb(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
+
 		/*!*********************************************************************************
 		\brief
 			Destroys a wall on a cell

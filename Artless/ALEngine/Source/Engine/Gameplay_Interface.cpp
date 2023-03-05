@@ -926,49 +926,60 @@ namespace ALEngine::Script
 	}
 
 	bool GameplaySystem::CheckIfAbilitiesCanBePlacedForTile(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities) {
+		bool canPlace = false;
+		
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
 			//must connect to player
 			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y)) {
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				
+				if (!cell.m_isAccessible) {
+					//return false;
+					canPlace = false;
+					break;
+				}
+
 				//If ability is direct type
 				if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
-					//If inside room, set the cell color to yellow
-					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
-
-					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-
 					if (cell.hasUnit) {
 						Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
 
 						if (unit.unitType == UNIT_TYPE::PLAYER) {
-							return true;
+							canPlace = true;
+							break;
+							//return true;
 						}
 					}
 				}
 				//If it's effect type
 				//Must connect to cell that is walkable but no on cells with units
 				else {
-					//If inside room, set the cell color to yellow
-					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
-
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 					if (cell.hasUnit) {
-						return false;
+						canPlace = false;
+						break;
+						//return false;
 					}
 				}
 			}
 		} //End loop through pattern body check
 
-		//If reach here and direct, means not touching player, false
-		if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
-			return false;
-		}
-		//If reach here and effect, means has not touch unit or cell, true
-		else {
-			return true;
-		}
+		//If can place means connected to player
+		return canPlace;
+		
+
+		////If reach here and direct, means not touching player, false
+		//if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
+		//	return false;
+		//}
+		////If reach here and effect, means has not touch unit or cell, true
+		//else {
+		//	return true;
+		//}
 	}
 
 	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities) {
@@ -1053,6 +1064,14 @@ namespace ALEngine::Script
 					{
 					case ABILITY_NAME::CONSTRUCT_WALL:
 						constructWall(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y, true);
+						break;
+
+					case ABILITY_NAME::MATRIX_TRAP:
+
+						break;
+
+					case ABILITY_NAME::VOLATILE:
+				
 						break;
 
 					default:

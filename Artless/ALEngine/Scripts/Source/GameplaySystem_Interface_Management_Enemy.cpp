@@ -452,7 +452,7 @@ namespace ALEngine::Script
 
 		// Setting move animation for bishop
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity);
-		ECS::ChangeAnimation(an, "BishopMove");
+		//ECS::ChangeAnimation(an, "BishopMove");
 
 		AL_CORE_INFO("Path Found");
 
