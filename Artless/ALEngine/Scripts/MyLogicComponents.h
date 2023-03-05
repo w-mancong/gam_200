@@ -6,5 +6,6 @@
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <PauseLogic.h>
+#include <ResumeButton.h>
 
 #endif

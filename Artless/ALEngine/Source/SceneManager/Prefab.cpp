@@ -815,6 +815,10 @@ namespace ALEngine
 			return;
 		}
 		ofs.write(sb.GetString(), sb.GetLength());
+
+		EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		if (instObjects.count(ed.tag) != 0)
+			instObjects[ed.tag] = sb.GetString();
 	}
 #endif
 

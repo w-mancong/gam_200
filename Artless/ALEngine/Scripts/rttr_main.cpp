@@ -23,4 +23,8 @@ RTTR_REGISTRATION
 	registration::class_<PauseLogic>("PauseLogic")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<ResumeButton>("ResumeButton")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }
