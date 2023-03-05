@@ -138,6 +138,16 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy04attributes([[maybe_unused]] Unit& enemyUnit)
 	{
+		enemyUnit.health = 10,
+		enemyUnit.maxHealth = 10;
+		enemyUnit.minDamage = 0,
+		enemyUnit.maxDamage = 0;
+		enemyUnit.maxMovementPoints = 4;
+		enemyUnit.movementPoints = 4;
+		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
+		enemyUnit.TriggeredByPlayer = false;
+		enemyUnit.m_CurrentStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
+		enemyUnit.TurnCounter = 0;
 		return;
 	}
 
@@ -180,6 +190,11 @@ namespace ALEngine::Script
 		SetEnemy02attributes(enemyUnit);
 		break;
 		case ENEMY_TYPE::ENEMY_SUMMONER:
+		{
+			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/TileBreaker.png";
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
+		}
 			SetEnemy03attributes(enemyUnit);
 			break;
 		case ENEMY_TYPE::ENEMY_TYPE04:
@@ -678,16 +693,16 @@ namespace ALEngine::Script
 			}
 		}
 
+		if (enemyUnit.TurnCounter >= 3)
+		{
+			//do the spawning of enemy 60% for tile destroyer & 40% for melee enemy
+
+			//reset counter
+			enemyUnit.TurnCounter = 0;
+		}
+
 		if (!enemyUnit.TriggeredByPlayer)
 		{
-			if (enemyUnit.TurnCounter >= 3)
-			{
-				//do the spawning of enemy 60% for tile destroyer & 40% for melee enemy
-				
-				//reset counter
-				enemyUnit.TurnCounter = 0;
-			}
-
 			++enemyUnit.TurnCounter;
 			++enemyNeededData.enemyMoved;
 			gameplaySystem->MoveEnemy();
@@ -695,14 +710,6 @@ namespace ALEngine::Script
 		}
 		else  //if player in range which triggered the summoner to follow player
 		{
-			if (enemyUnit.TurnCounter >= 3)
-			{
-				//do the spawning of enemy 60% for tile destroyer & 40% for melee enemy
-
-				//reset counter
-				enemyUnit.TurnCounter = 0;
-			}
-
 			//if health <=3
 			if (enemyUnit.health <= 3)
 			{
@@ -725,7 +732,7 @@ namespace ALEngine::Script
 			//check distance from player
 			if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellplayerin, pathdistance, true))
 			{
-				if (pathdistance.size() < 7) //player close to enemy
+				if (pathdistance.size() <=4 ) //player close to enemy
 				{
 					AL_CORE_INFO("Spawner transit to Move away State");
 					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_MOVE_AWAY;
@@ -742,38 +749,167 @@ namespace ALEngine::Script
 				}
 			}
 
+			//for storing all the cells with no units or player 
+			std::vector<ECS::Entity> allEmptyCells{};
+			//check for all cells with no units 
+			for (u32 x = 0; x < m_Room.width; x++)
+			{
+				for (u32 y = 0; y < m_Room.height; y++)
+				{
+					if (!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).hasUnit)
+					{
+						allEmptyCells.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+					}
+				}
+			}
+
+			//for move states to use to storing path from player to tile get final tile to check for path from enemy
+			std::vector<ECS::Entity> playerToCellPathList{}; 
+			//enemy path to final tile obtain from playerToCellPathList
+			std::vector<ECS::Entity> enemyToCellPathList{};
+			//list of available paths to valid tiles
+			std::vector<std::vector<ECS::Entity>> listofpathlists{};
+
+			std::vector<ECS::Entity> pathList;
+
+			b8 isPathFound = false;
+
 			switch (enemyUnit.m_CurrentStateId)
 			{
-			    case SUMMONER_ENEMY_STATE::SES_IDLE:
-				break;
+			    case SUMMONER_ENEMY_STATE::SES_IDLE:	
+					break;
 				case SUMMONER_ENEMY_STATE::SES_MOVE_CLOSER:
 
-				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
-				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
-				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-				break;
+				    //push the found paths for all the walkable cell
+					for (std::vector<ECS::Entity>::iterator i = allEmptyCells.begin(); i != allEmptyCells.end(); ++i)
+					{
+						//clear the temp vector before find path
+						if (playerToCellPathList.size() > 0)
+						{
+							playerToCellPathList.clear();
+						}
+
+						if (ALEngine::Engine::AI::FindPath(gameplaySystem,m_Room, cellplayerin, *i, playerToCellPathList, true))
+						{
+							if (!playerToCellPathList.size() > 7 && !playerToCellPathList.size() < 5)
+							{
+								if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, playerToCellPathList[0], enemyToCellPathList, true))
+								{
+									if (enemyToCellPathList.size() == 4)
+									{
+										listofpathlists.push_back(enemyToCellPathList);
+									}
+								}
+							}
+						}
+					}
+
+					if (listofpathlists.size() > 0)
+					{
+						isPathFound = true;
+					}
+
+					if (!isPathFound) {
+						AL_CORE_INFO("No Path Found");
+						++enemyNeededData.enemyMoved;
+						gameplaySystem->MoveEnemy();
+						return;
+					}
+
+					//compare paths sizes
+					for (std::vector<std::vector<ECS::Entity>>::iterator i = listofpathlists.begin(); i != listofpathlists.end(); ++i)
+					{
+						if (pathList.size() <= 0)
+						{
+							pathList = *i;
+						}
+						else if (pathList.size() < i->size()) //get closest cell to enemy path
+						{
+							pathList = *i;
+						}
+					}
+
+					//move to near player
+					gameplaySystem->SetMoveOrder(pathList);
+
+					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
+					enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+					break;
 				case SUMMONER_ENEMY_STATE::SES_MOVE_AWAY:
 
-				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
-				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
-				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-				break;
+					//find suitable tiles of cell
+							//push the found paths for all the walkable cell
+					for (std::vector<ECS::Entity>::iterator i = allEmptyCells.begin(); i != allEmptyCells.end(); ++i)
+					{
+						//clear the temp vector before find path
+						if (playerToCellPathList.size() > 0)
+						{
+							playerToCellPathList.clear();
+						}
+
+						if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, cellplayerin, *i, playerToCellPathList, true))
+						{
+							if (!playerToCellPathList.size() > 7 && !playerToCellPathList.size() < 5)
+							{
+								if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, playerToCellPathList[0], enemyToCellPathList, true))
+								{
+									if (enemyToCellPathList.size() == 4)
+									{
+										listofpathlists.push_back(enemyToCellPathList);
+									}
+								}
+							}
+						}
+					}
+
+					if (listofpathlists.size() > 0)
+					{
+						isPathFound = true;
+					}
+
+					if (!isPathFound) {
+						AL_CORE_INFO("No Path Found");
+						++enemyNeededData.enemyMoved;
+						gameplaySystem->MoveEnemy();
+						return;
+					}
+
+					//compare paths sizes
+					for (std::vector<std::vector<ECS::Entity>>::iterator i = listofpathlists.begin(); i != listofpathlists.end(); ++i)
+					{
+						if (pathList.size() <= 0)
+						{
+							pathList = *i;
+						}
+						else if (pathList.size() > i->size()) //get closest cell to enemy path
+						{
+							pathList = *i;
+						}
+					}
+					//move away from player
+					gameplaySystem->SetMoveOrder(pathList);
+
+					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
+					enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+					break;
 				case SUMMONER_ENEMY_STATE::SES_RETREAT:
-				AL_CORE_INFO("Spawner Retreat State");
-				//move to tile furthest from player
+					AL_CORE_INFO("Spawner Retreat State");
+					//move to tile furthest from player
 
-				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
-				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
-				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-				break;
+					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
+					enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+					break;
 				case SUMMONER_ENEMY_STATE::SES_HEAL:
-			    //enemy heals
-				enemyUnit.health += 3;
+					//enemy heals
+					enemyUnit.health += 3;
 
-				enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
-				enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
-				enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-				break;
+					enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_IDLE;
+					enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
+					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
+					break;
 				default:
 				break;
 			}

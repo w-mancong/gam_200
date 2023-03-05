@@ -1305,14 +1305,6 @@ namespace ALEngine::Script
 			break;
 		}
 		AL_CORE_INFO("after enemy move");
-
-		//if (enemyNeededData.enemyMoved < enemyEntityList.size()) {
-		//	
-		//	MoveEnemy();
-		//}
-
-		//MoveEnemy();
-		//return;
 	}
 
 	//****************EVENTS*****************//
