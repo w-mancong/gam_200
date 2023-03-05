@@ -99,6 +99,8 @@ public:
 	ALEngine::ECS::Entity current_Cooldown = 0, max_Cooldown = 2;
 	ALEngine::ECS::Entity damage = 15;
 
+	s32 cost{ 2 };
+
 	ABILITY_TYPE current_Ability_Type = ABILITY_TYPE::DIRECT;
 
 	//Keep track of ability type

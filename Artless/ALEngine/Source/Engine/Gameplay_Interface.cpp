@@ -563,6 +563,7 @@ namespace ALEngine::Script
 		new_ability.current_Ability_Name = ABILITY_NAME::OVERHANG;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.max_Cooldown = 5;
+		new_ability.cost = 0;
 		abilitiesList.push_back(new_ability);
 
 		//Construct Wall
@@ -998,6 +999,9 @@ namespace ALEngine::Script
 
 						u32 initialHealth = unit.health;
 
+						ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
 						//If unit is enemy
 						if (unit.unitType == UNIT_TYPE::ENEMY) {
 							//Check for ability name and run ability accordingly
@@ -1008,13 +1012,10 @@ namespace ALEngine::Script
 									break;
 								case ABILITY_NAME::LIFE_DRAIN:
 								{
-									DoDamageToUnit(cell.unitEntity, abilities->damage);
-
-									//Life steal 
-									ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
-									Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-
+									Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 									u32 healthDrained = unit.health < 0 ? initialHealth : abilities->damage;
+
+									DoDamageToUnit(cell.unitEntity, abilities->damage);
 
 									playerUnit.health += healthDrained;
 
@@ -1022,25 +1023,27 @@ namespace ALEngine::Script
 										playerUnit.health = playerUnit.maxHealth;
 									}
 
-									Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 									ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
 
 									AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 									break;
 								}
-								case ABILITY_NAME::OVERHANG:
-									DoDamageToUnit(playerEntity, 8);
-									Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-									
-									playerUnit.actionPoints += 1;
-									if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
-										playerUnit.actionPoints = playerUnit.maxActionPoints;
-									}
-
-									gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
-									break;
-							}
+							} //End switch
 						}//End check if unit
+						else {
+							//If interacted on player
+							if (abilities->current_Ability_Name == ABILITY_NAME::OVERHANG) {
+								//minus 8 HP
+								DoDamageToUnit(playerEntity, 8);
+
+								playerUnit.actionPoints += 1;	//Add 1 AP
+								if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
+									playerUnit.actionPoints = playerUnit.maxActionPoints;
+								}
+
+								gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+							}
+						}
 					}
 					break;
 
@@ -1204,7 +1207,8 @@ namespace ALEngine::Script
 
 
 			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-			gameplaySystem_GUI->Update_AP_UI_For_Cost(playerunit.actionPoints, 2);
+
+			gameplaySystem_GUI->Update_AP_UI_For_Cost(playerunit.actionPoints, ability.cost);
 		}
 	}
 
@@ -1787,10 +1791,9 @@ namespace ALEngine::Script
 				return;
 			}
 
+			playerUnit.actionPoints -= gameplaySystem->selected_Abilities->cost;
 			//Disable the filter
 			gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
-
-
 
 			//Run the abilities on the cell
 			gameplaySystem->RunAbilities_OnCells(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
@@ -1812,7 +1815,7 @@ namespace ALEngine::Script
 				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
 			}
 
-			playerUnit.actionPoints -= 2;
+
 			if (playerUnit.actionPoints < 0) {
 				playerUnit.actionPoints = 0;
 			}

@@ -280,7 +280,7 @@ namespace ALEngine::Script
 		}
 
 		//Enable set amount
-		for (int i = AP_count - AP_Cost; i < AP_count - AP_Cost + 2; ++i) {
+		for (int i = AP_count - AP_Cost; i < AP_count; ++i) {
 			int index = i < 0 ? 0 : i;
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[index]);
 			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Red.png");
