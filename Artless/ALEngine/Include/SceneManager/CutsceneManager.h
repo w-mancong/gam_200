@@ -25,7 +25,13 @@ namespace ALEngine::Engine::Scene
 				The name of the sequence to be played
 		***********************************************************************************/
 		void PlaySequence(std::string sequence);
+
+		/*!*********************************************************************************
+			\brief
+				Updates the cutscene manager
+		***********************************************************************************/
 		void Update(void);
+
 	private:
 		/*!*********************************************************************************
 			\brief 
@@ -37,18 +43,34 @@ namespace ALEngine::Engine::Scene
 		std::map<std::string, std::vector<Cutscene>> m_Cutscenes{};
 		std::vector<Cutscene>::iterator m_CurrentCutscene{};
 		std::string m_SelectedSequence{};
-		bool m_CutsceneIsPlaying{ false };
+		bool m_CutsceneIsPlaying{ false };			
 	};
 
 	struct Cutscene
 	{
-		std::string m_CutsceneText{};				// Text for cutscene
-		b8 m_HasImage{ true };						// Whether this cutscene has an image, or it is just the text
-		b8 m_HasTimer{ true };						// Whether this cutscene is timed or based on user click
-		std::string m_CutsceneImageFilePath{};		// Filepath to the Image for the FilePath
-		f32	m_TimeTaken{};							// Time taken to show cutscene
+		std::vector<std::string> m_CutsceneTexts{};	// List of texts for cutscene
+		std::vector<CutsceneImage> m_Images{};		// List of Images
+		f32	m_CutsceneTime{};						// The amount of time to show the cutscene
 
+		// Booleans
+		b8 m_HasImage{ true };						// Whether this cutscene has an image, or it is just the text
+		b8 m_HasText{ true };						// Whether this cutscene has text
+		b8 m_HasTimer{ true };						// Whether this cutscene is timed or based on user click
+
+		// Functions
+		/*!*********************************************************************************
+			\brief
+				Updates the cutscene time
+		***********************************************************************************/
 		bool UpdateTime(void);
+	};
+
+	struct CutsceneImage
+	{
+		std::string m_FilePath{};					// File Path
+		math::Vec2 m_StartPos{};					// Start Pos of the Image
+		math::Vec2 m_EndPos{};						// End Pos of the Image
+		f32 m_Speed;								// Speed for animation (If 0, no animation)		
 	};
 }
 
