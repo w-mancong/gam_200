@@ -695,12 +695,22 @@ namespace ALEngine::Script
 
 		if (enemyUnit.TurnCounter >= 3)
 		{
-			//do the spawning of enemy 60% for tile destroyer & 40% for melee enemy
-				
-			//Place enemy
-			//ECS::Entity enemyEntity = PlaceNewEnemyInRoom(3, 7, ENEMY_TYPE::ENEMY_SUMMONER, enemyEntityList, m_Room);
-			//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-			//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+			//do the spawning of enemy with probability of 60% for tile destroyer & 40% for melee enemy
+			
+			f64 spawnPercentage = (f64)rand() / RAND_MAX;
+
+			if (spawnPercentage < 0.60)//60% for tile destroyer to spawn
+			{
+				ECS::Entity enemyEntity = PlaceNewEnemyInRoom(3, 7, ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
+				ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+				ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+			}
+			else //  40% for melee enemyto spawn
+			{
+				 ECS::Entity enemyEntity = PlaceNewEnemyInRoom(3, 7, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+			     ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+			     ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+			}
 
 			//reset counter
 			enemyUnit.TurnCounter = 0;
@@ -968,9 +978,10 @@ namespace ALEngine::Script
 					enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
 					break;
 				default:
-				break;
+					break;
 			}
 
+			++enemyUnit.TurnCounter;
 			++enemyNeededData.enemyMoved;
 			return;
 		}
