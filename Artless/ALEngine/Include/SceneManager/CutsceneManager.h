@@ -51,6 +51,7 @@ namespace ALEngine::Engine::Scene
 		std::vector<std::string> m_CutsceneTexts{};	// List of texts for cutscene
 		std::vector<CutsceneImage> m_Images{};		// List of Images
 		f32	m_CutsceneTime{};						// The amount of time to show the cutscene
+		f32 m_CutsceneTimeCountdown{};				// Countdown for m_CutsceneTime
 
 		// Booleans
 		b8 m_HasImage{ true };						// Whether this cutscene has an image, or it is just the text
