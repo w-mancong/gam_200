@@ -183,17 +183,6 @@ namespace ALEngine::ECS
 		animator.animations.insert(std::move(node));
 		SaveAnimationClip(animator.animations[oldClipName], "Assets\\Animation\\" + std::string(newClipName) + ".anim");
 		remove( ("Assets\\Animation\\" + std::string(oldClipName) + ".anim").c_str() );
-
-		//SaveAnimationClip(animationClip, "Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim");
-
-		//Animation animationClip = animator.animations[oldClipName];
-
-		//remove( ("Assets\\Animation\\" + std::string(animationClip.clipName) + ".anim").c_str() );
-		//animator.animations.erase(oldClipName);
-
-		//strcpy_s(animationClip.clipName, sizeof(animationClip.clipName), newClipName);
-		//
-		//animator.animations[newClipName] = animationClip;
 	}
 
 	void ChangeAnimationFilePath(Animation& animationClip, c8 const* filePath)

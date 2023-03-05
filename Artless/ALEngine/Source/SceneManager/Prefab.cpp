@@ -117,6 +117,18 @@ namespace ALEngine
 		writer.Key("rotation");
 		writer.Double(static_cast<f64>(transform.rotation));
 
+		// UI
+		writer.Key("ui");
+		writer.Bool(transform.ui);
+
+		// uiOffset
+		writer.Key("uiOffset");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(transform.uiOffset.x));
+		writer.Double(static_cast<f64>(transform.uiOffset.y));
+		writer.Double(static_cast<f64>(transform.uiOffset.z));
+		writer.EndArray();
+
 		writer.EndObject();
 		writer.EndArray();
 	}
@@ -138,6 +150,15 @@ namespace ALEngine
 
 		// Getting rotation
 		transform.rotation = v[0]["rotation"].GetFloat();
+
+		//// Getting UI status
+		//transform.ui = v[0]["ui"].GetBool();
+
+		//// Getting uiOffset
+		//rjs::Value const& t = v[0]["uiOffset"];
+		//transform.uiOffset.x = t[0].GetFloat();
+		//transform.uiOffset.y = t[1].GetFloat();
+		//transform.uiOffset.z = t[2].GetFloat();
 
 		Coordinator::Instance()->AddComponent(en, transform);
 	}
