@@ -165,7 +165,6 @@
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_GUI.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
-    <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />

@@ -706,13 +706,17 @@ namespace ALEngine::Engine::Scene
 		writer.StartArray();
 		writer.StartObject();
 
-		AudioSource const& as = Coordinator::Instance()->GetComponent<AudioSource>(en);
+		Engine::AudioSource const& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(en);
 		writer.Key("audioClips");
 		writer.StartArray();
 		for (auto const& it : as.list)
 		{
-			std::string const& name = it.second.m_AudioName;
-			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+			Engine::Audio const& audio = it.second;
+			writer.String(audio.m_AudioName.c_str(), static_cast<rjs::SizeType>(audio.m_AudioName.length()));	// 0
+			writer.Double(audio.m_Volume);						// 1
+			writer.Bool(audio.m_Loop);							// 2
+			writer.Bool(audio.m_Mute);							// 3
+			writer.Uint64(static_cast<u64>(audio.m_Channel));	// 4
 		}
 		writer.EndArray();
 
@@ -723,12 +727,27 @@ namespace ALEngine::Engine::Scene
 	void ReadAudioComponent(rjs::Value const& v, ECS::Entity en)
 	{
 		rjs::Value const& c = v[0]["audioClips"];
-		AudioSource as;
-		for (u64 i = 0; i < c.Size(); ++i)
+		Engine::AudioSource as;
+		for (u64 i = 0, asId = 0; i < c.Size(); i += 5)
 		{
-			c8 const* name = c[i].GetString();
-			Guid id = AssetManager::Instance()->GetGuid(name);
-			as.list[as.id++] = AssetManager::Instance()->GetAudio(id);
+			// 0 - audio name
+			c8 const* name = c[i + 0].GetString();
+			Guid id = Engine::AssetManager::Instance()->GetGuid(name);
+			as.list[as.id] = Engine::AssetManager::Instance()->GetAudio(id);
+
+			as.list[as.id].m_ID = asId++;
+
+			// 1 - volume
+			as.list[as.id].m_Volume = c[i + 1].GetFloat();
+
+			// 2 - loop
+			as.list[as.id].m_Loop = c[i + 2].GetBool();
+
+			// 3 - mute
+			as.list[as.id].m_Mute = c[i + 3].GetBool();
+
+			// 4 - Channel
+			as.list[as.id++].m_Channel = static_cast<Engine::Channel>(c[i + 4].GetUint64());
 		}
 		Coordinator::Instance()->AddComponent(en, as);
 	}
