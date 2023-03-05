@@ -333,7 +333,7 @@ namespace ALEngine::Script
 			line1.textString = "Slam a Tetromino on enemies,";
 			line2.textString = "dealing 15 DMG on each";
 			line3.textString = "impacted enemy.";
-			line4.textString = "";
+			line4.textString = "[Cooldown - 1]";
 		}
 		else if (skill.tag == "skill_icon2")
 		{
@@ -341,44 +341,44 @@ namespace ALEngine::Script
 			headerText.textString = "Life Drain";
 			line1.textString = "Deal DMG to enemies and heal";
 			line2.textString = "for half of all DMG dealt.";
-			line3.textString = "[Lifesteal is WIP]";
+			line3.textString = "[Cooldown - 2]";
 			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon3")
+		{
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Overhang.png");
+			headerText.textString = "Overhang";
+			line1.textString = "Apply on player";
+			line2.textString = "to regenerate 1 AP";
+			line3.textString = "by sacrificing 8 HP";
+			line4.textString = "[Cooldown - 5]";
+		}
+		else if (skill.tag == "skill_icon4")
 		{
 			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Icon_Skill_ConstructTile.png");
 			headerText.textString = "Construct Tile";
 			line1.textString = "Erect a wall that blocks";
 			line2.textString = "enemies from passing or";
 			line3.textString = "attacking.";
-			line4.textString = "[Lasts for 2 turns]";
-		}
-		else if (skill.tag == "skill_icon4")
-		{
-			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "TBD";
-			line1.textString = "To be Developed";
-			line2.textString = "";
-			line3.textString = "";
-			line4.textString = "";
+			line4.textString = "[Walls lasts for 2 turns, Cooldown - 5]";
 		}
 		else if (skill.tag == "skill_icon5")
 		{
-			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "TBD";
-			line1.textString = "To be Developed";
-			line2.textString = "";
-			line3.textString = "";
-			line4.textString = "";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
+			headerText.textString = "Matrix Trap";
+			line1.textString = "Lay traps on cells, when they";
+			line2.textString = "steps onto the trap, they";
+			line3.textString = "will be rooted for 1 turn, and take 5 DMG";
+			line4.textString = "[Cooldown - 3]";
 		}
 		else if (skill.tag == "skill_icon6")
 		{
-			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "TBD";
-			line1.textString = "To be Developed";
-			line2.textString = "";
-			line3.textString = "";
-			line4.textString = "";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Skill_Icon_Bomb.png");
+			headerText.textString = "VolaTile";
+			line1.textString = "Place bombs on cells which, will blow";
+			line2.textString = "up next action phase, Dealing 13 DMG to";
+			line3.textString = "all units and destroy walkable tiles";
+			line4.textString = "[Cooldown - 5]";
 		}
 	}
 
