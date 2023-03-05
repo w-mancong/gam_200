@@ -693,8 +693,42 @@ namespace ALEngine::Script
 			}
 		}
 
+		//for storing all the cells with no units or player 
+		std::vector<ECS::Entity> allEmptyCells{};
+		//check for all cells with no units 
+		for (u32 x = 0; x < m_Room.width; x++)
+		{
+			for (u32 y = 0; y < m_Room.height; y++)
+			{
+				if (!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).hasUnit)
+				{
+					allEmptyCells.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+				}
+			}
+		}
+
 		if (enemyUnit.TurnCounter >= 3)
 		{
+			//check for available cells with no units near summoner
+			std::vector<ECS::Entity> enemyToCellDistance{};
+			ECS::Entity spawnPosition{};
+			for (std::vector<ECS::Entity>::iterator i = allEmptyCells.begin(); i != allEmptyCells.end(); ++i)
+			{
+				//clear the temp vector before find path
+				if (enemyToCellDistance.size() > 0)
+				{
+					enemyToCellDistance.clear();
+				}
+
+				if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, *i, enemyToCellDistance, true))
+				{
+					if (enemyToCellDistance.size() <5)
+					{
+						spawnPosition=*i;
+					}
+				}
+			}
+
 			//do the spawning of enemy with probability of 60% for tile destroyer & 40% for melee enemy
 			
 			f64 spawnPercentage = (f64)rand() / RAND_MAX;
@@ -762,20 +796,6 @@ namespace ALEngine::Script
 						enemyUnit.m_NextStateId = SUMMONER_ENEMY_STATE::SES_MOVE_CLOSER;
 						enemyUnit.m_PreviousStateId = enemyUnit.m_CurrentStateId;
 						enemyUnit.m_CurrentStateId = enemyUnit.m_NextStateId;
-					}
-				}
-			}
-
-			//for storing all the cells with no units or player 
-			std::vector<ECS::Entity> allEmptyCells{};
-			//check for all cells with no units 
-			for (u32 x = 0; x < m_Room.width; x++)
-			{
-				for (u32 y = 0; y < m_Room.height; y++)
-				{
-					if (!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).hasUnit)
-					{
-						allEmptyCells.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
 					}
 				}
 			}
