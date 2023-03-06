@@ -35,6 +35,7 @@ namespace ALEngine::Script
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
 	{
 		using namespace Gameplay;
+
 		MapManager::Instance()->SetMapPath(map_fp);
 		if (!MapManager::Instance()->DeserializeMap(map_fp))
 			return false;
@@ -71,6 +72,7 @@ namespace ALEngine::Script
 			for (auto row : col)
 			{
 				assert(counter < m_Room.roomSize);
+
 				m_Room.roomCellsArray[counter] = Coordinator::Instance()->CreateEntity();
 
 				sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[counter]);
@@ -167,6 +169,7 @@ namespace ALEngine::Script
 
 		// Place Player and Tile Below Player
 		PlaceNewPlayerInRoom(m_Room.playerX, m_Room.playerY);
+
 		return true;
 	}
 
@@ -358,6 +361,7 @@ namespace ALEngine::Script
 		}
 
 		if (Input::KeyTriggered(KeyCode::RightShift)) {
+
 			Engine::Scene::LoadScene("Assets\\Level_1.scene");
 		}
 

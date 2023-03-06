@@ -922,6 +922,10 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::DisplayFilterPlacementGrid(Room& room, Math::Vector2Int coordinate, Pattern pattern, Color color) {
+		if (pattern.offsetGroup.size() == 0) {
+			return;
+		}
+
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room

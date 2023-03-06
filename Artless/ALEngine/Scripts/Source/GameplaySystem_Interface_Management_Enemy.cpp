@@ -165,7 +165,7 @@ namespace ALEngine::Script
 
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
 		{
-			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/TileBreaker.png";
+			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit_2.png";
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
 		}
@@ -174,7 +174,7 @@ namespace ALEngine::Script
 
 		case ENEMY_TYPE::ENEMY_SUMMONER:
 		{
-			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Summoner.png";
+			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Summoner.png";
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Summoner.png");
 		}
