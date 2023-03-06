@@ -17,70 +17,70 @@ namespace ALEngine::Editor
 {
 	/*!*********************************************************************************
 		\brief
-		Class that manages the Dear ImGui functions and editor panels generated with
-		the aid of Dear ImGui
+			Class that manages the Dear ImGui functions and editor panels generated with
+			the aid of Dear ImGui
 	***********************************************************************************/
 	class ALEditor : public Templates::Singleton<ALEditor>
 	{
 	public:
 		/*!*********************************************************************************
 			\brief
-			Updates the editor each frame.
-			Mainly updates each ImGui panel
+				Updates the editor each frame.
+				Mainly updates each ImGui panel
 		***********************************************************************************/
 		void Update(void);
 
 		/*!*********************************************************************************
 			\brief
-			Used to shutdown and delete all necessary ImGui related processes.
+				Used to shutdown and delete all necessary ImGui related processes.
 		***********************************************************************************/
 		void Exit(void);
 
 		/*!*********************************************************************************
 			\brief
-			Signals the start of a new ImGui frame; any ImGui code is sandwiched between
-			this and End()
-			Ensure to call at the start of each frame, before any ImGui code is called
+				Signals the start of a new ImGui frame; any ImGui code is sandwiched between
+				this and End()
+				Ensure to call at the start of each frame, before any ImGui code is called
 		***********************************************************************************/
 		void Begin(void);
 
 		/*!*********************************************************************************
 			\brief
-			Signals the end of an ImGui frame; any ImGui code is sandwiched between
-			this and Begin()
-			Ensure to call at the end of each frame, after all objects are rendered, but
-			before framebuffers get swapped.
+				Signals the end of an ImGui frame; any ImGui code is sandwiched between
+				this and Begin()
+				Ensure to call at the end of each frame, after all objects are rendered, but
+				before framebuffers get swapped.
 		***********************************************************************************/
 		void End(void);
 
 		/*!*********************************************************************************
 			\brief
-			Initializes the Style of the editor
+				Initializes the Style of the editor
 		***********************************************************************************/
 		void InitializeStyle(void);
 
 		/*!*********************************************************************************
 			\brief
-			Updates the Menu Bar for the Editor
+				Updates the Menu Bar for the Editor
 		***********************************************************************************/
 		void EditorMenuBar(void);
 
 		/*!*********************************************************************************
 			\brief
-			Updates the Toolbar for the Editor
-			Toolbar contains play/stop functionality
+				Updates the Toolbar for the Editor
+				Toolbar contains play/stop functionality
 		***********************************************************************************/
 		void EditorToolbar(void);
 
 		/*!*********************************************************************************
 			\brief
-			Load Data from file (Window Pos, Colors, etc.)
+				Load Data from file (Window Pos, Colors, etc.)
 		***********************************************************************************/
 		void LoadData(void);
 
 		/*!*********************************************************************************
 			\brief
-			Load Map Data for the level
+				Load Map Data for the level
 		***********************************************************************************/
 		void LoadMap(void);
 
@@ -90,261 +90,270 @@ namespace ALEngine::Editor
 	public:
 		/*!*********************************************************************************
 			\brief
-			Sets ImGui to be enabled or disabled.
+				Sets ImGui to be enabled or disabled.
 
 			\param [in] isEnabled
-			Boolean for whether the ImGui will be set to enabled or disabled
+				Boolean for whether the ImGui will be set to enabled or disabled
 		***********************************************************************************/
 		void SetImGuiEnabled(b8 isEnabled);
 
 		/*!*********************************************************************************
 			\brief
-			Get whether ImGui is to be enabled or disabled.
+				Get whether ImGui is to be enabled or disabled.
 
 			\return
-			Returns true if ImGui is enabled, otherwise returns false
+				Returns true if ImGui is enabled, otherwise returns false
 		***********************************************************************************/
 		b8 GetImGuiEnabled(void);
 
 		/*!*********************************************************************************
 			\brief
-			Sets ImGui Docking to be enabled or disabled.
+				Sets ImGui Docking to be enabled or disabled.
 
 			\param [in] isEnabled
-			Boolean for whether the ImGui Docking will be set to enabled or disabled
+				Boolean for whether the ImGui Docking will be set to enabled or disabled
 		***********************************************************************************/
 		void SetDockingEnabled(b8 isEnabled);
 
 		/*!*********************************************************************************
 			\brief
-			Sets the entity to be selected by the ImGui inspector
+				Sets the entity to be selected by the ImGui inspector
 
 			\param [in] setter
-			Pointer to the transform of the entity to be selected by te inspector.
-			Soon It will be based on entity instead of just transform alone
+				Pointer to the transform of the entity to be selected by te inspector.
+				Soon It will be based on entity instead of just transform alone
 		***********************************************************************************/
 		void SetSelectedEntity(ECS::Entity setter);
 
 		/*!*********************************************************************************
 			\brief
-			Gets the entity selected by the ImGui inspector
+				Gets the entity selected by the ImGui inspector
 
 			\return
-			Returns the selected Entity
+				Returns the selected Entity
 		***********************************************************************************/
 		const ECS::Entity GetSelectedEntity(void);
 
 		/*!*********************************************************************************
 			\brief
-			Sets the current gizmo operation
+				Sets the current gizmo operation
 			\param [in] _op:
-			Current gizmo operation
+				Current gizmo operation
 		***********************************************************************************/
 		ImGuizmo::OPERATION GetCurrentGizmoOperation(void);
 
 		/*!*********************************************************************************
 			\brief
-			Sets the current gizmo operation
+				Sets the current gizmo operation
 			\param [in] _op:
-			Current gizmo operation
+				Current gizmo operation
 		***********************************************************************************/
 		void SetCurrentGizmoOperation(ImGuizmo::OPERATION _op);
 
 		/*!*********************************************************************************
 		\brief
-		Gets the Width of the Scene Panel
+			Gets the Width of the Scene Panel
 
 		\return
-		Returns the selected Entity
+			Returns the selected Entity
 		***********************************************************************************/
 		f64 GetSceneWidth(void);
 
 		/*!*********************************************************************************
 		\brief
-		Gets the Height of the Scene Panel
+			Gets the Height of the Scene Panel
 
 		\return
-		Returns the selected Entity
+			Returns the selected Entity
 		***********************************************************************************/
 		f64 GetSceneHeight(void);
 
 		/*!*********************************************************************************
-			\brief Return editor panel 
+			\brief 
+				Gets the scne camera's width
 			
-			
-			
-			's width
+			\return
+				Return editor panel's width
 		***********************************************************************************/
 		f32& GetSceneCameraWidth(void);
 
 		/*!*********************************************************************************
-			\brief Return editor panel camera's height
+			\brief 
+				Return editor panel camera's height
+			\return
+				Returns the editor panel's camera's height
 		***********************************************************************************/
 		f32& GetSceneCameraHeight(void);
 
 		/*!*********************************************************************************
 			\brief
-			Returns the Editor's Camera
+				Gets the Editor's Camera
 
 			\return
-			Gets the Editor's Camera
+				Returns the Editor's Camera
 		***********************************************************************************/
 		Engine::Camera& GetEditorCamera(void);
 
 		/*!*********************************************************************************
 			\brief
-			Returns the cursor's world space position.
+				Returns the cursor's world space position.
 
 			\return
-			Cursor World Space position.
-			Returns a Vec2 containing std::numeric_limits::max for x and y if the mouse
-			position was handled outside of the Scene viewport
+				Cursor World Space position.
+				Returns a Vec2 containing std::numeric_limits::max for x and y if the mouse
+				position was handled outside of the Scene viewport
 		***********************************************************************************/
 		Math::Vec2 GetMouseWorldPos();
 
 		/*!*********************************************************************************
 			\brief
-			Returns the cursor's screen space position with respect to the 
-			game/scene panel.
+				Returns the cursor's screen space position with respect to the 
+				game/scene panel.
 
 			\return
-			Cursor Screen Space position with reference to the game/scene panel.
+				Cursor Screen Space position with reference to the game/scene panel.
 		***********************************************************************************/
 		Math::Vec2 GetMousePosWRTPanel();
 
 		/*!*********************************************************************************
 			\brief
-			Returns the ImGui screen position of a vector that is in World Space.
+				Returns the ImGui screen position of a vector that is in World Space.
 
 			\param [in] pos
-			World Space position, to be converted to screen space
+				World Space position, to be converted to screen space
 
 			\return
-			Returns the screen position of a vector that is in World Space.
+				Returns the screen position of a vector that is in World Space.
 		***********************************************************************************/
 		Math::Vec2 WorldToScreenPosVec(Math::Vec2 pos);
 
 		/*!*********************************************************************************
 			\brief
-			Returns if the game panel is active or not
+				Returns if the game panel is active or not
 
 			\return
-			Returns true if game panel is active,
-			else returns false
+				Returns true if game panel is active,
+				else returns false
 		***********************************************************************************/
 		b8 GetGameActive(void);
 		
 		/*!*********************************************************************************
 			\brief
-			Set if the game panel is active or not
+				Set if the game panel is active or not
 
 			\param gameActive
-			Setter for whether the game is active or not
+				Setter for whether the game is active or not
 		***********************************************************************************/
 		void SetGameActive(b8 gameActive);
 
 		/*!*********************************************************************************
 			\brief
-			Returns if the editor is receiving keyboard input
+				Returns if the editor is receiving keyboard input
 
 			\return
-			Returns true if editor is receiving keyboard input,
-			else returns false
+				Returns true if editor is receiving keyboard input,
+				else returns false
 		***********************************************************************************/
 		b8 GetReceivingKBInput(void);
 
 		/*!*********************************************************************************
 			\brief
-			Sets if the editor is receiving keyboard input
+				Sets if the editor is receiving keyboard input
 
 			\param receivingInput
-			Variable to set if the editor is receiving keyboard input
+				Variable to set if the editor is receiving keyboard input
 		***********************************************************************************/
 		void SetReceivingKBInput(b8 receivingInput);
 
 		/*!*********************************************************************************
 			\brief
-			Returns if the editor is in focus
+				Returns if the editor is in focus
 
 			\return
-			Returns true if editor is in focus,
-			else returns false
+				Returns true if editor is in focus,
+				else returns false
 		***********************************************************************************/
 		b8 GetEditorInFocus(void);
 
 		/*!*********************************************************************************
 			\brief
-			Sets the current scene name
+				Sets the current scene name
 
 			\param sceneName
-			The current scene name
+				The current scene name
 		***********************************************************************************/
 		void SetCurrentSceneName(std::string sceneName);
 
 		/*!*********************************************************************************
 			\brief
-			Gets the current scene name
+				Gets the current scene name
 
 			\Return
-			Returns the current scene name
+				Returns the current scene name
 		***********************************************************************************/
 		std::string const& GetCurrentSceneName(void) const;
 
 		/*!*********************************************************************************
 			\brief
-			Sets the current tile map path
+				Sets the current tile map path
 
 			\param sceneName
-			The current tile map path
+				The current tile map path
 		***********************************************************************************/	
 		void SetCurrentTileMapPath(std::string tileMapPath);
 
 		/*!*********************************************************************************
 			\brief
-			Gets the current tile map path
+				Gets the current tile map path
 
 			\Return
-			Returns the current tile map path
+				Returns the current tile map path
 		***********************************************************************************/
 		std::string const& GetCurrentTileMapPath(void) const;
 
 		/*!*********************************************************************************
 			\brief
-			Sets the default panel positions and sizes
+				Sets the default panel positions and sizes
 		***********************************************************************************/
 		void SetDefaultPanel(void);
 
 	private:
 		/*!*********************************************************************************
 			\brief
-			Default constructor for the ALEditor class
+				Default constructor for the ALEditor class
 		***********************************************************************************/
 		ALEditor(void);
 
 		/*!*********************************************************************************
 			\brief
-			Default destructor for the ALEditor class
+				Default destructor for the ALEditor class
 		***********************************************************************************/
 		~ALEditor(void) = default;
 
 		/*!*********************************************************************************
 			\brief
-			Initialization for the ImGui editor
+				Initialization for the ImGui editor
 		***********************************************************************************/
 		void Init(void);
 
 		/*!*********************************************************************************
 			\brief
-			Runs code that enables docking for ImGui windows/panels.
-			Is to be called every frame when Docking is enabled
+				Runs code that enables docking for ImGui windows/panels.
+				Is to be called every frame when Docking is enabled
 		***********************************************************************************/
 		void Docking(void);
 
 		/*!*********************************************************************************
 			\brief
-			Saves the current Scene
+				Saves the current Scene
 		***********************************************************************************/
 		void SaveScene(void);
+
+		/*!*********************************************************************************
+			\brief
+				Creates a new empty scene
+		***********************************************************************************/
+		void CreateScene(void);
 
 		// Required for Singleton to function
 		friend class Templates::Singleton<ALEditor>;
@@ -360,7 +369,7 @@ namespace ALEngine::Editor
 		b8 m_DockingEnabled{ false };					// Set to true if docking is to be enabled
 		b8 m_GameIsActive{ false };						// Set to true if in Game Mode
 		b8 m_FullScreen{ false };						// Set to true if game mode full screen
-		b8 m_AnimatorEditorPanelEnabled{ false };				// Set to true if Animator Panel is enabled
+		b8 m_AnimatorEditorPanelEnabled{ false };		// Set to true if Animator Panel is enabled
 		b8 m_AudioPanelEnabled{ false };				// Set to true if Audio Panel is enabled
 		b8 m_EditorInFocus{ true };						// Bool to keep track of whether the editor is in focus
 		b8 m_ProfilerRunning{ false };					// Keep track of whether profiler is running

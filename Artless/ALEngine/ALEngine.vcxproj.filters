@@ -8,7 +8,6 @@
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_GUI.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
-    <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
@@ -94,7 +93,6 @@
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Source\ECS\Systems\ButtonSystem.cpp" />
-    <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Gameplay\Source\MapManager.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Source\SceneManager\Prefab.cpp" />
@@ -105,6 +103,12 @@
     <ClCompile Include="Source\Engine\PathFindingManager.cpp" />
     <ClCompile Include="Source\Editor\Panels\AnimatorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\SceneBuildOrderPanel.cpp" />
+    <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
+    <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
+    <ClCompile Include="Scripts\Source\HtpButton.cpp" />
+    <ClCompile Include="Scripts\Source\NewGameButton.cpp" />
+    <ClCompile Include="Scripts\Source\AlphaFadeIn.cpp" />
+    <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -261,6 +265,11 @@
     <ClInclude Include="Include\Engine\PathFindingManager.h" />
     <ClInclude Include="Include\Editor\Panels\AnimatorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneBuildOrderPanel.h" />
+    <ClInclude Include="Scripts\Header\ResumeButton.h" />
+    <ClInclude Include="Scripts\Header\HtpButton.h" />
+    <ClInclude Include="Scripts\Header\NewGameButton.h" />
+    <ClInclude Include="Scripts\Header\AlphaFadeIn.h" />
+    <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

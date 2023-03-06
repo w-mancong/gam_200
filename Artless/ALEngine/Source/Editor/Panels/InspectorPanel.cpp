@@ -16,6 +16,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 #include "imgui_internal.h"
 #include <../Scripts/others/ScriptManager.h>
 #include <ECS/Systems/LogicSystem.h>
+#include "imgui/cpp/imgui_stdlib.h"
 
 namespace ALEngine::Editor
 {
@@ -421,7 +422,7 @@ namespace ALEngine::Editor
 
 		if (ImGui::BeginPopup("spritecomp_rightclick"))
 		{
-			if (ImGui::Selectable("Remove Component"))
+			if (ImGui::Selectable("Remove Component##SpriteComponent"))
 			{
 				ECS::Coordinator::Instance()->RemoveComponent<Sprite>(m_SelectedEntity);
 			}
@@ -645,6 +646,21 @@ namespace ALEngine::Editor
 				audioSource.list[audioSource.id++] = ad;
 			}
 		}
+
+		// Right click!
+		if (ImGui::IsItemClicked(1))
+		{
+			ImGui::OpenPopup("audiocomp_rightclick");
+		}
+
+		if (ImGui::BeginPopup("audiocomp_rightclick"))
+		{
+			if (ImGui::Selectable("Remove Component##Audio Component"))
+			{
+				ECS::Coordinator::Instance()->RemoveComponent<AudioSource>(m_SelectedEntity);
+			}
+			ImGui::EndPopup();
+		}
 	}
 
 	void InspectorPanel::DisplayAnimator(void)
@@ -668,6 +684,21 @@ namespace ALEngine::Editor
 
 				ImGui::EndCombo();
 			}
+		}
+
+		// Right click!
+		if (ImGui::IsItemClicked(1))
+		{
+			ImGui::OpenPopup("animatorcomp_rightclick");
+		}
+
+		if (ImGui::BeginPopup("animatorcomp_rightclick"))
+		{
+			if (ImGui::Selectable("Remove Component##Animator Component"))
+			{
+				ECS::Coordinator::Instance()->RemoveComponent<Animator>(m_SelectedEntity);
+			}
+			ImGui::EndPopup();
 		}
 	}
 
@@ -722,6 +753,21 @@ namespace ALEngine::Editor
 
 			ImGui::Separator();
 		}
+
+		// Right click!
+		if (ImGui::IsItemClicked(1))
+		{
+			ImGui::OpenPopup("particlecomp_rightclick");
+		}
+
+		if (ImGui::BeginPopup("particlecomp_rightclick"))
+		{
+			if (ImGui::Selectable("Remove Component##Particles Component"))
+			{
+				ECS::Coordinator::Instance()->RemoveComponent<ParticleProperties>(m_SelectedEntity);
+			}
+			ImGui::EndPopup();
+		}
 	}
 
 	void InspectorPanel::DisplayTextProperty(void)
@@ -732,9 +778,7 @@ namespace ALEngine::Editor
 		if (ImGui::CollapsingHeader("Text Component"))
 		{
 			// String input field
-			c8* str = const_cast<c8*>(prop.textString.c_str());	
-			ImGui::InputText("String##InspectorTextComponent", str, 31); // exceeding 31 characters causes crash
-			prop.textString = str;
+			ImGui::InputText("String##InspectorTextComponent", &prop.textString); // exceeding 31 characters causes crash
 
 			// font pop down menu
 			ImVec2 winsize = ImGui::GetWindowSize();
@@ -804,6 +848,21 @@ namespace ALEngine::Editor
 			prop.position.y = pos[1];
 
 			ImGui::Separator();
+		}
+
+		// Right click!
+		if (ImGui::IsItemClicked(1))
+		{
+			ImGui::OpenPopup("textcomp_rightclick");
+		}
+
+		if (ImGui::BeginPopup("textcomp_rightclick"))
+		{
+			if (ImGui::Selectable("Remove Component##Text Component"))
+			{
+				ECS::Coordinator::Instance()->RemoveComponent<Text>(m_SelectedEntity);
+			}
+			ImGui::EndPopup();
 		}
 	}
 
@@ -877,6 +936,21 @@ namespace ALEngine::Editor
 				ImGui::EndListBox();
 			}
 		}
+
+		// Right click!
+		if (ImGui::IsItemClicked(1))
+		{
+			ImGui::OpenPopup("logiccomp_rightclick");
+		}
+
+		if (ImGui::BeginPopup("logiccomp_rightclick"))
+		{
+			if (ImGui::Selectable("Remove Component##Logic Component"))
+			{
+				ECS::Coordinator::Instance()->RemoveComponent<LogicComponent>(m_SelectedEntity);
+			}
+			ImGui::EndPopup();
+		}
 	}
 
 	void InspectorPanel::AddComponentButton(void)
@@ -936,30 +1010,30 @@ namespace ALEngine::Editor
 				// ==================== RigidBody ====================
 				case InspectorComponents::InComp_RigidBody:
 					// Check if has component
-					if (!ECS::Coordinator::Instance()->HasComponent<Rigidbody2D>(m_SelectedEntity))
-					{
-						if (ImGui::Selectable("RigidBody Component") &&
-							m_SelectedEntity != ECS::MAX_ENTITIES)
-						{
-							// Add RigidBody Component
-							ECS::Coordinator::Instance()->AddComponent<Rigidbody2D>(m_SelectedEntity, Rigidbody2D());
-						}
-						++count;
-					}
+					//if (!ECS::Coordinator::Instance()->HasComponent<Rigidbody2D>(m_SelectedEntity))
+					//{
+					//	if (ImGui::Selectable("RigidBody Component") &&
+					//		m_SelectedEntity != ECS::MAX_ENTITIES)
+					//	{
+					//		// Add RigidBody Component
+					//		ECS::Coordinator::Instance()->AddComponent<Rigidbody2D>(m_SelectedEntity, Rigidbody2D());
+					//	}
+					//	++count;
+					//}
 					break;
 				// ==================== Collider ====================
 				case InspectorComponents::InComp_Collider:
 					// Check if has component
-					if (!ECS::Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
-					{
-						if (ImGui::Selectable("Collider Component") &&
-							m_SelectedEntity != ECS::MAX_ENTITIES)
-						{
-							// Add Collider Component
-							ECS::Coordinator::Instance()->AddComponent<Collider2D>(m_SelectedEntity, Collider2D());
-						}
-						++count;
-					}
+					//if (!ECS::Coordinator::Instance()->HasComponent<Collider2D>(m_SelectedEntity))
+					//{
+					//	if (ImGui::Selectable("Collider Component") &&
+					//		m_SelectedEntity != ECS::MAX_ENTITIES)
+					//	{
+					//		// Add Collider Component
+					//		ECS::Coordinator::Instance()->AddComponent<Collider2D>(m_SelectedEntity, Collider2D());
+					//	}
+					//	++count;
+					//}
 					break;
 				// ==================== Particles ====================
 				case InspectorComponents::InComp_Particles:

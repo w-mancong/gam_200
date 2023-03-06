@@ -36,6 +36,9 @@ namespace ALEngine::Script
 			ECS::AddLogicComponent<PauseLogic>(en);
 		};
 		RTTR_ENABLE(ECS::Component::UniBehaviour)
+
+	public:
+		b8 paused{ false };
 	};
 }
 

@@ -13,7 +13,28 @@ namespace ALEngine::Engine::Scene
 {
 	namespace
 	{
-		const f32 WAIT_TIME{ 1.f };
+		const f32 WAIT_TIME{ 1.f };										// Time to wait after player clicks to skip current cutscene/cutscene text
+		const c8* TEXTBOX_PATH{ "Assets/Images/DialogueBox.png" };		// Path for the Dialogue Box images
+	}
+
+	CutsceneManager::CutsceneManager(void)
+	{
+	}
+
+	void CutsceneManager::Init(void)
+	{
+		/*m_CutsceneObject = Instantiate("Cutscene Object");
+		ECS::GetSceneGraph().FindImmediateChildren(m_CutsceneObject);
+		std::vector<s32> const& children = ECS::GetSceneGraph().GetChildren();
+		for (s32 child : children)
+		{
+			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
+			if (data.tag == "Black Overlay")
+				m_BlackOverlay = child;
+			else if (data.tag == "Dialogue Box")
+				m_DialogueBox = child;
+		}*/
 	}
 
 	void CutsceneManager::PlaySequence(std::string sequence)
@@ -25,6 +46,20 @@ namespace ALEngine::Engine::Scene
 		m_CutsceneIsPlaying = true;
 		m_SelectedSequence = sequence;
 		m_CurrentCutscene = m_Cutscenes[sequence].begin();
+		m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
+
+		// Make Obj Appear
+		EntityData& objData = Coordinator::Instance()->GetComponent<EntityData>(m_CutsceneObject);
+		objData.active = true;
+	}
+
+	void CutsceneManager::StopSequence(void)
+	{
+		m_CutsceneIsPlaying = false;
+
+		// Make Obj Disappear
+		EntityData& objData = Coordinator::Instance()->GetComponent<EntityData>(m_CutsceneObject);
+		objData.active = false;
 	}
 
 	void CutsceneManager::Update(void)
@@ -42,7 +77,7 @@ namespace ALEngine::Engine::Scene
 				|| Input::KeyTriggered(KeyCode::Enter)))
 		{
 			std::next(m_CurrentCutscene);
-
+			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
 			if (m_CurrentCutscene == m_Cutscenes[m_SelectedSequence].end())
 				m_CutsceneIsPlaying = false;
 
@@ -58,8 +93,8 @@ namespace ALEngine::Engine::Scene
 		if (!m_HasTimer)
 			return true;
 
-		m_TimeTaken -= Time::m_DeltaTime;
-		if (m_TimeTaken <= 0.f)
+		m_CutsceneTimeCountdown -= Time::m_DeltaTime;
+		if (m_CutsceneTimeCountdown <= 0.f)
 			return false;
 
 		return true;

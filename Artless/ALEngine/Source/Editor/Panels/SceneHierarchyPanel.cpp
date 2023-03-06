@@ -11,6 +11,7 @@ brief:	This file contains function definitions for the SceneHierarchPanel class.
 #include "pch.h"
 
 #if EDITOR
+#include "imgui/cpp/imgui_stdlib.h"
 
 namespace ALEngine::Editor
 {
@@ -27,8 +28,6 @@ namespace ALEngine::Editor
 
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
-		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-
 		// Set constraints
 		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
@@ -37,6 +36,8 @@ namespace ALEngine::Editor
 			ImGui::End();
 			return;
 		}
+
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
 		// Menu Bar
 		UpdateMenuBar();
@@ -404,6 +405,10 @@ namespace ALEngine::Editor
 				}
 				ImGui::EndDragDropTarget();
 			}
+
+			std::string sceneName = ALEditor::Instance()->GetCurrentSceneName();
+			if(ImGui::InputTextWithHint("##Scene Name_Scene Info", "Scene Name", &sceneName))
+				ALEditor::Instance()->SetCurrentSceneName(sceneName);
 		}
 
 		ImGui::Separator();

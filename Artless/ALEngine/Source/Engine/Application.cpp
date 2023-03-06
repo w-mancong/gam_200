@@ -187,6 +187,8 @@ namespace ALEngine::Engine
 
 			Coordinator::Instance()->ResetSystem();
 
+			Scene::LoadScene();
+
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current  = GameStateManager::next;
 		}
@@ -211,6 +213,7 @@ namespace ALEngine::Engine
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
+		Scene::CutsceneManager::Instance()->Init();
 
 		// Init ImGui
 #if EDITOR
@@ -374,12 +377,6 @@ namespace ALEngine::Engine
 		Input::Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
-
-		if (Input::KeyTriggered(KeyCode::Key_1))
-		{
-			Animator an = CreateAnimator("Player");
-			ChangeAnimationFramesCount(an.animations["PlayerIdle"], 0, 1);
-		}
 	}
 
 	void Engine::FixedUpdate(void)

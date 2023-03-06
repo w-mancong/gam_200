@@ -15,9 +15,7 @@ namespace ALEngine::Engine
 
 	void GameStateManager::Init()
 	{
-#if !EDITOR
 		current = previous = next = GameState::Running;
-#endif
 	}
 
 	void GameStateManager::Next(GameState state)

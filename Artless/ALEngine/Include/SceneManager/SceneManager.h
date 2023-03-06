@@ -30,17 +30,32 @@ namespace ALEngine::Engine::Scene
 	***********************************************************************************/
 	void LoadScene(std::string const& sceneName);
 
-	/*!*********************************************************************************
-		\brief Load a scene using scene index
+	///*!*********************************************************************************
+	//	\brief Load a scene using scene index
 
-		\param [in] index: Load scene based on the scene index
-	***********************************************************************************/
-	void LoadScene(u64 sceneIndex);
+	//	\param [in] index: Load scene based on the scene index
+	//***********************************************************************************/
+	//void LoadScene(u64 sceneIndex);
 
 	/*!*********************************************************************************
 		\brief This function will be used when the game restarts (loads current scene opened)
 	***********************************************************************************/
 	void LoadScene(void);
+
+	/*!*********************************************************************************
+		\brief Set the current scene to sceneName, and breaks out of the game loop
+	***********************************************************************************/
+	void NextScene(std::string const& sceneName);
+
+	/*!*********************************************************************************
+		\brief Set the current scene based on the index, and breaks out of the game loop
+	***********************************************************************************/
+	void NextScene(u64 sceneIndex);
+
+	/*!*********************************************************************************
+		\brief An interface to go to the next scene that is from the sceneIndex
+	***********************************************************************************/
+	void NextScene(void);
 
 	/*!*********************************************************************************
 		\brief An interface to restart gameplay

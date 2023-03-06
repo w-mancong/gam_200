@@ -20,6 +20,7 @@ namespace ALEngine::Engine::Scene
 
 		c8 const* sceneBuildIndexFilePath = "Assets\\Dev\\SceneManager\\scenesBuildIndex";
 
+		u64 sceneIndex{};
 		std::string currScene{};
 		std::vector<std::string> scenes{};	// this scenes will be storing the path to the .scene file
 #if EDITOR
@@ -706,13 +707,17 @@ namespace ALEngine::Engine::Scene
 		writer.StartArray();
 		writer.StartObject();
 
-		AudioSource const& as = Coordinator::Instance()->GetComponent<AudioSource>(en);
+		Engine::AudioSource const& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(en);
 		writer.Key("audioClips");
 		writer.StartArray();
 		for (auto const& it : as.list)
 		{
-			std::string const& name = it.second.m_AudioName;
-			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+			Engine::Audio const& audio = it.second;
+			writer.String(audio.m_AudioName.c_str(), static_cast<rjs::SizeType>(audio.m_AudioName.length()));	// 0
+			writer.Double(audio.m_Volume);						// 1
+			writer.Bool(audio.m_Loop);							// 2
+			writer.Bool(audio.m_Mute);							// 3
+			writer.Uint64(static_cast<u64>(audio.m_Channel));	// 4
 		}
 		writer.EndArray();
 
@@ -723,12 +728,27 @@ namespace ALEngine::Engine::Scene
 	void ReadAudioComponent(rjs::Value const& v, ECS::Entity en)
 	{
 		rjs::Value const& c = v[0]["audioClips"];
-		AudioSource as;
-		for (u64 i = 0; i < c.Size(); ++i)
+		Engine::AudioSource as;
+		for (u64 i = 0, asId = 0; i < c.Size(); i += 5)
 		{
-			c8 const* name = c[i].GetString();
-			Guid id = AssetManager::Instance()->GetGuid(name);
-			as.list[as.id++] = AssetManager::Instance()->GetAudio(id);
+			// 0 - audio name
+			c8 const* name = c[i + 0].GetString();
+			Guid id = Engine::AssetManager::Instance()->GetGuid(name);
+			as.list[as.id] = Engine::AssetManager::Instance()->GetAudio(id);
+
+			as.list[as.id].m_ID = asId++;
+
+			// 1 - volume
+			as.list[as.id].m_Volume = c[i + 1].GetFloat();
+
+			// 2 - loop
+			as.list[as.id].m_Loop = c[i + 2].GetBool();
+
+			// 3 - mute
+			as.list[as.id].m_Mute = c[i + 3].GetBool();
+
+			// 4 - Channel
+			as.list[as.id++].m_Channel = static_cast<Engine::Channel>(c[i + 4].GetUint64());
 		}
 		Coordinator::Instance()->AddComponent(en, as);
 	}
@@ -903,6 +923,13 @@ namespace ALEngine::Engine::Scene
 		}
 
 		currScene = sceneName;
+		sceneIndex = 0;
+		for (std::string const& scene : scenes)
+		{
+			if (scene == currScene)
+				break;
+			++sceneIndex;
+		}
 
 		rjs::Document doc;
 		doc.Parse(buffer);
@@ -911,18 +938,31 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->DestroyEntities();
 
 		DeserializeScene(doc);
-		GameStateManager::Next(GameState::LevelSwitch);
-	}
-
-	void LoadScene(u64 sceneIndex)
-	{
-		LoadScene(scenes[sceneIndex]);
 	}
 
 	void LoadScene(void)
 	{
 		LoadScene(currScene.c_str());
-		GameStateManager::next = GameStateManager::current;
+	}
+
+	void NextScene(std::string const& sceneName)
+	{
+		currScene = sceneName;
+		GameStateManager::Next(GameState::LevelSwitch);
+	}
+
+	void NextScene(u64 sceneIndex)
+	{
+		assert(sceneIndex < scenes.size() && "sceneIndex out of bound.");
+		currScene = scenes[sceneIndex];
+		GameStateManager::Next(GameState::LevelSwitch);
+	}
+
+	void NextScene(void)
+	{
+		(++sceneIndex) %= scenes.size();
+		currScene = scenes[sceneIndex];
+		GameStateManager::Next(GameState::LevelSwitch);
 	}
 
 	void Restart(void)
@@ -980,7 +1020,9 @@ namespace ALEngine::Engine::Scene
 	void InsertScene(u64 newIndex, u64 oldIndex)
 	{
 		// Remove old scene, but store the file path temporary
-		std::string sceneName_OldIndex = scenes[oldIndex], sceneName_NewIndex = scenes[newIndex];
+		u64 const L = std::max(newIndex, oldIndex), S = std::min(newIndex, oldIndex);
+
+		std::string sceneName_OldIndex = scenes[L], sceneName_NewIndex = scenes[S];
 		std::vector<std::string>::const_iterator it2 = std::find(scenes.begin(), scenes.end(), sceneName_OldIndex);
 		scenes.erase(it2);
 

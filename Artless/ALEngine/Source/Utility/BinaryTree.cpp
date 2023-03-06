@@ -160,8 +160,8 @@ namespace ALEngine::Tree
         while (node->left != nullptr)
         {
             prevNode = node;
-            searchVect.push_back(node);
             node = node->left;
+            searchVect.push_back(node);
 
             if (node->id == id)
             {
@@ -564,7 +564,7 @@ namespace ALEngine::Tree
 
         if (prevNode->left == branchNode) // if branchNode is the first child of PrevNode
         {
-            if (branchNode->right != nullptr)
+            if (branchNode && branchNode->right != nullptr)
             {
                 prevNode->left = branchNode->right;
             }
@@ -575,7 +575,7 @@ namespace ALEngine::Tree
         }
         else // branchNode is sibling of prevNode
         {
-            if (branchNode->right == nullptr) // if leaf
+            if (branchNode && branchNode->right == nullptr) // if leaf
             {
                 prevNode->right = nullptr;
             }
@@ -611,7 +611,8 @@ namespace ALEngine::Tree
             newParentNode->right = branchNode;
         }
 
-        branchNode->right = nullptr;
+        if(branchNode)
+            branchNode->right = nullptr;
         map[branch].parent = newParent; // assign new parent
 
         // update map

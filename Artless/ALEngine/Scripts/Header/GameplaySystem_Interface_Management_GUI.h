@@ -16,7 +16,9 @@ namespace ALEngine::Script
 		ECS::Entity Unit_Profile;
 		ECS::Entity Unit_Healthbar, Phase_Indicator;
 		ECS::Entity Skill_Tip_Icon, Skill_Tip_Header, Skill_Tip_Line1, Skill_Tip_Line2, Skill_Tip_Line3, Skill_Tip_Line4;
-		ECS::Entity Tooltip_Skills_Card, FPS_Label;
+		ECS::Entity Tooltip_Skills_Card, FPS_Label, Pause_Button;
+		std::array<ECS::Entity, 6> AP_Indicators;
+		
 		b8 fpsActive{ true };
 
 		//Win
