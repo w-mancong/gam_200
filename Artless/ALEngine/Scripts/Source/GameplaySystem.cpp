@@ -260,27 +260,6 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[4], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_4);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[5], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_5);
 
-
-		//******* Set inaccessible cells ********//
-		ToggleCellAccessibility(m_Room, 2, 3, false);
-		ToggleCellAccessibility(m_Room, 2, 4, false);
-		ToggleCellAccessibility(m_Room, 3, 3, false);
-		ToggleCellAccessibility(m_Room, 3, 4, false);
-
-		ToggleCellAccessibility(m_Room, 4, 0, false);
-		ToggleCellAccessibility(m_Room, 4, 1, false);
-		ToggleCellAccessibility(m_Room, 5, 0, false);
-		ToggleCellAccessibility(m_Room, 6, 1, false);
-
-		ToggleCellAccessibility(m_Room, 0, 7, false);
-		ToggleCellAccessibility(m_Room, 1, 7, false);
-
-		ToggleCellAccessibility(m_Room, 5, 7, false);
-		ToggleCellAccessibility(m_Room, 6, 7, false);
-		ToggleCellAccessibility(m_Room, 7, 5, false);
-		ToggleCellAccessibility(m_Room, 7, 7, false);
-		ToggleCellAccessibility(m_Room, 7, 6, false);
-
 		//Subscribe the restart button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
 
@@ -379,7 +358,7 @@ namespace ALEngine::Script
 		}
 
 		if (Input::KeyTriggered(KeyCode::RightShift)) {
-		
+			Engine::Scene::LoadScene("Assets\\Level_1.scene");
 		}
 
 		if (Input::KeyTriggered(KeyCode::E)) {

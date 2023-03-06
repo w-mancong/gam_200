@@ -309,7 +309,7 @@ namespace ALEngine::Engine
 		//AddAnimationToAnimator(an, "PlayerIdle");
 		//SaveAnimator(an);
 		
-		//Scene::LoadScene("Assets\\test.scene");
+		Scene::LoadScene("Assets\\Level_1.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
 		//EntityScript es;
