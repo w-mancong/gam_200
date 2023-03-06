@@ -2,7 +2,7 @@
 file:	HtpButton.cpp
 author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
-brief:	This file contain function declaration for a how to play button
+brief:	This file contain function definition for a how to play button
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
@@ -32,6 +32,9 @@ namespace ALEngine::Script
 
 		void WhenHtpHover(Entity en)
 		{
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
+				return;
+			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
 				// Entities to be set to true
@@ -42,9 +45,6 @@ namespace ALEngine::Script
 				SetActive(false, parent);
 				Lighten(en);
 			}
-			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
-				return;
-			Darken(en);
 		}
 
 		void WhenHtpExit(Entity en)

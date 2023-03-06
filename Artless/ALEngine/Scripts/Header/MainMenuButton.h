@@ -1,8 +1,8 @@
 /*!
-file:	QuitButton.h
+file:	MainMenuButton.h
 author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
-brief:	This file contain function declaration for a quit game button
+brief:	This file contain function declaration for main menu button when paused
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
