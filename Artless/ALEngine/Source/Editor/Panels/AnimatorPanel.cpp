@@ -211,7 +211,7 @@ namespace ALEngine::Editor
 						m_SelectedFrame = selectedFrame;
 				}
 				
-				s32 frameNum{ static_cast<s32>(m_SelectedAnimation.frames[m_SelectedFrame.y * MAX_SPRITES_ROW + m_SelectedFrame.y]) };
+				s32 frameNum{ static_cast<s32>(m_SelectedAnimation.frames[m_SelectedFrame.y * MAX_SPRITES_ROW + m_SelectedFrame.x]) };
 				if (ImGui::DragInt("Frame Count", &frameNum))
 				{
 					u64 frameIndex{ static_cast<u64>(m_SelectedFrame.y) * static_cast<u64>(MAX_SPRITES_ROW) + static_cast<u64>(m_SelectedFrame.x) };
