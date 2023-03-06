@@ -52,14 +52,12 @@ namespace ALEngine::Script
 		Text& attack_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Attack);
 		Text& defense_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Defense);
 		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Movement);
-		Text& range_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Range);
 		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
 
 		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
 		attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
 		defense_text.textString = std::to_string(unit.defense);
 		movement_text.textString = std::to_string(unit.actionPoints) + "/" + std::to_string(unit.maxActionPoints);
-		range_text.textString = std::to_string(unit.minRange);
 		name_text.textString = unit.unit_Name;
 
 		profile.id = Engine::AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
@@ -77,7 +75,6 @@ namespace ALEngine::Script
 		guiManager.Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
 		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
 		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
-		guiManager.Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
 		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red_health_bar");
 		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
 		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
