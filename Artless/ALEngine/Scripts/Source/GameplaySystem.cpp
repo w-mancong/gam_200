@@ -19,6 +19,26 @@ namespace ALEngine::Script
 		std::string room_To_Load = "Assets\\Presentation_Level.map";
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Load Level 1
+	***********************************************************************************/
+	void Event_Button_LoadLevel_1(ECS::Entity invoker) {
+		//Restart the gameplay
+		room_To_Load = "Assets\\Presentation_Level.map";
+		Engine::Scene::Restart();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Load Level 2
+	***********************************************************************************/
+	void Event_Button_LoadLevel_2(ECS::Entity invoker) {
+		//Restart the gameplay
+		room_To_Load = "Assets\\Tutorial_Level.map";
+		Engine::Scene::Restart();
+	}
+
 	void GameplaySystem::Load(ECS::Entity en)
 	{
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
@@ -236,7 +256,6 @@ namespace ALEngine::Script
 		//Initialize Abilities
 		InitializeAbilities(Abilities_List);
 
-
 		//Initialize Pattern GUI
 		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
 
@@ -264,7 +283,8 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[5], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_5);
 
 		//Subscribe the restart button
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Lose_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_2);
 
 		Toggle_Gameplay_State(true);
 
@@ -284,7 +304,6 @@ namespace ALEngine::Script
 
 		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
 		buttonClickAudio->m_Channel = Engine::Channel::SFX;
-
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {

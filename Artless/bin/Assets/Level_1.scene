@@ -19,8 +19,8 @@
         "Transform": [
             {
                 "position": [
-                    801.0485229492188,
-                    120.04290771484375,
+                    1042.522705078125,
+                    35.196685791015625,
                     0.0
                 ],
                 "scale": [
@@ -97,8 +97,8 @@
         "Transform": [
             {
                 "position": [
-                    800.798095703125,
-                    68.3270263671875,
+                    1042.2723388671875,
+                    -16.519195556640625,
                     0.0
                 ],
                 "scale": [
@@ -142,8 +142,8 @@
         "Transform": [
             {
                 "position": [
-                    1831.723876953125,
-                    497.33929443359375,
+                    2073.197998046875,
+                    412.4930725097656,
                     0.0
                 ],
                 "scale": [
@@ -187,8 +187,8 @@
         "Transform": [
             {
                 "position": [
-                    1868.251708984375,
-                    499.13787841796875,
+                    2109.72509765625,
+                    414.2915954589844,
                     0.0
                 ],
                 "scale": [
@@ -232,8 +232,8 @@
         "Transform": [
             {
                 "position": [
-                    1565.4151611328125,
-                    860.5792236328125,
+                    1806.889404296875,
+                    775.7330322265625,
                     0.0
                 ],
                 "scale": [
@@ -277,8 +277,8 @@
         "Transform": [
             {
                 "position": [
-                    1868.2762451171875,
-                    499.4622802734375,
+                    2109.75048828125,
+                    414.6158752441406,
                     0.0
                 ],
                 "scale": [
@@ -322,8 +322,8 @@
         "Transform": [
             {
                 "position": [
-                    797.9000854492188,
-                    51.0999755859375,
+                    1039.374267578125,
+                    -33.746246337890625,
                     0.0
                 ],
                 "scale": [
@@ -367,8 +367,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    227.60000610351563,
+                    1041.4742431640625,
+                    142.7537841796875,
                     0.0
                 ],
                 "scale": [
@@ -412,8 +412,8 @@
         "Transform": [
             {
                 "position": [
-                    124.09527587890625,
-                    50.923065185546875,
+                    365.5694885253906,
+                    -33.92315673828125,
                     0.0
                 ],
                 "scale": [
@@ -457,8 +457,8 @@
         "Transform": [
             {
                 "position": [
-                    250.0,
-                    390.0,
+                    491.4742126464844,
+                    305.1537780761719,
                     0.0
                 ],
                 "scale": [
@@ -502,8 +502,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    790.0,
+                    1041.4742431640625,
+                    705.15380859375,
                     0.0
                 ],
                 "scale": [
@@ -547,8 +547,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    772.0001831054688,
+                    1041.4744873046875,
+                    687.154052734375,
                     0.0
                 ],
                 "scale": [
@@ -592,8 +592,8 @@
         "Transform": [
             {
                 "position": [
-                    472.3999938964844,
-                    262.0870361328125,
+                    713.8742065429688,
+                    177.24081420898438,
                     0.0
                 ],
                 "scale": [
@@ -637,8 +637,8 @@
         "Transform": [
             {
                 "position": [
-                    340.39813232421875,
-                    370.7285461425781,
+                    581.872314453125,
+                    285.88232421875,
                     0.0
                 ],
                 "scale": [
@@ -682,8 +682,8 @@
         "Transform": [
             {
                 "position": [
-                    601.860107421875,
-                    36.850494384765625,
+                    843.3343505859375,
+                    -47.9957275390625,
                     0.0
                 ],
                 "scale": [
@@ -743,8 +743,8 @@
         "Transform": [
             {
                 "position": [
-                    658.2767333984375,
-                    39.202178955078125,
+                    899.7509765625,
+                    -45.64404296875,
                     0.0
                 ],
                 "scale": [
@@ -804,8 +804,8 @@
         "Transform": [
             {
                 "position": [
-                    718.5481567382813,
-                    39.202423095703125,
+                    960.0221557617188,
+                    -45.643798828125,
                     0.0
                 ],
                 "scale": [
@@ -865,8 +865,8 @@
         "Transform": [
             {
                 "position": [
-                    880.0217895507813,
-                    39.20263671875,
+                    1121.49560546875,
+                    -45.643585205078125,
                     0.0
                 ],
                 "scale": [
@@ -926,8 +926,8 @@
         "Transform": [
             {
                 "position": [
-                    940.81005859375,
-                    39.202178955078125,
+                    1182.28369140625,
+                    -45.64404296875,
                     0.0
                 ],
                 "scale": [
@@ -987,8 +987,8 @@
         "Transform": [
             {
                 "position": [
-                    1001.076904296875,
-                    39.20257568359375,
+                    1242.55078125,
+                    -45.643646240234375,
                     0.0
                 ],
                 "scale": [
@@ -1048,8 +1048,8 @@
         "Transform": [
             {
                 "position": [
-                    1345.647705078125,
-                    128.68667602539063,
+                    1587.1219482421875,
+                    43.84051513671875,
                     0.0
                 ],
                 "scale": [
@@ -1071,7 +1071,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 21,
-                "parentID": 84,
+                "parentID": 85,
                 "treeNodeFlags": 32
             }
         ]
@@ -1093,8 +1093,8 @@
         "Transform": [
             {
                 "position": [
-                    1434.9315185546875,
-                    38.88232421875,
+                    1676.40576171875,
+                    -45.963897705078125,
                     0.0
                 ],
                 "scale": [
@@ -1116,7 +1116,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 22,
-                "parentID": 85,
+                "parentID": 86,
                 "treeNodeFlags": 32
             }
         ]
@@ -1138,8 +1138,8 @@
         "Transform": [
             {
                 "position": [
-                    1524.3917236328125,
-                    45.28753662109375,
+                    1765.865966796875,
+                    -39.558685302734375,
                     0.0
                 ],
                 "scale": [
@@ -1161,7 +1161,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 23,
-                "parentID": 86,
+                "parentID": 87,
                 "treeNodeFlags": 32
             }
         ]
@@ -1216,8 +1216,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    227.59988403320313,
+                    1041.4742431640625,
+                    142.75360107421875,
                     0.0
                 ],
                 "scale": [
@@ -1265,8 +1265,8 @@
         "Transform": [
             {
                 "position": [
-                    472.39947509765625,
-                    262.0870056152344,
+                    713.8736572265625,
+                    177.24078369140625,
                     0.0
                 ],
                 "scale": [
@@ -1314,8 +1314,8 @@
         "Transform": [
             {
                 "position": [
-                    90.69287109375,
-                    50.920745849609375,
+                    332.1670837402344,
+                    -33.92548370361328,
                     0.0
                 ],
                 "scale": [
@@ -1363,8 +1363,8 @@
         "Transform": [
             {
                 "position": [
-                    1250.0001220703125,
-                    870.0000610351563,
+                    1491.474609375,
+                    785.1539306640625,
                     0.0
                 ],
                 "scale": [
@@ -1412,8 +1412,8 @@
         "Transform": [
             {
                 "position": [
-                    250.00003051757813,
-                    390.0,
+                    491.4742126464844,
+                    305.1537780761719,
                     0.0
                 ],
                 "scale": [
@@ -1461,8 +1461,8 @@
         "Transform": [
             {
                 "position": [
-                    699.9990234375,
-                    664.9996337890625,
+                    941.472900390625,
+                    580.1531982421875,
                     0.0
                 ],
                 "scale": [
@@ -1510,8 +1510,8 @@
         "Transform": [
             {
                 "position": [
-                    699.9990234375,
-                    664.9996337890625,
+                    941.472900390625,
+                    580.1531982421875,
                     0.0
                 ],
                 "scale": [
@@ -1559,8 +1559,8 @@
         "Transform": [
             {
                 "position": [
-                    699.9990234375,
-                    664.9996337890625,
+                    941.472900390625,
+                    580.1531982421875,
                     0.0
                 ],
                 "scale": [
@@ -1608,8 +1608,8 @@
         "Transform": [
             {
                 "position": [
-                    699.9990234375,
-                    664.9996337890625,
+                    941.472900390625,
+                    580.1531982421875,
                     0.0
                 ],
                 "scale": [
@@ -1657,8 +1657,8 @@
         "Transform": [
             {
                 "position": [
-                    1149.997314453125,
-                    939.9990234375,
+                    1391.470947265625,
+                    855.15283203125,
                     0.0
                 ],
                 "scale": [
@@ -1706,8 +1706,8 @@
         "Transform": [
             {
                 "position": [
-                    1149.997314453125,
-                    939.9990234375,
+                    1391.470947265625,
+                    855.15283203125,
                     0.0
                 ],
                 "scale": [
@@ -1755,8 +1755,8 @@
         "Transform": [
             {
                 "position": [
-                    1149.997314453125,
-                    939.9990234375,
+                    1391.470947265625,
+                    855.15283203125,
                     0.0
                 ],
                 "scale": [
@@ -1804,8 +1804,8 @@
         "Transform": [
             {
                 "position": [
-                    1149.997314453125,
-                    939.9990234375,
+                    1391.470947265625,
+                    855.15283203125,
                     0.0
                 ],
                 "scale": [
@@ -1910,8 +1910,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    614.699951171875,
+                    1041.4742431640625,
+                    529.853759765625,
                     0.0
                 ],
                 "scale": [
@@ -1955,8 +1955,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    485.9998779296875,
+                    1041.4742431640625,
+                    401.1536560058594,
                     0.0
                 ],
                 "scale": [
@@ -2094,8 +2094,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0001220703125,
+                    1041.4742431640625,
+                    365.1539001464844,
                     0.0
                 ],
                 "scale": [
@@ -2139,8 +2139,8 @@
         "Transform": [
             {
                 "position": [
-                    703.2499389648438,
-                    354.8001708984375,
+                    944.72412109375,
+                    269.95404052734375,
                     0.0
                 ],
                 "scale": [
@@ -2184,8 +2184,8 @@
         "Transform": [
             {
                 "position": [
-                    896.74951171875,
-                    354.8001708984375,
+                    1138.2236328125,
+                    269.95404052734375,
                     0.0
                 ],
                 "scale": [
@@ -2229,8 +2229,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0,
+                    1041.4742431640625,
+                    365.1537780761719,
                     0.0
                 ],
                 "scale": [
@@ -2274,8 +2274,8 @@
         "Transform": [
             {
                 "position": [
-                    1499.999755859375,
-                    830.000244140625,
+                    1741.473876953125,
+                    745.1542358398438,
                     0.0
                 ],
                 "scale": [
@@ -2313,14 +2313,14 @@
                     1.0,
                     0.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
-                    25.0,
-                    0.0,
+                    266.4742126464844,
+                    -84.84622192382813,
                     0.0
                 ],
                 "scale": [
@@ -2328,11 +2328,11 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
+                    -25.0,
                     0.0,
-                    0.0,
-                    0.0
+                    725.0
                 ]
             }
         ],
@@ -2343,7 +2343,7 @@
                 "localActive": false,
                 "id": 48,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ],
         "TextProperty": [
@@ -2374,14 +2374,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 255
             }
         ],
         "Transform": [
             {
                 "position": [
-                    234.99996948242188,
-                    627.800048828125,
+                    476.47418212890625,
+                    542.953857421875,
                     0.0
                 ],
                 "scale": [
@@ -2389,11 +2389,11 @@
                     100.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -234.99998474121094,
+                    -627.800048828125,
+                    725.0
                 ]
             }
         ],
@@ -2419,14 +2419,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
-                    0.000030517578125,
-                    0.00006103515625,
+                    241.4742431640625,
+                    -84.84616088867188,
                     0.0
                 ],
                 "scale": [
@@ -2434,11 +2434,11 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -0.000030517578125,
+                    -0.00006103515625,
+                    725.0
                 ]
             }
         ],
@@ -2454,7 +2454,7 @@
         ],
         "TextProperty": [
             {
-                "textString": "Press here to restart",
+                "textString": "Press here to go next level",
                 "currentFont": "Roboto-Bold",
                 "scale": 0.800000011920929,
                 "color": [
@@ -2486,8 +2486,8 @@
         "Transform": [
             {
                 "position": [
-                    -47.89404296875,
-                    589.7437744140625,
+                    193.58016967773438,
+                    504.8975524902344,
                     0.0
                 ],
                 "scale": [
@@ -2569,8 +2569,8 @@
         "Transform": [
             {
                 "position": [
-                    -47.28656005859375,
-                    430.4394226074219,
+                    194.18765258789063,
+                    345.59320068359375,
                     0.0
                 ],
                 "scale": [
@@ -2652,8 +2652,8 @@
         "Transform": [
             {
                 "position": [
-                    1649.874267578125,
-                    595.4466552734375,
+                    1891.3485107421875,
+                    510.6004333496094,
                     0.0
                 ],
                 "scale": [
@@ -2735,8 +2735,8 @@
         "Transform": [
             {
                 "position": [
-                    1655.6302490234375,
-                    275.3709411621094,
+                    1897.1044921875,
+                    190.52471923828125,
                     0.0
                 ],
                 "scale": [
@@ -2818,8 +2818,8 @@
         "Transform": [
             {
                 "position": [
-                    872.399658203125,
-                    612.088134765625,
+                    1113.8739013671875,
+                    527.241943359375,
                     0.0
                 ],
                 "scale": [
@@ -2879,8 +2879,8 @@
         "Transform": [
             {
                 "position": [
-                    872.399658203125,
-                    612.0877685546875,
+                    1113.8739013671875,
+                    527.241455078125,
                     0.0
                 ],
                 "scale": [
@@ -2940,8 +2940,8 @@
         "Transform": [
             {
                 "position": [
-                    872.399658203125,
-                    612.0877685546875,
+                    1113.8739013671875,
+                    527.241455078125,
                     0.0
                 ],
                 "scale": [
@@ -3001,8 +3001,8 @@
         "Transform": [
             {
                 "position": [
-                    872.399658203125,
-                    612.0877685546875,
+                    1113.8739013671875,
+                    527.241455078125,
                     0.0
                 ],
                 "scale": [
@@ -3062,8 +3062,8 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    241.47421264648438,
+                    -84.84622192382813,
                     0.0
                 ],
                 "scale": [
@@ -3107,8 +3107,8 @@
         "Transform": [
             {
                 "position": [
-                    1743.2000732421875,
-                    418.8000183105469,
+                    1984.6741943359375,
+                    333.9537658691406,
                     0.0
                 ],
                 "scale": [
@@ -3190,8 +3190,8 @@
         "Transform": [
             {
                 "position": [
-                    1761.60009765625,
-                    417.9999694824219,
+                    2003.0743408203125,
+                    333.1537170410156,
                     0.0
                 ],
                 "scale": [
@@ -3273,8 +3273,8 @@
         "Transform": [
             {
                 "position": [
-                    816.3997802734375,
-                    -52.79998779296875,
+                    1057.8739013671875,
+                    -137.6461944580078,
                     0.0
                 ],
                 "scale": [
@@ -3356,8 +3356,8 @@
         "Transform": [
             {
                 "position": [
-                    1569.2001953125,
-                    873.199951171875,
+                    1810.6744384765625,
+                    788.353759765625,
                     0.0
                 ],
                 "scale": [
@@ -3652,7 +3652,7 @@
                 "tag": "Gameplay_System",
                 "active": true,
                 "localActive": true,
-                "id": 68,
+                "id": 69,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3694,7 +3694,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 69,
+                "id": 70,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3727,7 +3727,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 70,
+                "id": 71,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3760,7 +3760,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 71,
+                "id": 72,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3793,7 +3793,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 72,
+                "id": 73,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3826,7 +3826,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 73,
+                "id": 74,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3859,7 +3859,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 74,
+                "id": 75,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3892,7 +3892,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 75,
+                "id": 76,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3915,8 +3915,8 @@
         "Transform": [
             {
                 "position": [
-                    800.7902221679688,
-                    160.117431640625,
+                    1042.26416015625,
+                    75.27120971679688,
                     0.0
                 ],
                 "scale": [
@@ -3937,7 +3937,7 @@
                 "tag": "AP holder",
                 "active": true,
                 "localActive": true,
-                "id": 76,
+                "id": 77,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -3960,8 +3960,8 @@
         "Transform": [
             {
                 "position": [
-                    704.4699096679688,
-                    168.3548583984375,
+                    945.94384765625,
+                    83.50863647460938,
                     0.0
                 ],
                 "scale": [
@@ -3982,7 +3982,7 @@
                 "tag": "AP1",
                 "active": true,
                 "localActive": true,
-                "id": 77,
+                "id": 78,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4005,8 +4005,8 @@
         "Transform": [
             {
                 "position": [
-                    742.417236328125,
-                    169.53179931640625,
+                    983.8911743164063,
+                    84.68557739257813,
                     0.0
                 ],
                 "scale": [
@@ -4027,7 +4027,7 @@
                 "tag": "AP2",
                 "active": true,
                 "localActive": true,
-                "id": 78,
+                "id": 79,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4050,8 +4050,8 @@
         "Transform": [
             {
                 "position": [
-                    781.3229370117188,
-                    169.53179931640625,
+                    1022.7969360351563,
+                    84.68557739257813,
                     0.0
                 ],
                 "scale": [
@@ -4072,7 +4072,7 @@
                 "tag": "AP3",
                 "active": true,
                 "localActive": true,
-                "id": 79,
+                "id": 80,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4095,8 +4095,8 @@
         "Transform": [
             {
                 "position": [
-                    820.2457885742188,
-                    169.53179931640625,
+                    1061.7196044921875,
+                    84.68557739257813,
                     0.0
                 ],
                 "scale": [
@@ -4117,7 +4117,7 @@
                 "tag": "AP4",
                 "active": true,
                 "localActive": true,
-                "id": 80,
+                "id": 81,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4140,8 +4140,8 @@
         "Transform": [
             {
                 "position": [
-                    859.1586303710938,
-                    170.70849609375,
+                    1100.6324462890625,
+                    85.86227416992188,
                     0.0
                 ],
                 "scale": [
@@ -4162,7 +4162,7 @@
                 "tag": "AP5",
                 "active": true,
                 "localActive": true,
-                "id": 81,
+                "id": 82,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4185,8 +4185,8 @@
         "Transform": [
             {
                 "position": [
-                    898.0698852539063,
-                    169.53179931640625,
+                    1139.5440673828125,
+                    84.68557739257813,
                     0.0
                 ],
                 "scale": [
@@ -4207,7 +4207,7 @@
                 "tag": "AP6",
                 "active": true,
                 "localActive": true,
-                "id": 82,
+                "id": 83,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
@@ -4240,7 +4240,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 83,
+                "id": 84,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4263,8 +4263,8 @@
         "Transform": [
             {
                 "position": [
-                    1346.291748046875,
-                    133.70306396484375,
+                    1587.7659912109375,
+                    48.856842041015625,
                     0.0
                 ],
                 "scale": [
@@ -4285,7 +4285,7 @@
                 "tag": "current_tile_holder",
                 "active": true,
                 "localActive": true,
-                "id": 84,
+                "id": 85,
                 "parentID": 1,
                 "treeNodeFlags": 0
             }
@@ -4308,8 +4308,8 @@
         "Transform": [
             {
                 "position": [
-                    1434.291748046875,
-                    40.697509765625,
+                    1675.7659912109375,
+                    -44.148712158203125,
                     0.0
                 ],
                 "scale": [
@@ -4330,7 +4330,7 @@
                 "tag": "next_tile_holder1",
                 "active": true,
                 "localActive": true,
-                "id": 85,
+                "id": 86,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
@@ -4353,8 +4353,8 @@
         "Transform": [
             {
                 "position": [
-                    1522.291748046875,
-                    40.697509765625,
+                    1763.7659912109375,
+                    -44.148712158203125,
                     0.0
                 ],
                 "scale": [
@@ -4375,7 +4375,7 @@
                 "tag": "next_tile_holder2",
                 "active": true,
                 "localActive": true,
-                "id": 86,
+                "id": 87,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
@@ -4408,7 +4408,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 87,
+                "id": 88,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4441,7 +4441,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 88,
+                "id": 89,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4474,7 +4474,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 89,
+                "id": 90,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4507,7 +4507,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 90,
+                "id": 91,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4540,7 +4540,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 91,
+                "id": 92,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4573,7 +4573,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 92,
+                "id": 93,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4606,7 +4606,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 93,
+                "id": 94,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4639,7 +4639,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 94,
+                "id": 95,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4672,7 +4672,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 95,
+                "id": 96,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4705,7 +4705,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 96,
+                "id": 97,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4738,7 +4738,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 97,
+                "id": 98,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4771,7 +4771,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 98,
+                "id": 99,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4804,7 +4804,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 99,
+                "id": 100,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4837,7 +4837,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 100,
+                "id": 101,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4870,7 +4870,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 101,
+                "id": 102,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4903,7 +4903,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 102,
+                "id": 103,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4936,7 +4936,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 103,
+                "id": 104,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4969,7 +4969,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 104,
+                "id": 105,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5002,7 +5002,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 105,
+                "id": 106,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5035,7 +5035,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 106,
+                "id": 107,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5068,7 +5068,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 107,
+                "id": 108,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5101,7 +5101,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 108,
+                "id": 109,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5134,7 +5134,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 109,
+                "id": 110,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5167,7 +5167,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 110,
+                "id": 111,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5200,7 +5200,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 111,
+                "id": 112,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5233,7 +5233,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 112,
+                "id": 113,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5266,7 +5266,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 113,
+                "id": 114,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5299,7 +5299,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 114,
+                "id": 115,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5332,7 +5332,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 115,
+                "id": 116,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5365,7 +5365,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 116,
+                "id": 117,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5398,7 +5398,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 117,
+                "id": 118,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5431,7 +5431,7 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 118,
+                "id": 119,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5464,9 +5464,242 @@
                 "tag": "Map Parent",
                 "active": true,
                 "localActive": true,
-                "id": 119,
+                "id": 120,
                 "parentID": -1,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 121,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Map Parent",
+                "active": true,
+                "localActive": true,
+                "id": 121,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 122,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Map Parent",
+                "active": true,
+                "localActive": true,
+                "id": 122,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 123,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    83.82208251953125,
+                    51.45721435546875,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Lose_Clear_Text",
+                "active": true,
+                "localActive": true,
+                "id": 123,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Player has lost all health",
+                "currentFont": "Roboto-Bold",
+                "scale": 0.800000011920929,
+                "color": [
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                "position": [
+                    10.0,
+                    400.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 124,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Bar_MenuBackdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 254
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    476.47418212890625,
+                    542.9537353515625,
+                    0.0
+                ],
+                "scale": [
+                    350.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -234.99998474121094,
+                    -627.7999877929688,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Lose_Button",
+                "active": true,
+                "localActive": true,
+                "id": 124,
+                "parentID": 123,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 125,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    476.4742126464844,
+                    542.9537353515625,
+                    0.0
+                ],
+                "scale": [
+                    350.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Lose_Button_Text",
+                "active": true,
+                "localActive": true,
+                "id": 125,
+                "parentID": 124,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Press here to restart",
+                "currentFont": "Roboto-Bold",
+                "scale": 0.800000011920929,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    50.0,
+                    342.0
+                ]
             }
         ]
     }

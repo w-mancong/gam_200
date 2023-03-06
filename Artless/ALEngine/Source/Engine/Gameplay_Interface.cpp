@@ -902,7 +902,7 @@ namespace ALEngine::Script
 				ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
 				Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
 
-				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
+				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Lose_Clear);
 
 				unitData.active = false;
 				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
@@ -910,6 +910,20 @@ namespace ALEngine::Script
 			else {
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
+				
+				b8 allEnemiesDead = true;
+				for (int i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+					Unit& enemy = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
+
+					if (enemy.health > 0) {
+						allEnemiesDead = false; 
+						break;
+					}
+				}
+
+				if (allEnemiesDead) {
+					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
+				}
 			}
 
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
@@ -1723,9 +1737,10 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_Button_Restart([[maybe_unused]] ECS::Entity invoker) {
 		//Restart the gameplay
-		gameplaySystem->Toggle_Gameplay_State(false);
+		//gameplaySystem->Toggle_Gameplay_State(false);
 		Engine::Scene::Restart();
 	}
+
 
 	/*!*********************************************************************************
 	\brief

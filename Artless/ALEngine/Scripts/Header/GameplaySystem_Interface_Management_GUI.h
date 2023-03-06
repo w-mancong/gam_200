@@ -25,6 +25,9 @@ namespace ALEngine::Script
 		//Win
 		ECS::Entity Win_Clear, Win_Button;
 
+		//Lose
+		ECS::Entity Lose_Clear, Lose_Button;
+
 		//List for containing entities of GUI
 		std::vector<ECS::Entity> GUI_Abilities_Button_List;
 		std::vector<ECS::Entity> GUI_Pattern_Button_List;
