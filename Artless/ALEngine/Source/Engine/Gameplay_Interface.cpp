@@ -1000,6 +1000,15 @@ namespace ALEngine::Script
 		bool canPlace = false;
 		bool touchedUnit = false, touchedEmpty = false;
 
+		//Shift through and check for out of bound
+		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			//must connect to player
+			if (!IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y)) {
+				return false;
+			}
+		} //End loop through pattern body check
+
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
@@ -1039,9 +1048,6 @@ namespace ALEngine::Script
 						//return false;
 					}
 				}
-			}
-			else {
-				return false;
 			}
 		} //End loop through pattern body check
 
