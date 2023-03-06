@@ -14,10 +14,17 @@ namespace ALEngine::Engine::Scene
 {
 	// Forward Declaration
 	struct Cutscene;
+	struct CutsceneImage;
 
 	class CutsceneManager : public Templates::Singleton<CutsceneManager>
 	{
 	public:
+		/*!*********************************************************************************
+			\brief
+				Initialize the Cutscene Manager
+		***********************************************************************************/
+		void Init(void);
+
 		/*!*********************************************************************************
 			\brief 
 				Plays the selected sequence
@@ -25,6 +32,12 @@ namespace ALEngine::Engine::Scene
 				The name of the sequence to be played
 		***********************************************************************************/
 		void PlaySequence(std::string sequence);
+
+		/*!*********************************************************************************
+			\brief
+				Stops the current sequence
+		***********************************************************************************/
+		void StopSequence(void);
 
 		/*!*********************************************************************************
 			\brief
@@ -43,7 +56,16 @@ namespace ALEngine::Engine::Scene
 		std::map<std::string, std::vector<Cutscene>> m_Cutscenes{};
 		std::vector<Cutscene>::iterator m_CurrentCutscene{};
 		std::string m_SelectedSequence{};
-		bool m_CutsceneIsPlaying{ false };			
+		bool m_CutsceneIsPlaying{ false };		
+
+		// Entities
+		ECS::Entity m_CutsceneObject{};
+		ECS::Entity m_BlackOverlay{};
+		ECS::Entity m_DialogueBox{};
+
+		// Required for Singleton to function
+		friend class Templates::Singleton<CutsceneManager>;
+		friend class Memory::StaticMemory;
 	};
 
 	struct Cutscene
