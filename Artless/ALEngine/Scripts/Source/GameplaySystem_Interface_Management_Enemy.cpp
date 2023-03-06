@@ -18,7 +18,7 @@ namespace ALEngine::Script
 	{
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);	
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
-		Set_GameplayInterface_Enemy(this);
+		Set_GameplayInterface_Enemy(en);
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Init(ECS::Entity en) {

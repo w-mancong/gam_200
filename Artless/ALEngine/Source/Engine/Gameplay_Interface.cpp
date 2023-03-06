@@ -10,27 +10,24 @@
 namespace ALEngine::Script
 {
 	namespace {
-		GameplaySystem_Interface_Management_Enemy* gameplaySystem_Enemy;
-		GameplaySystem_Interface_Management_GUI* gameplaySystem_GUI;
-		GameplaySystem* gameplaySystem;
-
-		std::shared_ptr<GameplaySystem> gameplaySystem_SharedPtr;
+		std::shared_ptr<GameplaySystem_Interface_Management_Enemy> gameplaySystem_Enemy;
+		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
+		std::shared_ptr<GameplaySystem> gameplaySystem;
 
 		//enemymanager struct object for enemymanagement function to access needed variables
 		Script::GameplaySystem_Interface_Management_Enemy::EnemyManager enemyNeededData;
 	}
 
-	void Set_GameplayInterface_Enemy(void* enemyManagerPtr) {
-		gameplaySystem_Enemy = reinterpret_cast<GameplaySystem_Interface_Management_Enemy*>(enemyManagerPtr);
+	void Set_GameplayInterface_Enemy(ECS::Entity GameplaySystemEntity) {
+		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(GameplaySystemEntity);
 	}
 
-	void Set_GameplayInterface_GUI(void* GUIManagerPtr) {
-		gameplaySystem_GUI = reinterpret_cast<GameplaySystem_Interface_Management_GUI*>(GUIManagerPtr);
+	void Set_GameplayInterface_GUI(ECS::Entity GameplaySystemEntity) {
+		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(GameplaySystemEntity);
 	}
 	
-	void Set_GameplayInterface_GameplayManager(void* ManagerPtr) {
-		gameplaySystem = reinterpret_cast<GameplaySystem*>(ManagerPtr);
-		gameplaySystem_SharedPtr.reset(gameplaySystem);
+	void Set_GameplayInterface_GameplayManager(ECS::Entity GameplaySystemEntity) {
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(GameplaySystemEntity);
 	}
 
 	void GameplaySystem::CreatePlayerUnit(ECS::Entity entity) {
@@ -1180,7 +1177,7 @@ namespace ALEngine::Script
 
 		//Get path
 		std::vector<ECS::Entity> pathList;
-		bool isPathFound = Engine::AI::FindPath(gameplaySystem_SharedPtr, m_Room, startCellEntity, targetCellEntity, pathList, false);
+		bool isPathFound = Engine::AI::FindPath(gameplaySystem, m_Room, startCellEntity, targetCellEntity, pathList, false);
 
 		//If path not found then stop
 		if (!isPathFound) {

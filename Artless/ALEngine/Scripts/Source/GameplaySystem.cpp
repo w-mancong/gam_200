@@ -21,7 +21,7 @@ namespace ALEngine::Script
 	{
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
-		Set_GameplayInterface_GameplayManager(this);
+		Set_GameplayInterface_GameplayManager(en);
 		std::cout << "setting up the system\n";
 	}
 
