@@ -28,8 +28,6 @@ namespace ALEngine::Editor
 
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
-		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-
 		// Set constraints
 		ImGui::SetNextWindowSizeConstraints(m_PanelMin, ImGui::GetMainViewport()->WorkSize);
 
@@ -38,6 +36,8 @@ namespace ALEngine::Editor
 			ImGui::End();
 			return;
 		}
+
+		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
 		// Menu Bar
 		UpdateMenuBar();

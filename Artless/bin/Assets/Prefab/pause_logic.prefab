@@ -1,8 +1,5 @@
 [
     {
-        "map_path": ""
-    },
-    {
         "id": 0,
         "Transform": [
             {
@@ -498,8 +495,8 @@
         "EntityData": [
             {
                 "tag": "quit_confirmation",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 10,
                 "parentID": 0,
                 "treeNodeFlags": 32
@@ -524,7 +521,7 @@
             {
                 "position": [
                     650.0,
-                    350.00006103515625,
+                    350.000732421875,
                     0.0
                 ],
                 "scale": [
@@ -543,7 +540,7 @@
         "EntityData": [
             {
                 "tag": "yes",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 11,
                 "parentID": 10,
@@ -569,7 +566,7 @@
             {
                 "position": [
                     960.0,
-                    350.0001220703125,
+                    350.000732421875,
                     0.0
                 ],
                 "scale": [
@@ -588,7 +585,7 @@
         "EntityData": [
             {
                 "tag": "no",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 12,
                 "parentID": 10,

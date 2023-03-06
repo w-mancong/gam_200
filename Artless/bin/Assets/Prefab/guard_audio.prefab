@@ -1,0 +1,231 @@
+[
+    {
+        "id": 0,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "guard_audio",
+                "active": true,
+                "localActive": true,
+                "id": 0,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "guard_audio_atk",
+                "active": true,
+                "localActive": true,
+                "id": 1,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "AudioSource": [
+            {
+                "audioClips": [
+                    "Assets\\Audio\\GuardAttack_v01.wav",
+                    1.0,
+                    false,
+                    false,
+                    1,
+                    "Assets\\Audio\\GuardAttack_v02.wav",
+                    1.0,
+                    false,
+                    false,
+                    1
+                ]
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "guard_death_audio",
+                "active": true,
+                "localActive": true,
+                "id": 2,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "AudioSource": [
+            {
+                "audioClips": [
+                    "Assets\\Audio\\GuardDeath_v01.wav",
+                    1.0,
+                    false,
+                    false,
+                    1
+                ]
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "guard_hurt_audio",
+                "active": true,
+                "localActive": true,
+                "id": 3,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "AudioSource": [
+            {
+                "audioClips": [
+                    "Assets\\Audio\\GuardGetHit_v01.wav",
+                    1.0,
+                    false,
+                    false,
+                    1,
+                    "Assets\\Audio\\GuardGetHit_v02.wav",
+                    1.0,
+                    false,
+                    false,
+                    1
+                ]
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "guard_move_audio",
+                "active": true,
+                "localActive": true,
+                "id": 4,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "AudioSource": [
+            {
+                "audioClips": [
+                    "Assets\\Audio\\GuardMove_v01.wav",
+                    1.0,
+                    false,
+                    false,
+                    1,
+                    "Assets\\Audio\\GuardMove_v02.wav",
+                    1.0,
+                    false,
+                    false,
+                    1,
+                    "Assets\\Audio\\GuardMove_v03.wav",
+                    1.0,
+                    false,
+                    false,
+                    1
+                ]
+            }
+        ]
+    }
+]

@@ -67,13 +67,13 @@ namespace ALEngine::Editor
 		static b8 clipText{ false }, clipAnimatorError{ false }, clipNameError{ false }, clipFilePathError{ false };
 		static std::string clipButtonStringName[2]{ "Create Clip##AnimatorPanelButton", "Close Clip##AnimatorPanelButton" };
 		static u64 clipButtonIndex{ 0 };
-		static std::string clipWidth{ "128" }, clipHeight{ "128" }, clipTotalSample{ "8" };
+		static std::string clipWidth{ "512" }, clipHeight{ "512" }, clipTotalSample{ "8" };
 
 		auto ResetClipValues = [](void)
 		{
 			clipAnimatorError = clipNameError = clipFilePathError = clipText = false;
 			clipButtonIndex = 0;
-			clipWidth = clipHeight = "128";
+			clipWidth = clipHeight = "512";
 			clipTotalSample = "8";
 			clipFilePathErrorTimer = clipNameErrorTimer = clipAnimatorErrorTimer = 0.0f;
 
@@ -273,6 +273,7 @@ namespace ALEngine::Editor
 					ECS::CreateAnimationClip(tempAnimation.filePath, tempAnimation.clipName, width, height, 12, totalSample);
 					ECS::AddAnimationToAnimator(animator, tempAnimation.clipName);
 					ECS::SaveAnimator(animator);
+					animatorList[currentAnimatorName] = animator;
 
 					ResetClipValues();
 				}

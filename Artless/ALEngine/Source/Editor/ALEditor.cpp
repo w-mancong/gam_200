@@ -296,6 +296,7 @@ namespace ALEngine::Editor
 			{
 				if (ImGui::Selectable("Create New Scene##MainMenuBar"))
 				{
+					SetSelectedEntity(ECS::MAX_ENTITIES);
 					CreateScene();
 				}
 

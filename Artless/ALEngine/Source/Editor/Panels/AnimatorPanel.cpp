@@ -189,6 +189,18 @@ namespace ALEngine::Editor
 					ImGui::EndCombo();
 				}
 
+				auto ReloadAnimators = [](void)
+				{
+					ECS::EntityList const& entities = Coordinator::Instance()->GetEntities();
+					for (ECS::Entity en : entities)
+					{
+						if (!Coordinator::Instance()->HasComponent<Animator>(en))
+							continue;
+						Animator& an = Coordinator::Instance()->GetComponent<Animator>(en);
+						an = ECS::CreateAnimator( an.animatorName.c_str() );
+					}
+				};
+
 				Math::Vec2Int selectedFrame = m_SelectedFrame;
 				ImGui::InputInt("Row No.", &selectedFrame.x);
 				ImGui::InputInt("Col No.", &selectedFrame.y);
@@ -199,11 +211,12 @@ namespace ALEngine::Editor
 						m_SelectedFrame = selectedFrame;
 				}
 				
-				s32 frameNum{ static_cast<s32>(m_SelectedAnimation.frames[m_SelectedFrame.y * MAX_SPRITES_ROW + m_SelectedFrame.y]) };
+				s32 frameNum{ static_cast<s32>(m_SelectedAnimation.frames[m_SelectedFrame.y * MAX_SPRITES_ROW + m_SelectedFrame.x]) };
 				if (ImGui::DragInt("Frame Count", &frameNum))
 				{
 					u64 frameIndex{ static_cast<u64>(m_SelectedFrame.y) * static_cast<u64>(MAX_SPRITES_ROW) + static_cast<u64>(m_SelectedFrame.x) };
 					ECS::ChangeAnimationFramesCount(m_SelectedAnimation, frameIndex, static_cast<u32>(frameNum));
+					ReloadAnimators();
 				}
 								
 				ImGui::InputTextWithHint("Clip Name##Animation Panel Clip Name", "Animation Clip Name", &m_CurrClipName);
@@ -212,12 +225,14 @@ namespace ALEngine::Editor
 				{
 					ECS::ChangeAnimationClipName(m_SelectedAnimator, m_CurrClipName.c_str(), m_OldCurrClipName.c_str());
 					m_OldCurrClipName = m_CurrClipName;
+					ReloadAnimators();
 				}
 
 				s32 sampleRate = m_SelectedAnimation.sample;
 				if (ImGui::DragInt("Sample Rate##InspectorPanelAnimatorSampleRate", &sampleRate, 1.f, 1, 60))
 				{
 					ECS::ChangeAnimationSampleRate(m_SelectedAnimation, static_cast<u32>(sampleRate));
+					ReloadAnimators();
 				}
 			}
 
