@@ -28,9 +28,9 @@ namespace ALEngine::Script
 	void GameplaySystem::Init(ECS::Entity en)
 	{
 		std::cout << "initializing system\n";
-		//StartGameplaySystem();
+		StartGameplaySystem();
 		//InitializeRoom("Assets\\Tutorial_Level.map");
-		InitializeRoom("Assets\\Presentation_Level.map");
+		//InitializeRoom("Assets\\Presentation_Level.map");
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
