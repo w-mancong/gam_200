@@ -42,8 +42,8 @@
                 "active": true,
                 "localActive": true,
                 "id": 0,
-                "parentID": -1,
-                "treeNodeFlags": 32
+                "parentID": 9,
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -64,13 +64,13 @@
         "Transform": [
             {
                 "position": [
-                    400.0,
-                    450.0,
+                    1168.0,
+                    709.199951171875,
                     0.0
                 ],
                 "scale": [
-                    800.0,
-                    800.0
+                    518.4000244140625,
+                    490.5
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -90,6 +90,13 @@
                 "parentID": 0,
                 "treeNodeFlags": 32
             }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "AlphaFadeIn"
+                ]
+            }
         ]
     },
     {
@@ -101,7 +108,7 @@
                     0.8472222089767456,
                     0.8472222089767456,
                     0.20003856718540192,
-                    0.0
+                    1.0
                 ],
                 "layer": 0
             }
@@ -109,13 +116,13 @@
         "Transform": [
             {
                 "position": [
-                    1200.0,
-                    740.0,
+                    1161.599853515625,
+                    466.20001220703125,
                     0.0
                 ],
                 "scale": [
-                    350.0,
-                    125.00000762939453
+                    260.8000183105469,
+                    74.69999694824219
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -128,7 +135,7 @@
         ],
         "EntityData": [
             {
-                "tag": "new_game",
+                "tag": "btn_newgame",
                 "active": true,
                 "localActive": true,
                 "id": 2,
@@ -154,7 +161,7 @@
                     0.9166666865348816,
                     0.35011571645736694,
                     0.35011571645736694,
-                    0.0
+                    1.0
                 ],
                 "layer": 0
             }
@@ -162,13 +169,13 @@
         "Transform": [
             {
                 "position": [
-                    1200.0,
-                    540.0,
+                    1161.599853515625,
+                    352.79998779296875,
                     0.0
                 ],
                 "scale": [
-                    350.0,
-                    125.00000762939453
+                    260.8000183105469,
+                    74.69999694824219
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -181,7 +188,7 @@
         ],
         "EntityData": [
             {
-                "tag": "options",
+                "tag": "btn_options",
                 "active": true,
                 "localActive": true,
                 "id": 3,
@@ -206,7 +213,7 @@
                     0.24170196056365967,
                     0.6804760098457336,
                     0.9253731369972229,
-                    0.0
+                    1.0
                 ],
                 "layer": 0
             }
@@ -214,13 +221,13 @@
         "Transform": [
             {
                 "position": [
-                    1200.0,
-                    340.0,
+                    1161.599853515625,
+                    246.60003662109375,
                     0.0
                 ],
                 "scale": [
-                    350.0,
-                    125.00000762939453
+                    260.8000183105469,
+                    74.69999694824219
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -233,7 +240,7 @@
         ],
         "EntityData": [
             {
-                "tag": "how to play",
+                "tag": "btn_htp",
                 "active": true,
                 "localActive": true,
                 "id": 4,
@@ -244,7 +251,8 @@
         "LogicComponent": [
             {
                 "components": [
-                    "AlphaFadeIn"
+                    "AlphaFadeIn",
+                    "HtpButton"
                 ]
             }
         ]
@@ -258,7 +266,7 @@
                     0.2219904214143753,
                     0.8283581733703613,
                     0.17308977246284485,
-                    0.0
+                    1.0
                 ],
                 "layer": 0
             }
@@ -266,13 +274,13 @@
         "Transform": [
             {
                 "position": [
-                    1200.0,
-                    140.0,
+                    1161.599853515625,
+                    140.4000244140625,
                     0.0
                 ],
                 "scale": [
-                    350.0,
-                    125.00000762939453
+                    260.8000183105469,
+                    74.69999694824219
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -285,7 +293,7 @@
         ],
         "EntityData": [
             {
-                "tag": "quit",
+                "tag": "btn_quit",
                 "active": true,
                 "localActive": true,
                 "id": 5,
@@ -296,6 +304,7 @@
         "LogicComponent": [
             {
                 "components": [
+                    "QuitButton",
                     "AlphaFadeIn"
                 ]
             }
@@ -303,39 +312,6 @@
     },
     {
         "id": 6,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 6,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 7,
         "Sprite": [
             {
                 "filePath": "",
@@ -373,7 +349,7 @@
                 "tag": "scene_transition",
                 "active": true,
                 "localActive": true,
-                "id": 7,
+                "id": 6,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -383,6 +359,264 @@
                 "components": [
                     "SceneChangeHelper"
                 ]
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\HowToPlay.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp",
+                "active": false,
+                "localActive": false,
+                "id": 7,
+                "parentID": 9,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1500.0,
+                    825.0,
+                    0.0
+                ],
+                "scale": [
+                    125.0,
+                    125.00001525878906
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "close",
+                "active": false,
+                "localActive": true,
+                "id": 8,
+                "parentID": 9,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "main_menu",
+                "active": true,
+                "localActive": true,
+                "id": 9,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirm_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1200.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "quit_confirmation",
+                "active": false,
+                "localActive": false,
+                "id": 10,
+                "parentID": 9,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    650.0,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": false,
+                "localActive": true,
+                "id": 11,
+                "parentID": 10,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    960.0,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": false,
+                "localActive": true,
+                "id": 12,
+                "parentID": 10,
+                "treeNodeFlags": 32
             }
         ]
     }

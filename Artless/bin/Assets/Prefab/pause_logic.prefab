@@ -80,7 +80,7 @@
                 "localActive": false,
                 "id": 1,
                 "parentID": 0,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -320,6 +320,13 @@
                 "id": 6,
                 "parentID": 1,
                 "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "QuitButton"
+                ]
             }
         ]
     },

@@ -14,7 +14,7 @@ namespace ALEngine::Script
 	namespace
 	{
 		using namespace ECS;
-		f32 constexpr SPEED{ 0.25f };
+		f32 constexpr SPEED{ 0.45f };
 	}
 
 	void AlphaFadeIn::Init(ECS::Entity en)

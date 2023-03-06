@@ -1,19 +1,19 @@
 /*!
-file:	HtpButton.h
+file:	QuitButton.h
 author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
-brief:	This file contain function declaration for a how to play button
+brief:	This file contain function declaration for a quit game button
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#ifndef	HTP_BUTTON_H
-#define HTP_BUTTON_H
+#ifndef	QUIT_BUTTON_H
+#define QUIT_BUTTON_H
 
 #include <ECS/Components/UniBehaviour.h>
 
 namespace ALEngine::Script
 {
-	class HtpButton : public ECS::Component::UniBehaviour
+	class QuitButton : public ECS::Component::UniBehaviour
 	{
 		/*!*********************************************************************************
 			\brief Used to initialise any values to it's default value
@@ -28,7 +28,7 @@ namespace ALEngine::Script
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)
 		{
-			ECS::AddLogicComponent<HtpButton>(en);
+			ECS::AddLogicComponent<QuitButton>(en);
 		};
 		RTTR_ENABLE(ECS::Component::UniBehaviour)
 	};
