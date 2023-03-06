@@ -120,7 +120,8 @@ namespace ALEngine::Script
 		enemyUnit.minDamage = 0,
 		enemyUnit.maxDamage = 0;
 		enemyUnit.maxActionPoints = 4;
-		enemyUnit.actionPoints = 4;
+		enemyUnit.actionPoints = 4; 
+		enemyUnit.abilityCooldown_Enemy = 3;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
 	}
 
@@ -377,6 +378,12 @@ namespace ALEngine::Script
 		std::vector<ECS::Entity> pathList;
 
 		if (enemyUnit.actionPoints <= 0) {
+			enemyUnit.abilityCooldown_Enemy--;
+			if (enemyUnit.abilityCooldown_Enemy <= 0) {
+				enemyUnit.abilityCooldown_Enemy = 3;
+				Enemy_Cast_Summoner(enemyEntityList[enemyNeededData.enemyMoved]);
+			}
+
 			++enemyNeededData.enemyMoved;
 			gameplaySystem->MoveEnemy();
 			return;
@@ -466,6 +473,12 @@ namespace ALEngine::Script
 		b8 isPathFound = ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyUnit.m_CurrentCell_Entity, cellToMoveTo, pathList, true);
 
 		if (!isPathFound) {
+			enemyUnit.abilityCooldown_Enemy--;
+			if (enemyUnit.abilityCooldown_Enemy <= 0) {
+				enemyUnit.abilityCooldown_Enemy = 3;
+				Enemy_Cast_Summoner(enemyEntityList[enemyNeededData.enemyMoved]);
+			}
+
 			++enemyNeededData.enemyMoved;
 			gameplaySystem->MoveEnemy();
 			return;
@@ -479,12 +492,34 @@ namespace ALEngine::Script
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
-		
+
 		//gameplaySystem->MoveEnemy();
 	}
 	
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Cast_Summoner(ECS::Entity& summoner_Entity) {
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(summoner_Entity);
+
+		//Shift through all adjacent and find one that is accessible and have no unit, then spawn
+
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				//If coordinate is out of bound
+				if (!gameplaySystem->IsCoordinateInsideRoom(gameplaySystem->m_Room, enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j)) {
+					continue;
+				}
+
+				//Get offset cell component 
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j));
+
+				//Skip if cell is not navigable, has unit or wall
+				if (!cell.m_isAccessible || cell.hasUnit || cell.has_Wall) {
+					continue;
+				}
+
+				PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+				return;
+			} //End j loop
+		} //End i loop
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Melee(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room)

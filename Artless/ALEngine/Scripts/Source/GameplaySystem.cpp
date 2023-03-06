@@ -308,7 +308,7 @@ namespace ALEngine::Script
 
 		////Place enemy
 		//enemyEntityList.clear();
-		//ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+		//ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room
 		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 

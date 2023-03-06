@@ -50,6 +50,7 @@ namespace ALEngine::ECS::Component
 		s32 minRange{}, maxRange{};
 
 		s32 stunDuration{ 0 };
+		s32 abilityCooldown_Enemy{ 0 };
 
 		//unit type
 		UNIT_TYPE unitType{};
