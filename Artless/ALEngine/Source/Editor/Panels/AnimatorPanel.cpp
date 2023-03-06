@@ -27,7 +27,7 @@ namespace ALEngine::Editor
 	{
 		m_SelectedAnimator = AnimatorEditorPanel::GetListOfAnimators().begin()->second;
 		m_SelectedAnimation = m_SelectedAnimator.animations.begin()->second;
-		m_CurrClipName = m_CurrClipName = m_SelectedAnimation.clipName;
+		m_CurrClipName = m_OldCurrClipName = m_SelectedAnimation.clipName;
 		m_SelectedAnimatorIndex = 0;
 		m_SelectedAnimationIndex = 0;
 	}
