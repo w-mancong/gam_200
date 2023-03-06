@@ -16,6 +16,7 @@ brief:	This file contains function definitions for the InspectorPanel class.
 #include "imgui_internal.h"
 #include <../Scripts/others/ScriptManager.h>
 #include <ECS/Systems/LogicSystem.h>
+#include "imgui/cpp/imgui_stdlib.h"
 
 namespace ALEngine::Editor
 {
@@ -777,9 +778,7 @@ namespace ALEngine::Editor
 		if (ImGui::CollapsingHeader("Text Component"))
 		{
 			// String input field
-			c8* str = const_cast<c8*>(prop.textString.c_str());	
-			ImGui::InputText("String##InspectorTextComponent", str, 31); // exceeding 31 characters causes crash
-			prop.textString = str;
+			ImGui::InputText("String##InspectorTextComponent", &prop.textString); // exceeding 31 characters causes crash
 
 			// font pop down menu
 			ImVec2 winsize = ImGui::GetWindowSize();

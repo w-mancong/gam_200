@@ -181,6 +181,22 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
 
+		/*!*********************************************************************************
+		\brief
+		 enemy summoner AI logic function for handling update of enemy AI
+		\param [in] enemyNeededData
+		Reference to enemy Struct object of datas from the level
+		\param [in] movingUnitEntity
+		Reference to enemyunit that is moving
+		\param [in] currentUnitControlStatus
+		Reference the level unit control statis
+		\param [in] enemyEntityList
+		 Reference to enemyEntityList for use
+		\param [in] m_Room
+		 Reference to m_Room which is the game room variables for use
+		***********************************************************************************/
+		void Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
+
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)
 		{

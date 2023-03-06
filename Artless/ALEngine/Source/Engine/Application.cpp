@@ -187,6 +187,8 @@ namespace ALEngine::Engine
 
 			Coordinator::Instance()->ResetSystem();
 
+			Scene::LoadScene();
+
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current  = GameStateManager::next;
 		}
@@ -211,6 +213,7 @@ namespace ALEngine::Engine
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
+		Scene::CutsceneManager::Instance()->Init();
 
 		// Init ImGui
 #if EDITOR
