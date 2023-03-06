@@ -604,7 +604,7 @@ namespace ALEngine::Script
 		//Fixed damage
 		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
-		new_ability.damage = 15;
+		new_ability.damage = 9;
 		new_ability.max_Cooldown = 1;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
@@ -612,7 +612,7 @@ namespace ALEngine::Script
 		//Life steal
 		new_ability.current_Ability_Name = ABILITY_NAME::LIFE_DRAIN;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
-		new_ability.damage = 12;
+		new_ability.damage = 8;
 		new_ability.max_Cooldown = 2;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);

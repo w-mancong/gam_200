@@ -386,6 +386,12 @@ namespace ALEngine::Script
 				Enemy_Cast_Summoner(enemyEntityList[enemyNeededData.enemyMoved]);
 			}
 
+			//If health <= 3, heal 3
+			if (enemyUnit.health <= 3) {
+				enemyUnit.health += 3;
+				gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
+			}
+
 			++enemyNeededData.enemyMoved;
 			gameplaySystem->MoveEnemy();
 			return;
@@ -395,6 +401,11 @@ namespace ALEngine::Script
 		//Use heuristic values from int vector coordinate to determine this action
 		//If distance is >= 5, go towards player, else, go away
 		b8 goTowardsPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1])) >= 5;
+
+		//If health <= 3, run away from player
+		if (enemyUnit.health <= 3) {
+			goTowardsPlayer = false;
+		}
 
 		//Move right
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]) &&
@@ -479,6 +490,12 @@ namespace ALEngine::Script
 			if (enemyUnit.abilityCooldown_Enemy <= 0) {
 				enemyUnit.abilityCooldown_Enemy = summonerCD;
 				Enemy_Cast_Summoner(enemyEntityList[enemyNeededData.enemyMoved]);
+			}
+
+			//If health <= 3, heal 3
+			if (enemyUnit.health <= 3) {
+				enemyUnit.health += 3;
+				gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
 			}
 
 			++enemyNeededData.enemyMoved;
