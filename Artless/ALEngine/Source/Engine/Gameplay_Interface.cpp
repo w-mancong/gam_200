@@ -62,6 +62,8 @@ namespace ALEngine::Script
 		Animator an = ECS::CreateAnimator("Player");
 		Coordinator::Instance()->AddComponent(playerUnit.unit_Sprite_Entity, an);
 
+		//ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity), "PlayerIdle");
+
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Player";
 		Coordinator::Instance()->GetComponent<EntityData>(playerUnit.unit_Sprite_Entity).tag = "Player_Sprite";
 
@@ -1209,8 +1211,8 @@ namespace ALEngine::Script
 		}
 
 		//// Set the move animation for player
-		//Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
-		//ECS::ChangeAnimation(an, "PlayerMove");
+		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+		//ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
 
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
