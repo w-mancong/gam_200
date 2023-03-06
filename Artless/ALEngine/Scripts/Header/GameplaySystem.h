@@ -443,7 +443,7 @@ namespace ALEngine::Script
 		ECS::Entity masterAudioSource{ ECS::MAX_ENTITIES };
 
 		//Tracks debug drawing for room
-		b8 is_DebugDraw = true;
+		b8 is_DebugDraw = false;
 
 		Engine::Audio* buttonClickAudio{ nullptr };
 
