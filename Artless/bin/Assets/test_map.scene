@@ -28,11 +28,11 @@
                     33.79999923706055
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -801.0499877929688,
+                    -120.04296875,
+                    725.0
                 ]
             }
         ],
@@ -166,7 +166,7 @@
                 "localActive": true,
                 "id": 3,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -413,7 +413,7 @@
             {
                 "position": [
                     169.75,
-                    57.5890007019043,
+                    57.58900451660156,
                     0.0
                 ],
                 "scale": [
@@ -421,11 +421,11 @@
                     114.4000015258789
                 ],
                 "rotation": 0.0,
-                "ui": true,
+                "ui": false,
                 "uiOffset": [
-                    -169.75,
-                    -57.5890007019043,
-                    725.0
+                    0.0,
+                    0.0,
+                    0.0
                 ]
             }
         ],
@@ -727,7 +727,7 @@
         "Transform": [
             {
                 "position": [
-                    658.2810668945313,
+                    658.281005859375,
                     39.20122528076172,
                     0.0
                 ],
@@ -772,7 +772,7 @@
         "Transform": [
             {
                 "position": [
-                    718.5944213867188,
+                    718.5943603515625,
                     39.20122528076172,
                     0.0
                 ],
@@ -817,7 +817,7 @@
         "Transform": [
             {
                 "position": [
-                    880.0794067382813,
+                    880.0792846679688,
                     39.20122528076172,
                     0.0
                 ],
@@ -862,7 +862,7 @@
         "Transform": [
             {
                 "position": [
-                    940.8768310546875,
+                    940.8767700195313,
                     39.20122528076172,
                     0.0
                 ],
@@ -907,7 +907,7 @@
         "Transform": [
             {
                 "position": [
-                    1001.1885375976563,
+                    1001.1884155273438,
                     39.20122528076172,
                     0.0
                 ],
@@ -1219,7 +1219,7 @@
             {
                 "position": [
                     136.34759521484375,
-                    57.58670425415039,
+                    57.586708068847656,
                     0.0
                 ],
                 "scale": [
@@ -1561,7 +1561,7 @@
         "Transform": [
             {
                 "position": [
-                    1149.999267578125,
+                    1149.9990234375,
                     939.9996337890625,
                     0.0
                 ],
@@ -1610,7 +1610,7 @@
         "Transform": [
             {
                 "position": [
-                    1149.999267578125,
+                    1149.9990234375,
                     939.9996337890625,
                     0.0
                 ],
@@ -1659,7 +1659,7 @@
         "Transform": [
             {
                 "position": [
-                    1149.999267578125,
+                    1149.9990234375,
                     939.9996337890625,
                     0.0
                 ],
@@ -1708,7 +1708,7 @@
         "Transform": [
             {
                 "position": [
-                    1149.999267578125,
+                    1149.9990234375,
                     939.9996337890625,
                     0.0
                 ],
@@ -1793,7 +1793,7 @@
                 "localActive": false,
                 "id": 38,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -1905,7 +1905,7 @@
             {
                 "position": [
                     799.9998779296875,
-                    218.69461059570313,
+                    218.69456481933594,
                     0.0
                 ],
                 "scale": [
@@ -2990,7 +2990,7 @@
                 "localActive": true,
                 "id": 59,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -3322,7 +3322,7 @@
             {
                 "position": [
                     799.9998779296875,
-                    349.19915771484375,
+                    349.1991271972656,
                     0.0
                 ],
                 "scale": [
@@ -3819,7 +3819,7 @@
         "Transform": [
             {
                 "position": [
-                    800.797119140625,
+                    800.7970581054688,
                     160.11741638183594,
                     0.0
                 ],
@@ -3864,7 +3864,7 @@
         "Transform": [
             {
                 "position": [
-                    704.4893798828125,
+                    704.4892578125,
                     168.35501098632813,
                     0.0
                 ],
@@ -3909,7 +3909,7 @@
         "Transform": [
             {
                 "position": [
-                    742.4241333007813,
+                    742.424072265625,
                     169.53182983398438,
                     0.0
                 ],
@@ -3954,7 +3954,7 @@
         "Transform": [
             {
                 "position": [
-                    781.3289794921875,
+                    781.328857421875,
                     169.53182983398438,
                     0.0
                 ],
@@ -3999,7 +3999,7 @@
         "Transform": [
             {
                 "position": [
-                    820.25146484375,
+                    820.2514038085938,
                     169.53182983398438,
                     0.0
                 ],
@@ -4044,7 +4044,7 @@
         "Transform": [
             {
                 "position": [
-                    859.1644287109375,
+                    859.1643676757813,
                     170.70855712890625,
                     0.0
                 ],
@@ -4089,7 +4089,7 @@
         "Transform": [
             {
                 "position": [
-                    898.0755615234375,
+                    898.0755004882813,
                     169.53182983398438,
                     0.0
                 ],
@@ -4545,6 +4545,309 @@
                 "localActive": true,
                 "id": 94,
                 "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 96,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Map Parent",
+                "active": true,
+                "localActive": true,
+                "id": 95,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 97,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path1",
+                "active": true,
+                "localActive": true,
+                "id": 96,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 98,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path2",
+                "active": true,
+                "localActive": true,
+                "id": 97,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 99,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path3",
+                "active": true,
+                "localActive": true,
+                "id": 98,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 100,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path4",
+                "active": true,
+                "localActive": true,
+                "id": 99,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 101,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path5",
+                "active": true,
+                "localActive": true,
+                "id": 100,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 102,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path6",
+                "active": true,
+                "localActive": true,
+                "id": 101,
+                "parentID": 59,
                 "treeNodeFlags": 32
             }
         ]

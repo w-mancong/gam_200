@@ -1434,7 +1434,8 @@ namespace ALEngine::Script
 	\brief
 		Event for when mouse enter cell
 	***********************************************************************************/
-	void Event_MouseEnterCell(ECS::Entity invoker) {
+	void Event_MouseEnterCell(ECS::Entity invoker) 
+	{
 		//Keep track of cell the mouse is interacting with
 		gameplaySystem->current_Moused_Over_Cell = invoker;
 
@@ -1666,8 +1667,12 @@ namespace ALEngine::Script
 
 		//If path not found then stop
 		if (!isPathFound) {
-			AL_CORE_INFO("No Path Found");
+			AL_CORE_INFO("No Path Found mutt");
 			return;
+		}
+		else
+		{
+			AL_CORE_INFO("Path Found mutt");
 		}
 
 		bool reachable = true;
@@ -1744,37 +1749,40 @@ namespace ALEngine::Script
 			}
 
 			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(pathlist[i]);
-
-			/*Transform& overlayTrans = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().path_blocks[i]);
-			Sprite& overlaySprite = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().path_blocks[i]);
+			Transform& overlayTrans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().Highlight_blocks[i]);
+			Sprite& overlaySprite = Coordinator::Instance()->GetComponent<Sprite>(gameplaySystem_GUI->getGuiManager().Highlight_blocks[i]);
 
 			switch (path)
 			{
 			case PATHSTATUS::HORIZONTAL:
-				overlaySprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Horizontal.png");
+				overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Horizontal.png");
+				overlayTrans.position = trans.position;
 				break;
 			case PATHSTATUS::VERTICAL:
-				overlaySprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Vertical.png");
+				overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Vertical.png");
+				overlayTrans.position = trans.position;
 				break;
 			case PATHSTATUS::END:
-				overlaySprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Destination.png");
+				overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Destination.png");
+				overlayTrans.position = trans.position;
 				break;
 			case PATHSTATUS::LEFTDOWN:
-				overlaySprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Btm_Left.png");
+				overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Btm_Left.png");
+				overlayTrans.position = trans.position;
 				break;
 			case PATHSTATUS::RIGHTDOWN:
-				overlaySprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Btm_Right.png");
+				overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Btm_Right.png");
+				overlayTrans.position = trans.position;
 				break;
 			case PATHSTATUS::LEFTUP:
-				overlaySprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Top_Left.png");
+				overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Top_Left.png");
+				overlayTrans.position = trans.position;
 				break;
 			case PATHSTATUS::RIGHTUP:
-				overlaySprite.id = AssetManager::Instance()->GetGuid("Assets/Images/Top_Right.png");
+				overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Top_Right.png");
+				overlayTrans.position = trans.position;
 				break;
-			}*/
+			}
 		}
 	}
-
-
-
 }

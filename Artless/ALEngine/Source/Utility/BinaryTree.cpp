@@ -160,8 +160,8 @@ namespace ALEngine::Tree
         while (node->left != nullptr)
         {
             prevNode = node;
-            searchVect.push_back(node);
             node = node->left;
+            searchVect.push_back(node);
 
             if (node->id == id)
             {
