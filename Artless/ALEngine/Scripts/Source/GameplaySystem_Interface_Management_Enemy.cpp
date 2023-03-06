@@ -10,6 +10,8 @@ namespace ALEngine::Script
 	namespace {
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
+
+		s32 summonerCD = 3;
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Load(ECS::Entity en)
@@ -121,7 +123,7 @@ namespace ALEngine::Script
 		enemyUnit.maxDamage = 0;
 		enemyUnit.maxActionPoints = 4;
 		enemyUnit.actionPoints = 4; 
-		enemyUnit.abilityCooldown_Enemy = 3;
+		enemyUnit.abilityCooldown_Enemy = summonerCD;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
 	}
 
@@ -380,7 +382,7 @@ namespace ALEngine::Script
 		if (enemyUnit.actionPoints <= 0) {
 			enemyUnit.abilityCooldown_Enemy--;
 			if (enemyUnit.abilityCooldown_Enemy <= 0) {
-				enemyUnit.abilityCooldown_Enemy = 3;
+				enemyUnit.abilityCooldown_Enemy = summonerCD;
 				Enemy_Cast_Summoner(enemyEntityList[enemyNeededData.enemyMoved]);
 			}
 
@@ -475,7 +477,7 @@ namespace ALEngine::Script
 		if (!isPathFound) {
 			enemyUnit.abilityCooldown_Enemy--;
 			if (enemyUnit.abilityCooldown_Enemy <= 0) {
-				enemyUnit.abilityCooldown_Enemy = 3;
+				enemyUnit.abilityCooldown_Enemy = summonerCD;
 				Enemy_Cast_Summoner(enemyEntityList[enemyNeededData.enemyMoved]);
 			}
 
@@ -515,8 +517,9 @@ namespace ALEngine::Script
 				if (!cell.m_isAccessible || cell.hasUnit || cell.has_Wall) {
 					continue;
 				}
-
-				PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, ENEMY_TYPE::ENEMY_MELEE, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+				
+				bool spawnMelee = (rand() % 100) <= 60;
+				PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, spawnMelee ? ENEMY_TYPE::ENEMY_MELEE : ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
 				return;
 			} //End j loop
 		} //End i loop
