@@ -12,5 +12,6 @@
 #include <AlphaFadeIn.h>
 #include <SceneChangeHelper.h>
 #include <QuitButton.h>
+#include <MainMenuButton.h>
 
 #endif

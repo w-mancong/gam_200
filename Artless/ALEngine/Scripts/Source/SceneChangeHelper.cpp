@@ -42,13 +42,13 @@ namespace ALEngine::Script
 			Engine::Scene::NextScene();
 	}
 
-	void SceneChangeHelper::ChangeScene(std::string const& sceneName)
+	void SceneChangeHelper::NextScene(std::string const& sceneName)
 	{
 		changeScene = true;
 		this->sceneName = sceneName;
 	}
 
-	void SceneChangeHelper::ChangeScene(u64 sceneIndex)
+	void SceneChangeHelper::NextScene(u64 sceneIndex)
 	{
 		changeScene = true;
 		this->sceneIndex = static_cast<s64>(sceneIndex);

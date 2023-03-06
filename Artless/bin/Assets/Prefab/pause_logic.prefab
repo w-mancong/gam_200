@@ -28,7 +28,7 @@
                 "localActive": true,
                 "id": 0,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "LogicComponent": [
@@ -178,6 +178,13 @@
                 "id": 3,
                 "parentID": 1,
                 "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "MainMenuButton"
+                ]
             }
         ]
     },
@@ -506,7 +513,7 @@
                 "localActive": false,
                 "id": 10,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -597,6 +604,193 @@
                 "id": 12,
                 "parentID": 10,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirmation_MainMenu.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1200.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "menu_confirmation",
+                "active": false,
+                "localActive": false,
+                "id": 13,
+                "parentID": 0,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    650.0,
+                    350.0001525878906,
+                    0.0
+                ],
+                "scale": [
+                    249.60000610351563,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": false,
+                "localActive": true,
+                "id": 14,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    959.5999755859375,
+                    350.0001525878906,
+                    0.0
+                ],
+                "scale": [
+                    240.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": false,
+                "localActive": true,
+                "id": 15,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "scene_transition",
+                "active": true,
+                "localActive": true,
+                "id": 16,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "SceneChangeHelper"
+                ]
             }
         ]
     }
