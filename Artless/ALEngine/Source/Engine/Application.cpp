@@ -187,6 +187,8 @@ namespace ALEngine::Engine
 
 			Coordinator::Instance()->ResetSystem();
 
+			Scene::LoadScene();
+
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current  = GameStateManager::next;
 		}

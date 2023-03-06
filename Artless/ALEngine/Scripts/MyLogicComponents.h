@@ -6,5 +6,10 @@
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <PauseLogic.h>
+#include <ResumeButton.h>
+#include <HtpButton.h>
+#include <NewGameButton.h>
+#include <AlphaFadeIn.h>
+#include <SceneChangeHelper.h>
 
 #endif

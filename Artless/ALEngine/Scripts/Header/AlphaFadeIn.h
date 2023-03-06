@@ -1,19 +1,19 @@
 /*!
-file:	PauseLogic.h
+file:	AlphaFadeIn.h
 author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
-brief:	This file contain function declaration for a pause menu
+brief:	This file contain function declaration for a pause menu's resume button
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
-#ifndef	PAUSE_LOGIC_H
-#define PAUSE_LOGIC_H
+#ifndef	ALPHA_FADE_IN_H
+#define ALPHA_FADE_IN_H
 
 #include <ECS/Components/UniBehaviour.h>
 
 namespace ALEngine::Script
 {
-	class PauseLogic : public ECS::Component::UniBehaviour
+	class AlphaFadeIn : public ECS::Component::UniBehaviour
 	{
 		/*!*********************************************************************************
 			\brief Used to initialise any values to it's default value
@@ -25,20 +25,15 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Update(ECS::Entity en);
 
-		/*!*********************************************************************************
-			\brief Whenever a scene ends, use this function to free any resources
-		**********************************************************************************/
-		void Free(ECS::Entity en);
-
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)
 		{
-			ECS::AddLogicComponent<PauseLogic>(en);
+			ECS::AddLogicComponent<AlphaFadeIn>(en);
 		};
-		RTTR_ENABLE(ECS::Component::UniBehaviour)
+		RTTR_ENABLE(ECS::Component::UniBehaviour);
 
-	public:
-		b8 paused{ false };
+		// variables
+		Sprite* sprite{ nullptr };
 	};
 }
 

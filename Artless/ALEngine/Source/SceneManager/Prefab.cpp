@@ -117,6 +117,18 @@ namespace ALEngine
 		writer.Key("rotation");
 		writer.Double(static_cast<f64>(transform.rotation));
 
+		// UI
+		writer.Key("ui");
+		writer.Bool(transform.ui);
+
+		// uiOffset
+		writer.Key("uiOffset");
+		writer.StartArray();
+		writer.Double(static_cast<f64>(transform.uiOffset.x));
+		writer.Double(static_cast<f64>(transform.uiOffset.y));
+		writer.Double(static_cast<f64>(transform.uiOffset.z));
+		writer.EndArray();
+
 		writer.EndObject();
 		writer.EndArray();
 	}
@@ -138,6 +150,15 @@ namespace ALEngine
 
 		// Getting rotation
 		transform.rotation = v[0]["rotation"].GetFloat();
+
+		//// Getting UI status
+		//transform.ui = v[0]["ui"].GetBool();
+
+		//// Getting uiOffset
+		//rjs::Value const& t = v[0]["uiOffset"];
+		//transform.uiOffset.x = t[0].GetFloat();
+		//transform.uiOffset.y = t[1].GetFloat();
+		//transform.uiOffset.z = t[2].GetFloat();
 
 		Coordinator::Instance()->AddComponent(en, transform);
 	}
@@ -677,8 +698,12 @@ namespace ALEngine
 		writer.StartArray();
 		for (auto const& it : as.list)
 		{
-			std::string const& name = it.second.m_AudioName;
-			writer.String(name.c_str(), static_cast<rjs::SizeType>(name.length()));
+			Engine::Audio const& audio = it.second;
+			writer.String( audio.m_AudioName.c_str(), static_cast<rjs::SizeType>( audio.m_AudioName.length() ) );	// 0
+			writer.Double( audio.m_Volume );					// 1
+			writer.Bool( audio.m_Loop );						// 2
+			writer.Bool( audio.m_Mute );						// 3
+			writer.Uint64( static_cast<u64>(audio.m_Channel) );	// 4
 		}
 		writer.EndArray();
 
@@ -690,11 +715,26 @@ namespace ALEngine
 	{
 		rjs::Value const& c = v[0]["audioClips"];
 		Engine::AudioSource as;
-		for (u64 i = 0; i < c.Size(); ++i)
+		for (u64 i = 0, asId = 0; i < c.Size(); i += 5)
 		{
-			c8 const* name = c[i].GetString();
+			// 0 - audio name
+			c8 const* name = c[i + 0].GetString();
 			Guid id = Engine::AssetManager::Instance()->GetGuid(name);
-			as.list[as.id++] = Engine::AssetManager::Instance()->GetAudio(id);
+			as.list[as.id] = Engine::AssetManager::Instance()->GetAudio(id);
+
+			as.list[as.id].m_ID = asId++;
+
+			// 1 - volume
+			as.list[as.id].m_Volume = c[i + 1].GetFloat();
+
+			// 2 - loop
+			as.list[as.id].m_Loop = c[i + 2].GetBool();
+
+			// 3 - mute
+			as.list[as.id].m_Mute = c[i + 3].GetBool();
+
+			// 4 - Channel
+			as.list[as.id++].m_Channel = static_cast<Engine::Channel>( c[i + 4].GetUint64() );			
 		}
 		Coordinator::Instance()->AddComponent(en, as);
 	}
@@ -775,6 +815,10 @@ namespace ALEngine
 			return;
 		}
 		ofs.write(sb.GetString(), sb.GetLength());
+
+		EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(en);
+		if (instObjects.count(ed.tag) != 0)
+			instObjects[ed.tag] = sb.GetString();
 	}
 #endif
 
@@ -814,7 +858,7 @@ namespace ALEngine
 			SerialID parent;
 		};
 
-		std::unordered_map<SerialID, DeserializeID> entities;
+		std::map<SerialID, DeserializeID> entities;
 
 		// Save the prefab data into a seperate entity id starting from (MAX_ENTITIES + 1) - (MAX_ENTITIES + MAX_PREFABS + 1) 
 		for (rjs::Value::ValueIterator it{ doc.Begin() }; it != doc.End(); ++it)
