@@ -267,6 +267,11 @@ namespace ALEngine::Script
 
 				//Get the cell component
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				
+				if (cell.m_isAccessible == false) {
+					continue;
+				}
+
 				resetCounter = checkTileCounters(cell);
 
 				//If 1 then set to crack

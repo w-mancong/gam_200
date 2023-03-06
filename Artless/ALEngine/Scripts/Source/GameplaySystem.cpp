@@ -22,15 +22,12 @@ namespace ALEngine::Script
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
 		Set_GameplayInterface_GameplayManager(en);
-		std::cout << "setting up the system\n";
 	}
 
 	void GameplaySystem::Init(ECS::Entity en)
 	{
-		std::cout << "initializing system\n";
 		StartGameplaySystem();
-		//InitializeRoom("Assets\\Tutorial_Level.map");
-		//InitializeRoom("Assets\\Presentation_Level.map");
+		InitializeRoom("Assets\\Presentation_Level.map");
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -115,8 +112,8 @@ namespace ALEngine::Script
 				{
 					m_Room.playerX = r;
 					m_Room.playerY = c; 
-					Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
-
+					//Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 				}
 				// Skip "Empty" tiles
 				else if (row != "Empty")
@@ -141,7 +138,12 @@ namespace ALEngine::Script
 
 						// Empty Tile under enemy
 						Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
-						ToggleCellAccessibility(m_Room, r, c, false);
+						ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
+					}
+					else if (row == "Vertical_Wall" || row == "Top_Wall" || row == "Horizontal_Wall" || row == "Bottom_Wall") {
+						Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, r, c)).m_isAccessible = false;
+						Coordinator::Instance()->GetComponent<EventTrigger>(getEntityCell(m_Room, r, c)).isEnabled = false;
+						ECS::CreateSprite(m_Room.roomCellsArray[counter], tile_image.c_str());
 					}
 					else
 					{
@@ -150,8 +152,9 @@ namespace ALEngine::Script
 				}
 				else
 				{
-					Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
-					ToggleCellAccessibility(m_Room, r, c, false);
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
+					//Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+					//ToggleCellAccessibility(m_Room, r, c, false);
 				}
 
 				++counter;
@@ -188,7 +191,6 @@ namespace ALEngine::Script
 
 
 	void GameplaySystem::StartGameplaySystem() {
-
 		AL_CORE_INFO("GAME START");
 		//Set up scene
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
@@ -240,87 +242,87 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->InitializeGUI();
 
 
-		//Initialize the room and cells
-		for (uint32_t i = 0; i < getRoomSize(); ++i) {
-			m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
+		////Initialize the room and cells
+		//for (uint32_t i = 0; i < getRoomSize(); ++i) {
+		//	m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
 
-			sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[i]); // other cells are children of the parent
+		//	sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[i]); // other cells are children of the parent
 
-			//Set default transform and scale
-			Transform transform;
-			transform.scale = { 100, 100 };
-			transform.localScale = { 100, 100 };
+		//	//Set default transform and scale
+		//	Transform transform;
+		//	transform.scale = { 100, 100 };
+		//	transform.localScale = { 100, 100 };
 
-			Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[i], transform);
+		//	Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[i], transform);
 
-			ECS::CreateSprite(m_Room.roomCellsArray[i], "Assets/Images/InitialTile_v04.png");
-		}
+		//	ECS::CreateSprite(m_Room.roomCellsArray[i], "Assets/Images/InitialTile_v04.png");
+		//}
 
-		//Set up the event triggers for the cells
-		for (s32 i = 0; i < static_cast<s32>(roomSize[0]); ++i) {
-			for (s32 j = 0; j < static_cast<s32>(roomSize[1]); ++j) {
-				//Determine the cell index
-				s32 cellIndex = i * roomSize[0] + j;
+		////Set up the event triggers for the cells
+		//for (s32 i = 0; i < static_cast<s32>(roomSize[0]); ++i) {
+		//	for (s32 j = 0; j < static_cast<s32>(roomSize[1]); ++j) {
+		//		//Determine the cell index
+		//		s32 cellIndex = i * roomSize[0] + j;
 
-				//Get the transform component
-				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(m_Room.roomCellsArray[cellIndex]);
+		//		//Get the transform component
+		//		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(m_Room.roomCellsArray[cellIndex]);
 
-				//Set the physical position according from the coordinates
-				transform.position = { 450 + (f32)j * 100.f, 150 + (f32)i * 100.f };
+		//		//Set the physical position according from the coordinates
+		//		transform.position = { 450 + (f32)j * 100.f, 150 + (f32)i * 100.f };
 
-				//Set the coordinates for the cell
-				Cell cell;
-				cell.coordinate = { i,j };
+		//		//Set the coordinates for the cell
+		//		Cell cell;
+		//		cell.coordinate = { i,j };
 
-				//Create the triggers and subscribe the cell related events
-				ECS::CreateEventTrigger(m_Room.roomCellsArray[cellIndex]);
-				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
-				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
-				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+		//		//Create the triggers and subscribe the cell related events
+		//		ECS::CreateEventTrigger(m_Room.roomCellsArray[cellIndex]);
+		//		ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
+		//		ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
+		//		ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
 
-				//Add the child overlay
-				cell.child_overlay = Coordinator::Instance()->CreateEntity();
+		//		//Add the child overlay
+		//		cell.child_overlay = Coordinator::Instance()->CreateEntity();
 
-				sceneGraph.Push(m_Room_Parent_Entity, cell.child_overlay); // other cells are children of the parent
-				ECS::CreateSprite(cell.child_overlay, "Assets/Images/InitialTile_v04.png");
+		//		sceneGraph.Push(m_Room_Parent_Entity, cell.child_overlay); // other cells are children of the parent
+		//		ECS::CreateSprite(cell.child_overlay, "Assets/Images/InitialTile_v04.png");
 
-				Transform child_overlay_transform;
-				child_overlay_transform.scale = transform.scale;
-				//child_overlay_transform.scale.y += 50;
-				child_overlay_transform.position = { 450 + (f32)i * 100.f, 150 + (f32)j * 100.f };
-				//child_overlay_transform.position.y += 50 >> 2;
-				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
+		//		Transform child_overlay_transform;
+		//		child_overlay_transform.scale = transform.scale;
+		//		//child_overlay_transform.scale.y += 50;
+		//		child_overlay_transform.position = { 450 + (f32)i * 100.f, 150 + (f32)j * 100.f };
+		//		//child_overlay_transform.position.y += 50 >> 2;
+		//		Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
 
-				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, i, j), cell);
-				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(i) + "," + std::to_string(j) + "]";
-				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(m_Room, i, j)).tag = "Cell[" + std::to_string(i) + "," + std::to_string(j) + "]";
-				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY	
-			}
-		}
+		//		Coordinator::Instance()->AddComponent(getEntityCell(m_Room, i, j), cell);
+		//		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(i) + "," + std::to_string(j) + "]";
+		//		Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(m_Room, i, j)).tag = "Cell[" + std::to_string(i) + "," + std::to_string(j) + "]";
+		//		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY	
+		//	}
+		//}
 
-		//Create Player
-		PlaceNewPlayerInRoom(0, 2);
+		////Create Player
+		//PlaceNewPlayerInRoom(0, 2);
 
-		//Place enemy
-		enemyEntityList.clear();
-		ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		////Place enemy
+		//enemyEntityList.clear();
+		//ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		////Place enemy
+		//enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		////Place enemy
+		//enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(0, 3, ENEMY_TYPE::ENEMY_SUMMONER, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		////Place enemy
+		//enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(0, 3, ENEMY_TYPE::ENEMY_SUMMONER, enemyEntityList, m_Room);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
 		//Create EndTurn Button
 		InitializeEndTurnButton();

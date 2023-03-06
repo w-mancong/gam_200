@@ -264,18 +264,15 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Run destroy block Attack");
 		bool ifEnemyIsOnWalkableCell = true;
 
-		AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed block");
 		//destroy the walkable block here important
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
-			ECS::Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
 
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  center block");
 		}
 
 		//up
@@ -284,11 +281,7 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
-			ECS::Entity cellEntity = m_Room.roomCellsArray[cellIndex];
-
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -297,6 +290,8 @@ namespace ALEngine::Script
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
 				}
 			}
+
+			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  up block");
 		}
 
 		//down
@@ -305,11 +300,7 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
-			ECS::Entity cellEntity = m_Room.roomCellsArray[cellIndex];
-
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -318,6 +309,8 @@ namespace ALEngine::Script
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
 				}
 			}
+
+			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  down block");
 		}
 
 		//left
@@ -326,11 +319,10 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
-			ECS::Entity cellEntity = m_Room.roomCellsArray[cellIndex];
+			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
 
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+			//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
+			//sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -339,6 +331,8 @@ namespace ALEngine::Script
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
 				}
 			}
+
+			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  left block");
 		}
 
 		//right
@@ -347,11 +341,7 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			s32 cellIndex = enemyUnit.coordinate[0] * enemyUnit.coordinate[1];
-			ECS::Entity cellEntity = m_Room.roomCellsArray[cellIndex];
-
-			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
+			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -360,6 +350,8 @@ namespace ALEngine::Script
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
 				}
 			}
+
+			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed right block");
 		}
 	}
 
