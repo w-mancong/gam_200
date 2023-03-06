@@ -213,6 +213,7 @@ namespace ALEngine::Engine
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
+		Scene::CutsceneManager::Instance()->Init();
 
 		// Init ImGui
 #if EDITOR

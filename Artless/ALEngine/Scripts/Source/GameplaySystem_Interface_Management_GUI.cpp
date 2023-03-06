@@ -52,7 +52,7 @@ namespace ALEngine::Script
 		Text& defense_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Defense);
 		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Movement);
 		Text& range_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Range);
-		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
+		//Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
 
 		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
 		attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
@@ -61,7 +61,7 @@ namespace ALEngine::Script
 		range_text.textString = std::to_string(unit.minRange);
 		name_text.textString = unit.unit_Name;
 
-		profile.id = Engine::AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
+		//profile.id = Engine::AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
 
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Unit_Healthbar);
 		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
@@ -72,7 +72,7 @@ namespace ALEngine::Script
 		//Initialize GUI Text and Sprites zafir2
 		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
-		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
+		//guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
 		guiManager.Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
 		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
 		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
@@ -96,6 +96,12 @@ namespace ALEngine::Script
 		guiManager.AP_Indicators[3] = Coordinator::Instance()->GetEntityByTag("AP4");
 		guiManager.AP_Indicators[4] = Coordinator::Instance()->GetEntityByTag("AP5");
 		guiManager.AP_Indicators[5] = Coordinator::Instance()->GetEntityByTag("AP6");
+		guiManager.Highlight_blocks[0] = Coordinator::Instance()->GetEntityByTag("Highlight_Path1");
+		guiManager.Highlight_blocks[1] = Coordinator::Instance()->GetEntityByTag("Highlight_Path2");
+		guiManager.Highlight_blocks[2] = Coordinator::Instance()->GetEntityByTag("Highlight_Path3");
+		guiManager.Highlight_blocks[3] = Coordinator::Instance()->GetEntityByTag("Highlight_Path4");
+		guiManager.Highlight_blocks[4] = Coordinator::Instance()->GetEntityByTag("Highlight_Path5");
+		guiManager.Highlight_blocks[5] = Coordinator::Instance()->GetEntityByTag("Highlight_Path6");
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
