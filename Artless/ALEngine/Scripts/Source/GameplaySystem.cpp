@@ -300,26 +300,32 @@ namespace ALEngine::Script
 		//Create Player
 		PlaceNewPlayerInRoom(0, 2);
 
-		//Place enemy
+		//Place enemy Summoneer, solo test
 		enemyEntityList.clear();
-		ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+		ECS::Entity enemyEntity = enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(0, 3, ENEMY_TYPE::ENEMY_SUMMONER, enemyEntityList, m_Room);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		////Place enemy
+		//enemyEntityList.clear();
+		//ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		////Place enemy
+		//enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(0, 3, ENEMY_TYPE::ENEMY_SUMMONER, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+		////Place enemy
+		//enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
+
+		////Place enemy
+		//enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(0, 3, ENEMY_TYPE::ENEMY_SUMMONER, enemyEntityList, m_Room);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
+		//ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
 		//Create EndTurn Button
 		InitializeEndTurnButton();

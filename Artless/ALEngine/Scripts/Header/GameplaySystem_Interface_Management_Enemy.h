@@ -167,6 +167,7 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
 
+		void Enemy_Cast_Summoner(ECS::Entity& summoner_Entity);
 
 		/*!*********************************************************************************
 		\brief
