@@ -65,7 +65,7 @@ namespace ALEngine::Script
 		profile.id = Engine::AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
 
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Unit_Healthbar);
-		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
+		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth)) * 0.5f;
 	}
 
 	void GameplaySystem_Interface_Management_GUI::InitializeGUI()
@@ -73,7 +73,7 @@ namespace ALEngine::Script
 		//Initialize GUI Text and Sprites zafir2
 		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
-		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
+		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_unit");
 		guiManager.Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
 		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
 		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
