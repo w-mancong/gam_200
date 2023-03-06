@@ -155,6 +155,13 @@ namespace ALEngine::Script
 			//Display the your turn animation 
 			ECS::ParticleSystem::GetParticleSystem().DisplayYourTurn();
 
+			for (int i = 0; i < Abilities_List.size(); ++i) {
+				if (Abilities_List[i].current_Cooldown > 0) {
+					Abilities_List[i].current_Cooldown--;
+				}
+			}
+
+			gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, false);
 			break;
 		}
 		gameplaySystem_GUI->GuiUpdatePhaseIndicator(currentPhaseStatus);

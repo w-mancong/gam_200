@@ -123,7 +123,7 @@ namespace ALEngine::Script
 		enemyUnit.maxDamage = 0;
 		enemyUnit.maxActionPoints = 4;
 		enemyUnit.actionPoints = 4; 
-		enemyUnit.abilityCooldown_Enemy = summonerCD;
+		enemyUnit.abilityCooldown_Enemy = 0;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
 	}
 
