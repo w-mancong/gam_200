@@ -380,6 +380,8 @@ namespace ALEngine::Script
 
 		void scanRoomCellArray();
 		void checkPlayerPlacement();
+		void DisplayPlayerEntityPathToCell(ECS::Entity cellEntity);
+		void HighlightWalkableCellsRange(Room& room, Math::Vector2Int coordinate, bool reachable, std::vector<ECS::Entity>& pathlist);
 
 
 		/*!*********************************************************************************
