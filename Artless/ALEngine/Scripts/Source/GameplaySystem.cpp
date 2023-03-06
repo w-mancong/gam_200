@@ -15,6 +15,7 @@ namespace ALEngine::Script
 	namespace {
 		std::shared_ptr < GameplaySystem_Interface_Management_Enemy> gameplaySystem_Enemy;
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
+		std::shared_ptr<GameplaySystem> gameplaySystem;
 
 		std::string room_To_Load = "Assets\\Presentation_Level.map";
 	}
@@ -34,8 +35,9 @@ namespace ALEngine::Script
 		Load Level 2
 	***********************************************************************************/
 	void Event_Button_LoadLevel_2(ECS::Entity invoker) {
+		gameplaySystem->Toggle_Gameplay_State(false);
 		//Restart the gameplay
-		room_To_Load = "Assets\\Tutorial_Level.map";
+		room_To_Load = "Assets\\Level_1.map";
 		Engine::Scene::Restart();
 	}
 
@@ -43,6 +45,7 @@ namespace ALEngine::Script
 	{
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
 		Set_GameplayInterface_GameplayManager(en);
 	}
 

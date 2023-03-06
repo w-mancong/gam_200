@@ -13,7 +13,7 @@ namespace ALEngine::Script
 {	
 	namespace
 	{
-		f32 constexpr const PADDING_PERCENTAGE = 0.1f, CAMERA_SPEED = 75.0f;
+		f32 constexpr const PADDING_PERCENTAGE = 0.1f, CAMERA_SPEED = 350.0f;
 	}
 
 	void GameplayCamera::Update([[maybe_unused]] ECS::Entity en)
