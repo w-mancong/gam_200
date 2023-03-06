@@ -8,5 +8,8 @@
 #include <PauseLogic.h>
 #include <ResumeButton.h>
 #include <HtpButton.h>
+#include <NewGameButton.h>
+#include <AlphaFadeIn.h>
+#include <SceneChangeHelper.h>
 
 #endif

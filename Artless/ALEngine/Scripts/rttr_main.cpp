@@ -31,4 +31,16 @@ RTTR_REGISTRATION
 	registration::class_<HtpButton>("HtpButton")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<NewGameButton>("NewGameButton")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<AlphaFadeIn>("AlphaFadeIn")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<SceneChangeHelper>("SceneChangeHelper")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

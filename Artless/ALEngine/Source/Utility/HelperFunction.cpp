@@ -36,9 +36,11 @@ namespace ALEngine::Utility
 			return nullptr;
 		}
 
-		c8* buffer = Memory::DynamicMemory::New<c8>(SIZE);
+		c8* buffer = Memory::DynamicMemory::New<c8>(SIZE + 1);
 		ifs.read(reinterpret_cast<char*>(buffer), SIZE);
 		ifs.close();
+
+		*(buffer + SIZE) = '\0';
 
 		if(outSize)
 			*outSize = static_cast<u32>(SIZE);

@@ -20,6 +20,7 @@ namespace ALEngine::Engine::Scene
 
 		c8 const* sceneBuildIndexFilePath = "Assets\\Dev\\SceneManager\\scenesBuildIndex";
 
+		u64 sceneIndex{};
 		std::string currScene{};
 		std::vector<std::string> scenes{};	// this scenes will be storing the path to the .scene file
 #if EDITOR
@@ -922,6 +923,13 @@ namespace ALEngine::Engine::Scene
 		}
 
 		currScene = sceneName;
+		sceneIndex = 0;
+		for (std::string const& scene : scenes)
+		{
+			if (scene == currScene)
+				break;
+			++sceneIndex;
+		}
 
 		rjs::Document doc;
 		doc.Parse(buffer);
@@ -930,18 +938,31 @@ namespace ALEngine::Engine::Scene
 		Coordinator::Instance()->DestroyEntities();
 
 		DeserializeScene(doc);
-		GameStateManager::Next(GameState::LevelSwitch);
-	}
-
-	void LoadScene(u64 sceneIndex)
-	{
-		LoadScene(scenes[sceneIndex]);
 	}
 
 	void LoadScene(void)
 	{
 		LoadScene(currScene.c_str());
-		GameStateManager::next = GameStateManager::current;
+	}
+
+	void NextScene(std::string const& sceneName)
+	{
+		currScene = sceneName;
+		GameStateManager::Next(GameState::LevelSwitch);
+	}
+
+	void NextScene(u64 sceneIndex)
+	{
+		assert(sceneIndex < scenes.size() && "sceneIndex out of bound.");
+		currScene = scenes[sceneIndex];
+		GameStateManager::Next(GameState::LevelSwitch);
+	}
+
+	void NextScene(void)
+	{
+		(++sceneIndex) %= scenes.size();
+		currScene = scenes[sceneIndex];
+		GameStateManager::Next(GameState::LevelSwitch);
 	}
 
 	void Restart(void)

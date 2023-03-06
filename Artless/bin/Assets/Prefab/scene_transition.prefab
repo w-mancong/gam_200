@@ -1,31 +1,28 @@
 [
     {
-        "map_path": ""
-    },
-    {
         "id": 0,
         "Sprite": [
             {
                 "filePath": "",
                 "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
-                    50.0,
-                    50.0
+                    1600.0,
+                    900.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -38,7 +35,7 @@
         ],
         "EntityData": [
             {
-                "tag": "entity #0",
+                "tag": "scene_transition",
                 "active": true,
                 "localActive": true,
                 "id": 0,
@@ -46,10 +43,10 @@
                 "treeNodeFlags": 32
             }
         ],
-        "AudioSource": [
+        "LogicComponent": [
             {
-                "audioClips": [
-                    "Assets\\Audio\\DrorWalking_1.wav"
+                "components": [
+                    "SceneChangeHelper"
                 ]
             }
         ]

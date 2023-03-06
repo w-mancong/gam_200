@@ -1,22 +1,22 @@
 /*!
-file:	ResumeButton.cpp
+file:	NewGameButton.cpp
 author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
-brief:	This file contain function declaration for a resume button
+brief:	This file contain function declaration for new game button
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
-#include <ResumeButton.h>
-#include <PauseLogic.h>
+#include <NewGameButton.h>
+#include <SceneChangeHelper.h>
 
 namespace ALEngine::Script
 {
 	namespace
 	{
 		using namespace ECS;
-
-		Entity bd_pause{ ECS::MAX_ENTITIES }, bd_pause_parent{ ECS::MAX_ENTITIES };
+		f32 constexpr ALPHA_VALUE{ 0.925f };
+		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
 
 		void Darken(Entity en)
 		{
@@ -32,35 +32,35 @@ namespace ALEngine::Script
 
 		void WhenHover(Entity en)
 		{
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
-				std::shared_ptr<PauseLogic> pl = GetLogicComponent<PauseLogic>(bd_pause_parent);
-				pl->paused = false;
-				SetActive(false, bd_pause);
-				Time::m_Scale = 1.0f;
-				Lighten(en);
+				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
+				ptr->NextScene();
 			}
 		}
 
 		void WhenExit(Entity en)
 		{
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
+				return;
 			Lighten(en);
 		}
 	}
 
-	void ResumeButton::Init(ECS::Entity en)
+	void NewGameButton::Init(ECS::Entity en)
 	{
-		bd_pause = static_cast<Entity>( GetSceneGraph().GetParent(en) );
-		bd_pause_parent = static_cast<Entity>( GetSceneGraph().GetParent(bd_pause) );
-
 		CreateEventTrigger(en, true);
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenHover);
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenExit);
+
+		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
 	}
 
-	void ResumeButton::Free(ECS::Entity en)
+	void NewGameButton::Free(ECS::Entity en)
 	{
-		bd_pause = bd_pause_parent = MAX_ENTITIES;
+		scene_transition = ECS::MAX_ENTITIES;
 	}
 }
