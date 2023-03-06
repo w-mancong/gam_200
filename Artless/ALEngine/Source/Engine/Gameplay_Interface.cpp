@@ -981,12 +981,15 @@ namespace ALEngine::Script
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				if (!cell.m_isAccessible) {
-					continue;
+					return false;
 				}
 
 				if (cell.m_canWalk) {
 					return false;
 				}
+			}
+			else {
+				return false;
 			}
 		}//End loop through pattern body check
 
@@ -1036,6 +1039,9 @@ namespace ALEngine::Script
 						//return false;
 					}
 				}
+			}
+			else {
+				return false;
 			}
 		} //End loop through pattern body check
 
