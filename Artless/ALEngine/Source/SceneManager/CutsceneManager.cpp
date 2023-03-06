@@ -23,7 +23,7 @@ namespace ALEngine::Engine::Scene
 
 	void CutsceneManager::Init(void)
 	{
-		m_CutsceneObject = Instantiate("Cutscene Object");
+		/*m_CutsceneObject = Instantiate("Cutscene Object");
 		ECS::GetSceneGraph().FindImmediateChildren(m_CutsceneObject);
 		std::vector<s32> const& children = ECS::GetSceneGraph().GetChildren();
 		for (s32 child : children)
@@ -34,8 +34,7 @@ namespace ALEngine::Engine::Scene
 				m_BlackOverlay = child;
 			else if (data.tag == "Dialogue Box")
 				m_DialogueBox = child;
-		}
-		std::cout << std::endl;
+		}*/
 	}
 
 	void CutsceneManager::PlaySequence(std::string sequence)
