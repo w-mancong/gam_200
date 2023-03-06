@@ -78,9 +78,9 @@
                 "tag": "bd_pause",
                 "active": false,
                 "localActive": false,
-                "id": 3,
+                "id": 1,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -123,8 +123,8 @@
                 "tag": "btn_resume",
                 "active": false,
                 "localActive": true,
-                "id": 4,
-                "parentID": 3,
+                "id": 2,
+                "parentID": 1,
                 "treeNodeFlags": 32
             }
         ],
@@ -175,8 +175,8 @@
                 "tag": "btn_mainmenu",
                 "active": false,
                 "localActive": true,
-                "id": 5,
-                "parentID": 3,
+                "id": 3,
+                "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
@@ -220,8 +220,8 @@
                 "tag": "btn_options",
                 "active": false,
                 "localActive": true,
-                "id": 6,
-                "parentID": 3,
+                "id": 4,
+                "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
@@ -265,8 +265,8 @@
                 "tag": "btn_htp",
                 "active": false,
                 "localActive": true,
-                "id": 7,
-                "parentID": 3,
+                "id": 5,
+                "parentID": 1,
                 "treeNodeFlags": 32
             }
         ],
@@ -317,8 +317,8 @@
                 "tag": "btn_quit",
                 "active": false,
                 "localActive": true,
-                "id": 8,
-                "parentID": 3,
+                "id": 6,
+                "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
@@ -362,8 +362,8 @@
                 "tag": "game_logo",
                 "active": false,
                 "localActive": true,
-                "id": 9,
-                "parentID": 3,
+                "id": 7,
+                "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
@@ -407,7 +407,7 @@
                 "tag": "htp",
                 "active": false,
                 "localActive": false,
-                "id": 2,
+                "id": 8,
                 "parentID": 0,
                 "treeNodeFlags": 32
             }
@@ -452,8 +452,143 @@
                 "tag": "close",
                 "active": false,
                 "localActive": true,
-                "id": 1,
+                "id": 9,
                 "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirm_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1200.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "quit_confirmation",
+                "active": false,
+                "localActive": false,
+                "id": 10,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    650.0,
+                    350.00006103515625,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": true,
+                "localActive": true,
+                "id": 11,
+                "parentID": 10,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    960.0,
+                    350.0001220703125,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": true,
+                "localActive": true,
+                "id": 12,
+                "parentID": 10,
                 "treeNodeFlags": 32
             }
         ]
