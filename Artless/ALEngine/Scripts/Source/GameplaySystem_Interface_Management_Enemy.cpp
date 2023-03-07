@@ -169,6 +169,9 @@ namespace ALEngine::Script
 			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit_2.png";
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/TileBreaker.png");
+			Animator an = ECS::CreateAnimator("Tile Destroyer");
+			Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
+			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "TileDestroyerIdle");
 		}
 		SetEnemy02attributes(enemyUnit);
 		break;
@@ -178,6 +181,9 @@ namespace ALEngine::Script
 			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Summoner.png";
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Summoner.png");
+			Animator an = ECS::CreateAnimator("Summoner");
+			Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
+			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerIdle");
 		}
 		SetEnemy03attributes(enemyUnit);
 		break;
@@ -371,6 +377,8 @@ namespace ALEngine::Script
 
 
 		if (enemyUnit.actionPoints <= 0) {
+			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerIdle");
+
 			enemyUnit.abilityCooldown_Enemy--;
 			if (enemyUnit.abilityCooldown_Enemy <= 0) {
 				enemyUnit.abilityCooldown_Enemy = summonerCD;
@@ -479,6 +487,7 @@ namespace ALEngine::Script
 		b8 isPathFound = ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyUnit.m_CurrentCell_Entity, cellToMoveTo, pathList, true);
 
 		if (!isPathFound) {
+			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerIdle");
 			enemyUnit.abilityCooldown_Enemy--;
 			if (enemyUnit.abilityCooldown_Enemy <= 0) {
 				enemyUnit.abilityCooldown_Enemy = summonerCD;
@@ -497,6 +506,8 @@ namespace ALEngine::Script
 		}
 
 		movingUnitEntity = enemyEntityList[enemyNeededData.enemyMoved];
+
+		ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerMove");
 
 		//Path found, move the enemy accordingly
 		gameplaySystem->SetMoveOrder(pathList);
@@ -638,7 +649,6 @@ namespace ALEngine::Script
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity);
 		ECS::ChangeAnimation(an, "GuardMove");
 
-
 		AL_CORE_INFO("Path Found");
 
 		//Path found, move the enemy accordingly
@@ -748,6 +758,8 @@ namespace ALEngine::Script
 		}
 
 		AL_CORE_INFO("Path Found");
+
+		ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "TileDestroyerMoving");
 
 		//compare paths sizes
 		for (std::vector<std::vector<ECS::Entity>>::iterator i = listofpathlists.begin(); i != listofpathlists.end(); ++i)
