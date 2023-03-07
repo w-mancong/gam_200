@@ -96,6 +96,7 @@ namespace ALEngine::Script
 		guiManager.AP_Indicators[3] = Coordinator::Instance()->GetEntityByTag("AP4");
 		guiManager.AP_Indicators[4] = Coordinator::Instance()->GetEntityByTag("AP5");
 		guiManager.AP_Indicators[5] = Coordinator::Instance()->GetEntityByTag("AP6");
+		guiManager.endTurnBtnEntity = Coordinator::Instance()->GetEntityByTag("end_turn"); 
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);

@@ -62,7 +62,7 @@ namespace ALEngine::Script
 		Animator an = ECS::CreateAnimator("Player");
 		Coordinator::Instance()->AddComponent(playerUnit.unit_Sprite_Entity, an);
 
-		//ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity), "PlayerIdle");
+		ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity), "PlayerIdle");
 
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Player";
 		Coordinator::Instance()->GetComponent<EntityData>(playerUnit.unit_Sprite_Entity).tag = "Player_Sprite";
@@ -1212,7 +1212,7 @@ namespace ALEngine::Script
 
 		//// Set the move animation for player
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
-		//ECS::ChangeAnimation(an, "PlayerRun");
+		ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
 
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
@@ -1630,7 +1630,7 @@ namespace ALEngine::Script
 					ad.Stop();
 
 					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
-					//ECS::ChangeAnimation(an, "PlayerIdle");
+					ECS::ChangeAnimation(an, "PlayerIdle");
 					if (movinUnit.actionPoints <= 0) {
 						EndTurn();
 					}
@@ -1640,7 +1640,7 @@ namespace ALEngine::Script
 					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 						//Stop movement
 						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
-						//ECS::ChangeAnimation(an, "BishopIdle");
+						ECS::ChangeAnimation(an, "GuardIdle");
 						gameplaySystem_Enemy->RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved - 1]));
 					}
 					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
