@@ -1182,6 +1182,8 @@ namespace ALEngine::Script
 				} //End switch check
 			}//End check if it's inside room
 		}//End loop through pattern body check
+
+		ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(ECS::Entity cellEntity) {
