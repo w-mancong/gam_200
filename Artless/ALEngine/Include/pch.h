@@ -89,7 +89,7 @@ brief:	This file contain all the header files that are will be precompiled inste
 #include <Common Header/MyScene.h>
 #include <Common Header//MyUndoRedo.h>
 
-#include <Prefabs/Prefabs.h>
+#include <SceneManager/Prefabs.h>
 
 // Serializations
 #include <Serialization/Serializer.h>

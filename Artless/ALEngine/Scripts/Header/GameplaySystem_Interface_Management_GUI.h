@@ -9,7 +9,7 @@ namespace ALEngine::Script
 	struct GUI
 	{
 		//UI
-		ECS::Entity endTurnBtnEntity;
+		ECS::Entity endTurnBtnEntity{ ECS::MAX_ENTITIES };
 
 		//Keep track of GUI entities
 		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Rang, Unit_Profile;
