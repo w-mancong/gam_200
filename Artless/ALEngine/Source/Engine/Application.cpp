@@ -186,9 +186,19 @@ namespace ALEngine::Engine
 #endif
 
 			Coordinator::Instance()->ResetSystem();
-
-			Scene::LoadScene();
-
+#if EDITOR
+			if (ALEditor::Instance()->GetGameActive())
+			{
+#endif
+				Scene::LoadScene();
+#if EDITOR
+			}
+			else
+			{
+				Coordinator::Instance()->DestroyEntities();
+				Engine::Scene::LoadState();
+			}
+#endif
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current  = GameStateManager::next;
 		}
