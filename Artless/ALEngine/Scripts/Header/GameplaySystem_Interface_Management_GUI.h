@@ -12,7 +12,7 @@ namespace ALEngine::Script
 		ECS::Entity endTurnBtnEntity;
 
 		//Keep track of GUI entities
-		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Range;
+		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Rang, Unit_Profile;
 		//ECS::Entity Unit_Profile;
 		ECS::Entity Unit_Healthbar, Phase_Indicator;
 		ECS::Entity Skill_Tip_Icon, Skill_Tip_Header, Skill_Tip_Line1, Skill_Tip_Line2, Skill_Tip_Line3, Skill_Tip_Line4;
@@ -24,6 +24,9 @@ namespace ALEngine::Script
 
 		//Win
 		ECS::Entity Win_Clear, Win_Button;
+
+		//Lose
+		ECS::Entity Lose_Clear, Lose_Button;
 
 		//List for containing entities of GUI
 		std::vector<ECS::Entity> GUI_Abilities_Button_List;
@@ -116,6 +119,21 @@ namespace ALEngine::Script
 			Updates the FPS label. Can be toggled on and off using ctrl.
 		***********************************************************************************/
 		void UpdateFpsLabel();
+
+		/*!*********************************************************************************
+		\brief
+			Updates the Action point UI
+		***********************************************************************************/
+		void Update_AP_UI(int AP_count);
+
+		/*!*********************************************************************************
+		\brief
+			Updates the Action point UI to visualize cost
+		***********************************************************************************/
+		void Update_AP_UI_For_Cost(int AP_count, int AP_Cost);
+
+
+		void Update_Ability_Cooldown(std::vector<Abilities> ability_set, bool isAbilityGUIActive);
 
 		GUI guiManager;	
 		

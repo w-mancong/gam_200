@@ -49,7 +49,7 @@ enum class PATTERN_PLACEMENT_STATUS {
 \brief
 	Ability names
 ***********************************************************************************/
-enum class ABILITY_NAME { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL };
+enum class ABILITY_NAME { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL, OVERHANG, MATRIX_TRAP, VOLATILE };
 
 /*!*********************************************************************************
 \brief
@@ -86,8 +86,7 @@ struct Pattern {
 	std::string file_path{};
 
 	//list of grid occupied relative to where it will be placed, 0,0 will be the center. 0,1 will be 1 grid right. 
-	std::vector<ALEngine::Math::Vector2Int> coordinate_occupied{}
-	;
+	std::vector<std::vector<ALEngine::Math::Vector2Int>> offsetGroup;
 };
 
 /*!*********************************************************************************
@@ -99,6 +98,8 @@ public:
 	//Stats
 	ALEngine::ECS::Entity current_Cooldown = 0, max_Cooldown = 2;
 	ALEngine::ECS::Entity damage = 15;
+
+	s32 cost{ 2 };
 
 	ABILITY_TYPE current_Ability_Type = ABILITY_TYPE::DIRECT;
 
@@ -119,9 +120,9 @@ struct MoveOrder {
 
 namespace ALEngine::Script
 {
-	void Set_GameplayInterface_Enemy(void* enemyManagerPtr);
-	void Set_GameplayInterface_GUI(void* GUIManagerPtr);
-	void Set_GameplayInterface_GameplayManager(void* GUIManagerPtr);
+	void Set_GameplayInterface_Enemy(ECS::Entity GameplaySystemEntity);
+	void Set_GameplayInterface_GUI(ECS::Entity GameplaySystemEntity);
+	void Set_GameplayInterface_GameplayManager(ECS::Entity GameplaySystemEntity);
 
 	//***************** Events  ************************//
 		/*!*********************************************************************************
@@ -129,6 +130,18 @@ namespace ALEngine::Script
 		Restart the level
 	***********************************************************************************/
 	void Event_Button_Restart(ECS::Entity invoker);
+
+	/*!*********************************************************************************
+	\brief
+		Load Level 2
+	***********************************************************************************/
+	void Event_Button_LoadLevel_2(ECS::Entity invoker);
+
+	/*!*********************************************************************************
+	\brief
+		Load Level 2
+	***********************************************************************************/
+	void Event_Button_LoadLevel_1(ECS::Entity invoker);
 
 	/*!*********************************************************************************
 	\brief
@@ -147,6 +160,25 @@ namespace ALEngine::Script
 		Select Ability 2
 	***********************************************************************************/
 	void Event_Button_Select_Abilities_2(ECS::Entity invoker);
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 2
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_3(ECS::Entity invoker);
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 2
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_4(ECS::Entity invoker);
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 2
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_5(ECS::Entity invoker);
+
 
 	/*!*********************************************************************************
 	\brief

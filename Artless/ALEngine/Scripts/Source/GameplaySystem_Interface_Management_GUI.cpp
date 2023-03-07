@@ -16,7 +16,7 @@ namespace ALEngine::Script
 	{
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
-		Set_GameplayInterface_GUI(this);
+		Set_GameplayInterface_GUI(en);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::Init(ECS::Entity en){
@@ -40,7 +40,8 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::Unload(ECS::Entity en)
 	{
-
+		gameplaySystem.reset();
+		gameplaySystem_GUI.reset();
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
@@ -51,20 +52,18 @@ namespace ALEngine::Script
 		Text& attack_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Attack);
 		Text& defense_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Defense);
 		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Movement);
-		Text& range_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Range);
-		//Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
+		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
 
 		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
 		attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
 		defense_text.textString = std::to_string(unit.defense);
-		movement_text.textString = std::to_string(unit.movementPoints) + "/" + std::to_string(unit.maxMovementPoints);
-		range_text.textString = std::to_string(unit.minRange);
+		movement_text.textString = std::to_string(unit.actionPoints) + "/" + std::to_string(unit.maxActionPoints);
 		name_text.textString = unit.unit_Name;
 
-		//profile.id = Engine::AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
+		profile.id = Engine::AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
 
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Unit_Healthbar);
-		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth));
+		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth)) * 0.5f;
 	}
 
 	void GameplaySystem_Interface_Management_GUI::InitializeGUI()
@@ -72,14 +71,15 @@ namespace ALEngine::Script
 		//Initialize GUI Text and Sprites zafir2
 		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
-		//guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_player");
+		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_unit");
 		guiManager.Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
 		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
 		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
-		guiManager.Unit_Range = Coordinator::Instance()->GetEntityByTag("text_range_output");
 		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red_health_bar");
 		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
 		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+		guiManager.Lose_Clear = Coordinator::Instance()->GetEntityByTag("Lose_Clear_Text");
+		guiManager.Lose_Button = Coordinator::Instance()->GetEntityByTag("Lose_Button");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
 		guiManager.Skill_Tip_Icon = Coordinator::Instance()->GetEntityByTag("skill_icon");
 		guiManager.Skill_Tip_Header = Coordinator::Instance()->GetEntityByTag("text_skillname");
@@ -96,17 +96,13 @@ namespace ALEngine::Script
 		guiManager.AP_Indicators[3] = Coordinator::Instance()->GetEntityByTag("AP4");
 		guiManager.AP_Indicators[4] = Coordinator::Instance()->GetEntityByTag("AP5");
 		guiManager.AP_Indicators[5] = Coordinator::Instance()->GetEntityByTag("AP6");
-		guiManager.Highlight_blocks[0] = Coordinator::Instance()->GetEntityByTag("Highlight_Path1");
-		guiManager.Highlight_blocks[1] = Coordinator::Instance()->GetEntityByTag("Highlight_Path2");
-		guiManager.Highlight_blocks[2] = Coordinator::Instance()->GetEntityByTag("Highlight_Path3");
-		guiManager.Highlight_blocks[3] = Coordinator::Instance()->GetEntityByTag("Highlight_Path4");
-		guiManager.Highlight_blocks[4] = Coordinator::Instance()->GetEntityByTag("Highlight_Path5");
-		guiManager.Highlight_blocks[5] = Coordinator::Instance()->GetEntityByTag("Highlight_Path6");
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
+		ECS::SetActive(false, guiManager.Lose_Clear);
 
 		ECS::CreateButton(guiManager.Win_Button);
+		ECS::CreateButton(guiManager.Lose_Button);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateFpsLabel()
@@ -158,7 +154,6 @@ namespace ALEngine::Script
 		//There will be a fix of 4 buttons
 		for (int i = 1; i <= 6; ++i) {
 			GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("skill_icon" + std::to_string(i)));
-			//GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->CreateEntity());
 		}
 
 		//Set base x
@@ -184,7 +179,7 @@ namespace ALEngine::Script
 			ECS::Subscribe(GUI_Abilities_Button_Entities[i], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Script::Event_Button_Exit_Ability_GUI);
 		}
 
-		for (int i = 0; i < 3; ++i) {
+		for (int i = 0; i < 6; ++i) {
 			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
 			//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
 
@@ -223,6 +218,8 @@ namespace ALEngine::Script
 			else
 				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
+
+		Update_Ability_Cooldown(gameplaySystem->Abilities_List, istrue);
 	}
 
 
@@ -254,6 +251,68 @@ namespace ALEngine::Script
 		}
 	}
 
+
+	void GameplaySystem_Interface_Management_GUI::Update_AP_UI(int AP_count) {
+		//Disable all
+		for (int i = 0; i < guiManager.AP_Indicators.size(); ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Empty.png");
+		}
+
+		//Enable set amount
+		for (int i = 0; i < AP_count; ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Green.png");
+		}
+	}
+
+	void GameplaySystem_Interface_Management_GUI::Update_AP_UI_For_Cost(int AP_count, int AP_Cost) {
+		//Disable all
+		for (int i = 0; i < guiManager.AP_Indicators.size(); ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Empty.png");
+		}
+
+		//Enable set amount
+		for (int i = 0; i < AP_count - AP_Cost; ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Green.png");
+		}
+
+		//Enable set amount
+		for (int i = AP_count - AP_Cost; i < AP_count; ++i) {
+			int index = i < 0 ? 0 : i;
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[index]);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/AP_Red.png");
+		}
+	}
+
+	void GameplaySystem_Interface_Management_GUI::Update_Ability_Cooldown(std::vector<Abilities> ability_set, bool isAbilityGUIActive) {
+		for (int i = 0; i < guiManager.GUI_Abilities_Button_List.size(); ++i) {
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
+			EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Abilities_Button_List[i]);
+			Text& guiBtn_Text = Coordinator::Instance()->GetComponent<Text>(guiManager.GUI_Abilities_Button_List[i]);
+
+			guiBtn_Text.textString = std::to_string(ability_set[i].current_Cooldown);
+
+			if (ability_set[i].current_Cooldown == 0) {
+				guiBtn_Text.scale = 0;
+			}
+			else {
+				guiBtn_Text.scale = 1.2f;
+			}
+
+			if (ability_set[i].current_Cooldown == 0 && isAbilityGUIActive) {
+				sprite.color = { 1.f, 1.f, 1.f, 1.f };
+				eventTrigger.isEnabled = true;
+			}
+			else {
+				eventTrigger.isEnabled = false;
+				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+			}
+		}//End for loop
+	}
+
 	void Event_Button_Enter_Ability_GUI(ECS::Entity invoker) {
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
@@ -275,7 +334,7 @@ namespace ALEngine::Script
 			line1.textString = "Slam a Tetromino on enemies,";
 			line2.textString = "dealing 15 DMG on each";
 			line3.textString = "impacted enemy.";
-			line4.textString = "";
+			line4.textString = "[Cooldown - 1]";
 		}
 		else if (skill.tag == "skill_icon2")
 		{
@@ -283,44 +342,44 @@ namespace ALEngine::Script
 			headerText.textString = "Life Drain";
 			line1.textString = "Deal DMG to enemies and heal";
 			line2.textString = "for half of all DMG dealt.";
-			line3.textString = "[Lifesteal is WIP]";
+			line3.textString = "[Cooldown - 2]";
 			line4.textString = "";
 		}
 		else if (skill.tag == "skill_icon3")
+		{
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Overhang.png");
+			headerText.textString = "Overhang";
+			line1.textString = "Apply on player";
+			line2.textString = "to regenerate 1 AP";
+			line3.textString = "by sacrificing 8 HP";
+			line4.textString = "[Cooldown - 5]";
+		}
+		else if (skill.tag == "skill_icon4")
 		{
 			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Icon_Skill_ConstructTile.png");
 			headerText.textString = "Construct Tile";
 			line1.textString = "Erect a wall that blocks";
 			line2.textString = "enemies from passing or";
 			line3.textString = "attacking.";
-			line4.textString = "[Lasts for 2 turns]";
-		}
-		else if (skill.tag == "skill_icon4")
-		{
-			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "TBD";
-			line1.textString = "To be Developed";
-			line2.textString = "";
-			line3.textString = "";
-			line4.textString = "";
+			line4.textString = "[Walls lasts for 2 turns, Cooldown - 5]";
 		}
 		else if (skill.tag == "skill_icon5")
 		{
-			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "TBD";
-			line1.textString = "To be Developed";
-			line2.textString = "";
-			line3.textString = "";
-			line4.textString = "";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
+			headerText.textString = "Matrix Trap";
+			line1.textString = "Lay traps on cells, when they";
+			line2.textString = "steps onto the trap, they";
+			line3.textString = "will be rooted for 1 turn, and take 5 DMG";
+			line4.textString = "[Cooldown - 3]";
 		}
 		else if (skill.tag == "skill_icon6")
 		{
-			//sprite.id = AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "TBD";
-			line1.textString = "To be Developed";
-			line2.textString = "";
-			line3.textString = "";
-			line4.textString = "";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Skill_Icon_Bomb.png");
+			headerText.textString = "VolaTile";
+			line1.textString = "Place bombs on cells which, will blow";
+			line2.textString = "up next action phase, Dealing 13 DMG to";
+			line3.textString = "all units and destroy walkable tiles";
+			line4.textString = "[Cooldown - 5]";
 		}
 	}
 

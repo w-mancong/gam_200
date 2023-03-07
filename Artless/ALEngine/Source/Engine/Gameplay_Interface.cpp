@@ -1,4 +1,4 @@
-#include <pch.h>
+﻿#include <pch.h>
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
@@ -10,27 +10,24 @@
 namespace ALEngine::Script
 {
 	namespace {
-		GameplaySystem_Interface_Management_Enemy* gameplaySystem_Enemy;
-		GameplaySystem_Interface_Management_GUI* gameplaySystem_GUI;
-		GameplaySystem* gameplaySystem;
-
-		std::shared_ptr<GameplaySystem> gameplaySystem_SharedPtr;
+		std::shared_ptr<GameplaySystem_Interface_Management_Enemy> gameplaySystem_Enemy;
+		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
+		std::shared_ptr<GameplaySystem> gameplaySystem;
 
 		//enemymanager struct object for enemymanagement function to access needed variables
 		Script::GameplaySystem_Interface_Management_Enemy::EnemyManager enemyNeededData;
 	}
 
-	void Set_GameplayInterface_Enemy(void* enemyManagerPtr) {
-		gameplaySystem_Enemy = reinterpret_cast<GameplaySystem_Interface_Management_Enemy*>(enemyManagerPtr);
+	void Set_GameplayInterface_Enemy(ECS::Entity GameplaySystemEntity) {
+		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(GameplaySystemEntity);
 	}
 
-	void Set_GameplayInterface_GUI(void* GUIManagerPtr) {
-		gameplaySystem_GUI = reinterpret_cast<GameplaySystem_Interface_Management_GUI*>(GUIManagerPtr);
+	void Set_GameplayInterface_GUI(ECS::Entity GameplaySystemEntity) {
+		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(GameplaySystemEntity);
 	}
 	
-	void Set_GameplayInterface_GameplayManager(void* ManagerPtr) {
-		gameplaySystem = reinterpret_cast<GameplaySystem*>(ManagerPtr);
-		gameplaySystem_SharedPtr.reset(gameplaySystem);
+	void Set_GameplayInterface_GameplayManager(ECS::Entity GameplaySystemEntity) {
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(GameplaySystemEntity);
 	}
 
 	void GameplaySystem::CreatePlayerUnit(ECS::Entity entity) {
@@ -64,6 +61,8 @@ namespace ALEngine::Script
 
 		Animator an = ECS::CreateAnimator("Player");
 		Coordinator::Instance()->AddComponent(playerUnit.unit_Sprite_Entity, an);
+
+		//ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity), "PlayerIdle");
 
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Player";
 		Coordinator::Instance()->GetComponent<EntityData>(playerUnit.unit_Sprite_Entity).tag = "Player_Sprite";
@@ -130,13 +129,17 @@ namespace ALEngine::Script
 
 			//Reset player movement points
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-			playerUnit.movementPoints = playerUnit.maxMovementPoints;
+			playerUnit.actionPoints += 4;
+			if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
+				playerUnit.actionPoints = playerUnit.maxActionPoints;
+			}
 
+			gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
 			//Reset enemy move ment points
 			for (int i = 0; i < enemyEntityList.size(); ++i) {
 				Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
-				enemyUnit.movementPoints = enemyUnit.maxMovementPoints;
+				enemyUnit.actionPoints = enemyUnit.maxActionPoints;
 			}
 
 			//Update the GUI to select player
@@ -151,6 +154,13 @@ namespace ALEngine::Script
 			//Display the your turn animation 
 			ECS::ParticleSystem::GetParticleSystem().DisplayYourTurn();
 
+			for (int i = 0; i < Abilities_List.size(); ++i) {
+				if (Abilities_List[i].current_Cooldown > 0) {
+					Abilities_List[i].current_Cooldown--;
+				}
+			}
+
+			gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, false);
 			break;
 		}
 		gameplaySystem_GUI->GuiUpdatePhaseIndicator(currentPhaseStatus);
@@ -182,8 +192,10 @@ namespace ALEngine::Script
 		playerUnit.m_CurrentCell_Entity = getEntityCell(m_Room, x, y);
 
 		//Set movement points
-		playerUnit.maxMovementPoints = 4;
-		playerUnit.movementPoints = playerUnit.maxMovementPoints;
+		playerUnit.maxActionPoints = 6;
+		playerUnit.actionPoints = playerUnit.maxActionPoints;
+
+		gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = playerEntity;
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).hasUnit = true;
@@ -257,6 +269,11 @@ namespace ALEngine::Script
 
 				//Get the cell component
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				
+				if (cell.m_isAccessible == false) {
+					continue;
+				}
+
 				resetCounter = checkTileCounters(cell);
 
 				//If 1 then set to crack
@@ -275,9 +292,63 @@ namespace ALEngine::Script
 					if (cell.has_Wall) {
 						destroyWall(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y, false);
 					}
+					else if (cell.hasBomb) {
+						//explode
+						Bomb_Explode(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y);
+					}
 				}
 			}
 		}
+	}
+
+	void GameplaySystem::Bomb_Explode(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y) {
+		//Range of bomb is 1 cell away
+		//Destroy Walkability/wall, just reset cell
+		//Units on top or adjacent is damaged 13
+
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				//If coordinate is out of bound
+				if (!IsCoordinateInsideRoom(currentRoom, x + i, y + j)) {
+					continue;
+				}
+
+				//Get offset cell component 
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x + i, y + j));
+				
+				//Skip if cell is not navigable
+				if (!cell.m_isAccessible) {
+					continue;
+				}
+				
+				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x + i, y + j));
+
+				ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+
+				//Do damage to cells without bombs
+				if (cell.hasBomb) {
+					continue;
+				}
+
+				if (cell.hasUnit) {
+					DoDamageToUnit(cell.unitEntity, 13);
+				}
+
+				ResetCell(gameplaySystem->m_Room, x + i, y + j);
+			}
+		}
+
+		//Get center cell component 
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x, y));
+
+		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+
+		if (cell.hasUnit) {
+			DoDamageToUnit(cell.unitEntity, 13);
+		}
+
+		ResetCell(gameplaySystem->m_Room, x, y);
 	}
 
 	//Check the selected tile counters and to make amendments to them at the end of the turn
@@ -329,69 +400,208 @@ namespace ALEngine::Script
 
 		//Template for pattern
 		Pattern newPattern;
+		std::vector<Math::Vector2Int> offset;
 
-		//upside down T shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.coordinate_occupied.push_back({ -1, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		//****** T SHAPE START *****//
 		newPattern.file_path = "Assets\\Images\\T.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//Straight line
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.coordinate_occupied.push_back({ 2, 0 });
-		newPattern.coordinate_occupied.push_back({ 3, 0 });
+		//Upside down T shape (Ʇ)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 0, 1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//rightside T shape (|-)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 1, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//downside T shape (T)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, -1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//leftside T shape (-|)s
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** T SHAPE END *****//
+
+		//****** LINE SHAPE START *****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\I.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//L Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
-		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		//Horizontal Straight line(---)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 2, 0 });
+		offset.push_back({ 3, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//Vertical Straight line(|)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, 2 });
+		offset.push_back({ 0, 3 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** LINE SHAPE END *****//
+
+		//****** L SHAPE START*****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\L.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//J Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ -1, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
-		newPattern.coordinate_occupied.push_back({ 0, 2 });
+		//L Shape (L)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, 2 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//90° clockwise rotation L Shape
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 2, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//180° clockwise rotation L 
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 0, -2 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//270° clockwise rotation L 
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ -2, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		patternList.push_back(newPattern);
+
+		//****** L SHAPE END *****//
+
+		//****** J SHAPE START*****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\J.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//Box Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.coordinate_occupied.push_back({ 1, 1 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
+		//J Shape (⅃)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 0, 2 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//90° clockwise Shape (J)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 2, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//180° clockwise Shape (J)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 0, -2 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//270° clockwise Shape (J)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ -2, 0 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** J SHAPE END *****//
+
+		//****** BOX SHAPE START*****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\O.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//S Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ -1, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
-		newPattern.coordinate_occupied.push_back({ 1, 1 });
+		//Box Shape (☐)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 1, 1 });
+		offset.push_back({ 0, 1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** BOX SHAPE END *****//
+
+		//****** S SHAPE START*****//
+		newPattern = Pattern{};
 		newPattern.file_path = "Assets\\Images\\S.png";
-		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
 
-		//Z Shape
-		newPattern.coordinate_occupied.push_back({ 0, 0 });
-		newPattern.coordinate_occupied.push_back({ 0, 1 });
-		newPattern.coordinate_occupied.push_back({ -1, 1 });
-		newPattern.coordinate_occupied.push_back({ 1, 0 });
-		newPattern.file_path = "Assets\\Images\\Z.png";
+		//S Shape (S)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ -1, -1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//S Shape (S) (rotated)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ 0, 1 });
+		offset.push_back({ 1, 0 });
+		offset.push_back({ 1, -1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
 		patternList.push_back(newPattern);
-		newPattern.coordinate_occupied.clear();
+		//****** S SHAPE END *****//
+
+		//****** Z SHAPE START*****//
+		newPattern = Pattern{};
+		newPattern.file_path = "Assets\\Images\\Z.png";
+
+		//Z Shape (Z)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ 0, -1 });
+		offset.push_back({ 1, -1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		//Z Shape (N)
+		offset.push_back({ 0, 0 });
+		offset.push_back({ -1, 0 });
+		offset.push_back({ -1, -1 });
+		offset.push_back({ 0, 1 });
+		newPattern.offsetGroup.push_back(offset);
+		offset.clear();
+
+		patternList.push_back(newPattern);
+		//****** Z SHAPE END *****//
 	}
 
 	//Initialize Abilities
@@ -405,19 +615,45 @@ namespace ALEngine::Script
 		//Fixed damage
 		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
-		new_ability.damage = 15;
+		new_ability.damage = 9;
+		new_ability.max_Cooldown = 1;
+		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
 		//Life steal
 		new_ability.current_Ability_Name = ABILITY_NAME::LIFE_DRAIN;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
-		new_ability.damage = 12;
+		new_ability.damage = 8;
+		new_ability.max_Cooldown = 2;
+		new_ability.cost = 2;
+		abilitiesList.push_back(new_ability);
+
+		//Overhang
+		new_ability.current_Ability_Name = ABILITY_NAME::OVERHANG;
+		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
+		new_ability.max_Cooldown = 5;
+		new_ability.cost = 0;
 		abilitiesList.push_back(new_ability);
 
 		//Construct Wall
 		new_ability.current_Ability_Name = ABILITY_NAME::CONSTRUCT_WALL;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
-		//TRIGGER THE BUILD WALL FUNCTION HERE!!
+		new_ability.max_Cooldown = 4;
+		new_ability.cost = 2;
+		abilitiesList.push_back(new_ability);
+	
+		//Matrix Trap
+		new_ability.current_Ability_Name = ABILITY_NAME::MATRIX_TRAP;
+		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
+		new_ability.max_Cooldown = 3;
+		new_ability.cost = 2;
+		abilitiesList.push_back(new_ability);
+	
+		//Matrix Trap
+		new_ability.current_Ability_Name = ABILITY_NAME::VOLATILE;
+		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
+		new_ability.max_Cooldown = 5;
+		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 	}
 
@@ -668,7 +904,7 @@ namespace ALEngine::Script
 				ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
 				Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
 
-				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
+				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Lose_Clear);
 
 				unitData.active = false;
 				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
@@ -676,6 +912,20 @@ namespace ALEngine::Script
 			else {
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
+				
+				b8 allEnemiesDead = true;
+				for (int i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+					Unit& enemy = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
+
+					if (enemy.health > 0) {
+						allEnemiesDead = false; 
+						break;
+					}
+				}
+
+				if (allEnemiesDead) {
+					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
+				}
 			}
 
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
@@ -688,12 +938,16 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::DisplayFilterPlacementGrid(Room& room, Math::Vector2Int coordinate, Pattern pattern, Color color) {
+		if (pattern.offsetGroup.size() == 0) {
+			return;
+		}
+
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
-			if (gameplaySystem->IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (gameplaySystem->IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y)) {
 				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = gameplaySystem->getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				ECS::Entity cellEntity = gameplaySystem->getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				if (!cell.m_isAccessible) {
@@ -715,11 +969,11 @@ namespace ALEngine::Script
 
 	void GameplaySystem::PlacePatternOntoGrid(Room& room, Math::Vector2Int coordinate, Pattern pattern, std::string sprite_fileName) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y)) {
 				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				if (!cell.m_isAccessible || cell.has_Wall) {
@@ -741,20 +995,23 @@ namespace ALEngine::Script
 
 	bool GameplaySystem::CheckIfPatternCanBePlacedForTile(Room& room, Math::Vector2Int coordinate, Pattern pattern) {
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
-			if (gameplaySystem->IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (gameplaySystem->IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y)) {
 				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = gameplaySystem->getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				ECS::Entity cellEntity = gameplaySystem->getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				if (!cell.m_isAccessible) {
-					continue;
+					return false;
 				}
 
 				if (cell.m_canWalk) {
 					return false;
 				}
+			}
+			else {
+				return false;
 			}
 		}//End loop through pattern body check
 
@@ -762,36 +1019,55 @@ namespace ALEngine::Script
 	}
 
 	bool GameplaySystem::CheckIfAbilitiesCanBePlacedForTile(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities) {
-		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		bool canPlace = false;
+		bool touchedUnit = false, touchedEmpty = false;
+
+		//Shift through and check for out of bound
+		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
 			//must connect to player
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (!IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y)) {
+				return false;
+			}
+		} //End loop through pattern body check
+
+		//Shift through each grid that the pattern would be in relative to given coordinate
+		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
+			//If the coordinate is within the boundaries of the room
+			//must connect to player
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y)) {
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
+				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+				
+				if (!cell.m_isAccessible || cell.hasBomb || cell.hasTrap || cell.has_Wall) {
+					//return false;
+					canPlace = false;
+					touchedEmpty = true;
+					break;
+				}
+
 				//If ability is direct type
 				if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
-					//If inside room, set the cell color to yellow
-					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
-
-					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-
 					if (cell.hasUnit) {
 						Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
 
 						if (unit.unitType == UNIT_TYPE::PLAYER) {
-							return true;
+							canPlace = true;
+							break;
+							//return true;
 						}
 					}
 				}
 				//If it's effect type
 				//Must connect to cell that is walkable but no on cells with units
 				else {
-					//If inside room, set the cell color to yellow
-					ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
-
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 					if (cell.hasUnit) {
-						return false;
+						canPlace = false;
+						touchedUnit = true;
+						break;
+						//return false;
 					}
 				}
 			}
@@ -799,26 +1075,29 @@ namespace ALEngine::Script
 
 		//If reach here and direct, means not touching player, false
 		if (abilities.current_Ability_Type == ABILITY_TYPE::DIRECT) {
-			return false;
+			return canPlace;
 		}
 		//If reach here and effect, means has not touch unit or cell, true
 		else {
-			return true;
+			return !touchedUnit && !touchedEmpty;
 		}
 	}
 
-	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities) {
+	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities) {
 		AL_CORE_CRITICAL("USE ABILITY");
 
+		abilities->current_Cooldown = abilities->max_Cooldown;
+		gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, true);
+
 		//Shift through each grid that the pattern would be in relative to given coordinate
-		for (int i = 0; i < pattern.coordinate_occupied.size(); ++i) {
+		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
-			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y)) {
+			if (IsCoordinateInsideRoom(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y)) {
 				//If inside room, set the cell color to yellow
-				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y);
+				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-				switch (abilities.current_Ability_Type)
+				switch (abilities->current_Ability_Type)
 				{
 					//IF DIRECT ABILITY, AFFECT UNITS ONLY
 				case ABILITY_TYPE::DIRECT:
@@ -832,47 +1111,68 @@ namespace ALEngine::Script
 
 						u32 initialHealth = unit.health;
 
+						ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
 						//If unit is enemy
 						if (unit.unitType == UNIT_TYPE::ENEMY) {
 							//Check for ability name and run ability accordingly
-							switch (abilities.current_Ability_Name)
+							switch (abilities->current_Ability_Name)
 							{
-							case ABILITY_NAME::HARD_DROP:
-								DoDamageToUnit(cell.unitEntity, abilities.damage);
-								break;
-							case ABILITY_NAME::LIFE_DRAIN:
-							{
-								DoDamageToUnit(cell.unitEntity, abilities.damage);
+								case ABILITY_NAME::HARD_DROP:
+									DoDamageToUnit(cell.unitEntity, abilities->damage);
+									break;
+								case ABILITY_NAME::LIFE_DRAIN:
+								{
+									Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+									u32 healthDrained = unit.health < 0 ? initialHealth : abilities->damage;
 
-								//Life steal 
-								ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
-								Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+									DoDamageToUnit(cell.unitEntity, abilities->damage);
 
-								u32 healthDrained = unit.health < 0 ? initialHealth : abilities.damage;
+									playerUnit.health += healthDrained;
 
-								playerUnit.health += healthDrained;
+									if (playerUnit.health > playerUnit.maxHealth) {
+										playerUnit.health = playerUnit.maxHealth;
+									}
 
-								if (playerUnit.health > playerUnit.maxHealth) {
-									playerUnit.health = playerUnit.maxHealth;
+									ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
+
+									AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
+									break;
+								}
+							} //End switch
+						}//End check if unit
+						else {
+							//If interacted on player
+							if (abilities->current_Ability_Name == ABILITY_NAME::OVERHANG) {
+								//minus 8 HP
+								DoDamageToUnit(playerEntity, 8);
+
+								playerUnit.actionPoints += 1;	//Add 1 AP
+								if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
+									playerUnit.actionPoints = playerUnit.maxActionPoints;
 								}
 
-								Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-								ECS::ParticleSystem::GetParticleSystem().UnitHealParticles(playerTrans.position);
-
-								AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
-								break;
+								gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 							}
-							}
-						}//End check if unit
+						}
 					}
 					break;
 
 				case ABILITY_TYPE::EFFECT:
 					//Check for ability name and run ability accordingly
-					switch (abilities.current_Ability_Name)
+					switch (abilities->current_Ability_Name)
 					{
 					case ABILITY_NAME::CONSTRUCT_WALL:
-						constructWall(room, coordinate.x + pattern.coordinate_occupied[i].x, coordinate.y + pattern.coordinate_occupied[i].y, true);
+						constructWall(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y, true);
+						break;
+
+					case ABILITY_NAME::MATRIX_TRAP:
+						constructTrap(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
+						break;
+
+					case ABILITY_NAME::VOLATILE:
+						constructBomb(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 						break;
 
 					default:
@@ -902,7 +1202,7 @@ namespace ALEngine::Script
 
 		//Get path
 		std::vector<ECS::Entity> pathList;
-		bool isPathFound = Engine::AI::FindPath(gameplaySystem_SharedPtr, m_Room, startCellEntity, targetCellEntity, pathList, false);
+		bool isPathFound = Engine::AI::FindPath(gameplaySystem, m_Room, startCellEntity, targetCellEntity, pathList, false);
 
 		//If path not found then stop
 		if (!isPathFound) {
@@ -910,9 +1210,9 @@ namespace ALEngine::Script
 			return;
 		}
 
-		// Set the move animation for player
+		//// Set the move animation for player
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
-		ECS::ChangeAnimation(an, "PlayerMove");
+		//ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
 
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
@@ -953,6 +1253,8 @@ namespace ALEngine::Script
 
 		//Set stats
 		cell.has_Wall = isTrue;
+		cell.hasTrap = false;
+		cell.hasBomb = false;
 		cell.m_canWalk = !isTrue;
 		cell.m_resetCounter = 2;
 
@@ -961,6 +1263,74 @@ namespace ALEngine::Script
 		sprite.layer = 1000 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
 		sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/ConstructTile_TileSprite.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
+	}
+
+	void GameplaySystem::constructTrap(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y) {
+		//Get the cell entity
+		ECS::Entity cellEntity = getEntityCell(currentRoom, x, y);
+
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//IF it already has a wall, don't do anything
+		if (cell.has_Wall || !cell.m_isAccessible) {
+			return;
+		}
+
+		//Set stats
+		cell.has_Wall = false;
+		cell.hasTrap = true;
+		cell.hasBomb = false;
+		cell.m_canWalk = false;
+		cell.m_resetCounter = 1000;
+
+		//Change it's sprite overlay
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
+		sprite.layer = 1000 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
+		sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tile_Overlay_Trap.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
+	}
+
+	void GameplaySystem::constructBomb(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y) {
+		//Get the cell entity
+		ECS::Entity cellEntity = getEntityCell(currentRoom, x, y);
+
+		//Get Cell Component
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		//IF it already has a wall, don't do anything
+		if (cell.has_Wall || !cell.m_isAccessible) {
+			return;
+		}
+
+		//Set stats
+		cell.has_Wall = false;
+		cell.hasTrap = false;
+		cell.hasBomb = true;
+		cell.m_canWalk = false;
+		cell.m_resetCounter = 1;
+
+		//Change it's sprite overlay
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
+		sprite.layer = 1000 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
+		sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tile_Overlay_Bomb.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
+	}
+
+	void GameplaySystem::ResetCell(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y) {
+		//Get cell component 
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
+
+		//Set Stats
+		cell.has_Wall = false;
+		cell.hasBomb = false;
+		cell.hasTrap = false;
+		cell.m_canWalk = false;
+
+		//Set the overlay sprite to false
+		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
+	
+		ToggleCellWalkability(currentRoom, getEntityCell(currentRoom, x, y), false);
 	}
 
 	void GameplaySystem::destroyWall(Room& currentRoom, u32 x, u32 y, b8 isTrue) {
@@ -990,6 +1360,7 @@ namespace ALEngine::Script
 
 
 	void GameplaySystem::SelectPattern(Pattern pattern) {
+		selected_Pattern_Rotation = 0;
 		//Select pattern 
 		if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 			//Set the placement status to be for tile
@@ -1018,11 +1389,16 @@ namespace ALEngine::Script
 			ad.m_Channel = Engine::Channel::SFX;
 			ad.Play();
 
-			selected_Abilities = ability;
+			selected_Abilities = &ability;
 
 			//Set the gui
 			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
 			gameplaySystem_GUI->TogglePatternGUI(true);
+
+
+			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+			gameplaySystem_GUI->Update_AP_UI_For_Cost(playerunit.actionPoints, ability.cost);
 		}
 	}
 
@@ -1207,21 +1583,37 @@ namespace ALEngine::Script
 			movinUnit.coordinate[1] = cell.coordinate.y;
 
 			//Keep track of end of path
-			bool isEndOfPath = true;
+			bool isEndOfPath = false;
 
 			//minus movement points for enemy
-			--movinUnit.movementPoints;
+			--movinUnit.actionPoints;
+
+			if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+				gameplaySystem_GUI->Update_AP_UI(movinUnit.actionPoints);
+			}
+
+			//Check if enemy stepped on trap
+			if (cell.hasTrap) {
+				if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
+					movinUnit.stunDuration = 1;
+					DoDamageToUnit(movingUnitEntity, 5);
+					isEndOfPath = true;
+
+					ResetCell(m_Room, cell.coordinate.x, cell.coordinate.y);
+				}
+			}
 
 			//If no more movement point
 			//Stop the movement
-			if (movinUnit.movementPoints <= 0) {
+			if (movinUnit.actionPoints <= 0) {
 				isEndOfPath = true;
 			}
 			else {
+				if(!isEndOfPath)
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
 			}
 
-			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.movementPoints));
+			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.actionPoints));
 
 			//If reached the end of path
 			if (isEndOfPath) {
@@ -1238,8 +1630,8 @@ namespace ALEngine::Script
 					ad.Stop();
 
 					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
-					ECS::ChangeAnimation(an, "PlayerIdle");
-					if (movinUnit.movementPoints <= 0) {
+					//ECS::ChangeAnimation(an, "PlayerIdle");
+					if (movinUnit.actionPoints <= 0) {
 						EndTurn();
 					}
 				}
@@ -1248,7 +1640,7 @@ namespace ALEngine::Script
 					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 						//Stop movement
 						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
-						ECS::ChangeAnimation(an, "BishopIdle");
+						//ECS::ChangeAnimation(an, "BishopIdle");
 						gameplaySystem_Enemy->RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved - 1]));
 					}
 					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
@@ -1289,6 +1681,16 @@ namespace ALEngine::Script
 			return;
 		}
 
+		//Check stun
+		if (enemyUnit.stunDuration > 0) {
+			enemyUnit.stunDuration--;
+			
+			//MOve on to the next enemy
+			++enemyNeededData.enemyMoved;
+			MoveEnemy();
+			return;
+		}
+
 		//use enemy logic function pointer
 		switch (enemyUnit.enemyUnitType)
 		{
@@ -1298,14 +1700,37 @@ namespace ALEngine::Script
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
 			gameplaySystem_Enemy->Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			break;
+
 		case ENEMY_TYPE::ENEMY_SUMMONER:
 			gameplaySystem_Enemy->Enemy_Logic_Update_Summoner(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			break;
+
 		default:
 			break;
 		}
 		AL_CORE_INFO("after enemy move");
 	}
+
+	void GameplaySystem::RotatePattern(s32 patternRotationAmount) {
+		if (currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING) {
+			return;
+		}
+
+		Event_MouseExitCell(current_Moused_Over_Cell);
+
+		selected_Pattern_Rotation += patternRotationAmount;
+
+
+		if (selected_Pattern_Rotation < 0) {
+			selected_Pattern_Rotation = selected_Pattern.offsetGroup.size() - 1;
+		}
+		else if (selected_Pattern_Rotation > selected_Pattern.offsetGroup.size() - 1) {
+			selected_Pattern_Rotation = 0;
+		}
+
+		Event_MouseEnterCell(current_Moused_Over_Cell);
+	}
+
 
 	//****************EVENTS*****************//
 	/*!*********************************************************************************
@@ -1314,9 +1739,10 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_Button_Restart([[maybe_unused]] ECS::Entity invoker) {
 		//Restart the gameplay
-		gameplaySystem->Toggle_Gameplay_State(false);
+		//gameplaySystem->Toggle_Gameplay_State(false);
 		Engine::Scene::Restart();
 	}
+
 
 	/*!*********************************************************************************
 	\brief
@@ -1360,6 +1786,47 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->DisableToolTipGUI();
 	}
 
+	/*!*********************************************************************************
+	\brief
+		Select Ability 3
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_3([[maybe_unused]] ECS::Entity invoker) { //CONSTRUCT WALL SKILL
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Construct Wall");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[3]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 4
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_4([[maybe_unused]] ECS::Entity invoker) { //CONSTRUCT WALL SKILL
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Construct Wall");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[4]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Select Ability 5
+	***********************************************************************************/
+	void Event_Button_Select_Abilities_5([[maybe_unused]] ECS::Entity invoker) { //CONSTRUCT WALL SKILL
+		if (utils::IsEqual(Time::m_Scale, 0.f)) {
+			return;
+		}
+
+		AL_CORE_INFO("Construct Wall");
+		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[5]);
+		gameplaySystem_GUI->DisableToolTipGUI();
+	}
 	/*!*********************************************************************************
 	\brief
 		Select Ability 3
@@ -1434,8 +1901,7 @@ namespace ALEngine::Script
 	\brief
 		Event for when mouse enter cell
 	***********************************************************************************/
-	void Event_MouseEnterCell(ECS::Entity invoker) 
-	{
+	void Event_MouseEnterCell(ECS::Entity invoker) {
 		//Keep track of cell the mouse is interacting with
 		gameplaySystem->current_Moused_Over_Cell = invoker;
 
@@ -1444,22 +1910,6 @@ namespace ALEngine::Script
 		//If cell is not accessible, then ignore
 		if (!cell.m_isAccessible) {
 			return;
-		}
-
-		//highlight walkable path if not placing or using abilities
-		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING && gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION)
-		{
-			//check if able to reach walkable cell then highlight path
-			gameplaySystem->DisplayPlayerEntityPathToCell(invoker);
-
-		}
-		else if (gameplaySystem->currentPhaseStatus != PHASE_STATUS::PHASE_ACTION)
-		{
-			for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
-			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-				trans.position = Math::vec3(-1000, -1000, trans.position.z);
-			}
 		}
 
 		//If placement status is being used
@@ -1476,7 +1926,7 @@ namespace ALEngine::Script
 			}
 			//If checking for abilities, if so, then filter for placement
 			else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
-				b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+				b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
 				if (canPlace)
 					gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 0.f,1.f,0.f,1.f });
@@ -1493,6 +1943,10 @@ namespace ALEngine::Script
 	void Event_MouseExitCell(ECS::Entity invoker) {
 		//Get Cell Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(invoker);
+
+		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING) {
+			return;
+		}
 
 		//Filter it's placement 
 		gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -1583,13 +2037,20 @@ namespace ALEngine::Script
 			gameplaySystem->EndTurn();
 		}
 		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
+			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+			
+			if (playerUnit.actionPoints < 2) {
+				return;
+			}
+			
 			//If placing patern for abilities
-			b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, gameplaySystem->selected_Abilities);
+			b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
 			}
 
+			playerUnit.actionPoints -= gameplaySystem->selected_Abilities->cost;
 			//Disable the filter
 			gameplaySystem->DisplayFilterPlacementGrid(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, { 1.f,1.f,1.f,1.f });
 
@@ -1613,7 +2074,23 @@ namespace ALEngine::Script
 				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
 			}
 
-			gameplaySystem->EndTurn();
+
+			if (playerUnit.actionPoints < 0) {
+				playerUnit.actionPoints = 0;
+			}
+
+			gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
+			if (playerUnit.actionPoints <= 0) {
+				gameplaySystem->EndTurn();
+			}
+			else {
+				//Reset the statuses
+				gameplaySystem->currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
+				gameplaySystem->currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+				gameplaySystem_GUI->TogglePatternGUI(false);
+			}
 
 			s8 eliminatedEnemyCount = 0;
 			//Check if all enemies are eliminated
@@ -1651,170 +2128,4 @@ namespace ALEngine::Script
 		}
 	}
 	//Event End
-
-	void GameplaySystem::DisplayPlayerEntityPathToCell(ECS::Entity cellEntity)
-	{
-		targetCellEntity = cellEntity;
-		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-
-		if (cell.hasUnit) {
-			return;
-		}
-
-		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-		startCellEntity = getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
-
-		//Get path
-		std::vector<ECS::Entity> pathList;
-		//bool isPathFound = Engine::AI::FindPath(m_Room, startCellEntity, targetCellEntity, pathList, false);
-		bool isPathFound = Engine::AI::FindPath(gameplaySystem_SharedPtr, m_Room, startCellEntity, targetCellEntity, pathList, false);
-
-		//If path not found then stop
-		if (!isPathFound) {
-			AL_CORE_INFO("No Path Found");
-			for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
-			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-				trans.position = Math::vec3(-1000, -1000, trans.position.z);
-			}
-			return;
-		}
-		else
-		{
-			AL_CORE_INFO("Path Found");
-		}
-
-		bool reachable = true;
-		
-		if (pathList.size() > 5)
-		{
-			reachable = false;
-		}
-
-		HighlightWalkableCellsRange(m_Room, cell.coordinate, reachable, pathList);
-	}
-
-	void GameplaySystem::HighlightWalkableCellsRange(Room& room, Math::Vector2Int coordinate, bool reachable, std::vector<ECS::Entity>& pathlist)
-	{
-		enum class PATHSTATUS
-		{
-			HORIZONTAL,
-			VERTICAL,
-			LEFTDOWN,
-			RIGHTDOWN,
-			LEFTUP,
-			RIGHTUP,
-			END
-		};
-
-		for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
-		{
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-			trans.position = Math::vec3(-1000, -1000, trans.position.z);
-		}
-
-		PATHSTATUS path{ PATHSTATUS::END };
-		int u{};
-		for (int i{ (int)pathlist.size() - 1 }; i >= 0; --i, ++u)
-		{
-			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i]);
-			if (i - 1 >= 0 && i + 1 < pathlist.size()) // corner block
-			{
-				Cell& next_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i - 1]);
-				Cell& prev_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i + 1]);
-				if (prev_cell.coordinate.x - 1 == cell.coordinate.x && cell.coordinate.y + 1 == next_cell.coordinate.y)
-					path = PATHSTATUS::RIGHTUP;
-				else if (prev_cell.coordinate.x + 1 == cell.coordinate.x && cell.coordinate.y + 1 == next_cell.coordinate.y)
-					path = PATHSTATUS::LEFTUP;
-				else if (prev_cell.coordinate.y - 1 == cell.coordinate.y && cell.coordinate.x + 1 == next_cell.coordinate.x)
-					path = PATHSTATUS::RIGHTUP;
-				else if (prev_cell.coordinate.y - 1 == cell.coordinate.y && cell.coordinate.x - 1 == next_cell.coordinate.x)
-					path = PATHSTATUS::LEFTUP;
-				else if (prev_cell.coordinate.y + 1 == cell.coordinate.y && cell.coordinate.x + 1 == next_cell.coordinate.x)
-					path = PATHSTATUS::RIGHTDOWN;
-				else if (prev_cell.coordinate.x + 1 == cell.coordinate.x && cell.coordinate.y - 1 == next_cell.coordinate.y)
-					path = PATHSTATUS::LEFTDOWN;
-				else if (prev_cell.coordinate.x - 1 == cell.coordinate.x && cell.coordinate.y - 1 == next_cell.coordinate.y)
-					path = PATHSTATUS::RIGHTDOWN;
-				else if (prev_cell.coordinate.y + 1 == cell.coordinate.y && cell.coordinate.x - 1 == next_cell.coordinate.x)
-					path = PATHSTATUS::LEFTDOWN;
-				else if (cell.coordinate.y + 1 == next_cell.coordinate.y)
-					path = PATHSTATUS::VERTICAL;
-				else if (cell.coordinate.x + 1 == next_cell.coordinate.x)
-					path = PATHSTATUS::HORIZONTAL;
-				else if (cell.coordinate.x - 1 == next_cell.coordinate.x)
-					path = PATHSTATUS::HORIZONTAL;
-				else if (cell.coordinate.y - 1 == next_cell.coordinate.y)
-					path = PATHSTATUS::VERTICAL;
-			}
-			else if (i - 1 >= 0)
-			{
-				Cell& next_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i - 1]);
-				if (cell.coordinate.y + 1 == next_cell.coordinate.y)
-					path = PATHSTATUS::VERTICAL;
-				else if (cell.coordinate.x + 1 == next_cell.coordinate.x)
-					path = PATHSTATUS::HORIZONTAL;
-				else if (cell.coordinate.x - 1 == next_cell.coordinate.x)
-					path = PATHSTATUS::HORIZONTAL;
-				else if (cell.coordinate.y - 1 == next_cell.coordinate.y)
-					path = PATHSTATUS::VERTICAL;
-			}
-			else
-			{
-				path = PATHSTATUS::END;
-			}
-
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(pathlist[i]);
-			if (u < gameplaySystem_GUI->getGuiManager().Highlight_blocks.size())
-			{
-				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Highlight_blocks[u]);
-				Transform& overlayTrans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().Highlight_blocks[u]);
-				Sprite& overlaySprite = Coordinator::Instance()->GetComponent<Sprite>(gameplaySystem_GUI->getGuiManager().Highlight_blocks[u]);
-				if (u == gameplaySystem_GUI->getGuiManager().Highlight_blocks.size() - 1)
-					path = PATHSTATUS::END;
-				switch (path)
-				{
-				case PATHSTATUS::HORIZONTAL:
-					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Horizontal.png");
-					overlayTrans.position = trans.position;
-					break;
-				case PATHSTATUS::VERTICAL:
-					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Vertical.png");
-					overlayTrans.position = trans.position;
-					break;
-				case PATHSTATUS::END:
-					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Destination.png");
-					overlayTrans.position = trans.position;
-					break;
-				case PATHSTATUS::LEFTDOWN:
-					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Btm_Left.png");
-					overlayTrans.position = trans.position;
-					break;
-				case PATHSTATUS::RIGHTDOWN:
-					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Btm_Right.png");
-					overlayTrans.position = trans.position;
-					break;
-				case PATHSTATUS::LEFTUP:
-					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Top_Left.png");
-					overlayTrans.position = trans.position;
-					break;
-				case PATHSTATUS::RIGHTUP:
-					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Top_Right.png");
-					overlayTrans.position = trans.position;
-					break;
-				default:
-					break;
-				}
-			}
-			else
-				break;
-		}
-		while (u < gameplaySystem_GUI->getGuiManager().Highlight_blocks.size())
-		{
-
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().Highlight_blocks[u]);
-			trans.position = Math::vec3(-1000, -1000, trans.position.z);
-			++u;
-		}
-	}
 }
