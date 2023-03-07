@@ -159,6 +159,7 @@ namespace ALEngine::Script
 			enemyUnit.unit_Profile_Sprite_File = "Assets/Images/Profile_Enemy_Unit.png";
 			Animator an = ECS::CreateAnimator("Guard");
 			Coordinator::Instance()->AddComponent(enemyUnit.unit_Sprite_Entity, an);
+			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "GuardIdle");
 		}
 		SetEnemy01attributes(enemyUnit);
 		break;
@@ -635,7 +636,7 @@ namespace ALEngine::Script
 
 		// Setting move animation for bishop
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity);
-		//ECS::ChangeAnimation(an, "BishopMove");
+		ECS::ChangeAnimation(an, "GuardMove");
 
 
 		AL_CORE_INFO("Path Found");
