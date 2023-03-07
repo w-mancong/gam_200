@@ -43,14 +43,16 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Load(ECS::Entity en)
 	{
-		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
-		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
-		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
-		Set_GameplayInterface_GameplayManager(en);
+
 	}
 
 	void GameplaySystem::Init(ECS::Entity en)
 	{
+		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
+		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
+		Set_GameplayInterface_GameplayManager(en);
+
 		StartGameplaySystem();
 		InitializeRoom(room_To_Load);
 		EnemyManager_LoadData();
@@ -212,12 +214,11 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Free(ECS::Entity en)
 	{
-	
+		ExitGameplaySystem();
 	}
 
 	void GameplaySystem::Unload(ECS::Entity en)
 	{
-		ExitGameplaySystem();
 	}
 
 

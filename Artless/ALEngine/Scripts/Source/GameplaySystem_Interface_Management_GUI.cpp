@@ -14,13 +14,13 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::Load(ECS::Entity en)
 	{
-		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
-		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
-		Set_GameplayInterface_GUI(en);
+
 	}
 
 	void GameplaySystem_Interface_Management_GUI::Init(ECS::Entity en){
-
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
+		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
+		Set_GameplayInterface_GUI(en);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::Update(ECS::Entity en)
@@ -35,13 +35,13 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::Free(ECS::Entity en)
 	{
-
+		gameplaySystem.reset();
+		gameplaySystem_GUI.reset();
 	}
 
 	void GameplaySystem_Interface_Management_GUI::Unload(ECS::Entity en)
 	{
-		gameplaySystem.reset();
-		gameplaySystem_GUI.reset();
+
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
