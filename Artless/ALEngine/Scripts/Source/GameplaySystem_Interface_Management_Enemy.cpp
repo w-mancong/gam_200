@@ -495,7 +495,7 @@ namespace ALEngine::Script
 			return;
 		}
 
-		movingUnitEntity = (enemyEntityList)[enemyNeededData.enemyMoved];
+		movingUnitEntity = enemyEntityList[enemyNeededData.enemyMoved];
 
 		//Path found, move the enemy accordingly
 		gameplaySystem->SetMoveOrder(pathList);
@@ -620,6 +620,9 @@ namespace ALEngine::Script
 
 		enemyNeededData.startCellEntity = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
 
+		AL_CORE_CRITICAL("Player CELL " + Coordinator::Instance()->GetComponent<EntityData>(playerUnit.m_CurrentCell_Entity).tag);
+		AL_CORE_CRITICAL("MOVING TO CELL " + Coordinator::Instance()->GetComponent<EntityData>(cellToMoveTo).tag);
+
 		//Find path
 		std::vector<ECS::Entity> pathList;
 		b8 isPathFound = ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyNeededData.startCellEntity, cellToMoveTo, pathList, true);
@@ -643,8 +646,7 @@ namespace ALEngine::Script
 		gameplaySystem->SetMoveOrder(pathList);
 
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
-		movingUnitEntity = (enemyEntityList)[enemyNeededData.enemyMoved];
-		//enemyNeededData.movingUnitEntity = enemyNeededData.enemyEntityList[enemyNeededData.enemyMoved];
+		movingUnitEntity = enemyEntityList[enemyNeededData.enemyMoved];
 
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
 

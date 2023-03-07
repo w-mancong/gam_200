@@ -37,7 +37,7 @@ namespace ALEngine::Script
 	void Event_Button_LoadLevel_2(ECS::Entity invoker) {
 		gameplaySystem->Toggle_Gameplay_State(false);
 		//Restart the gameplay
-		room_To_Load = "Assets\\Level_1.map";
+		room_To_Load = "Assets\\Tutorial_Level.map";
 		Engine::Scene::Restart();
 	}
 
@@ -53,6 +53,7 @@ namespace ALEngine::Script
 	{
 		StartGameplaySystem();
 		InitializeRoom(room_To_Load);
+		EnemyManager_LoadData();
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -159,8 +160,8 @@ namespace ALEngine::Script
 							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
 						else if (row == "Enemy Cell Destroyer")
 							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
-						else if (row == "Enemy Summoner")
-							enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
+						//else if (row == "Enemy Summoner")
+						//	enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
 						// Place Enemy
 						ECS::Entity enemyEntt = gameplaySystem_Enemy->PlaceNewEnemyInRoom(r, c, enemy_type, enemyEntityList, m_Room);
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
@@ -299,7 +300,6 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->TogglePatternGUI(true);
 
 		//***** AUDIO Initialization ******//
-		EnemyManager_LoadData();
 		CreateAudioEntityMasterSource();
 		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
