@@ -168,7 +168,6 @@ namespace ALEngine::Script
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
 						// Empty Tile under enemy
-						Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
 						ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 					}
 					else if (row == "Vertical_Wall" || row == "Top_Wall" || row == "Horizontal_Wall" || row == "Bottom_Wall") {
