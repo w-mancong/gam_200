@@ -1644,6 +1644,9 @@ namespace ALEngine::Script
 						gameplaySystem_Enemy->RunEnemyAdjacentAttack(m_Room, Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved - 1]));
 					}
 					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
+						ECS::ChangeAnimation(an, "TileDestroyerIdle");
+
 						//Destroy the tiles when reached destination
 						gameplaySystem_Enemy->Enemy_Logic_CellDestroyer_DestroyTile(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 					}
