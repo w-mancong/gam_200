@@ -160,8 +160,8 @@ namespace ALEngine::Script
 							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
 						else if (row == "Enemy Cell Destroyer")
 							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
-						//else if (row == "Enemy Summoner")
-						//	enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
+						else if (row == "Enemy Summoner")
+							enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
 						// Place Enemy
 						ECS::Entity enemyEntt = gameplaySystem_Enemy->PlaceNewEnemyInRoom(r, c, enemy_type, enemyEntityList, m_Room);
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);

@@ -368,8 +368,6 @@ namespace ALEngine::Script
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
 		ECS::Entity cellToMoveTo = enemyUnit.m_CurrentCell_Entity;
 
-		//Find path
-		std::vector<ECS::Entity> pathList;
 
 		if (enemyUnit.actionPoints <= 0) {
 			enemyUnit.abilityCooldown_Enemy--;
@@ -475,6 +473,8 @@ namespace ALEngine::Script
 			}//End else
 		}
 
+		//Find path
+		std::vector<ECS::Entity> pathList;
 		b8 isPathFound = ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyUnit.m_CurrentCell_Entity, cellToMoveTo, pathList, true);
 
 		if (!isPathFound) {
@@ -503,8 +503,6 @@ namespace ALEngine::Script
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
-
-		//gameplaySystem->MoveEnemy();
 	}
 	
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Cast_Summoner(ECS::Entity& summoner_Entity) {
