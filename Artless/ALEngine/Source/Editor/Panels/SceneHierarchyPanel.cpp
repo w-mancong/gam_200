@@ -396,7 +396,7 @@ namespace ALEngine::Editor
 						Gameplay::MapManager::Instance()->DeserializeMap(fileString);
 
 						// Load the tile level
-						ALEditor::Instance()->LoadMap();
+						//ALEditor::Instance()->LoadMap();
 					}
 					else
 					{
