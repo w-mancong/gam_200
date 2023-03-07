@@ -1,0 +1,797 @@
+[
+    {
+        "id": 0,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "pause_logic",
+                "active": true,
+                "localActive": true,
+                "id": 0,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "PauseLogic"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bd_pause",
+                "active": false,
+                "localActive": false,
+                "id": 1,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_Resume.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    620.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_resume",
+                "active": false,
+                "localActive": true,
+                "id": 2,
+                "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "ResumeButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_MainMenu.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    490.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_mainmenu",
+                "active": false,
+                "localActive": true,
+                "id": 3,
+                "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "MainMenuButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_Options.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    360.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_options",
+                "active": false,
+                "localActive": true,
+                "id": 4,
+                "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_HowToPlay.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    230.00001525878906,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_htp",
+                "active": false,
+                "localActive": true,
+                "id": 5,
+                "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "HtpButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_Quit.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    100.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_quit",
+                "active": false,
+                "localActive": true,
+                "id": 6,
+                "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "QuitButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Pave_Logo.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    775.0,
+                    0.0
+                ],
+                "scale": [
+                    400.0,
+                    200.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "game_logo",
+                "active": false,
+                "localActive": true,
+                "id": 7,
+                "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\HowToPlay.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp",
+                "active": false,
+                "localActive": false,
+                "id": 8,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1485.0,
+                    846.0009765625,
+                    0.0
+                ],
+                "scale": [
+                    125.0,
+                    125.00001525878906
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "close",
+                "active": false,
+                "localActive": true,
+                "id": 9,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirm_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1200.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "quit_confirmation",
+                "active": false,
+                "localActive": false,
+                "id": 10,
+                "parentID": 0,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    650.0,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": false,
+                "localActive": true,
+                "id": 11,
+                "parentID": 10,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    960.0,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": false,
+                "localActive": true,
+                "id": 12,
+                "parentID": 10,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirmation_MainMenu.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1200.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "menu_confirmation",
+                "active": false,
+                "localActive": false,
+                "id": 13,
+                "parentID": 0,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    650.0,
+                    350.0001525878906,
+                    0.0
+                ],
+                "scale": [
+                    249.60000610351563,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": false,
+                "localActive": true,
+                "id": 14,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    959.5999755859375,
+                    350.0001525878906,
+                    0.0
+                ],
+                "scale": [
+                    240.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": false,
+                "localActive": true,
+                "id": 15,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "scene_transition",
+                "active": true,
+                "localActive": true,
+                "id": 16,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "SceneChangeHelper"
+                ]
+            }
+        ]
+    }
+]

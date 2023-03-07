@@ -1,0 +1,17 @@
+[
+    {
+        "Bottom_Wall": "Assets\\Images\\Environment_Tileset_Bottom.png",
+        "Empty": "Assets\\Images\\InitialTile_v04.png",
+        "Enemy Cell Destroyer": "Assets\\Images\\TileBreaker.png",
+        "Enemy Melee": "Assets\\Images\\Bishop v.02.png",
+        "Enemy Summoner": "",
+        "Horizontal_Wall": "Assets\\Images\\Environment_Tileset_Horizontal.png",
+        "Obstacle": "Assets\\Images\\Bar_HPFull.png",
+        "Player": "Assets\\Images\\Player v2.png",
+        "Summoner": "",
+        "Tile": "Assets\\Images\\Walkable.png",
+        "Top_Wall": "Assets\\Images\\Environment_Tileset_Top.png",
+        "Vertical_Wall": "Assets\\Images\\Environment_Tileset_Vertical.png",
+        "Wall": "Assets\\Images\\CloseButton.png"
+    }
+]
