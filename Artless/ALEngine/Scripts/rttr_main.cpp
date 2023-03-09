@@ -43,4 +43,12 @@ RTTR_REGISTRATION
 	registration::class_<SceneChangeHelper>("SceneChangeHelper")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<QuitButton>("QuitButton")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<MainMenuButton>("MainMenuButton")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

@@ -62,6 +62,7 @@ namespace ALEngine::Script
 		void CreateEnemyUnit(ECS::Entity entity, std::vector<ECS::Entity>& enemyEntityList);
 
 
+
 		struct EnemyManager {
 			ECS::Entity enemyMoved;
 			ECS::Entity playerEntity;
@@ -86,7 +87,7 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-		 Function for set third enemy type attribute (future projectile based enemy?)
+		 Function for set third enemy type attribute (Summoner)
 		\param [in] enemyUnit
 		 Reference to enemyUnit to set the attribtues variables in enemyUnit
 		***********************************************************************************/
@@ -149,22 +150,10 @@ namespace ALEngine::Script
 		 Reference to m_Room which is the game room variables for use
 		***********************************************************************************/
 		void Enemy_Logic_CellDestroyer_DestroyTile(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
-
+		
 		/*!*********************************************************************************
 		\brief
-			Runs process to check adjacent for player and attack if they are adjacent.
-		\param [in]
-			room: room of gameplay
-		\param [in]
-			room: enemy entity
-		\return
-			if enemy attacked player and player is adjacent
-		***********************************************************************************/
-		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
-
-		/*!*********************************************************************************
-		\brief
-		 enemy summoner AI logic function for handling update of enemy AI
+		 enemy melee AI logic function for handling update of enemy AI
 		\param [in] enemyNeededData
 		Reference to enemy Struct object of datas from the level
 		\param [in] movingUnitEntity
@@ -177,6 +166,20 @@ namespace ALEngine::Script
 		 Reference to m_Room which is the game room variables for use
 		***********************************************************************************/
 		void Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
+
+		void Enemy_Cast_Summoner(ECS::Entity& summoner_Entity);
+
+		/*!*********************************************************************************
+		\brief
+			Runs process to check adjacent for player and attack if they are adjacent.
+		\param [in]
+			room: room of gameplay
+		\param [in]
+			room: enemy entity
+		\return
+			if enemy attacked player and player is adjacent
+		***********************************************************************************/
+		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
 
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)

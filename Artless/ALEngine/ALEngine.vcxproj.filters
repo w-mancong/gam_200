@@ -109,6 +109,8 @@
     <ClCompile Include="Scripts\Source\NewGameButton.cpp" />
     <ClCompile Include="Scripts\Source\AlphaFadeIn.cpp" />
     <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
+    <ClCompile Include="Scripts\Source\QuitButton.cpp" />
+    <ClCompile Include="Scripts\Source\MainMenuButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -238,7 +240,7 @@
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
-    <ClInclude Include="Include\Prefabs\Prefabs.h" />
+    <ClInclude Include="Include\SceneManager\Prefabs.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
     <ClInclude Include="Include\Templated Class\Singleton.h" />
@@ -270,6 +272,8 @@
     <ClInclude Include="Scripts\Header\NewGameButton.h" />
     <ClInclude Include="Scripts\Header\AlphaFadeIn.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
+    <ClInclude Include="Scripts\Header\QuitButton.h" />
+    <ClInclude Include="Scripts\Header\MainMenuButton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

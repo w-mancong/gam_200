@@ -19,6 +19,10 @@ namespace  ALEngine::Engine::AI
 	***********************************************************************************/
     b8 FindPath(std::shared_ptr<Script::GameplaySystem> gameplaySystem, GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, ECS::Entity startCell, ECS::Entity endCell, std::vector<ECS::Entity>& pathReturn, bool canWalkOverUnwalkable)
     {
+        if (startCell == endCell) {
+            return false;
+        }
+
         Cell& startNode = Coordinator::Instance()->GetComponent<Cell>(startCell);
         Cell& endNode = Coordinator::Instance()->GetComponent<Cell>(endCell);
 

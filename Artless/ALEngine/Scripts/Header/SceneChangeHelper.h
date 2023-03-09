@@ -36,12 +36,12 @@ namespace ALEngine::Script
 		/*!*****************************************************************************
 			\brief Helper function to change the scene based on the sceneName
 		*******************************************************************************/
-		void ChangeScene(std::string const& sceneName);
+		void NextScene(std::string const& sceneName);
 
 		/*!*****************************************************************************
 			\brief Helper function to change the scene based on the scene index
 		*******************************************************************************/
-		void ChangeScene(u64 sceneIndex);
+		void NextScene(u64 sceneIndex);
 
 		/*!*****************************************************************************
 			\brief Helper function to change to the next scene according to the next index

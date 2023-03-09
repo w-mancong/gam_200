@@ -41,7 +41,7 @@ namespace ALEngine::Script
 		{
 			paused = !paused;
 			SetActive(paused, bd_pause);
-			Time::m_Scale = static_cast<f32>(paused);
+			Time::m_Scale = static_cast<f32>(!paused);
 		}
 	}
 

@@ -315,7 +315,7 @@ namespace ALEngine::Script
 		\param [in]
 			abilities: ability
 		***********************************************************************************/
-		void RunAbilities_OnCells(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities abilities);
+		void RunAbilities_OnCells(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities);
 
 		/*!*********************************************************************************
 		\brief
@@ -341,6 +341,12 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void constructWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+		void constructTrap(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
+
+		void constructBomb(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
+
+		void ResetCell(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
+
 		/*!*********************************************************************************
 		\brief
 			Destroys a wall on a cell
@@ -355,6 +361,7 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void destroyWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+		void Bomb_Explode(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
 
 		/*!*********************************************************************************
 		\brief
@@ -377,9 +384,11 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void EnemyManager_LoadData();
 
-
+		void RotatePattern(int patternRotationAmount);
 		void scanRoomCellArray();
 		void checkPlayerPlacement();
+		void DisplayPlayerEntityPathToCell(ECS::Entity cellEntity);
+		void HighlightWalkableCellsRange(Room& room, Math::Vector2Int coordinate, bool reachable, std::vector<ECS::Entity>& pathlist);
 
 
 		/*!*********************************************************************************
@@ -417,10 +426,11 @@ namespace ALEngine::Script
 		std::vector<Pattern> pattern_Default, pattern_List;
 		Pattern selected_Pattern;
 		u32 selected_Pattern_Index{ 0 };
+		s32 selected_Pattern_Rotation{ 0 };
 
 		//Abilities
 		std::vector<Abilities> Abilities_List;
-		Abilities selected_Abilities;
+		Abilities* selected_Abilities;
 
 		//Cell that the mouse is hovering over
 		ECS::Entity current_Moused_Over_Cell;
@@ -435,7 +445,7 @@ namespace ALEngine::Script
 		ECS::Entity masterAudioSource{ ECS::MAX_ENTITIES };
 
 		//Tracks debug drawing for room
-		b8 is_DebugDraw = true;
+		b8 is_DebugDraw = false;
 
 		Engine::Audio* buttonClickAudio{ nullptr };
 

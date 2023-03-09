@@ -15,7 +15,7 @@ namespace ALEngine::Script
 	namespace
 	{
 		using namespace ECS;
-		f32 constexpr ALPHA_SPEED{ 1.15f };
+		f32 constexpr ALPHA_SPEED{ 0.75f };
 	}
 
 	void SceneChangeHelper::Init(ECS::Entity en)
@@ -42,16 +42,16 @@ namespace ALEngine::Script
 			Engine::Scene::NextScene();
 	}
 
-	void SceneChangeHelper::ChangeScene(std::string const& sceneName)
+	void SceneChangeHelper::NextScene(std::string const& _sceneName)
 	{
 		changeScene = true;
-		this->sceneName = sceneName;
+		sceneName = _sceneName;
 	}
 
-	void SceneChangeHelper::ChangeScene(u64 sceneIndex)
+	void SceneChangeHelper::NextScene(u64 _sceneIndex)
 	{
 		changeScene = true;
-		this->sceneIndex = static_cast<s64>(sceneIndex);
+		sceneIndex = static_cast<s64>(_sceneIndex);
 	}
 
 	void SceneChangeHelper::NextScene(void)
