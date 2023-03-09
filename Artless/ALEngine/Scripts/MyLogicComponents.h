@@ -14,5 +14,6 @@
 #include <QuitButton.h>
 #include <MainMenuButton.h>
 #include <CubeFloat.h>
+#include <OptionButton.h>
 
 #endif

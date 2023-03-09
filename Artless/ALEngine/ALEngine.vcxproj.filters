@@ -278,6 +278,8 @@
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\MainMenuButton.h" />
     <ClInclude Include="Scripts\Header\CubeFloat.h" />
+    <ClInclude Include="Scripts\Header\OptionButton.h" />
+    <ClInclude Include="Scripts\Source\OptionButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

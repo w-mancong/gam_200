@@ -467,12 +467,14 @@
     <ClInclude Include="Scripts\Header\HtpButton.h" />
     <ClInclude Include="Scripts\Header\MainMenuButton.h" />
     <ClInclude Include="Scripts\Header\NewGameButton.h" />
+    <ClInclude Include="Scripts\Header\OptionButton.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
     <ClInclude Include="Scripts\others\ScriptManager.h" />
+    <ClInclude Include="Scripts\Source\OptionButton.cpp" />
     <ClInclude Include="tracy\Tracy.hpp" />
   </ItemGroup>
   <ItemGroup>
