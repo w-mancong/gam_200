@@ -48,6 +48,12 @@ namespace ALEngine::Editor
 
 		/*!*********************************************************************************
 			\brief
+			Updates the menu bar
+		***********************************************************************************/
+		void UpdateMenuBar(void);
+
+		/*!*********************************************************************************
+			\brief
 				Set whether the panel is open
 			\param isOpen
 				Whether the panel is open

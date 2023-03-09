@@ -121,6 +121,19 @@ namespace ALEngine::Engine::Scene
 				Default Constructor for the Cutscene Manager class.
 		***********************************************************************************/
 		CutsceneManager(void);
+
+		/*!*********************************************************************************
+			\brief
+				Save all sequences
+		***********************************************************************************/
+		void SaveSequences(void);
+
+		/*!*********************************************************************************
+			\brief
+				Load all sequences
+		***********************************************************************************/
+		void LoadSequences(void);
+
 		std::vector<Cutscene>::iterator m_CurrentCutscene{};
 		std::string m_SelectedSequence{};
 		bool m_CutsceneIsPlaying{ false };		
@@ -135,14 +148,30 @@ namespace ALEngine::Engine::Scene
 		friend class Memory::StaticMemory;
 	};
 
+	enum class FadeType : u32
+	{
+		FADE_TO_BLACK = 0,			// Fade to Black
+		FADE_TO_WHITE,				// Fade to white
+		FADE_TO_NEXT,				// Fade to next cutscene
+		FADE_OVER_BLACK,			// Fade from black
+		FADE_OVER_WHITE,			// Fade from white
+		FADE_OVER_PREV,				// Fade Over Previous Cutscene
+		FADE_NONE,					// No Fade
+		FADE_TOTAL					// Fade Count
+	};
+
 	struct Cutscene
 	{
 		std::string m_CutsceneName{};				// Name of the Cutscene
 		u32 m_OrderIndex;							// The index for the order of the cutscene within the sequence
-		std::vector<std::string> m_CutsceneTexts{};	// List of texts for cutscene
-		std::vector<CutsceneImage> m_Images{};		// List of Images
+		//std::vector<std::string> m_CutsceneTexts{};	// List of texts for cutscene
+		//std::vector<CutsceneImage> m_Images{};		// List of Images
+		std::string m_CutsceneText{};				// Cutscene Text
+		std::string m_CutsceneImageFilePath{};		// Cutscene Image File Path
 		f32	m_CutsceneTime{};						// The amount of time until next cutscene
 		f32 m_CutsceneTimeCountdown{};				// Countdown for m_CutsceneTime
+		f32 m_FadeInTime{}, m_FadeOutTime{};		// Fade in and Fade out time
+		FadeType m_FadeInType{}, m_FadeOutType{};	// Fade in and Fade out type
 
 		// Booleans
 		b8 m_HasImage{ true };						// Whether this cutscene has an image, or it is just the text
