@@ -19,7 +19,7 @@
         "Transform": [
             {
                 "position": [
-                    801.0485229492188,
+                    801.0484619140625,
                     120.04290771484375,
                     0.0
                 ],
@@ -187,8 +187,8 @@
         "Transform": [
             {
                 "position": [
-                    1868.25048828125,
-                    499.1376953125,
+                    1868.2501220703125,
+                    499.13763427734375,
                     0.0
                 ],
                 "scale": [
@@ -226,13 +226,13 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 256
             }
         ],
         "Transform": [
             {
                 "position": [
-                    1565.4151611328125,
+                    1565.4150390625,
                     860.5792236328125,
                     0.0
                 ],
@@ -277,7 +277,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.2764892578125,
+                    1868.27685546875,
                     499.4620361328125,
                     0.0
                 ],
@@ -548,7 +548,7 @@
             {
                 "position": [
                     800.0003662109375,
-                    772.000244140625,
+                    772.0001831054688,
                     0.0
                 ],
                 "scale": [
@@ -638,7 +638,7 @@
             {
                 "position": [
                     340.3980712890625,
-                    370.728515625,
+                    370.7285461425781,
                     0.0
                 ],
                 "scale": [
@@ -804,8 +804,8 @@
         "Transform": [
             {
                 "position": [
-                    718.5477905273438,
-                    39.202423095703125,
+                    718.5476684570313,
+                    39.20243835449219,
                     0.0
                 ],
                 "scale": [
@@ -865,8 +865,8 @@
         "Transform": [
             {
                 "position": [
-                    880.0211181640625,
-                    39.20263671875,
+                    880.02099609375,
+                    39.20265197753906,
                     0.0
                 ],
                 "scale": [
@@ -926,8 +926,8 @@
         "Transform": [
             {
                 "position": [
-                    940.8091430664063,
-                    39.202178955078125,
+                    940.8089599609375,
+                    39.20219421386719,
                     0.0
                 ],
                 "scale": [
@@ -987,8 +987,8 @@
         "Transform": [
             {
                 "position": [
-                    1001.0761108398438,
-                    39.20257568359375,
+                    1001.075927734375,
+                    39.20259094238281,
                     0.0
                 ],
                 "scale": [
@@ -1048,8 +1048,8 @@
         "Transform": [
             {
                 "position": [
-                    1345.6475830078125,
-                    128.68667602539063,
+                    1345.6473388671875,
+                    128.68663024902344,
                     0.0
                 ],
                 "scale": [
@@ -1071,7 +1071,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 21,
-                "parentID": 85,
+                "parentID": 76,
                 "treeNodeFlags": 32
             }
         ]
@@ -1094,7 +1094,7 @@
             {
                 "position": [
                     1434.9315185546875,
-                    38.88232421875,
+                    38.88226318359375,
                     0.0
                 ],
                 "scale": [
@@ -1116,7 +1116,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 22,
-                "parentID": 86,
+                "parentID": 77,
                 "treeNodeFlags": 32
             }
         ]
@@ -1139,7 +1139,7 @@
             {
                 "position": [
                     1524.3917236328125,
-                    45.28753662109375,
+                    45.2874755859375,
                     0.0
                 ],
                 "scale": [
@@ -1161,7 +1161,7 @@
                 "active": true,
                 "localActive": true,
                 "id": 23,
-                "parentID": 87,
+                "parentID": 78,
                 "treeNodeFlags": 32
             }
         ]
@@ -1266,7 +1266,7 @@
             {
                 "position": [
                     472.3993835449219,
-                    262.08697509765625,
+                    262.0870056152344,
                     0.0
                 ],
                 "scale": [
@@ -1315,7 +1315,7 @@
             {
                 "position": [
                     90.69281005859375,
-                    50.920745849609375,
+                    50.92073059082031,
                     0.0
                 ],
                 "scale": [
@@ -1364,7 +1364,7 @@
             {
                 "position": [
                     1250.0003662109375,
-                    870.0001220703125,
+                    870.0000610351563,
                     0.0
                 ],
                 "scale": [
@@ -1461,13 +1461,13 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    699.998291015625,
+                    664.9993896484375,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    450.0,
+                    275.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -1510,13 +1510,13 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    699.998291015625,
+                    664.9993896484375,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    450.0,
+                    275.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -1559,13 +1559,13 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    699.998291015625,
+                    664.9993896484375,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    450.0,
+                    275.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -1608,13 +1608,13 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    699.998291015625,
+                    664.9993896484375,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    450.0,
+                    275.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -1657,7 +1657,7 @@
         "Transform": [
             {
                 "position": [
-                    1149.996337890625,
+                    1149.99609375,
                     939.9990234375,
                     0.0
                 ],
@@ -1706,7 +1706,7 @@
         "Transform": [
             {
                 "position": [
-                    1149.996337890625,
+                    1149.99609375,
                     939.9990234375,
                     0.0
                 ],
@@ -1755,7 +1755,7 @@
         "Transform": [
             {
                 "position": [
-                    1149.996337890625,
+                    1149.99609375,
                     939.9990234375,
                     0.0
                 ],
@@ -1804,7 +1804,7 @@
         "Transform": [
             {
                 "position": [
-                    1149.996337890625,
+                    1149.99609375,
                     939.9990234375,
                     0.0
                 ],
@@ -1859,7 +1859,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 255
+                "layer": 0
             }
         ],
         "Transform": [
@@ -1956,7 +1956,7 @@
             {
                 "position": [
                     800.0,
-                    485.9998779296875,
+                    485.9999084472656,
                     0.0
                 ],
                 "scale": [
@@ -2229,20 +2229,20 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    1600.0,
+                    900.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -450.0,
+                    725.0
                 ]
             }
         ],
@@ -2275,7 +2275,7 @@
             {
                 "position": [
                     1499.999267578125,
-                    830.00048828125,
+                    830.0006103515625,
                     0.0
                 ],
                 "scale": [
@@ -3108,7 +3108,7 @@
             {
                 "position": [
                     1743.199951171875,
-                    418.8000183105469,
+                    418.79998779296875,
                     0.0
                 ],
                 "scale": [
@@ -3191,7 +3191,7 @@
             {
                 "position": [
                     1761.60009765625,
-                    417.9999694824219,
+                    417.99993896484375,
                     0.0
                 ],
                 "scale": [
@@ -3274,7 +3274,7 @@
             {
                 "position": [
                     816.399658203125,
-                    -52.799957275390625,
+                    -52.79995346069336,
                     0.0
                 ],
                 "scale": [
@@ -3462,13 +3462,13 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    800.0,
+                    450.00006103515625,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    450.0,
+                    900.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -3507,13 +3507,13 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    1600.0,
+                    900.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -3582,39 +3582,6 @@
     },
     {
         "id": 68,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 68,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 69,
         "Sprite": [
             {
                 "filePath": "",
@@ -3652,7 +3619,7 @@
                 "tag": "Gameplay_System",
                 "active": true,
                 "localActive": true,
-                "id": 69,
+                "id": 68,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3668,238 +3635,7 @@
         ]
     },
     {
-        "id": 70,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 70,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 71,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 71,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 72,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 72,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 73,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 73,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 74,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 74,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 75,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 75,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 76,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 76,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 77,
+        "id": 69,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Backdrop.png",
@@ -3915,7 +3651,7 @@
         "Transform": [
             {
                 "position": [
-                    800.789794921875,
+                    800.7896728515625,
                     160.11740112304688,
                     0.0
                 ],
@@ -3937,14 +3673,14 @@
                 "tag": "AP holder",
                 "active": true,
                 "localActive": true,
-                "id": 77,
+                "id": 69,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 78,
+        "id": 70,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -3960,7 +3696,7 @@
         "Transform": [
             {
                 "position": [
-                    704.469482421875,
+                    704.4693603515625,
                     168.35482788085938,
                     0.0
                 ],
@@ -3982,14 +3718,14 @@
                 "tag": "AP1",
                 "active": true,
                 "localActive": true,
-                "id": 78,
+                "id": 70,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 79,
+        "id": 71,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -4005,8 +3741,8 @@
         "Transform": [
             {
                 "position": [
-                    742.4166870117188,
-                    169.53182983398438,
+                    742.4165649414063,
+                    169.5318603515625,
                     0.0
                 ],
                 "scale": [
@@ -4027,14 +3763,14 @@
                 "tag": "AP2",
                 "active": true,
                 "localActive": true,
-                "id": 79,
+                "id": 71,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 80,
+        "id": 72,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -4050,8 +3786,8 @@
         "Transform": [
             {
                 "position": [
-                    781.322509765625,
-                    169.53182983398438,
+                    781.3223876953125,
+                    169.5318603515625,
                     0.0
                 ],
                 "scale": [
@@ -4072,14 +3808,14 @@
                 "tag": "AP3",
                 "active": true,
                 "localActive": true,
-                "id": 80,
+                "id": 72,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 81,
+        "id": 73,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -4095,8 +3831,8 @@
         "Transform": [
             {
                 "position": [
-                    820.2451171875,
-                    169.53182983398438,
+                    820.2449951171875,
+                    169.5318603515625,
                     0.0
                 ],
                 "scale": [
@@ -4117,14 +3853,14 @@
                 "tag": "AP4",
                 "active": true,
                 "localActive": true,
-                "id": 81,
+                "id": 73,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 82,
+        "id": 74,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -4140,7 +3876,7 @@
         "Transform": [
             {
                 "position": [
-                    859.1580810546875,
+                    859.1578369140625,
                     170.70846557617188,
                     0.0
                 ],
@@ -4162,14 +3898,14 @@
                 "tag": "AP5",
                 "active": true,
                 "localActive": true,
-                "id": 82,
+                "id": 74,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 83,
+        "id": 75,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -4185,7 +3921,7 @@
         "Transform": [
             {
                 "position": [
-                    898.0698852539063,
+                    898.06982421875,
                     169.53179931640625,
                     0.0
                 ],
@@ -4207,47 +3943,14 @@
                 "tag": "AP6",
                 "active": true,
                 "localActive": true,
-                "id": 83,
+                "id": 75,
                 "parentID": 2,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 84,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 84,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 85,
+        "id": 76,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\TileSelect_CurrentTile.png",
@@ -4264,7 +3967,7 @@
             {
                 "position": [
                     1346.291748046875,
-                    133.70306396484375,
+                    133.70303344726563,
                     0.0
                 ],
                 "scale": [
@@ -4285,14 +3988,14 @@
                 "tag": "current_tile_holder",
                 "active": true,
                 "localActive": true,
-                "id": 85,
+                "id": 76,
                 "parentID": 1,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 86,
+        "id": 77,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\TileSelect_NextTile.png",
@@ -4309,7 +4012,7 @@
             {
                 "position": [
                     1434.291748046875,
-                    40.697509765625,
+                    40.69744873046875,
                     0.0
                 ],
                 "scale": [
@@ -4330,14 +4033,14 @@
                 "tag": "next_tile_holder1",
                 "active": true,
                 "localActive": true,
-                "id": 86,
+                "id": 77,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 87,
+        "id": 78,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\TileSelect_NextTile.png",
@@ -4354,7 +4057,7 @@
             {
                 "position": [
                     1522.291748046875,
-                    40.697509765625,
+                    40.69744873046875,
                     0.0
                 ],
                 "scale": [
@@ -4375,1169 +4078,14 @@
                 "tag": "next_tile_holder2",
                 "active": true,
                 "localActive": true,
-                "id": 87,
+                "id": 78,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 88,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 88,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 89,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 89,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 90,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 90,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 91,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 91,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 92,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 92,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 93,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 93,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 94,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 94,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 95,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 95,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 96,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 96,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 97,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 97,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 98,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 98,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 99,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 99,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 100,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 100,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 101,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 101,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 102,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 102,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 103,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 103,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 104,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 104,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 105,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 105,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 106,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 106,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 107,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 107,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 108,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 108,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 109,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 109,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 110,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 110,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 111,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 111,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 112,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 112,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 113,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 113,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 114,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 114,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 115,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 115,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 116,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 116,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 117,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 117,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 118,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 118,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 119,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 119,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 120,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 120,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 121,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 121,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 122,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Map Parent",
-                "active": true,
-                "localActive": true,
-                "id": 122,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 123,
+        "id": 79,
         "Sprite": [
             {
                 "filePath": "",
@@ -5575,7 +4123,7 @@
                 "tag": "Lose_Clear_Text",
                 "active": true,
                 "localActive": true,
-                "id": 123,
+                "id": 79,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -5598,7 +4146,7 @@
         ]
     },
     {
-        "id": 124,
+        "id": 80,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Bar_MenuBackdrop.png",
@@ -5636,14 +4184,14 @@
                 "tag": "Lose_Button",
                 "active": true,
                 "localActive": true,
-                "id": 124,
-                "parentID": 123,
+                "id": 80,
+                "parentID": 79,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 125,
+        "id": 81,
         "Sprite": [
             {
                 "filePath": "",
@@ -5681,8 +4229,8 @@
                 "tag": "Lose_Button_Text",
                 "active": true,
                 "localActive": true,
-                "id": 125,
-                "parentID": 124,
+                "id": 81,
+                "parentID": 80,
                 "treeNodeFlags": 32
             }
         ],
@@ -5704,17 +4252,29 @@
         ]
     },
     {
-        "id": 126,
+        "id": 82,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    50.0,
+                    50.0,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0
+                    100.0,
+                    100.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -5727,11 +4287,236 @@
         ],
         "EntityData": [
             {
-                "tag": "Map Parent",
+                "tag": "Highlight_Path1",
                 "active": true,
                 "localActive": true,
-                "id": 126,
-                "parentID": -1,
+                "id": 82,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 83,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path2",
+                "active": true,
+                "localActive": true,
+                "id": 83,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 84,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path3",
+                "active": true,
+                "localActive": true,
+                "id": 84,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 85,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path4",
+                "active": true,
+                "localActive": true,
+                "id": 85,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 86,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path5",
+                "active": true,
+                "localActive": true,
+                "id": 86,
+                "parentID": 59,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 87,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path6",
+                "active": true,
+                "localActive": true,
+                "id": 87,
+                "parentID": 59,
                 "treeNodeFlags": 32
             }
         ]
