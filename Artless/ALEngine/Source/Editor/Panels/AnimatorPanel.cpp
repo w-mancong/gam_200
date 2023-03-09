@@ -149,7 +149,7 @@ namespace ALEngine::Editor
 		//ECS::ChangeAnimationFramesCount();
 		if (ImGui::BeginChild("##AnimatorPanel_InfoArea", ImGui::GetContentRegionAvail()))
 		{
-			const char* animator_preview = m_SelectedAnimator.animatorName.empty() ? animator_list.begin()->first.c_str() : m_SelectedAnimator.animatorName.c_str();
+			const c8* animator_preview = m_SelectedAnimator.animatorName.empty() ? animator_list.begin()->first.c_str() : m_SelectedAnimator.animatorName.c_str();
 			if (ImGui::BeginCombo("Animator##AnimatorPanel", animator_preview))
 			{
 				u32 counter{ 0 };
@@ -171,7 +171,7 @@ namespace ALEngine::Editor
 
 			if (m_SelectedAnimation.clipName != "")
 			{
-				const char* animation_preview = m_SelectedAnimation.clipName;
+				const c8* animation_preview = m_SelectedAnimation.clipName;
 				if (ImGui::BeginCombo("Animation##AnimatorPanel", animation_preview))
 				{
 					u32 counter{ 0 };

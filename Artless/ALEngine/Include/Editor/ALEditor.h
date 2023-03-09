@@ -387,6 +387,7 @@ namespace ALEngine::Editor
 		TileEditorPanel m_TileEditor;					// Tile Editor Panel
 		AnimatorPanel m_AnimatorPanel;					// Animator Panel
 		SceneBuildOrderPanel m_SceneBuildOrderPanel;	// Scene Build Order Panel
+		CutsceneEditorPanel m_CutsceneEditorPanel;		// Cutscene Editor Panel
 
 		// Gizmo Operation
 		ImGuizmo::OPERATION m_CurrentGizmoOperation{ ImGuizmo::TRANSLATE };

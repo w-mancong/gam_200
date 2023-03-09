@@ -109,6 +109,7 @@
     <ClCompile Include="Scripts\Source\NewGameButton.cpp" />
     <ClCompile Include="Scripts\Source\AlphaFadeIn.cpp" />
     <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
+    <ClCompile Include="Source\Editor\Panels\CutsceneEditorPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -270,6 +271,7 @@
     <ClInclude Include="Scripts\Header\NewGameButton.h" />
     <ClInclude Include="Scripts\Header\AlphaFadeIn.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
+    <ClInclude Include="Include\Editor\Panels\CutsceneEditorPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

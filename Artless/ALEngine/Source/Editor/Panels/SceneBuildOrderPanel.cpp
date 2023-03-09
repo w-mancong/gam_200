@@ -44,7 +44,7 @@ namespace ALEngine::Editor
 		ImVec2 borderSize{ ImGui::GetContentRegionAvail().x * 0.8f, ImGui::GetContentRegionAvail().y * 0.8f };
 		ImGui::NewLine();
 		ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (borderSize.x * 0.5f));
-		ImGui::BeginChild("ContentBrowserPanel##PanelChild", borderSize, true);
+		ImGui::BeginChild("SceneBuildOrderPanel##PanelChild", borderSize, true);
 		{
 			std::vector<std::string> scenesList = Engine::Scene::GetScenesList();
 

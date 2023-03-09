@@ -181,6 +181,7 @@
     <ClCompile Include="Source\Commands\EditorCommandManager.cpp" />
     <ClCompile Include="Source\ECS\Systems\ParticleSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
+    <ClCompile Include="Source\Editor\Panels\CutsceneEditorPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\SceneBuildOrderPanel.cpp" />
     <ClCompile Include="Source\Editor\Panels\TileEditorPanel.cpp" />
     <ClCompile Include="Source\Editor\tracy\TracyClient.cpp">
@@ -321,6 +322,7 @@
     <ClInclude Include="Include\ECS\Components\ParticleProp.h" />
     <ClInclude Include="Include\ECS\Systems\ParticleSystem.h" />
     <ClInclude Include="Include\ECS\Systems\TextSystem.h" />
+    <ClInclude Include="Include\Editor\Panels\CutsceneEditorPanel.h" />
     <ClInclude Include="Include\Editor\Panels\SceneBuildOrderPanel.h" />
     <ClInclude Include="Include\Editor\Panels\TileEditorPanel.h" />
     <ClInclude Include="Include\ECS\Systems\TransformSystem.h" />
