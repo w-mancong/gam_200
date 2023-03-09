@@ -43,7 +43,7 @@
                 "localActive": true,
                 "id": 0,
                 "parentID": 9,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -103,7 +103,7 @@
         "id": 2,
         "Sprite": [
             {
-                "filePath": "",
+                "filePath": "Assets\\Images\\MainMenu_Button_NewGame.png",
                 "color": [
                     1.0,
                     1.0,
@@ -304,8 +304,8 @@
         "LogicComponent": [
             {
                 "components": [
-                    "QuitButton",
-                    "AlphaFadeIn"
+                    "AlphaFadeIn",
+                    "QuitButton"
                 ]
             }
         ]
@@ -373,7 +373,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 1
             }
         ],
         "Transform": [
@@ -418,7 +418,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 1
             }
         ],
         "Transform": [
