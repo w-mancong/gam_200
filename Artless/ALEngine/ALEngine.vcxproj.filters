@@ -112,6 +112,7 @@
     <ClCompile Include="Source\Editor\Panels\CutsceneEditorPanel.cpp" />
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\MainMenuButton.cpp" />
+    <ClCompile Include="Scripts\Source\CubeFloat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="Include\Editor\Panels\CutsceneEditorPanel.h" />
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\MainMenuButton.h" />
+    <ClInclude Include="Scripts\Header\CubeFloat.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

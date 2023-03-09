@@ -161,6 +161,7 @@
     <ClCompile Include="Scripts\others\ScriptManager.cpp" />
     <ClCompile Include="Scripts\rttr_main.cpp" />
     <ClCompile Include="Scripts\Source\AlphaFadeIn.cpp" />
+    <ClCompile Include="Scripts\Source\CubeFloat.cpp" />
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
@@ -458,6 +459,7 @@
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
     <ClInclude Include="Scripts\Header\AlphaFadeIn.h" />
+    <ClInclude Include="Scripts\Header\CubeFloat.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_GUI.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />

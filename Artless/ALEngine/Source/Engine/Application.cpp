@@ -238,7 +238,7 @@ namespace ALEngine::Engine
 #if EDITOR
 		RunFileWatcherThread();
 #else
-		OpenGLWindow::FullScreen(true);
+		//OpenGLWindow::FullScreen(true);
 		Console::StopConsole();
 #endif
 
@@ -322,7 +322,7 @@ namespace ALEngine::Engine
 		//AddAnimationToAnimator(an, "PlayerIdle");
 		//SaveAnimator(an);
 		
-		Scene::LoadScene("Assets\\Level_1.scene");
+		//Scene::LoadScene("Assets\\Level_1.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
 		//EntityScript es;
