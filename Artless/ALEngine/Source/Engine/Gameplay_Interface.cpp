@@ -1917,6 +1917,22 @@ namespace ALEngine::Script
 			return;
 		}
 
+		//highlight walkable path if not placing or using abilities
+		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING && gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION)
+		{
+			//check if able to reach walkable cell then highlight path
+			gameplaySystem->DisplayPlayerEntityPathToCell(invoker);
+
+		}
+		else if (gameplaySystem->currentPhaseStatus != PHASE_STATUS::PHASE_ACTION)
+		{
+			for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+				trans.position = Math::vec3(-1000, -1000, trans.position.z);
+			}
+		}
+
 		//If placement status is being used
 		//Determine is setup or abilities
 		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
@@ -2133,4 +2149,171 @@ namespace ALEngine::Script
 		}
 	}
 	//Event End
+
+	void GameplaySystem::HighlightWalkableCellsRange(Room& room, Math::Vector2Int coordinate, bool reachable, std::vector<ECS::Entity>& pathlist)
+	{
+		enum class PATHSTATUS
+		{
+			HORIZONTAL,
+			VERTICAL,
+			LEFTDOWN,
+			RIGHTDOWN,
+			LEFTUP,
+			RIGHTUP,
+			END
+		};
+
+		for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
+		{
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+			trans.position = Math::vec3(-1000, -1000, trans.position.z);
+		}
+
+		PATHSTATUS path{ PATHSTATUS::END };
+		int u{};
+		for (int i{ (int)pathlist.size() - 1 }; i >= 0; --i, ++u)
+		{
+			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i]);
+			if (i - 1 >= 0 && i + 1 < pathlist.size()) // corner block
+			{
+				Cell& next_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i - 1]);
+				Cell& prev_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i + 1]);
+				if (prev_cell.coordinate.x - 1 == cell.coordinate.x && cell.coordinate.y + 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::RIGHTUP;
+				else if (prev_cell.coordinate.x + 1 == cell.coordinate.x && cell.coordinate.y + 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::LEFTUP;
+				else if (prev_cell.coordinate.y - 1 == cell.coordinate.y && cell.coordinate.x + 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::RIGHTUP;
+				else if (prev_cell.coordinate.y - 1 == cell.coordinate.y && cell.coordinate.x - 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::LEFTUP;
+				else if (prev_cell.coordinate.y + 1 == cell.coordinate.y && cell.coordinate.x + 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::RIGHTDOWN;
+				else if (prev_cell.coordinate.x + 1 == cell.coordinate.x && cell.coordinate.y - 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::LEFTDOWN;
+				else if (prev_cell.coordinate.x - 1 == cell.coordinate.x && cell.coordinate.y - 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::RIGHTDOWN;
+				else if (prev_cell.coordinate.y + 1 == cell.coordinate.y && cell.coordinate.x - 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::LEFTDOWN;
+				else if (cell.coordinate.y + 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::VERTICAL;
+				else if (cell.coordinate.x + 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::HORIZONTAL;
+				else if (cell.coordinate.x - 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::HORIZONTAL;
+				else if (cell.coordinate.y - 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::VERTICAL;
+			}
+			else if (i - 1 >= 0)
+			{
+				Cell& next_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i - 1]);
+				if (cell.coordinate.y + 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::VERTICAL;
+				else if (cell.coordinate.x + 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::HORIZONTAL;
+				else if (cell.coordinate.x - 1 == next_cell.coordinate.x)
+					path = PATHSTATUS::HORIZONTAL;
+				else if (cell.coordinate.y - 1 == next_cell.coordinate.y)
+					path = PATHSTATUS::VERTICAL;
+			}
+			else
+			{
+				path = PATHSTATUS::END;
+			}
+
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(pathlist[i]);
+			if (u < gameplaySystem_GUI->getGuiManager().Highlight_blocks.size())
+			{
+				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Highlight_blocks[u]);
+				Transform& overlayTrans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().Highlight_blocks[u]);
+				Sprite& overlaySprite = Coordinator::Instance()->GetComponent<Sprite>(gameplaySystem_GUI->getGuiManager().Highlight_blocks[u]);
+				if (u == gameplaySystem_GUI->getGuiManager().Highlight_blocks.size() - 1)
+					path = PATHSTATUS::END;
+				switch (path)
+				{
+				case PATHSTATUS::HORIZONTAL:
+					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Horizontal.png");
+					overlayTrans.position = trans.position;
+					break;
+				case PATHSTATUS::VERTICAL:
+					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Vertical.png");
+					overlayTrans.position = trans.position;
+					break;
+				case PATHSTATUS::END:
+					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Destination.png");
+					overlayTrans.position = trans.position;
+					break;
+				case PATHSTATUS::LEFTDOWN:
+					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Btm_Left.png");
+					overlayTrans.position = trans.position;
+					break;
+				case PATHSTATUS::RIGHTDOWN:
+					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Btm_Right.png");
+					overlayTrans.position = trans.position;
+					break;
+				case PATHSTATUS::LEFTUP:
+					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Top_Left.png");
+					overlayTrans.position = trans.position;
+					break;
+				case PATHSTATUS::RIGHTUP:
+					overlaySprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Top_Right.png");
+					overlayTrans.position = trans.position;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+				break;
+		}
+		while (u < gameplaySystem_GUI->getGuiManager().Highlight_blocks.size())
+		{
+
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().Highlight_blocks[u]);
+			trans.position = Math::vec3(-1000, -1000, trans.position.z);
+			++u;
+		}
+	}
+
+	void GameplaySystem::DisplayPlayerEntityPathToCell(ECS::Entity cellEntity)
+	{
+		targetCellEntity = cellEntity;
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+		if (cell.hasUnit) {
+			return;
+		}
+
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		startCellEntity = getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
+
+		//Get path
+		std::vector<ECS::Entity> pathList;
+		//bool isPathFound = Engine::AI::FindPath(m_Room, startCellEntity, targetCellEntity, pathList, false);
+		//bool isPathFound = Engine::AI::FindPath(gameplaySystem_SharedPtr, m_Room, startCellEntity, targetCellEntity, pathList, false);
+		bool isPathFound = Engine::AI::FindPath(gameplaySystem, m_Room, startCellEntity, targetCellEntity, pathList, false);
+
+		//If path not found then stop
+		if (!isPathFound) {
+			AL_CORE_INFO("No Path Found");
+			for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+				trans.position = Math::vec3(-1000, -1000, trans.position.z);
+			}
+			return;
+		}
+		else
+		{
+			AL_CORE_INFO("Path Found");
+		}
+
+		bool reachable = true;
+
+		if (pathList.size() > 5)
+		{
+			reachable = false;
+		}
+
+		HighlightWalkableCellsRange(m_Room, cell.coordinate, reachable, pathList);
+	}
 }

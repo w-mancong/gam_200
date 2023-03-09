@@ -97,6 +97,12 @@ namespace ALEngine::Script
 		guiManager.AP_Indicators[4] = Coordinator::Instance()->GetEntityByTag("AP5");
 		guiManager.AP_Indicators[5] = Coordinator::Instance()->GetEntityByTag("AP6");
 		guiManager.endTurnBtnEntity = Coordinator::Instance()->GetEntityByTag("end_turn"); 
+		guiManager.Highlight_blocks[0] = Coordinator::Instance()->GetEntityByTag("Highlight_Path1");
+		guiManager.Highlight_blocks[1] = Coordinator::Instance()->GetEntityByTag("Highlight_Path2");
+		guiManager.Highlight_blocks[2] = Coordinator::Instance()->GetEntityByTag("Highlight_Path3");
+		guiManager.Highlight_blocks[3] = Coordinator::Instance()->GetEntityByTag("Highlight_Path4");
+		guiManager.Highlight_blocks[4] = Coordinator::Instance()->GetEntityByTag("Highlight_Path5");
+		guiManager.Highlight_blocks[5] = Coordinator::Instance()->GetEntityByTag("Highlight_Path6");
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);

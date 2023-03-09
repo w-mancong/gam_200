@@ -2,7 +2,7 @@
 file:	AnimatorPanel.h
 author: Lucas Nguyen
 email:	l.nguyen\@digipen.edu
-brief:	This file contains function declarations for the ANimatorPanel class.
+brief:	This file contains function declarations for the AnimatorPanel class.
 		The AnimatorPanel class contains an Animator Editor that edits the number of
 		frames for each frame within the Animation
 
@@ -10,6 +10,8 @@ brief:	This file contains function declarations for the ANimatorPanel class.
 *//*__________________________________________________________________________________*/
 #ifndef ANIMATOR_PANEL_H
 #define ANIMATOR_PANEL_H
+
+#if EDITOR
 
 namespace ALEngine::Editor
 {
@@ -108,5 +110,7 @@ namespace ALEngine::Editor
 			m_OldCurrClipName{};				// Current Clip Name but old
 	};
 }
+
+#endif
 
 #endif

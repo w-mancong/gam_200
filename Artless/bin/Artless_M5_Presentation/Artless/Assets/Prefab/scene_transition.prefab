@@ -1,0 +1,54 @@
+[
+    {
+        "id": 0,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "scene_transition",
+                "active": true,
+                "localActive": true,
+                "id": 0,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "SceneChangeHelper"
+                ]
+            }
+        ]
+    }
+]

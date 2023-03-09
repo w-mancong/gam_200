@@ -136,6 +136,9 @@ namespace ALEngine::Editor
 			if(m_AnimatorPanel.GetPanelIsOpen())
 				m_AnimatorPanel.OnImGuiRender();
 
+			if (m_CutsceneEditorPanel.GetPanelIsOpen())
+				m_CutsceneEditorPanel.OnImGuiRender();
+
 			// Check if game is running
 			if (m_GameIsActive)
 			{
