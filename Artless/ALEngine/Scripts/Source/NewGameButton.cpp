@@ -2,7 +2,7 @@
 file:	NewGameButton.cpp
 author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
-brief:	This file contain function declaration for new game button
+brief:	This file contain function definition for new game button
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/

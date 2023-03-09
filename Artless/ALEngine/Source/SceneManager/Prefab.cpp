@@ -1,5 +1,14 @@
+/*!
+file:	Prefabs.cpp
+author:	Wong Man Cong
+email:	w.mancong\@digipen.edu
+brief:	This file contain function declarations for saving, instantiating and clearing
+		the memory of all prefrabs instantiated previously
+
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #include <pch.h>
-#include <Prefabs/Prefabs.h>
+#include <SceneManager/Prefabs.h>
 
 namespace ALEngine
 {
@@ -426,7 +435,7 @@ namespace ALEngine
 
 		// Max movement points
 		writer.Key("maxMovementPoints");
-		writer.Int(unit.maxMovementPoints);
+		writer.Int(unit.maxActionPoints);
 
 		// Unit type
 		writer.Key("unitType");
@@ -444,7 +453,7 @@ namespace ALEngine
 		unit.maxHealth = v[0]["maxHealth"].GetInt();
 
 		// Getting max movement points
-		unit.maxMovementPoints = v[0]["maxMovementPoints"].GetInt();
+		unit.maxActionPoints = v[0]["maxMovementPoints"].GetInt();
 
 		// Getting unit type
 		unit.unitType = static_cast<UNIT_TYPE>(v[0]["unitType"].GetUint64());
@@ -930,46 +939,6 @@ namespace ALEngine
 		}
 		return CreateInstance(instObjects[prefabName]);
 	}
-
-	//template <typename T>
-	//void CopyComponentData(ECS::Entity dst, ECS::Entity src)
-	//{
-	//	// Utilising the copy constructor to copy the data
-	//	T component{ Coordinator::Instance()->GetComponent<T>(src) };
-	//	Coordinator::Instance()->AddComponent(dst, component);
-	//}
-
-	//void CopyComponentEntityData(ECS::Entity dst, ECS::Entity src)
-	//{
-	//	Coordinator::Instance()->GetComponent<EntityData>(dst) = Coordinator::Instance()->GetComponent<EntityData>(src);
-	//}
-
-	//// Create a clone of en
-	//ECS::Entity Instantiate(ECS::Entity en)
-	//{
-	//	ECS::Entity clone = Coordinator::Instance()->CreateEntity();
-	//	if (Coordinator::Instance()->HasComponent<Sprite>(en))
-	//		CopyComponentData<Sprite>(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<Animator>(en))
-	//		CopyComponentData<Animator>(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<Transform>(en))
-	//		CopyComponentData<Transform>(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<EntityData>(en))
-	//		CopyComponentEntityData(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<Collider2D>(en))
-	//		CopyComponentData<Collider2D>(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<Rigidbody2D>(en))
-	//		CopyComponentData<Rigidbody2D>(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<CharacterController>(en))
-	//		CopyComponentData<CharacterController>(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<Unit>(en))
-	//		CopyComponentData<Unit>(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<ParticleProperties>(en))
-	//		CopyComponentData<ParticleProperties>(clone, en);
-	//	if (Coordinator::Instance()->HasComponent<Text>(en))
-	//		CopyComponentData<Text>(clone, en);
-	//	return clone;
-	//}
 
 	void ClearPrefabCollection(void)
 	{

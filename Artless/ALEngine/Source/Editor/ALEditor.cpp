@@ -468,9 +468,8 @@ namespace ALEngine::Editor
 				{
 					ECS::ParticleSystem::GetParticleSystem().ClearParticles();
 					//ECS::ExitGameplaySystem();
-					Coordinator::Instance()->DestroyEntities();
-
-					Engine::Scene::LoadState();
+					//Coordinator::Instance()->DestroyEntities();
+					
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
 					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 				}

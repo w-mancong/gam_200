@@ -24,20 +24,10 @@ namespace ALEngine::ECS::Component
 	
 	enum class ENEMY_TYPE
 	{
-		ENEMY_MELEE,   //0 Enemy Melee
+		ENEMY_MELEE,			//0 Enemy Melee
 		ENEMY_CELL_DESTROYER,   //1 Cell Destroyer
-		ENEMY_SUMMONER,   //2
-		ENEMY_TYPE04    //3
-	};
-
-	enum class SUMMONER_ENEMY_STATE
-	{
-		//list of all spawnerenemystate
-		SES_IDLE = 0,    //Idle state
-		SES_MOVE_CLOSER, //move closer to player state once check if too far from player
-		SES_MOVE_AWAY,   //move away from player state once once check if player too close to enemy
-		SES_RETREAT,     //retreat away from player state
-		SES_HEAL         //heal itself state
+		ENEMY_SUMMONER,			//2 Summoner
+		ENEMY_TYPE04			//3
 	};
 
 	/*!*********************************************************************************
@@ -56,23 +46,11 @@ namespace ALEngine::ECS::Component
 		s32 health{}, maxHealth{};
 		s32 defense{};
 		s32 minDamage, maxDamage{};
-		s32 movementPoints{}, maxMovementPoints{};
+		s32 actionPoints{}, maxActionPoints{};
 		s32 minRange{}, maxRange{};
 
-		//spawner enemy state stuff
-		//current state
-		SUMMONER_ENEMY_STATE m_CurrentStateId{};
-		//next state
-		SUMMONER_ENEMY_STATE m_NextStateId{};
-		//previous state
-		SUMMONER_ENEMY_STATE m_PreviousStateId{};
-		//turncounte to keep track
-		s32 TurnCounter{};
-		//keep track that turn ended
-		bool TurnEnded{};
-
-		//bool to trigger when player in specified range of enemy
-		bool TriggeredByPlayer;
+		s32 stunDuration{ 0 };
+		s32 abilityCooldown_Enemy{ 0 };
 
 		//unit type
 		UNIT_TYPE unitType{};

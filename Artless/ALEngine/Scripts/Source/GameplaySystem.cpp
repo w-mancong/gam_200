@@ -15,26 +15,53 @@ namespace ALEngine::Script
 	namespace {
 		std::shared_ptr < GameplaySystem_Interface_Management_Enemy> gameplaySystem_Enemy;
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
+		std::shared_ptr<GameplaySystem> gameplaySystem;
+
+		std::string room_To_Load = "Assets\\Presentation_Level.map";
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Load Level 1
+	***********************************************************************************/
+	void Event_Button_LoadLevel_1(ECS::Entity invoker) {
+		//Restart the gameplay
+		room_To_Load = "Assets\\Presentation_Level.map";
+		Engine::Scene::Restart();
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Load Level 2
+	***********************************************************************************/
+	void Event_Button_LoadLevel_2(ECS::Entity invoker) {
+		gameplaySystem->Toggle_Gameplay_State(false);
+		//Restart the gameplay
+		room_To_Load = "Assets\\Tutorial_Level.map";
+		Engine::Scene::Restart();
 	}
 
 	void GameplaySystem::Load(ECS::Entity en)
 	{
-		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
-		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
-		Set_GameplayInterface_GameplayManager(this);
-		std::cout << "setting up the system\n";
+
 	}
 
 	void GameplaySystem::Init(ECS::Entity en)
 	{
-		std::cout << "initializing system\n";
+		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
+		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
+		Set_GameplayInterface_GameplayManager(en);
+
 		StartGameplaySystem();
-		//InitializeRoom("Assets\\Medium Map.map");
+		InitializeRoom(room_To_Load);
+		EnemyManager_LoadData();
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
 	{
 		using namespace Gameplay;
+
 		MapManager::Instance()->SetMapPath(map_fp);
 		if (!MapManager::Instance()->DeserializeMap(map_fp))
 			return false;
@@ -71,6 +98,7 @@ namespace ALEngine::Script
 			for (auto row : col)
 			{
 				assert(counter < m_Room.roomSize);
+
 				m_Room.roomCellsArray[counter] = Coordinator::Instance()->CreateEntity();
 
 				sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[counter]);
@@ -114,8 +142,8 @@ namespace ALEngine::Script
 				{
 					m_Room.playerX = r;
 					m_Room.playerY = c; 
-					Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
-
+					//Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 				}
 				// Skip "Empty" tiles
 				else if (row != "Empty")
@@ -125,7 +153,8 @@ namespace ALEngine::Script
 
 					// Check for enemy
 					if (row == "Enemy Melee" || 
-						row == "Enemy Cell Destroyer")
+						row == "Enemy Cell Destroyer" ||
+						row == "Enemy Summoner")
 					{
 						ENEMY_TYPE enemy_type{};
 
@@ -133,14 +162,20 @@ namespace ALEngine::Script
 							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
 						else if (row == "Enemy Cell Destroyer")
 							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
+						else if (row == "Enemy Summoner")
+							enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
 						// Place Enemy
 						ECS::Entity enemyEntt = gameplaySystem_Enemy->PlaceNewEnemyInRoom(r, c, enemy_type, enemyEntityList, m_Room);
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
 						// Empty Tile under enemy
-						Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
-						ToggleCellAccessibility(m_Room, r, c, false);
+						ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
+					}
+					else if (row == "Vertical_Wall" || row == "Top_Wall" || row == "Horizontal_Wall" || row == "Bottom_Wall") {
+						Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, r, c)).m_isAccessible = false;
+						Coordinator::Instance()->GetComponent<EventTrigger>(getEntityCell(m_Room, r, c)).isEnabled = false;
+						ECS::CreateSprite(m_Room.roomCellsArray[counter], tile_image.c_str());
 					}
 					else
 					{
@@ -149,8 +184,9 @@ namespace ALEngine::Script
 				}
 				else
 				{
-					Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
-					ToggleCellAccessibility(m_Room, r, c, false);
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
+					//Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
+					//ToggleCellAccessibility(m_Room, r, c, false);
 				}
 
 				++counter;
@@ -161,6 +197,7 @@ namespace ALEngine::Script
 
 		// Place Player and Tile Below Player
 		PlaceNewPlayerInRoom(m_Room.playerX, m_Room.playerY);
+
 		return true;
 	}
 
@@ -177,17 +214,15 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Free(ECS::Entity en)
 	{
-	
+		ExitGameplaySystem();
 	}
 
 	void GameplaySystem::Unload(ECS::Entity en)
 	{
-		ExitGameplaySystem();
 	}
 
 
 	void GameplaySystem::StartGameplaySystem() {
-
 		AL_CORE_INFO("GAME START");
 		//Set up scene
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
@@ -228,91 +263,6 @@ namespace ALEngine::Script
 		//Initialize Abilities
 		InitializeAbilities(Abilities_List);
 
-		//Initialize the room and cells
-		for (uint32_t i = 0; i < getRoomSize(); ++i) {
-			m_Room.roomCellsArray[i] = Coordinator::Instance()->CreateEntity();
-
-			sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[i]); // other cells are children of the parent
-
-			//Set default transform and scale
-			Transform transform;
-			transform.scale = { 100, 100 };
-			transform.localScale = { 100, 100 };
-
-			Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[i], transform);
-
-			ECS::CreateSprite(m_Room.roomCellsArray[i], "Assets/Images/InitialTile_v04.png");
-		}
-
-		//Set up the event triggers for the cells
-		for (s32 i = 0; i < static_cast<s32>(roomSize[0]); ++i) {
-			for (s32 j = 0; j < static_cast<s32>(roomSize[1]); ++j) {
-				//Determine the cell index
-				s32 cellIndex = i * roomSize[0] + j;
-
-				//Get the transform component
-				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(m_Room.roomCellsArray[cellIndex]);
-
-				//Set the physical position according from the coordinates
-				transform.position = { 450 + (f32)j * 100.f, 150 + (f32)i * 100.f };
-
-				//Set the coordinates for the cell
-				Cell cell;
-				cell.coordinate = { i,j };
-
-				//Create the triggers and subscribe the cell related events
-				ECS::CreateEventTrigger(m_Room.roomCellsArray[cellIndex]);
-				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
-				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
-				ECS::Subscribe(m_Room.roomCellsArray[cellIndex], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
-
-				//Add the child overlay
-				cell.child_overlay = Coordinator::Instance()->CreateEntity();
-
-				sceneGraph.Push(m_Room_Parent_Entity, cell.child_overlay); // other cells are children of the parent
-				ECS::CreateSprite(cell.child_overlay, "Assets/Images/InitialTile_v04.png");
-
-				Transform child_overlay_transform;
-				child_overlay_transform.scale = transform.scale;
-				//child_overlay_transform.scale.y += 50;
-				child_overlay_transform.position = { 450 + (f32)i * 100.f, 150 + (f32)j * 100.f };
-				//child_overlay_transform.position.y += 50 >> 2;
-				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
-
-				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, i, j), cell);
-				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).tag = "Cell_Overlay[" + std::to_string(i) + "," + std::to_string(j) + "]";
-				Coordinator::Instance()->GetComponent<EntityData>(getEntityCell(m_Room, i, j)).tag = "Cell[" + std::to_string(i) + "," + std::to_string(j) + "]";
-				Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY	
-			}
-		}
-
-		//Create Player
-		PlaceNewPlayerInRoom(0, 2);
-
-		//Place enemy
-		enemyEntityList.clear();
-		ECS::Entity enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(5, 1, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
-
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(8, 5, ENEMY_TYPE::ENEMY_MELEE, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
-
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(4, 2, ENEMY_TYPE::ENEMY_CELL_DESTROYER, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
-
-		//Place enemy
-		enemyEntity = gameplaySystem_Enemy->PlaceNewEnemyInRoom(2, 7, ENEMY_TYPE::ENEMY_SUMMONER, enemyEntityList, m_Room);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
-		ECS::Subscribe(enemyEntity, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
-
-		//Create EndTurn Button
-		InitializeEndTurnButton();
-
 		//Initialize Pattern GUI
 		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
 
@@ -321,6 +271,9 @@ namespace ALEngine::Script
 
 		//Initialize General GUI
 		gameplaySystem_GUI->InitializeGUI();
+
+		//Create EndTurn Button
+		InitializeEndTurnButton();
 
 		//Add events for pattern Button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
@@ -332,30 +285,13 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_2);
-
-
-		//******* Set inaccessible cells ********//
-		ToggleCellAccessibility(m_Room, 2, 3, false);
-		ToggleCellAccessibility(m_Room, 2, 4, false);
-		ToggleCellAccessibility(m_Room, 3, 3, false);
-		ToggleCellAccessibility(m_Room, 3, 4, false);
-
-		ToggleCellAccessibility(m_Room, 4, 0, false);
-		ToggleCellAccessibility(m_Room, 4, 1, false);
-		ToggleCellAccessibility(m_Room, 5, 0, false);
-		ToggleCellAccessibility(m_Room, 6, 1, false);
-
-		ToggleCellAccessibility(m_Room, 0, 7, false);
-		ToggleCellAccessibility(m_Room, 1, 7, false);
-
-		ToggleCellAccessibility(m_Room, 5, 7, false);
-		ToggleCellAccessibility(m_Room, 6, 7, false);
-		ToggleCellAccessibility(m_Room, 7, 5, false);
-		ToggleCellAccessibility(m_Room, 7, 7, false);
-		ToggleCellAccessibility(m_Room, 7, 6, false);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_3);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[4], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_4);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[5], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_5);
 
 		//Subscribe the restart button
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Lose_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_2);
 
 		Toggle_Gameplay_State(true);
 
@@ -364,7 +300,6 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->TogglePatternGUI(true);
 
 		//***** AUDIO Initialization ******//
-		EnemyManager_LoadData();
 		CreateAudioEntityMasterSource();
 		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
@@ -400,6 +335,10 @@ namespace ALEngine::Script
 
 				gameplaySystem_GUI->TogglePatternGUI(false);
 				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+
+				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+				gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 			}
 		}
 
@@ -439,10 +378,23 @@ namespace ALEngine::Script
 
 		if (Input::KeyTriggered(KeyCode::F8)) {
 			Cheat_EliminateAllEnemy();
+
 		}
 
 		if (Input::KeyTriggered(KeyCode::F9)) {
 			Cheat_ClearFloorWalkability();
+		}
+
+		if (Input::KeyTriggered(KeyCode::RightShift)) {
+
+			Engine::Scene::LoadScene("Assets\\Level_1.scene");
+		}
+
+		if (Input::KeyTriggered(KeyCode::E)) {
+			RotatePattern(1);
+		}
+		else if (Input::KeyTriggered(KeyCode::Q)) {
+			RotatePattern(-1);
 		}
 		//******END CHEAT KEYS******//
 
@@ -451,6 +403,9 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::ExitGameplaySystem() {
+		gameplaySystem_Enemy.reset();
+		gameplaySystem_GUI.reset();
+		
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 		for (auto& it : as.list)
 		{

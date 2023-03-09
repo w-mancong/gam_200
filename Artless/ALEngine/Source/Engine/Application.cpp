@@ -186,9 +186,19 @@ namespace ALEngine::Engine
 #endif
 
 			Coordinator::Instance()->ResetSystem();
-
-			Scene::LoadScene();
-
+#if EDITOR
+			if (ALEditor::Instance()->GetGameActive())
+			{
+#endif
+				Scene::LoadScene();
+#if EDITOR
+			}
+			else
+			{
+				Coordinator::Instance()->DestroyEntities();
+				Engine::Scene::LoadState();
+			}
+#endif
 			GameStateManager::previous = GameStateManager::current;
 			GameStateManager::current  = GameStateManager::next;
 		}
@@ -213,7 +223,7 @@ namespace ALEngine::Engine
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
-		Scene::CutsceneManager::Instance()->Init();
+		//Scene::CutsceneManager::Instance()->Init();
 
 		// Init ImGui
 #if EDITOR
@@ -312,7 +322,7 @@ namespace ALEngine::Engine
 		//AddAnimationToAnimator(an, "PlayerIdle");
 		//SaveAnimator(an);
 		
-		//Scene::LoadScene("Assets\\test.scene");
+		Scene::LoadScene("Assets\\Level_1.scene");
 
 		//Entity en = Coordinator::Instance()->GetEntityByTag("pause_menu");
 		//EntityScript es;

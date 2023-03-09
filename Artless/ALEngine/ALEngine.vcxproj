@@ -166,8 +166,10 @@
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_GUI.cpp" />
     <ClCompile Include="Scripts\Source\HtpButton.cpp" />
+    <ClCompile Include="Scripts\Source\MainMenuButton.cpp" />
     <ClCompile Include="Scripts\Source\NewGameButton.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
+    <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
     <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
@@ -439,7 +441,7 @@
     <ClInclude Include="Include\Math\inverse_sqrt.h" />
     <ClInclude Include="Include\Math\Vector2.h" />
     <ClInclude Include="Include\pch.h" />
-    <ClInclude Include="Include\Prefabs\Prefabs.h" />
+    <ClInclude Include="Include\SceneManager\Prefabs.h" />
     <ClInclude Include="Include\SceneManager\CutsceneManager.h" />
     <ClInclude Include="Include\SceneManager\SceneManager.h" />
     <ClInclude Include="Include\Serialization\Serializer.h" />
@@ -461,8 +463,10 @@
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_Enemy.h" />
     <ClInclude Include="Scripts\Header\HtpButton.h" />
+    <ClInclude Include="Scripts\Header\MainMenuButton.h" />
     <ClInclude Include="Scripts\Header\NewGameButton.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
+    <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
