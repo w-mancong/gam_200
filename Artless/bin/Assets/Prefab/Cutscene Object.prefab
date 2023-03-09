@@ -12,7 +12,13 @@
                     1.0,
                     1.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -51,7 +57,13 @@
                     1600.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -90,7 +102,13 @@
                     1600.0,
                     300.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -129,7 +147,13 @@
                     1600.0,
                     300.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [

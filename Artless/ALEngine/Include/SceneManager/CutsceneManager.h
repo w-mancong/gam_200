@@ -150,7 +150,6 @@ namespace ALEngine::Engine::Scene
 		b8 m_HasTimer{ true };						// Whether this cutscene is timed or based on user click
 		b8 m_WaitForInput{ true };					// Whether this cutscene wait for user input before proceeding to next
 
-
 		// Functions
 		/*!*********************************************************************************
 			\brief

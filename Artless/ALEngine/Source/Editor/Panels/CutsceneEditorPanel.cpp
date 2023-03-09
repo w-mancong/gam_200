@@ -74,7 +74,8 @@ namespace ALEngine::Editor
 			return;
 		}
 
-		ImVec2 borderSize{ ImGui::GetContentRegionAvail().x * 0.8f, ImGui::GetContentRegionAvail().y * 0.5f };
+		ImGui::BeginChild("##CutsceneEditorChild", { ImGui::GetContentRegionMax().x * 0.4f, 0.f });
+		ImVec2 borderSize{ ImGui::GetContentRegionAvail().x * 0.95f, ImGui::GetContentRegionAvail().y * 0.3f };
 
 		// Sequence Stuff
 		{
@@ -126,7 +127,7 @@ namespace ALEngine::Editor
 		{
 			ImGui::NewLine();
 			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (borderSize.x * 0.5f));
-			ImGui::BeginChild("Cutscenes##PanelChild", borderSize, true);
+			ImGui::BeginChild("Cutscenes##PanelChild", { borderSize.x, 0.f }, true);
 			{
 				// Sequence not empty
 				if (!CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].empty())
@@ -138,11 +139,10 @@ namespace ALEngine::Editor
 							m_SelectedCutsceneIndex = i.m_OrderIndex;
 						}
 					}
-				}
-				
+				}				
 
-				f32 btn_len{ ImGui::GetContentRegionAvail().x * 0.3f };
-				ImGui::NewLine(); ImGui::SameLine(ImGui::GetContentRegionAvail().x * 0.35f);
+				f32 btn_len{ ImGui::GetContentRegionAvail().x * 0.8f };
+				ImGui::NewLine(); ImGui::SameLine(ImGui::GetContentRegionAvail().x * 0.1f);
 				if (ImGui::Button("Add Cutscene", { btn_len, 0.f }))
 				{	// Adds empty cutscene
 					Cutscene newCutscene{};
@@ -152,11 +152,45 @@ namespace ALEngine::Editor
 				}
 			}
 			ImGui::EndChild();
+			ImGui::EndChild();
 
+			// Cutscene Not Empty
+			if (!CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].empty())
+			{
+				ImGui::SameLine();
+				ImGuiWindowFlags flag{};
+				ImGui::BeginChild("##SecondChildCutsceneEditor", { 0, 0 }, false, flag);
+				{
+					borderSize = { ImGui::GetContentRegionAvail().x * 0.95f, 0.f };
+					ImGui::NewLine(); ImGui::SameLine((ImGui::GetContentRegionAvail().x * 0.5f) - (borderSize.x * 0.5f));
+					ImGui::Text("Selected Cutscene");
 
-			ImGui::NewLine(); ImGui::SameLine();
-			ImGui::Text("Selected Cutscene");
+					borderSize.y = ImGui::GetContentRegionAvail().y;
+					ImGui::NewLine(); ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (borderSize.x * 0.5f));
+					ImGui::BeginChild("Selected Cutscene##PanelChild", borderSize, true);
+					{
+						Cutscene& selected = CutsceneManager::Instance()->m_Sequences[m_SelectedSequence][m_SelectedCutsceneIndex];
+						ImGui::InputText("Name##CutsceneEditorCutsceneName", &selected.m_CutsceneName);
 
+						s32 index{ static_cast<s32>(selected.m_OrderIndex) };
+						ImGui::InputInt("Index##CutsceneEditorCutsceneName", &index, 1, 1, ImGuiInputTextFlags_ReadOnly);
+
+						ImGui::InputFloat("Time##CutsceneEditorCutsceneName", &selected.m_CutsceneTime);
+
+						ImGui::Checkbox("Has Image", &selected.m_HasImage);
+						ImGui::SameLine();	ImGui::Checkbox("Has Text", &selected.m_HasText);
+
+						ImGui::Checkbox("Has Timer", &selected.m_HasTimer);
+						ImGui::SameLine();	 ImGui::Checkbox("Wait For Input", &selected.m_WaitForInput);
+					}
+					ImGui::EndChild();
+				}
+				ImGui::EndChild();
+			}
+		}
+		else
+		{
+			ImGui::EndChild();
 		}
 	}
 	
