@@ -51,4 +51,8 @@ RTTR_REGISTRATION
 	registration::class_<MainMenuButton>("MainMenuButton")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<CubeFloat>("CubeFloat")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

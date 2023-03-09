@@ -6,12 +6,12 @@
         "id": 0,
         "Sprite": [
             {
-                "filePath": "",
+                "filePath": "Assets\\Images\\MainMenu_BG.png",
                 "color": [
                     1.0,
                     1.0,
                     1.0,
-                    0.059701502323150635
+                    1.0
                 ],
                 "layer": 0
             }
@@ -43,7 +43,7 @@
                 "localActive": true,
                 "id": 0,
                 "parentID": 9,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -105,9 +105,9 @@
             {
                 "filePath": "",
                 "color": [
-                    0.8472222089767456,
-                    0.8472222089767456,
-                    0.20003856718540192,
+                    1.0,
+                    1.0,
+                    1.0,
                     1.0
                 ],
                 "layer": 0
@@ -156,11 +156,11 @@
         "id": 3,
         "Sprite": [
             {
-                "filePath": "",
+                "filePath": "Assets\\Images\\PauseMenu_Button_Options.png",
                 "color": [
-                    0.9166666865348816,
-                    0.35011571645736694,
-                    0.35011571645736694,
+                    1.0,
+                    1.0,
+                    1.0,
                     1.0
                 ],
                 "layer": 0
@@ -208,11 +208,11 @@
         "id": 4,
         "Sprite": [
             {
-                "filePath": "",
+                "filePath": "Assets\\Images\\PauseMenu_Button_HowToPlay.png",
                 "color": [
-                    0.24170196056365967,
-                    0.6804760098457336,
-                    0.9253731369972229,
+                    1.0,
+                    1.0,
+                    1.0,
                     1.0
                 ],
                 "layer": 0
@@ -222,7 +222,7 @@
             {
                 "position": [
                     1161.599853515625,
-                    246.60003662109375,
+                    246.6000213623047,
                     0.0
                 ],
                 "scale": [
@@ -261,11 +261,11 @@
         "id": 5,
         "Sprite": [
             {
-                "filePath": "",
+                "filePath": "Assets\\Images\\PauseMenu_Button_Quit.png",
                 "color": [
-                    0.2219904214143753,
-                    0.8283581733703613,
-                    0.17308977246284485,
+                    1.0,
+                    1.0,
+                    1.0,
                     1.0
                 ],
                 "layer": 0
@@ -481,7 +481,7 @@
                 "localActive": true,
                 "id": 9,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -617,6 +617,58 @@
                 "id": 12,
                 "parentID": 10,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\MainMenu_FloatingBoxy.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    764.0999755859375,
+                    335.00006103515625,
+                    0.0
+                ],
+                "scale": [
+                    300.0,
+                    300.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "floating_cube",
+                "active": true,
+                "localActive": true,
+                "id": 13,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "CubeFloat"
+                ]
             }
         ]
     }

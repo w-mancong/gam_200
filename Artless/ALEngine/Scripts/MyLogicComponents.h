@@ -13,5 +13,6 @@
 #include <SceneChangeHelper.h>
 #include <QuitButton.h>
 #include <MainMenuButton.h>
+#include <CubeFloat.h>
 
 #endif
