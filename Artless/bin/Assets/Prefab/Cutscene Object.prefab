@@ -12,7 +12,13 @@
                     1.0,
                     1.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
@@ -22,7 +28,7 @@
                 "localActive": true,
                 "id": 0,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -43,15 +49,21 @@
         "Transform": [
             {
                 "position": [
-                    1.0,
-                    1.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
                     1600.0,
                     900.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -800.0,
+                    -450.0,
+                    725.0
+                ]
             }
         ],
         "EntityData": [
@@ -82,15 +94,21 @@
         "Transform": [
             {
                 "position": [
-                    1.0,
-                    -300.0,
+                    800.0,
+                    150.0,
                     0.0
                 ],
                 "scale": [
                     1600.0,
                     300.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -800.0,
+                    -150.0,
+                    725.0
+                ]
             }
         ],
         "EntityData": [
@@ -100,36 +118,30 @@
                 "localActive": true,
                 "id": 2,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
     {
         "id": 3,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 256
-            }
-        ],
         "Transform": [
             {
                 "position": [
-                    1601.0,
-                    0.0,
+                    2400.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
                     1600.0,
                     300.0
                 ],
-                "rotation": 0.0
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
             }
         ],
         "EntityData": [
