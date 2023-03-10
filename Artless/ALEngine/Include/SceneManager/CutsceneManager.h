@@ -153,6 +153,15 @@ namespace ALEngine::Engine::Scene
 		***********************************************************************************/
 		void SetFade(FadeType type);
 
+		/*!*********************************************************************************
+			\brief
+				Gets if the cutscene is playing
+			\return
+				Returns true if cutscene is playing,
+				Else returns false
+		***********************************************************************************/
+		b8 CutsceneIsPlaying(void);
+
 	private:
 		/*!*********************************************************************************
 			\brief 
