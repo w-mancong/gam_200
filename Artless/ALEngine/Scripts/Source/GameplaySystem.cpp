@@ -81,6 +81,8 @@ namespace ALEngine::Script
 		//Load the enemy data
 		EnemyManager_LoadData();
 
+		ECS::SetBackgroundColor({ 0.2f, 0.3f, 0.3f, 1.0f });
+
 		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 		//ECS::GetCamera().Position() = playerTransform.localPosition;
 	}

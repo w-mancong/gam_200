@@ -47,7 +47,7 @@ namespace ALEngine::Script
 			u64 ch = static_cast<u64>(channel);
 			Text& text = Coordinator::Instance()->GetComponent<Text>(textID[ch]);
 			volumes[ch] = Engine::GetChannelVolume(channel);
-			text.textString = std::to_string(static_cast<u64>(volumes[ch]));
+			text.textString = std::to_string( static_cast<u64>( volumes[ch] * 100ULL )  );
 		}
 
 		void SetVolume(Engine::Channel channel, f32 flag = 1.0f)
@@ -58,9 +58,9 @@ namespace ALEngine::Script
 			{
 				mouseClicked = true;
 				u64 ch = static_cast<u64>(channel);
-				volumes[ch] += 1.0f * flag;
+				volumes[ch] += (1.0f * flag) / 100.0f;
 
-				volumes[ch] = std::clamp(volumes[ch], 0.0f, 100.0f);
+				volumes[ch] = std::clamp(volumes[ch], 0.0f, 1.0f);
 
 				Engine::SetChannelVolume(channel, volumes[ch]);
 				SetTextVolume(channel);

@@ -56,15 +56,15 @@ RTTR_REGISTRATION
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 
-	registration::class_<CutsceneObject>("CutsceneObject")
-		.constructor<>()
-		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
-		
 	registration::class_<OptionButton>("OptionButton")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 
 	registration::class_<AudioSetting>("AudioSetting")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<CutsceneObject>("CutsceneObject")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

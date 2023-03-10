@@ -194,9 +194,9 @@ namespace ALEngine::Engine
 		volumes[BGM] = (*it)["bgm"].GetFloat();
 		volumes[MASTER] = (*it)["master"].GetFloat();
 
-		sfx->setVolume(volumes[SFX]);
-		bgm->setVolume(volumes[BGM]);
-		master->setVolume(volumes[MASTER]);
+		SetChannelVolume(Engine::Channel::SFX, volumes[SFX]);
+		SetChannelVolume(Engine::Channel::BGM, volumes[BGM]);
+		SetChannelVolume(Engine::Channel::Master, volumes[MASTER]);
 	}
 
 	void AudioManager::Update(void)
