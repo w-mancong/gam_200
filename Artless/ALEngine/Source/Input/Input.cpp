@@ -49,7 +49,7 @@ namespace ALEngine::UserInput
 		f64 mousePosX{ 0.f }, mousePosY{ 0.f };
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 
-		return Math::Vec2(mousePosX, mousePosY);
+		return Math::Vec2( static_cast<f32>(mousePosX), static_cast<f32>(mousePosY) );
 
 #endif
 	}
@@ -140,7 +140,7 @@ namespace ALEngine::UserInput
 		f64 mousePosX{ 0.f }, mousePosY{ 0.f };
 		glfwGetCursorPos(Graphics::OpenGLWindow::Window(), &mousePosX, &mousePosY);
 
-		return Math::Vec2 (mousePosX, mousePosY);
+		return Math::Vec2(static_cast<f32>(mousePosX), static_cast<f32>(mousePosY));
 
 #endif
 	}

@@ -51,7 +51,11 @@ namespace ALEngine::ECS
 		Ref<RenderSystem> rs;
 		Shader indirectShader;
 		Camera camera{ Vector3(0.0f, 0.0f, 725.0f) };
+#if EDITOR
 		Color bgColor{ 0.2f, 0.3f, 0.3f, 1.0f };
+#else
+		Color bgColor{ 0.0f, 0.0f, 0.0f, 1.0f };
+#endif
 		Frustum fstm;
 
 		//ParticleSystem particleSysObj;
@@ -353,9 +357,10 @@ namespace ALEngine::ECS
 
 	void UpdateUIpositions()
 	{
+#if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
-
+#endif
 		for (Entity en : rs->mEntities)
 		{
 			if (!Coordinator::Instance()->HasComponent<Transform>(en))

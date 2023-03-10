@@ -693,7 +693,7 @@ namespace ALEngine::Engine::Scene
 	{
 		// Getting the names of the components
 		rjs::Value const& c = v[0]["components"];
-		for (u64 i = 0; i < c.Size(); ++i)
+		for (rjs::SizeType i = 0; i < c.Size(); ++i)
 		{
 			c8 const *name = c[i].GetString();
 			rttr::type class_type = rttr::type::get_by_name(name);
@@ -730,7 +730,7 @@ namespace ALEngine::Engine::Scene
 	{
 		rjs::Value const& c = v[0]["audioClips"];
 		Engine::AudioSource as;
-		for (u64 i = 0, asId = 0; i < c.Size(); i += 5)
+		for (rjs::SizeType i = 0, asId = 0; i < c.Size(); i += 5)
 		{
 			// 0 - audio name
 			c8 const* name = c[i + 0].GetString();
@@ -952,10 +952,10 @@ namespace ALEngine::Engine::Scene
 		GameStateManager::Next(GameState::LevelSwitch);
 	}
 
-	void NextScene(u64 sceneIndex)
+	void NextScene(u64 _sceneIndex)
 	{
-		assert(sceneIndex < scenes.size() && "sceneIndex out of bound.");
-		currScene = scenes[sceneIndex];
+		assert(_sceneIndex < scenes.size() && "sceneIndex out of bound.");
+		currScene = scenes[_sceneIndex];
 		GameStateManager::Next(GameState::LevelSwitch);
 	}
 
