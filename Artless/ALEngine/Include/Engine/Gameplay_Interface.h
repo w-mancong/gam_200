@@ -1,3 +1,21 @@
+///*!
+//file:   Gameplay_Interface.h
+//author:	Tan Zhen Xiong (30%)
+//co-author:	Mohamed Zafir (20%)
+//			Darrion Aw Wei Ting (20%)
+//			Chan Jie Ming Stanley (20%)
+//			Lucas Nguyen Thai Vinh (5%)
+//			Wong Man Cong (5%)
+//email:	t.zhenxiong@digipen.edu
+//		m.zafir@digipen.edu
+//		Weitingdarrion.aw@digipen.edu
+//		c.jiemingstanley@digipen.edu
+//		l.nguyen@digipen.edu
+//		w.mancong@digipen.edu
+//brief:	This file contains the function declaration for Gameplay_Interface.h
+//
+//		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+//*//*__________________________________________________________________________________*/
 #ifndef	GAMEPLAY_SYSTEM_INTERFACE_H
 #define GAMEPLAY_SYSTEM_INTERFACE_H
 #include <pch.h>
@@ -67,7 +85,9 @@ enum class ABILITY_TYPE { DIRECT, EFFECT };
 struct Room
 {
 	//Will contain array to the room's cell's entity
-	ALEngine::ECS::Entity* roomCellsArray{ nullptr };
+	//ALEngine::ECS::Entity* roomCellsArray{ nullptr };
+
+	std::vector<ALEngine::ECS::Entity> roomCellsArray;
 
 	//Size of room
 	ALEngine::ECS::Entity width{}, height{};
@@ -99,11 +119,13 @@ public:
 	ALEngine::ECS::Entity current_Cooldown = 0, max_Cooldown = 2;
 	ALEngine::ECS::Entity damage = 15;
 
+	//Cost of the ability
 	s32 cost{ 2 };
 
+	//Keep track of ability name
 	ABILITY_TYPE current_Ability_Type = ABILITY_TYPE::DIRECT;
 
-	//Keep track of ability type
+	//Keep track of ability name
 	ABILITY_NAME current_Ability_Name = ABILITY_NAME::HARD_DROP;
 };	
 

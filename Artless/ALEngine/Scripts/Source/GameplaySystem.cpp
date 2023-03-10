@@ -1,3 +1,21 @@
+///*!
+//file:   GameplaySystem.cpp
+//author:	Tan Zhen Xiong (30%)
+//co-author:	Mohamed Zafir (20%)
+//			Darrion Aw Wei Ting (20%)
+//			Chan Jie Ming Stanley (20%)
+//			Lucas Nguyen Thai Vinh (5%)
+//			Wong Man Cong (5%)
+//email:	t.zhenxiong@digipen.edu
+//		m.zafir@digipen.edu
+//		Weitingdarrion.aw@digipen.edu
+//		c.jiemingstanley@digipen.edu
+//		l.nguyen@digipen.edu
+//		w.mancong@digipen.edu
+//brief:	This file contains the function definition for GameplaySystem.cpp
+//
+//		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+//*//*__________________________________________________________________________________*/
 #include <pch.h>
 #include "Engine/Physics2D.h"
 #include "Engine/PathFindingManager.h"
@@ -43,18 +61,24 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Load(ECS::Entity en)
 	{
-
+		
 	}
 
 	void GameplaySystem::Init(ECS::Entity en)
 	{
+		//Load all the logic component
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
 		Set_GameplayInterface_GameplayManager(en);
 
+		//Start the gameplay logic
 		StartGameplaySystem();
+
+		//Initialize the room
 		InitializeRoom(room_To_Load);
+	
+		//Load the enemy data
 		EnemyManager_LoadData();
 	}
 
@@ -62,6 +86,7 @@ namespace ALEngine::Script
 	{
 		using namespace Gameplay;
 
+		//Get the map 
 		MapManager::Instance()->SetMapPath(map_fp);
 		if (!MapManager::Instance()->DeserializeMap(map_fp))
 			return false;
@@ -72,8 +97,8 @@ namespace ALEngine::Script
 		m_Room.width = MapManager::Instance()->GetWidth();
 		m_Room.height = MapManager::Instance()->GetHeight();
 		m_Room.roomSize = m_Room.width * m_Room.height;
-		m_Room.roomCellsArray = new ECS::Entity[m_Room.roomSize];
-
+		//m_Room.roomCellsArray = new ECS::Entity[m_Room.roomSize];
+		
 		//Initialize Room Parent 
 		m_Room_Parent_Entity = Coordinator::Instance()->CreateEntity();
 		Coordinator::Instance()->AddComponent(m_Room_Parent_Entity, Transform{});
@@ -94,12 +119,14 @@ namespace ALEngine::Script
 		// Iterate every Map
 		for (auto col : MapManager::Instance()->GetMap())
 		{
+			//Reset row
 			r = 0;
 			for (auto row : col)
 			{
 				assert(counter < m_Room.roomSize);
 
-				m_Room.roomCellsArray[counter] = Coordinator::Instance()->CreateEntity();
+				//Add to the array vector
+				m_Room.roomCellsArray.push_back(Coordinator::Instance()->CreateEntity());
 
 				sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[counter]);
 
@@ -158,6 +185,7 @@ namespace ALEngine::Script
 					{
 						ENEMY_TYPE enemy_type{};
 
+						//Check for type
 						if (row == "Enemy Melee")
 							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
 						else if (row == "Enemy Cell Destroyer")
@@ -185,13 +213,14 @@ namespace ALEngine::Script
 				else
 				{
 					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
-					//Coordinator::Instance()->AddComponent<Sprite>(m_Room.roomCellsArray[counter], empty_sprite);
-					//ToggleCellAccessibility(m_Room, r, c, false);
 				}
-
+				
+				//Increment counter and row
 				++counter;
 				++r;
 			}
+
+			//Increment column
 			++c;
 		}
 
@@ -208,6 +237,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem::LateUpdate(ECS::Entity en)
 	{
+		//Update system and draw
 		UpdateGameplaySystem();
 		DrawGameplaySystem();	
 	}
@@ -216,11 +246,11 @@ namespace ALEngine::Script
 	{
 		ExitGameplaySystem();
 	}
-
+	
 	void GameplaySystem::Unload(ECS::Entity en)
 	{
-	}
 
+	}
 
 	void GameplaySystem::StartGameplaySystem() {
 		AL_CORE_INFO("GAME START");
@@ -229,7 +259,6 @@ namespace ALEngine::Script
 		m_Room.width = roomSize[0];
 		m_Room.height = roomSize[1];
 		m_Room.roomSize = getRoomSize();
-		m_Room.roomCellsArray = new ECS::Entity[getRoomSize()];
 
 		currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;
 		currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
@@ -307,6 +336,7 @@ namespace ALEngine::Script
 		ad.m_Loop = true;
 		ad.Play();
 
+		//Initialize audio
 		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
 		buttonClickAudio->m_Channel = Engine::Channel::SFX;
 	}
@@ -377,7 +407,6 @@ namespace ALEngine::Script
 
 		if (Input::KeyTriggered(KeyCode::F8)) {
 			Cheat_EliminateAllEnemy();
-
 		}
 
 		if (Input::KeyTriggered(KeyCode::F9)) {
@@ -397,29 +426,39 @@ namespace ALEngine::Script
 		}
 		//******END CHEAT KEYS******//
 
+		//Run the game loop/state
 		RunGameState();
+
+		//Update the unit sprite layer
 		UpdateUnitSpriteLayer();
 	}
 
 	void GameplaySystem::ExitGameplaySystem() {
+		//Reset the pointers
 		gameplaySystem_Enemy.reset();
 		gameplaySystem_GUI.reset();
 		
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		
 		for (auto& it : as.list)
 		{
 			Engine::Audio& ad = it.second;
 			ad.Stop();
 		}
+
+		//Clear the cell room
+		m_Room.roomCellsArray.clear();
 	}
 
 
 	void GameplaySystem::DrawGameplaySystem() {
 
+		//If the gameplay status isn't player, don't render
 		if (currentGameplayStatus == GAMEPLAY_STATUS::STOP) {
 			return;
 		}
 
+		//If not debug mode
 		if (!is_DebugDraw)
 		{
 			return;

@@ -1,3 +1,22 @@
+///*!
+//file:   GameplaySystem.h
+//author:	Tan Zhen Xiong (30%)
+//co-author:	Mohamed Zafir (20%)
+//			Darrion Aw Wei Ting (20%)
+//			Chan Jie Ming Stanley (20%)
+//			Lucas Nguyen Thai Vinh (5%)
+//			Wong Man Cong (5%)
+//email:	t.zhenxiong@digipen.edu
+//		m.zafir@digipen.edu
+//		Weitingdarrion.aw@digipen.edu
+//		c.jiemingstanley@digipen.edu
+//		l.nguyen@digipen.edu
+//		w.mancong@digipen.edu
+//brief:	This file contains the function declarations for GameplaySystem.h
+//
+//		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+//*//*__________________________________________________________________________________*/
+
 #ifndef	GAMEPLAY_SYSTEM_H
 #define GAMEPLAY_SYSTEM_H
 
@@ -341,10 +360,41 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void constructWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+		/*!*********************************************************************************
+		\brief
+			Constructs a trap, if enemy steps on it, take damage and get stunned for a few turns
+		\param [in]
+			currentRoom: room maintained by the gameplay system
+		\param [in]
+			x: x coordinate
+		\param [in]
+			y: y coordinate
+		***********************************************************************************/
 		void constructTrap(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
 
+		/*!*********************************************************************************
+		\brief
+			Constructs a bomb, will explode in the next action phase, damage all units in it's 8 adjacent cell as well as resetting the affected cells
+		\param [in]
+			currentRoom: room maintained by the gameplay system
+		\param [in]
+			x: x coordinate
+		\param [in]
+			y: y coordinate
+		***********************************************************************************/
 		void constructBomb(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
 
+
+		/*!*********************************************************************************
+		\brief
+			Resets a cell back default cell
+		\param [in]
+			currentRoom: room maintained by the gameplay system
+		\param [in]
+			x: x coordinate
+		\param [in]
+			y: y coordinate
+		***********************************************************************************/
 		void ResetCell(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
 
 		/*!*********************************************************************************
@@ -361,6 +411,16 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void destroyWall(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y, b8 isTrue);
 
+		/*!*********************************************************************************
+		\brief
+			Runs explode algorithm on a cell, will reset adjacent cell as well as damage unit on top of them
+		\param [in]
+			currentRoom: room maintained by the gameplay system
+		\param [in]
+			x: x coordinate
+		\param [in]
+			y: y coordinate
+		***********************************************************************************/
 		void Bomb_Explode(GAMEPLAY_SYSTEM_INTERFACE_H::Room& currentRoom, u32 x, u32 y);
 
 		/*!*********************************************************************************
@@ -386,31 +446,31 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-		Rotates the pattern.
+		 Rotates the current pattern to place
 		***********************************************************************************/
 		void RotatePattern(int patternRotationAmount);
 
 		/*!*********************************************************************************
 		\brief
-		Helper function to scan room cells for pathfinding
+		 Shift through each cell and decrease their counter, resets them if the counter is 0
 		***********************************************************************************/
 		void scanRoomCellArray();
 
 		/*!*********************************************************************************
 		\brief
-		Updates the player placement logic in the cell.
+		 Checks if the player is on cell, if yes then eliminate player
 		***********************************************************************************/
 		void checkPlayerPlacement();
 
 		/*!*********************************************************************************
 		\brief
-		Displays the walkable path when mouse is hovered.
+		 Display path from player towards a cell
 		***********************************************************************************/
 		void DisplayPlayerEntityPathToCell(ECS::Entity cellEntity);
 
 		/*!*********************************************************************************
 		\brief
-		Heloper function to calculate which cells to highlight as walkable.
+		 Highlights walkable path within the player's cell
 		***********************************************************************************/
 		void HighlightWalkableCellsRange(Room& room, Math::Vector2Int coordinate, bool reachable, std::vector<ECS::Entity>& pathlist);
 
@@ -421,13 +481,52 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void CreateAudioEntityMasterSource(void);
 
+		/*!*********************************************************************************
+		\brief
+		 Toggles god mode
+		***********************************************************************************/
 		void Cheat_ToggleGodMode();
+
+		/*!*********************************************************************************
+		\brief
+		 Increase health by amount
+		***********************************************************************************/
 		void Cheat_IncreasePlayerHealth(s32 amount);
+
+		/*!*********************************************************************************
+		\brief
+		 DOubles ability damage
+		***********************************************************************************/
 		void Cheat_ToggleDoubleAbilitiesDoubleDamage();
+	
+		/*!*********************************************************************************
+		\brief
+		 Decrease all enemy health to one
+		***********************************************************************************/
 		void Cheat_DecreaseEnemyHealthToOne();
+
+		/*!*********************************************************************************
+		\brief
+		 Eliminate all enemy
+		***********************************************************************************/
 		void Cheat_EliminateAllEnemy();
+
+		/*!*********************************************************************************
+		\brief
+		 Reset all alive enemy health to max
+		***********************************************************************************/
 		void Cheat_ResetAllEnemiesHealth();
+
+		/*!*********************************************************************************
+		\brief
+		 Resets player health to max
+		***********************************************************************************/
 		void Cheat_ResetPlayerHealth();
+
+		/*!*********************************************************************************
+		\brief
+		 Clear all cell walkability
+		***********************************************************************************/
 		void Cheat_ClearFloorWalkability();
 
 	public:

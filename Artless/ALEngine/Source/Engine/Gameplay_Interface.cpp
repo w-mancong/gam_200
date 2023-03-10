@@ -1,4 +1,22 @@
-﻿#include <pch.h>
+﻿///*!
+//file:   Gameplay_Interface.cpp
+//author:	Tan Zhen Xiong (30%)
+//co-author:	Mohamed Zafir (20%)
+//			Darrion Aw Wei Ting (20%)
+//			Chan Jie Ming Stanley (20%)
+//			Lucas Nguyen Thai Vinh (5%)
+//			Wong Man Cong (5%)
+//email:	t.zhenxiong@digipen.edu
+//		m.zafir@digipen.edu
+//		Weitingdarrion.aw@digipen.edu
+//		c.jiemingstanley@digipen.edu
+//		l.nguyen@digipen.edu
+//		w.mancong@digipen.edu
+//brief:	This file contains the function definition for Gameplay_Interface.cpp
+//
+//		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+//*//*__________________________________________________________________________________*/
+#include <pch.h>
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
@@ -10,6 +28,7 @@
 namespace ALEngine::Script
 {
 	namespace {
+		//Keep track of the other managers so functions can use
 		std::shared_ptr<GameplaySystem_Interface_Management_Enemy> gameplaySystem_Enemy;
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
@@ -17,6 +36,7 @@ namespace ALEngine::Script
 		//enemymanager struct object for enemymanagement function to access needed variables
 		Script::GameplaySystem_Interface_Management_Enemy::EnemyManager enemyNeededData;
 	}
+
 
 	void Set_GameplayInterface_Enemy(ECS::Entity GameplaySystemEntity) {
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(GameplaySystemEntity);
@@ -57,11 +77,14 @@ namespace ALEngine::Script
 		playerSpriteTransform.localPosition = { 0.f, 0.4f };
 		playerSpriteTransform.localScale = { 1.35f, 1.35f };
 
+		//Assign sprite
 		ECS::CreateSprite(playerUnit.unit_Sprite_Entity, playerSpriteTransform, "Assets/Images/Player v2.png");
 
+		//Assign animator
 		Animator an = ECS::CreateAnimator("Player");
 		Coordinator::Instance()->AddComponent(playerUnit.unit_Sprite_Entity, an);
 
+		//Change the animation to idle
 		ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity), "PlayerIdle");
 
 		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Player";
@@ -305,7 +328,6 @@ namespace ALEngine::Script
 		//Range of bomb is 1 cell away
 		//Destroy Walkability/wall, just reset cell
 		//Units on top or adjacent is damaged 13
-
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				//If coordinate is out of bound
@@ -323,6 +345,7 @@ namespace ALEngine::Script
 				
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x + i, y + j));
 
+				//Run explosion particle
 				ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
 
 				//Do damage to cells without bombs
@@ -330,10 +353,12 @@ namespace ALEngine::Script
 					continue;
 				}
 
+				//If has unit, do 13 damage
 				if (cell.hasUnit) {
 					DoDamageToUnit(cell.unitEntity, 13);
 				}
 
+				//Reset the affected cell
 				ResetCell(gameplaySystem->m_Room, x + i, y + j);
 			}
 		}
@@ -800,8 +825,6 @@ namespace ALEngine::Script
 
 			DoDamageToUnit(enemyEntityList[i], unit.maxHealth);
 		}
-
-		//ECS::SetActive(true, getGuiManager().Win_Clear);
 	}
 
 	void GameplaySystem::Cheat_ResetAllEnemiesHealth() {
@@ -928,6 +951,7 @@ namespace ALEngine::Script
 				}
 			}
 
+			//Disable the unit
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
 			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			unit.health = 0;	//Limit to 0
@@ -1217,6 +1241,7 @@ namespace ALEngine::Script
 		ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
 
+		//Set state to moving
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
 		movingUnitEntity = playerEntity;
@@ -1409,6 +1434,7 @@ namespace ALEngine::Script
 		gameplaySystem->currentModeOrder.path.clear();
 		gameplaySystem->currentModeOrder.path_step = 1;
 
+		//Add to the current move order
 		for (s32 i = static_cast<s32>(path.size()) - 1; i >= 0; --i) {
 			gameplaySystem->currentModeOrder.path.push_back(path[i]);
 		}
@@ -1471,8 +1497,9 @@ namespace ALEngine::Script
 	}
 
 	bool GameplaySystem::StepUpModeOrderPath(MoveOrder& order) {
-		++order.path_step;
+		++order.path_step;	//Increment move order
 
+		//If reached end, return true, else false
 		if (order.path_step >= order.path.size()) {
 			order.path_step = 1;
 			return true;
