@@ -41,6 +41,12 @@ namespace ALEngine::Engine
 		fmod::ChannelGroup* channelGroup[static_cast<s64>(Channel::Total)]{};
 		f32 volumes[static_cast<u64>(Channel::Total)]{ 100.0f, 100.0f, 100.0f };
 
+		c8 const *AUDIO_SETTING_FILE_PATH = "Assets\\Dev\\Objects\\audio_settings.json";
+
+		static u64 constexpr MASTER = static_cast<u64>(Engine::Channel::Master),
+							 SFX    = static_cast<u64>(Engine::Channel::SFX),
+							 BGM    = static_cast<u64>(Engine::Channel::BGM);
+
 		// My own m_Channel info which will be used to check if m_Channel is for bgm/sfx
 		struct ChannelInfo
 		{
@@ -165,9 +171,30 @@ namespace ALEngine::Engine
 		iterators.reserve(MAX_CHANNELS);
 
 		// Load audio volume from .json file
-		sfx->setVolume(volumes[static_cast<u64>(Channel::SFX)]);
-		bgm->setVolume(volumes[static_cast<u64>(Channel::BGM)]);
-		master->setVolume(volumes[static_cast<u64>(Channel::Master)]);
+		namespace rjs = rapidjson;
+		rjs::Document doc;
+
+		{
+			c8* buffer = utils::ReadBytes(AUDIO_SETTING_FILE_PATH);
+
+			if (!buffer)
+			{
+				AL_CORE_CRITICAL("Error: Unable to load scene: {}", AUDIO_SETTING_FILE_PATH);
+				return;
+			}
+
+			doc.Parse(buffer);
+			Memory::DynamicMemory::Delete(buffer);
+		}
+
+		rjs::Value::ValueIterator it = doc.Begin();
+		volumes[SFX] = (*it)["sfx"].GetFloat();
+		volumes[BGM] = (*it)["bgm"].GetFloat();
+		volumes[MASTER] = (*it)["master"].GetFloat();
+
+		sfx->setVolume(volumes[SFX]);
+		bgm->setVolume(volumes[BGM]);
+		master->setVolume(volumes[MASTER]);
 	}
 
 	void AudioManager::Update(void)
@@ -214,6 +241,34 @@ namespace ALEngine::Engine
 	{
 		system->release();
 		// save audio volume into .json file
+		namespace rjs = rapidjson;
+		using TWriter = rjs::PrettyWriter<rjs::StringBuffer>;
+
+		rjs::StringBuffer sb{};
+		TWriter writer{ sb };
+
+		writer.StartArray();
+		writer.StartObject();
+
+		writer.Key("master");
+		writer.Double( static_cast<f64>( volumes[MASTER] ) );
+
+		writer.Key("sfx");
+		writer.Double( static_cast<f64>(volumes[SFX]) );
+
+		writer.Key("bgm");
+		writer.Double( static_cast<f64>( volumes[BGM] ) );
+
+		writer.EndObject();
+		writer.EndArray();
+
+		std::ofstream ofs{ AUDIO_SETTING_FILE_PATH };
+		if (!ofs)
+		{
+			AL_CORE_WARN("Unable to save into audio_settings.json!");
+			return;
+		}
+		ofs.write(sb.GetString(), sb.GetLength());
 	}
 
 	fmod::System* const& AudioManager::GetSystem(void) const
