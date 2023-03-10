@@ -67,7 +67,9 @@ enum class ABILITY_TYPE { DIRECT, EFFECT };
 struct Room
 {
 	//Will contain array to the room's cell's entity
-	ALEngine::ECS::Entity* roomCellsArray{ nullptr };
+	//ALEngine::ECS::Entity* roomCellsArray{ nullptr };
+
+	std::vector<ALEngine::ECS::Entity> roomCellsArray;
 
 	//Size of room
 	ALEngine::ECS::Entity width{}, height{};

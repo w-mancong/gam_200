@@ -43,7 +43,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Load(ECS::Entity en)
 	{
-
+		
 	}
 
 	void GameplaySystem::Init(ECS::Entity en)
@@ -72,8 +72,8 @@ namespace ALEngine::Script
 		m_Room.width = MapManager::Instance()->GetWidth();
 		m_Room.height = MapManager::Instance()->GetHeight();
 		m_Room.roomSize = m_Room.width * m_Room.height;
-		m_Room.roomCellsArray = new ECS::Entity[m_Room.roomSize];
-
+		//m_Room.roomCellsArray = new ECS::Entity[m_Room.roomSize];
+		
 		//Initialize Room Parent 
 		m_Room_Parent_Entity = Coordinator::Instance()->CreateEntity();
 		Coordinator::Instance()->AddComponent(m_Room_Parent_Entity, Transform{});
@@ -99,7 +99,7 @@ namespace ALEngine::Script
 			{
 				assert(counter < m_Room.roomSize);
 
-				m_Room.roomCellsArray[counter] = Coordinator::Instance()->CreateEntity();
+				m_Room.roomCellsArray.push_back(Coordinator::Instance()->CreateEntity());
 
 				sceneGraph.Push(m_Room_Parent_Entity, m_Room.roomCellsArray[counter]);
 
@@ -216,11 +216,11 @@ namespace ALEngine::Script
 	{
 		ExitGameplaySystem();
 	}
-
+	
 	void GameplaySystem::Unload(ECS::Entity en)
 	{
-	}
 
+	}
 
 	void GameplaySystem::StartGameplaySystem() {
 		AL_CORE_INFO("GAME START");
@@ -229,7 +229,7 @@ namespace ALEngine::Script
 		m_Room.width = roomSize[0];
 		m_Room.height = roomSize[1];
 		m_Room.roomSize = getRoomSize();
-		m_Room.roomCellsArray = new ECS::Entity[getRoomSize()];
+		//m_Room.roomCellsArray = new ECS::Entity[getRoomSize()];
 
 		currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;
 		currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
@@ -407,11 +407,14 @@ namespace ALEngine::Script
 		gameplaySystem_GUI.reset();
 		
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		
 		for (auto& it : as.list)
 		{
 			Engine::Audio& ad = it.second;
 			ad.Stop();
 		}
+
+		m_Room.roomCellsArray.clear();
 	}
 
 
