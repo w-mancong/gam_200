@@ -113,9 +113,9 @@
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\MainMenuButton.cpp" />
     <ClCompile Include="Scripts\Source\CubeFloat.cpp" />
+    <ClCompile Include="Scripts\Source\CutsceneObject.cpp" />
     <ClCompile Include="Scripts\Source\OptionButton.cpp" />
     <ClCompile Include="Scripts\Source\AudioSetting.cpp" />
-    <ClCompile Include="Scripts\Source\CutsceneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -281,9 +281,9 @@
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\MainMenuButton.h" />
     <ClInclude Include="Scripts\Header\CubeFloat.h" />
+    <ClInclude Include="Scripts\Header\CutsceneObject.h" />
     <ClInclude Include="Scripts\Header\OptionButton.h" />
     <ClInclude Include="Scripts\Header\AudioSetting.h" />
-    <ClInclude Include="Scripts\Header\CutsceneObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

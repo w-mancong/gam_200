@@ -14,8 +14,8 @@
 #include <QuitButton.h>
 #include <MainMenuButton.h>
 #include <CubeFloat.h>
+#include <CutsceneObject.h>
 #include <OptionButton.h>
 #include <AudioSetting.h>
-#include <CutsceneObject.h>
 
 #endif
