@@ -4,8 +4,8 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
+                    800.0,
+                    450.0000305175781,
                     0.0
                 ],
                 "scale": [
@@ -28,7 +28,14 @@
                 "localActive": true,
                 "id": 0,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "CutsceneObject"
+                ]
             }
         ]
     },
@@ -43,14 +50,14 @@
                     0.0,
                     0.46268653869628906
                 ],
-                "layer": 256
+                "layer": 255
             }
         ],
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0,
+                    801.0,
+                    451.00006103515625,
                     0.0
                 ],
                 "scale": [
@@ -58,11 +65,11 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": true,
+                "ui": false,
                 "uiOffset": [
-                    -800.0,
-                    -450.0,
-                    725.0
+                    0.0,
+                    0.0,
+                    0.0
                 ]
             }
         ],
@@ -94,46 +101,13 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    150.0,
+                    801.0001220703125,
+                    123.00006103515625,
                     0.0
                 ],
                 "scale": [
-                    1600.0,
-                    300.0
-                ],
-                "rotation": 0.0,
-                "ui": true,
-                "uiOffset": [
-                    -800.0,
-                    -150.0,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Dialogue Box",
-                "active": true,
-                "localActive": true,
-                "id": 2,
-                "parentID": 0,
-                "treeNodeFlags": 0
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "Transform": [
-            {
-                "position": [
-                    2400.0,
-                    450.0,
-                    0.0
-                ],
-                "scale": [
-                    1600.0,
-                    300.0
+                    1430.0,
+                    210.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -146,28 +120,118 @@
         ],
         "EntityData": [
             {
-                "tag": "Dialogue Text",
+                "tag": "Dialogue Box",
                 "active": true,
                 "localActive": true,
-                "id": 3,
-                "parentID": 2,
+                "id": 2,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ],
         "TextProperty": [
             {
-                "textString": "Hello I am A Dialogue Box ",
+                "textString": "Hello There",
                 "currentFont": "SFProverbialGothic",
-                "scale": 1.0,
+                "scale": 0.8999999761581421,
                 "color": [
                     1.0,
                     1.0,
                     1.0
                 ],
                 "position": [
-                    20.0,
-                    105.0
+                    72.0,
+                    83.0
                 ]
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    801.0,
+                    451.0000305175781,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Cutscene Bottom",
+                "active": true,
+                "localActive": true,
+                "id": 3,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 1
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    801.0,
+                    451.0000305175781,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Cutscene Top",
+                "active": true,
+                "localActive": true,
+                "id": 4,
+                "parentID": 0,
+                "treeNodeFlags": 32
             }
         ]
     }

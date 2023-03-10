@@ -55,4 +55,8 @@ RTTR_REGISTRATION
 	registration::class_<CubeFloat>("CubeFloat")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<CutsceneObject>("CutsceneObject")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

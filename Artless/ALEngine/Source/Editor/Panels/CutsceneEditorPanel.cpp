@@ -143,9 +143,11 @@ namespace ALEngine::Editor
 				// Sequence not empty
 				if (!CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].empty())
 				{
+					u32 count{ 0 };
 					for (auto i : CutsceneManager::Instance()->m_Sequences[m_SelectedSequence])
 					{
-						if (ImGui::Selectable(i.m_CutsceneName.c_str(), i.m_OrderIndex == m_SelectedCutsceneIndex))
+						std::string cutscene = i.m_CutsceneName + "## Cutscene Name " + std::to_string(count++);
+						if (ImGui::Selectable(cutscene.c_str(), i.m_OrderIndex == m_SelectedCutsceneIndex))
 						{
 							m_SelectedCutsceneIndex = i.m_OrderIndex;
 						}
@@ -194,9 +196,24 @@ namespace ALEngine::Editor
 						ImGui::Checkbox("Has Timer", &selected.m_HasTimer);
 						ImGui::SameLine();	 ImGui::Checkbox("Wait For Input", &selected.m_WaitForInput);
 
-						std::string fadeIn{};
+						std::string fadeSelected{};
+						switch (selected.m_FadeInType)
+						{
+						case FadeType::FADE_NONE:
+							fadeSelected = "No Fade";
+							break;
+						case FadeType::FADE_OVER_BLACK:
+							fadeSelected = "Fade From Black";
+							break;
+						case FadeType::FADE_OVER_WHITE:
+							fadeSelected = "Fade From White";
+							break;
+						case FadeType::FADE_OVER_PREV:
+							fadeSelected = "Fade Over Previous";
+							break;							
+						}
 						// Fade In Stuff
-						if (ImGui::BeginCombo("Fade In Type##CutsceneEditor", m_SelectedSequence.c_str()))
+						if (ImGui::BeginCombo("Fade In Type##CutsceneEditor", fadeSelected.c_str()))
 						{
 							for (u32 i{ 0 }; i < (u32)FadeType::FADE_TOTAL; ++i)
 							{
@@ -215,13 +232,33 @@ namespace ALEngine::Editor
 									if (ImGui::Selectable("Fade Over Previous", (u32)selected.m_FadeInType == i))
 										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_OVER_PREV);
 								}
+								else if (i == (u32)FadeType::FADE_NONE)
+								{
+									if (ImGui::Selectable("No Fade", (u32)selected.m_FadeInType == i))
+										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_NONE);
+								}
 							}
 							ImGui::EndCombo();
 						}						
-						ImGui::InputFloat("FadeIn Time##", &selected.m_FadeInTime, 0.f, 0.f, "", selected.m_FadeInType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
-					
+						ImGui::InputFloat("FadeIn Time##", &selected.m_FadeInTime, 0.f, 0.f, "%.3f", selected.m_FadeInType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
+
+						switch (selected.m_FadeOutType)
+						{
+						case FadeType::FADE_NONE:
+							fadeSelected = "No Fade";
+							break;
+						case FadeType::FADE_TO_BLACK:
+							fadeSelected = "Fade To Black";
+							break;
+						case FadeType::FADE_TO_WHITE:
+							fadeSelected = "Fade To White";
+							break;
+						case FadeType::FADE_TO_NEXT:
+							fadeSelected = "Fade To Next";
+							break;
+						}
 						// Fade Out Stuff
-						if (ImGui::BeginCombo("Fade Out Type##CutsceneEditor", m_SelectedSequence.c_str()))
+						if (ImGui::BeginCombo("Fade Out Type##CutsceneEditor", fadeSelected.c_str()))
 						{
 							for (u32 i{ 0 }; i < (u32)FadeType::FADE_TOTAL; ++i)
 							{
@@ -240,10 +277,15 @@ namespace ALEngine::Editor
 									if (ImGui::Selectable("Fade To Previous", (u32)selected.m_FadeOutType == i))
 										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_NEXT);
 								}
+								else if (i == (u32)FadeType::FADE_NONE)
+								{
+									if (ImGui::Selectable("No Fade", (u32)selected.m_FadeOutType == i))
+										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_NONE);
+								}
 							}
 							ImGui::EndCombo();
 						}
-						ImGui::InputFloat("FadeIn Time##", &selected.m_FadeInTime, 0.f, 0.f, "", selected.m_FadeInType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
+						ImGui::InputFloat("FadeOut Time##", &selected.m_FadeOutTime, 0.f, 0.f, "%.3f", selected.m_FadeOutType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
 
 						// Image
 						{
@@ -289,7 +331,7 @@ namespace ALEngine::Editor
 						if (selected.m_CutsceneText != "")
 						{
 							ImGui::Text("Cutscene Text");
-							ImGui::BeginChild("Text Box##CutsceneEditor", { 0.f, ImGui::GetContentRegionAvail().y * 0.4f }, true);
+							ImGui::BeginChild("Text Box##CutsceneEditor", { 0.f, ImGui::GetContentRegionAvail().x * 0.4f }, true);
 							ImGui::TextWrapped(selected.m_CutsceneText.c_str());
 							ImGui::EndChild();
 						}

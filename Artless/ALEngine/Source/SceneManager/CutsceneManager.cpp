@@ -23,9 +23,9 @@ namespace ALEngine::Engine::Scene
 		LoadSequences();
 	}
 
-	void CutsceneManager::Init(void)
+	void CutsceneManager::Init(ECS::Entity en)
 	{
-		m_CutsceneObject = Instantiate("Cutscene Object");
+		m_CutsceneObject = en;
 		ECS::GetSceneGraph().FindImmediateChildren(m_CutsceneObject);
 		std::vector<s32> const& children = ECS::GetSceneGraph().GetChildren();
 
@@ -38,7 +38,13 @@ namespace ALEngine::Engine::Scene
 				m_BlackOverlay = child;
 			else if (data.tag == "Dialogue Box")
 				m_DialogueBox = child;
+			else if (data.tag == "Cutscene Top")
+				m_CutsceneTop = child;
+			else if (data.tag == "Cutscene Bottom")
+				m_CutsceneBottom = child;
 		}
+
+		m_CurrentPhase = CutscenePhase::FADE_IN;
 	}
 
 	void CutsceneManager::PlaySequence(std::string sequence)
@@ -55,6 +61,9 @@ namespace ALEngine::Engine::Scene
 		// Make Obj Appear
 		EntityData& objData = Coordinator::Instance()->GetComponent<EntityData>(m_CutsceneObject);
 		objData.active = true;
+
+		// Set Fade
+		SetFade(m_CurrentCutscene->m_FadeInType);
 	}
 
 	void CutsceneManager::StopSequence(void)
@@ -62,8 +71,7 @@ namespace ALEngine::Engine::Scene
 		m_CutsceneIsPlaying = false;
 
 		// Make Obj Disappear
-		EntityData& objData = Coordinator::Instance()->GetComponent<EntityData>(m_CutsceneObject);
-		objData.active = false;
+		SetActive(false, m_CutsceneObject);
 	}
 
 	void CutsceneManager::AddSequence(std::string sequenceName)
@@ -203,6 +211,18 @@ namespace ALEngine::Engine::Scene
 					writer.Key("OrderIndex");
 					writer.Uint(i.m_OrderIndex);
 
+					writer.Key("FadeInType");
+					writer.Uint(static_cast<u32>(i.m_FadeInType));
+
+					writer.Key("FadeOutType");
+					writer.Uint(static_cast<f64>(i.m_FadeOutType));
+
+					writer.Key("FadeInTime");
+					writer.Double(static_cast<f64>(i.m_FadeInTime));
+
+					writer.Key("FadeOutTime");
+					writer.Double(static_cast<f64>(i.m_FadeOutTime));
+
 					// Has Image
 					if (i.m_HasImage)
 					{
@@ -327,7 +347,7 @@ namespace ALEngine::Engine::Scene
 				newScene.m_CutsceneTime = static_cast<f32>(v["CutsceneTime"].GetDouble());
 			if (v.HasMember("FadeInTime"))
 				newScene.m_FadeInTime = static_cast<f32>(v["FadeInTime"].GetDouble());
-			if (v.HasMember("FadeOutType"))
+			if (v.HasMember("FadeOutTime"))
 				newScene.m_FadeOutTime = static_cast<f32>(v["FadeOutTime"].GetDouble());
 
 			// Int
@@ -337,6 +357,12 @@ namespace ALEngine::Engine::Scene
 				newScene.m_FadeInType = static_cast<FadeType>(v["FadeInType"].GetUint());
 			if (v.HasMember("FadeOutType"))
 				newScene.m_FadeOutType = static_cast<FadeType>(v["FadeOutType"].GetUint());
+
+			// Strings
+			if (v.HasMember("Image"))
+				newScene.m_CutsceneImageFilePath = v["Image"].GetString();
+			if (v.HasMember("Text"))
+				newScene.m_CutsceneText = v["Text"].GetString();
 
 			AddCutscene(sequence_name, newScene);
 		}
@@ -349,29 +375,294 @@ namespace ALEngine::Engine::Scene
 		if (!m_CutsceneIsPlaying)
 			return;
 
-		// This is so the player does not spam the cutscene skip or skip too fast by accident
-		static f32 wait_timer{ 0.f };
-
-		// Check if next cutsene, either based on timer or if player pressed key
-		if (wait_timer <= 0.f &&
-			(!m_CurrentCutscene->UpdateTime()
-				|| Input::KeyTriggered(KeyCode::MouseLeftButton)
-				|| Input::KeyTriggered(KeyCode::Enter)))
+		switch (m_CurrentPhase)
 		{
-			std::next(m_CurrentCutscene);
-			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
-			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
-				m_CutsceneIsPlaying = false;
-
-			wait_timer = WAIT_TIME;
+		case CutscenePhase::FADE_IN:
+			FadeIn();
+			break;
+		case CutscenePhase::PLAYING_CUTSCENE:
+			PlayingCutscene();
+			break;
+		case CutscenePhase::FADE_OUT:
+			FadeOut();
+			break;
 		}
-		else if (wait_timer > 0.f)
-			wait_timer -= Time::m_DeltaTime;
 	}
 
 	b8 CutsceneManager::HasCutscene(void)
 	{
 		return !m_Sequences.empty();
+	}
+
+	void CutsceneManager::FadeIn(void)
+	{
+		Sprite &spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
+		spr.color.a += m_FadeSpeed * Time::m_DeltaTime;
+
+		// If top is fully opaque
+		if (spr.color.a >= 1.f)
+		{
+			// Set alpha to 1
+			spr.color.a = 1.f;
+
+			// Below set inactive
+			SetActive(false, m_CutsceneBottom);
+
+			// Set to playing cutscene
+			m_CurrentPhase = CutscenePhase::PLAYING_CUTSCENE;
+
+			SetActive(true, m_DialogueBox);
+
+			Text &dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
+			dialogue.textString = m_CurrentCutscene->m_CutsceneText;
+
+			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
+		}
+	}
+
+	void CutsceneManager::FadeOut(void)
+	{
+		Sprite &spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
+		spr.color.a -= m_FadeSpeed * Time::m_DeltaTime;
+
+		// If top is fully opaque
+		if (spr.color.a <= 0.f)
+		{
+			// Set alpha to 1
+			spr.color.a = 0.f;
+
+			// Swap bottom to top
+			Sprite &bot_spr{ Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom) };
+			spr.filePath = bot_spr.filePath;
+			spr.id = bot_spr.id;
+
+			// Below set inactive
+			SetActive(false, m_CutsceneBottom);
+
+			// Set to playing cutscene
+			m_CurrentPhase = CutscenePhase::FADE_IN;
+			m_CurrentCutscene = std::next(m_CurrentCutscene);
+
+			SetFade(m_CurrentCutscene->m_FadeInType);
+
+			// End of cutscene
+			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
+			{
+				StopSequence();
+				return;
+			}
+		}
+	}
+
+	void CutsceneManager::PlayingCutscene(void)
+	{
+		// This is so the player does not spam the cutscene skip or skip too fast by accident
+		//static f32 wait_timer{ 0.f };
+
+		// Normal Update
+		if (!m_CurrentCutscene->UpdateTime())
+		{	// Means time to set the next phase
+			// Fade Out
+			m_CurrentPhase = CutscenePhase::FADE_OUT;
+			auto nextCutscene = m_CurrentCutscene + 1;
+
+			if (nextCutscene != m_Sequences[m_SelectedSequence].end())
+			{
+				// If the next is supposed to fade from current
+				if (nextCutscene->m_FadeInType == FadeType::FADE_OVER_PREV)
+				{
+					// Fading in instead
+					m_CurrentPhase = CutscenePhase::FADE_IN;
+					// Don't fade out current, but fade in next
+					m_CurrentCutscene = std::next(m_CurrentCutscene);
+					// Set phase
+					SetFade(m_CurrentCutscene->m_FadeInType);
+				}
+				else
+					SetFade(m_CurrentCutscene->m_FadeOutType);
+			}
+			else
+				SetFade(m_CurrentCutscene->m_FadeOutType);
+
+			// Wait timer
+			//wait_timer = WAIT_TIME;
+
+			SetActive(false, m_DialogueBox);
+
+			// Exit
+			return;
+		}
+
+		// Check if next cutsene, either based on timer or if player pressed key
+		// Skips directly, no fading
+		/*if (wait_timer <= 0.f &&
+			(Input::KeyTriggered(KeyCode::MouseLeftButton)
+				|| Input::KeyTriggered(KeyCode::Enter)))
+		{
+			m_CurrentCutscene = std::next(m_CurrentCutscene);
+			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
+			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
+				m_CutsceneIsPlaying = false;
+
+			wait_timer = WAIT_TIME;
+			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
+		}
+		else if (wait_timer > 0.f)
+			wait_timer -= Time::m_DeltaTime;*/
+	}
+
+	void CutsceneManager::SetFade(FadeType type)
+	{
+		// Exit if no fade
+		if (type == FadeType::FADE_NONE)
+		{
+			if (m_CurrentPhase == CutscenePhase::FADE_IN)
+			{
+				// Set to playing cutscene 
+				m_CurrentPhase = CutscenePhase::PLAYING_CUTSCENE;
+
+				// Change sprite
+				Sprite &top = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
+				top.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
+				top.id = Engine::AssetManager::Instance()->GetGuid(top.filePath);
+				top.color = { 1.f, 1.f, 1.f, 1.f };
+
+				// Set the countdown
+				m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
+
+				// Make bottom disappear
+				SetActive(false, m_CutsceneBottom);
+
+				SetActive(true, m_DialogueBox);
+
+				Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
+				dialogue.textString = m_CurrentCutscene->m_CutsceneText;
+			}
+			else if (m_CurrentPhase == CutscenePhase::FADE_OUT)
+				m_CurrentPhase = CutscenePhase::FADE_IN;
+
+			return;
+		}
+
+		SetActive(true, m_CutsceneBottom);
+		SetActive(true, m_CutsceneTop);
+
+		Sprite &top_spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
+		Sprite &bot_spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom);
+
+		switch (type)
+		{
+			// ==================
+			// Fade In
+			// ==================
+		case FadeType::FADE_OVER_BLACK:
+			// Make Top become Cutscene
+				// Bottom is Black
+
+			// Top apha = 0
+			top_spr.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
+			top_spr.id = Engine::AssetManager::Instance()->GetGuid(top_spr.filePath);
+			top_spr.color = { 1.f, 1.f, 1.f, 0.f };
+
+			// Bottom alpha = 1
+			bot_spr.filePath = "";
+			bot_spr.id = 0;
+			bot_spr.color = { 0.f, 0.f, 0.f, 1.f };
+
+			// Set fade speed
+			m_FadeSpeed = 1.f / m_CurrentCutscene->m_FadeInTime;
+			
+			break;
+		case FadeType::FADE_OVER_WHITE:
+			// Make Top become Cutscene
+				// Bottom is White
+
+			// Top apha = 0
+			top_spr.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
+			top_spr.id = Engine::AssetManager::Instance()->GetGuid(top_spr.filePath);
+			top_spr.color = { 1.f, 1.f, 1.f, 0.f };
+
+			// Bottom alpha = 1
+			bot_spr.filePath = "";
+			bot_spr.id = 0;
+			bot_spr.color = { 1.f, 1.f, 1.f, 1.f };
+
+			// Set fade speed
+			m_FadeSpeed = 1.f / m_CurrentCutscene->m_FadeInTime;
+			break;
+		case FadeType::FADE_OVER_PREV:
+			// Make Top become Current Cutscene
+				// Bottom is Previous Cutscene
+
+			// Top apha = 0
+			top_spr.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
+			top_spr.id = Engine::AssetManager::Instance()->GetGuid(top_spr.filePath);
+			top_spr.color = { 1.f, 1.f, 1.f, 0.f };
+
+			// Bottom alpha = 1
+			bot_spr.filePath = (m_CurrentCutscene - 1)->m_CutsceneImageFilePath;
+			bot_spr.id = Engine::AssetManager::Instance()->GetGuid(bot_spr.filePath);
+			bot_spr.color = { 1.f, 1.f, 1.f, 1.f };
+
+			// Set fade speed
+			m_FadeSpeed = 1.f / m_CurrentCutscene->m_FadeInTime;
+			break;
+
+			// ==================
+			// Fade Out
+			// ==================
+		case FadeType::FADE_TO_BLACK:
+			// Make Top become Black
+			// Bottom is Current Cutscene
+
+			// Top apha = 0
+			top_spr.filePath = "";
+			top_spr.id = 0;
+			top_spr.color = { 0.f, 0.f, 0.f, 0.f };
+
+			// Bottom alpha = 1
+			bot_spr.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
+			bot_spr.id = Engine::AssetManager::Instance()->GetGuid(bot_spr.filePath);
+			bot_spr.color = { 1.f, 1.f, 1.f, 1.f };
+
+			// Set fade speed
+			m_FadeSpeed = 1.f / m_CurrentCutscene->m_FadeOutTime;
+			break;
+		case FadeType::FADE_TO_WHITE:
+			// Make Top become White
+			// Bottom is Current Cutscene
+			
+			// Top apha = 0
+			top_spr.filePath = "";
+			top_spr.id = 0;
+			top_spr.color = { 1.f, 1.f, 1.f, 0.f };
+
+			// Bottom alpha = 1
+			bot_spr.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
+			bot_spr.id = Engine::AssetManager::Instance()->GetGuid(bot_spr.filePath);
+			bot_spr.color = { 1.f, 1.f, 1.f, 1.f };
+
+			// Set fade speed
+			m_FadeSpeed = 1.f / m_CurrentCutscene->m_FadeOutTime;
+			break;
+		case FadeType::FADE_TO_NEXT:
+			// Make Top Next Cutscene
+			// Bottom is Current Cutscene
+
+			// Top apha = 0
+			top_spr.filePath = (m_CurrentCutscene + 1)->m_CutsceneImageFilePath;
+			top_spr.id = Engine::AssetManager::Instance()->GetGuid(top_spr.filePath);
+			top_spr.color = { 1.f, 1.f, 1.f, 0.f };
+
+			// Bottom alpha = 1
+			bot_spr.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
+			bot_spr.id = Engine::AssetManager::Instance()->GetGuid(bot_spr.filePath);
+			bot_spr.color = { 1.f, 1.f, 1.f, 1.f };
+
+			// Set fade speed
+			m_FadeSpeed = 1.f / m_CurrentCutscene->m_FadeOutTime;
+			break;
+		}
 	}
 	
 	bool Cutscene::UpdateTime(void)

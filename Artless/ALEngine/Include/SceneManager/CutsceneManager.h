@@ -15,6 +15,15 @@ namespace ALEngine::Engine::Scene
 	// Forward Declaration
 	struct Cutscene;
 	struct CutsceneImage;
+	enum class FadeType: u32;
+
+	enum class CutscenePhase
+	{
+		FADE_IN = 0,
+		PLAYING_CUTSCENE,
+		FADE_OUT,
+		CUTSCENE_PHASE_TOTAL
+	};
 
 	class CutsceneManager : public Templates::Singleton<CutsceneManager>
 	{
@@ -28,8 +37,10 @@ namespace ALEngine::Engine::Scene
 		/*!*********************************************************************************
 			\brief
 				Initialize the Cutscene Manager
+			\param [in] en
+				Entity of Cutscene Object
 		***********************************************************************************/
-		void Init(void);
+		void Init(ECS::Entity en);
 
 		/*!*********************************************************************************
 			\brief 
@@ -115,6 +126,33 @@ namespace ALEngine::Engine::Scene
 		***********************************************************************************/
 		b8 HasCutscene(void);
 
+		/*!*********************************************************************************
+			\brief
+				Fade in next Cutscene
+		***********************************************************************************/
+		void FadeIn(void);
+
+		/*!*********************************************************************************
+			\brief
+				Fade out current cutscene.
+		***********************************************************************************/
+		void FadeOut(void);
+
+		/*!*********************************************************************************
+			\brief
+				Update for playing the cutscene
+		***********************************************************************************/
+		void PlayingCutscene(void);
+
+		/*!*********************************************************************************
+			\brief
+				Set cutscenes according to the FadeType.
+				Always make the top cutscene be the one to change alpha.
+			\param [in] type
+				Fade type
+		***********************************************************************************/
+		void SetFade(FadeType type);
+
 	private:
 		/*!*********************************************************************************
 			\brief 
@@ -136,12 +174,15 @@ namespace ALEngine::Engine::Scene
 
 		std::vector<Cutscene>::iterator m_CurrentCutscene{};
 		std::string m_SelectedSequence{};
-		bool m_CutsceneIsPlaying{ false };		
+		b8 m_CutsceneIsPlaying{ true };		
+		f32 m_FadeSpeed{};
+		CutscenePhase m_CurrentPhase{ CutscenePhase::FADE_IN };
 
 		// Entities
-		ECS::Entity m_CutsceneObject{};
-		ECS::Entity m_BlackOverlay{};
-		ECS::Entity m_DialogueBox{};
+		ECS::Entity m_CutsceneObject{};							// The parent object
+		ECS::Entity m_BlackOverlay{};							// Black overlay (for those with no image)
+		ECS::Entity m_DialogueBox{};							// Dialogue Box, also has text component
+		ECS::Entity m_CutsceneTop{}, m_CutsceneBottom{};		// Top will be displayed over Bottom
 
 		// Required for Singleton to function
 		friend class Templates::Singleton<CutsceneManager>;
@@ -162,16 +203,17 @@ namespace ALEngine::Engine::Scene
 
 	struct Cutscene
 	{
-		std::string m_CutsceneName{};				// Name of the Cutscene
-		u32 m_OrderIndex;							// The index for the order of the cutscene within the sequence
+		std::string m_CutsceneName{};					// Name of the Cutscene
+		u32 m_OrderIndex;								// The index for the order of the cutscene within the sequence
 		//std::vector<std::string> m_CutsceneTexts{};	// List of texts for cutscene
 		//std::vector<CutsceneImage> m_Images{};		// List of Images
-		std::string m_CutsceneText{};				// Cutscene Text
-		std::string m_CutsceneImageFilePath{};		// Cutscene Image File Path
-		f32	m_CutsceneTime{};						// The amount of time until next cutscene
-		f32 m_CutsceneTimeCountdown{};				// Countdown for m_CutsceneTime
-		f32 m_FadeInTime{}, m_FadeOutTime{};		// Fade in and Fade out time
-		FadeType m_FadeInType{}, m_FadeOutType{};	// Fade in and Fade out type
+		std::string m_CutsceneText{};					// Cutscene Text
+		std::string m_CutsceneImageFilePath{};			// Cutscene Image File Path
+		f32	m_CutsceneTime{};							// The amount of time until next cutscene
+		f32 m_CutsceneTimeCountdown{};					// Countdown for m_CutsceneTime
+		f32 m_FadeInTime{}, m_FadeOutTime{};			// Fade in and Fade out time
+		FadeType m_FadeInType{ FadeType::FADE_NONE },	// Fade in and Fade out type
+			m_FadeOutType{ FadeType::FADE_NONE };		
 
 		// Booleans
 		b8 m_HasImage{ true };						// Whether this cutscene has an image, or it is just the text
@@ -209,7 +251,6 @@ namespace ALEngine::Engine::Scene
 		f32 m_TimeTillNext{};						// Time till next image/cutscene
 		
 		b8 m_HasFade{ false };						// Whether there is fade-in
-
 	};
 }
 
