@@ -80,6 +80,9 @@ namespace ALEngine::Script
 	
 		//Load the enemy data
 		EnemyManager_LoadData();
+
+		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+		//ECS::GetCamera().Position() = playerTransform.localPosition;
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -97,7 +100,6 @@ namespace ALEngine::Script
 		m_Room.width = MapManager::Instance()->GetWidth();
 		m_Room.height = MapManager::Instance()->GetHeight();
 		m_Room.roomSize = m_Room.width * m_Room.height;
-		//m_Room.roomCellsArray = new ECS::Entity[m_Room.roomSize];
 		
 		//Initialize Room Parent 
 		m_Room_Parent_Entity = Coordinator::Instance()->CreateEntity();
@@ -192,6 +194,7 @@ namespace ALEngine::Script
 							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
 						else if (row == "Enemy Summoner")
 							enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
+
 						// Place Enemy
 						ECS::Entity enemyEntt = gameplaySystem_Enemy->PlaceNewEnemyInRoom(r, c, enemy_type, enemyEntityList, m_Room);
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
@@ -203,6 +206,7 @@ namespace ALEngine::Script
 					else if (row == "Vertical_Wall" || row == "Top_Wall" || row == "Horizontal_Wall" || row == "Bottom_Wall") {
 						Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, r, c)).m_isAccessible = false;
 						Coordinator::Instance()->GetComponent<EventTrigger>(getEntityCell(m_Room, r, c)).isEnabled = false;
+
 						ECS::CreateSprite(m_Room.roomCellsArray[counter], tile_image.c_str());
 					}
 					else
@@ -446,9 +450,6 @@ namespace ALEngine::Script
 			Engine::Audio& ad = it.second;
 			ad.Stop();
 		}
-
-		//Clear the cell room
-		m_Room.roomCellsArray.clear();
 	}
 
 

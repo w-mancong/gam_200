@@ -279,9 +279,7 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
-
-			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  center block");
+			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
 		}
 
 		//up
@@ -290,7 +288,7 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
+			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -309,7 +307,7 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
+			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -328,7 +326,7 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
+			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
 
 			//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 			//sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
@@ -350,7 +348,7 @@ namespace ALEngine::Script
 			cell.m_resetCounter = 0;
 			cell.m_canWalk = false;
 
-			gameplaySystem->ResetCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
+			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);

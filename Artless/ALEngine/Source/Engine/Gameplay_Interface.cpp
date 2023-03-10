@@ -195,8 +195,10 @@ namespace ALEngine::Script
 
 	u32 GameplaySystem::getEntityCell(Room& currentRoom, u32 x, u32 y)
 	{
+		u32 index = y * currentRoom.width + x;
+
 		//Get required cell's entity
-		return currentRoom.roomCellsArray[y * currentRoom.width + x];
+		return currentRoom.roomCellsArray[index];
 	}
 
 	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
