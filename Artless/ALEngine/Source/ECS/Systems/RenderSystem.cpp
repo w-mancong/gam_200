@@ -382,7 +382,6 @@ namespace ALEngine::ECS
 	void RenderGameplay(void)
 	{
 		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
-		UpdateUIpositions();
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
