@@ -29,6 +29,8 @@ namespace ALEngine::Engine
 		void ToggleMuteChannel(Channel m_Channel);
 		void SetChannelVolume(Channel m_Channel, f32 m_Volume);
 
+		f32 GetChannelVolume(Channel m_Channel) const;
+
 		fmod::System* const& GetSystem(void) const;
 
 	private:
@@ -37,6 +39,7 @@ namespace ALEngine::Engine
 
 		fmod::System* system{ nullptr };
 		fmod::ChannelGroup* channelGroup[static_cast<s64>(Channel::Total)]{};
+		f32 volumes[static_cast<u64>(Channel::Total)]{ 100.0f, 100.0f, 100.0f };
 
 		// My own m_Channel info which will be used to check if m_Channel is for bgm/sfx
 		struct ChannelInfo
@@ -160,6 +163,11 @@ namespace ALEngine::Engine
 			sfxChannels.push({ nullptr, Channel::SFX });
 		// Reserving a size of iterators to be max_channels
 		iterators.reserve(MAX_CHANNELS);
+
+		// Load audio volume from .json file
+		sfx->setVolume(volumes[static_cast<u64>(Channel::SFX)]);
+		bgm->setVolume(volumes[static_cast<u64>(Channel::BGM)]);
+		master->setVolume(volumes[static_cast<u64>(Channel::Master)]);
 	}
 
 	void AudioManager::Update(void)
@@ -205,6 +213,7 @@ namespace ALEngine::Engine
 	void AudioManager::Exit(void) 
 	{
 		system->release();
+		// save audio volume into .json file
 	}
 
 	fmod::System* const& AudioManager::GetSystem(void) const
@@ -319,6 +328,13 @@ namespace ALEngine::Engine
 	{
 		s64 const m_Ch{ static_cast<s64>(m_Channel) };
 		channelGroup[m_Ch]->setVolume(m_Volume);
+		volumes[m_Ch] = m_Volume;
+	}
+
+	f32 AudioManager::GetChannelVolume(Channel m_Channel) const
+	{
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
+		return volumes[m_Ch];
 	}
 
 	/***************************************************************************************************
@@ -465,5 +481,10 @@ namespace ALEngine::Engine
 	void SetChannelVolume(Channel m_Channel, f32 m_Volume)
 	{
 		audioManager->SetChannelVolume(m_Channel, m_Volume);
+	}
+
+	f32 GetChannelVolume(Channel m_Channel)
+	{
+		return audioManager->GetChannelVolume(m_Channel);
 	}
 }

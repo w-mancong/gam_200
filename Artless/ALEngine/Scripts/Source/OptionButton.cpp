@@ -14,11 +14,8 @@ namespace ALEngine::Script
 	namespace
 	{
 		using namespace ECS;
-
-		ECS::Entity sound_options{ ECS::MAX_ENTITIES },
-			master_right{ ECS::MAX_ENTITIES }, master_left{ ECS::MAX_ENTITIES }, master_text{ ECS::MAX_ENTITIES },
-			sfx_right{ ECS::MAX_ENTITIES }, sfx_left{ ECS::MAX_ENTITIES }, sfx_text{ ECS::MAX_ENTITIES },
-			bgm_right{ ECS::MAX_ENTITIES }, bgm_left{ ECS::MAX_ENTITIES }, bgm_text{ ECS::MAX_ENTITIES };
+		 
+		ECS::Entity sound_options{ ECS::MAX_ENTITIES }, close_btn{ ECS::MAX_ENTITIES }, parent{ ECS::MAX_ENTITIES };
 
 		void Darken(Entity en)
 		{
@@ -34,12 +31,34 @@ namespace ALEngine::Script
 
 		void WhenOptionHover(Entity en)
 		{
-
+			Darken(en);
+			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			{
+				SetActive(false, parent);
+				SetActive(true, sound_options);
+				Lighten(en);
+			}
 		}
 
 		void WhenOptionExit(Entity en)
 		{
+			Lighten(en);
+		}
 
+		void WhenCloseBtnHover(Entity en)
+		{
+			Darken(en);
+			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			{
+				SetActive(true, parent);
+				SetActive(false, sound_options);
+				Lighten(en);
+			}
+		}
+
+		void WhenCloseBtnExit(Entity en)
+		{
+			Lighten(en);
 		}
 	}
 
@@ -50,17 +69,37 @@ namespace ALEngine::Script
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenOptionExit);
 
 		// option button will be attached to btn_options
-		Entity parent = static_cast<Entity>(GetSceneGraph().GetParent(en));
+		parent = static_cast<Entity>(GetSceneGraph().GetParent(en));
 		Entity grandparent = static_cast<Entity>(GetSceneGraph().GetParent(parent));
 		GetSceneGraph().FindImmediateChildren(grandparent);
+		// Find sound_options
 		std::vector<s32> const& children1{ GetSceneGraph().GetChildren() };
+
+		for (s32 child : children1)
+		{
+			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(static_cast<Entity>(child));
+			if (ed.tag == "sound_options")
+				sound_options = static_cast<Entity>(child);
+		}
+	
+		GetSceneGraph().FindImmediateChildren(sound_options);
+		// Find master_bd, sfx_bd, bgm_bd
+		std::vector<s32> const& children2{ GetSceneGraph().GetChildren() };
+
+		for (s32 child : children2)
+		{
+			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(static_cast<Entity>(child));
+			if (ed.tag == "close_btn")
+				close_btn = static_cast<Entity>(child);
+		}
+
+		CreateEventTrigger(close_btn, true);
+		Subscribe(close_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenCloseBtnHover);
+		Subscribe(close_btn, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenCloseBtnExit);
 	}
 
-	void OptionButton::Free(ECS::Entity en)
+	void OptionButton::Free([[maybe_unused]] ECS::Entity en)
 	{
-		sound_options = 
-		master_right  = master_left = master_text = 
-		sfx_right     = sfx_left    = sfx_text    =
-		bgm_right     = bgm_left    = bgm_text    = ECS::MAX_ENTITIES;
+		sound_options = close_btn = parent = ECS::MAX_ENTITIES;
 	}
 }

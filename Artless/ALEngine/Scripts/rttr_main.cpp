@@ -59,4 +59,8 @@ RTTR_REGISTRATION
 	registration::class_<OptionButton>("OptionButton")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<AudioSetting>("AudioSetting")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

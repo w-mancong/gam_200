@@ -15,5 +15,6 @@
 #include <MainMenuButton.h>
 #include <CubeFloat.h>
 #include <OptionButton.h>
+#include <AudioSetting.h>
 
 #endif

@@ -186,6 +186,11 @@ namespace ALEngine::Engine
 		\param [in] m_Channel: Channel group
 	***********************************************************************************/
 	void SetChannelVolume(Channel m_Channel, f32 m_Volume);
+
+	/*!*********************************************************************************
+		\brief Get m_Channel's m_Volume
+	***********************************************************************************/
+	f32 GetChannelVolume(Channel m_Channel);
 }
 
 #endif
