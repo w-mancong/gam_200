@@ -281,14 +281,14 @@ namespace ALEngine::Engine
 		//Scene::LoadScene("Assets\\test_logic.scene");
 		//Scene::SaveScene("test_map");
 		//Scene::LoadScene("Assets\\test_map.scene");
-/*
-		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		//Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
 		//Entity Entity_GameplaySystem = Coordinator::Instance()->CreateEntity();
 		//Coordinator::Instance()->GetComponent<EntityData>(Entity_GameplaySystem).tag = "Gameplay System";
 
 		//Coordinator::Instance()->AddComponent(Entity_GameplaySystem, Transform{});
-		//
+		
 		//sceneGraph.Push(-1, Entity_GameplaySystem);
 
 		//AddLogicComponent<Script::GameplaySystem>(Entity_GameplaySystem);
@@ -296,14 +296,14 @@ namespace ALEngine::Engine
 		//AddLogicComponent<Script::GameplaySystem_Interface_Management_GUI>(Entity_GameplaySystem);
 
 		//Entity en = Coordinator::Instance()->CreateEntity();
-		*/
+		
 		//Coordinator::Instance()->GetComponent<EntityData>(en).tag = "entity_test2";
 		//Coordinator::Instance()->AddComponent(en, Transform{});
 		//Coordinator::Instance()->AddComponent(en, Rigidbody2D{});
 		//SavePrefab(en);
 		
 		//Entity en2 = Instantiate(en), 
-		//	en3 = Instantiate("entity_test");
+		//en3 = Instantiate("entity_test");
 
 		//Animator an = CreateAnimator("Player");
 
