@@ -1953,11 +1953,7 @@ namespace ALEngine::Script
 		}
 		else if (gameplaySystem->currentPhaseStatus != PHASE_STATUS::PHASE_ACTION)
 		{
-			for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
-			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-				trans.position = Math::vec3(-1000, -1000, trans.position.z);
-			}
+			gameplaySystem->ClearHighlightPath();
 		}
 
 		//If placement status is being used
@@ -2306,9 +2302,8 @@ namespace ALEngine::Script
 		targetCellEntity = cellEntity;
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-		if (cell.hasUnit) {
+		if (cell.hasUnit)
 			return;
-		}
 
 		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		startCellEntity = getEntityCell(m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
@@ -2320,11 +2315,7 @@ namespace ALEngine::Script
 		//If path not found then stop
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
-			for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
-			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-				trans.position = Math::vec3(-1000, -1000, trans.position.z);
-			}
+			ClearHighlightPath();
 			return;
 		}
 		else
@@ -2340,5 +2331,14 @@ namespace ALEngine::Script
 		}
 
 		HighlightWalkableCellsRange(m_Room, cell.coordinate, reachable, pathList);
+	}
+
+	void GameplaySystem::ClearHighlightPath()
+	{
+		for (ECS::Entity& en : gameplaySystem_GUI->getGuiManager().Highlight_blocks)
+		{
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
+			trans.position = Math::vec3(-1000, -1000, trans.position.z);
+		}
 	}
 }
