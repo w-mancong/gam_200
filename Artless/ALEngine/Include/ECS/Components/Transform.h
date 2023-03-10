@@ -34,7 +34,7 @@ namespace ALEngine::ECS::Component
 		f32	rotation{ 0.0f };
 		Math::mat4 modelMatrix{ 1.0f };
 
-		b8 ui{ false }, uiToggle{ false };
+		b8 ui{ false };
 		math::vec3 uiOffset{ 0.0f, 0.0f, 0.0f };
 	};
 

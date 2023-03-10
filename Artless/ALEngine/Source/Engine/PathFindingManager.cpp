@@ -49,7 +49,7 @@ namespace  ALEngine::Engine::AI
             for (u32 j{ 0 }; j < currentRoom.height; ++j)
             {
                 //Get the cell of the current entity
-                Cell& c = Coordinator::Instance()->GetComponent<Cell>(currentRoom.roomCellsArray[i * currentRoom.width + j]);
+                Cell& c = Coordinator::Instance()->GetComponent<Cell>(currentRoom.roomCellsArray[j * currentRoom.width + i]);
 
                 //Set G to 0
                 c.m_GCost = 0.0f;

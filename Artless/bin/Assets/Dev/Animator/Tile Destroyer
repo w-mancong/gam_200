@@ -1,2 +1,5 @@
+TileDestroyerAttack
+TileDestroyerDeath
+TileDestroyerHurt
 TileDestroyerIdle
 TileDestroyerMoving

@@ -353,24 +353,15 @@ namespace ALEngine::ECS
 
 	void UpdateUIpositions()
 	{
+		if (!Editor::ALEditor::Instance()->GetGameActive())
+			return;
+
 		for (Entity en : rs->mEntities)
 		{
 			if (!Coordinator::Instance()->HasComponent<Transform>(en))
 				continue;
 
 			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
-
-			if (trans.uiToggle) // save current offset
-			{
-				trans.ui = true;
-				trans.uiToggle = false;
-
-				if (trans.ui)
-				{
-					trans.uiOffset = camera.Position() - trans.position;
-					AL_CORE_INFO("UI offset updated.");
-				}
-			}
 
 			if (trans.ui)
 			{
@@ -382,7 +373,6 @@ namespace ALEngine::ECS
 	void RenderGameplay(void)
 	{
 		ParticleSystem::GetParticleSystem().ParticleUpdate(Time::m_DeltaTime);
-		UpdateUIpositions();
 #if EDITOR
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
