@@ -16,7 +16,6 @@
 //
 //		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 //*//*__________________________________________________________________________________*/
-
 #ifndef	GAMEPLAY_SYSTEM_INTERFACE_H
 #define GAMEPLAY_SYSTEM_INTERFACE_H
 #include <pch.h>
@@ -120,11 +119,13 @@ public:
 	ALEngine::ECS::Entity current_Cooldown = 0, max_Cooldown = 2;
 	ALEngine::ECS::Entity damage = 15;
 
+	//Cost of the ability
 	s32 cost{ 2 };
 
+	//Keep track of ability name
 	ABILITY_TYPE current_Ability_Type = ABILITY_TYPE::DIRECT;
 
-	//Keep track of ability type
+	//Keep track of ability name
 	ABILITY_NAME current_Ability_Name = ABILITY_NAME::HARD_DROP;
 };	
 
