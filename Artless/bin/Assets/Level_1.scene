@@ -20,7 +20,7 @@
             {
                 "position": [
                     796.9470825195313,
-                    122.83589172363281,
+                    122.83595275878906,
                     0.0
                 ],
                 "scale": [
@@ -154,7 +154,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.244140625,
+                    1868.2432861328125,
                     499.13763427734375,
                     0.0
                 ],
@@ -199,7 +199,7 @@
         "Transform": [
             {
                 "position": [
-                    1565.37255859375,
+                    1565.3717041015625,
                     860.5792236328125,
                     0.0
                 ],
@@ -244,7 +244,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.2789306640625,
+                    1868.279296875,
                     499.4620361328125,
                     0.0
                 ],
@@ -771,7 +771,7 @@
         "Transform": [
             {
                 "position": [
-                    675.9326782226563,
+                    675.9329833984375,
                     43.227169036865234,
                     0.0
                 ],
@@ -832,7 +832,7 @@
         "Transform": [
             {
                 "position": [
-                    918.7069091796875,
+                    918.7073364257813,
                     43.22271728515625,
                     0.0
                 ],
@@ -893,7 +893,7 @@
         "Transform": [
             {
                 "position": [
-                    1002.4461059570313,
+                    1002.446533203125,
                     43.22287368774414,
                     0.0
                 ],
@@ -3241,7 +3241,7 @@
             {
                 "position": [
                     2360.300048828125,
-                    447.4001159667969,
+                    447.4002380371094,
                     0.0
                 ],
                 "scale": [
@@ -3843,7 +3843,7 @@
         "Transform": [
             {
                 "position": [
-                    845.3642578125,
+                    845.3646850585938,
                     155.45263671875,
                     0.0
                 ],
@@ -3888,7 +3888,7 @@
         "Transform": [
             {
                 "position": [
-                    877.7392578125,
+                    877.7396850585938,
                     155.45263671875,
                     0.0
                 ],
@@ -4484,6 +4484,1559 @@
                 "localActive": true,
                 "id": 86,
                 "parentID": 58,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 87,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "pause_logic",
+                "active": true,
+                "localActive": true,
+                "id": 87,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "PauseLogic"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 88,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    -800.0,
+                    -450.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bd_pause",
+                "active": false,
+                "localActive": false,
+                "id": 88,
+                "parentID": 87,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 89,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_Resume.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    621.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_resume",
+                "active": false,
+                "localActive": true,
+                "id": 89,
+                "parentID": 88,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "ResumeButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 90,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_MainMenu.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    504.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_mainmenu",
+                "active": false,
+                "localActive": true,
+                "id": 90,
+                "parentID": 88,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "MainMenuButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 91,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_Options.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    387.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_options",
+                "active": false,
+                "localActive": true,
+                "id": 91,
+                "parentID": 88,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "OptionButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 92,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_HowToPlay.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    270.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_htp",
+                "active": false,
+                "localActive": true,
+                "id": 92,
+                "parentID": 88,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "HtpButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 93,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_Quit.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    153.0,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    76.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "btn_quit",
+                "active": false,
+                "localActive": true,
+                "id": 93,
+                "parentID": 88,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "QuitButton"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 94,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Pave_Logo.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    774.0,
+                    0.0
+                ],
+                "scale": [
+                    284.8000183105469,
+                    214.20001220703125
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "game_logo",
+                "active": false,
+                "localActive": true,
+                "id": 94,
+                "parentID": 88,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 95,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\HowToPlay.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    -800.0,
+                    -450.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp",
+                "active": false,
+                "localActive": false,
+                "id": 95,
+                "parentID": 87,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 96,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1485.0,
+                    850.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    -1485.0,
+                    -850.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "close",
+                "active": false,
+                "localActive": false,
+                "id": 96,
+                "parentID": 87,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 97,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirm_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1200.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    -800.0,
+                    -450.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "quit_confirmation",
+                "active": false,
+                "localActive": false,
+                "id": 97,
+                "parentID": 87,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 98,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    650.0,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": false,
+                "localActive": true,
+                "id": 98,
+                "parentID": 97,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 99,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    960.0,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    250.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": false,
+                "localActive": true,
+                "id": 99,
+                "parentID": 97,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 100,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Confirmation_MainMenu.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1200.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    -800.0,
+                    -450.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "menu_confirmation",
+                "active": false,
+                "localActive": false,
+                "id": 100,
+                "parentID": 87,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 101,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    650.0,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    249.60000610351563,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": false,
+                "localActive": true,
+                "id": 101,
+                "parentID": 100,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 102,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    959.5999755859375,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    240.0,
+                    125.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": false,
+                "localActive": true,
+                "id": 102,
+                "parentID": 100,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 103,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "scene_transition",
+                "active": true,
+                "localActive": true,
+                "id": 103,
+                "parentID": 87,
+                "treeNodeFlags": 32
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "SceneChangeHelper"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 104,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\SoundOptions.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    750.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sound_options",
+                "active": false,
+                "localActive": false,
+                "id": 104,
+                "parentID": 87,
+                "treeNodeFlags": 0
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "AudioSetting"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 105,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    944.9998779296875,
+                    570.0013427734375,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "master_bd",
+                "active": false,
+                "localActive": true,
+                "id": 105,
+                "parentID": 104,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 106,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Right.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1075.0,
+                    571.4263305664063,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "master_right",
+                "active": false,
+                "localActive": true,
+                "id": 106,
+                "parentID": 105,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 107,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Left.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    814.9998779296875,
+                    571.4263305664063,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "master_left",
+                "active": false,
+                "localActive": true,
+                "id": 107,
+                "parentID": 105,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 108,
+        "Transform": [
+            {
+                "position": [
+                    1120.00048828125,
+                    645.0009765625,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "master_text",
+                "active": false,
+                "localActive": true,
+                "id": 108,
+                "parentID": 105,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "100",
+                "currentFont": "Almendra-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    0.9176470637321472,
+                    0.9019607901573181,
+                    0.8980392217636108
+                ],
+                "position": [
+                    498.0,
+                    305.0
+                ]
+            }
+        ]
+    },
+    {
+        "id": 109,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    944.9998779296875,
+                    445.00592041015625,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sfx_bd",
+                "active": false,
+                "localActive": true,
+                "id": 109,
+                "parentID": 104,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 110,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Right.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1075.0,
+                    446.4306335449219,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sfx_right",
+                "active": false,
+                "localActive": true,
+                "id": 110,
+                "parentID": 109,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 111,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Left.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    814.9998779296875,
+                    442.2306213378906,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sfx_left",
+                "active": false,
+                "localActive": true,
+                "id": 111,
+                "parentID": 109,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 112,
+        "Transform": [
+            {
+                "position": [
+                    1119.999755859375,
+                    520.0050048828125,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sfx_text",
+                "active": false,
+                "localActive": true,
+                "id": 112,
+                "parentID": 109,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "100",
+                "currentFont": "Almendra-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    0.9176470637321472,
+                    0.9019607901573181,
+                    0.8980392217636108
+                ],
+                "position": [
+                    498.0,
+                    237.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 113,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    944.9998779296875,
+                    319.7882080078125,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bgm_bd",
+                "active": false,
+                "localActive": true,
+                "id": 113,
+                "parentID": 104,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 114,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Right.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1075.0,
+                    318.58819580078125,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bgm_right",
+                "active": false,
+                "localActive": true,
+                "id": 114,
+                "parentID": 113,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 115,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Left.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    814.9998779296875,
+                    318.8132019042969,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bgm_left",
+                "active": false,
+                "localActive": true,
+                "id": 115,
+                "parentID": 113,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 116,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    275.7882080078125,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bgm_text",
+                "active": false,
+                "localActive": true,
+                "id": 116,
+                "parentID": 113,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "100",
+                "currentFont": "Almendra-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    0.9176470637321472,
+                    0.9019607901573181,
+                    0.8980392217636108
+                ],
+                "position": [
+                    498.0,
+                    169.5
+                ]
+            }
+        ]
+    },
+    {
+        "id": 117,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1169.999755859375,
+                    680.7879638671875,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "close_btn",
+                "active": false,
+                "localActive": true,
+                "id": 117,
+                "parentID": 104,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 118,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.4305555820465088
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "black_overlay",
+                "active": false,
+                "localActive": true,
+                "id": 118,
+                "parentID": 95,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 119,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.4305555820465088
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    799.999755859375,
+                    450.00018310546875,
+                    0.0
+                ],
+                "scale": [
+                    1600.0001220703125,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "black_overlay",
+                "active": false,
+                "localActive": true,
+                "id": 119,
+                "parentID": 104,
                 "treeNodeFlags": 32
             }
         ]

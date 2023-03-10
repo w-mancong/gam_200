@@ -261,13 +261,11 @@ namespace ALEngine::Engine
 
 	void Application::Exit(void)
 	{
-		//ExitGameplaySystem();
 #if EDITOR
 		ALEditor::Instance()->Exit();		// Exit ImGui
 #endif
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		AudioManagerExit();
-		//ScriptEngine::Shutdown();
 		glfwTerminate();					// clean/delete all GLFW resources
 	}
 

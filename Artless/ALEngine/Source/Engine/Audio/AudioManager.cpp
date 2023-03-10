@@ -29,6 +29,8 @@ namespace ALEngine::Engine
 		void ToggleMuteChannel(Channel m_Channel);
 		void SetChannelVolume(Channel m_Channel, f32 m_Volume);
 
+		bool IsChannelPlaying(Channel m_Channel);
+
 		f32 GetChannelVolume(Channel m_Channel) const;
 
 		fmod::System* const& GetSystem(void) const;
@@ -386,6 +388,14 @@ namespace ALEngine::Engine
 		volumes[m_Ch] = m_Volume;
 	}
 
+	bool AudioManager::IsChannelPlaying(Channel m_Channel)
+	{
+		b8 isPlaying{ false };
+		s64 const m_Ch{ static_cast<s64>(m_Channel) };
+		channelGroup[m_Ch]->isPlaying(&isPlaying);
+		return isPlaying;
+	}
+
 	f32 AudioManager::GetChannelVolume(Channel m_Channel) const
 	{
 		s64 const m_Ch{ static_cast<s64>(m_Channel) };
@@ -536,6 +546,11 @@ namespace ALEngine::Engine
 	void SetChannelVolume(Channel m_Channel, f32 m_Volume)
 	{
 		audioManager->SetChannelVolume(m_Channel, m_Volume);
+	}
+
+	bool IsChannelPlaying(Channel m_Channel)
+	{
+		return audioManager->IsChannelPlaying(m_Channel);
 	}
 
 	f32 GetChannelVolume(Channel m_Channel)
