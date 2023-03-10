@@ -89,6 +89,8 @@ namespace ALEngine::Script
 	{
 		using namespace Gameplay;
 
+		AL_CORE_CRITICAL("START");
+
 		//Get the map 
 		MapManager::Instance()->SetMapPath(map_fp);
 		if (!MapManager::Instance()->DeserializeMap(map_fp))
@@ -100,7 +102,7 @@ namespace ALEngine::Script
 		m_Room.width = MapManager::Instance()->GetWidth();
 		m_Room.height = MapManager::Instance()->GetHeight();
 		m_Room.roomSize = m_Room.width * m_Room.height;
-		
+	
 		//Initialize Room Parent 
 		m_Room_Parent_Entity = Coordinator::Instance()->CreateEntity();
 		Coordinator::Instance()->AddComponent(m_Room_Parent_Entity, Transform{});
@@ -117,6 +119,9 @@ namespace ALEngine::Script
 
 		// Clear enemy list
 		enemyEntityList.clear();
+		
+		// Clear room
+		m_Room.roomCellsArray.clear();
 
 		// Iterate every Map
 		for (auto col : MapManager::Instance()->GetMap())

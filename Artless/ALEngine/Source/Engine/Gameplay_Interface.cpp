@@ -283,17 +283,22 @@ namespace ALEngine::Script
 
 	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile
 	void GameplaySystem::scanRoomCellArray() {
+		AL_CORE_CRITICAL("SCANNING : " + std::to_string(m_Room.width) + " : " + std::to_string(m_Room.height));
+
 		//Keep track of reset counter
 		s32 resetCounter;
 		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
-		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->roomSize[0]); ++i) {
-			for (s32 j = 0; j < static_cast<s32>(gameplaySystem->roomSize[1]); ++j) {
+		for (u32 i = 0; i < m_Room.width; ++i) {
+			for (u32 j = 0; j < m_Room.height; ++j) {
 				//Get the cell index
-				s32 cellIndex = i * gameplaySystem->roomSize[0] + j;
+				s32 cellIndex = j * m_Room.width + i;
 				ECS::Entity cellEntity = m_Room.roomCellsArray[cellIndex];
 
 				//Get the cell component
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+
+				if(cell.m_resetCounter > 0)
+				AL_CORE_CRITICAL("SCANNING " + std::to_string(i) + "," + std::to_string(j) + " : count is : " + std::to_string(cell.m_resetCounter));
 				
 				if (cell.m_isAccessible == false) {
 					continue;
