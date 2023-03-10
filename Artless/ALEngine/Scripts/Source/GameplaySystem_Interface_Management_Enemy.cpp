@@ -4,6 +4,7 @@
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <Engine/PathFindingManager.h>
+#include <Utility/AudioNames.h>
 
 namespace ALEngine::Script
 {
@@ -208,6 +209,48 @@ namespace ALEngine::Script
 		return newEnemy;
 	}
 
+	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyAttack(Unit& enemy) {
+		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+			s32 randomVal = rand() % 100;
+
+			if (randomVal > 50) {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_ATTACK_1);
+			}
+			else {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_ATTACK_2);
+			}
+		}
+		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+
+		}
+		else {
+
+		}
+	}
+	
+	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyMove(Unit& enemy) {
+		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+			s32 randomVal = rand() % 100;
+
+			if (randomVal < 33) {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_1);
+			}
+			else if (randomVal >= 33 && randomVal < 67) {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_2);
+			}
+			else {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_3);
+			}
+		}
+		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+
+		}
+		else {
+
+		}
+	}
+
+
 	bool GameplaySystem_Interface_Management_Enemy::RunEnemyAdjacentAttack(Room& room, Unit& enemy) {
 		//Check 4 adjacent
 		//If player is beside, do damage to it
@@ -220,6 +263,8 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
+
+					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
 					return true;
 				}
 			}
@@ -233,6 +278,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
+					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
 					return true;
 				}
 			}
@@ -246,6 +292,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
+					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
 					return true;
 				}
 			}
@@ -259,6 +306,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
+					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
 					return true;
 				}
 			}
@@ -515,6 +563,10 @@ namespace ALEngine::Script
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
+
+		if (enemyUnit.actionPoints == enemyUnit.maxActionPoints) {
+			Audio_PlayEnemyMove(enemyUnit);
+		}
 	}
 	
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Cast_Summoner(ECS::Entity& summoner_Entity) {
@@ -645,6 +697,8 @@ namespace ALEngine::Script
 			return;
 		}
 
+		Audio_PlayEnemyMove(enemyUnit);
+
 		// Setting move animation for bishop
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity);
 		ECS::ChangeAnimation(an, "GuardMove");
@@ -759,6 +813,7 @@ namespace ALEngine::Script
 
 		AL_CORE_INFO("Path Found");
 
+		Audio_PlayEnemyMove(enemyUnit);
 		ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "TileDestroyerMoving");
 
 		//compare paths sizes

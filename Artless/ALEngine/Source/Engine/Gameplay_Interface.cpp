@@ -50,6 +50,16 @@ namespace ALEngine::Script
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(GameplaySystemEntity);
 	}
 
+	void GameplaySystem::PlayAudio(std::string audioName) {
+		//Get the master audio source
+		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+
+		Engine::Audio& ad = as.GetAudio(audioName);
+		ad.m_Channel = Engine::Channel::SFX;
+		ad.Play();
+	}
+
 	void GameplaySystem::CreatePlayerUnit(ECS::Entity entity) {
 		//Create new unit
 		Unit unit{};
@@ -914,20 +924,29 @@ namespace ALEngine::Script
 		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
-		//Play hit sound accordingly
-		if (unit.unitType == UNIT_TYPE::PLAYER) {
-			Engine::Audio& ad = as.GetAudio(AUDIO_HIT);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.Play();
-		}
-		else {
-			Engine::Audio& ad = as.GetAudio(AUDIO_ENEMY_HURT_1);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.Play();
+		if (unit.health > 0) {
+			//Play hit sound accordingly
+			if (unit.unitType == UNIT_TYPE::PLAYER) {
+				Engine::Audio& ad = as.GetAudio(AUDIO_HIT);
+				ad.m_Channel = Engine::Channel::SFX;
+				ad.Play();
+			}
+			else {
+				if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+					s32 randomVal = rand() % 100;
+
+					if (randomVal > 50) {
+						gameplaySystem->PlayAudio(AUDIO_GUARD_GET_HIT_1);
+					}
+					else {
+						gameplaySystem->PlayAudio(AUDIO_GUARD_GET_HIT_2);
+					}
+				}
+			}
 		}
 
 		//If no health
-		if (unit.health <= 0) {
+		else if (unit.health <= 0) {
 			//Determinte type
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				AL_CORE_INFO("Unit Died");
@@ -943,6 +962,10 @@ namespace ALEngine::Script
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
 				
+				if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+					gameplaySystem->PlayAudio(AUDIO_GUARD_DEATH_1);
+				}
+
 				b8 allEnemiesDead = true;
 				for (int i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
 					Unit& enemy = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
@@ -1493,6 +1516,38 @@ namespace ALEngine::Script
 
 		//Add Player Walk
 		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Move 1
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Move 2
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_2));
+		as.list[as.id++] = ad;
+
+		//Add Guard Move 3
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_3));
+		as.list[as.id++] = ad;
+		
+		//Add Guard Death 1
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_DEATH_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Hit 1
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_GET_HIT_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Hit 2
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_GET_HIT_2));
+		as.list[as.id++] = ad;
+
+		//Add Guard Attack 1
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_ATTACK_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Attack 2
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_ATTACK_2));
 		as.list[as.id++] = ad;
 
 		//Add the audiosource component to the entity
