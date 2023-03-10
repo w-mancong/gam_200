@@ -559,7 +559,7 @@ namespace ALEngine::Script
 
 		//Patterns
 		std::vector<Pattern> pattern_Default, pattern_List;
-		Pattern selected_Pattern;
+		Pattern selected_Pattern{};
 		u32 selected_Pattern_Index{ 0 };
 		s32 selected_Pattern_Rotation{ 0 };
 

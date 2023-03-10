@@ -52,7 +52,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem::PlayAudio(std::string audioName) {
 		//Get the master audio source
-		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
 		Engine::Audio& ad = as.GetAudio(audioName);
@@ -293,8 +293,6 @@ namespace ALEngine::Script
 
 	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile
 	void GameplaySystem::scanRoomCellArray() {
-		AL_CORE_CRITICAL("SCANNING : " + std::to_string(m_Room.width) + " : " + std::to_string(m_Room.height));
-
 		//Keep track of reset counter
 		s32 resetCounter;
 		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
@@ -307,9 +305,6 @@ namespace ALEngine::Script
 				//Get the cell component
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-				if(cell.m_resetCounter > 0)
-				AL_CORE_CRITICAL("SCANNING " + std::to_string(i) + "," + std::to_string(j) + " : count is : " + std::to_string(cell.m_resetCounter));
-				
 				if (cell.m_isAccessible == false) {
 					continue;
 				}
@@ -921,7 +916,7 @@ namespace ALEngine::Script
 		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
 
 		//Get the master audio source
-		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
 		if (unit.health > 0) {
@@ -1115,8 +1110,6 @@ namespace ALEngine::Script
 				//If it's effect type
 				//Must connect to cell that is walkable but no on cells with units
 				else {
-					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-
 					if (cell.hasUnit) {
 						canPlace = false;
 						touchedUnit = true;
@@ -1165,7 +1158,7 @@ namespace ALEngine::Script
 
 						u32 initialHealth = unit.health;
 
-						ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+						playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 						//If unit is enemy
@@ -1816,7 +1809,7 @@ namespace ALEngine::Script
 
 
 		if (selected_Pattern_Rotation < 0) {
-			selected_Pattern_Rotation = selected_Pattern.offsetGroup.size() - 1;
+			selected_Pattern_Rotation = static_cast<s32>(selected_Pattern.offsetGroup.size()) - 1;
 		}
 		else if (selected_Pattern_Rotation > selected_Pattern.offsetGroup.size() - 1) {
 			selected_Pattern_Rotation = 0;
