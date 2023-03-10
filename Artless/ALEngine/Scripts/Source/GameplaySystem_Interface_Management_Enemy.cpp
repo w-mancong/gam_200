@@ -375,9 +375,6 @@ namespace ALEngine::Script
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
 
-			//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-			//sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
-
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
 
@@ -421,7 +418,6 @@ namespace ALEngine::Script
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
 		ECS::Entity cellToMoveTo = enemyUnit.m_CurrentCell_Entity;
-
 
 		if (enemyUnit.actionPoints <= 0) {
 			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerIdle");

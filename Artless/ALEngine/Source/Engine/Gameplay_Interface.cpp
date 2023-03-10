@@ -52,7 +52,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem::PlayAudio(std::string audioName) {
 		//Get the master audio source
-		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
 		Engine::Audio& ad = as.GetAudio(audioName);
@@ -1110,8 +1110,6 @@ namespace ALEngine::Script
 				//If it's effect type
 				//Must connect to cell that is walkable but no on cells with units
 				else {
-					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-
 					if (cell.hasUnit) {
 						canPlace = false;
 						touchedUnit = true;

@@ -22,7 +22,6 @@ namespace ALEngine::Script
 
 		//Keep track of GUI entities
 		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Rang, Unit_Profile;
-		//ECS::Entity Unit_Profile;
 		ECS::Entity Unit_Healthbar, Phase_Indicator;
 		ECS::Entity Skill_Tip_Icon, Skill_Tip_Header, Skill_Tip_Line1, Skill_Tip_Line2, Skill_Tip_Line3, Skill_Tip_Line4;
 		ECS::Entity Tooltip_Skills_Card, FPS_Label, Pause_Button;
