@@ -470,6 +470,7 @@ namespace ALEngine::Editor
 					//ECS::ExitGameplaySystem();
 					//Coordinator::Instance()->DestroyEntities();
 					
+					Engine::StopChannel(Engine::Channel::Master);
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
 					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 				}

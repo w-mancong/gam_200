@@ -409,6 +409,12 @@ namespace ALEngine::Editor
 			std::string sceneName = ALEditor::Instance()->GetCurrentSceneName();
 			if(ImGui::InputTextWithHint("##Scene Name_Scene Info", "Scene Name", &sceneName))
 				ALEditor::Instance()->SetCurrentSceneName(sceneName);
+
+			Engine::Camera& editorCam = ALEditor::Instance()->GetEditorCamera();
+			f32 camPos[2]{ editorCam.Position().x,editorCam.Position().y };
+			ImGui::InputFloat2("Camera Pos", camPos);
+			editorCam.Position().x = camPos[0];
+			editorCam.Position().y = camPos[1];
 		}
 
 		ImGui::Separator();

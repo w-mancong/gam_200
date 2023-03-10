@@ -15,6 +15,14 @@ brief:	This file contains function definitions for the CutsceneEditorPanel class
 
 namespace ALEngine::Editor
 {
+	namespace
+	{
+		const f32 ASPECT_RATIO{ 9.f / 16.f };
+
+		// File buffer size
+		const u32 FILE_BUFFER_SIZE{ 1024 };
+	}
+
 	CutsceneEditorPanel::CutsceneEditorPanel(void)
 	{
 	}
@@ -28,12 +36,15 @@ namespace ALEngine::Editor
 		if (m_PanelIsOpen == false)
 			return;
 
-		if (!ImGui::Begin("Cutscene Editor", &m_PanelIsOpen))
+		ImGuiWindowFlags winFlags = ImGuiWindowFlags_MenuBar;
+
+		if (!ImGui::Begin("Cutscene Editor", &m_PanelIsOpen, winFlags))
 		{
 			ImGui::End();
 			return;
 		}
 
+		UpdateMenuBar();
 		Update();
 
 		ImGui::End();
@@ -74,7 +85,8 @@ namespace ALEngine::Editor
 			return;
 		}
 
-		ImVec2 borderSize{ ImGui::GetContentRegionAvail().x * 0.8f, ImGui::GetContentRegionAvail().y * 0.5f };
+		ImGui::BeginChild("##CutsceneEditorChild", { ImGui::GetContentRegionMax().x * 0.4f, 0.f });
+		ImVec2 borderSize{ ImGui::GetContentRegionAvail().x * 0.95f, ImGui::GetContentRegionAvail().y * 0.3f };
 
 		// Sequence Stuff
 		{
@@ -126,23 +138,24 @@ namespace ALEngine::Editor
 		{
 			ImGui::NewLine();
 			ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (borderSize.x * 0.5f));
-			ImGui::BeginChild("Cutscenes##PanelChild", borderSize, true);
+			ImGui::BeginChild("Cutscenes##PanelChild", { borderSize.x, 0.f }, true);
 			{
 				// Sequence not empty
 				if (!CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].empty())
 				{
+					u32 count{ 0 };
 					for (auto i : CutsceneManager::Instance()->m_Sequences[m_SelectedSequence])
 					{
-						if (ImGui::Selectable(i.m_CutsceneName.c_str(), i.m_OrderIndex == m_SelectedCutsceneIndex))
+						std::string cutscene = i.m_CutsceneName + "## Cutscene Name " + std::to_string(count++);
+						if (ImGui::Selectable(cutscene.c_str(), i.m_OrderIndex == m_SelectedCutsceneIndex))
 						{
 							m_SelectedCutsceneIndex = i.m_OrderIndex;
 						}
 					}
-				}
-				
+				}				
 
-				f32 btn_len{ ImGui::GetContentRegionAvail().x * 0.3f };
-				ImGui::NewLine(); ImGui::SameLine(ImGui::GetContentRegionAvail().x * 0.35f);
+				f32 btn_len{ ImGui::GetContentRegionAvail().x * 0.8f };
+				ImGui::NewLine(); ImGui::SameLine(ImGui::GetContentRegionAvail().x * 0.1f);
 				if (ImGui::Button("Add Cutscene", { btn_len, 0.f }))
 				{	// Adds empty cutscene
 					Cutscene newCutscene{};
@@ -152,11 +165,201 @@ namespace ALEngine::Editor
 				}
 			}
 			ImGui::EndChild();
+			ImGui::EndChild();
 
+			// Cutscene Not Empty
+			if (!CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].empty())
+			{
+				ImGui::SameLine();
+				ImGuiWindowFlags flag{};
+				ImGui::BeginChild("##SecondChildCutsceneEditor", { 0, 0 }, false, flag);
+				{
+					borderSize = { ImGui::GetContentRegionAvail().x * 0.95f, 0.f };
+					ImGui::NewLine(); ImGui::SameLine((ImGui::GetContentRegionAvail().x * 0.5f) - (borderSize.x * 0.5f));
+					ImGui::Text("Selected Cutscene");
 
-			ImGui::NewLine(); ImGui::SameLine();
-			ImGui::Text("Selected Cutscene");
+					borderSize.y = ImGui::GetContentRegionAvail().y;
+					ImGui::NewLine(); ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (borderSize.x * 0.5f));
+					ImGui::BeginChild("Selected Cutscene##PanelChild", borderSize, true);
+					{
+						Cutscene& selected = CutsceneManager::Instance()->m_Sequences[m_SelectedSequence][m_SelectedCutsceneIndex];
+						ImGui::InputText("Name##CutsceneEditor", &selected.m_CutsceneName);
 
+						s32 index{ static_cast<s32>(selected.m_OrderIndex) };
+						ImGui::InputInt("Index##CutsceneEditor", &index, 1, 1, ImGuiInputTextFlags_ReadOnly);
+
+						ImGui::InputFloat("Time##CutsceneEditor", &selected.m_CutsceneTime);
+
+						ImGui::Checkbox("Has Image", &selected.m_HasImage);
+						ImGui::SameLine();	ImGui::Checkbox("Has Text", &selected.m_HasText);
+
+						ImGui::Checkbox("Has Timer", &selected.m_HasTimer);
+						ImGui::SameLine();	 ImGui::Checkbox("Wait For Input", &selected.m_WaitForInput);
+
+						std::string fadeSelected{};
+						switch (selected.m_FadeInType)
+						{
+						case FadeType::FADE_NONE:
+							fadeSelected = "No Fade";
+							break;
+						case FadeType::FADE_OVER_BLACK:
+							fadeSelected = "Fade From Black";
+							break;
+						case FadeType::FADE_OVER_WHITE:
+							fadeSelected = "Fade From White";
+							break;
+						case FadeType::FADE_OVER_PREV:
+							fadeSelected = "Fade Over Previous";
+							break;							
+						}
+						// Fade In Stuff
+						if (ImGui::BeginCombo("Fade In Type##CutsceneEditor", fadeSelected.c_str()))
+						{
+							for (u32 i{ 0 }; i < (u32)FadeType::FADE_TOTAL; ++i)
+							{
+								if(i == (u32)FadeType::FADE_OVER_BLACK)
+								{
+									if (ImGui::Selectable("Fade Over Black", (u32)selected.m_FadeInType == i))
+										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_OVER_BLACK);
+								}
+								else if (i == (u32)FadeType::FADE_OVER_WHITE)
+								{
+									if (ImGui::Selectable("Fade Over White", (u32)selected.m_FadeInType == i))
+										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_OVER_WHITE);
+								}
+								else if (i == (u32)FadeType::FADE_OVER_PREV)
+								{
+									if (ImGui::Selectable("Fade Over Previous", (u32)selected.m_FadeInType == i))
+										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_OVER_PREV);
+								}
+								else if (i == (u32)FadeType::FADE_NONE)
+								{
+									if (ImGui::Selectable("No Fade", (u32)selected.m_FadeInType == i))
+										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_NONE);
+								}
+							}
+							ImGui::EndCombo();
+						}						
+						ImGui::InputFloat("FadeIn Time##", &selected.m_FadeInTime, 0.f, 0.f, "%.3f", selected.m_FadeInType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
+
+						switch (selected.m_FadeOutType)
+						{
+						case FadeType::FADE_NONE:
+							fadeSelected = "No Fade";
+							break;
+						case FadeType::FADE_TO_BLACK:
+							fadeSelected = "Fade To Black";
+							break;
+						case FadeType::FADE_TO_WHITE:
+							fadeSelected = "Fade To White";
+							break;
+						case FadeType::FADE_TO_NEXT:
+							fadeSelected = "Fade To Next";
+							break;
+						}
+						// Fade Out Stuff
+						if (ImGui::BeginCombo("Fade Out Type##CutsceneEditor", fadeSelected.c_str()))
+						{
+							for (u32 i{ 0 }; i < (u32)FadeType::FADE_TOTAL; ++i)
+							{
+								if (i == (u32)FadeType::FADE_TO_BLACK)
+								{
+									if (ImGui::Selectable("Fade To Black", (u32)selected.m_FadeOutType == i))
+										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_BLACK);
+								}
+								else if (i == (u32)FadeType::FADE_TO_WHITE)
+								{
+									if (ImGui::Selectable("Fade To White", (u32)selected.m_FadeOutType == i))
+										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_WHITE);
+								}
+								else if (i == (u32)FadeType::FADE_TO_NEXT)
+								{
+									if (ImGui::Selectable("Fade To Previous", (u32)selected.m_FadeOutType == i))
+										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_NEXT);
+								}
+								else if (i == (u32)FadeType::FADE_NONE)
+								{
+									if (ImGui::Selectable("No Fade", (u32)selected.m_FadeOutType == i))
+										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_NONE);
+								}
+							}
+							ImGui::EndCombo();
+						}
+						ImGui::InputFloat("FadeOut Time##", &selected.m_FadeOutTime, 0.f, 0.f, "%.3f", selected.m_FadeOutType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
+
+						// Image
+						{
+							if (selected.m_CutsceneImageFilePath != "")
+							{
+								Guid id = Engine::AssetManager::Instance()->GetGuid(selected.m_CutsceneImageFilePath.c_str());
+								u64 texture = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
+								ImVec2 winSize = ImGui::GetContentRegionAvail();
+								ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x, winSize.x * ASPECT_RATIO }, { 0, 1 }, { 1, 0 });
+							}
+							ImGui::InputTextWithHint("Image File Path##CutsceneEditorImage", "File Path", &selected.m_CutsceneImageFilePath, ImGuiInputTextFlags_ReadOnly);
+
+							// Drag Drop!
+							if (ImGui::BeginDragDropTarget())
+							{
+								// Payload flag
+								ImGuiDragDropFlags payload_flag{ 0 };
+								//payload_flag |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+								// Get Drag and Drop Payload
+								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM", payload_flag))
+								{
+									// Get filepath
+									size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
+									wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+
+									// Check if image (png or jpg)
+									std::string fileString = filePath;
+									if (fileString.find(".png") != std::string::npos)
+									{
+										selected.m_CutsceneImageFilePath = fileString;
+									}
+									else
+									{
+										AL_CORE_ERROR("A .jpg or .png file is required!");
+									}
+								}
+								ImGui::EndDragDropTarget();
+							}
+						}
+
+						// Text
+						if (selected.m_CutsceneText != "")
+						{
+							ImGui::Text("Cutscene Text");
+							ImGui::BeginChild("Text Box##CutsceneEditor", { 0.f, ImGui::GetContentRegionAvail().x * 0.4f }, true);
+							ImGui::TextWrapped(selected.m_CutsceneText.c_str());
+							ImGui::EndChild();
+						}
+						ImGui::InputText("Cutscene Text##CutsceneEditor", &selected.m_CutsceneText);
+					}
+					ImGui::EndChild();
+				}
+				ImGui::EndChild();
+			}
+		}
+		else
+		{
+			ImGui::EndChild();
+		}
+	}
+
+	void CutsceneEditorPanel::UpdateMenuBar(void)
+	{
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::Selectable("Save##CutsceneEditorPanel"))
+			{
+				// Save Sequence
+				if (m_SelectedSequence != "")
+					Engine::Scene::CutsceneManager::Instance()->SerializeSequence(m_SelectedSequence);
+			}
+
+			ImGui::EndMenuBar();
 		}
 	}
 	
