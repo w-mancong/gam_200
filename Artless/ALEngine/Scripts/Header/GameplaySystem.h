@@ -384,10 +384,34 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void EnemyManager_LoadData();
 
+		/*!*********************************************************************************
+		\brief
+		Rotates the pattern.
+		***********************************************************************************/
 		void RotatePattern(int patternRotationAmount);
+
+		/*!*********************************************************************************
+		\brief
+		Helper function to scan room cells for pathfinding
+		***********************************************************************************/
 		void scanRoomCellArray();
+
+		/*!*********************************************************************************
+		\brief
+		Updates the player placement logic in the cell.
+		***********************************************************************************/
 		void checkPlayerPlacement();
+
+		/*!*********************************************************************************
+		\brief
+		Displays the walkable path when mouse is hovered.
+		***********************************************************************************/
 		void DisplayPlayerEntityPathToCell(ECS::Entity cellEntity);
+
+		/*!*********************************************************************************
+		\brief
+		Heloper function to calculate which cells to highlight as walkable.
+		***********************************************************************************/
 		void HighlightWalkableCellsRange(Room& room, Math::Vector2Int coordinate, bool reachable, std::vector<ECS::Entity>& pathlist);
 
 

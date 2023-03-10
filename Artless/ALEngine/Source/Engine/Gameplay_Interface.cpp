@@ -2288,8 +2288,6 @@ namespace ALEngine::Script
 
 		//Get path
 		std::vector<ECS::Entity> pathList;
-		//bool isPathFound = Engine::AI::FindPath(m_Room, startCellEntity, targetCellEntity, pathList, false);
-		//bool isPathFound = Engine::AI::FindPath(gameplaySystem_SharedPtr, m_Room, startCellEntity, targetCellEntity, pathList, false);
 		bool isPathFound = Engine::AI::FindPath(gameplaySystem, m_Room, startCellEntity, targetCellEntity, pathList, false);
 
 		//If path not found then stop
