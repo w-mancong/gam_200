@@ -217,9 +217,9 @@ namespace ALEngine::Engine
 		Script::InitScriptManager();
 #endif
 
-		//Engine::AssetManager::Instance()->Init();
-		//Scene::InitSceneManager();
-		//GameStateManager::Init();
+		Engine::AssetManager::Instance()->Init();
+		Scene::InitSceneManager();
+		GameStateManager::Init();
 
 		// Initialize Time (Framerate Controller)
 		Time::Init();
