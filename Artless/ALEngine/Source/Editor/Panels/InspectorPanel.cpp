@@ -248,7 +248,7 @@ namespace ALEngine::Editor
 
 			if (ImGui::Button("Save UI offset"))
 			{
-				xform.uiOffset = ECS::GetCamera().Position() - xform.localPosition;
+				xform.uiOffset = Math::Vec3(0.0f, 0.0f, 725.0f) - xform.localPosition;
 				xform.ui = true;
 				AL_CORE_INFO("UI offset updated.");
 			}

@@ -353,6 +353,9 @@ namespace ALEngine::ECS
 
 	void UpdateUIpositions()
 	{
+		if (!Editor::ALEditor::Instance()->GetGameActive())
+			return;
+
 		for (Entity en : rs->mEntities)
 		{
 			if (!Coordinator::Instance()->HasComponent<Transform>(en))
