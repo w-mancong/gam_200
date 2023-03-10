@@ -143,7 +143,7 @@ namespace ALEngine::Script
 		\param [in] movingUnitEntity
 		Reference to enemyunit that is moving
 		\param [in] currentUnitControlStatus
-		Reference the level unit control statis
+		Reference the level unit control status
 		\param [in] enemyEntityList
 		 Reference to enemyEntityList for use
 		\param [in] m_Room
@@ -153,13 +153,13 @@ namespace ALEngine::Script
 		
 		/*!*********************************************************************************
 		\brief
-		 enemy melee AI logic function for handling update of enemy AI
+		 enemy summoner AI logic function for handling update of enemy AI
 		\param [in] enemyNeededData
 		Reference to enemy Struct object of datas from the level
 		\param [in] movingUnitEntity
 		Reference to enemyunit that is moving
 		\param [in] currentUnitControlStatus
-		Reference the level unit control statis
+		Reference the level unit control status
 		\param [in] enemyEntityList
 		 Reference to enemyEntityList for use
 		\param [in] m_Room
@@ -167,6 +167,12 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room);
 
+		/*!*********************************************************************************
+		\brief
+		enemy summoner summoning new enemy logic function
+		\param [in] summoner_Entity
+		Reference to summoner enemyunit 
+		***********************************************************************************/
 		void Enemy_Cast_Summoner(ECS::Entity& summoner_Entity);
 
 		/*!*********************************************************************************
