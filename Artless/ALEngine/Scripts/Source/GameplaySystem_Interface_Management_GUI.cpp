@@ -6,7 +6,8 @@
 
 namespace ALEngine::Script
 {
-	namespace {
+	namespace 
+	{
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 	}
@@ -68,7 +69,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::InitializeGUI()
 	{
-		//Initialize GUI Text and Sprites zafir2
+		//Initialize GUI Text and Sprites
 		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
 		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_unit");
@@ -136,7 +137,7 @@ namespace ALEngine::Script
 		GUI_Pattern_Button_Entities.clear();
 
 		//There will be a fix of 4 buttons
-		for (int i = 1; i <= 4; ++i) {
+		for (int i = 1; i <= 3; ++i) {
 			GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("next_tile_icon" + std::to_string(i)));
 		}
 
@@ -151,7 +152,6 @@ namespace ALEngine::Script
 		ECS::CreateButton(GUI_Pattern_Button_Entities[0]);
 		ECS::CreateButton(GUI_Pattern_Button_Entities[1]);
 		ECS::CreateButton(GUI_Pattern_Button_Entities[2]);
-		ECS::CreateButton(GUI_Pattern_Button_Entities[3]);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities) {

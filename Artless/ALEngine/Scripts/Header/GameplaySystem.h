@@ -470,6 +470,12 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
+		 Hides the highlighted path.
+		***********************************************************************************/
+		void ClearHighlightPath();
+
+		/*!*********************************************************************************
+		\brief
 		 Highlights walkable path within the player's cell
 		***********************************************************************************/
 		void HighlightWalkableCellsRange(Room& room, Math::Vector2Int coordinate, bool reachable, std::vector<ECS::Entity>& pathlist);
