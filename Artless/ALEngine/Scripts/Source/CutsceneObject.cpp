@@ -32,13 +32,13 @@ namespace ALEngine::Script
 	{
 		Engine::Scene::CutsceneManager::Instance()->Update();
 
+		if (!Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
+			Engine::Scene::NextScene();
+
 		if (Input::KeyTriggered(KeyCode::Escape))
 		{
 			Engine::Scene::CutsceneManager::Instance()->StopSequence();
 			Engine::Scene::NextScene();
 		}
-
-		if(!Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
-			Engine::Scene::NextScene();
 	}
 }
