@@ -11,4 +11,15 @@
 #define AUDIO_PLAYER_WALK_1	"Assets\\Audio\\DrorWalking_1.wav"
 #define AUDIO_TEST_ENEMY_DEATH "Assets\\Audio\\testenemydeathsound.wav"
 
+#define AUDIO_GUARD_MOVE_1 "Assets\\Audio\\GuardMove_v01.wav"
+#define AUDIO_GUARD_MOVE_2 "Assets\\Audio\\GuardMove_v02.wav"
+#define AUDIO_GUARD_MOVE_3 "Assets\\Audio\\GuardMove_v03.wav"
+
+#define AUDIO_GUARD_DEATH_1 "Assets\\Audio\\GuardDeath_v01.wav"
+
+#define AUDIO_GUARD_GET_HIT_1 "Assets\\Audio\\GuardGetHit_v01.wav"
+#define AUDIO_GUARD_GET_HIT_2 "Assets\\Audio\\GuardGetHit_v02.wav"
+
+#define AUDIO_GUARD_ATTACK_1 "Assets\\Audio\\GuardAttack_v01.wav"
+#define AUDIO_GUARD_ATTACK_2 "Assets\\Audio\\GuardAttack_v02.wav"
 #endif

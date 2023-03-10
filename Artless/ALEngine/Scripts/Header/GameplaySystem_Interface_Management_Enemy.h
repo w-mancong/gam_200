@@ -187,6 +187,19 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
 
+		/*!*********************************************************************************
+		\brief
+			Play Attack sound based on enemy
+		***********************************************************************************/
+		void Audio_PlayEnemyAttack(Unit& enemy);
+
+		/*!*********************************************************************************
+		\brief
+			Play Moving sound based on enemy
+		***********************************************************************************/
+		void Audio_PlayEnemyMove(Unit& enemy);
+
+
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)
 		{

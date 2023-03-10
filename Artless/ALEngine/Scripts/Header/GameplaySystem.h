@@ -535,6 +535,12 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Cheat_ClearFloorWalkability();
 
+		/*!*********************************************************************************
+		\brief
+		 Play Audio
+		***********************************************************************************/
+		void PlayAudio(std::string audioName);
+
 	public:
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped
 		PHASE_STATUS currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;								//Keep track of phase
