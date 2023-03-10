@@ -49,8 +49,13 @@ namespace ALEngine::Script
 		*******************************************************************************/
 		void NextScene(void);
 
+		/*!*****************************************************************************
+			\brief Helper function to restart a scene
+		*******************************************************************************/
+		void Restart(void);
+
 	private:
-		b8 changeScene{ false };
+		b8 changeScene{ false }, restart{ false };
 		std::string sceneName{ "" };
 		s64 sceneIndex{ -1 };
 		Sprite* sprite{ nullptr };
