@@ -24,6 +24,7 @@ namespace ALEngine::Engine::Scene
 		std::string currScene{};
 		std::vector<std::string> scenes{};	// this scenes will be storing the path to the .scene file
 #if EDITOR
+		u64 sceneIndexEditor{};
 		std::string state{};
 #endif
 	}
@@ -980,6 +981,7 @@ namespace ALEngine::Engine::Scene
 	{
 		rjs::StringBuffer sb{};
 		SerializeScene(sb);
+		sceneIndexEditor = sceneIndex;
 		state = sb.GetString();
 	}
 
@@ -987,6 +989,7 @@ namespace ALEngine::Engine::Scene
 	{
 		rjs::Document doc;
 		doc.Parse(state.c_str());
+		sceneIndex = sceneIndexEditor;
 		DeserializeScene(doc);
 	}
 

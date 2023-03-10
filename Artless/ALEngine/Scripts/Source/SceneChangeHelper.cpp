@@ -40,6 +40,7 @@ namespace ALEngine::Script
 			Engine::Scene::NextScene( static_cast<u64>(sceneIndex) );
 		else
 			Engine::Scene::NextScene();
+		Engine::StopChannel(Engine::Channel::Master);
 	}
 
 	void SceneChangeHelper::NextScene(std::string const& _sceneName)

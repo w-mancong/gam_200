@@ -57,6 +57,15 @@ namespace ALEngine::Script
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenExit);
 
 		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
+
+		if (!Engine::IsChannelPlaying(Engine::Channel::Master))
+		{
+			Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Audio\\Cutscene_MainMenu_BGM.wav");
+			Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(id);
+			ad.m_Channel = Engine::Channel::BGM;
+			ad.m_Loop = true;
+			ad.Play();
+		}
 	}
 
 	void NewGameButton::Free(ECS::Entity en)
