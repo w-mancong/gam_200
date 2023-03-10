@@ -222,7 +222,14 @@ namespace ALEngine::ECS
 
 			//Render
 			particleShader.Set("scale", Math::Matrix4x4::Scale(size.x, size.y, 1.0f));
-			particleShader.Set("rotate", Math::Matrix4x4::Rotation(particle.rotation, Math::Vector3(0.0f, 0.0f, 1.0f)));
+			if (particle.rotation != 0.f)
+			{
+				particleShader.Set("rotate", Math::Matrix4x4::Rotation(particle.rotation, Math::Vector3(0.0f, 0.0f, 1.0f)));
+			}
+			else
+			{
+				particleShader.Set("rotate", 0.f);
+			}
 			particleShader.Set("translate", Math::Matrix4x4::Translate(particle.position.x, particle.position.y, 0.0f));
 			particleShader.Set("color", color.x, color.y, color.z, color.w);
 			glBindVertexArray(particleVAO);
@@ -243,7 +250,10 @@ namespace ALEngine::ECS
 		Particle& particle = particleContainer[particleIndex];
 		particle.active = true; // set particle as active
 		particle.position = particleProperty.position;
-		particle.rotation = distribution(generator) * 3.141592653f;
+		if (particleProperty.rotation)
+			particle.rotation = distribution(generator) * 3.141592653f;
+		else
+			particle.rotation = 0.f;
 
 		// Set particle characterisitcs
 		particle.velocity = particleProperty.velocity;
