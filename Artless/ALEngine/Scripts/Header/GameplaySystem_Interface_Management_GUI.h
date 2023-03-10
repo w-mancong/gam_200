@@ -1,3 +1,12 @@
+/*!
+file:	GameplaySystem_Interface_Management_GUI.h
+author:	Mohamed Zafir (75%)
+co-author: Zheng Xiong (25%)
+email:	m.zafir\@digipen.edu
+brief:	This file contains the function declarations for GameplaySystem_Interface_Management_GUI.
+
+		All content 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
 #ifndef	GAMEPLAY_SYSTEM_INTERFACE_GUI_H
 #define GAMEPLAY_SYSTEM_INTERFACE_GUI_H
 
