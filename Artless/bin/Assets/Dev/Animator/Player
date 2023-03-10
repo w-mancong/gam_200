@@ -1,5 +1,7 @@
 PlayerAttack
+PlayerChargeLoop
 PlayerCombatCharge
+PlayerDeath
 PlayerHurt
 PlayerIdle
 PlayerRun

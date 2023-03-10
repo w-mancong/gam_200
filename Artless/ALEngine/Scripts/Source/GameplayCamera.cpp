@@ -50,5 +50,6 @@ namespace ALEngine::Script
 		{
 			camera.Position().y += CAMERA_SPEED * Time::m_DeltaTime;
 		}
+		ECS::UpdateUIpositions();
 	}
 }

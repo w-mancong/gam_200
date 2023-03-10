@@ -177,13 +177,22 @@ namespace ALEngine::ECS
 
 			// iterate through all characters
 			std::string::const_iterator c;
+			int space{};
+			f32 saveInitialX = text.position.x;
 			for (c = text.textString.begin(); c != text.textString.end(); c++)
 			{
+				if (*c == '=')
+				{
+					space += 20;
+					text.position.x = saveInitialX;
+					continue;
+				}
 				Character ch = font.characterCollection[*c];
 
 				// position of each glyph
 				f32 xPos = text.position.x + ch.bearing.x * text.scale;
 				f32 yPos = text.position.y - (ch.size.y - ch.bearing.y) * text.scale;
+				yPos -= space;
 
 				// scale of each glyph
 				f32 width = ch.size.x * text.scale;
