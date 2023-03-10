@@ -161,6 +161,7 @@
     <ClCompile Include="Scripts\others\ScriptManager.cpp" />
     <ClCompile Include="Scripts\rttr_main.cpp" />
     <ClCompile Include="Scripts\Source\AlphaFadeIn.cpp" />
+    <ClCompile Include="Scripts\Source\AudioSetting.cpp" />
     <ClCompile Include="Scripts\Source\CubeFloat.cpp" />
     <ClCompile Include="Scripts\Source\CutsceneObject.cpp" />
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="Scripts\Source\HtpButton.cpp" />
     <ClCompile Include="Scripts\Source\MainMenuButton.cpp" />
     <ClCompile Include="Scripts\Source\NewGameButton.cpp" />
+    <ClCompile Include="Scripts\Source\OptionButton.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
@@ -460,6 +462,7 @@
     <ClInclude Include="Include\Engine\Physics2D.h" />
     <ClInclude Include="Include\Utility\WindowsFileDialog.h" />
     <ClInclude Include="Scripts\Header\AlphaFadeIn.h" />
+    <ClInclude Include="Scripts\Header\AudioSetting.h" />
     <ClInclude Include="Scripts\Header\CubeFloat.h" />
     <ClInclude Include="Scripts\Header\CutsceneObject.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
@@ -469,6 +472,7 @@
     <ClInclude Include="Scripts\Header\HtpButton.h" />
     <ClInclude Include="Scripts\Header\MainMenuButton.h" />
     <ClInclude Include="Scripts\Header\NewGameButton.h" />
+    <ClInclude Include="Scripts\Header\OptionButton.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />

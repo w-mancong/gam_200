@@ -186,6 +186,16 @@ namespace ALEngine::Engine
 		\param [in] m_Channel: Channel group
 	***********************************************************************************/
 	void SetChannelVolume(Channel m_Channel, f32 m_Volume);
+
+	/*!*****************************************************************************
+		\brief Check if a channel is playing any audio
+	*******************************************************************************/
+	bool IsChannelPlaying(Channel m_Channel);
+
+	/*!*********************************************************************************
+		\brief Get m_Channel's m_Volume
+	***********************************************************************************/
+	f32 GetChannelVolume(Channel m_Channel);
 }
 
 #endif

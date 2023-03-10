@@ -15,5 +15,7 @@
 #include <MainMenuButton.h>
 #include <CubeFloat.h>
 #include <CutsceneObject.h>
+#include <OptionButton.h>
+#include <AudioSetting.h>
 
 #endif

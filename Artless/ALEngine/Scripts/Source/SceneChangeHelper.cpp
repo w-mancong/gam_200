@@ -31,7 +31,7 @@ namespace ALEngine::Script
 	{
 		if (!changeScene)
 			return;
-		sprite->color.a += Time::m_DeltaTime * ALPHA_SPEED;
+		sprite->color.a += Time::m_ActualDeltaTime * ALPHA_SPEED;
 		if (sprite->color.a < 1.0f)
 			return;
 		if (!sceneName.empty() && sceneIndex == -1)
