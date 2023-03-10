@@ -63,6 +63,14 @@ namespace ALEngine::Engine::Scene
 		m_CurrentCutscene = m_Sequences[sequence].begin();
 		m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
 
+		if (m_CurrentCutscene->m_HasImage)
+		{
+			EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_BlackOverlay);
+			data.active = false;
+		}
+		else
+			ECS::SetActive(true, m_BlackOverlay);
+
 		// Make Obj Appear
 		EntityData& objData = Coordinator::Instance()->GetComponent<EntityData>(m_CutsceneObject);
 		objData.active = true;
