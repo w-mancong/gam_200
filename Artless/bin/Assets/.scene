@@ -20,7 +20,7 @@
             {
                 "position": [
                     796.9470825195313,
-                    122.83578491210938,
+                    122.83590698242188,
                     0.0
                 ],
                 "scale": [
@@ -154,7 +154,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.24560546875,
+                    1868.243896484375,
                     499.13763427734375,
                     0.0
                 ],
@@ -199,7 +199,7 @@
         "Transform": [
             {
                 "position": [
-                    1565.3740234375,
+                    1565.3721923828125,
                     860.5792236328125,
                     0.0
                 ],
@@ -244,7 +244,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.2786865234375,
+                    1868.279052734375,
                     499.4620361328125,
                     0.0
                 ],
@@ -771,7 +771,7 @@
         "Transform": [
             {
                 "position": [
-                    675.9321899414063,
+                    675.9328002929688,
                     43.227169036865234,
                     0.0
                 ],
@@ -832,7 +832,7 @@
         "Transform": [
             {
                 "position": [
-                    918.7062377929688,
+                    918.7070922851563,
                     43.22271728515625,
                     0.0
                 ],
@@ -893,7 +893,7 @@
         "Transform": [
             {
                 "position": [
-                    1002.4453125,
+                    1002.4462890625,
                     43.22287368774414,
                     0.0
                 ],
@@ -1817,186 +1817,6 @@
     },
     {
         "id": 37,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\PauseMenu_Backdrop.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    0.20001220703125,
-                    150.0,
-                    0.0
-                ],
-                "scale": [
-                    1600.0,
-                    900.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "profile_unit",
-                "active": false,
-                "localActive": false,
-                "id": 37,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 38,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\PauseMenu_Button_Resume.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 256
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    0.20001220703125,
-                    614.699951171875,
-                    0.0
-                ],
-                "scale": [
-                    288.0,
-                    63.0
-                ],
-                "rotation": 0.0,
-                "ui": true,
-                "uiOffset": [
-                    -800.0,
-                    -614.699951171875,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "button_resume",
-                "active": false,
-                "localActive": true,
-                "id": 38,
-                "parentID": 37,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 39,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\PauseMenu_Button_HowToPlay.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 256
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    0.20001220703125,
-                    485.9999084472656,
-                    0.0
-                ],
-                "scale": [
-                    288.0,
-                    63.0
-                ],
-                "rotation": 0.0,
-                "ui": true,
-                "uiOffset": [
-                    -800.0,
-                    -485.9998779296875,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "button_htp",
-                "active": false,
-                "localActive": true,
-                "id": 39,
-                "parentID": 37,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 40,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\PauseMenu_Button_Quit.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 256
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    0.19989013671875,
-                    -81.30549621582031,
-                    0.0
-                ],
-                "scale": [
-                    288.0,
-                    63.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "button_quit",
-                "active": false,
-                "localActive": true,
-                "id": 40,
-                "parentID": 37,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 41,
         "Transform": [
             {
                 "position": [
@@ -2022,7 +1842,7 @@
                 "tag": "text_bar_hp",
                 "active": true,
                 "localActive": true,
-                "id": 41,
+                "id": 37,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -2045,7 +1865,7 @@
         ]
     },
     {
-        "id": 42,
+        "id": 38,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Confirm_Backdrop.png",
@@ -2083,14 +1903,14 @@
                 "tag": "backdrop_cfm",
                 "active": false,
                 "localActive": false,
-                "id": 42,
+                "id": 38,
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 43,
+        "id": 39,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Btn_Yes.png",
@@ -2128,14 +1948,14 @@
                 "tag": "button_quit_yes",
                 "active": false,
                 "localActive": true,
-                "id": 43,
-                "parentID": 42,
+                "id": 39,
+                "parentID": 38,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 44,
+        "id": 40,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Btn_No.png",
@@ -2173,14 +1993,14 @@
                 "tag": "button_quit_no",
                 "active": false,
                 "localActive": true,
-                "id": 44,
-                "parentID": 42,
+                "id": 40,
+                "parentID": 38,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 45,
+        "id": 41,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\HowToPlay.png",
@@ -2218,14 +2038,14 @@
                 "tag": "htp",
                 "active": false,
                 "localActive": false,
-                "id": 45,
+                "id": 41,
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 46,
+        "id": 42,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\CloseButton.png",
@@ -2263,14 +2083,14 @@
                 "tag": "htp_cross_btn",
                 "active": false,
                 "localActive": true,
-                "id": 46,
-                "parentID": 45,
+                "id": 42,
+                "parentID": 41,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 47,
+        "id": 43,
         "Sprite": [
             {
                 "filePath": "",
@@ -2308,7 +2128,7 @@
                 "tag": "Win_Clear_Text",
                 "active": false,
                 "localActive": false,
-                "id": 47,
+                "id": 43,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -2331,7 +2151,7 @@
         ]
     },
     {
-        "id": 48,
+        "id": 44,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Bar_MenuBackdrop.png",
@@ -2369,14 +2189,14 @@
                 "tag": "Win_Button",
                 "active": false,
                 "localActive": true,
-                "id": 48,
-                "parentID": 47,
+                "id": 44,
+                "parentID": 43,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 49,
+        "id": 45,
         "Sprite": [
             {
                 "filePath": "",
@@ -2414,8 +2234,8 @@
                 "tag": "Win_Button_Text",
                 "active": false,
                 "localActive": true,
-                "id": 49,
-                "parentID": 48,
+                "id": 45,
+                "parentID": 44,
                 "treeNodeFlags": 32
             }
         ],
@@ -2437,7 +2257,7 @@
         ]
     },
     {
-        "id": 50,
+        "id": 46,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\J.png",
@@ -2475,8 +2295,8 @@
                 "tag": "particle_left_1",
                 "active": true,
                 "localActive": true,
-                "id": 50,
-                "parentID": 58,
+                "id": 46,
+                "parentID": 54,
                 "treeNodeFlags": 32
             }
         ],
@@ -2520,7 +2340,7 @@
         ]
     },
     {
-        "id": 51,
+        "id": 47,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\O.png",
@@ -2558,8 +2378,8 @@
                 "tag": "particle_left_2",
                 "active": true,
                 "localActive": true,
-                "id": 51,
-                "parentID": 58,
+                "id": 47,
+                "parentID": 54,
                 "treeNodeFlags": 32
             }
         ],
@@ -2603,7 +2423,7 @@
         ]
     },
     {
-        "id": 52,
+        "id": 48,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\T.png",
@@ -2641,8 +2461,8 @@
                 "tag": "particle_right_1",
                 "active": true,
                 "localActive": true,
-                "id": 52,
-                "parentID": 58,
+                "id": 48,
+                "parentID": 54,
                 "treeNodeFlags": 32
             }
         ],
@@ -2686,7 +2506,7 @@
         ]
     },
     {
-        "id": 53,
+        "id": 49,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Z.png",
@@ -2724,8 +2544,8 @@
                 "tag": "particle_right_2",
                 "active": true,
                 "localActive": true,
-                "id": 53,
-                "parentID": 58,
+                "id": 49,
+                "parentID": 54,
                 "treeNodeFlags": 32
             }
         ],
@@ -2769,7 +2589,7 @@
         ]
     },
     {
-        "id": 54,
+        "id": 50,
         "Sprite": [
             {
                 "filePath": "",
@@ -2807,7 +2627,7 @@
                 "tag": "tooltip_skill_line1",
                 "active": false,
                 "localActive": true,
-                "id": 54,
+                "id": 50,
                 "parentID": 12,
                 "treeNodeFlags": 32
             }
@@ -2830,7 +2650,7 @@
         ]
     },
     {
-        "id": 55,
+        "id": 51,
         "Sprite": [
             {
                 "filePath": "",
@@ -2868,7 +2688,7 @@
                 "tag": "tooltip_skill_line2",
                 "active": false,
                 "localActive": true,
-                "id": 55,
+                "id": 51,
                 "parentID": 12,
                 "treeNodeFlags": 32
             }
@@ -2891,7 +2711,7 @@
         ]
     },
     {
-        "id": 56,
+        "id": 52,
         "Sprite": [
             {
                 "filePath": "",
@@ -2929,7 +2749,7 @@
                 "tag": "tooltip_skill_line3",
                 "active": false,
                 "localActive": true,
-                "id": 56,
+                "id": 52,
                 "parentID": 12,
                 "treeNodeFlags": 32
             }
@@ -2952,7 +2772,7 @@
         ]
     },
     {
-        "id": 57,
+        "id": 53,
         "Sprite": [
             {
                 "filePath": "",
@@ -2990,7 +2810,7 @@
                 "tag": "tooltip_skill_line4",
                 "active": false,
                 "localActive": true,
-                "id": 57,
+                "id": 53,
                 "parentID": 12,
                 "treeNodeFlags": 32
             }
@@ -3013,7 +2833,7 @@
         ]
     },
     {
-        "id": 58,
+        "id": 54,
         "Sprite": [
             {
                 "filePath": "",
@@ -3051,14 +2871,14 @@
                 "tag": "VFX",
                 "active": true,
                 "localActive": true,
-                "id": 58,
+                "id": 54,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 59,
+        "id": 55,
         "Sprite": [
             {
                 "filePath": "",
@@ -3096,8 +2916,8 @@
                 "tag": "damage_particles",
                 "active": true,
                 "localActive": true,
-                "id": 59,
-                "parentID": 58,
+                "id": 55,
+                "parentID": 54,
                 "treeNodeFlags": 32
             }
         ],
@@ -3141,7 +2961,7 @@
         ]
     },
     {
-        "id": 60,
+        "id": 56,
         "Sprite": [
             {
                 "filePath": "",
@@ -3179,8 +2999,8 @@
                 "tag": "heal_particles",
                 "active": true,
                 "localActive": true,
-                "id": 60,
-                "parentID": 58,
+                "id": 56,
+                "parentID": 54,
                 "treeNodeFlags": 32
             }
         ],
@@ -3224,7 +3044,7 @@
         ]
     },
     {
-        "id": 61,
+        "id": 57,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\PhaseChange_SetupPhase.png",
@@ -3240,8 +3060,8 @@
         "Transform": [
             {
                 "position": [
-                    2368.800048828125,
-                    474.8000183105469,
+                    2360.300048828125,
+                    447.4002380371094,
                     0.0
                 ],
                 "scale": [
@@ -3262,16 +3082,16 @@
                 "tag": "your_turn_VFX",
                 "active": true,
                 "localActive": true,
-                "id": 61,
-                "parentID": 58,
+                "id": 57,
+                "parentID": 8,
                 "treeNodeFlags": 32
             }
         ],
         "ParticleProperty": [
             {
                 "velocity": [
-                    0.0,
-                    650.0
+                    -800.0,
+                    0.0
                 ],
                 "velocityVariation": [
                     0.0,
@@ -3290,24 +3110,24 @@
                     1.0
                 ],
                 "sizeStart": [
-                    350.0,
+                    1300.0,
                     200.0
                 ],
                 "sizeEnd": [
-                    350.0,
+                    1300.0,
                     200.0
                 ],
                 "sizeVariation": 0.0,
-                "lifeTime": 4.0,
+                "lifeTime": 8.0,
                 "spawnRate": 1.0,
                 "rotation": 0.0,
-                "gravityEnabled": true,
+                "gravityEnabled": false,
                 "active": false
             }
         ]
     },
     {
-        "id": 62,
+        "id": 58,
         "Sprite": [
             {
                 "filePath": "",
@@ -3345,8 +3165,8 @@
                 "tag": "FPS_label",
                 "active": true,
                 "localActive": true,
-                "id": 62,
-                "parentID": 58,
+                "id": 58,
+                "parentID": 54,
                 "treeNodeFlags": 32
             }
         ],
@@ -3368,52 +3188,7 @@
         ]
     },
     {
-        "id": 63,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\PauseMenu_Button_Options.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 256
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    0.19989013671875,
-                    49.199073791503906,
-                    0.0
-                ],
-                "scale": [
-                    288.0,
-                    70.20000457763672
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "button_story",
-                "active": false,
-                "localActive": true,
-                "id": 63,
-                "parentID": 37,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 64,
+        "id": 59,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\storyline.png",
@@ -3451,14 +3226,14 @@
                 "tag": "story",
                 "active": false,
                 "localActive": true,
-                "id": 64,
-                "parentID": 65,
+                "id": 59,
+                "parentID": 60,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 65,
+        "id": 60,
         "Sprite": [
             {
                 "filePath": "",
@@ -3496,14 +3271,14 @@
                 "tag": "story_bg",
                 "active": false,
                 "localActive": false,
-                "id": 65,
+                "id": 60,
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 66,
+        "id": 61,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\CloseButton.png",
@@ -3541,14 +3316,14 @@
                 "tag": "story_cross",
                 "active": false,
                 "localActive": true,
-                "id": 66,
-                "parentID": 65,
+                "id": 61,
+                "parentID": 60,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 67,
+        "id": 62,
         "Sprite": [
             {
                 "filePath": "",
@@ -3586,7 +3361,7 @@
                 "tag": "Gameplay_System",
                 "active": true,
                 "localActive": true,
-                "id": 67,
+                "id": 62,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -3602,7 +3377,7 @@
         ]
     },
     {
-        "id": 68,
+        "id": 63,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Backdrop.png",
@@ -3640,14 +3415,14 @@
                 "tag": "AP holder",
                 "active": true,
                 "localActive": true,
-                "id": 68,
+                "id": 63,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 69,
+        "id": 64,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -3685,14 +3460,14 @@
                 "tag": "AP1",
                 "active": true,
                 "localActive": true,
-                "id": 69,
+                "id": 64,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 70,
+        "id": 65,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -3730,14 +3505,14 @@
                 "tag": "AP2",
                 "active": true,
                 "localActive": true,
-                "id": 70,
+                "id": 65,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 71,
+        "id": 66,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -3775,14 +3550,14 @@
                 "tag": "AP3",
                 "active": true,
                 "localActive": true,
-                "id": 71,
+                "id": 66,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 72,
+        "id": 67,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -3820,14 +3595,14 @@
                 "tag": "AP4",
                 "active": true,
                 "localActive": true,
-                "id": 72,
+                "id": 67,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 73,
+        "id": 68,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -3843,7 +3618,7 @@
         "Transform": [
             {
                 "position": [
-                    845.3635864257813,
+                    845.3644409179688,
                     155.45263671875,
                     0.0
                 ],
@@ -3865,14 +3640,14 @@
                 "tag": "AP5",
                 "active": true,
                 "localActive": true,
-                "id": 73,
+                "id": 68,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 74,
+        "id": 69,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\AP_Empty.png",
@@ -3888,7 +3663,7 @@
         "Transform": [
             {
                 "position": [
-                    877.7385864257813,
+                    877.7393798828125,
                     155.45263671875,
                     0.0
                 ],
@@ -3910,14 +3685,14 @@
                 "tag": "AP6",
                 "active": true,
                 "localActive": true,
-                "id": 74,
+                "id": 69,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 75,
+        "id": 70,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\TileSelect_CurrentTile.png",
@@ -3955,14 +3730,14 @@
                 "tag": "current_tile_holder",
                 "active": true,
                 "localActive": true,
-                "id": 75,
+                "id": 70,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 76,
+        "id": 71,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\TileSelect_NextTile.png",
@@ -4000,14 +3775,14 @@
                 "tag": "next_tile_holder1",
                 "active": true,
                 "localActive": true,
-                "id": 76,
+                "id": 71,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 77,
+        "id": 72,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\TileSelect_NextTile.png",
@@ -4045,14 +3820,14 @@
                 "tag": "next_tile_holder2",
                 "active": true,
                 "localActive": true,
-                "id": 77,
+                "id": 72,
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 78,
+        "id": 73,
         "Sprite": [
             {
                 "filePath": "",
@@ -4090,7 +3865,7 @@
                 "tag": "Lose_Clear_Text",
                 "active": true,
                 "localActive": true,
-                "id": 78,
+                "id": 73,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -4113,7 +3888,7 @@
         ]
     },
     {
-        "id": 79,
+        "id": 74,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Bar_MenuBackdrop.png",
@@ -4151,14 +3926,14 @@
                 "tag": "Lose_Button",
                 "active": true,
                 "localActive": true,
-                "id": 79,
-                "parentID": 78,
+                "id": 74,
+                "parentID": 73,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 80,
+        "id": 75,
         "Sprite": [
             {
                 "filePath": "",
@@ -4196,8 +3971,8 @@
                 "tag": "Lose_Button_Text",
                 "active": true,
                 "localActive": true,
-                "id": 80,
-                "parentID": 79,
+                "id": 75,
+                "parentID": 74,
                 "treeNodeFlags": 32
             }
         ],
@@ -4215,6 +3990,231 @@
                     50.0,
                     342.0
                 ]
+            }
+        ]
+    },
+    {
+        "id": 76,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path1",
+                "active": true,
+                "localActive": true,
+                "id": 76,
+                "parentID": 54,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 77,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path2",
+                "active": true,
+                "localActive": true,
+                "id": 77,
+                "parentID": 54,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 78,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path3",
+                "active": true,
+                "localActive": true,
+                "id": 78,
+                "parentID": 54,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 79,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path4",
+                "active": true,
+                "localActive": true,
+                "id": 79,
+                "parentID": 54,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 80,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 10
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    50.0,
+                    50.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Highlight_Path5",
+                "active": true,
+                "localActive": true,
+                "id": 80,
+                "parentID": 54,
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -4254,236 +4254,11 @@
         ],
         "EntityData": [
             {
-                "tag": "Highlight_Path1",
-                "active": true,
-                "localActive": true,
-                "id": 81,
-                "parentID": 58,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 82,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 10
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.0,
-                    0.0
-                ],
-                "scale": [
-                    100.0,
-                    100.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Highlight_Path2",
-                "active": true,
-                "localActive": true,
-                "id": 82,
-                "parentID": 58,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 83,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 10
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.0,
-                    0.0
-                ],
-                "scale": [
-                    100.0,
-                    100.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Highlight_Path3",
-                "active": true,
-                "localActive": true,
-                "id": 83,
-                "parentID": 58,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 84,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 10
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.0,
-                    0.0
-                ],
-                "scale": [
-                    100.0,
-                    100.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Highlight_Path4",
-                "active": true,
-                "localActive": true,
-                "id": 84,
-                "parentID": 58,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 85,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 10
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.0,
-                    0.0
-                ],
-                "scale": [
-                    100.0,
-                    100.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Highlight_Path5",
-                "active": true,
-                "localActive": true,
-                "id": 85,
-                "parentID": 58,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 86,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 10
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    50.0,
-                    50.0,
-                    0.0
-                ],
-                "scale": [
-                    100.0,
-                    100.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
                 "tag": "Highlight_Path6",
                 "active": true,
                 "localActive": true,
-                "id": 86,
-                "parentID": 58,
+                "id": 81,
+                "parentID": 54,
                 "treeNodeFlags": 32
             }
         ]
