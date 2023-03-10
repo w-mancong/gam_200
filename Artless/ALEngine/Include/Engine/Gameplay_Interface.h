@@ -1,3 +1,22 @@
+///*!
+//file:   Gameplay_Interface.h
+//author:	Tan Zhen Xiong (30%)
+//co-author:	Mohamed Zafir (20%)
+//			Darrion Aw Wei Ting (20%)
+//			Chan Jie Ming Stanley (20%)
+//			Lucas Nguyen Thai Vinh (5%)
+//			Wong Man Cong (5%)
+//email:	t.zhenxiong@digipen.edu
+//		m.zafir@digipen.edu
+//		Weitingdarrion.aw@digipen.edu
+//		c.jiemingstanley@digipen.edu
+//		l.nguyen@digipen.edu
+//		w.mancong@digipen.edu
+//brief:	This file contains the function declaration for Gameplay_Interface.h
+//
+//		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+//*//*__________________________________________________________________________________*/
+
 #ifndef	GAMEPLAY_SYSTEM_INTERFACE_H
 #define GAMEPLAY_SYSTEM_INTERFACE_H
 #include <pch.h>

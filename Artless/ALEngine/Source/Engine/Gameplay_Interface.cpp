@@ -1,4 +1,22 @@
-﻿#include <pch.h>
+﻿///*!
+//file:   Gameplay_Interface.cpp
+//author:	Tan Zhen Xiong (30%)
+//co-author:	Mohamed Zafir (20%)
+//			Darrion Aw Wei Ting (20%)
+//			Chan Jie Ming Stanley (20%)
+//			Lucas Nguyen Thai Vinh (5%)
+//			Wong Man Cong (5%)
+//email:	t.zhenxiong@digipen.edu
+//		m.zafir@digipen.edu
+//		Weitingdarrion.aw@digipen.edu
+//		c.jiemingstanley@digipen.edu
+//		l.nguyen@digipen.edu
+//		w.mancong@digipen.edu
+//brief:	This file contains the function definition for Gameplay_Interface.cpp
+//
+//		All content :copyright: 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+//*//*__________________________________________________________________________________*/
+#include <pch.h>
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
