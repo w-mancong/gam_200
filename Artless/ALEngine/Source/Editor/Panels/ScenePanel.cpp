@@ -71,7 +71,7 @@ namespace ALEngine::Editor
 
 		if(ImGui::BeginDragDropTarget())
 		{
-			Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+			//Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB_ITEM"))
 			{

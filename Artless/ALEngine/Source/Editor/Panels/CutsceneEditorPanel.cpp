@@ -62,7 +62,7 @@ namespace ALEngine::Editor
 		{
 			static std::string newSequenceName{};
 			f32 text_width = ImGui::GetContentRegionAvail().x * 0.6f;
-			f32 text_height = ImGui::GetContentRegionAvail().y * 0.2f;
+			//f32 text_height = ImGui::GetContentRegionAvail().y * 0.2f;
 			f32 text_size = text_width + style.FramePadding.x * 2.f;
 			f32 align = (ImGui::GetWindowSize().x - text_size) * 0.5f;
 
@@ -72,7 +72,7 @@ namespace ALEngine::Editor
 			ImGui::InputTextWithHint("##New Sequence Name", "Sequence Name", &newSequenceName);
 
 			f32 btn_width = text_width * 0.5f;
-			f32 btn_height = text_height;
+			//f32 btn_height = text_height;
 			f32 btn_size = btn_width + style.FramePadding.x * 2.f;
 			align = (ImGui::GetWindowSize().x - btn_size) * 0.5f;
 
@@ -159,7 +159,7 @@ namespace ALEngine::Editor
 				if (ImGui::Button("Add Cutscene", { btn_len, 0.f }))
 				{	// Adds empty cutscene
 					Cutscene newCutscene{};
-					newCutscene.m_OrderIndex = CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].size();
+					newCutscene.m_OrderIndex = static_cast<u32>( CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].size() );
 					newCutscene.m_CutsceneName = m_SelectedSequence + ": Cutscene #" + std::to_string(newCutscene.m_OrderIndex);
 					CutsceneManager::Instance()->AddCutscene(m_SelectedSequence, newCutscene);
 				}

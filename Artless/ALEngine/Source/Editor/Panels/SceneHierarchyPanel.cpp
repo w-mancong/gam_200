@@ -167,10 +167,10 @@ namespace ALEngine::Editor
 		if (ImGui::BeginDragDropTarget())
 		{
 			// Set payload
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
+			if (const ImGuiPayload* _payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
 			{
-				assert(payload->DataSize == sizeof(ECS::Entity));
-				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
+				assert(_payload->DataSize == sizeof(ECS::Entity));
+				ECS::Entity child_pl = *(ECS::Entity*)_payload->Data;
 				// Insert remove parent code here
 				sceneGraph.MoveBranch(child_pl, -1);
 				
