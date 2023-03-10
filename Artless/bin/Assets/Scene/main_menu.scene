@@ -482,7 +482,7 @@
                 "localActive": true,
                 "id": 9,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -927,7 +927,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    445.0059814453125,
+                    445.00604248046875,
                     0.0
                 ],
                 "scale": [
@@ -972,7 +972,7 @@
             {
                 "position": [
                     1075.0,
-                    446.4306335449219,
+                    446.4306640625,
                     0.0
                 ],
                 "scale": [
@@ -1017,7 +1017,7 @@
             {
                 "position": [
                     814.9998779296875,
-                    442.2306213378906,
+                    442.2305908203125,
                     0.0
                 ],
                 "scale": [
@@ -1340,7 +1340,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.000244140625,
+                    450.00030517578125,
                     0.0
                 ],
                 "scale": [
@@ -1364,6 +1364,62 @@
                 "id": 28,
                 "parentID": 14,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "fps_display",
+                "active": true,
+                "localActive": true,
+                "id": 29,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "fps: 60",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.350000023841858,
+                "color": [
+                    0.8580800890922546,
+                    0.8662790656089783,
+                    0.16116821765899658
+                ],
+                "position": [
+                    569.5,
+                    339.5
+                ]
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "FPSDisplay"
+                ]
             }
         ]
     }

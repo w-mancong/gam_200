@@ -8,7 +8,7 @@
             {
                 "position": [
                     800.0,
-                    450.0000305175781,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -31,7 +31,7 @@
                 "localActive": true,
                 "id": 0,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "LogicComponent": [
@@ -60,7 +60,7 @@
             {
                 "position": [
                     801.0,
-                    451.00006103515625,
+                    451.0000305175781,
                     0.0
                 ],
                 "scale": [
@@ -105,7 +105,7 @@
             {
                 "position": [
                     801.0001220703125,
-                    123.00006103515625,
+                    123.00003051757813,
                     0.0
                 ],
                 "scale": [
@@ -166,7 +166,7 @@
             {
                 "position": [
                     801.0,
-                    451.0000305175781,
+                    451.0,
                     0.0
                 ],
                 "scale": [
@@ -211,7 +211,7 @@
             {
                 "position": [
                     801.0,
-                    451.0000305175781,
+                    451.0,
                     0.0
                 ],
                 "scale": [
@@ -235,6 +235,62 @@
                 "id": 4,
                 "parentID": 0,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "fps_display",
+                "active": true,
+                "localActive": true,
+                "id": 5,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "fps: 60",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.350000023841858,
+                "color": [
+                    0.8580800890922546,
+                    0.8662790656089783,
+                    0.16116821765899658
+                ],
+                "position": [
+                    569.5,
+                    339.5
+                ]
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "FPSDisplay"
+                ]
             }
         ]
     }
