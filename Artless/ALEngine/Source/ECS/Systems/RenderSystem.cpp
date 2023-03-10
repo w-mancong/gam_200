@@ -360,18 +360,6 @@ namespace ALEngine::ECS
 
 			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
-			if (trans.uiToggle) // save current offset
-			{
-				trans.ui = true;
-				trans.uiToggle = false;
-
-				if (trans.ui)
-				{
-					trans.uiOffset = camera.Position() - trans.position;
-					AL_CORE_INFO("UI offset updated.");
-				}
-			}
-
 			if (trans.ui)
 			{
 				trans.position = camera.Position() - trans.uiOffset;
