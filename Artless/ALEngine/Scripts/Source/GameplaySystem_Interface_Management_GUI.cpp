@@ -91,12 +91,6 @@ namespace ALEngine::Script
 		guiManager.Lose_Clear = Coordinator::Instance()->GetEntityByTag("Lose_Clear_Text");
 		guiManager.Lose_Button = Coordinator::Instance()->GetEntityByTag("Lose_Button");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
-		guiManager.Skill_Tip_Icon = Coordinator::Instance()->GetEntityByTag("skill_icon");
-		guiManager.Skill_Tip_Header = Coordinator::Instance()->GetEntityByTag("text_skillname");
-		guiManager.Skill_Tip_Line1 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line1");
-		guiManager.Skill_Tip_Line2 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line2");
-		guiManager.Skill_Tip_Line3 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line3");
-		guiManager.Skill_Tip_Line4 = Coordinator::Instance()->GetEntityByTag("tooltip_skill_line4");
 		guiManager.Tooltip_Skills_Card = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
 		guiManager.FPS_Label = Coordinator::Instance()->GetEntityByTag("FPS_label");
 		guiManager.Pause_Button = Coordinator::Instance()->GetEntityByTag("pause_button");
@@ -303,6 +297,16 @@ namespace ALEngine::Script
 		}
 	}
 
+	void GameplaySystem_Interface_Management_GUI::Update_Skill_Tip_Position()
+	{
+		EntityData& en = Coordinator::Instance()->GetComponent<EntityData>(gameplaySystem_GUI->guiManager.Tooltip_Skills_Card);
+		if (en.active == false)
+			return;
+
+		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->guiManager.Tooltip_Skills_Card);
+		trans.position = Input::GetMouseWorldPos() + Math::Vec2(0.f, 290.f);
+	}
+
 	void GameplaySystem_Interface_Management_GUI::Update_Ability_Cooldown(std::vector<Abilities> ability_set, bool isAbilityGUIActive) {
 		for (int i = 0; i < guiManager.GUI_Abilities_Button_List.size(); ++i) {
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Abilities_Button_List[i]);
@@ -329,73 +333,41 @@ namespace ALEngine::Script
 		}//End for loop
 	}
 
-	void Event_Button_Enter_Ability_GUI(ECS::Entity invoker) {
+	void Event_Button_Enter_Ability_GUI(ECS::Entity invoker) 
+	{
 		if (utils::IsEqual(Time::m_Scale, 0.f)) {
 			return;
 		}
-
 		ECS::SetActive(true, gameplaySystem_GUI->guiManager.Tooltip_Skills_Card);
 		EntityData skill = Coordinator::Instance()->GetComponent<EntityData>(invoker);
-		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(gameplaySystem_GUI->guiManager.Skill_Tip_Icon);
-		Text& headerText = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->guiManager.Skill_Tip_Header);
-		Text& line1 = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->guiManager.Skill_Tip_Line1);
-		Text& line2 = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->guiManager.Skill_Tip_Line2);
-		Text& line3 = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->guiManager.Skill_Tip_Line3);
-		Text& line4 = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->guiManager.Skill_Tip_Line4);
 
+		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->guiManager.Tooltip_Skills_Card);
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(gameplaySystem_GUI->guiManager.Tooltip_Skills_Card);
+
+		trans.position = Input::GetMouseWorldPos() + Math::Vec2(0.f, 290.f);
 		if (skill.tag == "skill_icon1")
 		{
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/HardDrop.png");
-			headerText.textString = "Hard Drop";
-			line1.textString = "Slam a Tetromino on enemies,";
-			line2.textString = "dealing 15 DMG on each";
-			line3.textString = "impacted enemy.";
-			line4.textString = "[Cooldown - 1]";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Skills_HardDrop.png");
 		}
 		else if (skill.tag == "skill_icon2")
 		{
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "Life Drain";
-			line1.textString = "Deal DMG to enemies and heal";
-			line2.textString = "for half of all DMG dealt.";
-			line3.textString = "[Cooldown - 2]";
-			line4.textString = "";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Skills_LifeDrain.png");
 		}
 		else if (skill.tag == "skill_icon3")
 		{
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Overhang.png");
-			headerText.textString = "Overhang";
-			line1.textString = "Apply on player";
-			line2.textString = "to regenerate 1 AP";
-			line3.textString = "by sacrificing 8 HP";
-			line4.textString = "[Cooldown - 5]";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Skills_Overhang.png");
 		}
 		else if (skill.tag == "skill_icon4")
 		{
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Icon_Skill_ConstructTile.png");
-			headerText.textString = "Construct Tile";
-			line1.textString = "Erect a wall that blocks";
-			line2.textString = "enemies from passing or";
-			line3.textString = "attacking.";
-			line4.textString = "[Walls lasts for 2 turns, Cooldown - 5]";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Skills_ConstructTile.png");
 		}
 		else if (skill.tag == "skill_icon5")
 		{
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/LifeDrain.png");
-			headerText.textString = "Matrix Trap";
-			line1.textString = "Lay traps on cells, when they";
-			line2.textString = "steps onto the trap, they";
-			line3.textString = "will be rooted for 1 turn, and take 5 DMG";
-			line4.textString = "[Cooldown - 3]";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Skills_MatrixTrap.png");
 		}
 		else if (skill.tag == "skill_icon6")
 		{
-			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Skill_Icon_Bomb.png");
-			headerText.textString = "VolaTile";
-			line1.textString = "Place bombs on cells which, will blow";
-			line2.textString = "up next action phase, Dealing 13 DMG to";
-			line3.textString = "all units and destroy walkable tiles";
-			line4.textString = "[Cooldown - 5]";
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Skills_VolaTile.png");
 		}
 	}
 

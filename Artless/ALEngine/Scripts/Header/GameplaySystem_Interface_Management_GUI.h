@@ -23,7 +23,6 @@ namespace ALEngine::Script
 		//Keep track of GUI entities
 		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Rang, Unit_Profile;
 		ECS::Entity Unit_Healthbar, Phase_Indicator;
-		ECS::Entity Skill_Tip_Icon, Skill_Tip_Header, Skill_Tip_Line1, Skill_Tip_Line2, Skill_Tip_Line3, Skill_Tip_Line4;
 		ECS::Entity Tooltip_Skills_Card, FPS_Label, Pause_Button;
 		std::array<ECS::Entity, 6> AP_Indicators;
 		std::array<ECS::Entity, 6> Highlight_blocks;
@@ -139,6 +138,8 @@ namespace ALEngine::Script
 			Updates the Action point UI to visualize cost
 		***********************************************************************************/
 		void Update_AP_UI_For_Cost(int AP_count, int AP_Cost);
+
+		void Update_Skill_Tip_Position();
 
 
 		void Update_Ability_Cooldown(std::vector<Abilities> ability_set, bool isAbilityGUIActive);
