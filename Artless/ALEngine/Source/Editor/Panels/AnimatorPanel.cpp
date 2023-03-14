@@ -83,7 +83,7 @@ namespace ALEngine::Editor
 	void AnimatorPanel::Update(void)
 	{
 		// Check if no animations or animation has no filepath
-		if (m_SelectedAnimation.filePath != "" && !m_SelectedAnimator.animations.empty()) 
+		if (strcmp(m_SelectedAnimation.filePath, "") && !m_SelectedAnimator.animations.empty()) 
 		{
 			ImVec2 animationsArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.6f, ImGui::GetContentRegionAvail().x * 0.6f);
 
@@ -149,7 +149,7 @@ namespace ALEngine::Editor
 		//ECS::ChangeAnimationFramesCount();
 		if (ImGui::BeginChild("##AnimatorPanel_InfoArea", ImGui::GetContentRegionAvail()))
 		{
-			const char* animator_preview = m_SelectedAnimator.animatorName.empty() ? animator_list.begin()->first.c_str() : m_SelectedAnimator.animatorName.c_str();
+			const c8* animator_preview = m_SelectedAnimator.animatorName.empty() ? animator_list.begin()->first.c_str() : m_SelectedAnimator.animatorName.c_str();
 			if (ImGui::BeginCombo("Animator##AnimatorPanel", animator_preview))
 			{
 				u32 counter{ 0 };
@@ -169,9 +169,9 @@ namespace ALEngine::Editor
 				ImGui::EndCombo();
 			}
 
-			if (m_SelectedAnimation.clipName != "")
+			if (strcmp(m_SelectedAnimation.clipName, ""))
 			{
-				const char* animation_preview = m_SelectedAnimation.clipName;
+				const c8* animation_preview = m_SelectedAnimation.clipName;
 				if (ImGui::BeginCombo("Animation##AnimatorPanel", animation_preview))
 				{
 					u32 counter{ 0 };

@@ -550,7 +550,7 @@ namespace ALEngine::Engine
 		for (auto& audio : audioList)
 		{
 			fmod::Sound*& sound = audio.second.m_Sound;
-			FMOD_RESULT res = sound->release();
+			sound->release();
 		}
 
 		std::for_each(guidList.begin(), guidList.end(), [](std::unordered_map<std::string, GUID_LIST>::value_type& item)
@@ -558,6 +558,7 @@ namespace ALEngine::Engine
 			item.second.loaded = false;
 		});
 		animationList.clear(), textureList.clear(), audioList.clear();
+		textureList.insert(std::pair<Guid, Texture>{ std::numeric_limits<Guid>::max(), LoadWhiteImage() });
 	}
 #endif
 
@@ -798,6 +799,7 @@ namespace ALEngine::Engine
 			else
 				guidList.insert(std::pair<std::string, Guid>{ guidKey, id });
 		}
+		textureList.insert(std::pair<Guid, Texture>{ std::numeric_limits<Guid>::max(), LoadWhiteImage() });
 	}
 
 	void AssetManager::LoadResource(std::string const& filePath, Guid id)

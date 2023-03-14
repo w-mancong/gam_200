@@ -109,8 +109,14 @@
     <ClCompile Include="Scripts\Source\NewGameButton.cpp" />
     <ClCompile Include="Scripts\Source\AlphaFadeIn.cpp" />
     <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
+    <ClCompile Include="Source\Editor\Panels\CutsceneEditorPanel.cpp" />
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\MainMenuButton.cpp" />
+    <ClCompile Include="Scripts\Source\CubeFloat.cpp" />
+    <ClCompile Include="Scripts\Source\CutsceneObject.cpp" />
+    <ClCompile Include="Scripts\Source\OptionButton.cpp" />
+    <ClCompile Include="Scripts\Source\AudioSetting.cpp" />
+    <ClCompile Include="Scripts\Source\FPSDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -272,8 +278,14 @@
     <ClInclude Include="Scripts\Header\NewGameButton.h" />
     <ClInclude Include="Scripts\Header\AlphaFadeIn.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
+    <ClInclude Include="Include\Editor\Panels\CutsceneEditorPanel.h" />
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\MainMenuButton.h" />
+    <ClInclude Include="Scripts\Header\CubeFloat.h" />
+    <ClInclude Include="Scripts\Header\CutsceneObject.h" />
+    <ClInclude Include="Scripts\Header\OptionButton.h" />
+    <ClInclude Include="Scripts\Header\AudioSetting.h" />
+    <ClInclude Include="Scripts\Header\FPSDisplay.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

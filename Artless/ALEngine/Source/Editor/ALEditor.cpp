@@ -136,6 +136,9 @@ namespace ALEngine::Editor
 			if(m_AnimatorPanel.GetPanelIsOpen())
 				m_AnimatorPanel.OnImGuiRender();
 
+			if (m_CutsceneEditorPanel.GetPanelIsOpen())
+				m_CutsceneEditorPanel.OnImGuiRender();
+
 			// Check if game is running
 			if (m_GameIsActive)
 			{
@@ -467,6 +470,7 @@ namespace ALEngine::Editor
 					//ECS::ExitGameplaySystem();
 					//Coordinator::Instance()->DestroyEntities();
 					
+					Engine::StopChannel(Engine::Channel::Master);
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
 					m_InspectorPanel.SetSelectedEntity(ECS::MAX_ENTITIES);
 				}

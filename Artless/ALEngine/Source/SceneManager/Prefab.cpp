@@ -160,14 +160,14 @@ namespace ALEngine
 		// Getting rotation
 		transform.rotation = v[0]["rotation"].GetFloat();
 
-		//// Getting UI status
-		//transform.ui = v[0]["ui"].GetBool();
+		// Getting UI status
+		transform.ui = v[0]["ui"].GetBool();
 
-		//// Getting uiOffset
-		//rjs::Value const& t = v[0]["uiOffset"];
-		//transform.uiOffset.x = t[0].GetFloat();
-		//transform.uiOffset.y = t[1].GetFloat();
-		//transform.uiOffset.z = t[2].GetFloat();
+		// Getting uiOffset
+		rjs::Value const& t = v[0]["uiOffset"];
+		transform.uiOffset.x = t[0].GetFloat();
+		transform.uiOffset.y = t[1].GetFloat();
+		transform.uiOffset.z = t[2].GetFloat();
 
 		Coordinator::Instance()->AddComponent(en, transform);
 	}
@@ -687,7 +687,7 @@ namespace ALEngine
 	{
 		// Getting the names of the components
 		rjs::Value const& c = v[0]["components"];
-		for (u64 i = 0; i < c.Size(); ++i)
+		for (rjs::SizeType i = 0; i < c.Size(); ++i)
 		{
 			c8 const* name = c[i].GetString();
 			rttr::type class_type = rttr::type::get_by_name(name);
@@ -724,14 +724,14 @@ namespace ALEngine
 	{
 		rjs::Value const& c = v[0]["audioClips"];
 		Engine::AudioSource as;
-		for (u64 i = 0, asId = 0; i < c.Size(); i += 5)
+		for (rjs::SizeType i = 0, asId = 0; i < c.Size(); i += 5)
 		{
 			// 0 - audio name
 			c8 const* name = c[i + 0].GetString();
 			Guid id = Engine::AssetManager::Instance()->GetGuid(name);
 			as.list[as.id] = Engine::AssetManager::Instance()->GetAudio(id);
 
-			as.list[as.id].m_ID = asId++;
+			as.list[as.id].m_ID = static_cast<u32>(asId++);
 
 			// 1 - volume
 			as.list[as.id].m_Volume = c[i + 1].GetFloat();

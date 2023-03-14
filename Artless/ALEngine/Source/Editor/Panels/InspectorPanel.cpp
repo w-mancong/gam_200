@@ -294,8 +294,8 @@ namespace ALEngine::Editor
 			{
 				Guid id = Engine::AssetManager::Instance()->GetGuid(spr.filePath.c_str());
 				u64 texture = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
-				ImVec2 winSize = ImGui::GetWindowSize();
-				ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x * 0.5f, winSize.x * 0.5f }, { 0, 1 }, { 1, 0 });
+				ImVec2 winSize = ImGui::GetContentRegionAvail();
+				ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x, winSize.x }, { 0, 1 }, { 1, 0 });
 			}
 
 			// File path
@@ -780,7 +780,8 @@ namespace ALEngine::Editor
 		if (ImGui::CollapsingHeader("Text Component"))
 		{
 			// String input field
-			ImGui::InputText("String##InspectorTextComponent", &prop.textString); // exceeding 31 characters causes crash
+			ImGui::Text("String:");
+			ImGui::InputTextMultiline("##StringInspectorTextComponent", &prop.textString, { ImGui::GetContentRegionAvail().x, 0.f });
 
 			// font pop down menu
 			ImVec2 winsize = ImGui::GetWindowSize();

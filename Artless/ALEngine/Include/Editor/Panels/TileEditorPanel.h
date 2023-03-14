@@ -23,96 +23,96 @@ namespace ALEngine::Editor
 	public:
 		/*!*********************************************************************************
 			\brief
-			Default constructor for the TileEditorPanel
+				Default constructor for the TileEditorPanel
 		***********************************************************************************/
 		TileEditorPanel(void);
 
 		/*!*********************************************************************************
 			\brief
-			Default destructor for the TileEditorPanel
+				Default destructor for the TileEditorPanel
 		***********************************************************************************/
 		~TileEditorPanel(void);
 
 		/*!*********************************************************************************
 			\brief
-			Updates the Tile Editor Panel
+				Updates the Tile Editor Panel
 		***********************************************************************************/
 		void OnImGuiRender(void);
 
 		/*!*********************************************************************************
 			\brief
-			Set the panel's minimum size
-			\param min
-			Panel's min size
+				Set the panel's minimum size
+			\param [in] min
+				Panel's min size
 		***********************************************************************************/
 		void SetPanelMin(Math::Vec2 min);
 
 		/*!*********************************************************************************
 			\brief
-			Set whether the panel is open
-			\param isOpen
-			Whether the panel is open
+				Set whether the panel is open
+			\param [in] isOpen
+				Whether the panel is open
 		***********************************************************************************/
 		void SetPanelIsOpen(b8 isOpen);
 
 		/*!*********************************************************************************
 			\brief
-			Set whether the panel is open
-			\param isOpen
-			Whether the panel is open
+				Set whether the panel is open
+			\param [in] isOpen
+				Whether the panel is open
 		***********************************************************************************/
 		b8 GetPanelIsOpen(void);
 
 	private:
 		/*!*********************************************************************************
 			\brief
-			Updates the current map for tile editor
+				Updates the current map for tile editor
 		***********************************************************************************/
 		void Update(void);
 
 		/*!*********************************************************************************
 			\brief
-			Updates the menu bar
+				Updates the menu bar
 		***********************************************************************************/
 		void UpdateMenuBar(void);
 
 		/*!*********************************************************************************
 			\brief
-			Creates a new Map for the Tile Editor
+				Creates a new Map for the Tile Editor
 		***********************************************************************************/
 		void CreateNewMap(void);
 
 		/*!*********************************************************************************
 			\brief
-			Select Map for the Tile Editor
+				Select Map for the Tile Editor
 		***********************************************************************************/
 		void SelectMap(void);
 
 		/*!*********************************************************************************
 			\brief
-			Saves the current Map
-			\param filePath
-			File Path of the map to be saved
+				Saves the current Map
+			\param [in] filePath
+				File Path of the map to be saved
 		***********************************************************************************/
 		void SaveMap(const c8* filePath);
 
 		/*!*********************************************************************************
 			\brief
-			Loads the Map
-			\param filePath
-			File Path of the map to be loaded
+				Loads the Map
+			\param [in] filePath
+				File Path of the map to be loaded
 		***********************************************************************************/
 		void LoadMap(const c8* filePath);
 
 		/*!*********************************************************************************
 			\brief
-			Saves the tile editor's data
+				Saves the tile editor's data
 		***********************************************************************************/
 		void SaveTileEditorData(void);
 
 		/*!*********************************************************************************
 			\brief
-			Resets all the variables required for th Tile Editor
+				Resets all the variables required for th Tile Editor
 		***********************************************************************************/
 		void ResetVariables(void);
 

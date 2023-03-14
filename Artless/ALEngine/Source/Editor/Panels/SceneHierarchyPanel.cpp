@@ -167,10 +167,10 @@ namespace ALEngine::Editor
 		if (ImGui::BeginDragDropTarget())
 		{
 			// Set payload
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
+			if (const ImGuiPayload* _payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
 			{
-				assert(payload->DataSize == sizeof(ECS::Entity));
-				ECS::Entity child_pl = *(ECS::Entity*)payload->Data;
+				assert(_payload->DataSize == sizeof(ECS::Entity));
+				ECS::Entity child_pl = *(ECS::Entity*)_payload->Data;
 				// Insert remove parent code here
 				sceneGraph.MoveBranch(child_pl, -1);
 				
@@ -409,6 +409,12 @@ namespace ALEngine::Editor
 			std::string sceneName = ALEditor::Instance()->GetCurrentSceneName();
 			if(ImGui::InputTextWithHint("##Scene Name_Scene Info", "Scene Name", &sceneName))
 				ALEditor::Instance()->SetCurrentSceneName(sceneName);
+
+			Engine::Camera& editorCam = ALEditor::Instance()->GetEditorCamera();
+			f32 camPos[2]{ editorCam.Position().x,editorCam.Position().y };
+			ImGui::InputFloat2("Camera Pos", camPos);
+			editorCam.Position().x = camPos[0];
+			editorCam.Position().y = camPos[1];
 		}
 
 		ImGui::Separator();

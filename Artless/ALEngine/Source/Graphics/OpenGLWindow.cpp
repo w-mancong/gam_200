@@ -93,7 +93,7 @@ namespace ALEngine::Graphics
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		Serializer::Serializer config{ "Assets/Dev/Objects/Config.json" };
+		Serializer::Serializer config{ "Assets\\Dev\\Objects\\Config.json" };
 		title = config.GetString("window title", "ALEngine");
 		Math::vec2 dimension = config.GetVec2("dimensions", { DEFAULT_WIDTH, DEFAULT_HEIGHT });
 		width = static_cast<u32>(dimension.x);

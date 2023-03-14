@@ -64,6 +64,7 @@ namespace ALEngine::Utility
 
 	public:
 		static f32 m_DeltaTime;				// Delta Time
+		static f32 m_ActualDeltaTime;		// The actual delta time
 		static f32 m_Scale;					// Time Scale, to be used to change the scale of delta time
 		static const f32 m_FixedDeltaTime;	// Fixed Delta Time
 		static f32 m_FPS;					// Current FPS
@@ -82,7 +83,6 @@ namespace ALEngine::Utility
 
 		static s32 m_TargetFPS;			// Target FPS
 		static b8 m_HasFPSLimit;		// Whether there is an FPS limit
-		static f32 m_ActualDeltaTime;	// The actual delta time
 
 		static std::chrono::nanoseconds m_Ticks[MAX_SAMPLES];		// Stores the number of ticks in the past 100 frames
 		static std::chrono::nanoseconds m_TickSum;				// Number of ticks

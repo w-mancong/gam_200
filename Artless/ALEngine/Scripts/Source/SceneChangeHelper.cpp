@@ -31,15 +31,18 @@ namespace ALEngine::Script
 	{
 		if (!changeScene)
 			return;
-		sprite->color.a += Time::m_DeltaTime * ALPHA_SPEED;
+		sprite->color.a += Time::m_ActualDeltaTime * ALPHA_SPEED;
 		if (sprite->color.a < 1.0f)
 			return;
-		if (!sceneName.empty() && sceneIndex == -1)
+		if (restart)
+			Engine::Scene::Restart();
+		else if (!sceneName.empty() && sceneIndex == -1)
 			Engine::Scene::NextScene(sceneName);
 		else if (sceneName.empty() && sceneIndex != -1)
 			Engine::Scene::NextScene( static_cast<u64>(sceneIndex) );
 		else
 			Engine::Scene::NextScene();
+		Engine::StopChannel(Engine::Channel::Master);
 	}
 
 	void SceneChangeHelper::NextScene(std::string const& _sceneName)
@@ -57,5 +60,11 @@ namespace ALEngine::Script
 	void SceneChangeHelper::NextScene(void)
 	{
 		changeScene = true;
+	}
+
+	void SceneChangeHelper::Restart(void)
+	{
+		changeScene = true;
+		restart = true;
 	}
 }

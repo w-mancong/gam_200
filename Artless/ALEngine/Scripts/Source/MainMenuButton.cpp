@@ -52,7 +52,8 @@ namespace ALEngine::Script
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
 				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
-				ptr->NextScene(0);
+				ptr->NextScene("Assets\\Scene\\main_menu.scene");
+				Time::m_Scale = 1.0f;
 			}
 		}
 
@@ -112,9 +113,13 @@ namespace ALEngine::Script
 		Subscribe(yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenYesHover);
 		Subscribe(yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenYesExit);
 
+		Coordinator::Instance()->GetComponent<EventTrigger>(yes).layer = 50;
+
 		CreateEventTrigger(no, true);
 		Subscribe(no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenNoHover);
 		Subscribe(no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenNoExit);
+
+		Coordinator::Instance()->GetComponent<EventTrigger>(no).layer = 50;
 	}
 
 	void MainMenuButton::Free(ECS::Entity en)
