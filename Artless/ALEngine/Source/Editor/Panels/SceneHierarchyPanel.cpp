@@ -179,11 +179,11 @@ namespace ALEngine::Editor
 				xform.localRotation = xform.rotation;
 				xform.localScale	= xform.scale;
 			}
-			else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB_ITEM"))
+			else if (const ImGuiPayload* payload2 = ImGui::AcceptDragDropPayload("PREFAB_ITEM"))
 			{
 				// Get filepath
 				size_t fileLen;	c8 filePath[FILE_BUFFER_SIZE];
-				wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload->Data, payload->DataSize);
+				wcstombs_s(&fileLen, filePath, FILE_BUFFER_SIZE, (const wchar_t*)payload2->Data, payload2->DataSize);
 
 				std::string fileString = filePath;
 				u64 const start = fileString.find_last_of('\\') + 1, num = fileString.find_last_of('.') - start;

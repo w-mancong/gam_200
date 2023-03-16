@@ -403,6 +403,34 @@ namespace ALEngine::Engine::Scene
 			FadeOut();
 			break;
 		}
+
+		// Check if next cutsene, either based on timer or if player pressed key
+		// Skips directly, no fading
+		if (Input::KeyTriggered(KeyCode::MouseLeftButton)
+			|| Input::KeyTriggered(KeyCode::Enter))
+		{
+			m_CurrentCutscene = std::next(m_CurrentCutscene);
+
+			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
+				StopSequence();
+			else
+			{			
+				// Swap bottom to top
+				Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
+				Sprite& bot_spr{ Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom) };
+				spr.filePath = bot_spr.filePath;
+				spr.id = bot_spr.id;
+
+				// Below set inactive
+				ECS::SetActive(false, m_CutsceneBottom);
+				m_CurrentPhase = CutscenePhase::FADE_IN;
+				m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
+				Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
+				dialogue.textString = m_CurrentCutscene->m_CutsceneText;
+
+				SetFade(m_CurrentCutscene->m_FadeInType);
+			}
+		}
 	}
 
 	b8 CutsceneManager::HasCutscene(void)
@@ -508,31 +536,11 @@ namespace ALEngine::Engine::Scene
 					SetFade(m_CurrentCutscene->m_FadeOutType);
 			}
 
-			// Wait timer
-			//wait_timer = WAIT_TIME;
-
 			ECS::SetActive(false, m_DialogueBox);
 
 			// Exit
 			return;
 		}
-
-		// Check if next cutsene, either based on timer or if player pressed key
-		// Skips directly, no fading
-		/*if (wait_timer <= 0.f &&
-			(Input::KeyTriggered(KeyCode::MouseLeftButton)
-				|| Input::KeyTriggered(KeyCode::Enter)))
-		{
-			m_CurrentCutscene = std::next(m_CurrentCutscene);
-			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
-			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
-				m_CutsceneIsPlaying = false;
-
-			wait_timer = WAIT_TIME;
-			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
-		}
-		else if (wait_timer > 0.f)
-			wait_timer -= Time::m_DeltaTime;*/
 	}
 
 	void CutsceneManager::SetFade(FadeType type)
