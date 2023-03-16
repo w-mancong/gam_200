@@ -197,7 +197,6 @@ namespace ALEngine::Script
 		}
 	}
 	
-
 	void GameplaySystem_Interface_Management_GUI::TogglePatternGUI(b8 istrue) {
 		//Toggle the pattern GUI accordingly
 		for (int i = 0; i < guiManager.GUI_Pattern_Button_List.size(); ++i) {
@@ -211,6 +210,21 @@ namespace ALEngine::Script
 			else
 				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
+	}
+
+	void GameplaySystem_Interface_Management_GUI::TogglePatternFirstOnlyGUI(b8 istrue) {
+		TogglePatternGUI(false);
+
+		//Just toggle the first
+		EventTrigger& eventTrigger = Coordinator::Instance()->GetComponent<EventTrigger>(guiManager.GUI_Pattern_Button_List[0]);
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.GUI_Pattern_Button_List[0]);
+
+		eventTrigger.isEnabled = istrue;
+
+		if (istrue)
+			sprite.color = { 1.f, 1.f, 1.f, 1.f };
+		else
+			sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
 	}
 
 
