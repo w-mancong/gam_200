@@ -513,7 +513,7 @@ namespace ALEngine::Engine::Scene
 			if (nextCutscene != m_Sequences[m_SelectedSequence].end())
 			{
 				// If the next is supposed to fade from current
-				if (nextCutscene->m_FadeInType == FadeType::FADE_OVER_PREV)
+				if (nextCutscene->m_FadeInType == FadeType::FADE_FROM_PREV)
 				{
 					// Fading in instead
 					m_CurrentPhase = CutscenePhase::FADE_IN;
@@ -587,7 +587,7 @@ namespace ALEngine::Engine::Scene
 			// ==================
 			// Fade In
 			// ==================
-		case FadeType::FADE_OVER_BLACK:
+		case FadeType::FADE_FROM_BLACK:
 			// Make Top become Cutscene
 				// Bottom is Black
 
@@ -605,7 +605,7 @@ namespace ALEngine::Engine::Scene
 			m_FadeSpeed = 1.f / m_CurrentCutscene->m_FadeInTime;
 			
 			break;
-		case FadeType::FADE_OVER_WHITE:
+		case FadeType::FADE_FROM_WHITE:
 			// Make Top become Cutscene
 				// Bottom is White
 
@@ -622,7 +622,7 @@ namespace ALEngine::Engine::Scene
 			// Set fade speed
 			m_FadeSpeed = 1.f / m_CurrentCutscene->m_FadeInTime;
 			break;
-		case FadeType::FADE_OVER_PREV:
+		case FadeType::FADE_FROM_PREV:
 			// Make Top become Current Cutscene
 				// Bottom is Previous Cutscene
 
