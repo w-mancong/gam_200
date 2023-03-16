@@ -358,7 +358,7 @@ namespace ALEngine::Script
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x + i, y + j));
 
 				//Run explosion particle
-				ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+				ECS::ParticleSystem::GetParticleSystem().ExplosionParticles(transform.position);
 
 				//Do damage to cells without bombs
 				if (cell.hasBomb) {
@@ -379,7 +379,7 @@ namespace ALEngine::Script
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
 		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x, y));
 
-		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+		ECS::ParticleSystem::GetParticleSystem().ExplosionParticles(transform.position);
 
 		if (cell.hasUnit) {
 			DoDamageToUnit(cell.unitEntity, 13);
