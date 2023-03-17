@@ -26,6 +26,11 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Update(ECS::Entity en);
 
+		/*!*****************************************************************************
+			\brief Set camera's L, R, T, B boundary
+		*******************************************************************************/
+		void SetBoundary(f32 L, f32 R, f32 T, f32 B);
+
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)
 		{
@@ -34,10 +39,10 @@ namespace ALEngine::Script
 		RTTR_ENABLE(ECS::Component::UniBehaviour)
 
 	private:
-		f32 L_Boundary{},
-			R_Boundary{},
-			T_Boundary{},
-			B_Boundary{};
+		f32 L_Boundary{ std::numeric_limits<f32>::min() },
+			R_Boundary{ std::numeric_limits<f32>::max() },
+			B_Boundary{ std::numeric_limits<f32>::min() },
+			T_Boundary{ std::numeric_limits<f32>::max() };
 		f32 WIDTH{}, HEIGHT{};
 		static f32 constexpr const PADDING_PERCENTAGE = 0.01f, CAMERA_SPEED = 450.0f;
 	};

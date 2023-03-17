@@ -14,27 +14,30 @@ namespace ALEngine::Script
 	namespace
 	{
 		using namespace ECS;
+		//using namespace utils;
 	}
 
-	void GameplayCamera::Init(ECS::Entity en)
+	void GameplayCamera::Init([[maybe_unused]] ECS::Entity en)
 	{
-		ECS::GetSceneGraph().FindImmediateChildren(en);
-		std::vector<s32> const& children{ ECS::GetSceneGraph().GetChildren() };
+		//ECS::GetSceneGraph().FindImmediateChildren(en);
+		//std::vector<s32> const& children{ ECS::GetSceneGraph().GetChildren() };
 
-		for (s32 child : children)
-		{
-			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>( static_cast<Entity>( child ) );
-			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>( static_cast<Entity>( child ) );
+		//f32 constexpr const MIN = std::numeric_limits<f32>::min();
 
-			if (ed.tag == "L_Boundary")
-				L_Boundary = trans.position.x + trans.scale.x * 0.5f;
-			else if (ed.tag == "R_Boundary")
-				R_Boundary = trans.position.x - trans.scale.x * 0.5f;
-			else if (ed.tag == "T_Boundary")
-				T_Boundary = trans.position.y - trans.scale.y * 0.5f;
-			else if (ed.tag == "B_Boundary")
-				B_Boundary = trans.position.y + trans.scale.y * 0.5f;
-		}
+		//for (s32 child : children)
+		//{
+		//	EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>( static_cast<Entity>( child ) );
+		//	Transform const& trans = Coordinator::Instance()->GetComponent<Transform>( static_cast<Entity>( child ) );
+
+		//	if (ed.tag == "L_Boundary" && !IsEqual(L_Boundary, MIN))
+		//		L_Boundary = trans.position.x + trans.scale.x * 0.5f;
+		//	else if (ed.tag == "R_Boundary" && !IsEqual(R_Boundary, MIN))
+		//		R_Boundary = trans.position.x - trans.scale.x * 0.5f;
+		//	else if (ed.tag == "T_Boundary" && !IsEqual(T_Boundary, MIN))
+		//		T_Boundary = trans.position.y - trans.scale.y * 0.5f;
+		//	else if (ed.tag == "B_Boundary" && !IsEqual(B_Boundary, MIN))
+		//		B_Boundary = trans.position.y + trans.scale.y * 0.5f;
+		//}
 		WIDTH = GetCamera().Width(), HEIGHT = GetCamera().Height();
 	}
 
@@ -81,5 +84,13 @@ namespace ALEngine::Script
 				pos.y = T_Boundary - HEIGHT;
 		}
 		ECS::UpdateUIpositions();
+	}
+
+	void GameplayCamera::SetBoundary(f32 L, f32 R, f32 T, f32 B)
+	{
+		L_Boundary = L;
+		R_Boundary = R;
+		T_Boundary = T;
+		B_Boundary = B;
 	}
 }

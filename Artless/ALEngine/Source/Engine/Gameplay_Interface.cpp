@@ -115,6 +115,11 @@ namespace ALEngine::Script
 
 		//Camera Logic
 		ECS::AddLogicComponent<Script::GameplayCamera>(entity);
+		//{
+		//	auto ptr = ECS::GetLogicComponent<Script::GameplayCamera>(entity);
+		//	// Set the camera's boundary for level 1 and level 2
+		//	ptr->SetBoundary();
+		//}
 
 		//Add physics
 		ECS::CreateRigidbody(entity);
