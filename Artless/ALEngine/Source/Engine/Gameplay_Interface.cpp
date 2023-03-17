@@ -158,7 +158,8 @@ namespace ALEngine::Script
 			//Load setup phase
 			AL_CORE_DEBUG("Loading PHASE SETUP");
 			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
-			gameplaySystem_GUI->TogglePatternGUI(true);
+			//gameplaySystem_GUI->TogglePatternGUI(true);
+			gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 			//Reset player movement points
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
@@ -358,7 +359,7 @@ namespace ALEngine::Script
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x + i, y + j));
 
 				//Run explosion particle
-				ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+				ECS::ParticleSystem::GetParticleSystem().ExplosionParticles(transform.position);
 
 				//Do damage to cells without bombs
 				if (cell.hasBomb) {
@@ -379,7 +380,7 @@ namespace ALEngine::Script
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
 		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x, y));
 
-		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+		ECS::ParticleSystem::GetParticleSystem().ExplosionParticles(transform.position);
 
 		if (cell.hasUnit) {
 			DoDamageToUnit(cell.unitEntity, 13);

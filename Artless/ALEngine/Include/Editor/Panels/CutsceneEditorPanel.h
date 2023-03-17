@@ -70,7 +70,7 @@ namespace ALEngine::Editor
 
 	private:
 		// Variables
-		b8 m_PanelIsOpen{ true };						// Keeps track of whether the Panel is open
+		b8 m_PanelIsOpen{ false };						// Keeps track of whether the Panel is open
 		std::string m_SelectedSequence{};				// Name of the selected sequence
 		u32 m_SelectedCutsceneIndex{};					// Index of selected cutscene
 	};
