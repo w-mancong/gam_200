@@ -1267,13 +1267,13 @@ namespace ALEngine::Script
 		ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
 
+		ECS::SetActive(false, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+
 		//Set state to moving
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
 		movingUnitEntity = playerEntity;
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
-
-		ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 
 		//Get the audiosource
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
@@ -1633,7 +1633,7 @@ namespace ALEngine::Script
 		//Keep track of next cell destination
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
 
-		//Keep track of player transform
+		//Keep track of player transformF
 		Transform& movingTransform = Coordinator::Instance()->GetComponent<Transform>(movingUnitEntity);
 
 		//Move player transform to it's iterated waypoint
@@ -1707,6 +1707,8 @@ namespace ALEngine::Script
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+
 					//Get the audiosource
 					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
@@ -1781,6 +1783,7 @@ namespace ALEngine::Script
 			return;
 		}
 
+		AL_CORE_INFO("Enemy Making Decisions");
 		//use enemy logic function pointer
 		switch (enemyUnit.enemyUnitType)
 		{
