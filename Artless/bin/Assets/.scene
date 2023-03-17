@@ -144,7 +144,8 @@
                 "position": [
                     72.0,
                     83.0
-                ]
+                ],
+                "layer": 0
             }
         ]
     },
@@ -283,7 +284,8 @@
                 "position": [
                     507.0,
                     339.5
-                ]
+                ],
+                "layer": 0
             }
         ],
         "LogicComponent": [
