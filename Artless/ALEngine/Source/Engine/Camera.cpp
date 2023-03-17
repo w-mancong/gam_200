@@ -106,6 +106,16 @@ namespace ALEngine::Engine
 		return m_ProjRight;
 	}
 
+	f32 Camera::Width(void) const
+	{
+		return std::abs(m_ProjRight - m_ProjLeft);
+	}
+
+	f32 Camera::Height(void) const
+	{
+		return std::abs(m_ProjTop - m_ProjBottom);
+	}
+
 	Vector3 Camera::Position(void) const
 	{
 		return m_Position;

@@ -13,12 +13,34 @@ namespace ALEngine::Script
 {	
 	namespace
 	{
-		f32 constexpr const PADDING_PERCENTAGE = 0.01f, CAMERA_SPEED = 450.0f;
+		using namespace ECS;
+	}
+
+	void GameplayCamera::Init(ECS::Entity en)
+	{
+		ECS::GetSceneGraph().FindImmediateChildren(en);
+		std::vector<s32> const& children{ ECS::GetSceneGraph().GetChildren() };
+
+		for (s32 child : children)
+		{
+			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>( static_cast<Entity>( child ) );
+			Transform const& trans = Coordinator::Instance()->GetComponent<Transform>( static_cast<Entity>( child ) );
+
+			if (ed.tag == "L_Boundary")
+				L_Boundary = trans.position.x + trans.scale.x * 0.5f;
+			else if (ed.tag == "R_Boundary")
+				R_Boundary = trans.position.x - trans.scale.x * 0.5f;
+			else if (ed.tag == "T_Boundary")
+				T_Boundary = trans.position.y - trans.scale.y * 0.5f;
+			else if (ed.tag == "B_Boundary")
+				B_Boundary = trans.position.y + trans.scale.y * 0.5f;
+		}
+		WIDTH = GetCamera().Width(), HEIGHT = GetCamera().Height();
 	}
 
 	void GameplayCamera::Update([[maybe_unused]] ECS::Entity en)
 	{
-		Engine::Camera& camera = ECS::GetCamera();
+		Math::vec3& pos = GetCamera().Position();
 
 		f32 const xScreen = static_cast<f32>( Input::GetScreenResX() ),
 				  yScreen = static_cast<f32>( Input::GetScreenResY()) ;
@@ -32,23 +54,31 @@ namespace ALEngine::Script
 		// Move camera to the left
 		if (xMouse <= xPadding)
 		{
-			camera.Position().x -= CAMERA_SPEED * Time::m_DeltaTime;
+			pos.x -= CAMERA_SPEED * Time::m_DeltaTime;
+			if (pos.x < L_Boundary)
+				pos.x = L_Boundary;
 		}
 		// Move camera to the right
 		else if (xMouse >= (xScreen - xPadding))
 		{
-			camera.Position().x += CAMERA_SPEED * Time::m_DeltaTime;
+			pos.x += CAMERA_SPEED * Time::m_DeltaTime;
+			if (pos.x > R_Boundary - WIDTH)
+				pos.x = R_Boundary - WIDTH;
 		}
 		
 		// Move camera down
 		if (yMouse <= yPadding)
 		{
-			camera.Position().y -= CAMERA_SPEED * Time::m_DeltaTime;
+			pos.y -= CAMERA_SPEED * Time::m_DeltaTime;
+			if (pos.y < B_Boundary)
+				pos.y = B_Boundary;
 		}
 		// Move camera up
 		else if (yMouse >= (yScreen - yPadding))
 		{
-			camera.Position().y += CAMERA_SPEED * Time::m_DeltaTime;
+			pos.y += CAMERA_SPEED * Time::m_DeltaTime;
+			if (pos.y > T_Boundary - HEIGHT)
+				pos.y = T_Boundary - HEIGHT;
 		}
 		ECS::UpdateUIpositions();
 	}
