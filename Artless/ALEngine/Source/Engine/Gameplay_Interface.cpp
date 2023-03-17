@@ -158,7 +158,8 @@ namespace ALEngine::Script
 			//Load setup phase
 			AL_CORE_DEBUG("Loading PHASE SETUP");
 			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
-			gameplaySystem_GUI->TogglePatternGUI(true);
+			//gameplaySystem_GUI->TogglePatternGUI(true);
+			gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 			//Reset player movement points
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
