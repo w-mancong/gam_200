@@ -72,9 +72,11 @@ namespace ALEngine::Script
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
 		Set_GameplayInterface_GameplayManager(en);
 
+		//Initialize General GUI
+		gameplaySystem_GUI->InitializeGUI();
+
 		//Start the gameplay logic
 		StartGameplaySystem();
-		room_To_Load = Gameplay::MapManager::Instance()->GetMapPath();
 		//Initialize the room
 		InitializeRoom(room_To_Load);
 	
@@ -309,8 +311,8 @@ namespace ALEngine::Script
 		//Initialize abilities GUI
 		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
 
-		//Initialize General GUI
-		gameplaySystem_GUI->InitializeGUI();
+		////Initialize General GUI
+		//gameplaySystem_GUI->InitializeGUI();
 
 		//Create EndTurn Button
 		InitializeEndTurnButton();

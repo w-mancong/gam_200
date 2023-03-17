@@ -55,6 +55,8 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
+		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_unit");
+
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
 		Text& health_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Health);

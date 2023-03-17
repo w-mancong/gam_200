@@ -37,7 +37,6 @@ namespace ALEngine::Script
 		Script::GameplaySystem_Interface_Management_Enemy::EnemyManager enemyNeededData;
 	}
 
-
 	void Set_GameplayInterface_Enemy(ECS::Entity GameplaySystemEntity) {
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(GameplaySystemEntity);
 	}
