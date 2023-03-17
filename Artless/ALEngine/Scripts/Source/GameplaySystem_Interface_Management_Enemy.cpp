@@ -4,6 +4,7 @@
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <Engine/PathFindingManager.h>
+#include <Utility/AudioNames.h>
 
 namespace ALEngine::Script
 {
@@ -208,6 +209,48 @@ namespace ALEngine::Script
 		return newEnemy;
 	}
 
+	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyAttack(Unit& enemy) {
+		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+			s32 randomVal = rand() % 100;
+
+			if (randomVal > 50) {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_ATTACK_1);
+			}
+			else {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_ATTACK_2);
+			}
+		}
+		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+
+		}
+		else {
+
+		}
+	}
+	
+	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyMove(Unit& enemy) {
+		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+			s32 randomVal = rand() % 100;
+
+			if (randomVal < 33) {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_1);
+			}
+			else if (randomVal >= 33 && randomVal < 67) {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_2);
+			}
+			else {
+				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_3);
+			}
+		}
+		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+
+		}
+		else {
+
+		}
+	}
+
+
 	bool GameplaySystem_Interface_Management_Enemy::RunEnemyAdjacentAttack(Room& room, Unit& enemy) {
 		//Check 4 adjacent
 		//If player is beside, do damage to it
@@ -220,6 +263,8 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
+
+					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
 					return true;
 				}
 			}
@@ -233,6 +278,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
+					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
 					return true;
 				}
 			}
@@ -246,6 +292,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
+					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
 					return true;
 				}
 			}
@@ -259,6 +306,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
+					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
 					return true;
 				}
 			}
@@ -271,8 +319,7 @@ namespace ALEngine::Script
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved - 1]);
 
 		AL_CORE_INFO("Run destroy block Attack");
-		bool ifEnemyIsOnWalkableCell = true;
-
+		
 		//destroy the walkable block here important
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
@@ -328,9 +375,6 @@ namespace ALEngine::Script
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
 
-			//Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
-			//sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/InitialTile_v04.png");
-
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
 
@@ -375,7 +419,6 @@ namespace ALEngine::Script
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
 		ECS::Entity cellToMoveTo = enemyUnit.m_CurrentCell_Entity;
 
-
 		if (enemyUnit.actionPoints <= 0) {
 			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerIdle");
 
@@ -412,8 +455,8 @@ namespace ALEngine::Script
 			!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1])).hasUnit)
 		{
 			Cell& previousCell = Coordinator::Instance()->GetComponent<Cell>(cellToMoveTo);
-			f32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
-			f32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
+			s32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
+			s32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
 
 			if (goTowardsPlayer) {
 				if(newDistance < oldDistance)
@@ -431,8 +474,8 @@ namespace ALEngine::Script
 			!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1])).hasUnit)
 		{
 			Cell& previousCell = Coordinator::Instance()->GetComponent<Cell>(cellToMoveTo);
-			f32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
-			f32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
+			s32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
+			s32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
 
 			if (goTowardsPlayer) {
 				if (newDistance < oldDistance)
@@ -450,8 +493,8 @@ namespace ALEngine::Script
 			!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1)).hasUnit)
 		{
 			Cell& previousCell = Coordinator::Instance()->GetComponent<Cell>(cellToMoveTo);
-			f32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
-			f32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
+			s32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
+			s32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
 
 			if (goTowardsPlayer) {
 				if (newDistance < oldDistance)
@@ -469,8 +512,8 @@ namespace ALEngine::Script
 			!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1)).hasUnit)
 		{
 			Cell& previousCell = Coordinator::Instance()->GetComponent<Cell>(cellToMoveTo);
-			f32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
-			f32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
+			s32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
+			s32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
 
 			if (goTowardsPlayer) {
 				if (newDistance < oldDistance)
@@ -515,6 +558,10 @@ namespace ALEngine::Script
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
+
+		if (enemyUnit.actionPoints == enemyUnit.maxActionPoints) {
+			Audio_PlayEnemyMove(enemyUnit);
+		}
 	}
 	
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Cast_Summoner(ECS::Entity& summoner_Entity) {
@@ -645,6 +692,8 @@ namespace ALEngine::Script
 			return;
 		}
 
+		Audio_PlayEnemyMove(enemyUnit);
+
 		// Setting move animation for bishop
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity);
 		ECS::ChangeAnimation(an, "GuardMove");
@@ -759,6 +808,7 @@ namespace ALEngine::Script
 
 		AL_CORE_INFO("Path Found");
 
+		Audio_PlayEnemyMove(enemyUnit);
 		ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "TileDestroyerMoving");
 
 		//compare paths sizes

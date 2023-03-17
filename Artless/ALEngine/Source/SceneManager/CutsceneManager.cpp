@@ -231,7 +231,7 @@ namespace ALEngine::Engine::Scene
 					writer.Uint(static_cast<u32>(i.m_FadeInType));
 
 					writer.Key("FadeOutType");
-					writer.Uint(static_cast<f64>(i.m_FadeOutType));
+					writer.Uint(static_cast<u32>(i.m_FadeOutType));
 
 					writer.Key("FadeInTime");
 					writer.Double(static_cast<f64>(i.m_FadeInTime));

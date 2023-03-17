@@ -164,6 +164,7 @@
     <ClCompile Include="Scripts\Source\AudioSetting.cpp" />
     <ClCompile Include="Scripts\Source\CubeFloat.cpp" />
     <ClCompile Include="Scripts\Source\CutsceneObject.cpp" />
+    <ClCompile Include="Scripts\Source\FPSDisplay.cpp" />
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
@@ -465,6 +466,7 @@
     <ClInclude Include="Scripts\Header\AudioSetting.h" />
     <ClInclude Include="Scripts\Header\CubeFloat.h" />
     <ClInclude Include="Scripts\Header\CutsceneObject.h" />
+    <ClInclude Include="Scripts\Header\FPSDisplay.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_GUI.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />

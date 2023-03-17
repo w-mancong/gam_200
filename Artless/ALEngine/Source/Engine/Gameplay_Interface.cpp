@@ -50,6 +50,16 @@ namespace ALEngine::Script
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(GameplaySystemEntity);
 	}
 
+	void GameplaySystem::PlayAudio(std::string audioName) {
+		//Get the master audio source
+		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+
+		Engine::Audio& ad = as.GetAudio(audioName);
+		ad.m_Channel = Engine::Channel::SFX;
+		ad.Play();
+	}
+
 	void GameplaySystem::CreatePlayerUnit(ECS::Entity entity) {
 		//Create new unit
 		Unit unit{};
@@ -148,7 +158,8 @@ namespace ALEngine::Script
 			//Load setup phase
 			AL_CORE_DEBUG("Loading PHASE SETUP");
 			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
-			gameplaySystem_GUI->TogglePatternGUI(true);
+			//gameplaySystem_GUI->TogglePatternGUI(true);
+			gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 			//Reset player movement points
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
@@ -283,8 +294,6 @@ namespace ALEngine::Script
 
 	// Scan the entire room array to check for the tile counters and to change the sprite to the correct state of the tile
 	void GameplaySystem::scanRoomCellArray() {
-		AL_CORE_CRITICAL("SCANNING : " + std::to_string(m_Room.width) + " : " + std::to_string(m_Room.height));
-
 		//Keep track of reset counter
 		s32 resetCounter;
 		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
@@ -297,9 +306,6 @@ namespace ALEngine::Script
 				//Get the cell component
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
-				if(cell.m_resetCounter > 0)
-				AL_CORE_CRITICAL("SCANNING " + std::to_string(i) + "," + std::to_string(j) + " : count is : " + std::to_string(cell.m_resetCounter));
-				
 				if (cell.m_isAccessible == false) {
 					continue;
 				}
@@ -353,7 +359,7 @@ namespace ALEngine::Script
 				Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x + i, y + j));
 
 				//Run explosion particle
-				ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+				ECS::ParticleSystem::GetParticleSystem().ExplosionParticles(transform.position);
 
 				//Do damage to cells without bombs
 				if (cell.hasBomb) {
@@ -374,7 +380,7 @@ namespace ALEngine::Script
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getEntityCell(currentRoom, x, y));
 		Transform& transform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(currentRoom, x, y));
 
-		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(transform.position);
+		ECS::ParticleSystem::GetParticleSystem().ExplosionParticles(transform.position);
 
 		if (cell.hasUnit) {
 			DoDamageToUnit(cell.unitEntity, 13);
@@ -911,23 +917,32 @@ namespace ALEngine::Script
 		AL_CORE_CRITICAL(unitData.tag + " now has " + std::to_string(unit.health) + " health");
 
 		//Get the master audio source
-		ECS::Entity masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
-		//Play hit sound accordingly
-		if (unit.unitType == UNIT_TYPE::PLAYER) {
-			Engine::Audio& ad = as.GetAudio(AUDIO_HIT);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.Play();
-		}
-		else {
-			Engine::Audio& ad = as.GetAudio(AUDIO_ENEMY_HURT_1);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.Play();
+		if (unit.health > 0) {
+			//Play hit sound accordingly
+			if (unit.unitType == UNIT_TYPE::PLAYER) {
+				Engine::Audio& ad = as.GetAudio(AUDIO_HIT);
+				ad.m_Channel = Engine::Channel::SFX;
+				ad.Play();
+			}
+			else {
+				if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+					s32 randomVal = rand() % 100;
+
+					if (randomVal > 50) {
+						gameplaySystem->PlayAudio(AUDIO_GUARD_GET_HIT_1);
+					}
+					else {
+						gameplaySystem->PlayAudio(AUDIO_GUARD_GET_HIT_2);
+					}
+				}
+			}
 		}
 
 		//If no health
-		if (unit.health <= 0) {
+		else if (unit.health <= 0) {
 			//Determinte type
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				AL_CORE_INFO("Unit Died");
@@ -943,6 +958,10 @@ namespace ALEngine::Script
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
 				
+				if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+					gameplaySystem->PlayAudio(AUDIO_GUARD_DEATH_1);
+				}
+
 				b8 allEnemiesDead = true;
 				for (int i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
 					Unit& enemy = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
@@ -1092,8 +1111,6 @@ namespace ALEngine::Script
 				//If it's effect type
 				//Must connect to cell that is walkable but no on cells with units
 				else {
-					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
-
 					if (cell.hasUnit) {
 						canPlace = false;
 						touchedUnit = true;
@@ -1142,7 +1159,7 @@ namespace ALEngine::Script
 
 						u32 initialHealth = unit.health;
 
-						ECS::Entity playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+						playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 						//If unit is enemy
@@ -1495,6 +1512,38 @@ namespace ALEngine::Script
 		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_PLAYER_WALK_1));
 		as.list[as.id++] = ad;
 
+		//Add Guard Move 1
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Move 2
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_2));
+		as.list[as.id++] = ad;
+
+		//Add Guard Move 3
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_3));
+		as.list[as.id++] = ad;
+		
+		//Add Guard Death 1
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_DEATH_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Hit 1
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_GET_HIT_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Hit 2
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_GET_HIT_2));
+		as.list[as.id++] = ad;
+
+		//Add Guard Attack 1
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_ATTACK_1));
+		as.list[as.id++] = ad;
+
+		//Add Guard Attack 2
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_ATTACK_2));
+		as.list[as.id++] = ad;
+
 		//Add the audiosource component to the entity
 		Coordinator::Instance()->AddComponent(en, as);
 	}
@@ -1761,7 +1810,7 @@ namespace ALEngine::Script
 
 
 		if (selected_Pattern_Rotation < 0) {
-			selected_Pattern_Rotation = selected_Pattern.offsetGroup.size() - 1;
+			selected_Pattern_Rotation = static_cast<s32>(selected_Pattern.offsetGroup.size()) - 1;
 		}
 		else if (selected_Pattern_Rotation > selected_Pattern.offsetGroup.size() - 1) {
 			selected_Pattern_Rotation = 0;

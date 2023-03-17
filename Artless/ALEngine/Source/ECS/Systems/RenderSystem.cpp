@@ -361,7 +361,6 @@ namespace ALEngine::ECS
 		if (!Editor::ALEditor::Instance()->GetGameActive())
 			return;
 #endif
-
 		for (Entity en : rs->mEntities)
 		{
 			if (!Coordinator::Instance()->HasComponent<Transform>(en))
