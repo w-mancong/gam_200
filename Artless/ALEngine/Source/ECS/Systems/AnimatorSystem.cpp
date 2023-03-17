@@ -51,7 +51,7 @@ namespace ALEngine::ECS
 				animator.time = 0.0f;
 			}
 
-			(++sprite.index) %= animation.totalSprites;
+			(++sprite.index) %= animation.totalSprites; // need to check if sprite.index is zero. (division by zero)
 
 			(++animator.currSprite) %= animation.totalSprites;
 			animator.time = 0.0f;

@@ -336,7 +336,7 @@ namespace ALEngine::Script
 
 		//Toggle the gui 
 		gameplaySystem_GUI->ToggleAbilitiesGUI(false);
-		gameplaySystem_GUI->TogglePatternGUI(true);
+		gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 		//***** AUDIO Initialization ******//
 		CreateAudioEntityMasterSource();
@@ -355,6 +355,8 @@ namespace ALEngine::Script
 	void GameplaySystem::UpdateGameplaySystem() {
 		gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
 
+		gameplaySystem_GUI->Update_Skill_Tip_Position();
+
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton)) {
 			//Deselect Pattern
@@ -364,7 +366,7 @@ namespace ALEngine::Script
 				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
 				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
-				gameplaySystem_GUI->TogglePatternGUI(true);
+				gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 			}
 			//Deselect Abilities
 			else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {

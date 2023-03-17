@@ -303,6 +303,16 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
+	void ParticleSystem::ExplosionParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("explosion_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 1.f;
+		manualParticleContainer.push_back(prop);
+	}
+
 	void ParticleSystem::UnitHealParticles(Math::Vector2 position)
 	{
 		Entity en = Coordinator::Instance()->GetEntityByTag("heal_particles");
