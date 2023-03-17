@@ -2063,6 +2063,9 @@ namespace ALEngine::Script
 			Event_MouseEnterCell(unit.m_CurrentCell_Entity);
 		}
 		
+		if (unit.unitType != UNIT_TYPE::ENEMY)
+			return;
+
 		if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE)
 		{
 			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
@@ -2084,6 +2087,11 @@ namespace ALEngine::Script
 	void Event_MouseExitUnit(ECS::Entity invoker) {
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
 
+		Event_MouseExitCell(unit.m_CurrentCell_Entity);
+
+		if (unit.unitType != UNIT_TYPE::ENEMY)
+			return;
+
 		if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE)
 		{
 			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
@@ -2096,7 +2104,6 @@ namespace ALEngine::Script
 		{
 			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Summoner);
 		}
-		Event_MouseExitCell(unit.m_CurrentCell_Entity);
 	}
 
 	/*!*********************************************************************************
