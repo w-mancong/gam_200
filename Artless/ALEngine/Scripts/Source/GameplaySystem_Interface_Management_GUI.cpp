@@ -109,6 +109,9 @@ namespace ALEngine::Script
 		guiManager.Highlight_blocks[3] = Coordinator::Instance()->GetEntityByTag("Highlight_Path4");
 		guiManager.Highlight_blocks[4] = Coordinator::Instance()->GetEntityByTag("Highlight_Path5");
 		guiManager.Highlight_blocks[5] = Coordinator::Instance()->GetEntityByTag("Highlight_Path6");
+		guiManager.Enemy_Tip_Guard = Coordinator::Instance()->GetEntityByTag("guard_tip");
+		guiManager.Enemy_Tip_Flying = Coordinator::Instance()->GetEntityByTag("destoryer_tip");
+		guiManager.Enemy_Tip_Summoner = Coordinator::Instance()->GetEntityByTag("summoner_tip");
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);

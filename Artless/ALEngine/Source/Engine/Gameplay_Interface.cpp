@@ -2054,12 +2054,28 @@ namespace ALEngine::Script
 
 	/*!*********************************************************************************
 	\brief
-		Event for when mouse enter unit
+		Event for when mouse enter unit mutton
 	***********************************************************************************/
 	void Event_MouseEnterUnit(ECS::Entity invoker) {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
 		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
-			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
 			Event_MouseEnterCell(unit.m_CurrentCell_Entity);
+		}
+		
+		if (unit.unitType != UNIT_TYPE::ENEMY)
+			return;
+
+		if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE)
+		{
+			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
+		}
+		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER)
+		{
+			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Flying);
+		}
+		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_SUMMONER)
+		{
+			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Summoner);
 		}
 	}
 
@@ -2069,7 +2085,24 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_MouseExitUnit(ECS::Entity invoker) {
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+
 		Event_MouseExitCell(unit.m_CurrentCell_Entity);
+
+		if (unit.unitType != UNIT_TYPE::ENEMY)
+			return;
+
+		if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE)
+		{
+			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
+		}
+		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER)
+		{
+			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Flying);
+		}
+		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_SUMMONER)
+		{
+			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Summoner);
+		}
 	}
 
 	/*!*********************************************************************************
@@ -2078,7 +2111,6 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_ClickCell(ECS::Entity invokerCell) {
 		AL_CORE_INFO("Select Cell");
-
 		//If the unit control is currently moving unit, ignore click order
 		if (gameplaySystem->currentUnitControlStatus != UNITS_CONTROL_STATUS::NOTHING) {
 			return;
