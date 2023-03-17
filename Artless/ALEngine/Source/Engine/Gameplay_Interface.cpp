@@ -125,6 +125,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem::EndTurn()
 	{
+		AL_CORE_CRITICAL("ENDING TURN");
 		//Reset the statuses
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 		currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
@@ -137,14 +138,14 @@ namespace ALEngine::Script
 		case PHASE_STATUS::PHASE_SETUP:
 			//Load action phase
 			currentPhaseStatus = PHASE_STATUS::PHASE_ACTION;
-			AL_CORE_DEBUG("Loading PHASE ACTION");
+			AL_CORE_CRITICAL("Loading PHASE ACTION");
 			gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 			gameplaySystem_GUI->TogglePatternGUI(false);
 			break;
 
 		case PHASE_STATUS::PHASE_ACTION:
 			//Load enemy phase
-			AL_CORE_DEBUG("Loading PHASE ENEMY");
+			AL_CORE_CRITICAL("Loading PHASE ENEMY");
 			currentPhaseStatus = PHASE_STATUS::PHASE_ENEMY;
 			enemyNeededData.enemyMoved = 0;
 
@@ -155,7 +156,7 @@ namespace ALEngine::Script
 
 		case PHASE_STATUS::PHASE_ENEMY:
 			//Load setup phase
-			AL_CORE_DEBUG("Loading PHASE SETUP");
+			AL_CORE_CRITICAL("Loading PHASE SETUP");
 			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
 			//gameplaySystem_GUI->TogglePatternGUI(true);
 			gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
@@ -1789,19 +1790,23 @@ namespace ALEngine::Script
 		{
 		case ENEMY_TYPE::ENEMY_MELEE:
 			gameplaySystem_Enemy->Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			return;
 			break;
 		case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
 			gameplaySystem_Enemy->Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			return;
 			break;
 
 		case ENEMY_TYPE::ENEMY_SUMMONER:
 			gameplaySystem_Enemy->Enemy_Logic_Update_Summoner(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			return;
 			break;
 
 		default:
 			break;
 		}
 		AL_CORE_INFO("after enemy move");
+		MoveEnemy();
 	}
 
 	void GameplaySystem::RotatePattern(s32 patternRotationAmount) {

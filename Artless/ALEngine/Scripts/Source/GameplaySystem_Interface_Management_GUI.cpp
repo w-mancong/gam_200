@@ -265,6 +265,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::GuiUpdatePhaseIndicator(PHASE_STATUS status)
 	{
+		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
 		Text& phaseIndicator = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Phase_Indicator);
 		phaseIndicator.colour = Engine::Vector3(1.f, 1.f, 1.f);
 
