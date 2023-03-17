@@ -74,7 +74,7 @@ namespace ALEngine::Script
 
 		//Start the gameplay logic
 		StartGameplaySystem();
-		room_To_Load = Gameplay::MapManager::Instance()->GetMapPath();
+		//room_To_Load = Gameplay::MapManager::Instance()->GetMapPath();
 		//Initialize the room
 		InitializeRoom(room_To_Load);
 	
