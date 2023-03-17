@@ -1134,6 +1134,9 @@ namespace ALEngine::Script
 		AL_CORE_CRITICAL("USE ABILITY");
 
 		abilities->current_Cooldown = abilities->max_Cooldown;
+
+		//Initialize abilities GUI
+		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
 		gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, true);
 
 		//Shift through each grid that the pattern would be in relative to given coordinate
