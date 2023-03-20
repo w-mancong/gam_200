@@ -23,12 +23,14 @@ namespace ALEngine::Script
 	{
 		GetSceneGraph().FindImmediateChildren(en);
 		std::vector<s32> const& children = GetSceneGraph().GetChildren();
+		Coordinator::Instance()->GetComponent<Sprite>(en).layer = 3000U;
 
 		for (s32 child : children)
 		{
 			EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>(static_cast<Entity>(child));
 			if (ed.tag == "bd_pause")
 				bd_pause = static_cast<Entity>(child);
+			Coordinator::Instance()->GetComponent<Sprite>( static_cast<Entity>(child) ).layer = 3100U;
 		}
 
 		paused	 = false;

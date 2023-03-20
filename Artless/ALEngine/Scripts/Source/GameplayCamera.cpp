@@ -19,25 +19,14 @@ namespace ALEngine::Script
 
 	void GameplayCamera::Init([[maybe_unused]] ECS::Entity en)
 	{
-		//ECS::GetSceneGraph().FindImmediateChildren(en);
-		//std::vector<s32> const& children{ ECS::GetSceneGraph().GetChildren() };
+		auto const& map = Gameplay::MapManager::Instance()->GetMap();
+		u64 const W = map[0].size(), H = map.size();
+		f32 constexpr const TILE_WIDTH = 100.0f;
 
-		//f32 constexpr const MIN = std::numeric_limits<f32>::min();
+		L_Boundary = B_Boundary = 0.0f - TILE_WIDTH;
+		R_Boundary = static_cast<f32>(TILE_WIDTH) * static_cast<f32>(W);
+		T_Boundary = static_cast<f32>(TILE_WIDTH) * static_cast<f32>(H);
 
-		//for (s32 child : children)
-		//{
-		//	EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>( static_cast<Entity>( child ) );
-		//	Transform const& trans = Coordinator::Instance()->GetComponent<Transform>( static_cast<Entity>( child ) );
-
-		//	if (ed.tag == "L_Boundary" && !IsEqual(L_Boundary, MIN))
-		//		L_Boundary = trans.position.x + trans.scale.x * 0.5f;
-		//	else if (ed.tag == "R_Boundary" && !IsEqual(R_Boundary, MIN))
-		//		R_Boundary = trans.position.x - trans.scale.x * 0.5f;
-		//	else if (ed.tag == "T_Boundary" && !IsEqual(T_Boundary, MIN))
-		//		T_Boundary = trans.position.y - trans.scale.y * 0.5f;
-		//	else if (ed.tag == "B_Boundary" && !IsEqual(B_Boundary, MIN))
-		//		B_Boundary = trans.position.y + trans.scale.y * 0.5f;
-		//}
 		WIDTH = GetCamera().Width(), HEIGHT = GetCamera().Height();
 	}
 
@@ -56,33 +45,19 @@ namespace ALEngine::Script
 
 		// Move camera to the left
 		if (xMouse <= xPadding)
-		{
 			pos.x -= CAMERA_SPEED * Time::m_DeltaTime;
-			if (pos.x < L_Boundary)
-				pos.x = L_Boundary;
-		}
 		// Move camera to the right
 		else if (xMouse >= (xScreen - xPadding))
-		{
 			pos.x += CAMERA_SPEED * Time::m_DeltaTime;
-			if (pos.x > R_Boundary - WIDTH)
-				pos.x = R_Boundary - WIDTH;
-		}
-		
+
 		// Move camera down
 		if (yMouse <= yPadding)
-		{
 			pos.y -= CAMERA_SPEED * Time::m_DeltaTime;
-			if (pos.y < B_Boundary)
-				pos.y = B_Boundary;
-		}
 		// Move camera up
 		else if (yMouse >= (yScreen - yPadding))
-		{
 			pos.y += CAMERA_SPEED * Time::m_DeltaTime;
-			if (pos.y > T_Boundary - HEIGHT)
-				pos.y = T_Boundary - HEIGHT;
-		}
+
+		ConfinePosition(pos);
 		ECS::UpdateUIpositions();
 	}
 
@@ -92,5 +67,18 @@ namespace ALEngine::Script
 		R_Boundary = R;
 		T_Boundary = T;
 		B_Boundary = B;
+	}
+
+	void GameplayCamera::ConfinePosition(Math::vec3& pos) const
+	{
+		if (pos.x < L_Boundary)
+			pos.x = L_Boundary;
+		else if (pos.x > R_Boundary - WIDTH)
+			pos.x = R_Boundary - WIDTH;
+
+		if (pos.y < B_Boundary)
+			pos.y = B_Boundary;
+		else if (pos.y > T_Boundary - HEIGHT)
+			pos.y = T_Boundary - HEIGHT;
 	}
 }

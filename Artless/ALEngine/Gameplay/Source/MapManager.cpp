@@ -115,7 +115,7 @@ namespace Gameplay
 		return m_Height;
 	}
 
-	std::vector<std::vector<std::string>> MapManager::GetMap(void)
+	std::vector<std::vector<std::string>> const& MapManager::GetMap(void) const
 	{
 		return m_Map;
 	}

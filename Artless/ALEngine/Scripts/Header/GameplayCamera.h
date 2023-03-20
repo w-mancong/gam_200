@@ -39,6 +39,8 @@ namespace ALEngine::Script
 		RTTR_ENABLE(ECS::Component::UniBehaviour)
 
 	private:
+		void ConfinePosition(Math::vec3& pos) const;
+
 		f32 L_Boundary{ std::numeric_limits<f32>::min() },
 			R_Boundary{ std::numeric_limits<f32>::max() },
 			B_Boundary{ std::numeric_limits<f32>::min() },

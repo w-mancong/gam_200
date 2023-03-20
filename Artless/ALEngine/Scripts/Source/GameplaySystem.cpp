@@ -143,7 +143,7 @@ namespace ALEngine::Script
 				Transform transform;
 				transform.scale = { 100, 100 };
 				transform.localScale = { 100, 100 };
-				transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
+				transform.position = { (f32)r * 100.f, (f32)c * 100.f };
 				Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[counter], transform);
 
 				// Cell coordinates
@@ -161,7 +161,7 @@ namespace ALEngine::Script
 
 				Transform child_overlay_transform;
 				child_overlay_transform.scale = transform.scale;
-				child_overlay_transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
+				child_overlay_transform.position = { (f32)r * 100.f, (f32)c * 100.f };
 				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
 
 				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c), cell);
