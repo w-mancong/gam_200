@@ -356,6 +356,7 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
 
 		gameplaySystem_GUI->Update_Skill_Tip_Position();
+		gameplaySystem_GUI->UpdateYourTurnSign();
 
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton)) {

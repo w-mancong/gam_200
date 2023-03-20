@@ -186,7 +186,7 @@ namespace ALEngine::Script
 			checkPlayerPlacement();
 
 			//Display the your turn animation 
-			ECS::ParticleSystem::GetParticleSystem().DisplayYourTurn();
+			gameplaySystem_GUI->DisplayYourTurn();
 
 			for (int i = 0; i < Abilities_List.size(); ++i) {
 				if (Abilities_List[i].current_Cooldown > 0) {

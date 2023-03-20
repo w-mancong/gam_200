@@ -54,6 +54,50 @@ namespace ALEngine::Script
 
 	}
 
+	void GameplaySystem_Interface_Management_GUI::DisplayYourTurn()
+	{
+		guiManager.Your_Turn_timer = 4.f;
+	}
+
+	template<typename T>
+	T GameplaySystem_Interface_Management_GUI::Lerp(T a, T b, float t)
+	{
+		return (T)(a + (b - a) * t);
+	}
+
+	void GameplaySystem_Interface_Management_GUI::UpdateYourTurnSign()
+	{
+		f32& timer = guiManager.Your_Turn_timer;
+
+		if (timer > 0.f && timer <= 3.f)
+		{
+			ECS::SetActive(true, guiManager.Your_Turn_Sign);
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Your_Turn_Sign);
+			const Math::vec2 biggest(3000.f, 600.f);
+			const Math::vec2 smallest(0.f, 0.f);
+			const f32 lifetime = 3.f;
+
+			f32 lifePercentage = (lifetime - timer) / lifetime; // particle.lifeRemaining / particle.lifeTime;
+
+			if (timer > 1.5f)
+			{
+				trans.scale = Lerp(smallest, biggest, lifePercentage);
+			}
+			else //second half
+			{
+				trans.scale = Lerp(biggest, smallest, lifePercentage);
+			}
+
+			timer -= Time::m_DeltaTime;
+			if(timer <= 0.f)
+				ECS::SetActive(false, guiManager.Your_Turn_Sign);
+		}
+		else if (timer > 0.f)
+		{
+			timer -= Time::m_DeltaTime;
+		}
+	}
+
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
@@ -110,6 +154,17 @@ namespace ALEngine::Script
 		guiManager.Enemy_Tip_Guard = Coordinator::Instance()->GetEntityByTag("guard_tip");
 		guiManager.Enemy_Tip_Flying = Coordinator::Instance()->GetEntityByTag("destoryer_tip");
 		guiManager.Enemy_Tip_Summoner = Coordinator::Instance()->GetEntityByTag("summoner_tip");
+		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+
+
+		//void ParticleSystem::DisplayYourTurn()
+		//{
+		//	Entity en = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		//	ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		//	prop.position = Coordinator::Instance()->GetComponent<Transform>(en).position;
+		//	prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		//	Emit(prop);
+		//}
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
