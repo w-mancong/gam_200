@@ -177,6 +177,7 @@
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
     <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
+    <ClCompile Include="Scripts\Source\WaterGenerator.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
@@ -479,6 +480,7 @@
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
+    <ClInclude Include="Scripts\Header\WaterGenerator.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
     <ClInclude Include="Scripts\others\ScriptManager.h" />
     <ClInclude Include="tracy\Tracy.hpp" />

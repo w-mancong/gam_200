@@ -9,6 +9,7 @@ brief:	This file contain function definition for main menu button when paused
 #include <pch.h>
 #include <MainMenuButton.h>
 #include <SceneChangeHelper.h>
+#include <GameplaySystem.h>
 
 namespace ALEngine::Script
 {
@@ -53,6 +54,7 @@ namespace ALEngine::Script
 			{
 				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
 				ptr->NextScene("Assets\\Scene\\main_menu.scene");
+				SetMap(0);
 				Time::m_Scale = 1.0f;
 			}
 		}

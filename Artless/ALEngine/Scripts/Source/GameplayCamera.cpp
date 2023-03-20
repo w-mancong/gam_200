@@ -8,6 +8,7 @@ brief:	This file contain function definition for a gameplay camera
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <GameplayCamera.h>
+#include <GameplaySystem.h>
 
 namespace ALEngine::Script
 {	
@@ -21,11 +22,10 @@ namespace ALEngine::Script
 	{
 		auto const& map = Gameplay::MapManager::Instance()->GetMap();
 		u64 const W = map[0].size(), H = map.size();
-		f32 constexpr const TILE_WIDTH = 100.0f;
 
-		L_Boundary = B_Boundary = 0.0f - TILE_WIDTH;
-		R_Boundary = static_cast<f32>(TILE_WIDTH) * static_cast<f32>(W);
-		T_Boundary = static_cast<f32>(TILE_WIDTH) * static_cast<f32>(H);
+		L_Boundary = B_Boundary = 0.0f - TILE_SIZE;
+		R_Boundary = static_cast<f32>(TILE_SIZE) * static_cast<f32>(W);
+		T_Boundary = static_cast<f32>(TILE_SIZE) * static_cast<f32>(H);
 
 		WIDTH = GetCamera().Width(), HEIGHT = GetCamera().Height();
 	}

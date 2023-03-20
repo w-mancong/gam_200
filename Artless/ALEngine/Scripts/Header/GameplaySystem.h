@@ -26,6 +26,12 @@
 namespace ALEngine::Script
 {
 	using GAMEPLAY_SYSTEM_INTERFACE_H::Room;
+	static f32 constexpr const TILE_SIZE = 100.0f;
+	
+	/*!*********************************************************************************
+		\brief Set the room_to_load for MapManager
+	***********************************************************************************/
+	void SetMap(u64 index);
 
 	class GameplaySystem : public ECS::Component::UniBehaviour
 	{

@@ -22,6 +22,7 @@
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <GameplayCamera.h>
+#include <WaterGenerator.h>
 #include <Utility/AudioNames.h>
 #include <Engine/PathFindingManager.h>
 
@@ -114,11 +115,8 @@ namespace ALEngine::Script
 
 		//Camera Logic
 		ECS::AddLogicComponent<Script::GameplayCamera>(entity);
-		//{
-		//	auto ptr = ECS::GetLogicComponent<Script::GameplayCamera>(entity);
-		//	// Set the camera's boundary for level 1 and level 2
-		//	ptr->SetBoundary();
-		//}
+		// Water generator
+		ECS::AddLogicComponent<Script::WaterGenerator>(entity);
 
 		//Add physics
 		ECS::CreateRigidbody(entity);

@@ -45,7 +45,7 @@ namespace ALEngine
 
 		// Layer
 		writer.Key("layer");
-		writer.Uint64(static_cast<u64>(sprite.layer));
+		writer.Int(sprite.layer);
 
 		writer.EndObject();
 		writer.EndArray();
@@ -67,7 +67,7 @@ namespace ALEngine
 
 		// Getting layers
 		//sprite.layer = static_cast<RenderLayer>(v[0]["layer"].GetUint64());
-		sprite.layer = v[0]["layer"].GetUint();
+		sprite.layer = v[0]["layer"].GetInt();
 
 		// Initialising value
 		sprite.id = Engine::AssetManager::Instance()->GetGuid(sprite.filePath);

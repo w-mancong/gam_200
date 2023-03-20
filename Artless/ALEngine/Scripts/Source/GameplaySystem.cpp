@@ -26,6 +26,7 @@
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
 #include <PauseLogic.h>
+#include <SceneChangeHelper.h>
 #include <ranges>
 
 namespace ALEngine::Script
@@ -35,7 +36,15 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string room_To_Load = "Assets\\Presentation_Level.map";
+		std::string rooms[] = { "Assets\\Presentation_Level.map", "Assets\\Tutorial_Level.map" };
+		std::string room_To_Load = rooms[0];
+
+		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
+	}
+
+	void SetMap(u64 index)
+	{
+		room_To_Load = rooms[index];
 	}
 
 	/*!*********************************************************************************
@@ -44,8 +53,10 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_Button_LoadLevel_1(ECS::Entity invoker) {
 		//Restart the gameplay
-		room_To_Load = "Assets\\Presentation_Level.map";
-		Engine::Scene::Restart();
+		room_To_Load = rooms[0];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
+		//Engine::Scene::Restart();
 	}
 
 	/*!*********************************************************************************
@@ -55,8 +66,10 @@ namespace ALEngine::Script
 	void Event_Button_LoadLevel_2(ECS::Entity invoker) {
 		gameplaySystem->Toggle_Gameplay_State(false);
 		//Restart the gameplay
-		room_To_Load = "Assets\\Tutorial_Level.map";
-		Engine::Scene::Restart();
+		room_To_Load = rooms[1];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
+		//Engine::Scene::Restart();
 	}
 
 	void GameplaySystem::Load(ECS::Entity en)
@@ -82,6 +95,8 @@ namespace ALEngine::Script
 		EnemyManager_LoadData();
 
 		ECS::SetBackgroundColor( { 0.2f, 0.3f, 0.3f, 1.0f } );
+
+		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
 
 		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 		//ECS::GetCamera().Position() = playerTransform.localPosition;
@@ -143,7 +158,7 @@ namespace ALEngine::Script
 				Transform transform;
 				transform.scale = { 100, 100 };
 				transform.localScale = { 100, 100 };
-				transform.position = { (f32)r * 100.f, (f32)c * 100.f };
+				transform.position = { (f32)r * TILE_SIZE, (f32)c * TILE_SIZE };
 				Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[counter], transform);
 
 				// Cell coordinates
@@ -161,7 +176,7 @@ namespace ALEngine::Script
 
 				Transform child_overlay_transform;
 				child_overlay_transform.scale = transform.scale;
-				child_overlay_transform.position = { (f32)r * 100.f, (f32)c * 100.f };
+				child_overlay_transform.position = { (f32)r * TILE_SIZE, (f32)c * TILE_SIZE };
 				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
 
 				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c), cell);

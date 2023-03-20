@@ -21,7 +21,7 @@ namespace ALEngine::ECS::Component
 		std::string filePath{};
 		Color color{ 1.0f, 1.0f, 1.0f, 1.0f };
 		//RenderLayer layer{ RenderLayer::Background };
-		u32 layer{ 0 };
+		s32 layer{ 0 };
 		u32 index{};	// used to determine which 
 	};
 }

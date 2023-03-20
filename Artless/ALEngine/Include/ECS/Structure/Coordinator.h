@@ -90,6 +90,7 @@ namespace ALEngine::ECS
 			m_EntityManager->DestroyEntity(entity);
 			m_ComponentManager->EntityDestroy(entity);
 			m_SystemManager->EntityDestroyed(entity);
+			GetSceneGraph().Destruct(static_cast<s32>(entity));
 		}
 
 		/*!*********************************************************************************

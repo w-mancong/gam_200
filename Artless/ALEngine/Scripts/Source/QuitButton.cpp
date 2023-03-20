@@ -10,6 +10,7 @@ brief:	This file contain function definition for quit game button
 #include <QuitButton.h>
 #if EDITOR
 #include <Engine/GSM/GameStateManager.h>
+#include <GameplaySystem.h>
 #endif
 
 namespace ALEngine::Script
@@ -68,6 +69,7 @@ namespace ALEngine::Script
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
 					Editor::ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
 					ECS::ResetEventTriggerSystem();
+					SetMap(0);
 				}
 				else
 					Engine::TerminateEngine();
