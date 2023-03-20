@@ -323,15 +323,6 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
-	void ParticleSystem::DisplayYourTurn()
-	{
-		Entity en = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
-		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
-		prop.position = Coordinator::Instance()->GetComponent<Transform>(en).position;
-		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
-		Emit(prop);
-	}
-
 	std::vector<ParticleSystem::Particle> const& ParticleSystem::GetParticleContainer()
 	{
 		return particleContainer;

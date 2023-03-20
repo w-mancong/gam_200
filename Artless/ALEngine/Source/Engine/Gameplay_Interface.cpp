@@ -37,7 +37,6 @@ namespace ALEngine::Script
 		Script::GameplaySystem_Interface_Management_Enemy::EnemyManager enemyNeededData;
 	}
 
-
 	void Set_GameplayInterface_Enemy(ECS::Entity GameplaySystemEntity) {
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(GameplaySystemEntity);
 	}
@@ -191,7 +190,7 @@ namespace ALEngine::Script
 			checkPlayerPlacement();
 
 			//Display the your turn animation 
-			ECS::ParticleSystem::GetParticleSystem().DisplayYourTurn();
+			gameplaySystem_GUI->DisplayYourTurn();
 
 			for (int i = 0; i < Abilities_List.size(); ++i) {
 				if (Abilities_List[i].current_Cooldown > 0) {
@@ -1140,6 +1139,9 @@ namespace ALEngine::Script
 		AL_CORE_CRITICAL("USE ABILITY");
 
 		abilities->current_Cooldown = abilities->max_Cooldown;
+
+		//Initialize abilities GUI
+		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
 		gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, true);
 
 		//Shift through each grid that the pattern would be in relative to given coordinate
@@ -1270,13 +1272,13 @@ namespace ALEngine::Script
 		ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
 
+		ECS::SetActive(false, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+
 		//Set state to moving
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
 		movingUnitEntity = playerEntity;
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
-
-		ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 
 		//Get the audiosource
 		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
@@ -1636,7 +1638,7 @@ namespace ALEngine::Script
 		//Keep track of next cell destination
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
 
-		//Keep track of player transform
+		//Keep track of player transformF
 		Transform& movingTransform = Coordinator::Instance()->GetComponent<Transform>(movingUnitEntity);
 
 		//Move player transform to it's iterated waypoint
@@ -1710,6 +1712,8 @@ namespace ALEngine::Script
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+
 					//Get the audiosource
 					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 
@@ -1784,6 +1788,7 @@ namespace ALEngine::Script
 			return;
 		}
 
+		AL_CORE_INFO("Enemy Making Decisions");
 		//use enemy logic function pointer
 		switch (enemyUnit.enemyUnitType)
 		{
@@ -2060,12 +2065,28 @@ namespace ALEngine::Script
 
 	/*!*********************************************************************************
 	\brief
-		Event for when mouse enter unit
+		Event for when mouse enter unit mutton
 	***********************************************************************************/
 	void Event_MouseEnterUnit(ECS::Entity invoker) {
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
 		if (gameplaySystem->currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING) {
-			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
 			Event_MouseEnterCell(unit.m_CurrentCell_Entity);
+		}
+		
+		if (unit.unitType != UNIT_TYPE::ENEMY)
+			return;
+
+		if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE)
+		{
+			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
+		}
+		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER)
+		{
+			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Flying);
+		}
+		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_SUMMONER)
+		{
+			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Summoner);
 		}
 	}
 
@@ -2075,7 +2096,24 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_MouseExitUnit(ECS::Entity invoker) {
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(invoker);
+
 		Event_MouseExitCell(unit.m_CurrentCell_Entity);
+
+		if (unit.unitType != UNIT_TYPE::ENEMY)
+			return;
+
+		if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE)
+		{
+			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
+		}
+		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER)
+		{
+			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Flying);
+		}
+		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_SUMMONER)
+		{
+			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Summoner);
+		}
 	}
 
 	/*!*********************************************************************************
@@ -2084,7 +2122,6 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_ClickCell(ECS::Entity invokerCell) {
 		AL_CORE_INFO("Select Cell");
-
 		//If the unit control is currently moving unit, ignore click order
 		if (gameplaySystem->currentUnitControlStatus != UNITS_CONTROL_STATUS::NOTHING) {
 			return;

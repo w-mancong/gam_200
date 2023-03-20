@@ -18,6 +18,7 @@ namespace ALEngine::ECS::Component
 		Math::Vector3 colour{ 1.f, 1.f, 1.f }; // color of text
 		f32 scale{ 1.f }; // scale of text
 		std::string textString{"[new text]"}; // text string
+		u32 layer{};
 	};
 }
 
