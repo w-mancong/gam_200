@@ -36,6 +36,17 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
 		std::string room_To_Load = "Assets\\Presentation_Level.map";
+		
+		bool TUTORIAL_ACTIVE{ false };
+	}
+
+	/*!*********************************************************************************
+	\brief
+		Load Tutorial Level
+	***********************************************************************************/
+	void Event_Button_LoadLevel_Tutorial(ECS::Entity invoker) {
+		room_To_Load = "Assets\\Tutorial_Level.map";
+		Engine::Scene::Restart();
 	}
 
 	/*!*********************************************************************************

@@ -286,6 +286,7 @@
     <ClInclude Include="Scripts\Header\OptionButton.h" />
     <ClInclude Include="Scripts\Header\AudioSetting.h" />
     <ClInclude Include="Scripts\Header\FPSDisplay.h" />
+    <ClInclude Include="Gameplay\Header\TutorialGameplay.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

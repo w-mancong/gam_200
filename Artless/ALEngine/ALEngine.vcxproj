@@ -312,6 +312,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
+    <ClInclude Include="Gameplay\Header\TutorialGameplay.h" />
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
     <ClInclude Include="Include\Commands\EntityCommand.h" />
     <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
