@@ -787,6 +787,24 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 	}
 
+	void GameplaySystem::Cheat_IncreasePlayerActionPoint(s32 amount)
+	{
+		//Get player unit
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+		//Add health
+		unit.actionPoints += amount;
+
+		//Limit to max
+		if (unit.actionPoints >= unit.maxActionPoints) {
+			unit.actionPoints = unit.maxActionPoints;
+		}
+
+		//Select player
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
+	}
+
+
 	void GameplaySystem::Cheat_ToggleDoubleAbilitiesDoubleDamage() {
 		//Toggle double damage cheat
 		cheat_abilitiesDoubleDamage = !cheat_abilitiesDoubleDamage;
@@ -857,6 +875,17 @@ namespace ALEngine::Script
 
 		//Reset
 		unit.health = unit.maxHealth;
+
+		//Select player
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
+	}
+
+	void GameplaySystem::Cheat_ResetPlayerActionPoints()
+	{
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+		//reset
+		unit.actionPoints = unit.maxActionPoints;
 
 		//Select player
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
