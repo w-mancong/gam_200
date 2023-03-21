@@ -203,9 +203,9 @@ namespace ALEngine::Engine::Scene
 		FADE_TO_BLACK = 0,			// Fade to Black
 		FADE_TO_WHITE,				// Fade to white
 		FADE_TO_NEXT,				// Fade to next cutscene
-		FADE_OVER_BLACK,			// Fade from black
-		FADE_OVER_WHITE,			// Fade from white
-		FADE_OVER_PREV,				// Fade Over Previous Cutscene
+		FADE_FROM_BLACK,			// Fade from black
+		FADE_FROM_WHITE,			// Fade from white
+		FADE_FROM_PREV,				// Fade Over Previous Cutscene
 		FADE_NONE,					// No Fade
 		FADE_TOTAL					// Fade Count
 	};

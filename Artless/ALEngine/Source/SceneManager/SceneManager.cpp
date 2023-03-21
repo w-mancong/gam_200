@@ -638,8 +638,13 @@ namespace ALEngine::Engine::Scene
 		writer.Key("position");
 		writer.StartArray();
 		writer.Double(static_cast<f64>(prop.position.x));
+
 		writer.Double(static_cast<f64>(prop.position.y));
 		writer.EndArray();
+
+		// Layer
+		writer.Key("layer");
+		writer.Uint64(static_cast<u64>(prop.layer));
 
 		writer.EndObject();
 		writer.EndArray();
@@ -665,6 +670,9 @@ namespace ALEngine::Engine::Scene
 		rjs::Value const& e = v[0]["position"];
 		prop.position.x = e[0].GetFloat();
 		prop.position.y = e[1].GetFloat();
+
+		// Getting render layer
+		prop.layer = v[0]["layer"].GetUint();
 
 		Coordinator::Instance()->AddComponent(en, prop);
 	}

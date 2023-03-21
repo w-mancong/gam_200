@@ -22,8 +22,8 @@ namespace ALEngine::Script
 
 		//Keep track of GUI entities
 		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Rang, Unit_Profile;
-		ECS::Entity Unit_Healthbar, Phase_Indicator;
-		ECS::Entity Tooltip_Skills_Card, FPS_Label, Pause_Button;
+		ECS::Entity Unit_Healthbar, Phase_Indicator, Your_Turn_Sign;
+		ECS::Entity Tooltip_Skills_Card, FPS_Label, Pause_Button, Enemy_Tip_Guard, Enemy_Tip_Summoner, Enemy_Tip_Flying;
 		std::array<ECS::Entity, 6> AP_Indicators;
 		std::array<ECS::Entity, 6> Highlight_blocks;
 		
@@ -38,6 +38,8 @@ namespace ALEngine::Script
 		//List for containing entities of GUI
 		std::vector<ECS::Entity> GUI_Abilities_Button_List;
 		std::vector<ECS::Entity> GUI_Pattern_Button_List;
+
+		f32 Your_Turn_timer{};
 	};
 
 	class GameplaySystem_Interface_Management_GUI : public ECS::Component::UniBehaviour
@@ -147,6 +149,12 @@ namespace ALEngine::Script
 
 		void Update_Skill_Tip_Position();
 
+		void DisplayYourTurn();
+
+		void UpdateYourTurnSign();
+
+		template <typename T>
+		static T Lerp(T a, T b, float t);
 
 		void Update_Ability_Cooldown(std::vector<Abilities> ability_set, bool isAbilityGUIActive);
 

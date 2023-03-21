@@ -54,7 +54,58 @@ namespace ALEngine::Script
 
 	}
 
+	void GameplaySystem_Interface_Management_GUI::DisplayYourTurn()
+	{
+		guiManager.Your_Turn_timer = 4.f;
+	}
+
+	template<typename T>
+	T GameplaySystem_Interface_Management_GUI::Lerp(T a, T b, float t)
+	{
+		return (T)(a + (b - a) * t);
+	}
+
+	void GameplaySystem_Interface_Management_GUI::UpdateYourTurnSign()
+	{
+		f32& timer = guiManager.Your_Turn_timer;
+
+		if (timer > 0.f && timer <= 3.f)
+		{
+			ECS::SetActive(true, guiManager.Your_Turn_Sign);
+			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Your_Turn_Sign);
+			const Math::vec2 biggest(3000.f, 600.f);
+			const Math::vec2 smallest(0.f, 0.f);
+			const f32 lifetime = 3.f;
+
+			f32 lifePercentage = (lifetime - timer) / lifetime; // particle.lifeRemaining / particle.lifeTime;
+
+			if (timer > 1.5f)
+			{
+				trans.scale = Lerp(smallest, biggest, lifePercentage);
+			}
+			else //second half
+			{
+				trans.scale = Lerp(biggest, smallest, lifePercentage);
+			}
+
+			timer -= Time::m_DeltaTime;
+			if(timer <= 0.f)
+				ECS::SetActive(false, guiManager.Your_Turn_Sign);
+		}
+		else if (timer > 0.f)
+		{
+			timer -= Time::m_DeltaTime;
+		}
+	}
+
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
+		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
+		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
+		guiManager.Unit_Profile = Coordinator::Instance()->GetEntityByTag("profile_unit");
+		guiManager.Unit_Attack = Coordinator::Instance()->GetEntityByTag("text_attack_output");
+		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
+		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
+
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
 		Text& health_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Health);
@@ -107,6 +158,20 @@ namespace ALEngine::Script
 		guiManager.Highlight_blocks[3] = Coordinator::Instance()->GetEntityByTag("Highlight_Path4");
 		guiManager.Highlight_blocks[4] = Coordinator::Instance()->GetEntityByTag("Highlight_Path5");
 		guiManager.Highlight_blocks[5] = Coordinator::Instance()->GetEntityByTag("Highlight_Path6");
+		guiManager.Enemy_Tip_Guard = Coordinator::Instance()->GetEntityByTag("guard_tip");
+		guiManager.Enemy_Tip_Flying = Coordinator::Instance()->GetEntityByTag("destoryer_tip");
+		guiManager.Enemy_Tip_Summoner = Coordinator::Instance()->GetEntityByTag("summoner_tip");
+		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+
+
+		//void ParticleSystem::DisplayYourTurn()
+		//{
+		//	Entity en = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		//	ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		//	prop.position = Coordinator::Instance()->GetComponent<Transform>(en).position;
+		//	prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		//	Emit(prop);
+		//}
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);

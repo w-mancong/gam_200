@@ -26,8 +26,6 @@ namespace ALEngine::Script
 		ad.m_Channel = Engine::Channel::BGM;
 		ad.m_Loop = true;
 		ad.Play();
-
-		ECS::GetCamera().Position() = { 0.0f, 0.0f, ECS::GetCamera().Position().z };
 	}
 
 	void CutsceneObject::Update(ECS::Entity en)

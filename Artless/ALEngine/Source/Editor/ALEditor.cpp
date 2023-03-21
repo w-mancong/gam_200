@@ -361,6 +361,10 @@ namespace ALEngine::Editor
 				if (ImGui::MenuItem("Animator Editor"))
 					m_AnimatorPanel.SetPanelIsOpen(true);
 
+				// Set active for animator panel
+				if (ImGui::MenuItem("Cutscene Editor"))
+					m_CutsceneEditorPanel.SetPanelIsOpen(true);
+
 #ifdef TRACY_ENABLE
 				if (ImGui::MenuItem("Tracy Profiler"))
 				{
