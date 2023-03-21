@@ -85,7 +85,7 @@ namespace ALEngine::Script
 
 		//Start the gameplay logic
 		StartGameplaySystem();
-		room_To_Load = Gameplay::MapManager::Instance()->GetMapPath();
+		//room_To_Load = Gameplay::MapManager::Instance()->GetMapPath();
 		//Initialize the room
 		InitializeRoom(room_To_Load);
 	
@@ -367,6 +367,7 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
 
 		gameplaySystem_GUI->Update_Skill_Tip_Position();
+		gameplaySystem_GUI->UpdateYourTurnSign();
 
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton)) {
