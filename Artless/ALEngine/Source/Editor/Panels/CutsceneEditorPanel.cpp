@@ -191,10 +191,11 @@ namespace ALEngine::Editor
 						ImGui::InputFloat("Time##CutsceneEditor", &selected.m_CutsceneTime);
 
 						ImGui::Checkbox("Has Image", &selected.m_HasImage);
-						ImGui::SameLine();	ImGui::Checkbox("Has Text", &selected.m_HasText);
-
-						ImGui::Checkbox("Has Timer", &selected.m_HasTimer);
 						ImGui::SameLine();	 ImGui::Checkbox("Wait For Input", &selected.m_WaitForInput);
+						ImGui::SameLine();	 ImGui::Checkbox("Has Timer", &selected.m_HasTimer);
+
+						ImGui::Checkbox("Has Text", &selected.m_HasText);
+						if (selected.m_HasText) { ImGui::SameLine();	ImGui::Checkbox("Text Is Above", &selected.m_TextIsAbove); }
 
 						std::string fadeSelected{};
 						switch (selected.m_FadeInType)
@@ -288,6 +289,7 @@ namespace ALEngine::Editor
 						ImGui::InputFloat("Fade Out Time##CutsceneEditor", &selected.m_FadeOutTime, 0.f, 0.f, "%.3f", selected.m_FadeOutType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
 
 						// Image
+						if(selected.m_HasImage)
 						{
 							if (selected.m_CutsceneImageFilePath != "")
 							{
@@ -328,14 +330,17 @@ namespace ALEngine::Editor
 						}
 
 						// Text
-						if (selected.m_CutsceneText != "")
+						if (selected.m_HasText)
 						{
-							ImGui::Text("Cutscene Text");
-							ImGui::BeginChild("Text Box##CutsceneEditor", { 0.f, ImGui::GetContentRegionAvail().x * 0.4f }, true);
-							ImGui::TextWrapped(selected.m_CutsceneText.c_str());
-							ImGui::EndChild();
+							if (selected.m_CutsceneText != "")
+							{
+								ImGui::Text("Cutscene Text");
+								ImGui::BeginChild("Text Box##CutsceneEditor", { 0.f, ImGui::GetContentRegionAvail().x * 0.4f }, true);
+								ImGui::TextWrapped(selected.m_CutsceneText.c_str());
+								ImGui::EndChild();
+							}
+							ImGui::InputText("Cutscene Text##CutsceneEditor", &selected.m_CutsceneText);
 						}
-						ImGui::InputText("Cutscene Text##CutsceneEditor", &selected.m_CutsceneText);
 					}
 					ImGui::EndChild();
 				}

@@ -23,6 +23,35 @@ namespace ALEngine::Engine::Scene
 		return m_CutsceneIsPlaying;
 	}
 
+	void CutsceneManager::SetText(void)
+	{
+		// Check has text
+		if (m_CurrentCutscene->m_HasText)
+		{
+			if (m_CurrentCutscene->m_TextIsAbove == false)
+			{
+				Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
+				dialogue.textString = m_CurrentCutscene->m_CutsceneText;
+
+				ECS::Component::SetActive(false, m_DialogueBoxTop);
+				ECS::Component::SetActive(true, m_DialogueBox);
+			}
+			else
+			{
+				Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBoxTop);
+				dialogue.textString = m_CurrentCutscene->m_CutsceneText;
+
+				ECS::Component::SetActive(true, m_DialogueBoxTop);
+				ECS::Component::SetActive(false, m_DialogueBox);
+			}
+		}
+		else
+		{
+			ECS::Component::SetActive(false, m_DialogueBoxTop);
+			ECS::Component::SetActive(false, m_DialogueBox);
+		}
+	}
+
 	CutsceneManager::CutsceneManager(void)
 	{
 		LoadSequences();
@@ -43,6 +72,8 @@ namespace ALEngine::Engine::Scene
 				m_BlackOverlay = child;
 			else if (data.tag == "Dialogue Box")
 				m_DialogueBox = child;
+			else if (data.tag == "Dialogue Box Top")
+				m_DialogueBoxTop = child;
 			else if (data.tag == "Cutscene Top")
 				m_CutsceneTop = child;
 			else if (data.tag == "Cutscene Bottom")
@@ -65,11 +96,17 @@ namespace ALEngine::Engine::Scene
 
 		if (m_CurrentCutscene->m_HasImage)
 		{
-			EntityData& data = Coordinator::Instance()->GetComponent<EntityData>(m_BlackOverlay);
-			data.active = false;
+			ECS::SetActive(false, m_BlackOverlay);
 		}
 		else
-			ECS::SetActive(true, m_BlackOverlay);
+		{
+			//ECS::SetActive(true, m_BlackOverlay);
+			//ECS::SetActive(false, m_CutsceneTop);
+			//ECS::SetActive(false, m_CutsceneBottom);
+			Coordinator::Instance()->GetComponent<Sprite>(m_BlackOverlay).color.a = 0.5f;
+			Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop).color.a = 0.f;
+			Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom).color.a = 0.f;
+		}
 
 		// Make Obj Appear
 		EntityData& objData = Coordinator::Instance()->GetComponent<EntityData>(m_CutsceneObject);
@@ -78,8 +115,8 @@ namespace ALEngine::Engine::Scene
 		// Set Fade
 		SetFade(m_CurrentCutscene->m_FadeInType);
 
-		Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
-		dialogue.textString = m_CurrentCutscene->m_CutsceneText;
+		// Text
+		SetText();
 	}
 
 	void CutsceneManager::StopSequence(void)
@@ -415,20 +452,31 @@ namespace ALEngine::Engine::Scene
 				StopSequence();
 			else
 			{			
-				// Swap bottom to top
-				Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
-				Sprite& bot_spr{ Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom) };
-				spr.filePath = bot_spr.filePath;
-				spr.id = bot_spr.id;
+				// Check has image
+				if (m_CurrentCutscene->m_HasImage)
+				{
+					// Swap bottom to top
+					Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
+					Sprite& bot_spr{ Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom) };
+					spr.filePath = bot_spr.filePath;
+					spr.id = bot_spr.id;
 
-				// Below set inactive
-				ECS::SetActive(false, m_CutsceneBottom);
+					// Below set inactive
+					ECS::SetActive(false, m_CutsceneBottom);
+				}
+				else
+				{
+					// Set inactive
+					ECS::SetActive(false, m_CutsceneTop);
+					ECS::SetActive(false, m_CutsceneBottom);
+				}
+
 				m_CurrentPhase = CutscenePhase::FADE_IN;
 				m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
-				Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
-				dialogue.textString = m_CurrentCutscene->m_CutsceneText;
 
 				SetFade(m_CurrentCutscene->m_FadeInType);
+
+				SetText();
 			}
 		}
 	}
@@ -451,11 +499,12 @@ namespace ALEngine::Engine::Scene
 
 			// Below set inactive
 			ECS::SetActive(false, m_CutsceneBottom);
+			Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom).color.a = 0.f;
 
 			// Set to playing cutscene
 			m_CurrentPhase = CutscenePhase::PLAYING_CUTSCENE;
 
-			ECS::SetActive(true, m_DialogueBox);
+			SetText();
 
 			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
 		}
@@ -476,6 +525,7 @@ namespace ALEngine::Engine::Scene
 			Sprite &bot_spr{ Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom) };
 			spr.filePath = bot_spr.filePath;
 			spr.id = bot_spr.id;
+			bot_spr.color.a = 0.f;
 
 			// Below set inactive
 			ECS::SetActive(false, m_CutsceneBottom);
@@ -484,10 +534,9 @@ namespace ALEngine::Engine::Scene
 			m_CurrentPhase = CutscenePhase::FADE_IN;
 			m_CurrentCutscene = std::next(m_CurrentCutscene);
 
-			Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
-			dialogue.textString = m_CurrentCutscene->m_CutsceneText;
-
 			SetFade(m_CurrentCutscene->m_FadeInType);
+
+			SetText();
 
 			// End of cutscene
 			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
@@ -519,11 +568,10 @@ namespace ALEngine::Engine::Scene
 					m_CurrentPhase = CutscenePhase::FADE_IN;
 					// Don't fade out current, but fade in next
 					m_CurrentCutscene = std::next(m_CurrentCutscene);
-					// Text
-					Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
-					dialogue.textString = m_CurrentCutscene->m_CutsceneText;
 					// Set phase
 					SetFade(m_CurrentCutscene->m_FadeInType);
+					// Text
+					SetText();
 				}
 				else
 					SetFade(m_CurrentCutscene->m_FadeOutType);
@@ -535,8 +583,6 @@ namespace ALEngine::Engine::Scene
 				else
 					SetFade(m_CurrentCutscene->m_FadeOutType);
 			}
-
-			ECS::SetActive(false, m_DialogueBox);
 
 			// Exit
 			return;
@@ -553,22 +599,27 @@ namespace ALEngine::Engine::Scene
 				// Set to playing cutscene 
 				m_CurrentPhase = CutscenePhase::PLAYING_CUTSCENE;
 
-				// Change sprite
-				Sprite &top = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
-				top.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
-				top.id = Engine::AssetManager::Instance()->GetGuid(top.filePath);
-				top.color = { 1.f, 1.f, 1.f, 1.f };
+				// Check has image
+				if (m_CurrentCutscene->m_HasImage)
+				{
+					SetActive(true, m_CutsceneTop);
+					// Change sprite
+					Sprite& top = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
+					top.filePath = m_CurrentCutscene->m_CutsceneImageFilePath;
+					top.id = Engine::AssetManager::Instance()->GetGuid(top.filePath);
+					top.color = { 1.f, 1.f, 1.f, 1.f };
+				}
+				else 
+					ECS::SetActive(false, m_CutsceneTop);
 
 				// Set the countdown
 				m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
 
 				// Make bottom disappear
 				ECS::SetActive(false, m_CutsceneBottom);
+				Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom).color.a = 0.f;
 
-				ECS::SetActive(true, m_DialogueBox);
-
-				Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);
-				dialogue.textString = m_CurrentCutscene->m_CutsceneText;
+				SetText();
 			}
 			else if (m_CurrentPhase == CutscenePhase::FADE_OUT)
 				m_CurrentPhase = CutscenePhase::FADE_IN;

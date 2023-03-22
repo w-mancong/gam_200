@@ -5,7 +5,7 @@
             {
                 "position": [
                     800.0,
-                    450.0000305175781,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -57,7 +57,7 @@
             {
                 "position": [
                     801.0,
-                    451.00006103515625,
+                    451.0,
                     0.0
                 ],
                 "scale": [
@@ -101,8 +101,8 @@
         "Transform": [
             {
                 "position": [
-                    801.0001220703125,
-                    123.00006103515625,
+                    800.0,
+                    123.0,
                     0.0
                 ],
                 "scale": [
@@ -163,7 +163,7 @@
             {
                 "position": [
                     801.0,
-                    451.0000305175781,
+                    451.0,
                     0.0
                 ],
                 "scale": [
@@ -208,7 +208,7 @@
             {
                 "position": [
                     801.0,
-                    451.0000305175781,
+                    451.0,
                     0.0
                 ],
                 "scale": [
@@ -232,6 +232,67 @@
                 "id": 4,
                 "parentID": 0,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\DialogueBox.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    799.9998779296875,
+                    780.0,
+                    0.0
+                ],
+                "scale": [
+                    1430.0,
+                    210.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Dialogue Box Top",
+                "active": true,
+                "localActive": true,
+                "id": 5,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Hello There",
+                "currentFont": "SFProverbialGothic",
+                "scale": 0.8999999761581421,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    72.0,
+                    430.0
+                ]
             }
         ]
     }

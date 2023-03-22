@@ -162,6 +162,12 @@ namespace ALEngine::Engine::Scene
 		***********************************************************************************/
 		b8 CutsceneIsPlaying(void);
 
+		/*!*********************************************************************************
+			\brief
+				Set the text for the dialogue box
+		***********************************************************************************/
+		void SetText(void);
+
 	private:
 		/*!*********************************************************************************
 			\brief 
@@ -190,7 +196,7 @@ namespace ALEngine::Engine::Scene
 		// Entities
 		ECS::Entity m_CutsceneObject{};							// The parent object
 		ECS::Entity m_BlackOverlay{};							// Black overlay (for those with no image)
-		ECS::Entity m_DialogueBox{};							// Dialogue Box, also has text component
+		ECS::Entity m_DialogueBox{}, m_DialogueBoxTop{};		// Dialogue Box, also has text component
 		ECS::Entity m_CutsceneTop{}, m_CutsceneBottom{};		// Top will be displayed over Bottom
 
 		// Required for Singleton to function
@@ -229,6 +235,7 @@ namespace ALEngine::Engine::Scene
 		b8 m_HasText{ true };						// Whether this cutscene has text
 		b8 m_HasTimer{ true };						// Whether this cutscene is timed or based on user click
 		b8 m_WaitForInput{ true };					// Whether this cutscene wait for user input before proceeding to next
+		b8 m_TextIsAbove{ false };					// Whether the dialogue box is on top or below
 
 		// Functions
 		/*!*********************************************************************************

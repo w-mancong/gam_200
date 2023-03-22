@@ -19,7 +19,7 @@ namespace ALEngine::Script
 	void CutsceneObject::Init(ECS::Entity en)
 	{
 		Engine::Scene::CutsceneManager::Instance()->Init(en);
-		Engine::Scene::CutsceneManager::Instance()->PlaySequence("Opening Sequence");
+		Engine::Scene::CutsceneManager::Instance()->PlaySequence("Tutorial Intro");
 		
 		Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Audio\\Cutscene_MainMenu_BGM.wav");
 		Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(id);
