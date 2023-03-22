@@ -2071,18 +2071,28 @@ namespace ALEngine::Script
 		if (unit.unitType != UNIT_TYPE::ENEMY)
 			return;
 
+		SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Health);
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(gameplaySystem_GUI->getGuiManager().Enemy_Tip_Health);
+		Text& health_text = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Enemy_Tip_Health);
+		
 		if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE)
 		{
 			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Hover_Guard.png");
 		}
 		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER)
 		{
 			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Flying);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Hover_TileDestroyer.png");
 		}
 		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_SUMMONER)
 		{
 			SetActive(true, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Summoner);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tooltip_Hover_Summoner.png");
 		}
+		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().Enemy_Tip_Healthbar);
+		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth)) * 0.8f;
+		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
 	}
 
 	/*!*********************************************************************************
@@ -2097,18 +2107,10 @@ namespace ALEngine::Script
 		if (unit.unitType != UNIT_TYPE::ENEMY)
 			return;
 
-		if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE)
-		{
-			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
-		}
-		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER)
-		{
-			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Flying);
-		}
-		else if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_SUMMONER)
-		{
-			SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Summoner);
-		}
+		SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Guard);
+		SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Flying);
+		SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Summoner);
+		SetActive(false, gameplaySystem_GUI->getGuiManager().Enemy_Tip_Health);
 	}
 
 	/*!*********************************************************************************

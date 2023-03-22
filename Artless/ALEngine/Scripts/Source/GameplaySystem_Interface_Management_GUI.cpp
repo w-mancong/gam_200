@@ -162,6 +162,9 @@ namespace ALEngine::Script
 		guiManager.Enemy_Tip_Flying = Coordinator::Instance()->GetEntityByTag("destoryer_tip");
 		guiManager.Enemy_Tip_Summoner = Coordinator::Instance()->GetEntityByTag("summoner_tip");
 		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		guiManager.Enemy_Tip_Health = Coordinator::Instance()->GetEntityByTag("enemy_tip_health");
+		guiManager.Enemy_Tip_Healthbar = Coordinator::Instance()->GetEntityByTag("enemy_tip_healthbar");
+		
 
 
 		//void ParticleSystem::DisplayYourTurn()
