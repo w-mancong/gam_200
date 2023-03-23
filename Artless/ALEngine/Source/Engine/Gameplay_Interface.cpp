@@ -1580,7 +1580,17 @@ namespace ALEngine::Script
 	}
 
 	ECS::Entity GameplaySystem::getCurrentEntityCell() {
-		return currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
+
+		if (gameplaySystem->currentModeOrder.path_step >= currentModeOrder.path.size())
+		{
+			return 0;
+		}
+		else
+		{
+			return currentModeOrder.path[gameplaySystem->currentModeOrder.path_step];
+		}
+
+		
 	}
 
 	bool GameplaySystem::StepUpModeOrderPath(MoveOrder& order) {
@@ -1660,6 +1670,12 @@ namespace ALEngine::Script
 		}
 
 		//Keep track of next cell destination
+		if (getCurrentEntityCell() == 0)
+		{
+			gameplaySystem->EndTurn();
+			return;
+		}
+
 		Transform& cellTransform = Coordinator::Instance()->GetComponent<Transform>(getCurrentEntityCell());
 
 		//Keep track of player transformF
