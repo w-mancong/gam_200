@@ -1502,6 +1502,15 @@ namespace ALEngine::Script
 
 			gameplaySystem_GUI->TogglePatternGUI(false);
 		}
+		else if (currentPhaseStatus == PHASE_STATUS::PHASE_ENEMY) {
+			AL_CORE_CRITICAL("SELECTING PATTERN IN SETUP");
+			currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
+			//Set the placement status to be for tile
+			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+			selected_Pattern = pattern;
+
+			gameplaySystem_GUI->TogglePatternGUI(false);
+		}
 	}
 
 	void GameplaySystem::SelectAbility(Abilities& ability) {
