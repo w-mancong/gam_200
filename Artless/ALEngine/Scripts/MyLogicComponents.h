@@ -18,5 +18,7 @@
 #include <OptionButton.h>
 #include <AudioSetting.h>
 #include <FPSDisplay.h>
+#include <CutsceneObjectTutorial.h>
+#include <TutorialCamera.h>
 
 #endif

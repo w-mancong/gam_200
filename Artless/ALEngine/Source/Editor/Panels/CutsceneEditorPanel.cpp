@@ -167,6 +167,8 @@ namespace ALEngine::Editor
 			ImGui::EndChild();
 			ImGui::EndChild();
 
+			bool toDeleteCutscene{ false };
+
 			// Cutscene Not Empty
 			if (!CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].empty())
 			{
@@ -177,6 +179,10 @@ namespace ALEngine::Editor
 					borderSize = { ImGui::GetContentRegionAvail().x * 0.95f, 0.f };
 					ImGui::NewLine(); ImGui::SameLine((ImGui::GetContentRegionAvail().x * 0.5f) - (borderSize.x * 0.5f));
 					ImGui::Text("Selected Cutscene");
+
+					ImGui::SameLine();
+					if (ImGui::Button("Delete Cutscene##CutsceneEditor"))
+						toDeleteCutscene = true;
 
 					borderSize.y = ImGui::GetContentRegionAvail().y;
 					ImGui::NewLine(); ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (borderSize.x * 0.5f));
@@ -344,6 +350,13 @@ namespace ALEngine::Editor
 					}
 					ImGui::EndChild();
 				}
+
+				if (toDeleteCutscene && CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].empty() == false)
+				{
+					CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].erase(CutsceneManager::Instance()->m_Sequences[m_SelectedSequence].begin() + m_SelectedCutsceneIndex);
+					m_SelectedCutsceneIndex = 0;
+				}
+
 				ImGui::EndChild();
 			}
 		}

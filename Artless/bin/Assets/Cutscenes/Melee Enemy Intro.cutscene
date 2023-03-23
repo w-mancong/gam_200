@@ -1,0 +1,20 @@
+[
+    {
+        "Sequence_Name": "Melee Enemy Intro"
+    },
+    {
+        "CutsceneName": "Melee Enemy",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 0,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "This Guard is a Melee Enemy that will run straight for you and attack once they detect you!===So plan your moves carefully.===For now, let's end our turn and wait for the Guard to approach us instead."
+    }
+]

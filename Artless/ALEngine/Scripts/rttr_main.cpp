@@ -71,4 +71,13 @@ RTTR_REGISTRATION
 	registration::class_<FPSDisplay>("FPSDisplay")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<CutsceneObjectTutorial>("CutsceneObjectTutorial")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<TutorialCamera>("TutorialCamera")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
 }

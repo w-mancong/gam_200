@@ -100,12 +100,9 @@ namespace ALEngine::Engine::Scene
 		}
 		else
 		{
-			//ECS::SetActive(true, m_BlackOverlay);
-			//ECS::SetActive(false, m_CutsceneTop);
-			//ECS::SetActive(false, m_CutsceneBottom);
-			Coordinator::Instance()->GetComponent<Sprite>(m_BlackOverlay).color.a = 0.5f;
-			Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop).color.a = 0.f;
-			Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom).color.a = 0.f;
+			ECS::SetActive(true, m_BlackOverlay);
+			ECS::SetActive(false, m_CutsceneTop);
+			ECS::SetActive(false, m_CutsceneBottom);
 		}
 
 		// Make Obj Appear
@@ -258,6 +255,9 @@ namespace ALEngine::Engine::Scene
 					writer.Key("WaitForInput");
 					writer.Bool(i.m_WaitForInput);
 
+					writer.Key("TextIsAbove");
+					writer.Bool(i.m_TextIsAbove);
+
 					writer.Key("CutsceneTime");
 					writer.Double(static_cast<f64>(i.m_CutsceneTime));
 
@@ -394,6 +394,8 @@ namespace ALEngine::Engine::Scene
 				newScene.m_HasTimer = v["HasTimer"].GetBool();
 			if (v.HasMember("WaitForInput"))
 				newScene.m_WaitForInput = v["WaitForInput"].GetBool();
+			if (v.HasMember("TextIsAbove"))
+				newScene.m_TextIsAbove = v["TextIsAbove"].GetBool();
 
 			// Floats
 			if (v.HasMember("CutsceneTime"))
@@ -525,7 +527,6 @@ namespace ALEngine::Engine::Scene
 			Sprite &bot_spr{ Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom) };
 			spr.filePath = bot_spr.filePath;
 			spr.id = bot_spr.id;
-			bot_spr.color.a = 0.f;
 
 			// Below set inactive
 			ECS::SetActive(false, m_CutsceneBottom);
@@ -617,7 +618,6 @@ namespace ALEngine::Engine::Scene
 
 				// Make bottom disappear
 				ECS::SetActive(false, m_CutsceneBottom);
-				Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom).color.a = 0.f;
 
 				SetText();
 			}

@@ -18,6 +18,7 @@
 //*//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <GameplaySystem.h>
+#include <TutorialCamera.h>
 #include <Engine/Gameplay_Interface.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <GameplaySystem_Interface_Management_GUI.h>
@@ -113,7 +114,10 @@ namespace ALEngine::Script
 		//AddLogicComponent<Script::PauseLogic>(entity)
 
 		//Camera Logic
-		ECS::AddLogicComponent<Script::GameplayCamera>(entity);
+		if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			ECS::AddLogicComponent<Script::TutorialCamera>(entity);
+		else
+			ECS::AddLogicComponent<Script::GameplayCamera>(entity);
 
 		//Add physics
 		ECS::CreateRigidbody(entity);

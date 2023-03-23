@@ -198,6 +198,8 @@ namespace ALEngine::Editor
 		//	//}
 		//}
 
+		m_IsReceivingKBInput = ImGui::GetIO().WantTextInput;
+
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -219,8 +221,6 @@ namespace ALEngine::Editor
 		ImGuizmo::BeginFrame();
 
 		Update();
-
-		m_IsReceivingKBInput = ImGui::GetIO().WantTextInput;
 	}
 
 	void ALEditor::End(void)

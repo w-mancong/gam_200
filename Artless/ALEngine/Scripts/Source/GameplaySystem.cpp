@@ -35,9 +35,9 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string room_To_Load = "Assets\\Presentation_Level.map";
+		std::string room_To_Load = "Assets\\Map\\Tutorial_Final.map";
 		
-		bool TUTORIAL_ACTIVE{ false };
+		bool TUTORIAL_ACTIVE{ true };
 	}
 
 	/*!*********************************************************************************
@@ -193,6 +193,11 @@ namespace ALEngine::Script
 					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 				}
 				// Skip "Empty" tiles
+				else if (row == "Outside_Empty")
+				{
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "");
+					Coordinator::Instance()->GetComponent<Sprite>(m_Room.roomCellsArray[counter]).color.a = 0.f;
+				}
 				else if (row != "Empty")
 				{
 					// Tile image file path
@@ -201,7 +206,7 @@ namespace ALEngine::Script
 					// Check for enemy
 					if (row == "Enemy Melee" || 
 						row == "Enemy Cell Destroyer" ||
-						row == "Enemy Summoner")
+						row == "Summoner")
 					{
 						ENEMY_TYPE enemy_type{};
 
@@ -210,7 +215,7 @@ namespace ALEngine::Script
 							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
 						else if (row == "Enemy Cell Destroyer")
 							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
-						else if (row == "Enemy Summoner")
+						else if (row == "Summoner")
 							enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
 
 						// Place Enemy

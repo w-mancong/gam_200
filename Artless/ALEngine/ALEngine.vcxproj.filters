@@ -117,6 +117,9 @@
     <ClCompile Include="Scripts\Source\OptionButton.cpp" />
     <ClCompile Include="Scripts\Source\AudioSetting.cpp" />
     <ClCompile Include="Scripts\Source\FPSDisplay.cpp" />
+    <ClCompile Include="Scripts\Source\CutsceneObjectTutorial.cpp" />
+    <ClCompile Include="Gameplay\Source\TutorialManager.cpp" />
+    <ClCompile Include="Scripts\Source\TutorialCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -286,7 +289,9 @@
     <ClInclude Include="Scripts\Header\OptionButton.h" />
     <ClInclude Include="Scripts\Header\AudioSetting.h" />
     <ClInclude Include="Scripts\Header\FPSDisplay.h" />
-    <ClInclude Include="Gameplay\Header\TutorialGameplay.h" />
+    <ClInclude Include="Gameplay\Header\TutorialManager.h" />
+    <ClInclude Include="Scripts\Header\CutsceneObjectTutorial.h" />
+    <ClInclude Include="Scripts\Header\TutorialCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

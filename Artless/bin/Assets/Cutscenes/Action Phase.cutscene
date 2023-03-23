@@ -1,9 +1,9 @@
 [
     {
-        "Sequence_Name": "Tutorial Intro"
+        "Sequence_Name": "Action Phase"
     },
     {
-        "CutsceneName": "Defeat All Enemies",
+        "CutsceneName": "Action Phase",
         "HasImage": false,
         "HasText": true,
         "HasTimer": false,
@@ -15,10 +15,10 @@
         "FadeOutType": 6,
         "FadeInTime": 0.0,
         "FadeOutTime": 0.0,
-        "Text": "Dror, you need to Defeat all Enemies in the room in order to Escape!===Worry not, I have temporarily given you my powers."
+        "Text": "Once you have finally finished setting up, it is now the Action Phase.===During the Action Phase, you can choose to move, or use one of your skills, depending on===how many Action Points (AP) you have!"
     },
     {
-        "CutsceneName": "Select Tile",
+        "CutsceneName": "Action Points",
         "HasImage": false,
         "HasText": true,
         "HasTimer": false,
@@ -30,6 +30,6 @@
         "FadeOutType": 6,
         "FadeInTime": 0.0,
         "FadeOutTime": 0.0,
-        "Text": "Since its the Setup Phase, you will need to place my Tetrimino Tiles===to create a path for you to walk on.===Select the current Tile and place it on the squares in front of you."
+        "Text": "The Green Spheres are the amount of AP you have. Moving 1 tile will cost you 1 AP, and most===skills will cost 2AP.===Alright, see the Guard in front of you? Let's move a little closer!"
     }
 ]
