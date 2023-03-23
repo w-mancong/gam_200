@@ -20,7 +20,7 @@
             {
                 "position": [
                     796.9470825195313,
-                    122.83657836914063,
+                    122.83692932128906,
                     0.0
                 ],
                 "scale": [
@@ -154,7 +154,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.2354736328125,
+                    1868.2310791015625,
                     499.13763427734375,
                     0.0
                 ],
@@ -199,7 +199,7 @@
         "Transform": [
             {
                 "position": [
-                    1565.3638916015625,
+                    1565.3594970703125,
                     860.5792236328125,
                     0.0
                 ],
@@ -244,7 +244,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.2821044921875,
+                    1868.283203125,
                     499.4620361328125,
                     0.0
                 ],
@@ -358,7 +358,7 @@
                 "localActive": true,
                 "id": 7,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -403,7 +403,7 @@
                 "localActive": true,
                 "id": 8,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -728,7 +728,7 @@
         "Transform": [
             {
                 "position": [
-                    675.9616088867188,
+                    675.963134765625,
                     43.22944641113281,
                     0.0
                 ],
@@ -790,7 +790,7 @@
         "Transform": [
             {
                 "position": [
-                    918.7376708984375,
+                    918.7398071289063,
                     43.22441101074219,
                     0.0
                 ],
@@ -852,7 +852,7 @@
         "Transform": [
             {
                 "position": [
-                    1002.4822387695313,
+                    1002.484375,
                     43.224891662597656,
                     0.0
                 ],
@@ -2442,7 +2442,7 @@
                 "spawnRate": 2.0,
                 "rotation": 42.0,
                 "gravityEnabled": false,
-                "active": true
+                "active": false
             }
         ]
     },
@@ -2525,7 +2525,7 @@
                 "spawnRate": 2.0,
                 "rotation": 18.5,
                 "gravityEnabled": false,
-                "active": true
+                "active": false
             }
         ]
     },
@@ -2608,7 +2608,7 @@
                 "spawnRate": 2.0,
                 "rotation": 10.899999618530273,
                 "gravityEnabled": false,
-                "active": true
+                "active": false
             }
         ]
     },
@@ -2691,7 +2691,7 @@
                 "spawnRate": 2.0,
                 "rotation": 18.799999237060547,
                 "gravityEnabled": false,
-                "active": true
+                "active": false
             }
         ]
     },
@@ -3489,7 +3489,7 @@
         "Transform": [
             {
                 "position": [
-                    845.3684692382813,
+                    845.3705444335938,
                     155.45263671875,
                     0.0
                 ],
@@ -3738,7 +3738,7 @@
                 "localActive": true,
                 "id": 72,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "TextProperty": [
@@ -4132,7 +4132,7 @@
                 "localActive": true,
                 "id": 80,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -5205,7 +5205,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    445.0073547363281,
+                    445.00811767578125,
                     0.0
                 ],
                 "scale": [
@@ -5665,7 +5665,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.0016174316406,
+                    450.00244140625,
                     0.0
                 ],
                 "scale": [
@@ -5793,7 +5793,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.857421875,
+                    469.85906982421875,
                     0.0
                 ],
                 "scale": [
@@ -5838,7 +5838,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.83319091796875,
+                    469.8348693847656,
                     0.0
                 ],
                 "scale": [
@@ -5883,7 +5883,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.814453125,
+                    469.8161926269531,
                     0.0
                 ],
                 "scale": [
@@ -5906,6 +5906,113 @@
                 "localActive": false,
                 "id": 117,
                 "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 118,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Tooltip_OnHover_NameHP.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 2005
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    808.2060546875,
+                    821.0025634765625,
+                    0.0
+                ],
+                "scale": [
+                    416.5904235839844,
+                    130.5
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "enemy_tip_health",
+                "active": false,
+                "localActive": false,
+                "id": 118,
+                "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "99/99",
+                "currentFont": "SFProverbialGothic",
+                "scale": 0.6000000238418579,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    495.5,
+                    488.5
+                ],
+                "layer": 0
+            }
+        ]
+    },
+    {
+        "id": 119,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Bar_HPFull.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 2006
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    808.205810546875,
+                    787.5945434570313,
+                    0.0
+                ],
+                "scale": [
+                    356.6014099121094,
+                    20.8799991607666
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "enemy_tip_healthbar",
+                "active": false,
+                "localActive": true,
+                "id": 119,
+                "parentID": 118,
                 "treeNodeFlags": 32
             }
         ]
