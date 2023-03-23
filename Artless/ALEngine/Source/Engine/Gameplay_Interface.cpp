@@ -123,9 +123,62 @@ namespace ALEngine::Script
 		rigidbody.hasGravity = false;
 	}
 
+
+	/*!*********************************************************************************
+	\brief
+		EndTurn_Enemy, to fix the bug where the bug skips the setup phase
+	***********************************************************************************/
+	void GameplaySystem::EndTurn_Enemy() {
+		AL_CORE_CRITICAL("ENDING TURN_DIRECT FROM ENEMY");
+
+		//Load setup phase
+		AL_CORE_CRITICAL("Loading PHASE SETUP");
+		currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
+		//gameplaySystem_GUI->TogglePatternGUI(true);
+		gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
+
+		//Reset player movement points
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		playerUnit.actionPoints += 4;
+		if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
+			playerUnit.actionPoints = playerUnit.maxActionPoints;
+		}
+
+		gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
+		//Reset enemy move ment points
+		for (int i = 0; i < enemyEntityList.size(); ++i) {
+			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+			enemyUnit.actionPoints = enemyUnit.maxActionPoints;
+		}
+
+		//Update the GUI to select player
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
+
+		//Do an update for all walkable cell on the map
+		scanRoomCellArray();
+
+		//Check if player cell is destroyed, if yes then eliminate player
+		checkPlayerPlacement();
+
+		//Display the your turn animation 
+		gameplaySystem_GUI->DisplayYourTurn();
+
+		for (int i = 0; i < Abilities_List.size(); ++i) {
+			if (Abilities_List[i].current_Cooldown > 0) {
+				Abilities_List[i].current_Cooldown--;
+			}
+		}
+
+		gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, false);
+	
+		gameplaySystem_GUI->GuiUpdatePhaseIndicator(currentPhaseStatus);
+	}
+
 	void GameplaySystem::EndTurn()
 	{
 		AL_CORE_CRITICAL("ENDING TURN");
+		
 		//Reset the statuses
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 		currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
@@ -1414,9 +1467,27 @@ namespace ALEngine::Script
 
 
 	void GameplaySystem::SelectPattern(Pattern pattern) {
+		AL_CORE_CRITICAL("SELECTING PATTERN");
+		
+		switch (currentPhaseStatus) {
+		case PHASE_STATUS::PHASE_SETUP:
+			AL_CORE_CRITICAL("FROM PHASE_SETUP");
+			break;
+
+		case PHASE_STATUS::PHASE_ACTION:
+			AL_CORE_CRITICAL("FROM PHASE_ACTION");
+			break;
+
+		case PHASE_STATUS::PHASE_ENEMY:
+			AL_CORE_CRITICAL("FROM PHASE_ENEMY");
+			break;
+		}
+
 		selected_Pattern_Rotation = 0;
 		//Select pattern 
 		if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+			AL_CORE_CRITICAL("SELECTING PATTERN IN SETUP");
+
 			//Set the placement status to be for tile
 			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
 			selected_Pattern = pattern;
@@ -1424,6 +1495,7 @@ namespace ALEngine::Script
 			gameplaySystem_GUI->TogglePatternGUI(false);
 		}
 		else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+			AL_CORE_CRITICAL("SELECTING PATTERN IN ACTION");
 			//Set the placement status to be for abilities
 			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
 			selected_Pattern = pattern;
@@ -1937,6 +2009,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
 		gameplaySystem->selected_Pattern_Index = 0;
+		AL_CORE_INFO("END Select Current Pattern");
 	}
 
 	/*!*********************************************************************************
@@ -2183,7 +2256,7 @@ namespace ALEngine::Script
 		else if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES) {
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 			
-			if (playerUnit.actionPoints < 2) {
+			if (playerUnit.actionPoints < gameplaySystem->selected_Abilities->cost ) {
 				return;
 			}
 			
