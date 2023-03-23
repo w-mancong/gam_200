@@ -17,12 +17,14 @@ namespace ALEngine::Script
 	{
 	public:
 		/*!*********************************************************************************
-			\brief Initializes the TutorialCamera
+			\brief 
+				Initializes the TutorialCamera
 		***********************************************************************************/
 		void Init(ECS::Entity en);
 
 		/*!*********************************************************************************
-			\brief Updates TutorialCamera every frame
+			\brief 
+				Updates TutorialCamera every frame
 		***********************************************************************************/
 		void Update(ECS::Entity en);
 
@@ -32,6 +34,13 @@ namespace ALEngine::Script
 			ECS::AddLogicComponent<TutorialCamera>(en);
 		};
 		RTTR_ENABLE(ECS::Component::UniBehaviour)
+
+	private:
+		/*!*********************************************************************************
+			\brief 
+				Updates Camera Movement for the TutorialCamera
+		***********************************************************************************/
+		void UpdateCameraMovement(void);
 	};
 }
 #endif

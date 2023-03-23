@@ -25,18 +25,28 @@ namespace ALEngine::Script
 		f32 const xScreen = static_cast<f32>(Input::GetScreenResX()),
 			yScreen = static_cast<f32>(Input::GetScreenResY());
 
-		cam.Position().x = xform.localPosition.x - xScreen * 0.5f;
-		cam.Position().y = xform.localPosition.y - yScreen;
-
-		ECS::UpdateUIpositions();
+		cam.Position().x = 0.f;
+		cam.Position().y = 0.f;
 	}
 
 	void TutorialCamera::Update([[maybe_unused]] ECS::Entity en)
 	{
+		ECS::UpdateUIpositions();
 		// Don't move camera if cutscene is playing
 		if (Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
 			return;
 
+		UpdateCameraMovement();
+
+#if EDITOR
+		// For debugging purposes, to go to the next state
+		if (Input::KeyTriggered(KeyCode::N))
+			Gameplay::TutorialManager::Instance()->NextState();
+#endif
+	}
+
+	void TutorialCamera::UpdateCameraMovement(void)
+	{
 		Engine::Camera& camera = ECS::GetCamera();
 
 		f32 const xScreen = static_cast<f32>(Input::GetScreenResX()),
@@ -69,12 +79,5 @@ namespace ALEngine::Script
 		{
 			camera.Position().y += CAMERA_SPEED * Time::m_DeltaTime;
 		}
-		ECS::UpdateUIpositions();
-
-#if EDITOR
-		// For debugging purposes, to go to the next state
-		if (Input::KeyTriggered(KeyCode::N))
-			Gameplay::TutorialManager::Instance()->NextState();
-#endif
 	}
 }
