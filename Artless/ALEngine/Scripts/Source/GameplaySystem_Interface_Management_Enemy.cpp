@@ -409,7 +409,7 @@ namespace ALEngine::Script
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room) {
 		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
 			AL_CORE_INFO("All Enemy Made move, ending turn");
-			gameplaySystem->EndTurn();
+			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
 
@@ -638,7 +638,7 @@ namespace ALEngine::Script
 	{
 		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
 			AL_CORE_INFO("All Enemy Made move, ending turn");
-			gameplaySystem->EndTurn();
+			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
 		AL_CORE_INFO("MELEE Making Decision");
@@ -773,7 +773,7 @@ namespace ALEngine::Script
 	{
 		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
 			AL_CORE_INFO("All Enemy Made move, ending turn");
-			gameplaySystem->EndTurn();
+			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
 

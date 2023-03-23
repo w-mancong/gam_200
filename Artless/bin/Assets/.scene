@@ -273,7 +273,7 @@
         ],
         "TextProperty": [
             {
-                "textString": "[new text]",
+                "textString": "fps: 60",
                 "currentFont": "Almendra-Regular",
                 "scale": 1.350000023841858,
                 "color": [
@@ -282,7 +282,7 @@
                     0.16116821765899658
                 ],
                 "position": [
-                    507.0,
+                    569.5,
                     339.5
                 ],
                 "layer": 0
