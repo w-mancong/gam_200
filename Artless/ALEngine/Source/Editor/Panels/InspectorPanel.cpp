@@ -843,6 +843,10 @@ namespace ALEngine::Editor
 			ImGuiColorEditFlags clr_flags = ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_PickerHueBar;
 			ImGui::ColorPicker4("Color", color, clr_flags);
 
+			s32 renderLayer{ static_cast<s32>(prop.layer) };
+			ImGui::DragInt("Render Layer", &renderLayer, 1.f, 0, 3000);
+			prop.layer = static_cast<u32>(renderLayer);
+
 			prop.colour.x = color[0];
 			prop.colour.y = color[1];
 			prop.colour.z = color[2];

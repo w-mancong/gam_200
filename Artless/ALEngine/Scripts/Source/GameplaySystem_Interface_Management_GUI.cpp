@@ -54,6 +54,50 @@ namespace ALEngine::Script
 
 	}
 
+	void GameplaySystem_Interface_Management_GUI::DisplayYourTurn()
+	{
+		guiManager.Your_Turn_timer = 5.6f;
+	}
+
+	template<typename T>
+	T GameplaySystem_Interface_Management_GUI::Lerp(T a, T b, float t)
+	{
+		return (T)(a + (b - a) * t);
+	}
+
+	void GameplaySystem_Interface_Management_GUI::UpdateYourTurnSign()
+	{
+		f32& timer = guiManager.Your_Turn_timer;
+
+		if (timer > 0.f && timer <= 4.5f)
+		{
+			ECS::SetActive(true, guiManager.Your_Turn_Sign);
+			Sprite& trans = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Your_Turn_Sign);
+			const f32 biggest(1.f);
+			const f32 smallest(0.f);
+
+			if (timer > 2.5f)
+			{
+				f32 t1 = timer - 2.5f;
+				f32 lifePercentage = (2.f - t1) / 2.f; // particle.lifeRemaining / particle.lifeTime;
+				trans.color.a = Lerp(smallest, biggest, lifePercentage);
+			}
+			else if(timer <= 1.2f)
+			{
+				f32 lifePercentage = (1.2f - timer) / 1.2f; // particle.lifeRemaining / particle.lifeTime;
+				trans.color.a = Lerp(biggest, smallest, lifePercentage);
+			}
+
+			timer -= Time::m_DeltaTime;
+			if(timer <= 0.f)
+				ECS::SetActive(false, guiManager.Your_Turn_Sign);
+		}
+		else if (timer > 0.f)
+		{
+			timer -= Time::m_DeltaTime;
+		}
+	}
+
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
 		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
@@ -117,6 +161,20 @@ namespace ALEngine::Script
 		guiManager.Enemy_Tip_Guard = Coordinator::Instance()->GetEntityByTag("guard_tip");
 		guiManager.Enemy_Tip_Flying = Coordinator::Instance()->GetEntityByTag("destoryer_tip");
 		guiManager.Enemy_Tip_Summoner = Coordinator::Instance()->GetEntityByTag("summoner_tip");
+		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		guiManager.Enemy_Tip_Health = Coordinator::Instance()->GetEntityByTag("enemy_tip_health");
+		guiManager.Enemy_Tip_Healthbar = Coordinator::Instance()->GetEntityByTag("enemy_tip_healthbar");
+		
+
+
+		//void ParticleSystem::DisplayYourTurn()
+		//{
+		//	Entity en = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		//	ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		//	prop.position = Coordinator::Instance()->GetComponent<Transform>(en).position;
+		//	prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		//	Emit(prop);
+		//}
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
