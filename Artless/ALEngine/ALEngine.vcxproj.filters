@@ -118,6 +118,7 @@
     <ClCompile Include="Scripts\Source\AudioSetting.cpp" />
     <ClCompile Include="Scripts\Source\FPSDisplay.cpp" />
     <ClCompile Include="Scripts\Source\WaterGenerator.cpp" />
+    <ClCompile Include="Scripts\Source\PauseButtonFlag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -288,6 +289,7 @@
     <ClInclude Include="Scripts\Header\AudioSetting.h" />
     <ClInclude Include="Scripts\Header\FPSDisplay.h" />
     <ClInclude Include="Scripts\Header\WaterGenerator.h" />
+    <ClInclude Include="Scripts\Header\PauseButtonFlag.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

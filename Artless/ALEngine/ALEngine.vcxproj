@@ -173,6 +173,7 @@
     <ClCompile Include="Scripts\Source\MainMenuButton.cpp" />
     <ClCompile Include="Scripts\Source\NewGameButton.cpp" />
     <ClCompile Include="Scripts\Source\OptionButton.cpp" />
+    <ClCompile Include="Scripts\Source\PauseButtonFlag.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
@@ -476,6 +477,7 @@
     <ClInclude Include="Scripts\Header\MainMenuButton.h" />
     <ClInclude Include="Scripts\Header\NewGameButton.h" />
     <ClInclude Include="Scripts\Header\OptionButton.h" />
+    <ClInclude Include="Scripts\Header\PauseButtonFlag.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />

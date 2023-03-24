@@ -8,6 +8,7 @@ brief:	This file contain function definition for quit game button
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <QuitButton.h>
+#include <PauseButtonFlag.h>
 #if EDITOR
 #include <Engine/GSM/GameStateManager.h>
 #include <GameplaySystem.h>
@@ -37,13 +38,14 @@ namespace ALEngine::Script
 
 		void WhenQuitHover(Entity en)
 		{
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a || PauseButtonFlag::confirmationBG)
+				return;
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
 				SetActive(true, quit_confirmation);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = true;
 			}
-			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
-				return;
 			Darken(en);
 		}
 
@@ -91,6 +93,7 @@ namespace ALEngine::Script
 			{
 				SetActive(false, quit_confirmation);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = false;
 			}
 		}
 
@@ -141,5 +144,6 @@ namespace ALEngine::Script
 	void QuitButton::Free(ECS::Entity en)
 	{
 		quit_confirmation = yes = no = MAX_ENTITIES;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }

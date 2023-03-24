@@ -8,13 +8,15 @@ brief:	This file contain function definition for option button
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <OptionButton.h>
+#include <PauseButtonFlag.h>
 
 namespace ALEngine::Script
 {
 	namespace
 	{
 		using namespace ECS;
-		 
+
+		f32 constexpr ALPHA_VALUE{ 0.925f };
 		ECS::Entity sound_options{ ECS::MAX_ENTITIES }, close_btn{ ECS::MAX_ENTITIES }, parent{ ECS::MAX_ENTITIES };
 
 		void Darken(Entity en)
@@ -31,6 +33,8 @@ namespace ALEngine::Script
 
 		void WhenOptionHover(Entity en)
 		{
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a || PauseButtonFlag::confirmationBG)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
@@ -42,6 +46,8 @@ namespace ALEngine::Script
 
 		void WhenOptionExit(Entity en)
 		{
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
+				return;
 			Lighten(en);
 		}
 
@@ -101,5 +107,6 @@ namespace ALEngine::Script
 	void OptionButton::Free([[maybe_unused]] ECS::Entity en)
 	{
 		sound_options = close_btn = parent = ECS::MAX_ENTITIES;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }
