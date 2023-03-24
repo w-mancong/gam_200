@@ -454,6 +454,20 @@ namespace ALEngine::Script
 		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 		AL_CORE_INFO("dist enemy & player:" + std::to_string(distanceBetweenEnemyandPlayer));
 
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= 4)
+		{
+			enemyUnit.playerTriggeredEnemy = true;
+			AL_CORE_INFO("AI triggered by player");
+		}
+
+		if (!enemyUnit.playerTriggeredEnemy)
+		{
+			++enemyNeededData.enemyMoved;
+			gameplaySystem->MoveEnemy();
+			return;
+		}
+
+
 		//vector to store the cells no unit with tile
 		std::vector<ECS::Entity> cellsMoveableTo{};
 		std::vector<ECS::Entity> backUpCellsMoveableTo{};
@@ -651,10 +665,19 @@ namespace ALEngine::Script
 		//distance between enemy and player
 		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 
-		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <=5)
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <=4)
 		{
 			enemyUnit.playerTriggeredEnemy = true;
+			AL_CORE_INFO("AI triggered by player");
 		}
+
+		if (!enemyUnit.playerTriggeredEnemy)
+		{
+			++enemyNeededData.enemyMoved;
+			gameplaySystem->MoveEnemy();
+			return;
+		}
+
 
 		if (enemyUnit.health <= 0) {
 			++enemyNeededData.enemyMoved;
@@ -787,9 +810,17 @@ namespace ALEngine::Script
 		//distance between enemy and player
 		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 
-		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= 5)
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= 4)
 		{
 			enemyUnit.playerTriggeredEnemy = true;
+			AL_CORE_INFO("AI triggered by player");
+		}
+
+		if (!enemyUnit.playerTriggeredEnemy)
+		{
+			++enemyNeededData.enemyMoved;
+			gameplaySystem->MoveEnemy();
+			return;
 		}
 
 		if (enemyUnit.health <= 0) {
