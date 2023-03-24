@@ -7,63 +7,6 @@
         "Transform": [
             {
                 "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "fps_display",
-                "active": true,
-                "localActive": true,
-                "id": 0,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "fps: 60",
-                "currentFont": "Almendra-Regular",
-                "scale": 1.350000023841858,
-                "color": [
-                    0.8580800890922546,
-                    0.8662790656089783,
-                    0.16116821765899658
-                ],
-                "position": [
-                    569.5,
-                    339.5
-                ],
-                "layer": 0
-            }
-        ],
-        "LogicComponent": [
-            {
-                "components": [
-                    "FPSDisplay"
-                ]
-            }
-        ]
-    },
-    {
-        "id": 1,
-        "Transform": [
-            {
-                "position": [
                     800.0,
                     450.0,
                     0.0
@@ -86,7 +29,7 @@
                 "tag": "Cutscene Object",
                 "active": true,
                 "localActive": true,
-                "id": 1,
+                "id": 0,
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
@@ -100,7 +43,7 @@
         ]
     },
     {
-        "id": 2,
+        "id": 1,
         "Sprite": [
             {
                 "filePath": "",
@@ -117,7 +60,7 @@
             {
                 "position": [
                     801.0,
-                    451.0,
+                    451.0000305175781,
                     0.0
                 ],
                 "scale": [
@@ -138,14 +81,14 @@
                 "tag": "Black Overlay",
                 "active": true,
                 "localActive": true,
-                "id": 2,
-                "parentID": 1,
+                "id": 1,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\DialogueBox.png",
@@ -161,8 +104,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    123.0,
+                    801.0001220703125,
+                    123.00003051757813,
                     0.0
                 ],
                 "scale": [
@@ -183,8 +126,8 @@
                 "tag": "Dialogue Box",
                 "active": true,
                 "localActive": true,
-                "id": 3,
-                "parentID": 1,
+                "id": 2,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ],
@@ -207,7 +150,7 @@
         ]
     },
     {
-        "id": 4,
+        "id": 3,
         "Sprite": [
             {
                 "filePath": "",
@@ -245,14 +188,14 @@
                 "tag": "Cutscene Bottom",
                 "active": true,
                 "localActive": true,
-                "id": 4,
-                "parentID": 1,
+                "id": 3,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 5,
+        "id": 4,
         "Sprite": [
             {
                 "filePath": "",
@@ -290,36 +233,24 @@
                 "tag": "Cutscene Top",
                 "active": true,
                 "localActive": true,
-                "id": 5,
-                "parentID": 1,
+                "id": 4,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 6,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\DialogueBox.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 256
-            }
-        ],
+        "id": 5,
         "Transform": [
             {
                 "position": [
-                    799.9998779296875,
-                    780.0,
+                    0.0,
+                    0.0,
                     0.0
                 ],
                 "scale": [
-                    1430.0,
-                    210.0
+                    50.0,
+                    50.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -332,29 +263,36 @@
         ],
         "EntityData": [
             {
-                "tag": "Dialogue Box Top",
+                "tag": "fps_display",
                 "active": true,
                 "localActive": true,
-                "id": 6,
-                "parentID": 1,
+                "id": 5,
+                "parentID": -1,
                 "treeNodeFlags": 32
             }
         ],
         "TextProperty": [
             {
-                "textString": "Hello There",
-                "currentFont": "SFProverbialGothic",
-                "scale": 0.8999999761581421,
+                "textString": "fps: 60",
+                "currentFont": "Almendra-Regular",
+                "scale": 1.350000023841858,
                 "color": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.8580800890922546,
+                    0.8662790656089783,
+                    0.16116821765899658
                 ],
                 "position": [
-                    72.0,
-                    430.0
+                    569.5,
+                    339.5
                 ],
                 "layer": 0
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "FPSDisplay"
+                ]
             }
         ]
     }

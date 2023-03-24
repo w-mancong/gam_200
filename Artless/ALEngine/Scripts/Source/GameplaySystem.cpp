@@ -447,6 +447,14 @@ namespace ALEngine::Script
 			Cheat_ClearFloorWalkability();
 		}
 
+		if (Input::KeyTriggered(KeyCode::F10)) {
+			Cheat_IncreasePlayerActionPoint(2);
+		}
+
+		if (Input::KeyTriggered(KeyCode::F11)) {
+			Cheat_ResetPlayerActionPoints();
+		}
+
 		if (Input::KeyTriggered(KeyCode::RightShift)) {
 
 			Engine::Scene::LoadScene("Assets\\Level_1.scene");
