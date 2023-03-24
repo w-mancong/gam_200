@@ -35,14 +35,13 @@ namespace ALEngine::Script
 	private:
 		struct Water
 		{
-			ECS::Entity shadow{ ECS::MAX_ENTITIES },
+			ECS::Entity /*shadow{ ECS::MAX_ENTITIES },*/
 						second_layer{ ECS::MAX_ENTITIES },
 						first_layer{ ECS::MAX_ENTITIES };
 		};
 		std::vector<Water> water{};
 		f32 L_Bound{}, R_Bound{}, B_Bound{}, T_Bound{};
-		f32 maxScale{}, minScale{}, flag{ 1.0f };
-		static f32 constexpr const WATER_SPEED[]{ 10.0f, 20.0f }, SCALE_SPEED{ 30.0f };
+		static f32 constexpr const WATER_SPEED[]{ 5.0f, 17.5f }, SCALE_SPEED{ 30.0f };
 	};
 }
 

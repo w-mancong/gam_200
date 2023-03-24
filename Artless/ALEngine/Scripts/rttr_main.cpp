@@ -71,4 +71,8 @@ RTTR_REGISTRATION
 	registration::class_<FPSDisplay>("FPSDisplay")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<WaterGenerator>("WaterGenerator")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

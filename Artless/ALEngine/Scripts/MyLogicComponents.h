@@ -18,5 +18,6 @@
 #include <OptionButton.h>
 #include <AudioSetting.h>
 #include <FPSDisplay.h>
+#include <WaterGenerator.h>
 
 #endif

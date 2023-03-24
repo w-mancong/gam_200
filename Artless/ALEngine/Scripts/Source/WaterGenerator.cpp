@@ -45,9 +45,9 @@ namespace ALEngine::Script
 				{
 					EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>( static_cast<Entity>(child) );
 					Coordinator::Instance()->GetComponent<Transform>(static_cast<Entity>(child)).position = pos;
-					if (ed.tag == "shadow")
+/*					if (ed.tag == "shadow")
 						w.shadow = static_cast<Entity>(child);
-					else if (ed.tag == "second_layer")
+					else */if (ed.tag == "second_layer")
 						w.second_layer = static_cast<Entity>(child);
 					else if (ed.tag == "first_layer")
 						w.first_layer = static_cast<Entity>(child);
@@ -58,8 +58,6 @@ namespace ALEngine::Script
 
 		L_Bound = -waterScale.x, R_Bound = waterScale.x * static_cast<f32>(COL - 1);
 		B_Bound = -waterScale.y, T_Bound = waterScale.y * static_cast<f32>(ROW - 1);
-		f32 constexpr const PERCENT = 0.9f;
-		maxScale = waterScale.x, minScale = waterScale.x * PERCENT;
 	}
 
 	void WaterGenerator::Update(ECS::Entity en)
@@ -87,15 +85,6 @@ namespace ALEngine::Script
 				if (trans.position.y >= T_Bound)
 					trans.position.y = B_Bound;
 			}
-
-			//{	// Scale up/down shadow
-			//	Transform& trans = Coordinator::Instance()->GetComponent<Transform>(w.shadow);
-			//	trans.scale.x = trans.scale.y += SCALE_SPEED * Time::m_DeltaTime * flag;
-			//	if (trans.scale.x >= maxScale)
-			//		flag = -1.0f;
-			//	else if (trans.scale.x <= minScale)
-			//		flag = 1.0f;
-			//}
 		}
 	}
 }
