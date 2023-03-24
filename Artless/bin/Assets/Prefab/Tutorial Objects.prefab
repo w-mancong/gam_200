@@ -44,8 +44,8 @@
         "Transform": [
             {
                 "position": [
-                    1.0,
-                    1.0,
+                    0.0,
+                    0.0,
                     0.0
                 ],
                 "scale": [
@@ -83,14 +83,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 255
+                "layer": 3901
             }
         ],
         "Transform": [
             {
                 "position": [
-                    1251.0,
-                    201.0,
+                    1250.0,
+                    200.0,
                     0.0
                 ],
                 "scale": [
@@ -134,8 +134,8 @@
         "Transform": [
             {
                 "position": [
-                    1401.0,
-                    114.0,
+                    1400.0,
+                    113.0,
                     0.0
                 ],
                 "scale": [
@@ -158,6 +158,129 @@
                 "localActive": true,
                 "id": 3,
                 "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Place First Tile",
+                "active": true,
+                "localActive": true,
+                "id": 4,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Selector.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3901
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    750.0,
+                    650.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Click Here",
+                "active": true,
+                "localActive": true,
+                "id": 5,
+                "parentID": 4,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Pointer.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3901
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    830.0,
+                    800.0,
+                    0.0
+                ],
+                "scale": [
+                    250.00076293945313,
+                    250.00076293945313
+                ],
+                "rotation": 169.99990844726563,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Arrow",
+                "active": true,
+                "localActive": true,
+                "id": 6,
+                "parentID": 4,
                 "treeNodeFlags": 32
             }
         ]

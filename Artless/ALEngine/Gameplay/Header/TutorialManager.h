@@ -9,10 +9,16 @@ brief:	Header file that contains declarations for functions needed for the Tutor
 #ifndef TUTORIAL_MANAGER_H
 #define TUTORIAL_MANAGER_H
 
+namespace ALEngine::Script
+{
+	class GameplaySystem;
+}
+
 namespace Gameplay
 {
 	// Forward Declaration
 	enum class TutorialState : u32;
+
 
 	class TutorialManager : public ALEngine::Templates::Singleton<TutorialManager>
 	{
@@ -66,24 +72,69 @@ namespace Gameplay
 
 		/*!*********************************************************************************
 			\brief
-				Get Tutorial Object
+				Get if a Tile is selected (Mainly for placement)
 			\return
-				Returns the Tutorial Object
+				Returns true if a Tile is selected
+				Else returns false
 		***********************************************************************************/
 		b8 GetTileIsSelected(void);
 
+		/*!*********************************************************************************
+			\brief
+				Set if a Tile is selected (Mainly for placement)
+			\param [in] tileIsSelected
+				Value for whether the Tile is selected
+		***********************************************************************************/
 		void SetTileIsSelected(b8 tileIsSelected);
+
+		/*!*********************************************************************************
+			\brief
+				Get if a Tile is placed
+			\return
+				Returns true if tile was just placed,
+				Else Returns False
+		***********************************************************************************/
+		b8 GetTileIsPlaced(void);
+
+		/*!*********************************************************************************
+			\brief
+				Set if a Tile is placed
+			\param [in] tileIsSelected
+				Value for whether the Tile is placed
+		***********************************************************************************/
+		void SetTileIsPlaced(b8 tileIsPlaced);
+
+		/*!*********************************************************************************
+			\brief
+				Gets the GameplaySystem
+			\return
+				Returns pointer to the GameplaySystem
+		***********************************************************************************/
+		std::shared_ptr<ALEngine::Script::GameplaySystem> GetGameplaySystem(void);
+
+		/*!*********************************************************************************
+			\brief
+				Sets the GameplaySystem pointer
+			\param [in] gs
+				Pointer to the GameplaySystem, to be set to this
+		***********************************************************************************/
+		void SetGameplaySystem(std::shared_ptr<ALEngine::Script::GameplaySystem> gs);
 
 	private:
 
 		// Entities
 		ALEngine::ECS::Entity m_TutorialObject{ ALEngine::ECS::MAX_ENTITIES };
 
+		// Enums
 		TutorialState m_CurrentState{ 0 };					// Current cutscene state
 
 		// Booleans
 		b8 m_TutorialIsPlaying{ true };						// Whether Tutorial is being played or not
 		b8 m_TileIsSelected{ false };						// Whether the player is holding a tile right now
+		b8 m_TileIsPlaced{ false };							// Whether player has placed tile
+
+		// Pointers
+		std::shared_ptr<ALEngine::Script::GameplaySystem> m_GameplaySystem{ nullptr };
 
 		// Required for Singleton to function
 		friend class ALEngine::Templates::Singleton<TutorialManager>;

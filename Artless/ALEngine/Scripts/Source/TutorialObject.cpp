@@ -10,12 +10,14 @@ brief:	This file contain function definition for the tutorial object.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <TutorialObject.h>
+#include <GameplaySystem.h>
 
 namespace ALEngine::Script
 {
 	namespace
 	{
 		using namespace ECS;
+		std::shared_ptr<GameplaySystem> gs{ nullptr };
 	}
 
 	void TutorialObject::Init(ECS::Entity en)
@@ -23,8 +25,26 @@ namespace ALEngine::Script
 		m_TutorialObject = en;
 		Gameplay::TutorialManager::Instance()->SetTutorialObject(en);
 
-		ECS::GetSceneGraph().FindImmediateChildren(m_TutorialObject);
-		std::vector<s32> const& children = ECS::GetSceneGraph().GetChildren();
+		ALEngine::Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
+
+		sceneGraph.FindImmediateChildren(m_TutorialObject);
+		std::vector<s32> const& children = sceneGraph.GetChildren();
+
+		// Set gameplay system
+		gs = Gameplay::TutorialManager::Instance()->GetGameplaySystem();
+		// Make the first one an |
+		gs->pattern_List.insert(gs->pattern_List.begin(), gs->pattern_Default[1]);
+		
+		// Set sprites for the Patterns
+		for (u32 i{ 1 }; i <= 4; ++i)
+		{
+			std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+			ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+			sprite.id = Engine::AssetManager::Instance()->GetGuid(gs->pattern_List[i - 1].file_path);
+		}
 
 		// Check children for Tutorial Object
 		for (s32 child : children)
@@ -36,12 +56,16 @@ namespace ALEngine::Script
 				m_SelectTile = child;
 				ECS::SetActive(false, m_SelectTile);
 			}
+			else if (data.tag == "Place First Tile")
+			{
+				m_PlaceFirstTile = child;
+				ECS::SetActive(false, m_PlaceFirstTile);
+			}
 		}
 
-		ECS::GetSceneGraph().FindImmediateChildren(m_SelectTile);
-		std::vector<s32> const& childrenSelectChild = ECS::GetSceneGraph().GetChildren();
+		sceneGraph.FindImmediateChildren(m_SelectTile);
 		// Check children for Tutorial Object
-		for (s32 child : childrenSelectChild)
+		for (s32 child : sceneGraph.GetChildren())
 		{
 			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
 
@@ -51,6 +75,17 @@ namespace ALEngine::Script
 				m_SelectTile_Bloom = child;
 		}
 
+		sceneGraph.FindImmediateChildren(m_PlaceFirstTile);
+		// Check children for Tutorial Object
+		for (s32 child : sceneGraph.GetChildren())
+		{
+			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
+			if (data.tag == "Arrow")
+				m_PlaceFirstTile_Arrow = child;
+			else if (data.tag == "Click Here")
+				m_PlaceFirstTile_ClickHere = child;
+		}
 	}
 
 	void TutorialObject::Update(ECS::Entity en)
@@ -70,6 +105,8 @@ namespace ALEngine::Script
 		if (Gameplay::TutorialManager::Instance()->GetTileIsSelected() == false)
 		{	// If tile is not selected, show arrow
 			ECS::SetActive(true, m_SelectTile);
+			ECS::SetActive(false, m_PlaceFirstTile);
+
 			const f32 arrowMax{ 250.f }, arrowMin{ 200.f };
 			const f32 scaleSpeed{ 35.f }, bloomSpeed{ 0.7f };
 
@@ -110,7 +147,15 @@ namespace ALEngine::Script
 		else
 		{	// Tile not selected, show other 
 			ECS::SetActive(false, m_SelectTile);
+			ECS::SetActive(true, m_PlaceFirstTile);
+		}
 
+		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
+		{
+			Gameplay::TutorialManager::Instance()->NextState();
+			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
+			ECS::SetActive(false, m_SelectTile);
+			ECS::SetActive(false, m_PlaceFirstTile);
 		}
 	}
 }

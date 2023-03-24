@@ -274,6 +274,7 @@ namespace ALEngine::Editor
 					Engine::Scene::LoadScene(the_path.c_str());
 					ALEditor::Instance()->SetCurrentSceneName(the_path);
 					ALEditor::Instance()->SetCurrentTileMapPath(Gameplay::MapManager::Instance()->GetMapPath());
+					//ALEditor::Instance()->LoadMap();
 				}
 				//else if (fileNamestring.find(".map") != std::string::npos)
 				//{

@@ -48,6 +48,11 @@ namespace ALEngine::Script
 		ECS::Entity m_SelectTile_Bloom{};			// Bloom
 
 		b8 m_SelectTile_ArrowIsShrink{ false };
+		// ===================================
+		// ===== Place First Tile =====
+		ECS::Entity m_PlaceFirstTile{};
+		ECS::Entity m_PlaceFirstTile_ClickHere{};
+		ECS::Entity m_PlaceFirstTile_Arrow{};
 
 		/*!*********************************************************************************
 			\brief
@@ -56,7 +61,6 @@ namespace ALEngine::Script
 				Entity that the script is attached to
 		***********************************************************************************/
 		void UpdateSelectTile(void);
-		// ===================================
 
 
 	};

@@ -7,6 +7,7 @@ brief:	File that contains definitions for functions needed for the Tutorial
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
+#include <GameplaySystem.h>
 
 namespace Gameplay
 {
@@ -26,7 +27,7 @@ namespace Gameplay
 		m_CurrentState = static_cast<TutorialState>(static_cast<u32>(m_CurrentState) + 1);
 
 		// End of tutorial, start level 1
-		if (m_CurrentState == TutorialState::TUTORIAL_END)
+		if (m_CurrentState >= TutorialState::TUTORIAL_END)
 		{
 			return;
 		}
@@ -46,7 +47,10 @@ namespace Gameplay
 			break;
 
 
-			// ===== Scripted Gameplaye =====
+			// ===== Scripted Gameplay =====
+		case TutorialState::TUTORIAL_SELECT_TILE:
+			//m_GameplaySystem->
+			break;
 		}
 	}
 
@@ -78,5 +82,24 @@ namespace Gameplay
 	void TutorialManager::SetTileIsSelected(b8 tileIsSelected)
 	{
 		m_TileIsSelected = tileIsSelected;
+	}
+	
+	b8 TutorialManager::GetTileIsPlaced(void)
+	{
+		return m_TileIsPlaced;
+	}
+
+	void TutorialManager::SetTileIsPlaced(b8 tileIsPlaced)
+	{
+		m_TileIsPlaced = tileIsPlaced;
+	}
+
+	std::shared_ptr<ALEngine::Script::GameplaySystem> TutorialManager::GetGameplaySystem(void)
+	{
+		return m_GameplaySystem;
+	}
+	void TutorialManager::SetGameplaySystem(std::shared_ptr<ALEngine::Script::GameplaySystem> gs)
+	{
+		m_GameplaySystem = gs;
 	}
 }

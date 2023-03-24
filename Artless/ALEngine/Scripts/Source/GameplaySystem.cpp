@@ -45,7 +45,7 @@ namespace ALEngine::Script
 		Load Tutorial Level
 	***********************************************************************************/
 	void Event_Button_LoadLevel_Tutorial(ECS::Entity invoker) {
-		room_To_Load = "Assets\\Tutorial_Level.map";
+		room_To_Load = "Assets\\Tutorial_Final.map";
 		Engine::Scene::Restart();
 	}
 
@@ -81,6 +81,8 @@ namespace ALEngine::Script
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
+		Gameplay::TutorialManager::Instance()->SetGameplaySystem(gameplaySystem);
+
 		Set_GameplayInterface_GameplayManager(en);
 
 		//Start the gameplay logic
@@ -388,6 +390,8 @@ namespace ALEngine::Script
 				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
 				gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
+
+				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
 			}
 			//Deselect Abilities
 			else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
@@ -402,6 +406,8 @@ namespace ALEngine::Script
 				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 				gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
+				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
 			}
 		}
 

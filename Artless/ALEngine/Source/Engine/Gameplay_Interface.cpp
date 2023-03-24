@@ -2067,6 +2067,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
 		gameplaySystem->selected_Pattern_Index = 0;
+		Gameplay::TutorialManager::Instance()->SetTileIsSelected(true);
 		AL_CORE_INFO("END Select Current Pattern");
 	}
 
@@ -2277,6 +2278,9 @@ namespace ALEngine::Script
 				return;
 			}
 
+			Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(true);
+
 			//Get the audiosource
 			Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
 
@@ -2324,6 +2328,9 @@ namespace ALEngine::Script
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
 			}
+
+			Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(true);
 
 			playerUnit.actionPoints -= gameplaySystem->selected_Abilities->cost;
 			//Disable the filter
