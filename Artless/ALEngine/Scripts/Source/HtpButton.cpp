@@ -45,6 +45,7 @@ namespace ALEngine::Script
 				// Entities to be set to false
 				SetActive(false, parent);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = true;
 			}
 		}
 
@@ -67,6 +68,7 @@ namespace ALEngine::Script
 				SetActive(false, htp);
 				Coordinator::Instance()->GetComponent<EntityData>(close).active = false;
 				Lighten(close);
+				PauseButtonFlag::confirmationBG = false;
 			}
 		}
 

@@ -41,6 +41,7 @@ namespace ALEngine::Script
 				SetActive(false, parent);
 				SetActive(true, sound_options);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = true;
 			}
 		}
 
@@ -59,6 +60,7 @@ namespace ALEngine::Script
 				SetActive(true, parent);
 				SetActive(false, sound_options);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = false;
 			}
 		}
 

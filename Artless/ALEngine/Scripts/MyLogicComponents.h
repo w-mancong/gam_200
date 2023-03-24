@@ -19,5 +19,6 @@
 #include <AudioSetting.h>
 #include <FPSDisplay.h>
 #include <WaterGenerator.h>
+#include <PauseButton.h>
 
 #endif
