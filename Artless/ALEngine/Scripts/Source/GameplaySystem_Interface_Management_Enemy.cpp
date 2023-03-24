@@ -417,7 +417,7 @@ namespace ALEngine::Script
 
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
-		ECS::Entity cellToMoveTo = enemyUnit.m_CurrentCell_Entity;
+		//ECS::Entity cellToMoveTo = enemyUnit.m_CurrentCell_Entity;
 
 		if (enemyUnit.actionPoints <= 0) {
 			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerIdle");
@@ -538,7 +538,7 @@ namespace ALEngine::Script
 		   }
         }
 
-		if (!cellsMoveableTo.size() > 0 && backUpCellsMoveableTo.size() > 0)//if cellsMoveableTo is empty then check if backUpCellsMoveableTo has any position.
+		if (!(cellsMoveableTo.size() > 0) && backUpCellsMoveableTo.size() > 0)//if cellsMoveableTo is empty then check if backUpCellsMoveableTo has any position.
 		{
 			for (u32 i = 0; i < backUpCellsMoveableTo.size(); i++)
 			{
@@ -655,6 +655,7 @@ namespace ALEngine::Script
 			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
+
 		AL_CORE_INFO("MELEE Making Decision");
 
 		AL_CORE_INFO("Finding Target Cell");
@@ -799,6 +800,7 @@ namespace ALEngine::Script
 			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
+
 
 		AL_CORE_INFO("CELL DESTROYER Making Decision");
 
