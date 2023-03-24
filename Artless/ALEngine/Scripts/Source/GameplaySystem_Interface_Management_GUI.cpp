@@ -56,7 +56,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::DisplayYourTurn()
 	{
-		guiManager.Your_Turn_timer = 4.f;
+		guiManager.Your_Turn_timer = 5.6f;
 	}
 
 	template<typename T>
@@ -69,23 +69,23 @@ namespace ALEngine::Script
 	{
 		f32& timer = guiManager.Your_Turn_timer;
 
-		if (timer > 0.f && timer <= 3.f)
+		if (timer > 0.f && timer <= 4.5f)
 		{
 			ECS::SetActive(true, guiManager.Your_Turn_Sign);
-			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Your_Turn_Sign);
-			const Math::vec2 biggest(3000.f, 600.f);
-			const Math::vec2 smallest(0.f, 0.f);
-			const f32 lifetime = 3.f;
+			Sprite& trans = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Your_Turn_Sign);
+			const f32 biggest(1.f);
+			const f32 smallest(0.f);
 
-			f32 lifePercentage = (lifetime - timer) / lifetime; // particle.lifeRemaining / particle.lifeTime;
-
-			if (timer > 1.5f)
+			if (timer > 2.5f)
 			{
-				trans.scale = Lerp(smallest, biggest, lifePercentage);
+				f32 t1 = timer - 2.5f;
+				f32 lifePercentage = (2.f - t1) / 2.f; // particle.lifeRemaining / particle.lifeTime;
+				trans.color.a = Lerp(smallest, biggest, lifePercentage);
 			}
-			else //second half
+			else if(timer <= 1.2f)
 			{
-				trans.scale = Lerp(biggest, smallest, lifePercentage);
+				f32 lifePercentage = (1.2f - timer) / 1.2f; // particle.lifeRemaining / particle.lifeTime;
+				trans.color.a = Lerp(biggest, smallest, lifePercentage);
 			}
 
 			timer -= Time::m_DeltaTime;
@@ -162,6 +162,9 @@ namespace ALEngine::Script
 		guiManager.Enemy_Tip_Flying = Coordinator::Instance()->GetEntityByTag("destoryer_tip");
 		guiManager.Enemy_Tip_Summoner = Coordinator::Instance()->GetEntityByTag("summoner_tip");
 		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		guiManager.Enemy_Tip_Health = Coordinator::Instance()->GetEntityByTag("enemy_tip_health");
+		guiManager.Enemy_Tip_Healthbar = Coordinator::Instance()->GetEntityByTag("enemy_tip_healthbar");
+		
 
 
 		//void ParticleSystem::DisplayYourTurn()
@@ -320,6 +323,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::GuiUpdatePhaseIndicator(PHASE_STATUS status)
 	{
+		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
 		Text& phaseIndicator = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Phase_Indicator);
 		phaseIndicator.colour = Engine::Vector3(1.f, 1.f, 1.f);
 

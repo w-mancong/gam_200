@@ -409,7 +409,7 @@ namespace ALEngine::Script
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Logic_Update_Summoner(EnemyManager& enemyNeededData, ECS::Entity& movingUnitEntity, UNITS_CONTROL_STATUS& currentUnitControlStatus, std::vector<ECS::Entity>& enemyEntityList, Room& m_Room) {
 		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
 			AL_CORE_INFO("All Enemy Made move, ending turn");
-			gameplaySystem->EndTurn();
+			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
 
@@ -417,7 +417,7 @@ namespace ALEngine::Script
 
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
-		ECS::Entity cellToMoveTo = enemyUnit.m_CurrentCell_Entity;
+		//ECS::Entity cellToMoveTo = enemyUnit.m_CurrentCell_Entity;
 
 		if (enemyUnit.actionPoints <= 0) {
 			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerIdle");
@@ -443,93 +443,120 @@ namespace ALEngine::Script
 		//Use heuristic values from int vector coordinate to determine this action
 		//If distance is >= 5, go towards player, else, go away
 		b8 goTowardsPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1])) >= 5;
-
+		b8 retreatFromPlayer{ false };
 		//If health <= 3, run away from player
 		if (enemyUnit.health <= 3) {
 			goTowardsPlayer = false;
+			retreatFromPlayer = true;
 		}
 
-		//Move right
-		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]) &&
-			gameplaySystem->IsCoordinateCellAccessible(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]) &&
-			!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1])).hasUnit)
+		//distance between enemy and player
+		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
+		AL_CORE_INFO("dist enemy & player:" + std::to_string(distanceBetweenEnemyandPlayer));
+
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= 4)
 		{
-			Cell& previousCell = Coordinator::Instance()->GetComponent<Cell>(cellToMoveTo);
-			s32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
-			s32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
-
-			if (goTowardsPlayer) {
-				if(newDistance < oldDistance)
-				cellToMoveTo = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
-			}
-			else {
-				if (newDistance >= oldDistance)
-					cellToMoveTo = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
-			}//End else
+			enemyUnit.playerTriggeredEnemy = true;
+			AL_CORE_INFO("AI triggered by player");
 		}
 
-		//Move left
-		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]) &&
-			gameplaySystem->IsCoordinateCellAccessible(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]) &&
-			!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1])).hasUnit)
+		if (!enemyUnit.playerTriggeredEnemy)
 		{
-			Cell& previousCell = Coordinator::Instance()->GetComponent<Cell>(cellToMoveTo);
-			s32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
-			s32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
-
-			if (goTowardsPlayer) {
-				if (newDistance < oldDistance)
-					cellToMoveTo = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
-			}
-			else {
-				if (newDistance >= oldDistance)
-					cellToMoveTo = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
-			}//End else
+			++enemyNeededData.enemyMoved;
+			gameplaySystem->MoveEnemy();
+			return;
 		}
 
-		//Move up
-		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1) &&
-			gameplaySystem->IsCoordinateCellAccessible(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1) &&
-			!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1)).hasUnit)
+
+		//vector to store the cells no unit with tile
+		std::vector<ECS::Entity> cellsMoveableTo{};
+		std::vector<ECS::Entity> backUpCellsMoveableTo{};
+
+		b8 hasFoundCells = false;
+
+		if(!retreatFromPlayer)//not retreating from player
 		{
-			Cell& previousCell = Coordinator::Instance()->GetComponent<Cell>(cellToMoveTo);
-			s32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
-			s32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
+			if (distanceBetweenEnemyandPlayer < 5 || distanceBetweenEnemyandPlayer > 5)
+			{
+				AL_CORE_INFO("enemy relocating");
 
-			if (goTowardsPlayer) {
-				if (newDistance < oldDistance)
-					cellToMoveTo = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
+				//check for all cell with no unit and distance from player is 5 and from enemy is <3
+				for (u32 x = 0; x < m_Room.width; x++)
+				{
+					for (u32 y = 0; y < m_Room.height; y++)
+					{
+						if (Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).m_isAccessible && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).has_Wall && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).hasUnit)
+						{
+							if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) >= 5)
+							{
+								if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <= 3)
+								{
+									cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+								}
+							}
+						}
+						if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
+						{
+							if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) > 2 )
+							{
+								backUpCellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+							}
+						}
+					}
+				}
+
 			}
-			else {
-				if (newDistance >= oldDistance)
-					cellToMoveTo = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
-			}//End else
 		}
-
-		//Move down
-		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1) &&
-			gameplaySystem->IsCoordinateCellAccessible(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1) &&
-			!Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1)).hasUnit)
+		else
 		{
-			Cell& previousCell = Coordinator::Instance()->GetComponent<Cell>(cellToMoveTo);
-			s32 newDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
-			s32 oldDistance = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(previousCell.coordinate.x, previousCell.coordinate.y));
+		   AL_CORE_INFO("enemy retreating");
+		   if (distanceBetweenEnemyandPlayer < 10 )
+		   {
+			   for (u32 x = 0; x < m_Room.width; x++)
+			   {
+				   for (u32 y = 0; y < m_Room.height; y++)
+				   {
+					   if (Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).m_isAccessible && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).has_Wall && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).hasUnit)
+					   {
+						   if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 5)
+						   {
+							   if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) > 2)
+							   {
+								   cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+							   }
+						   }
+					   }
+					   if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
+					   {
+						   if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) >2)
+						   {
+							   backUpCellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+						   }
+					   }
+				   }
+			   }
+		   }
+        }
 
-			if (goTowardsPlayer) {
-				if (newDistance < oldDistance)
-					cellToMoveTo = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
+		if (!(cellsMoveableTo.size() > 0) && backUpCellsMoveableTo.size() > 0)//if cellsMoveableTo is empty then check if backUpCellsMoveableTo has any position.
+		{
+			for (u32 i = 0; i < backUpCellsMoveableTo.size(); i++)
+			{
+				cellsMoveableTo.push_back(backUpCellsMoveableTo[i]);
 			}
-			else {
-				if (newDistance >= oldDistance)
-					cellToMoveTo = gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
-			}//End else
 		}
 
-		//Find path
+		if (cellsMoveableTo.size() > 0)//if cellsMoveableTo is not empty
+		{
+			hasFoundCells = true;
+		}
+
+		std::vector<ECS::Entity> tempPathList;
+		std::vector<std::vector<ECS::Entity>> listofpathlists{};
 		std::vector<ECS::Entity> pathList;
-		b8 isPathFound = ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyUnit.m_CurrentCell_Entity, cellToMoveTo, pathList, true);
 
-		if (!isPathFound) {
+		if (!hasFoundCells)
+		{
 			ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerIdle");
 			enemyUnit.abilityCooldown_Enemy--;
 			if (enemyUnit.abilityCooldown_Enemy <= 0) {
@@ -546,8 +573,37 @@ namespace ALEngine::Script
 			++enemyNeededData.enemyMoved;
 			gameplaySystem->MoveEnemy();
 			return;
+		
 		}
 
+		//push the found paths for all the walkable cell
+		for (std::vector<ECS::Entity>::iterator i = cellsMoveableTo.begin(); i != cellsMoveableTo.end(); ++i)
+		{
+			//clear the temp vector before find path
+			if (tempPathList.size() > 0)
+			{
+				tempPathList.clear();
+			}
+
+			if (ALEngine::Engine::AI::FindPath(gameplaySystem, m_Room, enemyUnit.m_CurrentCell_Entity, *i, tempPathList, true))
+			{
+				listofpathlists.push_back(tempPathList);
+			}
+		}
+
+		//get smallest/shortest path
+		for (std::vector<std::vector<ECS::Entity>>::iterator i = listofpathlists.begin(); i != listofpathlists.end(); ++i)
+		{
+			if (pathList.size() <= 0)
+			{
+				pathList = *i;
+			}
+			else if (pathList.size() > i->size() && i->size() > 0)
+			{
+				pathList = *i;
+			}
+		}
+	
 		movingUnitEntity = enemyEntityList[enemyNeededData.enemyMoved];
 
 		ECS::ChangeAnimation(Coordinator::Instance()->GetComponent<Animator>(enemyUnit.unit_Sprite_Entity), "SummonerMove");
@@ -562,6 +618,7 @@ namespace ALEngine::Script
 		if (enemyUnit.actionPoints == enemyUnit.maxActionPoints) {
 			Audio_PlayEnemyMove(enemyUnit);
 		}
+		AL_CORE_INFO("summon debug point");
 	}
 	
 	void GameplaySystem_Interface_Management_Enemy::Enemy_Cast_Summoner(ECS::Entity& summoner_Entity) {
@@ -595,9 +652,10 @@ namespace ALEngine::Script
 	{
 		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
 			AL_CORE_INFO("All Enemy Made move, ending turn");
-			gameplaySystem->EndTurn();
+			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
+
 		AL_CORE_INFO("MELEE Making Decision");
 
 		AL_CORE_INFO("Finding Target Cell");
@@ -605,9 +663,27 @@ namespace ALEngine::Script
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
 		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
 
+		//distance between enemy and player
+		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
+
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <=4)
+		{
+			enemyUnit.playerTriggeredEnemy = true;
+			AL_CORE_INFO("AI triggered by player");
+		}
+
+		if (!enemyUnit.playerTriggeredEnemy)
+		{
+			++enemyNeededData.enemyMoved;
+			gameplaySystem->MoveEnemy();
+			return;
+		}
+
+
 		if (enemyUnit.health <= 0) {
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -618,7 +694,8 @@ namespace ALEngine::Script
 		if (ifPlayerIsAlreadyBeside) {
 			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " Attacked player");
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -671,7 +748,8 @@ namespace ALEngine::Script
 			AL_CORE_INFO("No Space Beside Player, Moving to next enemy");
 			RunEnemyAdjacentAttack(m_Room, enemyUnit);
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, gameplaySystem->currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -688,7 +766,8 @@ namespace ALEngine::Script
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_Melee(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -718,19 +797,38 @@ namespace ALEngine::Script
 	{
 		if (enemyNeededData.enemyMoved >= enemyEntityList.size()) {
 			AL_CORE_INFO("All Enemy Made move, ending turn");
-			gameplaySystem->EndTurn();
+			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
+
 
 		AL_CORE_INFO("CELL DESTROYER Making Decision");
 
 		AL_CORE_INFO("Finding Target Cell");
 		//Find a target cell
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[enemyNeededData.enemyMoved]);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(enemyNeededData.playerEntity);
+
+		//distance between enemy and player
+		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
+
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= 4)
+		{
+			enemyUnit.playerTriggeredEnemy = true;
+			AL_CORE_INFO("AI triggered by player");
+		}
+
+		if (!enemyUnit.playerTriggeredEnemy)
+		{
+			++enemyNeededData.enemyMoved;
+			gameplaySystem->MoveEnemy();
+			return;
+		}
 
 		if (enemyUnit.health <= 0) {
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -764,7 +862,8 @@ namespace ALEngine::Script
 		if (!hasFoundWalkableCells) {
 			AL_CORE_INFO("No walkable cells");
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
@@ -802,7 +901,8 @@ namespace ALEngine::Script
 		if (!isPathFound) {
 			AL_CORE_INFO("No Path Found");
 			++enemyNeededData.enemyMoved;
-			Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
+			gameplaySystem->MoveEnemy();
+			//Enemy_Logic_Update_CellDestroyer(enemyNeededData, movingUnitEntity, currentUnitControlStatus, enemyEntityList, m_Room);
 			return;
 		}
 
