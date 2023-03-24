@@ -50,13 +50,33 @@ namespace Gameplay
 		}
 	}
 
+	b8 TutorialManager::TutorialIsPlaying(void)
+	{
+		return m_TutorialIsPlaying;
+	}
+
 	TutorialState TutorialManager::GetState(void)
 	{
 		return m_CurrentState;
 	}
 
-	b8 TutorialManager::TutorialIsPlaying(void)
+	ALEngine::ECS::Entity TutorialManager::GetTutorialObject(void)
 	{
-		return m_TutorialIsPlaying;
+		return m_TutorialObject;
+	}
+	
+	void TutorialManager::SetTutorialObject(ALEngine::ECS::Entity tut_obj)
+	{
+		m_TutorialObject = tut_obj;
+	}
+	
+	b8 TutorialManager::GetTileIsSelected(void)
+	{
+		return m_TileIsSelected;
+	}
+
+	void TutorialManager::SetTileIsSelected(b8 tileIsSelected)
+	{
+		m_TileIsSelected = tileIsSelected;
 	}
 }

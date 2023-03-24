@@ -20,5 +20,6 @@
 #include <FPSDisplay.h>
 #include <CutsceneObjectTutorial.h>
 #include <TutorialCamera.h>
+#include <TutorialObject.h>
 
 #endif

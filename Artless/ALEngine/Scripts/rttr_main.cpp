@@ -80,4 +80,8 @@ RTTR_REGISTRATION
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 
+	registration::class_<TutorialObject>("TutorialObject")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
 }

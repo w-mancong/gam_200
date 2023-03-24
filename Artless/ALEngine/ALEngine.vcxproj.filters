@@ -120,6 +120,7 @@
     <ClCompile Include="Scripts\Source\CutsceneObjectTutorial.cpp" />
     <ClCompile Include="Gameplay\Source\TutorialManager.cpp" />
     <ClCompile Include="Scripts\Source\TutorialCamera.cpp" />
+    <ClCompile Include="Scripts\Source\TutorialObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -292,6 +293,7 @@
     <ClInclude Include="Gameplay\Header\TutorialManager.h" />
     <ClInclude Include="Scripts\Header\CutsceneObjectTutorial.h" />
     <ClInclude Include="Scripts\Header\TutorialCamera.h" />
+    <ClInclude Include="Scripts\Header\TutorialObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

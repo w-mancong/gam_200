@@ -31,6 +31,17 @@ namespace Gameplay
 
 		/*!*********************************************************************************
 			\brief
+				Gets whether the Tutorial is being played
+			\return
+				Returns true if Tutorial is playing, 
+				Else returns false
+		***********************************************************************************/
+		b8 TutorialIsPlaying(void);
+
+		// Getters and Setters
+	public:
+		/*!*********************************************************************************
+			\brief
 				Gets the current state of the tutorial as an enum value
 			\return
 				Returns the current state of the tutorial
@@ -39,17 +50,40 @@ namespace Gameplay
 
 		/*!*********************************************************************************
 			\brief
-				Gets whether the Tutorial is being played
+				Get Tutorial Object
 			\return
-				Returns true if Tutorial is playing, 
-				Else returns false
+				Returns the Tutorial Object
 		***********************************************************************************/
-		b8 TutorialIsPlaying(void);
+		ALEngine::ECS::Entity GetTutorialObject(void);
+
+		/*!*********************************************************************************
+			\brief
+				Set Tutorial Object 
+			\param [in] tut_obj
+				The value for the Tutorial Object
+		***********************************************************************************/
+		void SetTutorialObject(ALEngine::ECS::Entity tut_obj);
+
+		/*!*********************************************************************************
+			\brief
+				Get Tutorial Object
+			\return
+				Returns the Tutorial Object
+		***********************************************************************************/
+		b8 GetTileIsSelected(void);
+
+		void SetTileIsSelected(b8 tileIsSelected);
 
 	private:
 
-		TutorialState m_CurrentState{ 0 };				// Current cutscene state
-		b8 m_TutorialIsPlaying{ true };				// Whether Tutorial is being played or not
+		// Entities
+		ALEngine::ECS::Entity m_TutorialObject{ ALEngine::ECS::MAX_ENTITIES };
+
+		TutorialState m_CurrentState{ 0 };					// Current cutscene state
+
+		// Booleans
+		b8 m_TutorialIsPlaying{ true };						// Whether Tutorial is being played or not
+		b8 m_TileIsSelected{ false };						// Whether the player is holding a tile right now
 
 		// Required for Singleton to function
 		friend class ALEngine::Templates::Singleton<TutorialManager>;

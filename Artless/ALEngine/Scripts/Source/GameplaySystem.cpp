@@ -161,11 +161,15 @@ namespace ALEngine::Script
 				Cell cell;
 				cell.coordinate = { (s32)r, (s32)c };
 
-				//Create the triggers and subscribe the cell related events
-				ECS::CreateEventTrigger(m_Room.roomCellsArray[counter]);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+				// Dont subscribe if it is not within 
+				if (row != "Outside_Empty")
+				{
+					//Create the triggers and subscribe the cell related events
+					ECS::CreateEventTrigger(m_Room.roomCellsArray[counter]);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+				}
 
 				// Add the child overlay
 				cell.child_overlay = Coordinator::Instance()->CreateEntity();

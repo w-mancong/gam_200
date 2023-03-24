@@ -180,6 +180,7 @@
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
     <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
     <ClCompile Include="Scripts\Source\TutorialCamera.cpp" />
+    <ClCompile Include="Scripts\Source\TutorialObject.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
@@ -485,6 +486,7 @@
     <ClInclude Include="Scripts\Header\ResumeButton.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
     <ClInclude Include="Scripts\Header\TutorialCamera.h" />
+    <ClInclude Include="Scripts\Header\TutorialObject.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
     <ClInclude Include="Scripts\others\ScriptManager.h" />
     <ClInclude Include="tracy\Tracy.hpp" />
