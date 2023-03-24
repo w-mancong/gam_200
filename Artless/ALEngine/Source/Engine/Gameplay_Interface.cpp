@@ -1698,10 +1698,10 @@ namespace ALEngine::Script
 
 			//If the time is paused, put the enemy layer to the back
 			if (utils::IsEqual(Time::m_Scale, 1.0f)) {
-				enemySprite.layer = 1000 - static_cast<u32>(enemyTransform.position.y);
+				enemySprite.layer = 2000 - static_cast<u32>(enemyTransform.position.y);
 			}
 			else {
-				enemySprite.layer = 1;
+				enemySprite.layer = 1001;
 			}
 		}
 
@@ -1712,10 +1712,10 @@ namespace ALEngine::Script
 
 		//If the time is paused, put the player layer to the back
 		if (utils::IsEqual(Time::m_Scale, 1.0f)) {
-			playerSprite.layer = 1000 - static_cast<u32>(playerTransform.position.y);
+			playerSprite.layer = 2000 - static_cast<u32>(playerTransform.position.y);
 		}
 		else
-			playerSprite.layer = 1;
+			playerSprite.layer = 1001;
 	}
 
 	b8 GameplaySystem::CheckIfWalkableOnGrid(Room& room, u32 gridX, u32 gridY)
