@@ -154,7 +154,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.229248046875,
+                    1868.2288818359375,
                     499.13763427734375,
                     0.0
                 ],
@@ -199,7 +199,7 @@
         "Transform": [
             {
                 "position": [
-                    1565.3575439453125,
+                    1565.357177734375,
                     860.5792236328125,
                     0.0
                 ],
@@ -244,7 +244,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.2840576171875,
+                    1868.2843017578125,
                     499.4620361328125,
                     0.0
                 ],
@@ -728,7 +728,7 @@
         "Transform": [
             {
                 "position": [
-                    675.9638061523438,
+                    675.9639282226563,
                     43.22941589355469,
                     0.0
                 ],
@@ -790,7 +790,7 @@
         "Transform": [
             {
                 "position": [
-                    918.74072265625,
+                    918.7409057617188,
                     43.22438049316406,
                     0.0
                 ],
@@ -852,7 +852,7 @@
         "Transform": [
             {
                 "position": [
-                    1002.4853515625,
+                    1002.4855346679688,
                     43.22486114501953,
                     0.0
                 ],
@@ -3489,7 +3489,7 @@
         "Transform": [
             {
                 "position": [
-                    845.3714599609375,
+                    845.3716430664063,
                     155.45263671875,
                     0.0
                 ],
@@ -5205,7 +5205,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    445.0085144042969,
+                    445.0085754394531,
                     0.0
                 ],
                 "scale": [
@@ -5250,7 +5250,7 @@
             {
                 "position": [
                     1075.0,
-                    446.4306640625,
+                    446.4306945800781,
                     0.0
                 ],
                 "scale": [
@@ -5295,7 +5295,7 @@
             {
                 "position": [
                     814.9998779296875,
-                    442.23046875,
+                    442.2304992675781,
                     0.0
                 ],
                 "scale": [
@@ -5665,7 +5665,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.0027770996094,
+                    450.0028381347656,
                     0.0
                 ],
                 "scale": [
@@ -6014,305 +6014,6 @@
                 "id": 119,
                 "parentID": 118,
                 "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 120,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    -1600.0,
-                    -900.0,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Cutscene Object",
-                "active": true,
-                "localActive": true,
-                "id": 120,
-                "parentID": -1,
-                "treeNodeFlags": 0
-            }
-        ],
-        "LogicComponent": [
-            {
-                "components": [
-                    "CutsceneObjectTutorial"
-                ]
-            }
-        ]
-    },
-    {
-        "id": 121,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.46268653869628906
-                ],
-                "layer": 3901
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    450.0,
-                    0.0
-                ],
-                "scale": [
-                    1600.0,
-                    900.0
-                ],
-                "rotation": 0.0,
-                "ui": true,
-                "uiOffset": [
-                    -800.0,
-                    -450.0,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Black Overlay",
-                "active": true,
-                "localActive": true,
-                "id": 121,
-                "parentID": 120,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 122,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\DialogueBox.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3990
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    123.0,
-                    0.0
-                ],
-                "scale": [
-                    1430.0,
-                    210.0
-                ],
-                "rotation": 0.0,
-                "ui": true,
-                "uiOffset": [
-                    -800.0,
-                    -123.0,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Dialogue Box",
-                "active": true,
-                "localActive": true,
-                "id": 122,
-                "parentID": 120,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "Hello There",
-                "currentFont": "SFProverbialGothic",
-                "scale": 0.8999999761581421,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    72.0,
-                    83.0
-                ],
-                "layer": 0
-            }
-        ]
-    },
-    {
-        "id": 123,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3988
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    450.0,
-                    0.0
-                ],
-                "scale": [
-                    1600.0,
-                    900.0
-                ],
-                "rotation": 0.0,
-                "ui": true,
-                "uiOffset": [
-                    -800.0,
-                    -450.0,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Cutscene Bottom",
-                "active": true,
-                "localActive": true,
-                "id": 123,
-                "parentID": 120,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 124,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3989
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    450.0,
-                    0.0
-                ],
-                "scale": [
-                    1600.0,
-                    900.0
-                ],
-                "rotation": 0.0,
-                "ui": true,
-                "uiOffset": [
-                    -800.0,
-                    -450.0,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Cutscene Top",
-                "active": true,
-                "localActive": true,
-                "id": 124,
-                "parentID": 120,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 125,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\DialogueBox.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3990
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    780.0,
-                    0.0
-                ],
-                "scale": [
-                    1430.0,
-                    210.0
-                ],
-                "rotation": 0.0,
-                "ui": true,
-                "uiOffset": [
-                    -800.0,
-                    -780.0,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Dialogue Box Top",
-                "active": true,
-                "localActive": true,
-                "id": 125,
-                "parentID": 120,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "Hello There",
-                "currentFont": "SFProverbialGothic",
-                "scale": 0.8999999761581421,
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "position": [
-                    72.0,
-                    430.0
-                ],
-                "layer": 0
             }
         ]
     }
