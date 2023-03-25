@@ -335,6 +335,11 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
 
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
+
+
 		//Add events for abilities Button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);

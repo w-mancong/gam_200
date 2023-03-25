@@ -41,6 +41,7 @@ namespace ALEngine::Script
 		//List for containing entities of GUI
 		std::vector<ECS::Entity> GUI_Abilities_Button_List;
 		std::vector<ECS::Entity> GUI_Pattern_Button_List;
+		std::vector<ECS::Entity> GUI_Pattern_Button_List_BG;
 		std::vector<ECS::Entity> GUI_Center_Pattern_Button_List;
 		std::vector<ECS::Entity> GUI_Center_Pattern_Button_List_BG;
 
