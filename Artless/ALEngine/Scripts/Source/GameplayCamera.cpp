@@ -8,17 +8,31 @@ brief:	This file contain function definition for a gameplay camera
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <GameplayCamera.h>
+#include <GameplaySystem.h>
 
 namespace ALEngine::Script
 {	
 	namespace
 	{
-		f32 constexpr const PADDING_PERCENTAGE = 0.01f, CAMERA_SPEED = 450.0f;
+		using namespace ECS;
+		//using namespace utils;
+	}
+
+	void GameplayCamera::Init([[maybe_unused]] ECS::Entity en)
+	{
+		auto const& map = Gameplay::MapManager::Instance()->GetMap();
+		u64 const W = map[0].size(), H = map.size();
+
+		L_Boundary = B_Boundary = 0.0f - TILE_SIZE;
+		R_Boundary = static_cast<f32>(TILE_SIZE) * static_cast<f32>(W);
+		T_Boundary = static_cast<f32>(TILE_SIZE) * static_cast<f32>(H);
+
+		WIDTH = GetCamera().Width(), HEIGHT = GetCamera().Height();
 	}
 
 	void GameplayCamera::Update([[maybe_unused]] ECS::Entity en)
 	{
-		Engine::Camera& camera = ECS::GetCamera();
+		Math::vec3& pos = GetCamera().Position();
 
 		f32 const xScreen = static_cast<f32>( Input::GetScreenResX() ),
 				  yScreen = static_cast<f32>( Input::GetScreenResY()) ;
@@ -31,25 +45,40 @@ namespace ALEngine::Script
 
 		// Move camera to the left
 		if (xMouse <= xPadding)
-		{
-			camera.Position().x -= CAMERA_SPEED * Time::m_DeltaTime;
-		}
+			pos.x -= CAMERA_SPEED * Time::m_DeltaTime;
 		// Move camera to the right
 		else if (xMouse >= (xScreen - xPadding))
-		{
-			camera.Position().x += CAMERA_SPEED * Time::m_DeltaTime;
-		}
-		
+			pos.x += CAMERA_SPEED * Time::m_DeltaTime;
+
 		// Move camera down
 		if (yMouse <= yPadding)
-		{
-			camera.Position().y -= CAMERA_SPEED * Time::m_DeltaTime;
-		}
+			pos.y -= CAMERA_SPEED * Time::m_DeltaTime;
 		// Move camera up
 		else if (yMouse >= (yScreen - yPadding))
-		{
-			camera.Position().y += CAMERA_SPEED * Time::m_DeltaTime;
-		}
+			pos.y += CAMERA_SPEED * Time::m_DeltaTime;
+
+		ConfinePosition(pos);
 		ECS::UpdateUIpositions();
+	}
+
+	void GameplayCamera::SetBoundary(f32 L, f32 R, f32 T, f32 B)
+	{
+		L_Boundary = L;
+		R_Boundary = R;
+		T_Boundary = T;
+		B_Boundary = B;
+	}
+
+	void GameplayCamera::ConfinePosition(Math::vec3& pos) const
+	{
+		if (pos.x < L_Boundary)
+			pos.x = L_Boundary;
+		else if (pos.x > R_Boundary - WIDTH)
+			pos.x = R_Boundary - WIDTH;
+
+		if (pos.y < B_Boundary)
+			pos.y = B_Boundary;
+		else if (pos.y > T_Boundary - HEIGHT)
+			pos.y = T_Boundary - HEIGHT;
 	}
 }

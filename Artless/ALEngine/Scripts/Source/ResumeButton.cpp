@@ -9,6 +9,7 @@ brief:	This file contain function definition for pause menu's resume button
 #include <pch.h>
 #include <ResumeButton.h>
 #include <PauseLogic.h>
+#include <PauseButtonFlag.h>
 
 namespace ALEngine::Script
 {
@@ -32,6 +33,8 @@ namespace ALEngine::Script
 
 		void WhenHover(Entity en)
 		{
+			if (PauseButtonFlag::confirmationBG)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
@@ -62,5 +65,6 @@ namespace ALEngine::Script
 	void ResumeButton::Free(ECS::Entity en)
 	{
 		bd_pause = bd_pause_parent = MAX_ENTITIES;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }

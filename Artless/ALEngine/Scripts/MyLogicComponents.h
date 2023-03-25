@@ -21,5 +21,6 @@
 #include <CutsceneObjectTutorial.h>
 #include <TutorialCamera.h>
 #include <TutorialObject.h>
+#include <WaterGenerator.h>
 
 #endif

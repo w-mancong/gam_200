@@ -84,4 +84,7 @@ RTTR_REGISTRATION
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 
+	registration::class_<WaterGenerator>("WaterGenerator")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

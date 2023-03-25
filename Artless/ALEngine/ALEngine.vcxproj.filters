@@ -121,6 +121,8 @@
     <ClCompile Include="Gameplay\Source\TutorialManager.cpp" />
     <ClCompile Include="Scripts\Source\TutorialCamera.cpp" />
     <ClCompile Include="Scripts\Source\TutorialObject.cpp" />
+    <ClCompile Include="Scripts\Source\WaterGenerator.cpp" />
+    <ClCompile Include="Scripts\Source\PauseButtonFlag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -294,6 +296,8 @@
     <ClInclude Include="Scripts\Header\CutsceneObjectTutorial.h" />
     <ClInclude Include="Scripts\Header\TutorialCamera.h" />
     <ClInclude Include="Scripts\Header\TutorialObject.h" />
+    <ClInclude Include="Scripts\Header\WaterGenerator.h" />
+    <ClInclude Include="Scripts\Header\PauseButtonFlag.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

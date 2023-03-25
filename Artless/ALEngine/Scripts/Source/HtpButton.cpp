@@ -8,6 +8,7 @@ brief:	This file contain function definition for a how to play button
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <HtpButton.h>
+#include <PauseButtonFlag.h>
 
 namespace ALEngine::Script
 {
@@ -32,7 +33,7 @@ namespace ALEngine::Script
 
 		void WhenHtpHover(Entity en)
 		{
-			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a || PauseButtonFlag::confirmationBG)
 				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
@@ -104,5 +105,6 @@ namespace ALEngine::Script
 	void HtpButton::Free(ECS::Entity en)
 	{
 		htp = close = parent = MAX_ENTITIES;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }

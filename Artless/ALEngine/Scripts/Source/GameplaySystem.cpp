@@ -26,6 +26,7 @@
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
 #include <PauseLogic.h>
+#include <SceneChangeHelper.h>
 #include <ranges>
 
 namespace ALEngine::Script
@@ -35,18 +36,27 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string room_To_Load = "Assets\\Map\\Tutorial_Final.map";
+		std::string rooms[] = { "Assets\\Presentation_Level.map", "Assets\\Tutorial_Final.map" };
+		std::string room_To_Load = rooms[0];
+
+		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
 		
 		bool TUTORIAL_ACTIVE{ true };
 	}
+
+	void SetMap(u64 index)
+	{
+		room_To_Load = rooms[index];
+	}		
 
 	/*!*********************************************************************************
 	\brief
 		Load Tutorial Level
 	***********************************************************************************/
 	void Event_Button_LoadLevel_Tutorial(ECS::Entity invoker) {
-		room_To_Load = "Assets\\Tutorial_Final.map";
-		Engine::Scene::Restart();
+		room_To_Load = rooms[1];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
 	}
 
 	/*!*********************************************************************************
@@ -55,8 +65,10 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_Button_LoadLevel_1(ECS::Entity invoker) {
 		//Restart the gameplay
-		room_To_Load = "Assets\\Presentation_Level.map";
-		Engine::Scene::Restart();
+		room_To_Load = rooms[0];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
+		//Engine::Scene::Restart();
 	}
 
 	/*!*********************************************************************************
@@ -66,8 +78,10 @@ namespace ALEngine::Script
 	void Event_Button_LoadLevel_2(ECS::Entity invoker) {
 		gameplaySystem->Toggle_Gameplay_State(false);
 		//Restart the gameplay
-		room_To_Load = "Assets\\Tutorial_Level.map";
-		Engine::Scene::Restart();
+		room_To_Load = rooms[1];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
+		//Engine::Scene::Restart();
 	}
 
 	void GameplaySystem::Load(ECS::Entity en)
@@ -95,6 +109,8 @@ namespace ALEngine::Script
 		EnemyManager_LoadData();
 
 		ECS::SetBackgroundColor( { 0.2f, 0.3f, 0.3f, 1.0f } );
+
+		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
 
 		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 		//ECS::GetCamera().Position() = playerTransform.localPosition;
@@ -156,7 +172,7 @@ namespace ALEngine::Script
 				Transform transform;
 				transform.scale = { 100, 100 };
 				transform.localScale = { 100, 100 };
-				transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
+				transform.position = { (f32)r * TILE_SIZE, (f32)c * TILE_SIZE };
 				Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[counter], transform);
 
 				// Cell coordinates
@@ -178,7 +194,7 @@ namespace ALEngine::Script
 
 				Transform child_overlay_transform;
 				child_overlay_transform.scale = transform.scale;
-				child_overlay_transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
+				child_overlay_transform.position = { (f32)r * TILE_SIZE, (f32)c * TILE_SIZE };
 				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
 
 				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c), cell);
@@ -342,6 +358,11 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
 
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
+
+
 		//Add events for abilities Button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
@@ -358,6 +379,7 @@ namespace ALEngine::Script
 
 		//Toggle the gui 
 		gameplaySystem_GUI->ToggleAbilitiesGUI(false);
+		gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 		gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 		//***** AUDIO Initialization ******//
@@ -400,6 +422,7 @@ namespace ALEngine::Script
 				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
 				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
+				gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 				gameplaySystem_GUI->TogglePatternGUI(false);
 				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 
