@@ -207,7 +207,21 @@ namespace ALEngine::Script
 		//Clear GUI
 		GUI_Pattern_Button_Entities.clear();
 
-		//There will be a fix of 4 buttons
+		guiManager.GUI_Center_Pattern_Parent = Coordinator::Instance()->GetEntityByTag("Pattern_Center");
+		guiManager.GUI_Center_Pattern_BG = Coordinator::Instance()->GetEntityByTag("Pattern_Center_BG");
+
+		//There will be a fix of 3 buttons
+		for (int i = 0; i < 3; ++i) {
+			guiManager.GUI_Center_Pattern_Button_List.push_back(Coordinator::Instance()->GetEntityByTag("Pattern_Center_" + std::to_string(i)));
+		}
+
+		//There will be a fix of 3 buttons BG
+		for (int i = 0; i < 3; ++i) {
+			guiManager.GUI_Center_Pattern_Button_List_BG.push_back(Coordinator::Instance()->GetEntityByTag("Pattern_Center_" + std::to_string(i) + "_BG"));
+		}
+
+
+		//There will be a fix of 3 buttons
 		for (int i = 1; i <= 3; ++i) {
 			GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("next_tile_icon" + std::to_string(i)));
 		}
@@ -223,6 +237,7 @@ namespace ALEngine::Script
 		ECS::CreateButton(GUI_Pattern_Button_Entities[0]);
 		ECS::CreateButton(GUI_Pattern_Button_Entities[1]);
 		ECS::CreateButton(GUI_Pattern_Button_Entities[2]);
+		
 	}
 
 	void GameplaySystem_Interface_Management_GUI::InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities) {
@@ -277,6 +292,18 @@ namespace ALEngine::Script
 				sprite.color = { 1.f, 1.f, 1.f, 1.f };
 			else
 				sprite.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+	}
+
+	void GameplaySystem_Interface_Management_GUI::ToggleCenterPatternGUI(b8 istrue) {
+		Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Center_Pattern_Parent).active = istrue;
+		Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Center_Pattern_BG).active = istrue;
+
+
+		//Toggle the pattern GUI accordingly
+		for (int i = 0; i < guiManager.GUI_Center_Pattern_Button_List.size(); ++i) {
+			Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Center_Pattern_Button_List_BG[i]).active = istrue;
+			Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Center_Pattern_Button_List[i]).active = istrue;
 		}
 	}
 

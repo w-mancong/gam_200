@@ -351,6 +351,7 @@ namespace ALEngine::Script
 
 		//Toggle the gui 
 		gameplaySystem_GUI->ToggleAbilitiesGUI(false);
+		gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 		gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 		//***** AUDIO Initialization ******//
@@ -391,6 +392,7 @@ namespace ALEngine::Script
 				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
 				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
+				gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 				gameplaySystem_GUI->TogglePatternGUI(false);
 				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 

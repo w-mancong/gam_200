@@ -35,9 +35,14 @@ namespace ALEngine::Script
 		//Lose
 		ECS::Entity Lose_Clear, Lose_Button;
 
+		//Center Pattern Parent
+		ECS::Entity GUI_Center_Pattern_Parent, GUI_Center_Pattern_BG, GUI_Bottom_Pattern_Parent;
+
 		//List for containing entities of GUI
 		std::vector<ECS::Entity> GUI_Abilities_Button_List;
 		std::vector<ECS::Entity> GUI_Pattern_Button_List;
+		std::vector<ECS::Entity> GUI_Center_Pattern_Button_List;
+		std::vector<ECS::Entity> GUI_Center_Pattern_Button_List_BG;
 
 		f32 Your_Turn_timer{};
 	};
@@ -92,6 +97,12 @@ namespace ALEngine::Script
 				Toggle Pattern GUI active
 		***********************************************************************************/
 		void TogglePatternGUI(b8 istrue);
+
+		/*!*********************************************************************************
+			\brief
+				Toggle Center Pattern GUI active
+		***********************************************************************************/
+		void ToggleCenterPatternGUI(b8 istrue);
 
 		/*!*********************************************************************************
 			\brief

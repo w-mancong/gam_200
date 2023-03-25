@@ -188,6 +188,7 @@ namespace ALEngine::Script
 
 		//Disable the end turn button
 		ECS::SetActive(false, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+		gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 
 		//Set the turn accordingly
 		switch (currentPhaseStatus) {
@@ -1560,7 +1561,8 @@ namespace ALEngine::Script
 
 			//Set the gui
 			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
-			gameplaySystem_GUI->TogglePatternGUI(true);
+			gameplaySystem_GUI->ToggleCenterPatternGUI(true);
+			//gameplaySystem_GUI->TogglePatternGUI(true);
 
 
 			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
