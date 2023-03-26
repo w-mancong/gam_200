@@ -20,7 +20,7 @@
             {
                 "position": [
                     796.94775390625,
-                    122.84027099609375,
+                    122.84042358398438,
                     0.0
                 ],
                 "scale": [
@@ -154,7 +154,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.1671142578125,
+                    1868.164794921875,
                     499.1375732421875,
                     0.0
                 ],
@@ -231,7 +231,7 @@
         "id": 5,
         "Sprite": [
             {
-                "filePath": "Assets\\Images\\Profile_Enemy_Unit.png",
+                "filePath": "Assets\\Images\\Profile_Player_Unit.png",
                 "color": [
                     1.0,
                     1.0,
@@ -245,7 +245,7 @@
             {
                 "position": [
                     797.900634765625,
-                    53.2001953125,
+                    53.200225830078125,
                     0.0
                 ],
                 "scale": [
@@ -334,7 +334,7 @@
         "Transform": [
             {
                 "position": [
-                    147.79501342773438,
+                    147.79507446289063,
                     47.02301025390625,
                     0.0
                 ],
@@ -345,7 +345,7 @@
                 "rotation": 0.0,
                 "ui": true,
                 "uiOffset": [
-                    -147.79501342773438,
+                    -147.79507446289063,
                     -47.02301025390625,
                     725.0
                 ]
@@ -358,7 +358,7 @@
                 "localActive": true,
                 "id": 7,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -448,7 +448,7 @@
                 "localActive": false,
                 "id": 9,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -683,7 +683,7 @@
         "Transform": [
             {
                 "position": [
-                    676.0075073242188,
+                    676.0081787109375,
                     43.229576110839844,
                     0.0
                 ],
@@ -745,7 +745,7 @@
         "Transform": [
             {
                 "position": [
-                    918.7666625976563,
+                    918.767578125,
                     43.22444152832031,
                     0.0
                 ],
@@ -807,7 +807,7 @@
         "Transform": [
             {
                 "position": [
-                    1002.5089111328125,
+                    1002.5098266601563,
                     43.22492980957031,
                     0.0
                 ],
@@ -1149,7 +1149,7 @@
         "Transform": [
             {
                 "position": [
-                    147.79498291015625,
+                    147.7950439453125,
                     47.0211181640625,
                     0.0
                 ],
@@ -1735,7 +1735,7 @@
                 "localActive": false,
                 "id": 34,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -1879,7 +1879,7 @@
         "Transform": [
             {
                 "position": [
-                    407.1479187011719,
+                    407.1479797363281,
                     256.14288330078125,
                     0.0
                 ],
@@ -1941,7 +1941,7 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
+                    800.0000610351563,
                     450.0000915527344,
                     0.0
                 ],
@@ -1986,7 +1986,7 @@
         "Transform": [
             {
                 "position": [
-                    703.2496337890625,
+                    703.2491455078125,
                     354.8003234863281,
                     0.0
                 ],
@@ -2031,7 +2031,7 @@
         "Transform": [
             {
                 "position": [
-                    896.7490234375,
+                    896.74853515625,
                     354.8003234863281,
                     0.0
                 ],
@@ -2076,8 +2076,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    449.9999694824219,
+                    2.5,
+                    449.99993896484375,
                     0.0
                 ],
                 "scale": [
@@ -2121,8 +2121,8 @@
         "Transform": [
             {
                 "position": [
-                    1499.999267578125,
-                    450.2575378417969,
+                    702.499267578125,
+                    450.25750732421875,
                     0.0
                 ],
                 "scale": [
@@ -3031,7 +3031,7 @@
             {
                 "position": [
                     800.0,
-                    450.0000915527344,
+                    450.00006103515625,
                     0.0
                 ],
                 "scale": [
@@ -3076,7 +3076,7 @@
             {
                 "position": [
                     800.0,
-                    449.9999694824219,
+                    449.99993896484375,
                     0.0
                 ],
                 "scale": [
@@ -3121,7 +3121,7 @@
             {
                 "position": [
                     1499.999755859375,
-                    830.0,
+                    830.0001220703125,
                     0.0
                 ],
                 "scale": [
@@ -3669,7 +3669,7 @@
         "Transform": [
             {
                 "position": [
-                    83.82208251953125,
+                    83.82205200195313,
                     51.45721435546875,
                     0.0
                 ],
@@ -3731,7 +3731,7 @@
         "Transform": [
             {
                 "position": [
-                    234.99998474121094,
+                    234.9999542236328,
                     627.7998046875,
                     0.0
                 ],
@@ -3776,7 +3776,7 @@
         "Transform": [
             {
                 "position": [
-                    234.99998474121094,
+                    234.9999542236328,
                     627.799072265625,
                     0.0
                 ],
@@ -4132,7 +4132,7 @@
                 "localActive": true,
                 "id": 80,
                 "parentID": -1,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "LogicComponent": [
@@ -4946,7 +4946,7 @@
                 "localActive": false,
                 "id": 97,
                 "parentID": 80,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "LogicComponent": [
@@ -5160,7 +5160,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    445.01300048828125,
+                    445.0133361816406,
                     0.0
                 ],
                 "scale": [
@@ -5205,7 +5205,7 @@
             {
                 "position": [
                     1075.0,
-                    446.4352722167969,
+                    446.43524169921875,
                     0.0
                 ],
                 "scale": [
@@ -5620,7 +5620,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.00933837890625,
+                    450.0097351074219,
                     0.0
                 ],
                 "scale": [
@@ -5748,7 +5748,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.8597717285156,
+                    469.8605041503906,
                     0.0
                 ],
                 "scale": [
@@ -5793,7 +5793,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.8355407714844,
+                    469.836181640625,
                     0.0
                 ],
                 "scale": [
@@ -5838,7 +5838,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.81683349609375,
+                    469.8175048828125,
                     0.0
                 ],
                 "scale": [
@@ -5968,6 +5968,383 @@
                 "localActive": true,
                 "id": 118,
                 "parentID": 117,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 119,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 254
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0003662109375,
+                    300.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -800.0003662109375,
+                    -300.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Pattern_Center",
+                "active": true,
+                "localActive": true,
+                "id": 119,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Select a Tile",
+                "currentFont": "Almendra-Regular",
+                "scale": 0.8999999761581421,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    375.0,
+                    135.0
+                ],
+                "layer": 254
+            }
+        ]
+    },
+    {
+        "id": 120,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\SelectAttackTile_Backdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 254
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0003662109375,
+                    300.0,
+                    0.0
+                ],
+                "scale": [
+                    400.0,
+                    150.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Pattern_Center_BG",
+                "active": true,
+                "localActive": true,
+                "id": 120,
+                "parentID": 119,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 121,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\TileSelect_NextTile.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 255
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    675.000244140625,
+                    325.0,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Pattern_Center_0_BG",
+                "active": true,
+                "localActive": true,
+                "id": 121,
+                "parentID": 119,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 122,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\TileSelect_NextTile.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 255
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0003662109375,
+                    325.0,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Pattern_Center_1_BG",
+                "active": true,
+                "localActive": true,
+                "id": 122,
+                "parentID": 119,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 123,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\TileSelect_NextTile.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 255
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    925.0003662109375,
+                    325.0,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Pattern_Center_2_BG",
+                "active": true,
+                "localActive": true,
+                "id": 123,
+                "parentID": 119,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 124,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\T.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    675.000244140625,
+                    325.0,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Pattern_Center_0",
+                "active": true,
+                "localActive": true,
+                "id": 124,
+                "parentID": 121,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 125,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\T.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0003662109375,
+                    325.0,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Pattern_Center_1",
+                "active": true,
+                "localActive": true,
+                "id": 125,
+                "parentID": 122,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 126,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\T.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    925.0003662109375,
+                    325.0,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Pattern_Center_2",
+                "active": true,
+                "localActive": true,
+                "id": 126,
+                "parentID": 123,
                 "treeNodeFlags": 32
             }
         ]
