@@ -127,6 +127,9 @@ namespace ALEngine::ECS
 
 		void TileDestoryParticles(Math::Vector2 position);
 
+		void UnitSpawnParticles(Math::Vector2 position);
+		
+
 	private:
 		/*!*********************************************************************************
 			\brief
