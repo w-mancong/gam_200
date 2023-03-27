@@ -195,6 +195,7 @@ namespace ALEngine::Script
 
 		//Disable the end turn button
 		ECS::SetActive(false, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+		gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 
 		//Set the turn accordingly
 		switch (currentPhaseStatus) {
@@ -1523,6 +1524,8 @@ namespace ALEngine::Script
 		}
 
 		selected_Pattern_Rotation = 0;
+		gameplaySystem_GUI->ToggleCenterPatternGUI(false);
+
 		//Select pattern 
 		if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 			AL_CORE_CRITICAL("SELECTING PATTERN IN SETUP");
@@ -1567,7 +1570,8 @@ namespace ALEngine::Script
 
 			//Set the gui
 			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
-			gameplaySystem_GUI->TogglePatternGUI(true);
+			gameplaySystem_GUI->ToggleCenterPatternGUI(true);
+			//gameplaySystem_GUI->TogglePatternGUI(true);
 
 
 			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
@@ -2312,6 +2316,15 @@ namespace ALEngine::Script
 
 				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
 				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
+			}
+
+			for (int i = 0; i < 3; ++i) {
+				std::string tile_icon = "Pattern_Center_" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i].file_path);
 			}
 
 			//End turn
