@@ -323,6 +323,17 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
+	void ParticleSystem::TileDestoryParticles(Math::Vector2 position)
+	{
+		position += Math::Vector2(0, 30.f);
+		Entity en = Coordinator::Instance()->GetEntityByTag("tile_dest_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 0.5f;
+		manualParticleContainer.push_back(prop);
+	}
+
 	std::vector<ParticleSystem::Particle> const& ParticleSystem::GetParticleContainer()
 	{
 		return particleContainer;

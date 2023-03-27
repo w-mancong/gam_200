@@ -324,6 +324,11 @@ namespace ALEngine::Script
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 			cell.m_resetCounter = 0;
+			if (cell.m_canWalk)
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
+				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+			}
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
@@ -333,6 +338,11 @@ namespace ALEngine::Script
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1)) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
 			cell.m_resetCounter = 0;
+			if (cell.m_canWalk)
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
+				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+			}
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
@@ -352,6 +362,11 @@ namespace ALEngine::Script
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1)) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
 			cell.m_resetCounter = 0;
+			if (cell.m_canWalk)
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
+				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+			}
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
@@ -371,8 +386,14 @@ namespace ALEngine::Script
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
 			cell.m_resetCounter = 0;
-			cell.m_canWalk = false;
 
+			if (cell.m_canWalk) // particles
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
+				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+			}
+			
+			cell.m_canWalk = false;
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
 
 			if (cell.hasUnit) {
@@ -382,7 +403,6 @@ namespace ALEngine::Script
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
 				}
 			}
-
 			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  left block");
 		}
 
@@ -390,6 +410,11 @@ namespace ALEngine::Script
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
 			cell.m_resetCounter = 0;
+			if (cell.m_canWalk)
+			{
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
+				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+			}
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
