@@ -79,4 +79,8 @@ RTTR_REGISTRATION
 	registration::class_<PauseButton>("PauseButton")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<PromptTool>("PromptTool")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

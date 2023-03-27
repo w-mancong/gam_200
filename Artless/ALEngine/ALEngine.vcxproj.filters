@@ -120,6 +120,7 @@
     <ClCompile Include="Scripts\Source\WaterGenerator.cpp" />
     <ClCompile Include="Scripts\Source\PauseButtonFlag.cpp" />
     <ClCompile Include="Scripts\Source\PauseButton.cpp" />
+    <ClCompile Include="Scripts\Source\PromptTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -292,6 +293,7 @@
     <ClInclude Include="Scripts\Header\WaterGenerator.h" />
     <ClInclude Include="Scripts\Header\PauseButtonFlag.h" />
     <ClInclude Include="Scripts\Header\PauseButton.h" />
+    <ClInclude Include="Scripts\Header\PromptTool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

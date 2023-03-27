@@ -20,5 +20,6 @@
 #include <FPSDisplay.h>
 #include <WaterGenerator.h>
 #include <PauseButton.h>
+#include <PromptTool.h>
 
 #endif

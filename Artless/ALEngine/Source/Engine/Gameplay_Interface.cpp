@@ -23,6 +23,7 @@
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <GameplayCamera.h>
 #include <WaterGenerator.h>
+#include <PromptTool.h>
 #include <Utility/AudioNames.h>
 #include <Engine/PathFindingManager.h>
 
@@ -117,6 +118,12 @@ namespace ALEngine::Script
 		ECS::AddLogicComponent<Script::GameplayCamera>(entity);
 		// Water generator
 		ECS::AddLogicComponent<Script::WaterGenerator>(entity);
+		// Tooltip prompt
+		ECS::AddLogicComponent<Script::PromptTool>(entity);
+		{
+			std::shared_ptr<Script::PromptTool> ptr = ECS::GetLogicComponent<Script::PromptTool>(entity);
+			ptr->InitPatternPlacementStatusVariable(&currentPatternPlacementStatus);
+		}
 
 		//Add physics
 		ECS::CreateRigidbody(entity);
