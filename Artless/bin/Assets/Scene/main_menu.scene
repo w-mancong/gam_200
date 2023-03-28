@@ -305,8 +305,8 @@
         "LogicComponent": [
             {
                 "components": [
-                    "QuitButton",
-                    "AlphaFadeIn"
+                    "AlphaFadeIn",
+                    "QuitButton"
                 ]
             }
         ]
@@ -322,7 +322,7 @@
                     0.0,
                     0.0
                 ],
-                "layer": 256
+                "layer": 15000
             }
         ],
         "Transform": [
@@ -482,7 +482,7 @@
                 "localActive": true,
                 "id": 9,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -928,7 +928,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    445.0060729980469,
+                    445.00616455078125,
                     0.0
                 ],
                 "scale": [
@@ -973,7 +973,7 @@
             {
                 "position": [
                     1075.0,
-                    446.4306945800781,
+                    446.4306335449219,
                     0.0
                 ],
                 "scale": [
@@ -1018,7 +1018,7 @@
             {
                 "position": [
                     814.9998779296875,
-                    442.2305908203125,
+                    442.23052978515625,
                     0.0
                 ],
                 "scale": [
@@ -1051,7 +1051,7 @@
             {
                 "position": [
                     1119.999755859375,
-                    520.0050048828125,
+                    520.0048828125,
                     0.0
                 ],
                 "scale": [
@@ -1343,7 +1343,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.0003356933594,
+                    450.00042724609375,
                     0.0
                 ],
                 "scale": [
@@ -1424,6 +1424,141 @@
                 "components": [
                     "FPSDisplay"
                 ]
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\TutorialConfirmation.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3100
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    442.0,
+                    0.0
+                ],
+                "scale": [
+                    715.0,
+                    485.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "tutorial_prompt",
+                "active": false,
+                "localActive": false,
+                "id": 30,
+                "parentID": 2,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3100
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    650.0,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    249.59999084472656,
+                    125.00000762939453
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": false,
+                "localActive": true,
+                "id": 31,
+                "parentID": 30,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3100
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    959.5999145507813,
+                    350.000732421875,
+                    0.0
+                ],
+                "scale": [
+                    240.0,
+                    125.00000762939453
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": false,
+                "localActive": true,
+                "id": 32,
+                "parentID": 30,
+                "treeNodeFlags": 32
             }
         ]
     }
