@@ -22,7 +22,7 @@ namespace ALEngine::Script
 
 		//Keep track of GUI entities
 		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Rang, Unit_Profile;
-		ECS::Entity Unit_Healthbar, Phase_Indicator, Your_Turn_Sign, Enemy_Tip_Health, Enemy_Tip_Healthbar;
+		ECS::Entity Unit_Healthbar, Phase_Indicator, Phase_Indicator_Icon, Your_Turn_Sign, Enemy_Tip_Health, Enemy_Tip_Healthbar;
 		ECS::Entity Tooltip_Skills_Card, FPS_Label, Pause_Button, Enemy_Tip_Guard, Enemy_Tip_Summoner, Enemy_Tip_Flying;
 		std::array<ECS::Entity, 6> AP_Indicators;
 		std::array<ECS::Entity, 6> Highlight_blocks;
