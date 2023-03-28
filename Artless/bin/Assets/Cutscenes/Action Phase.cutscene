@@ -15,7 +15,7 @@
         "FadeOutType": 6,
         "FadeInTime": 0.0,
         "FadeOutTime": 0.0,
-        "Text": "Once you have finally finished setting up, it is now the Action Phase.===During the Action Phase, you can choose to move, or use one of your skills, depending on===how many Action Points (AP) you have!"
+        "Text": "Now that you have finally finished setting up, it is now the Action Phase.===During the Action Phase, you can choose to move, or use one of your skills, depending on===how many Action Points (AP) you have!"
     },
     {
         "CutsceneName": "Action Points",

@@ -25,7 +25,7 @@ namespace ALEngine::Script
 		f32 const xScreen = static_cast<f32>(Input::GetScreenResX()),
 			yScreen = static_cast<f32>(Input::GetScreenResY());
 
-		cam.Position().x = xform.localPosition.x - xScreen * 0.5f;
+		cam.Position().x = xform.localPosition.x - xScreen * 0.5f + 200.f;
 		cam.Position().y = xform.localPosition.y - yScreen;
 
 		ECS::UpdateUIpositions();

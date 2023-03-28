@@ -488,7 +488,7 @@
                 "localActive": true,
                 "id": 10,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -578,6 +578,321 @@
                 "localActive": true,
                 "id": 12,
                 "parentID": 10,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Show AP",
+                "active": true,
+                "localActive": true,
+                "id": 13,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\AP_Green.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    716.0,
+                    156.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -715.0,
+                    -155.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "AP1",
+                "active": true,
+                "localActive": true,
+                "id": 14,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\AP_Green.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    748.5,
+                    156.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -747.5,
+                    -155.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "AP2",
+                "active": true,
+                "localActive": true,
+                "id": 15,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\AP_Green.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    781.0,
+                    156.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -780.0,
+                    -155.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "AP3",
+                "active": true,
+                "localActive": true,
+                "id": 16,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\AP_Green.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    813.5,
+                    156.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -812.5,
+                    -155.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "AP4",
+                "active": true,
+                "localActive": true,
+                "id": 17,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 18,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\AP_Green.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    846.0,
+                    156.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -845.0,
+                    -155.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "AP5",
+                "active": true,
+                "localActive": true,
+                "id": 18,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 19,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\AP_Green.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    878.4999389648438,
+                    156.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -877.4999389648438,
+                    -155.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "AP6",
+                "active": true,
+                "localActive": true,
+                "id": 19,
+                "parentID": 13,
                 "treeNodeFlags": 32
             }
         ]

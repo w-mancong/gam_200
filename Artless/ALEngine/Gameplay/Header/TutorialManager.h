@@ -145,9 +145,8 @@ namespace Gameplay
 	{
 		TUTORIAL_INTRO_CS = 0,						// Intro - Destroy All Enemies & Select Tile Cutscenes
 		TUTORIAL_SELECT_TILE,						// Arrow pointing at tiles
-		//TUTORIAL_PLACE_TILE,						// Tell player to place tile
 		TUTORIAL_ACTION_PHASE_CS,					// Action Phase & AP Description Cutscenes
-		//TUTORIAL_ACTION_PHASE_WALK,					// Action Phase Walking (No Skills Yet)
+		TUTORIAL_ACTION_PHASE_WALK,					// Action Phase Walking (No Skills Yet)
 		TUTORIAL_MELEE_CS,							// Melee Enemy Cutscene
 		//TUTORIAL_MELEE_END_TURN,					// Fight Melee Enemy
 		TUTORIAL_HARD_DROP_CS,						// Setup Phase Again & Hard Drop Cutscenes

@@ -61,10 +61,15 @@ namespace ALEngine::Script
 				m_PlaceFirstTile = child;
 				ECS::SetActive(false, m_PlaceFirstTile);
 			}
+			else if(data.tag == "Show AP")
+			{
+				m_ShowAP = child;
+				ECS::SetActive(false, m_ShowAP);
+			}
 		}
 
+		// Select Tile Children
 		sceneGraph.FindImmediateChildren(static_cast<s32>(m_SelectTile));
-		// Check children for Tutorial Object
 		for (s32 child : sceneGraph.GetChildren())
 		{
 			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
@@ -75,8 +80,8 @@ namespace ALEngine::Script
 				m_SelectTile_Bloom = child;
 		}
 
+		// Place First Tile Children
 		sceneGraph.FindImmediateChildren(static_cast<s32>(m_PlaceFirstTile));
-		// Check children for Tutorial Object
 		for (s32 child : sceneGraph.GetChildren())
 		{
 			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
@@ -85,6 +90,26 @@ namespace ALEngine::Script
 				m_PlaceFirstTile_Arrow = child;
 			else if (data.tag == "Click Here")
 				m_PlaceFirstTile_ClickHere = child;
+		}
+
+		// Place First Tile Children
+		sceneGraph.FindImmediateChildren(static_cast<s32>(m_ShowAP));
+		for (s32 child : sceneGraph.GetChildren())
+		{
+			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
+			if (data.tag == "AP1")
+				m_APs[0] = child;
+			else if (data.tag == "AP2")
+				m_APs[1] = child;
+			else if (data.tag == "AP3")
+				m_APs[2] = child;
+			else if (data.tag == "AP4")
+				m_APs[3] = child;
+			else if (data.tag == "AP5")
+				m_APs[4] = child;
+			else if (data.tag == "AP6")
+				m_APs[5] = child;
 		}
 	}
 

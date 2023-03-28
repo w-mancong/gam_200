@@ -46,12 +46,19 @@ namespace ALEngine::Script
 		ECS::Entity m_SelectTile{};					// Select Tile Parent
 		ECS::Entity m_SelectTile_Arrow{};			// Arrow
 		ECS::Entity m_SelectTile_Bloom{};			// Bloom
-
 		// ===================================
+
 		// ===== Place First Tile =====
 		ECS::Entity m_PlaceFirstTile{};
 		ECS::Entity m_PlaceFirstTile_ClickHere{};
 		ECS::Entity m_PlaceFirstTile_Arrow{};
+		// ============================
+
+		// ===== AP Display =====
+		ECS::Entity m_ShowAP{};
+		ECS::Entity m_APs[6]{};
+		ECS::Entity m_APs_Arrow{};
+		//=======================
 
 		/*!*********************************************************************************
 			\brief
