@@ -45,7 +45,7 @@ namespace ALEngine::Script
 			SetActive(paused, bd_pause);
 			Time::m_Scale = static_cast<f32>(!paused);
 		}
-		SetActive(static_cast<b8>(!paused), text_bar_hp);
+		SetActive(static_cast<b8>(Time::m_Scale), text_bar_hp);
 	}
 
 	void PauseLogic::Free(ECS::Entity en)

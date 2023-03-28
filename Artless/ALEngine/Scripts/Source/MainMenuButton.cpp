@@ -60,6 +60,7 @@ namespace ALEngine::Script
 				ptr->NextScene("Assets\\Scene\\main_menu.scene");
 				SetMap(0);
 				Time::m_Scale = 1.0f;
+				Font::EnableTextRendering(false);
 			}
 		}
 

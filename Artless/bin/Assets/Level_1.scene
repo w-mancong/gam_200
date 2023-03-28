@@ -225,6 +225,13 @@
                 "parentID": 1,
                 "treeNodeFlags": 32
             }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "PauseButton"
+                ]
+            }
         ]
     },
     {
@@ -4864,7 +4871,7 @@
                     0.0,
                     0.0
                 ],
-                "layer": 256
+                "layer": 15000
             }
         ],
         "Transform": [

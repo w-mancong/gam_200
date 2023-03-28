@@ -66,6 +66,8 @@ namespace ALEngine::Script
 			ad.m_Loop = true;
 			ad.Play();
 		}
+
+		Font::EnableTextRendering(true);
 	}
 
 	void NewGameButton::Free(ECS::Entity en)
