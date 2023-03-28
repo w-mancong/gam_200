@@ -60,7 +60,7 @@ namespace ALEngine::Engine::Scene
 	void CutsceneManager::Init(ECS::Entity en)
 	{
 		m_CutsceneObject = en;
-		ECS::GetSceneGraph().FindImmediateChildren(m_CutsceneObject);
+		ECS::GetSceneGraph().FindImmediateChildren(static_cast<s32>(m_CutsceneObject));
 		std::vector<s32> const& children = ECS::GetSceneGraph().GetChildren();
 
 		// Find all children

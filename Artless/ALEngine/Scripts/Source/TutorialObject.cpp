@@ -27,7 +27,7 @@ namespace ALEngine::Script
 
 		ALEngine::Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
-		sceneGraph.FindImmediateChildren(m_TutorialObject);
+		sceneGraph.FindImmediateChildren(static_cast<s32>(m_TutorialObject));
 		std::vector<s32> const& children = sceneGraph.GetChildren();
 
 		// Set gameplay system
@@ -63,7 +63,7 @@ namespace ALEngine::Script
 			}
 		}
 
-		sceneGraph.FindImmediateChildren(m_SelectTile);
+		sceneGraph.FindImmediateChildren(static_cast<s32>(m_SelectTile));
 		// Check children for Tutorial Object
 		for (s32 child : sceneGraph.GetChildren())
 		{
@@ -75,7 +75,7 @@ namespace ALEngine::Script
 				m_SelectTile_Bloom = child;
 		}
 
-		sceneGraph.FindImmediateChildren(m_PlaceFirstTile);
+		sceneGraph.FindImmediateChildren(static_cast<s32>(m_PlaceFirstTile));
 		// Check children for Tutorial Object
 		for (s32 child : sceneGraph.GetChildren())
 		{
@@ -102,23 +102,24 @@ namespace ALEngine::Script
 
 	void TutorialObject::UpdateSelectTile(void)
 	{
+		const f32 arrowMax{ 250.f }, arrowMin{ 200.f };
+		const f32 scaleSpeed{ 35.f }, bloomSpeed{ 0.7f };
+		static b8 arrowIsShrink{ false };
+
 		if (Gameplay::TutorialManager::Instance()->GetTileIsSelected() == false)
 		{	// If tile is not selected, show arrow
 			ECS::SetActive(true, m_SelectTile);
 			ECS::SetActive(false, m_PlaceFirstTile);
 
-			const f32 arrowMax{ 250.f }, arrowMin{ 200.f };
-			const f32 scaleSpeed{ 35.f }, bloomSpeed{ 0.7f };
-
 			Transform& arrowXform = Coordinator::Instance()->GetComponent<Transform>(m_SelectTile_Arrow);
 
-			if (m_SelectTile_ArrowIsShrink)
+			if (arrowIsShrink)
 			{
 				arrowXform.scale.x -= (scaleSpeed * Time::m_DeltaTime);
 				arrowXform.scale.y = arrowXform.scale.x;
 
 				if (arrowXform.scale.x <= arrowMin)
-					m_SelectTile_ArrowIsShrink = false;
+					arrowIsShrink = false;
 			}
 			else
 			{
@@ -126,7 +127,7 @@ namespace ALEngine::Script
 				arrowXform.scale.y = arrowXform.scale.x;
 
 				if (arrowXform.scale.x >= arrowMax)
-					m_SelectTile_ArrowIsShrink = true;
+					arrowIsShrink = true;
 			}
 
 			static f32 bloomDir{ 1.f };
@@ -148,6 +149,25 @@ namespace ALEngine::Script
 		{	// Tile not selected, show other 
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(true, m_PlaceFirstTile);
+
+			Transform& arrowXform = Coordinator::Instance()->GetComponent<Transform>(m_PlaceFirstTile_Arrow);
+
+			if (arrowIsShrink)
+			{
+				arrowXform.scale.x -= (scaleSpeed * Time::m_DeltaTime);
+				arrowXform.scale.y = arrowXform.scale.x;
+
+				if (arrowXform.scale.x <= arrowMin)
+					arrowIsShrink = false;
+			}
+			else
+			{
+				arrowXform.scale.x += (scaleSpeed * Time::m_DeltaTime);
+				arrowXform.scale.y = arrowXform.scale.x;
+
+				if (arrowXform.scale.x >= arrowMax)
+					arrowIsShrink = true;
+			}
 		}
 
 		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())

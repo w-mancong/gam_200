@@ -242,7 +242,7 @@ namespace ALEngine::Editor
 		ImGuiTreeNodeFlags flags = data.treeNodeFlags;
 
 		// Check if has children
-		sceneGraph.FindImmediateChildren(child);
+		sceneGraph.FindImmediateChildren(static_cast<s32>(child));
 		std::vector<s32> childrenList = sceneGraph.GetChildren();
 
 		if (childrenList.empty())

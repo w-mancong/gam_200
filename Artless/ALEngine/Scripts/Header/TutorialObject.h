@@ -23,7 +23,7 @@ namespace ALEngine::Script
 			\param [in] en
 				Entity that the script is attached to
 		***********************************************************************************/
-		void Init(ECS::Entity en);
+		void Init(ECS::Entity en) override;
 
 		/*!*********************************************************************************
 			\brief
@@ -31,10 +31,10 @@ namespace ALEngine::Script
 			\param [in] en
 				Entity that the script is attached to
 		***********************************************************************************/
-		void Update(ECS::Entity en);
+		void Update(ECS::Entity en) override;
 
 		// For RTTR
-		void DeserializeComponent(ECS::Entity en)
+		void DeserializeComponent(ECS::Entity en) override
 		{
 			ECS::AddLogicComponent<TutorialObject>(en);
 		};
@@ -47,7 +47,6 @@ namespace ALEngine::Script
 		ECS::Entity m_SelectTile_Arrow{};			// Arrow
 		ECS::Entity m_SelectTile_Bloom{};			// Bloom
 
-		b8 m_SelectTile_ArrowIsShrink{ false };
 		// ===================================
 		// ===== Place First Tile =====
 		ECS::Entity m_PlaceFirstTile{};

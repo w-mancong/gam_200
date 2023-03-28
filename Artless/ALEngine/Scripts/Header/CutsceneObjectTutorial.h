@@ -21,7 +21,7 @@ namespace ALEngine::Script
 			\param [in] en
 				Entity that the script is attached to
 		***********************************************************************************/
-		void Init(ECS::Entity en);
+		void Init(ECS::Entity en) override;
 
 		/*!*********************************************************************************
 			\brief
@@ -29,10 +29,10 @@ namespace ALEngine::Script
 			\param [in] en
 				Entity that the script is attached to
 		***********************************************************************************/
-		void Update(ECS::Entity en);
+		void Update(ECS::Entity en) override;
 
 		// For RTTR
-		void DeserializeComponent(ECS::Entity en)
+		void DeserializeComponent(ECS::Entity en) override
 		{
 			ECS::AddLogicComponent<CutsceneObjectTutorial>(en);
 		};
