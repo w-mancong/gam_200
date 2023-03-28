@@ -476,7 +476,7 @@ namespace ALEngine::Script
 
 		if(!retreatFromPlayer)//not retreating from player
 		{
-			if (distanceBetweenEnemyandPlayer < 5 || distanceBetweenEnemyandPlayer > 5)
+			if (distanceBetweenEnemyandPlayer !=5)
 			{
 				AL_CORE_INFO("enemy relocating");
 
@@ -487,19 +487,54 @@ namespace ALEngine::Script
 					{
 						if (Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).m_isAccessible && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).has_Wall && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).hasUnit)
 						{
-							if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) >= 5)
-							{
-								if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <= 3)
+							if (distanceBetweenEnemyandPlayer > 5)
+							{ 
+								if (distanceBetweenEnemyandPlayer < 7)
 								{
-									cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+									if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) == 5)
+									{
+										if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <= 3)
+										{
+											cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+										}
+									}
 								}
+
+								if (distanceBetweenEnemyandPlayer < 7)
+								{
+									if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 5)
+									{
+										if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <=3 )
+										{
+											cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+										}
+									}
+								}
+		
+
 							}
-						}
-						if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
-						{
-							if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) > 2 )
+							else if (distanceBetweenEnemyandPlayer < 5)
 							{
-								backUpCellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+								if (distanceBetweenEnemyandPlayer <= 3)
+								{
+									if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
+									{
+										if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
+										{
+											cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+										}
+									}
+								}
+								if (distanceBetweenEnemyandPlayer > 3)
+								{
+									if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
+									{
+										if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
+										{
+											cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+										}
+									}
+								}
 							}
 						}
 					}
@@ -510,7 +545,7 @@ namespace ALEngine::Script
 		else
 		{
 		   AL_CORE_INFO("enemy retreating");
-		   if (distanceBetweenEnemyandPlayer < 10 )
+		   if (distanceBetweenEnemyandPlayer != 10)
 		   {
 			   for (u32 x = 0; x < m_Room.width; x++)
 			   {
