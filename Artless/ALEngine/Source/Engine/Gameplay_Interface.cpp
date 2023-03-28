@@ -1299,6 +1299,8 @@ namespace ALEngine::Script
 								}
 
 								gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
+								gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 							}
 						}
 					}
