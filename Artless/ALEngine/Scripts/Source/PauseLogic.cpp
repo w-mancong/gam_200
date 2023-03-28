@@ -33,6 +33,8 @@ namespace ALEngine::Script
 
 		paused	 = false;
 		SetActive(paused, bd_pause);	// to make sure that bd_pause is always false when init
+
+		text_bar_hp = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
 	}
 
 	void PauseLogic::Update(ECS::Entity en)
@@ -43,6 +45,7 @@ namespace ALEngine::Script
 			SetActive(paused, bd_pause);
 			Time::m_Scale = static_cast<f32>(!paused);
 		}
+		SetActive(static_cast<b8>(!paused), text_bar_hp);
 	}
 
 	void PauseLogic::Free(ECS::Entity en)

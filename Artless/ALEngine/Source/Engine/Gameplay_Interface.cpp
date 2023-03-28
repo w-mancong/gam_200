@@ -124,6 +124,7 @@ namespace ALEngine::Script
 			std::shared_ptr<Script::PromptTool> ptr = ECS::GetLogicComponent<Script::PromptTool>(entity);
 			ptr->InitPatternPlacementStatusVariable(&currentPatternPlacementStatus);
 		}
+		// pause_logic
 
 		//Add physics
 		ECS::CreateRigidbody(entity);
