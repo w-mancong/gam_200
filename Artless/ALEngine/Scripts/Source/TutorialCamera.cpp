@@ -37,7 +37,7 @@ namespace ALEngine::Script
 		if (Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
 			return;
 
-		UpdateCameraMovement();
+		//UpdateCameraMovement();
 
 #if EDITOR
 		// For debugging purposes, to go to the next state

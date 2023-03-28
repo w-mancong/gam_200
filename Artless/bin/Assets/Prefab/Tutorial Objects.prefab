@@ -28,7 +28,7 @@
                 "localActive": true,
                 "id": 0,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ],
         "LogicComponent": [
@@ -64,11 +64,11 @@
         "EntityData": [
             {
                 "tag": "Cutscene Object",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 1,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "LogicComponent": [
@@ -96,8 +96,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0,
+                    505.5,
+                    527.0,
                     0.0
                 ],
                 "scale": [
@@ -116,7 +116,7 @@
         "EntityData": [
             {
                 "tag": "Black Overlay",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 2,
                 "parentID": 1,
@@ -141,8 +141,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    123.0,
+                    505.5,
+                    200.0,
                     0.0
                 ],
                 "scale": [
@@ -161,7 +161,7 @@
         "EntityData": [
             {
                 "tag": "Dialogue Box",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 3,
                 "parentID": 1,
@@ -202,8 +202,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0,
+                    505.5,
+                    527.0,
                     0.0
                 ],
                 "scale": [
@@ -222,7 +222,7 @@
         "EntityData": [
             {
                 "tag": "Cutscene Bottom",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 4,
                 "parentID": 1,
@@ -247,8 +247,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0,
+                    505.5,
+                    527.0,
                     0.0
                 ],
                 "scale": [
@@ -267,7 +267,7 @@
         "EntityData": [
             {
                 "tag": "Cutscene Top",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 5,
                 "parentID": 1,
@@ -292,8 +292,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    780.0,
+                    505.5,
+                    857.0,
                     0.0
                 ],
                 "scale": [
@@ -312,7 +312,7 @@
         "EntityData": [
             {
                 "tag": "Dialogue Box Top",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 6,
                 "parentID": 1,
@@ -321,7 +321,7 @@
         ],
         "TextProperty": [
             {
-                "textString": "Hello There",
+                "textString": "Since its the Setup Phase, you will need to place my Tetrimino Tiles===to create a path for you to walk on.===Select the current Tile and place it on the squares in front of you.",
                 "currentFont": "SFProverbialGothic",
                 "scale": 0.8999999761581421,
                 "color": [
@@ -361,11 +361,11 @@
         "EntityData": [
             {
                 "tag": "Select Tile Arrow",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 7,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -386,13 +386,13 @@
         "Transform": [
             {
                 "position": [
-                    1250.0,
-                    200.0,
+                    955.5,
+                    277.0,
                     0.0
                 ],
                 "scale": [
-                    250.0,
-                    250.0
+                    219.38465881347656,
+                    219.38465881347656
                 ],
                 "rotation": -90.0,
                 "ui": true,
@@ -406,7 +406,7 @@
         "EntityData": [
             {
                 "tag": "Arrow",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 8,
                 "parentID": 7,
@@ -423,16 +423,16 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.43681710958480835
                 ],
-                "layer": 255
+                "layer": 2002
             }
         ],
         "Transform": [
             {
                 "position": [
-                    1400.0,
-                    113.0,
+                    1105.5,
+                    190.0,
                     0.0
                 ],
                 "scale": [
@@ -451,7 +451,7 @@
         "EntityData": [
             {
                 "tag": "Bloom",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 9,
                 "parentID": 7,
@@ -509,8 +509,8 @@
         "Transform": [
             {
                 "position": [
-                    750.0,
-                    650.0,
+                    300.0,
+                    500.0,
                     0.0
                 ],
                 "scale": [
@@ -554,13 +554,13 @@
         "Transform": [
             {
                 "position": [
-                    830.0,
-                    800.0,
+                    400.0,
+                    650.0,
                     0.0
                 ],
                 "scale": [
-                    250.00076293945313,
-                    250.00076293945313
+                    243.5574493408203,
+                    243.5574493408203
                 ],
                 "rotation": 169.99990844726563,
                 "ui": false,

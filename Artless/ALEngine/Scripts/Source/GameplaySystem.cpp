@@ -36,8 +36,8 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string rooms[] = { "Assets\\Presentation_Level.map", "Assets\\Tutorial_Final.map" };
-		std::string room_To_Load = rooms[0];
+		std::string rooms[] = { "Assets\\Presentation_Level.map", "Assets\\Map\\Tutorial_Final.map" };
+		std::string room_To_Load = rooms[1];
 
 		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
 		
