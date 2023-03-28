@@ -9,6 +9,8 @@ brief:	This file contain function definition for main menu button when paused
 #include <pch.h>
 #include <MainMenuButton.h>
 #include <SceneChangeHelper.h>
+#include <GameplaySystem.h>
+#include <PauseButtonFlag.h>
 
 namespace ALEngine::Script
 {
@@ -33,11 +35,14 @@ namespace ALEngine::Script
 
 		void WhenMenuHover(Entity en)
 		{
+			if (PauseButtonFlag::confirmationBG)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
 				SetActive(true, menu_confirmation);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = true;
 			}
 		}
 
@@ -53,6 +58,7 @@ namespace ALEngine::Script
 			{
 				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
 				ptr->NextScene("Assets\\Scene\\main_menu.scene");
+				SetMap(0);
 				Time::m_Scale = 1.0f;
 			}
 		}
@@ -69,6 +75,7 @@ namespace ALEngine::Script
 			{
 				SetActive(false, menu_confirmation);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = false;
 			}
 		}
 
@@ -125,5 +132,6 @@ namespace ALEngine::Script
 	void MainMenuButton::Free(ECS::Entity en)
 	{
 		menu_confirmation = yes = no = scene_transition = MAX_ENTITIES;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }

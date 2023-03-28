@@ -238,7 +238,7 @@ namespace ALEngine::Engine
 #if EDITOR
 		RunFileWatcherThread();
 #else
-		OpenGLWindow::FullScreen(true);
+		//OpenGLWindow::FullScreen(true);
 		Console::StopConsole();
 #endif
 	}
