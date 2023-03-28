@@ -479,7 +479,7 @@ namespace ALEngine::Script
 		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 		AL_CORE_INFO("dist enemy & player:" + std::to_string(distanceBetweenEnemyandPlayer));
 
-		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= 4)
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <=6)
 		{
 			enemyUnit.playerTriggeredEnemy = true;
 			AL_CORE_INFO("AI triggered by player");
@@ -495,67 +495,120 @@ namespace ALEngine::Script
 
 		//vector to store the cells no unit with tile
 		std::vector<ECS::Entity> cellsMoveableTo{};
-		std::vector<ECS::Entity> backUpCellsMoveableTo{};
+		//std::vector<ECS::Entity> backUpCellsMoveableTo{};
 
 		b8 hasFoundCells = false;
 
 		if(!retreatFromPlayer)//not retreating from player
 		{
-			if (distanceBetweenEnemyandPlayer < 5 || distanceBetweenEnemyandPlayer > 5)
+			if (distanceBetweenEnemyandPlayer < 6)
 			{
-				AL_CORE_INFO("enemy relocating");
-
-				//check for all cell with no unit and distance from player is 5 and from enemy is <3
+				AL_CORE_INFO("enemy relocating FURTHER from player");
 				for (u32 x = 0; x < m_Room.width; x++)
 				{
 					for (u32 y = 0; y < m_Room.height; y++)
 					{
-						if (Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).m_isAccessible && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).has_Wall && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).hasUnit)
+						if (distanceBetweenEnemyandPlayer <= 3)// 2-0 tiles between player and summoner
 						{
-							if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) >= 5)
+							if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
 							{
-								if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <= 3)
+								if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) < 4)
 								{
 									cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
 								}
 							}
 						}
-						if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
+						if (distanceBetweenEnemyandPlayer > 3)//3-4  tiles between player and summoner
 						{
-							if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) > 2 )
+							if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) == 6)
 							{
-								backUpCellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+								if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <=3)
+								{
+									cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+								}
 							}
 						}
 					}
 				}
-
+			}
+			else if (distanceBetweenEnemyandPlayer > 6)
+			{
+				AL_CORE_INFO("enemy relocating NEARER to player");
+				for (u32 x = 0; x < m_Room.width; x++)
+				{
+					for (u32 y = 0; y < m_Room.height; y++)
+					{
+						if (distanceBetweenEnemyandPlayer <= 9)// 6-8 tiles between player and summoner
+						{
+							if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) == 6)
+							{
+								if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <4)
+								{
+									cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+								}
+							}
+						}
+						if (distanceBetweenEnemyandPlayer > 9)// 9 or more tiles between player and summoner
+						{
+							if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) < distanceBetweenEnemyandPlayer)
+							{
+								if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <4)
+								{
+									cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 		else
 		{
 		   AL_CORE_INFO("enemy retreating");
-		   if (distanceBetweenEnemyandPlayer < 10 )
+		   if (distanceBetweenEnemyandPlayer < 6)
 		   {
+			   AL_CORE_INFO("enemy relocating FURTHER from player");
 			   for (u32 x = 0; x < m_Room.width; x++)
 			   {
 				   for (u32 y = 0; y < m_Room.height; y++)
 				   {
-					   if (Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).m_isAccessible && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).has_Wall && !Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, x, y)).hasUnit)
+					   if (distanceBetweenEnemyandPlayer <= 3)// 2-0 tiles between player and summoner
 					   {
-						   if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 5)
+						   if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
 						   {
-							   if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) > 2)
+							   if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) < 4)
 							   {
 								   cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
 							   }
 						   }
 					   }
-					   if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > 1)
+					   if (distanceBetweenEnemyandPlayer > 3)//3-4  tiles between player and summoner
 					   {
-						   if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) >2)
+						   if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) == 6)
 						   {
-							   backUpCellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+							   if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) <= 3)
+							   {
+								   cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+							   }
+						   }
+					   }
+				   }
+			   }
+		   }
+		   else if (distanceBetweenEnemyandPlayer > 6)
+		   {
+			   for (u32 x = 0; x < m_Room.width; x++)
+			   {
+				   for (u32 y = 0; y < m_Room.height; y++)
+				   {
+					   if (distanceBetweenEnemyandPlayer > 9)// 9 or more tiles between player and summoner
+					   {
+						   if (Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(x, y)) > distanceBetweenEnemyandPlayer)
+						   {
+							   if (Math::Vector2Int::Distance(Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]), Math::Vector2Int(x, y)) < 4)
+							   {
+								   cellsMoveableTo.push_back(gameplaySystem->getEntityCell(m_Room, x, y));
+							   }
 						   }
 					   }
 				   }
@@ -563,13 +616,13 @@ namespace ALEngine::Script
 		   }
         }
 
-		if (!(cellsMoveableTo.size() > 0) && backUpCellsMoveableTo.size() > 0)//if cellsMoveableTo is empty then check if backUpCellsMoveableTo has any position.
-		{
-			for (u32 i = 0; i < backUpCellsMoveableTo.size(); i++)
-			{
-				cellsMoveableTo.push_back(backUpCellsMoveableTo[i]);
-			}
-		}
+		//if (!(cellsMoveableTo.size() > 0) && backUpCellsMoveableTo.size() > 0)//if cellsMoveableTo is empty then check if backUpCellsMoveableTo has any position.
+		//{
+		//	for (u32 i = 0; i < backUpCellsMoveableTo.size(); i++)
+		//	{
+		//		cellsMoveableTo.push_back(backUpCellsMoveableTo[i]);
+		//	}
+		//}
 
 		if (cellsMoveableTo.size() > 0)//if cellsMoveableTo is not empty
 		{
@@ -623,7 +676,7 @@ namespace ALEngine::Script
 			{
 				pathList = *i;
 			}
-			else if (pathList.size() > i->size() && i->size() > 0)
+			else if (pathList.size() < i->size())
 			{
 				pathList = *i;
 			}
