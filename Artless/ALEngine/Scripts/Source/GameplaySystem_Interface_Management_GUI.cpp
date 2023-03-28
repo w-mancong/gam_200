@@ -115,17 +115,18 @@ namespace ALEngine::Script
 		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Movement);
 		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
 
-		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
-		attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
-		defense_text.textString = std::to_string(unit.defense);
-		movement_text.textString = std::to_string(unit.actionPoints) + "/" + std::to_string(unit.maxActionPoints);
-		name_text.textString = unit.unit_Name;
-
 		Unit& PlayerUnit = Coordinator::Instance()->GetComponent<Unit>(Coordinator::Instance()->GetEntityByTag("Player"));
+
+		health_text.textString = std::to_string(PlayerUnit.health) + "/" + std::to_string(PlayerUnit.maxHealth);
+		attack_text.textString = std::to_string(PlayerUnit.minDamage) + "/" + std::to_string(PlayerUnit.maxDamage);
+		defense_text.textString = std::to_string(PlayerUnit.defense);
+		movement_text.textString = std::to_string(PlayerUnit.actionPoints) + "/" + std::to_string(PlayerUnit.maxActionPoints);
+		name_text.textString = PlayerUnit.unit_Name;
+
 		profile.id = Engine::AssetManager::Instance()->GetGuid(PlayerUnit.unit_Profile_Sprite_File);
 
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Unit_Healthbar);
-		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth)) * 0.5f;
+		healthbar_transform.localScale.x = (PlayerUnit.health <= 0 ? 0 : ((f32)PlayerUnit.health / (f32)PlayerUnit.maxHealth)) * 0.5f;
 	}
 
 	void GameplaySystem_Interface_Management_GUI::InitializeGUI()
