@@ -336,12 +336,25 @@ namespace ALEngine::ECS
 
 	void ParticleSystem::TileDestoryParticles(Math::Vector2 position)
 	{
-		position += Math::Vector2(0, 30.f);
 		Entity en = Coordinator::Instance()->GetEntityByTag("tile_dest_particles");
 		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
-		prop.position = position;
 		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		prop.spawnDuration = 0.5f;
+
+		Math::Vector2 position1 = position + Math::Vector2(15.f, -25.f);
+		prop.position = position1;
+		manualParticleContainer.push_back(prop);
+
+		Math::Vector2 position2 = position + Math::Vector2(-15.f, -25.f);
+		prop.position = position2;
+		manualParticleContainer.push_back(prop);
+
+		Math::Vector2 position3 = position + Math::Vector2(17.f, 25.f);
+		prop.position = position3;
+		manualParticleContainer.push_back(prop);
+
+		Math::Vector2 position4 = position + Math::Vector2(-17.f, 25.f);
+		prop.position = position4;
 		manualParticleContainer.push_back(prop);
 	}
 
