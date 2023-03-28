@@ -144,6 +144,7 @@ namespace ALEngine::Script
 		guiManager.Lose_Clear = Coordinator::Instance()->GetEntityByTag("Lose_Clear_Text");
 		guiManager.Lose_Button = Coordinator::Instance()->GetEntityByTag("Lose_Button");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
+		guiManager.Phase_Indicator_Icon = Coordinator::Instance()->GetEntityByTag("Phase_Icon");
 		guiManager.Tooltip_Skills_Card = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
 		guiManager.FPS_Label = Coordinator::Instance()->GetEntityByTag("FPS_label");
 		guiManager.Pause_Button = Coordinator::Instance()->GetEntityByTag("pause_button");
@@ -365,6 +366,7 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::GuiUpdatePhaseIndicator(PHASE_STATUS status)
 	{
+		guiManager.Phase_Indicator_Icon = Coordinator::Instance()->GetEntityByTag("Phase_Icon");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
 		Text& phaseIndicator = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Phase_Indicator);
 		phaseIndicator.colour = Engine::Vector3(1.f, 1.f, 1.f);
@@ -373,14 +375,26 @@ namespace ALEngine::Script
 		{
 		case PHASE_STATUS::PHASE_SETUP:
 			phaseIndicator.textString = "Setup Phase";
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Phase_Indicator_Icon);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Phase_SetupIcon.png");
+			}
 			break;
 
 		case PHASE_STATUS::PHASE_ACTION:
 			phaseIndicator.textString = "Action Phase";
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Phase_Indicator_Icon);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Phase_ActionIcon.png");
+			}
 			break;
 
 		case PHASE_STATUS::PHASE_ENEMY:
 			phaseIndicator.textString = "Enemy Phase";
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Phase_Indicator_Icon);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Phase_EnemyIcon.png");
+			}
 			phaseIndicator.colour = Engine::Vector3(1.f, 0.32f, 0.28f);
 			break;
 		}
