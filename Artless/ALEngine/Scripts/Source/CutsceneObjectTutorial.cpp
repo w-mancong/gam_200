@@ -20,6 +20,7 @@ namespace ALEngine::Script
 	{
 		Engine::Scene::CutsceneManager::Instance()->Init(en);
 		Engine::Scene::CutsceneManager::Instance()->PlaySequence("Tutorial Intro");
+		Time::m_Scale = 0.f;
 
 		Gameplay::TutorialManager::Instance()->BeginTutorial();
 	}

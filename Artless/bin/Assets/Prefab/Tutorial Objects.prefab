@@ -391,8 +391,8 @@
                     0.0
                 ],
                 "scale": [
-                    219.38465881347656,
-                    219.38465881347656
+                    250.0,
+                    250.0
                 ],
                 "rotation": -90.0,
                 "ui": true,
@@ -488,7 +488,7 @@
                 "localActive": true,
                 "id": 10,
                 "parentID": 0,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -559,8 +559,8 @@
                     0.0
                 ],
                 "scale": [
-                    243.5574493408203,
-                    243.5574493408203
+                    250.0,
+                    250.0
                 ],
                 "rotation": 169.99990844726563,
                 "ui": false,
@@ -584,18 +584,6 @@
     },
     {
         "id": 13,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 0
-            }
-        ],
         "Transform": [
             {
                 "position": [
@@ -623,7 +611,7 @@
                 "localActive": true,
                 "id": 13,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -893,6 +881,174 @@
                 "localActive": true,
                 "id": 19,
                 "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 20,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Pointer.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    651.0,
+                    261.0,
+                    0.0
+                ],
+                "scale": [
+                    250.00039672851563,
+                    250.00039672851563
+                ],
+                "rotation": -119.99998474121094,
+                "ui": true,
+                "uiOffset": [
+                    -650.0,
+                    -260.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Arrow",
+                "active": true,
+                "localActive": true,
+                "id": 20,
+                "parentID": 13,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 21,
+        "Transform": [
+            {
+                "position": [
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Walk To Enemy",
+                "active": true,
+                "localActive": true,
+                "id": 21,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 22,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Pointer.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3901
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    601.0,
+                    651.0,
+                    0.0
+                ],
+                "scale": [
+                    249.99986267089844,
+                    249.99986267089844
+                ],
+                "rotation": 169.99990844726563,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Arrow",
+                "active": true,
+                "localActive": true,
+                "id": 22,
+                "parentID": 21,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 23,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Selector.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3901
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    501.0,
+                    501.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Click Here",
+                "active": true,
+                "localActive": true,
+                "id": 23,
+                "parentID": 21,
                 "treeNodeFlags": 32
             }
         ]

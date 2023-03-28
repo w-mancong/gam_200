@@ -129,6 +129,9 @@ namespace ALEngine::Script
 		rigidbody.drag = { 0,0 };
 		rigidbody.mass = 0.1f;
 		rigidbody.hasGravity = false;
+
+		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			Gameplay::TutorialManager::Instance()->SetPlayerEntity(entity);
 	}
 
 

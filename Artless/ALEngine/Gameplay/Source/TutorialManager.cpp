@@ -38,19 +38,26 @@ namespace Gameplay
 			// ===== Cutscenes =====
 		case TutorialState::TUTORIAL_ACTION_PHASE_CS:
 			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Action Phase");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
 			break;
 		case TutorialState::TUTORIAL_MELEE_CS:
 			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Melee Enemy Intro");
+			Time::m_Scale = 0.f;
 			break;
 		case TutorialState::TUTORIAL_HARD_DROP_CS:
 			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Hard Drop Skill Intro");
+			Time::m_Scale = 0.f;
 			break;
 
 
 			// ===== Scripted Gameplay =====
 		case TutorialState::TUTORIAL_SELECT_TILE:
 			//m_GameplaySystem->
+			Time::m_Scale = 1.f;
 			break;
+		default:
+			Time::m_Scale = 1.f;
 		}
 	}
 
@@ -92,6 +99,16 @@ namespace Gameplay
 	void TutorialManager::SetTileIsPlaced(b8 tileIsPlaced)
 	{
 		m_TileIsPlaced = tileIsPlaced;
+	}
+
+	ALEngine::ECS::Entity TutorialManager::GetPlayerEntity(void)
+	{
+		return m_PlayerObject;
+	}
+
+	void TutorialManager::SetPlayerEntity(ALEngine::ECS::Entity en)
+	{
+		m_PlayerObject = en;
 	}
 
 	std::shared_ptr<ALEngine::Script::GameplaySystem> TutorialManager::GetGameplaySystem(void)

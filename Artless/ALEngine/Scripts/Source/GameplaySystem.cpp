@@ -179,6 +179,13 @@ namespace ALEngine::Script
 				Cell cell;
 				cell.coordinate = { (s32)r, (s32)c };
 
+				// Mainly for tutorial
+				if (row == "Tile")
+				{
+					cell.m_canWalk = true;
+					cell.m_resetCounter = 1000;		// Big number that cannot be reached
+				}
+
 				// Dont subscribe if it is not within 
 				if (row != "Outside_Empty")
 				{

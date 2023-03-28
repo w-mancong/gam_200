@@ -52,6 +52,24 @@ namespace ALEngine::Engine::Scene
 		}
 	}
 
+	b8 CutsceneManager::WasJustTriggered(void)
+	{
+		return m_JustTriggered;
+	}
+
+	void CutsceneManager::SetJustTriggered(void)
+	{
+		m_JustTriggered = true;
+	}
+
+	std::string CutsceneManager::GetCurrentCutsceneName(void)
+	{
+		if (m_CurrentCutscene != m_Sequences[m_SelectedSequence].end())
+			return m_CurrentCutscene->m_CutsceneName;
+
+		return "";
+	}
+
 	CutsceneManager::CutsceneManager(void)
 	{
 		LoadSequences();
@@ -445,15 +463,15 @@ namespace ALEngine::Engine::Scene
 
 		// Check if next cutsene, either based on timer or if player pressed key
 		// Skips directly, no fading
-		if (Input::KeyTriggered(KeyCode::MouseLeftButton)
-			|| Input::KeyTriggered(KeyCode::Enter))
+		if ((Input::KeyTriggered(KeyCode::MouseLeftButton)
+			|| Input::KeyTriggered(KeyCode::Enter)) && m_JustTriggered == false)
 		{
 			m_CurrentCutscene = std::next(m_CurrentCutscene);
 
 			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
 				StopSequence();
 			else
-			{			
+			{
 				// Check has image
 				if (m_CurrentCutscene->m_HasImage)
 				{
@@ -481,6 +499,8 @@ namespace ALEngine::Engine::Scene
 				SetText();
 			}
 		}
+		else
+			m_JustTriggered = false;
 	}
 
 	b8 CutsceneManager::HasCutscene(void)

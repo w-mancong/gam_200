@@ -41,6 +41,13 @@ namespace ALEngine::Script
 				Updates Camera Movement for the TutorialCamera
 		***********************************************************************************/
 		void UpdateCameraMovement(void);
+
+		// Vairables
+		f32	m_LBound{ std::numeric_limits<f32>::min() },
+			m_RBound{ std::numeric_limits<f32>::max() },
+			m_BBound{ std::numeric_limits<f32>::min() },
+			m_TBound{ std::numeric_limits<f32>::max() };
+		f32 m_Width{}, m_Height{};
 	};
 }
 #endif

@@ -8,6 +8,7 @@ brief:	This file contain function definition for a tutorial camera
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <TutorialCamera.h>
+#include <GameplaySystem.h>
 
 namespace ALEngine::Script
 {
@@ -18,15 +19,26 @@ namespace ALEngine::Script
 
 	void TutorialCamera::Init([[maybe_unused]] ECS::Entity en)
 	{
-		AL_CORE_INFO("Hello World");
-		Transform& xform = Coordinator::Instance()->GetComponent<Transform>(en);
-		Engine::Camera& cam = ECS::GetCamera();
+		auto const& map = Gameplay::MapManager::Instance()->GetMap();
+		u64 const W = map[0].size(), H = map.size();
 
-		f32 const xScreen = static_cast<f32>(Input::GetScreenResX()),
-			yScreen = static_cast<f32>(Input::GetScreenResY());
+		m_LBound = m_BBound = 0.0f - TILE_SIZE;
+		m_RBound = static_cast<f32>(TILE_SIZE) * static_cast<f32>(W);
+		m_TBound = static_cast<f32>(TILE_SIZE) * static_cast<f32>(H);
 
-		cam.Position().x = xform.localPosition.x - xScreen * 0.5f + 200.f;
-		cam.Position().y = xform.localPosition.y - yScreen;
+		m_Width = ECS::GetCamera().Width(), m_Height = ECS::GetCamera().Height();
+
+		Engine::Camera& camera = ECS::GetCamera();
+
+		if (camera.Position().x < m_LBound)
+			camera.Position().x = m_LBound;
+		else if (camera.Position().x > m_RBound - m_Width)
+			camera.Position().x = m_RBound - m_Width;
+
+		if (camera.Position().y < m_BBound)
+			camera.Position().y = m_BBound;
+		else if (camera.Position().y > m_TBound - m_Height)
+			camera.Position().y = m_TBound - m_Height;
 
 		ECS::UpdateUIpositions();
 	}
@@ -50,14 +62,14 @@ namespace ALEngine::Script
 	{
 		Engine::Camera& camera = ECS::GetCamera();
 
-		f32 const xScreen = static_cast<f32>(Input::GetScreenResX()),
-			yScreen = static_cast<f32>(Input::GetScreenResY());
+		f32 const	xScreen = static_cast<f32>(Input::GetScreenResX()),
+					yScreen = static_cast<f32>(Input::GetScreenResY());
 
-		f32 const xPadding = xScreen * PADDING_PERCENTAGE,
-			yPadding = yScreen * PADDING_PERCENTAGE;
+		f32 const	xPadding = xScreen * PADDING_PERCENTAGE,
+					yPadding = yScreen * PADDING_PERCENTAGE;
 
-		f32 const xMouse = static_cast<f32>(Input::GetMousePosX()),
-			yMouse = static_cast<f32>(Input::GetMousePosY());
+		f32 const	xMouse = static_cast<f32>(Input::GetMousePosX()),
+					yMouse = static_cast<f32>(Input::GetMousePosY());
 
 		// Move camera to the left
 		if (xMouse <= xPadding)
@@ -80,6 +92,17 @@ namespace ALEngine::Script
 		{
 			camera.Position().y += CAMERA_SPEED * Time::m_DeltaTime;
 		}
+
+		if (camera.Position().x < m_LBound)
+			camera.Position().x = m_LBound;
+		else if (camera.Position().x > m_RBound - m_Width)
+			camera.Position().x = m_RBound - m_Width;
+
+		if (camera.Position().y < m_BBound)
+			camera.Position().y = m_BBound;
+		else if (camera.Position().y > m_TBound - m_Height)
+			camera.Position().y = m_TBound - m_Height;
+
 		ECS::UpdateUIpositions();
 
 	}

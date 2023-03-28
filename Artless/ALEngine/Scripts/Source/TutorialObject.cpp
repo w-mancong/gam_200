@@ -11,6 +11,7 @@ brief:	This file contain function definition for the tutorial object.
 #include <pch.h>
 #include <TutorialObject.h>
 #include <GameplaySystem.h>
+#include <Engine/Gameplay_Interface.h>
 
 namespace ALEngine::Script
 {
@@ -66,6 +67,11 @@ namespace ALEngine::Script
 				m_ShowAP = child;
 				ECS::SetActive(false, m_ShowAP);
 			}
+			else if (data.tag == "Walk To Enemy")
+			{
+				m_WalkToEnemy = child;
+				ECS::SetActive(false, m_WalkToEnemy);
+			}
 		}
 
 		// Select Tile Children
@@ -110,6 +116,20 @@ namespace ALEngine::Script
 				m_APs[4] = child;
 			else if (data.tag == "AP6")
 				m_APs[5] = child;
+			else if (data.tag == "Arrow")
+				m_APs_Arrow = child;
+		}
+
+		// Walk To Enemy Children
+		sceneGraph.FindImmediateChildren(static_cast<s32>(m_WalkToEnemy));
+		for (s32 child : sceneGraph.GetChildren())
+		{
+			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
+			if (data.tag == "Click Here")
+				m_WalkToEnemy_ClickHere = child;
+			else if (data.tag == "Arrow")
+				m_WalkToEnemy_Arrow = child;
 		}
 	}
 
@@ -120,6 +140,12 @@ namespace ALEngine::Script
 		case Gameplay::TutorialState::TUTORIAL_SELECT_TILE:
 			UpdateSelectTile();
 			break;
+		case Gameplay::TutorialState::TUTORIAL_ACTION_PHASE_CS:
+			UpdateAP_CS();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_ACTION_PHASE_WALK:
+			UpdateWalkToEnemy();
+			break;
 		default:
 			break;
 		}
@@ -127,37 +153,18 @@ namespace ALEngine::Script
 
 	void TutorialObject::UpdateSelectTile(void)
 	{
-		const f32 arrowMax{ 250.f }, arrowMin{ 200.f };
-		const f32 scaleSpeed{ 35.f }, bloomSpeed{ 0.7f };
-		static b8 arrowIsShrink{ false };
+		const f32 bloomSpeed{ 0.7f };
 
 		if (Gameplay::TutorialManager::Instance()->GetTileIsSelected() == false)
 		{	// If tile is not selected, show arrow
 			ECS::SetActive(true, m_SelectTile);
 			ECS::SetActive(false, m_PlaceFirstTile);
 
-			Transform& arrowXform = Coordinator::Instance()->GetComponent<Transform>(m_SelectTile_Arrow);
-
-			if (arrowIsShrink)
-			{
-				arrowXform.scale.x -= (scaleSpeed * Time::m_DeltaTime);
-				arrowXform.scale.y = arrowXform.scale.x;
-
-				if (arrowXform.scale.x <= arrowMin)
-					arrowIsShrink = false;
-			}
-			else
-			{
-				arrowXform.scale.x += (scaleSpeed * Time::m_DeltaTime);
-				arrowXform.scale.y = arrowXform.scale.x;
-
-				if (arrowXform.scale.x >= arrowMax)
-					arrowIsShrink = true;
-			}
+			VariableScale(m_SelectTile_Arrow);
 
 			static f32 bloomDir{ 1.f };
 			Sprite& bloomSpr = Coordinator::Instance()->GetComponent<Sprite>(m_SelectTile_Bloom);
-			bloomSpr.color.a += (bloomDir * Time::m_DeltaTime * bloomSpeed);
+			bloomSpr.color.a += (bloomDir * Time::m_ActualDeltaTime * bloomSpeed);
 
 			if (bloomSpr.color.a >= 1.f)
 			{
@@ -175,24 +182,7 @@ namespace ALEngine::Script
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(true, m_PlaceFirstTile);
 
-			Transform& arrowXform = Coordinator::Instance()->GetComponent<Transform>(m_PlaceFirstTile_Arrow);
-
-			if (arrowIsShrink)
-			{
-				arrowXform.scale.x -= (scaleSpeed * Time::m_DeltaTime);
-				arrowXform.scale.y = arrowXform.scale.x;
-
-				if (arrowXform.scale.x <= arrowMin)
-					arrowIsShrink = false;
-			}
-			else
-			{
-				arrowXform.scale.x += (scaleSpeed * Time::m_DeltaTime);
-				arrowXform.scale.y = arrowXform.scale.x;
-
-				if (arrowXform.scale.x >= arrowMax)
-					arrowIsShrink = true;
-			}
+			VariableScale(m_PlaceFirstTile_Arrow);
 		}
 
 		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
@@ -201,6 +191,89 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(false, m_PlaceFirstTile);
+		}
+	}
+
+	void TutorialObject::UpdateAP_CS(void)
+	{
+		if (ALEngine::Engine::Scene::CutsceneManager::Instance()->GetCurrentCutsceneName() == "Action Points")
+		{
+			ECS::SetActive(true, m_ShowAP);
+
+			// Scale arrow
+			VariableScale(m_APs_Arrow);
+
+			// Change alpha of the AP circle
+			const f32 bloomSpeed{ 0.7f };
+			const f32 min{ 0.3f }, max{ 1.f };
+
+			static f32 bloomDir{ 1.f };
+
+			Sprite& APspr = Coordinator::Instance()->GetComponent<Sprite>(m_APs[0]);
+			APspr.color.a += (bloomDir * Time::m_ActualDeltaTime * bloomSpeed);
+
+			if (APspr.color.a >= max)
+			{
+				APspr.color.a = max;
+				bloomDir = -1.f;
+			}
+			else if (APspr.color.a <= min)
+			{
+				APspr.color.a = min;
+				bloomDir = 1.f;
+			}
+
+			for (u8 i{ 1 }; i < 6; ++i)
+			{
+				Sprite& otherAPspr = Coordinator::Instance()->GetComponent<Sprite>(m_APs[i]);
+				otherAPspr.color.a = APspr.color.a;
+			}
+		}
+		else
+			ECS::SetActive(false, m_ShowAP);
+	}
+
+	void TutorialObject::UpdateWalkToEnemy(void)
+	{
+		ECS::SetActive(true, m_WalkToEnemy);
+		ECS::SetActive(false, m_ShowAP);
+
+		Unit player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
+
+		if (Gameplay::TutorialManager::Instance()->GetGameplaySystem()->currentModeOrder.path.empty() &&
+			player.actionPoints != player.maxActionPoints)
+		{
+			Gameplay::TutorialManager::Instance()->NextState();
+			ECS::SetActive(false, m_WalkToEnemy);
+			return;
+		}
+
+		VariableScale(m_WalkToEnemy_Arrow);
+	}
+	
+	void TutorialObject::VariableScale(ECS::Entity en)
+	{
+		const f32 max{ 250.f }, min{ 200.f };
+		const f32 scaleSpeed{ 35.f };
+		static b8 isShrink{ false };
+
+		Transform& xform = Coordinator::Instance()->GetComponent<Transform>(en);
+
+		if (isShrink)
+		{
+			xform.scale.x -= (scaleSpeed * Time::m_ActualDeltaTime);
+			xform.scale.y = xform.scale.x;
+
+			if (xform.scale.x <= min)
+				isShrink = false;
+		}
+		else
+		{
+			xform.scale.x += (scaleSpeed * Time::m_ActualDeltaTime);
+			xform.scale.y = xform.scale.x;
+
+			if (xform.scale.x >= max)
+				isShrink = true;
 		}
 	}
 }

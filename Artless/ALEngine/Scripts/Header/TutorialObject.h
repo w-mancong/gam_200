@@ -60,6 +60,13 @@ namespace ALEngine::Script
 		ECS::Entity m_APs_Arrow{};
 		//=======================
 
+		// ===== Walk To Enemy =====
+		ECS::Entity m_WalkToEnemy{};
+		ECS::Entity m_WalkToEnemy_ClickHere{};
+		ECS::Entity m_WalkToEnemy_Arrow{};
+		// =========================
+
+
 		/*!*********************************************************************************
 			\brief
 				Initializes the Tutorial Object
@@ -68,7 +75,25 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void UpdateSelectTile(void);
 
+		/*!*********************************************************************************
+			\brief
+				Updates the AP objects look during the AP cutscene
+		***********************************************************************************/
+		void UpdateAP_CS(void);
 
+		/*!*********************************************************************************
+			\brief
+				Updates getting the player to walk to enemy
+		***********************************************************************************/
+		void UpdateWalkToEnemy(void);
+
+		/*!*********************************************************************************
+			\brief
+				Scales the entity big/small
+			\param [in] en
+				Entity to be scaled
+		***********************************************************************************/
+		void VariableScale(ECS::Entity en);
 	};
 }
 

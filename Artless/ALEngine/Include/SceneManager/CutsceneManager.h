@@ -168,6 +168,34 @@ namespace ALEngine::Engine::Scene
 		***********************************************************************************/
 		void SetText(void);
 
+		/*!*********************************************************************************
+			\brief
+				Checks whether it was just triggered by mouse click right before cutscene
+				sequence started.
+				Mainly to handle the cutscene and make sure it doesn't skip the first 
+				cutscene image if a player had to click to begin the cutscene sequence
+			\return
+				Returns if the cutscene was just triggered
+		***********************************************************************************/
+		b8 WasJustTriggered(void);
+		
+		/*!*********************************************************************************
+			\brief
+				Sets whether it was just triggered by mouse click right before cutscene
+				sequence started to true.
+				Mainly to handle the cutscene and make sure it doesn't skip the first
+				cutscene image if a player had to click to begin the cutscene sequence
+		***********************************************************************************/
+		void SetJustTriggered(void);
+
+		/*!*********************************************************************************
+			\brief
+				Gets the name of the current cutscene
+			\return
+				Returns the current name
+				Returns empty if no cutscene
+		***********************************************************************************/
+		std::string GetCurrentCutsceneName(void);
 	private:
 		/*!*********************************************************************************
 			\brief 
@@ -190,6 +218,7 @@ namespace ALEngine::Engine::Scene
 		std::vector<Cutscene>::iterator m_CurrentCutscene{};
 		std::string m_SelectedSequence{};
 		b8 m_CutsceneIsPlaying{ true };		
+		b8 m_JustTriggered{ false };
 		f32 m_FadeSpeed{};
 		CutscenePhase m_CurrentPhase{ CutscenePhase::FADE_IN };
 

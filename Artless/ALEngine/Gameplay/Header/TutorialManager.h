@@ -106,6 +106,22 @@ namespace Gameplay
 
 		/*!*********************************************************************************
 			\brief
+				Get Player Entity 
+			\return
+				Return Player Entity
+		***********************************************************************************/
+		ALEngine::ECS::Entity GetPlayerEntity(void);
+
+		/*!*********************************************************************************
+			\brief
+				Set player Entity
+			\param [in] en
+				Value to set to player entity
+		***********************************************************************************/
+		void SetPlayerEntity(ALEngine::ECS::Entity en);
+
+		/*!*********************************************************************************
+			\brief
 				Gets the GameplaySystem
 			\return
 				Returns pointer to the GameplaySystem
@@ -124,6 +140,7 @@ namespace Gameplay
 
 		// Entities
 		ALEngine::ECS::Entity m_TutorialObject{ ALEngine::ECS::MAX_ENTITIES };
+		ALEngine::ECS::Entity m_PlayerObject{ ALEngine::ECS::MAX_ENTITIES };
 
 		// Enums
 		TutorialState m_CurrentState{ 0 };					// Current cutscene state
