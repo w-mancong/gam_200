@@ -26,6 +26,9 @@ namespace ALEngine::Script
 		m_TutorialObject = en;
 		Gameplay::TutorialManager::Instance()->SetTutorialObject(en);
 
+		// Variables Init
+		m_EndTurn_ArrowBool = true;
+
 		ALEngine::Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 
 		sceneGraph.FindImmediateChildren(static_cast<s32>(m_TutorialObject));
@@ -71,6 +74,16 @@ namespace ALEngine::Script
 			{
 				m_WalkToEnemy = child;
 				ECS::SetActive(false, m_WalkToEnemy);
+			}
+			else if (data.tag == "End Turn Arrow")
+			{
+				m_EndTurn_Arrow = child;
+				ECS::SetActive(false, m_EndTurn_Arrow);
+			}
+			else if (data.tag == "Hard Drop")
+			{
+				m_HardDrop = child;
+				ECS::SetActive(false, m_HardDrop);
 			}
 		}
 
@@ -131,6 +144,22 @@ namespace ALEngine::Script
 			else if (data.tag == "Arrow")
 				m_WalkToEnemy_Arrow = child;
 		}
+
+		// Hard Drop Children
+		sceneGraph.FindImmediateChildren(static_cast<s32>(m_HardDrop));
+		for (s32 child : sceneGraph.GetChildren())
+		{
+			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
+			if (data.tag == "Click Here")
+				m_HardDrop_ClickHere = child;
+			else if (data.tag == "Arrow")
+				m_HardDrop_Arrow_1 = child;
+			else if (data.tag == "Arrow Blocks")
+				m_HardDrop_Arrow_2 = child;
+			else if (data.tag == "Blocks")
+				m_HardDrop_Blocks = child;
+		}
 	}
 
 	void TutorialObject::Update(ECS::Entity en)
@@ -145,6 +174,26 @@ namespace ALEngine::Script
 			break;
 		case Gameplay::TutorialState::TUTORIAL_ACTION_PHASE_WALK:
 			UpdateWalkToEnemy();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_MELEE_END_TURN:
+			UpdateEndTurn();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_SETUP_2:
+			UpdateSetUpPhaseWait();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_HARD_DROP:
+			UpdateHardDrop();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_ATTACK:
+			UpdateAttack();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_WAIT_GUARD_DEFEAT:
+			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 1)
+				Gameplay::TutorialManager::Instance()->NextState();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_DEFEAT_TILE_DESTROYER_CS:
+			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 2)
+				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		default:
 			break;
@@ -240,15 +289,85 @@ namespace ALEngine::Script
 
 		Unit player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
 
-		if (Gameplay::TutorialManager::Instance()->GetGameplaySystem()->currentModeOrder.path.empty() &&
-			player.actionPoints != player.maxActionPoints)
+		if (Gameplay::TutorialManager::Instance()->GetPlayerMoveFinished())
 		{
 			Gameplay::TutorialManager::Instance()->NextState();
 			ECS::SetActive(false, m_WalkToEnemy);
+			Gameplay::TutorialManager::Instance()->SetPlayerMoveFinished(false);
 			return;
 		}
 
 		VariableScale(m_WalkToEnemy_Arrow);
+	}
+
+	void TutorialObject::UpdateEndTurn(void)
+	{
+		ECS::SetActive(m_EndTurn_ArrowBool, m_EndTurn_Arrow);
+
+		VariableScale(m_EndTurn_Arrow);
+
+		if (Gameplay::TutorialManager::Instance()->GetEndTurnPressed())
+		{
+			Gameplay::TutorialManager::Instance()->SetEndTurnPressed(false);
+			m_EndTurn_ArrowBool = false;
+		}
+
+		if (m_EndTurn_ArrowBool == false && Gameplay::TutorialManager::Instance()->GetPlayerTurnStart())
+		{
+			Gameplay::TutorialManager::Instance()->NextState();
+			Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(false);
+		}
+	}
+
+	void TutorialObject::UpdateSetUpPhaseWait(void)
+	{
+		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
+		{
+			Gameplay::TutorialManager::Instance()->NextState();
+			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
+		}
+	}
+
+	void TutorialObject::UpdateHardDrop(void)
+	{
+		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
+		ECS::SetActive(true, m_HardDrop);
+		
+		// If player selected Hard Drop
+		if (gs->selected_Abilities != nullptr && gs->selected_Abilities->current_Ability_Name == ABILITY_NAME::HARD_DROP)
+		{
+			ECS::SetActive(false, m_HardDrop_ClickHere);
+			ECS::SetActive(false, m_HardDrop_Arrow_1);
+			ECS::SetActive(true, m_HardDrop_Arrow_2);
+			ECS::SetActive(true, m_HardDrop_Blocks);
+
+			VariableScale(m_HardDrop_Arrow_2);
+
+			if (gs->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES)
+			{
+				Gameplay::TutorialManager::Instance()->NextState();
+				ECS::SetActive(false, m_HardDrop);
+				return;
+			}
+
+		}
+		else
+		{	// No Selected Abilities
+			ECS::SetActive(true, m_HardDrop_ClickHere);
+			ECS::SetActive(true, m_HardDrop_Arrow_1);
+			ECS::SetActive(false, m_HardDrop_Arrow_2);
+			ECS::SetActive(false, m_HardDrop_Blocks);
+
+			VariableScale(m_HardDrop_Arrow_1);
+		}
+	}
+
+	void TutorialObject::UpdateAttack(void)
+	{
+		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
+		{
+			Gameplay::TutorialManager::Instance()->NextState();
+		}
 	}
 	
 	void TutorialObject::VariableScale(ECS::Entity en)

@@ -49,6 +49,13 @@ namespace ALEngine::Script
 		if (Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
 			return;
 
+		switch (Gameplay::TutorialManager::Instance()->GetState())
+		{
+		case Gameplay::TutorialState::TUTORIAL_MOVE_CAMERA_1:
+			break;
+		default:
+			break;
+		}
 		//UpdateCameraMovement();
 
 #if EDITOR
@@ -56,6 +63,14 @@ namespace ALEngine::Script
 		if (Input::KeyTriggered(KeyCode::N))
 			Gameplay::TutorialManager::Instance()->NextState();
 #endif
+	}
+
+	void TutorialCamera::MoveCameraToTileDestroyer(void)
+	{
+	}
+
+	void TutorialCamera::MoveCameraToSummoner(void)
+	{
 	}
 
 	void TutorialCamera::UpdateCameraMovement(void)

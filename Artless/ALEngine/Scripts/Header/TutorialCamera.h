@@ -42,6 +42,18 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void UpdateCameraMovement(void);
 
+		/*!*********************************************************************************
+			\brief
+				Moves the camera to see the Tile Destroyer
+		***********************************************************************************/
+		void MoveCameraToTileDestroyer(void);
+		
+		/*!*********************************************************************************
+			\brief
+				Moves the camera to see the Summoner
+		***********************************************************************************/
+		void MoveCameraToSummoner(void);
+
 		// Vairables
 		f32	m_LBound{ std::numeric_limits<f32>::min() },
 			m_RBound{ std::numeric_limits<f32>::max() },

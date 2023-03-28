@@ -23,6 +23,9 @@ namespace Gameplay
 	class TutorialManager : public ALEngine::Templates::Singleton<TutorialManager>
 	{
 	public:
+		// Variables
+		std::vector<ALEngine::ECS::Entity> m_AbilityList{};
+
 		/*!*********************************************************************************
 			\brief
 				Begings the Tutorial
@@ -136,6 +139,80 @@ namespace Gameplay
 		***********************************************************************************/
 		void SetGameplaySystem(std::shared_ptr<ALEngine::Script::GameplaySystem> gs);
 
+		/*!*********************************************************************************
+			\brief
+				Gets whether the player has finished their move
+			\return
+				Returns whether player has finished their move
+		***********************************************************************************/
+		b8 GetPlayerMoveFinished(void);
+
+		/*!*********************************************************************************
+			\brief
+				Gets whether the player has finished their move
+			\param [in] moveOver
+				Value to set player's move is over
+		***********************************************************************************/
+		void SetPlayerMoveFinished(b8 moveOver);
+
+		/*!*********************************************************************************
+			\brief
+				Gets whether the player has clicked End Turn
+			\return
+				Returns whether player has clicked End Turn
+		***********************************************************************************/
+		b8 GetEndTurnPressed(void);
+
+		/*!*********************************************************************************
+			\brief
+				Gets whether the player has clicked End Turn
+			\param [in] isPressed
+				Value to set whether player has clicked End Turn
+		***********************************************************************************/
+		void SetEndTurnPressed(b8 isPressed);
+		
+		/*!*********************************************************************************
+			\brief
+				Gets whether the player's turn has started
+			\return
+				Returns whether player's turn has started
+		***********************************************************************************/
+		b8 GetPlayerTurnStart(void);
+
+		/*!*********************************************************************************
+			\brief
+				Gets whether the player's turn has started
+			\param [in] hasStarted
+				Value to set whether player's turn has started
+		***********************************************************************************/
+		void SetPlayerTurnStart(b8 hasStarted);
+
+		/*!*********************************************************************************
+			\brief
+				Gets number of enemies player has killed
+			\return
+				Returns the number of enemies player has killed
+		***********************************************************************************/
+		u16 GetNumEnemiesKilled(void);
+
+		/*!*********************************************************************************
+			\brief
+				Increments the number of enemies killed by 1
+		***********************************************************************************/
+		void IncrementNumberOfEnemiesKilled(void);
+
+		/*!*********************************************************************************
+			\brief
+				Sets all the abilities to be off
+		***********************************************************************************/
+		void SetAllAbilitiesOff(void);
+		
+		/*!*********************************************************************************
+			\brief
+				Sets all the abilities but Hard Drop to be off
+		***********************************************************************************/
+		void SetAllAbilitiesButHardDropOff(void);
+
 	private:
 
 		// Entities
@@ -149,6 +226,12 @@ namespace Gameplay
 		b8 m_TutorialIsPlaying{ true };						// Whether Tutorial is being played or not
 		b8 m_TileIsSelected{ false };						// Whether the player is holding a tile right now
 		b8 m_TileIsPlaced{ false };							// Whether player has placed tile
+		b8 m_PlayerMoveFinished{ false };					// Whether player has finished moving
+		b8 m_EndTurnPressed{ false };						// Whether player pressed End Turn
+		b8 m_PlayerTurnStart{ false };						// Whether player's turn has started
+
+		// Info
+		u16 m_EnemiesKilled{};								// Number of enemies killed by player
 
 		// Pointers
 		std::shared_ptr<ALEngine::Script::GameplaySystem> m_GameplaySystem{ nullptr };
@@ -165,10 +248,22 @@ namespace Gameplay
 		TUTORIAL_ACTION_PHASE_CS,					// Action Phase & AP Description Cutscenes
 		TUTORIAL_ACTION_PHASE_WALK,					// Action Phase Walking (No Skills Yet)
 		TUTORIAL_MELEE_CS,							// Melee Enemy Cutscene
-		//TUTORIAL_MELEE_END_TURN,					// Fight Melee Enemy
+		TUTORIAL_MELEE_END_TURN,					// Melee End Turn
+		TUTORIAL_CRACKING_TILES_CS,					// Cracking Tiles Cutscene
+		TUTORIAL_SETUP_2,							// 2nd Setup Phase
 		TUTORIAL_HARD_DROP_CS,						// Setup Phase Again & Hard Drop Cutscenes
-		//TUTORIAL_HARD_DROP,							// Hard Drop Picking
-
+		TUTORIAL_HARD_DROP,							// Hard Drop Picking
+		TUTORIAL_ABILITIES_CS,						// Cutscene explaining how the attack mechanics work 
+		TUTORIAL_ATTACK,							// Player Execute Attack
+		TUTORIAL_SHOW_HOVER_CS,						// Show the hover over enemy cutscene
+		TUTORIAL_WAIT_GUARD_DEFEAT,					// Wait for the player to defeat the guard
+		TUTORIAL_MOVE_CAMERA_1,						// Move Camera to the Tile Destroyer
+		TUTORIAL_TILE_DESTROYER_CS,					// Cutscene Explaining Tile Destroyer & Using Construct Wall
+		TUTORIAL_CONSTRUCT_WALL,					// Use Construct Wall
+		TUTORIAL_UTILITIES_CS,						// Explanation of Utility Skills
+		TUTORIAL_PLACE_CONSTRUCT_WALL,				// Placing of the Construct Wall
+		TUTORIAL_DEFEAT_TILE_DESTROYER_CS,			// Cutscene to tell player to defeat tile destroyer
+		TUTORIAL_WAIT_TILE_DESTROYER_DEFEAT,		// Wait for Tile Destroyer to be defeated
 
 		TUTORIAL_END								// End Level
 	};

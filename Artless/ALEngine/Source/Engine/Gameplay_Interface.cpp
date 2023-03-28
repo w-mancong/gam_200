@@ -260,6 +260,9 @@ namespace ALEngine::Script
 			}
 
 			gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, false);
+
+			if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+				Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(true);
 			break;
 		}
 		gameplaySystem_GUI->GuiUpdatePhaseIndicator(currentPhaseStatus);
@@ -1840,6 +1843,9 @@ namespace ALEngine::Script
 			else {
 				if(!isEndOfPath)
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
+
+				if (isEndOfPath && Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+					Gameplay::TutorialManager::Instance()->SetPlayerMoveFinished(true);
 			}
 
 			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.actionPoints));
@@ -2136,6 +2142,9 @@ namespace ALEngine::Script
 		//End turn
 		gameplaySystem->EndTurn();
 		gameplaySystem->buttonClickAudio->Play();
+
+		if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			Gameplay::TutorialManager::Instance()->SetEndTurnPressed(true);
 	}
 
 	/*!*********************************************************************************

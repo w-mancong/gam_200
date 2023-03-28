@@ -96,8 +96,8 @@
         "Transform": [
             {
                 "position": [
-                    505.5,
-                    527.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -141,8 +141,8 @@
         "Transform": [
             {
                 "position": [
-                    505.5,
-                    200.0,
+                    800.0,
+                    123.0,
                     0.0
                 ],
                 "scale": [
@@ -202,8 +202,8 @@
         "Transform": [
             {
                 "position": [
-                    505.5,
-                    527.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -247,8 +247,8 @@
         "Transform": [
             {
                 "position": [
-                    505.5,
-                    527.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -292,8 +292,8 @@
         "Transform": [
             {
                 "position": [
-                    505.5,
-                    857.0,
+                    800.0,
+                    780.0,
                     0.0
                 ],
                 "scale": [
@@ -321,7 +321,7 @@
         ],
         "TextProperty": [
             {
-                "textString": "Since its the Setup Phase, you will need to place my Tetrimino Tiles===to create a path for you to walk on.===Select the current Tile and place it on the squares in front of you.",
+                "textString": "This Guard is a Melee Enemy that will run straight for you and attack once they detect you!===So plan your moves carefully.===For now, let's end our turn and wait for the Guard to approach us instead.",
                 "currentFont": "SFProverbialGothic",
                 "scale": 0.8999999761581421,
                 "color": [
@@ -386,13 +386,13 @@
         "Transform": [
             {
                 "position": [
-                    955.5,
-                    277.0,
+                    1250.0,
+                    200.0,
                     0.0
                 ],
                 "scale": [
-                    250.0,
-                    250.0
+                    215.09988403320313,
+                    215.09988403320313
                 ],
                 "rotation": -90.0,
                 "ui": true,
@@ -423,7 +423,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    0.43681710958480835
+                    0.28227877616882324
                 ],
                 "layer": 2002
             }
@@ -431,8 +431,8 @@
         "Transform": [
             {
                 "position": [
-                    1105.5,
-                    190.0,
+                    1400.0,
+                    113.0,
                     0.0
                 ],
                 "scale": [
@@ -484,11 +484,11 @@
         "EntityData": [
             {
                 "tag": "Place First Tile",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 10,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -529,7 +529,7 @@
         "EntityData": [
             {
                 "tag": "Click Here",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 11,
                 "parentID": 10,
@@ -559,8 +559,8 @@
                     0.0
                 ],
                 "scale": [
-                    250.0,
-                    250.0
+                    202.8697052001953,
+                    202.8697052001953
                 ],
                 "rotation": 169.99990844726563,
                 "ui": false,
@@ -574,7 +574,7 @@
         "EntityData": [
             {
                 "tag": "Arrow",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 12,
                 "parentID": 10,
@@ -607,8 +607,8 @@
         "EntityData": [
             {
                 "tag": "Show AP",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 13,
                 "parentID": 0,
                 "treeNodeFlags": 0
@@ -624,7 +624,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.33716946840286255
                 ],
                 "layer": 3902
             }
@@ -632,8 +632,8 @@
         "Transform": [
             {
                 "position": [
-                    716.0,
-                    156.0,
+                    715.0,
+                    155.0,
                     0.0
                 ],
                 "scale": [
@@ -652,7 +652,7 @@
         "EntityData": [
             {
                 "tag": "AP1",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 14,
                 "parentID": 13,
@@ -669,7 +669,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.33716946840286255
                 ],
                 "layer": 3902
             }
@@ -677,8 +677,8 @@
         "Transform": [
             {
                 "position": [
-                    748.5,
-                    156.0,
+                    747.5,
+                    155.0,
                     0.0
                 ],
                 "scale": [
@@ -697,7 +697,7 @@
         "EntityData": [
             {
                 "tag": "AP2",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 15,
                 "parentID": 13,
@@ -714,7 +714,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.33716946840286255
                 ],
                 "layer": 3902
             }
@@ -722,8 +722,8 @@
         "Transform": [
             {
                 "position": [
-                    781.0,
-                    156.0,
+                    780.0,
+                    155.0,
                     0.0
                 ],
                 "scale": [
@@ -742,7 +742,7 @@
         "EntityData": [
             {
                 "tag": "AP3",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 16,
                 "parentID": 13,
@@ -759,7 +759,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.33716946840286255
                 ],
                 "layer": 3902
             }
@@ -767,8 +767,8 @@
         "Transform": [
             {
                 "position": [
-                    813.5,
-                    156.0,
+                    812.5,
+                    155.0,
                     0.0
                 ],
                 "scale": [
@@ -787,7 +787,7 @@
         "EntityData": [
             {
                 "tag": "AP4",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 17,
                 "parentID": 13,
@@ -804,7 +804,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.33716946840286255
                 ],
                 "layer": 3902
             }
@@ -812,8 +812,8 @@
         "Transform": [
             {
                 "position": [
-                    846.0,
-                    156.0,
+                    845.0,
+                    155.0,
                     0.0
                 ],
                 "scale": [
@@ -832,7 +832,7 @@
         "EntityData": [
             {
                 "tag": "AP5",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 18,
                 "parentID": 13,
@@ -849,7 +849,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.33716946840286255
                 ],
                 "layer": 3902
             }
@@ -857,8 +857,8 @@
         "Transform": [
             {
                 "position": [
-                    878.4999389648438,
-                    156.0,
+                    877.4999389648438,
+                    155.0,
                     0.0
                 ],
                 "scale": [
@@ -877,7 +877,7 @@
         "EntityData": [
             {
                 "tag": "AP6",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 19,
                 "parentID": 13,
@@ -902,13 +902,13 @@
         "Transform": [
             {
                 "position": [
-                    651.0,
-                    261.0,
+                    650.0,
+                    260.0,
                     0.0
                 ],
                 "scale": [
-                    250.00039672851563,
-                    250.00039672851563
+                    215.36758422851563,
+                    215.36758422851563
                 ],
                 "rotation": -119.99998474121094,
                 "ui": true,
@@ -922,7 +922,7 @@
         "EntityData": [
             {
                 "tag": "Arrow",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 20,
                 "parentID": 13,
@@ -955,8 +955,8 @@
         "EntityData": [
             {
                 "tag": "Walk To Enemy",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 21,
                 "parentID": 0,
                 "treeNodeFlags": 32
@@ -985,8 +985,8 @@
                     0.0
                 ],
                 "scale": [
-                    249.99986267089844,
-                    249.99986267089844
+                    216.76881408691406,
+                    216.76881408691406
                 ],
                 "rotation": 169.99990844726563,
                 "ui": false,
@@ -1000,7 +1000,7 @@
         "EntityData": [
             {
                 "tag": "Arrow",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 22,
                 "parentID": 21,
@@ -1019,7 +1019,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 3901
+                "layer": 1
             }
         ],
         "Transform": [
@@ -1045,10 +1045,391 @@
         "EntityData": [
             {
                 "tag": "Click Here",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 23,
                 "parentID": 21,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 24,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Pointer.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    900.0,
+                    320.0,
+                    0.0
+                ],
+                "scale": [
+                    221.85447692871094,
+                    221.85447692871094
+                ],
+                "rotation": 169.99990844726563,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "End Turn Arrow",
+                "active": false,
+                "localActive": false,
+                "id": 24,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 25,
+        "Transform": [
+            {
+                "position": [
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Hard Drop",
+                "active": false,
+                "localActive": true,
+                "id": 25,
+                "parentID": 0,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 26,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Selector.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    511.0000305175781,
+                    41.0,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Click Here",
+                "active": false,
+                "localActive": true,
+                "id": 26,
+                "parentID": 25,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 27,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Pointer.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    551.0,
+                    451.0000305175781,
+                    0.0
+                ],
+                "scale": [
+                    250.00045776367188,
+                    250.00045776367188
+                ],
+                "rotation": -109.99996185302734,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Arrow Blocks",
+                "active": false,
+                "localActive": true,
+                "id": 27,
+                "parentID": 25,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 28,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Pointer.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    431.0000305175781,
+                    181.00003051757813,
+                    0.0
+                ],
+                "scale": [
+                    250.00010681152344,
+                    250.00010681152344
+                ],
+                "rotation": -119.99998474121094,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Arrow",
+                "active": false,
+                "localActive": true,
+                "id": 28,
+                "parentID": 25,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "Transform": [
+            {
+                "position": [
+                    2.0,
+                    2.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Blocks",
+                "active": false,
+                "localActive": true,
+                "id": 29,
+                "parentID": 25,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Selector.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    672.0,
+                    322.5000305175781,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -672.0,
+                    -322.5000305175781,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "First",
+                "active": false,
+                "localActive": true,
+                "id": 30,
+                "parentID": 29,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Selector.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    322.5000305175781,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -800.0,
+                    -322.5000305175781,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Second",
+                "active": false,
+                "localActive": true,
+                "id": 31,
+                "parentID": 29,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Selector.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3902
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    925.0,
+                    322.5000305175781,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -925.0,
+                    -322.5000305175781,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Third",
+                "active": false,
+                "localActive": true,
+                "id": 32,
+                "parentID": 29,
                 "treeNodeFlags": 32
             }
         ]

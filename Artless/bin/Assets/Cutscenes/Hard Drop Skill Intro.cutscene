@@ -3,21 +3,6 @@
         "Sequence_Name": "Hard Drop Skill Intro"
     },
     {
-        "CutsceneName": "Cracking Tiles",
-        "HasImage": false,
-        "HasText": true,
-        "HasTimer": false,
-        "WaitForInput": true,
-        "TextIsAbove": true,
-        "CutsceneTime": 0.0,
-        "OrderIndex": 0,
-        "FadeInType": 6,
-        "FadeOutType": 6,
-        "FadeInTime": 0.0,
-        "FadeOutTime": 0.0,
-        "Text": "It's the Setup Phase again, place a tile for your path!===But be careful, my tiles don't last for ever! They will crack after 2 turns and break in the next===turn, so do not stand on top of them when they are cracking!"
-    },
-    {
         "CutsceneName": "Use Hard Drop",
         "HasImage": false,
         "HasText": true,

@@ -20,6 +20,11 @@ namespace Gameplay
 	{
 		m_CurrentState = TutorialState::TUTORIAL_INTRO_CS;
 		m_TutorialIsPlaying = true;
+		m_TileIsSelected = false;
+		m_TileIsPlaced = false;
+		m_PlayerMoveFinished = false;
+		m_EndTurnPressed = false;
+		m_PlayerTurnStart = false;
 	}
 
 	void TutorialManager::NextState(void)
@@ -43,19 +48,32 @@ namespace Gameplay
 			break;
 		case TutorialState::TUTORIAL_MELEE_CS:
 			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Melee Enemy Intro");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
+			break;
+		case TutorialState::TUTORIAL_CRACKING_TILES_CS:
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Cracking Tiles");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
 			Time::m_Scale = 0.f;
 			break;
 		case TutorialState::TUTORIAL_HARD_DROP_CS:
 			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Hard Drop Skill Intro");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
+			break;
+		case TutorialState::TUTORIAL_ABILITIES_CS:
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Ability Explanation");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
+			break;
+		case TutorialState::TUTORIAL_SHOW_HOVER_CS:
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Show Hover");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
 			Time::m_Scale = 0.f;
 			break;
 
 
 			// ===== Scripted Gameplay =====
-		case TutorialState::TUTORIAL_SELECT_TILE:
-			//m_GameplaySystem->
-			Time::m_Scale = 1.f;
-			break;
 		default:
 			Time::m_Scale = 1.f;
 		}
@@ -118,5 +136,73 @@ namespace Gameplay
 	void TutorialManager::SetGameplaySystem(std::shared_ptr<ALEngine::Script::GameplaySystem> gs)
 	{
 		m_GameplaySystem = gs;
+	}
+	
+	b8 TutorialManager::GetPlayerMoveFinished(void)
+	{
+		return m_PlayerMoveFinished;
+	}
+	
+	void TutorialManager::SetPlayerMoveFinished(b8 moveOver)
+	{
+		m_PlayerMoveFinished = moveOver;
+	}
+
+	b8 TutorialManager::GetEndTurnPressed(void)
+	{
+		return m_EndTurnPressed;
+	}
+	
+	void TutorialManager::SetEndTurnPressed(b8 isPressed)
+	{
+		m_EndTurnPressed = isPressed;
+	}
+	
+	b8 TutorialManager::GetPlayerTurnStart(void)
+	{
+		return m_PlayerTurnStart;
+	}
+	
+	void TutorialManager::SetPlayerTurnStart(b8 hasStarted)
+	{
+		m_PlayerTurnStart = hasStarted;
+	}
+	
+	u16 TutorialManager::GetNumEnemiesKilled(void)
+	{
+		return m_EnemiesKilled;
+	}
+	
+	void TutorialManager::IncrementNumberOfEnemiesKilled(void)
+	{
+		++m_EnemiesKilled;
+	}
+	
+	void TutorialManager::SetAllAbilitiesOff(void)
+	{
+		for (u16 i{ 0 }; i < 6; ++i)
+		{
+			EventTrigger& et = Coordinator::Instance()->GetComponent<EventTrigger>(m_AbilityList[i]);
+			Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_AbilityList[i]);
+
+			et.isEnabled = false;
+			spr.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+	}
+	
+	void TutorialManager::SetAllAbilitiesButHardDropOff(void)
+	{
+		if (m_AbilityList.empty())
+			return;
+
+		for (u16 i{ 1 }; i < 6; ++i)
+		{
+			EventTrigger& et = Coordinator::Instance()->GetComponent<EventTrigger>(m_AbilityList[i]);
+			Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_AbilityList[i]);
+
+			et.isEnabled = false;
+			spr.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+		
 	}
 }

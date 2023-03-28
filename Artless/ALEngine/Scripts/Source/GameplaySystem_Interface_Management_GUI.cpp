@@ -252,9 +252,13 @@ namespace ALEngine::Script
 		//Clear GUI
 		GUI_Abilities_Button_Entities.clear();
 
+		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			Gameplay::TutorialManager::Instance()->m_AbilityList.clear();
+
 		//There will be a fix of 4 buttons
 		for (int i = 1; i <= 6; ++i) {
 			GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("skill_icon" + std::to_string(i)));
+			Gameplay::TutorialManager::Instance()->m_AbilityList.push_back(Coordinator::Instance()->GetEntityByTag("skill_icon" + std::to_string(i)));
 		}
 
 		//Set base x

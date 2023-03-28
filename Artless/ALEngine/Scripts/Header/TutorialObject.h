@@ -66,12 +66,24 @@ namespace ALEngine::Script
 		ECS::Entity m_WalkToEnemy_Arrow{};
 		// =========================
 
+		// ===== End Turn =====
+		ECS::Entity m_EndTurn_Arrow{};
+
+		b8 m_EndTurn_ArrowBool{ true };
+		// ====================
+
+		// ===== Hard Drop =====
+		ECS::Entity m_HardDrop{};
+		ECS::Entity m_HardDrop_ClickHere{};
+		ECS::Entity m_HardDrop_Arrow_1{};
+		ECS::Entity m_HardDrop_Arrow_2{};
+		ECS::Entity m_HardDrop_Blocks{};
+		// =====================
+
 
 		/*!*********************************************************************************
 			\brief
-				Initializes the Tutorial Object
-			\param [in] en
-				Entity that the script is attached to
+				Updates the Select Tile
 		***********************************************************************************/
 		void UpdateSelectTile(void);
 
@@ -86,6 +98,30 @@ namespace ALEngine::Script
 				Updates getting the player to walk to enemy
 		***********************************************************************************/
 		void UpdateWalkToEnemy(void);
+
+		/*!*********************************************************************************
+			\brief
+				Updates getting the player supposedly going to press End Turn
+		***********************************************************************************/
+		void UpdateEndTurn(void);
+
+		/*!*********************************************************************************
+			\brief
+				Wait for setup phase to end
+		***********************************************************************************/
+		void UpdateSetUpPhaseWait(void);
+
+		/*!*********************************************************************************
+			\brief
+				Updates the Hard Drop
+		***********************************************************************************/
+		void UpdateHardDrop(void);
+
+		/*!*********************************************************************************
+			\brief
+				Updates the Hard Drop
+		***********************************************************************************/
+		void UpdateAttack(void);
 
 		/*!*********************************************************************************
 			\brief
