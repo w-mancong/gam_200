@@ -18,6 +18,7 @@
 //*//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <GameplaySystem.h>
+#include <TutorialCamera.h>
 #include <Engine/Gameplay_Interface.h>
 #include <GameplaySystem_Interface_Management_Enemy.h>
 #include <GameplaySystem_Interface_Management_GUI.h>
@@ -115,7 +116,11 @@ namespace ALEngine::Script
 		//AddLogicComponent<Script::PauseLogic>(entity)
 
 		//Camera Logic
-		ECS::AddLogicComponent<Script::GameplayCamera>(entity);
+		if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			ECS::AddLogicComponent<Script::TutorialCamera>(entity);
+		else
+			ECS::AddLogicComponent<Script::GameplayCamera>(entity);
+			
 		// Water generator
 		ECS::AddLogicComponent<Script::WaterGenerator>(entity);
 		// Tooltip prompt
@@ -132,6 +137,9 @@ namespace ALEngine::Script
 		rigidbody.drag = { 0,0 };
 		rigidbody.mass = 0.1f;
 		rigidbody.hasGravity = false;
+
+		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			Gameplay::TutorialManager::Instance()->SetPlayerEntity(entity);
 	}
 
 
@@ -260,6 +268,9 @@ namespace ALEngine::Script
 			}
 
 			gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, false);
+
+			if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+				Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(true);
 			break;
 		}
 		gameplaySystem_GUI->GuiUpdatePhaseIndicator(currentPhaseStatus);
@@ -328,7 +339,11 @@ namespace ALEngine::Script
 
 		//Set to canwalk
 		cell.m_canWalk = true;
-		cell.m_resetCounter = 2;
+
+		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			cell.m_resetCounter = 1000;
+		else
+			cell.m_resetCounter = 2;
 
 		//Change the cell sprite to filename sprite
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
@@ -1069,6 +1084,9 @@ namespace ALEngine::Script
 				if (allEnemiesDead) {
 					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
 				}
+
+				if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+					Gameplay::TutorialManager::Instance()->IncrementNumberOfEnemiesKilled();
 			}
 
 			//Disable the unit
@@ -1842,6 +1860,9 @@ namespace ALEngine::Script
 			else {
 				if(!isEndOfPath)
 				isEndOfPath = StepUpModeOrderPath(currentModeOrder);
+
+				if (isEndOfPath && Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+					Gameplay::TutorialManager::Instance()->SetPlayerMoveFinished(true);
 			}
 
 			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.actionPoints));
@@ -2080,6 +2101,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Select Current Pattern");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
 		gameplaySystem->selected_Pattern_Index = 0;
+		Gameplay::TutorialManager::Instance()->SetTileIsSelected(true);
 		AL_CORE_INFO("END Select Current Pattern");
 	}
 
@@ -2137,6 +2159,9 @@ namespace ALEngine::Script
 		//End turn
 		gameplaySystem->EndTurn();
 		gameplaySystem->buttonClickAudio->Play();
+
+		if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			Gameplay::TutorialManager::Instance()->SetEndTurnPressed(true);
 	}
 
 	/*!*********************************************************************************
@@ -2290,6 +2315,9 @@ namespace ALEngine::Script
 				return;
 			}
 
+			Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(true);
+
 			//Get the audiosource
 			Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
 
@@ -2346,6 +2374,9 @@ namespace ALEngine::Script
 			if (!canPlace && !gameplaySystem->godMode) {
 				return;
 			}
+
+			Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(true);
 
 			playerUnit.actionPoints -= gameplaySystem->selected_Abilities->cost;
 			//Disable the filter

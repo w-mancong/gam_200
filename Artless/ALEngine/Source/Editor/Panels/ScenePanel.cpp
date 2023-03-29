@@ -225,6 +225,9 @@ namespace ALEngine::Editor
 		// Find the Editor panel
 		ImGuiWindow* win = ImGui::FindWindowByName("Editor Scene");
 
+		if(win == nullptr)
+			return Math::Vec2(std::numeric_limits<f32>::max(), std::numeric_limits<f32>::max());
+
 		// Get panel position
 		m_ImGuiPanelPos = win->DC.CursorPos;
 

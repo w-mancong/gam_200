@@ -36,15 +36,27 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string rooms[] = { "Assets\\Presentation_Level.map", "Assets\\Tutorial_Level.map" };
-		std::string room_To_Load = rooms[0];
+		std::string rooms[] = { "Assets\\Presentation_Level.map", "Assets\\Map\\Tutorial_Final.map" };
+		std::string room_To_Load = rooms[1];
 
 		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
+		
+		bool TUTORIAL_ACTIVE{ true };
 	}
 
 	void SetMap(u64 index)
 	{
 		room_To_Load = rooms[index];
+	}		
+
+	/*!*********************************************************************************
+	\brief
+		Load Tutorial Level
+	***********************************************************************************/
+	void Event_Button_LoadLevel_Tutorial(ECS::Entity invoker) {
+		room_To_Load = rooms[1];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
 	}
 
 	/*!*********************************************************************************
@@ -83,6 +95,8 @@ namespace ALEngine::Script
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
+		Gameplay::TutorialManager::Instance()->SetGameplaySystem(gameplaySystem);
+
 		Set_GameplayInterface_GameplayManager(en);
 
 		//Start the gameplay logic
@@ -165,11 +179,22 @@ namespace ALEngine::Script
 				Cell cell;
 				cell.coordinate = { (s32)r, (s32)c };
 
-				//Create the triggers and subscribe the cell related events
-				ECS::CreateEventTrigger(m_Room.roomCellsArray[counter]);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+				// Mainly for tutorial
+				if (row == "Tile")
+				{
+					cell.m_canWalk = true;
+					cell.m_resetCounter = 1000;
+				}
+
+				// Dont subscribe if it is not within 
+				if (row != "Outside_Empty")
+				{
+					//Create the triggers and subscribe the cell related events
+					ECS::CreateEventTrigger(m_Room.roomCellsArray[counter]);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+				}
 
 				// Add the child overlay
 				cell.child_overlay = Coordinator::Instance()->CreateEntity();
@@ -197,6 +222,11 @@ namespace ALEngine::Script
 					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 				}
 				// Skip "Empty" tiles
+				else if (row == "Outside_Empty")
+				{
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "");
+					Coordinator::Instance()->GetComponent<Sprite>(m_Room.roomCellsArray[counter]).color.a = 0.f;
+				}
 				else if (row != "Empty")
 				{
 					// Tile image file path
@@ -205,7 +235,7 @@ namespace ALEngine::Script
 					// Check for enemy
 					if (row == "Enemy Melee" || 
 						row == "Enemy Cell Destroyer" ||
-						row == "Enemy Summoner")
+						row == "Summoner")
 					{
 						ENEMY_TYPE enemy_type{};
 
@@ -214,7 +244,7 @@ namespace ALEngine::Script
 							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
 						else if (row == "Enemy Cell Destroyer")
 							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
-						else if (row == "Enemy Summoner")
+						else if (row == "Summoner")
 							enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
 
 						// Place Enemy
@@ -350,7 +380,7 @@ namespace ALEngine::Script
 
 		//Subscribe the restart button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Lose_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_2);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_Tutorial);
 
 		Toggle_Gameplay_State(true);
 
@@ -389,6 +419,8 @@ namespace ALEngine::Script
 				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
 				gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
+
+				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
 			}
 			//Deselect Abilities
 			else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
@@ -404,6 +436,8 @@ namespace ALEngine::Script
 				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 				gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
+				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
 			}
 		}
 

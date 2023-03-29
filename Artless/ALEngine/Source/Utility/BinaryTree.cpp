@@ -534,11 +534,11 @@ namespace ALEngine::Tree
         return map[en].parent;
     }
 
-    void BinaryTree::SetParentChildActive(NodeData const& node, b8 activeState) const
+    void BinaryTree::SetParentChildActive(NodeData const& node, b8 activeState, s32 counter) const
     {
         EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(node.id);
 
-        if (node.parent != -1)
+        if (node.parent != -1 && 0 < counter)
         {
             EntityData const& parent_ed = Coordinator::Instance()->GetComponent<EntityData>(node.parent);
             if (ed.selfActive)
@@ -553,7 +553,7 @@ namespace ALEngine::Tree
         for (s32 en : node.children)
         {
             Tree::BinaryTree::NodeData const& nd = ECS::GetSceneGraph(0).GetMap()[en];
-            SetParentChildActive(nd, activeState);
+            SetParentChildActive(nd, activeState, ++counter);
         }
     }
 

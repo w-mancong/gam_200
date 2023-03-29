@@ -67,6 +67,8 @@ namespace ALEngine::ECS::Component
 		//trigger bool
 		bool playerTriggeredEnemy{ false };
 
+		s32 distanceToTriggerEnemy{ 0 };
+
 		void(*UpdateEnemyLogic)(struct EnemyManager&, std::vector<Entity>&, struct Room&) {};
 	};
 }

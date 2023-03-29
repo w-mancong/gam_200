@@ -195,13 +195,13 @@ namespace ALEngine::Editor
 	{
 		// Get transform
 		Transform& xform = Coordinator::Instance()->GetComponent<Transform>(m_SelectedEntity);
-
+		
 		// Select between the 3 Gizmos Operations by keypress
-		if (Input::KeyTriggered(KeyCode::W))
+		if (ImGui::IsKeyPressed(ImGuiKey_W) && ALEditor::Instance()->GetReceivingKBInput() == false)
 			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-		if (Input::KeyTriggered(KeyCode::E))
+		if (ImGui::IsKeyPressed(ImGuiKey_E) && ALEditor::Instance()->GetReceivingKBInput() == false)
 			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::ROTATE);
-		if (Input::KeyTriggered(KeyCode::R))
+		if (ImGui::IsKeyPressed(ImGuiKey_R) && ALEditor::Instance()->GetReceivingKBInput() == false)
 			ALEditor::Instance()->SetCurrentGizmoOperation(ImGuizmo::SCALE);
 
 		// Transform

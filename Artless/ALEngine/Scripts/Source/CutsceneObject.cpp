@@ -2,7 +2,7 @@
 file:	CutsceneObject.cpp
 author:	Lucas Nguyen
 email:	l.nguyen\@digipen.edu
-brief:	This file contain function definition for fading in alpha of entities
+brief:	This file contain function definition for the cutscene object.
 
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/

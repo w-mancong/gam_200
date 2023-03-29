@@ -72,6 +72,18 @@ RTTR_REGISTRATION
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 
+	registration::class_<CutsceneObjectTutorial>("CutsceneObjectTutorial")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<TutorialCamera>("TutorialCamera")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<TutorialObject>("TutorialObject")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
 	registration::class_<WaterGenerator>("WaterGenerator")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);

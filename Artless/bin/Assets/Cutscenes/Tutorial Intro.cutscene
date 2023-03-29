@@ -1,0 +1,35 @@
+[
+    {
+        "Sequence_Name": "Tutorial Intro"
+    },
+    {
+        "CutsceneName": "Defeat All Enemies",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 0,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "Dror, you need to Defeat all Enemies in the room in order to Escape!===Worry not, I have temporarily given you my powers."
+    },
+    {
+        "CutsceneName": "Select Tile",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 1,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "Since its the Setup Phase, you will need to place my Tetrimino Tiles===to create a path for you to walk on.===Select the current Tile and place it on the squares in front of you."
+    }
+]

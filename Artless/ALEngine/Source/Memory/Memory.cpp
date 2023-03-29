@@ -48,6 +48,7 @@ namespace ALEngine::Memory
 		Engine::MeshBuilder::Free();
 		Engine::AssetManager::Free();
 		Gameplay::MapManager::Free();
+		Gameplay::TutorialManager::Free();
 		Engine::Scene::CutsceneManager::Free();
 	}
 
