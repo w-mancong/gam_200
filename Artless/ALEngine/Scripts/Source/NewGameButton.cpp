@@ -70,7 +70,7 @@ namespace ALEngine::Script
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
-				ChangeScene(0);
+				ChangeScene(1);
 				Lighten(en);
 			}
 		}
