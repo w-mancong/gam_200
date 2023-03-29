@@ -165,6 +165,8 @@ namespace ALEngine::Script
 
 		void UpdateYourTurnSign();
 
+		void HideBarHealthText(b8 boolean);
+
 		template <typename T>
 		static T Lerp(T a, T b, float t);
 

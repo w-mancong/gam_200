@@ -98,6 +98,11 @@ namespace ALEngine::Script
 		}
 	}
 
+	void GameplaySystem_Interface_Management_GUI::HideBarHealthText(b8 boolean)
+	{
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("text_bar_hp"));
+	}
+
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
 		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
