@@ -71,6 +71,31 @@ namespace Gameplay
 			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
 			Time::m_Scale = 0.f;
 			break;
+		case TutorialState::TUTORIAL_TILE_DESTROYER_CS:
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Tile Destroyer");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
+			break;
+		case TutorialState::TUTORIAL_UTILITIES_CS:
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Utility Skills Explanation");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
+			break;
+		case TutorialState::TUTORIAL_DEFEAT_TILE_DESTROYER_CS:
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Construct Tile Placed");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
+			break;
+		case TutorialState::TUTORIAL_SUMMONER_INTRO_CS:
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Summoner Intro");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
+			break;
+		case TutorialState::TUTORIAL_FINAL_CS:
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->PlaySequence("Tutorial Final");
+			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
+			Time::m_Scale = 0.f;
+			break;
 
 
 			// ===== Scripted Gameplay =====
@@ -204,5 +229,24 @@ namespace Gameplay
 			spr.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
 		
+	}
+
+	void TutorialManager::SetAllAbilitiesButConstructTileOff(void)
+	{
+		if (m_AbilityList.empty())
+			return;
+
+		for (u16 i{ 0 }; i < 6; ++i)
+		{
+			if (i == 3)
+				continue;
+
+			EventTrigger& et = Coordinator::Instance()->GetComponent<EventTrigger>(m_AbilityList[i]);
+			Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_AbilityList[i]);
+
+			et.isEnabled = false;
+			spr.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+
 	}
 }

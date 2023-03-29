@@ -48,10 +48,17 @@ namespace ALEngine::Script
 		// Don't move camera if cutscene is playing
 		if (Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
 			return;
-
+		
 		switch (Gameplay::TutorialManager::Instance()->GetState())
 		{
 		case Gameplay::TutorialState::TUTORIAL_MOVE_CAMERA_1:
+			MoveCameraToTileDestroyer();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_MOVE_CAMERA_2:
+			MoveCameraToSummoner();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT:
+			UpdateCameraMovement();
 			break;
 		default:
 			break;
@@ -67,10 +74,34 @@ namespace ALEngine::Script
 
 	void TutorialCamera::MoveCameraToTileDestroyer(void)
 	{
+		constexpr f32 targetX{ 400.f };
+		
+		Engine::Camera& camera = ECS::GetCamera();
+		camera.Position().x += CAMERA_SPEED * Time::m_DeltaTime * 0.7f;
+
+		if(camera.Position().x >= targetX)
+		{
+			camera.Position().x = targetX;
+			Gameplay::TutorialManager::Instance()->NextState();
+		}
+
+		ECS::UpdateUIpositions();
 	}
 
 	void TutorialCamera::MoveCameraToSummoner(void)
 	{
+		constexpr f32 targetX{ 1300.f };
+
+		Engine::Camera& camera = ECS::GetCamera();
+		camera.Position().x += CAMERA_SPEED * Time::m_DeltaTime * 0.7f;
+
+		if (camera.Position().x >= targetX)
+		{
+			camera.Position().x = targetX;
+			Gameplay::TutorialManager::Instance()->NextState();
+		}
+
+		ECS::UpdateUIpositions();
 	}
 
 	void TutorialCamera::UpdateCameraMovement(void)
@@ -119,6 +150,5 @@ namespace ALEngine::Script
 			camera.Position().y = m_TBound - m_Height;
 
 		ECS::UpdateUIpositions();
-
 	}
 }

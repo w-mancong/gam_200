@@ -213,6 +213,12 @@ namespace Gameplay
 		***********************************************************************************/
 		void SetAllAbilitiesButHardDropOff(void);
 
+		/*!*********************************************************************************
+			\brief
+				Sets all the abilities but Construct Tile to be off
+		***********************************************************************************/
+		void SetAllAbilitiesButConstructTileOff(void);
+
 	private:
 
 		// Entities
@@ -259,11 +265,17 @@ namespace Gameplay
 		TUTORIAL_WAIT_GUARD_DEFEAT,					// Wait for the player to defeat the guard
 		TUTORIAL_MOVE_CAMERA_1,						// Move Camera to the Tile Destroyer
 		TUTORIAL_TILE_DESTROYER_CS,					// Cutscene Explaining Tile Destroyer & Using Construct Wall
-		TUTORIAL_CONSTRUCT_WALL,					// Use Construct Wall
+		TUTORIAL_CONSTRUCT_TILE,					// Use Construct Wall
 		TUTORIAL_UTILITIES_CS,						// Explanation of Utility Skills
-		TUTORIAL_PLACE_CONSTRUCT_WALL,				// Placing of the Construct Wall
+		TUTORIAL_PLACE_CONSTRUCT_TILE,				// Placing of the Construct Wall
 		TUTORIAL_DEFEAT_TILE_DESTROYER_CS,			// Cutscene to tell player to defeat tile destroyer
 		TUTORIAL_WAIT_TILE_DESTROYER_DEFEAT,		// Wait for Tile Destroyer to be defeated
+		TUTORIAL_MOVE_CAMERA_2,						// Move camera to the Summoner
+		TUTORIAL_SUMMONER_INTRO_CS,					// Cutscene Explaining the Summoner
+		TUTORIAL_FINAL_FIGHT,						// Final Fight
+		TUTORIAL_FINAL_CS,							// Final cutscene
+
+
 
 		TUTORIAL_END								// End Level
 	};

@@ -80,6 +80,11 @@ namespace ALEngine::Script
 		ECS::Entity m_HardDrop_Blocks{};
 		// =====================
 
+		// ===== Construct Tile =====
+		ECS::Entity m_ConstructTile{};
+		ECS::Entity m_ConstructTile_Arrow{};
+		ECS::Entity m_ConstructTile_ClickHere{};
+		// ==========================
 
 		/*!*********************************************************************************
 			\brief
@@ -119,9 +124,21 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 			\brief
-				Updates the Hard Drop
+				Updates the Attack
 		***********************************************************************************/
 		void UpdateAttack(void);
+
+		/*!*********************************************************************************
+			\brief
+				Updates the Construct Tile
+		***********************************************************************************/
+		void UpdateConstructTile(void);
+
+		/*!*********************************************************************************
+			\brief
+				Updates the Placing of Construct Tile
+		***********************************************************************************/
+		void UpdatePlaceConstructTile(void);
 
 		/*!*********************************************************************************
 			\brief

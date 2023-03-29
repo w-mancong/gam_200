@@ -15,6 +15,6 @@
         "FadeOutType": 6,
         "FadeInTime": 0.0,
         "FadeOutTime": 0.0,
-        "Text": "Alright! The Guard is almost defeated. If you want to inspect how much Health Points enemies have left,===or more info on an enemy, hover your mouse over them!===I'll let you continue by yourself for now. I'll be watching over you so don't worry. Good luck!"
+        "Text": "Alright! The Guard is almost defeated. If you want to inspect how much Health Points===enemies have left, or more info on an enemy, hover your mouse over them!===I'll let you continue by yourself for now. I'll be watching over you so don't worry. Good luck!"
     }
 ]

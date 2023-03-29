@@ -85,6 +85,11 @@ namespace ALEngine::Script
 				m_HardDrop = child;
 				ECS::SetActive(false, m_HardDrop);
 			}
+			else if (data.tag == "Construct Tile")
+			{
+				m_ConstructTile = child;
+				ECS::SetActive(false, m_ConstructTile);
+			}
 		}
 
 		// Select Tile Children
@@ -160,10 +165,24 @@ namespace ALEngine::Script
 			else if (data.tag == "Blocks")
 				m_HardDrop_Blocks = child;
 		}
+
+		// Construct Tile Children
+		sceneGraph.FindImmediateChildren(static_cast<s32>(m_ConstructTile));
+		for (s32 child : sceneGraph.GetChildren())
+		{
+			EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
+			if (data.tag == "Click Here")
+				m_ConstructTile_ClickHere = child;
+			else if (data.tag == "Arrow")
+				m_ConstructTile_Arrow = child;
+		}
 	}
 
 	void TutorialObject::Update(ECS::Entity en)
 	{
+		const Unit player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
+
 		switch (Gameplay::TutorialManager::Instance()->GetState())
 		{
 		case Gameplay::TutorialState::TUTORIAL_SELECT_TILE:
@@ -187,12 +206,29 @@ namespace ALEngine::Script
 		case Gameplay::TutorialState::TUTORIAL_ATTACK:
 			UpdateAttack();
 			break;
+		case Gameplay::TutorialState::TUTORIAL_CONSTRUCT_TILE:
+			UpdateConstructTile();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_PLACE_CONSTRUCT_TILE:
+			UpdatePlaceConstructTile();
+			break;
+
+
+
 		case Gameplay::TutorialState::TUTORIAL_WAIT_GUARD_DEFEAT:
-			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 1)
+			Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
+			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 1
+				&& player.coordinate[0] >= 11)
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
-		case Gameplay::TutorialState::TUTORIAL_DEFEAT_TILE_DESTROYER_CS:
-			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 2)
+		case Gameplay::TutorialState::TUTORIAL_WAIT_TILE_DESTROYER_DEFEAT:
+			Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
+			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 2
+				&& player.coordinate[0] >= 18)
+				Gameplay::TutorialManager::Instance()->NextState();
+			break;
+		case Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT:
+			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 3)
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		default:
@@ -202,7 +238,7 @@ namespace ALEngine::Script
 
 	void TutorialObject::UpdateSelectTile(void)
 	{
-		const f32 bloomSpeed{ 0.7f };
+		constexpr f32 bloomSpeed{ 0.7f };
 
 		if (Gameplay::TutorialManager::Instance()->GetTileIsSelected() == false)
 		{	// If tile is not selected, show arrow
@@ -253,8 +289,8 @@ namespace ALEngine::Script
 			VariableScale(m_APs_Arrow);
 
 			// Change alpha of the AP circle
-			const f32 bloomSpeed{ 0.7f };
-			const f32 min{ 0.3f }, max{ 1.f };
+			constexpr f32 bloomSpeed{ 0.7f };
+			constexpr f32 min{ 0.3f }, max{ 1.f };
 
 			static f32 bloomDir{ 1.f };
 
@@ -364,11 +400,75 @@ namespace ALEngine::Script
 
 	void TutorialObject::UpdateAttack(void)
 	{
+		static f32 countdown{ 2.f };
+		static b8 hasAttacked{ false };
+
+		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
+
 		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
+			hasAttacked = true;
+
+		if(hasAttacked)
 		{
-			Gameplay::TutorialManager::Instance()->NextState();
+			countdown -= Time::m_DeltaTime;
+
+			if(countdown <= 0.f)
+			{
+				Gameplay::TutorialManager::Instance()->NextState();
+				Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
+				hasAttacked = false;
+				countdown = 2.f;
+			}
 		}
 	}
+
+	void TutorialObject::UpdateConstructTile(void)
+	{
+		ECS::SetActive(true, m_ConstructTile);
+
+		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButConstructTileOff();
+
+		// Give player enough points for Construct Tile
+		Unit& player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
+		if (player.actionPoints < 2)
+			player.actionPoints = 2;
+
+		VariableScale(m_ConstructTile_Arrow);
+
+		if(gs->selected_Abilities != nullptr && 
+			gs->selected_Abilities->current_Ability_Name == ABILITY_NAME::CONSTRUCT_WALL &&
+			gs->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES)
+		{
+			Gameplay::TutorialManager::Instance()->NextState();
+			ECS::SetActive(false, m_ConstructTile);
+			return;
+		}
+	}
+
+	void TutorialObject::UpdatePlaceConstructTile(void)
+	{
+		static f32 countdown{ 1.f };
+		static b8 hasPlaced{ false };
+
+		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButConstructTileOff();
+
+		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
+			hasPlaced = true;
+
+		if (hasPlaced)
+		{
+			countdown -= Time::m_DeltaTime;
+
+			if (countdown <= 0.f)
+			{
+				Gameplay::TutorialManager::Instance()->NextState();
+				Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
+				hasPlaced = false;
+				countdown = 1.f;
+			}
+		}
+	}
+
 	
 	void TutorialObject::VariableScale(ECS::Entity en)
 	{

@@ -183,7 +183,7 @@ namespace ALEngine::Script
 				if (row == "Tile")
 				{
 					cell.m_canWalk = true;
-					cell.m_resetCounter = 1000;		// Big number that cannot be reached
+					cell.m_resetCounter = 1000;
 				}
 
 				// Dont subscribe if it is not within 
