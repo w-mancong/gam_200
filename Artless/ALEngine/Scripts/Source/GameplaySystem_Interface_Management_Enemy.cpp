@@ -105,6 +105,8 @@ namespace ALEngine::Script
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_MELEE;
+		enemyUnit.playerTriggeredEnemy = false;
+		enemyUnit.distanceToTriggerEnemy = 6;
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
@@ -116,6 +118,8 @@ namespace ALEngine::Script
 		enemyUnit.maxActionPoints = 1;
 		enemyUnit.actionPoints = 1;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
+		enemyUnit.playerTriggeredEnemy = false;
+		enemyUnit.distanceToTriggerEnemy = 6;
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy03attributes([[maybe_unused]] Unit& enemyUnit)
@@ -128,6 +132,8 @@ namespace ALEngine::Script
 		enemyUnit.actionPoints = 4; 
 		enemyUnit.abilityCooldown_Enemy = 0;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
+		enemyUnit.playerTriggeredEnemy = false;
+		enemyUnit.distanceToTriggerEnemy = 6;
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy04attributes([[maybe_unused]] Unit& enemyUnit)
@@ -250,6 +256,11 @@ namespace ALEngine::Script
 		}
 	}
 
+	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue)
+	{
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(UnitEntity);
+		enemyUnit.distanceToTriggerEnemy = rangeValue;
+	}
 
 	bool GameplaySystem_Interface_Management_Enemy::RunEnemyAdjacentAttack(Room& room, Unit& enemy) {
 		//Check 4 adjacent
@@ -479,7 +490,7 @@ namespace ALEngine::Script
 		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 		AL_CORE_INFO("dist enemy & player:" + std::to_string(distanceBetweenEnemyandPlayer));
 
-		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <=6)
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= enemyUnit.distanceToTriggerEnemy)
 		{
 			enemyUnit.playerTriggeredEnemy = true;
 			AL_CORE_INFO("AI triggered by player");
@@ -747,7 +758,7 @@ namespace ALEngine::Script
 		//distance between enemy and player
 		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 
-		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <=4)
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= enemyUnit.distanceToTriggerEnemy)
 		{
 			enemyUnit.playerTriggeredEnemy = true;
 			AL_CORE_INFO("AI triggered by player");
@@ -893,7 +904,7 @@ namespace ALEngine::Script
 		//distance between enemy and player
 		s32 distanceBetweenEnemyandPlayer = Math::Vector2Int::Distance(Math::Vector2Int(playerUnit.coordinate[0], playerUnit.coordinate[1]), Math::Vector2Int(enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 
-		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= 4)
+		if (!enemyUnit.playerTriggeredEnemy && distanceBetweenEnemyandPlayer <= enemyUnit.distanceToTriggerEnemy)
 		{
 			enemyUnit.playerTriggeredEnemy = true;
 			AL_CORE_INFO("AI triggered by player");

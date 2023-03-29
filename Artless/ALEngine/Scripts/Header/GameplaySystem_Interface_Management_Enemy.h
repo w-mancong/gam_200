@@ -199,6 +199,7 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Audio_PlayEnemyMove(Unit& enemy);
 
+		void Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue);
 
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)
