@@ -9,6 +9,7 @@ brief:	This file contain function definition for new game button
 #include <pch.h>
 #include <NewGameButton.h>
 #include <SceneChangeHelper.h>
+#include <PauseButtonFlag.h>
 
 namespace ALEngine::Script
 {
@@ -20,12 +21,14 @@ namespace ALEngine::Script
 		f32 constexpr ALPHA_VALUE{ 0.925f };
 		ECS::Entity scene_transition{ ECS::MAX_ENTITIES }, 
 			tutorial_prompt{ ECS::MAX_ENTITIES }, yes{ ECS::MAX_ENTITIES }, no{ ECS::MAX_ENTITIES };
+		b8 roomSet{ false };
 
 		void ChangeScene(u64 roomIndex)
 		{
 			std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
 			ptr->NextScene();
 			SetMap(roomIndex);
+			roomSet = true;
 		}
 
 		void Darken(Entity en)
@@ -42,11 +45,15 @@ namespace ALEngine::Script
 
 		void WhenHover(Entity en)
 		{
-			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a || PauseButtonFlag::confirmationBG)
 				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			{
 				SetActive(true, tutorial_prompt);
+				PauseButtonFlag::confirmationBG = true;
+				Lighten(en);
+			}
 		}
 
 		void WhenExit(Entity en)
@@ -58,9 +65,14 @@ namespace ALEngine::Script
 
 		void WhenYesHover(Entity en)
 		{
+			if (roomSet)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			{
 				ChangeScene(0);
+				Lighten(en);
+			}
 		}
 
 		void WhenYesExit(Entity en)
@@ -70,9 +82,14 @@ namespace ALEngine::Script
 
 		void WhenNoHover(Entity en)
 		{
+			if (roomSet)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			{
 				ChangeScene(0);
+				Lighten(en);
+			}
 		}
 
 		void WhenNoExit(Entity en)
@@ -133,6 +150,8 @@ namespace ALEngine::Script
 		}
 
 		Font::EnableTextRendering(true);
+
+		roomSet = false;
 	}
 
 	void NewGameButton::Update(ECS::Entity en)
@@ -143,12 +162,14 @@ namespace ALEngine::Script
 			{
 				SetActive(false, tutorial_prompt);
 				Lighten(yes), Lighten(no);
+				PauseButtonFlag::confirmationBG = false;
 			}
 		}
 	}
 
 	void NewGameButton::Free(ECS::Entity en)
 	{
-		scene_transition = ECS::MAX_ENTITIES;
+		tutorial_prompt = yes = no = scene_transition = ECS::MAX_ENTITIES;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }

@@ -70,6 +70,7 @@ namespace ALEngine::Script
 					Engine::ToggleApplicationMode();
 					Engine::GameStateManager::Next(Engine::GameState::Editor);
 					Editor::ALEditor::Instance()->SetSelectedEntity(ECS::MAX_ENTITIES);
+					Engine::StopChannel(Engine::Channel::Master);
 					ECS::ResetEventTriggerSystem();
 					SetMap(0);
 				}
