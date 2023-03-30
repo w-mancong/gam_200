@@ -10,6 +10,11 @@ brief:	This contains declarations for the Cutscene Manager class, which is in ch
 #ifndef CUTSCENE_MANAGER
 #define CUTSCENE_MANAGER
 
+namespace ALEngine::Script
+{
+	class GameplaySystem_Interface_Management_GUI;
+}
+
 namespace ALEngine::Engine::Scene
 {
 	// Forward Declaration
@@ -196,6 +201,23 @@ namespace ALEngine::Engine::Scene
 				Returns empty if no cutscene
 		***********************************************************************************/
 		std::string GetCurrentCutsceneName(void);
+		
+		/*!*********************************************************************************
+			\brief
+				Gets the GameplaySystem_GUI
+			\return
+				Returns pointer to the GameplaySystem_GUI
+		***********************************************************************************/
+		std::shared_ptr<ALEngine::Script::GameplaySystem_Interface_Management_GUI> GetGameplaySystem_GUI(void);
+
+		/*!*********************************************************************************
+			\brief
+				Sets the GameplaySystem_GUI pointer
+			\param [in] gs
+				Pointer to the GameplaySystem_GUI, to be set to this
+		***********************************************************************************/
+		void SetGameplaySystem_GUI(std::shared_ptr<ALEngine::Script::GameplaySystem_Interface_Management_GUI> gs);
+
 	private:
 		/*!*********************************************************************************
 			\brief 
@@ -227,6 +249,9 @@ namespace ALEngine::Engine::Scene
 		ECS::Entity m_BlackOverlay{};							// Black overlay (for those with no image)
 		ECS::Entity m_DialogueBox{}, m_DialogueBoxTop{};		// Dialogue Box, also has text component
 		ECS::Entity m_CutsceneTop{}, m_CutsceneBottom{};		// Top will be displayed over Bottom
+
+		// Pointers
+		std::shared_ptr<ALEngine::Script::GameplaySystem_Interface_Management_GUI> m_GameplaySystem_GUI{ nullptr };
 
 		// Required for Singleton to function
 		friend class Templates::Singleton<CutsceneManager>;

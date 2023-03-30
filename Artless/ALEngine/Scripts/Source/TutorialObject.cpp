@@ -350,8 +350,20 @@ namespace ALEngine::Script
 
 		if (m_EndTurn_ArrowBool == false && Gameplay::TutorialManager::Instance()->GetPlayerTurnStart())
 		{
-			Gameplay::TutorialManager::Instance()->NextState();
-			Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(false);
+			m_EndTurn_EnemyAttacked = true;			
+		}
+
+		if (m_EndTurn_EnemyAttacked)
+		{
+			m_EndTurn_EnemyAttackedTimer -= Time::m_DeltaTime;
+
+			if (m_EndTurn_EnemyAttackedTimer <= 0.f)
+			{
+				Gameplay::TutorialManager::Instance()->NextState();
+				Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(false);
+				m_EndTurn_EnemyAttackedTimer = 2.f;
+				m_EndTurn_EnemyAttacked = false;
+			}
 		}
 	}
 

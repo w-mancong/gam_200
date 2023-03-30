@@ -8,6 +8,7 @@ brief:	This contains definitions for the Cutscene Manager class, which is in cha
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
+#include <GameplaySystem_Interface_Management_GUI.h>
 
 namespace ALEngine::Engine::Scene
 {
@@ -68,6 +69,16 @@ namespace ALEngine::Engine::Scene
 			return m_CurrentCutscene->m_CutsceneName;
 
 		return "";
+	}
+
+	std::shared_ptr<ALEngine::Script::GameplaySystem_Interface_Management_GUI> CutsceneManager::GetGameplaySystem_GUI(void)
+	{
+		return m_GameplaySystem_GUI;
+	}
+
+	void CutsceneManager::SetGameplaySystem_GUI(std::shared_ptr<ALEngine::Script::GameplaySystem_Interface_Management_GUI> gs)
+	{
+		m_GameplaySystem_GUI = gs;
 	}
 
 	CutsceneManager::CutsceneManager(void)
@@ -447,6 +458,9 @@ namespace ALEngine::Engine::Scene
 	{
 		if (!m_CutsceneIsPlaying)
 			return;
+
+		if(m_GameplaySystem_GUI != nullptr)
+			m_GameplaySystem_GUI->HideEnemyTooltip(true);
 
 		switch (m_CurrentPhase)
 		{
