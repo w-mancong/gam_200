@@ -219,7 +219,9 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
 			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 1
 				&& player.coordinate[0] >= 11)
+			{
 				Gameplay::TutorialManager::Instance()->NextState();
+			}
 			break;
 		case Gameplay::TutorialState::TUTORIAL_WAIT_TILE_DESTROYER_DEFEAT:
 			Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
@@ -228,7 +230,7 @@ namespace ALEngine::Script
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		case Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT:
-			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 3)
+			if (gs->enemyEntityList.size() == Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled())
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		default:
@@ -350,8 +352,20 @@ namespace ALEngine::Script
 
 		if (m_EndTurn_ArrowBool == false && Gameplay::TutorialManager::Instance()->GetPlayerTurnStart())
 		{
-			Gameplay::TutorialManager::Instance()->NextState();
-			Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(false);
+			m_EndTurn_EnemyAttacked = true;			
+		}
+
+		if (m_EndTurn_EnemyAttacked)
+		{
+			m_EndTurn_EnemyAttackedTimer -= Time::m_DeltaTime;
+
+			if (m_EndTurn_EnemyAttackedTimer <= 0.f)
+			{
+				Gameplay::TutorialManager::Instance()->NextState();
+				Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(false);
+				m_EndTurn_EnemyAttackedTimer = 2.f;
+				m_EndTurn_EnemyAttacked = false;
+			}
 		}
 	}
 
@@ -406,7 +420,10 @@ namespace ALEngine::Script
 		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
 
 		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
+		{
 			hasAttacked = true;
+			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
+		}
 
 		if(hasAttacked)
 		{
@@ -424,6 +441,16 @@ namespace ALEngine::Script
 
 	void TutorialObject::UpdateConstructTile(void)
 	{
+		if (gs->currentPhaseStatus != PHASE_STATUS::PHASE_ACTION)
+		{
+			Unit player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
+			if (player.actionPoints <= 2 && player.actionPoints > 0)
+				Gameplay::TutorialManager::Instance()->GetGameplaySystem()->EndTurn();
+
+			ECS::SetActive(false, m_ConstructTile);
+			return;
+		}
+
 		ECS::SetActive(true, m_ConstructTile);
 
 		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButConstructTileOff();
@@ -462,7 +489,6 @@ namespace ALEngine::Script
 			if (countdown <= 0.f)
 			{
 				Gameplay::TutorialManager::Instance()->NextState();
-				Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
 				hasPlaced = false;
 				countdown = 1.f;
 			}

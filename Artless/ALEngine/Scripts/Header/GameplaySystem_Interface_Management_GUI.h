@@ -179,9 +179,9 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-			Hides the center health bar.
+			Hides the Enemy Tool Tip
 		***********************************************************************************/
-		void HideBarHealthText(b8 boolean);
+		void HideEnemyTooltip(b8 boolean);
 
 		/*!*********************************************************************************
 		\brief

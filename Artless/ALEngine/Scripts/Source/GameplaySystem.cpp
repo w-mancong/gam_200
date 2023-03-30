@@ -408,7 +408,7 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->UpdateYourTurnSign();
 
 		//If right mouse button
-		if (Input::KeyDown(KeyCode::MouseRightButton) || Time::m_Scale <= 0.0f) {
+		if (Input::KeyDown(KeyCode::MouseRightButton) && Time::m_Scale <= 0.0f) {
 			//Deselect Pattern
 			if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);

@@ -31,6 +31,8 @@ namespace ALEngine::Script
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		Set_GameplayInterface_GUI(en);
+
+		Engine::Scene::CutsceneManager::Instance()->SetGameplaySystem_GUI(gameplaySystem_GUI);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::Update(ECS::Entity en)
@@ -98,9 +100,12 @@ namespace ALEngine::Script
 		}
 	}
 
-	void GameplaySystem_Interface_Management_GUI::HideBarHealthText(b8 boolean)
+	void GameplaySystem_Interface_Management_GUI::HideEnemyTooltip(b8 boolean)
 	{
-		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("text_bar_hp"));
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("enemy_tip_health"));
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("summoner_tip"));
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("destoryer_tip"));
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("guard_tip"));
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
