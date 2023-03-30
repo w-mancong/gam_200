@@ -25,11 +25,15 @@ namespace Gameplay
 		m_PlayerMoveFinished = false;
 		m_EndTurnPressed = false;
 		m_PlayerTurnStart = false;
+		m_EnemiesKilled = 0;
 	}
 
 	void TutorialManager::NextState(void)
 	{
 		m_CurrentState = static_cast<TutorialState>(static_cast<u32>(m_CurrentState) + 1);
+		m_TileIsPlaced = false;
+		m_PlayerTurnStart = false;
+		m_PlayerMoveFinished = false;
 
 		// End of tutorial, start level 1
 		if (m_CurrentState >= TutorialState::TUTORIAL_END)
