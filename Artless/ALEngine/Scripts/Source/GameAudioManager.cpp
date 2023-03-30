@@ -37,11 +37,23 @@ namespace ALEngine::Script
 		// Audio
 		if (!initialized)
 		{
+			// SFX
 			InitAudio("Assets\\Audio\\MenuOpen.wav");
 			InitAudio("Assets\\Audio\\MenuClose.wav");
 			InitAudio("Assets\\Audio\\MenuButtonPress.wav");
 			InitAudio("Assets\\Audio\\VolumeControl.wav");
 			InitAudio("Assets\\Audio\\DialogueBoxOpen.wav");
+			InitAudio("Assets\\Audio\\AttackSelectionAppear.wav");
+			InitAudio("Assets\\Audio\\CannotPlace.wav");
+			InitAudio("Assets\\Audio\\MouseClick.wav");
+			InitAudio("Assets\\Audio\\PhaseChange.wav");
+			InitAudio("Assets\\Audio\\TileBreak.wav");
+			InitAudio("Assets\\Audio\\TileCrack.wav");
+			InitAudio("Assets\\Audio\\TilePlace.wav");
+			InitAudio("Assets\\Audio\\TileRotation.wav");
+
+			// VO
+
 
 			initialized = true;
 		}
