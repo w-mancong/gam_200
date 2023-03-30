@@ -21,7 +21,8 @@ namespace ALEngine::Script
 					bgm_right{ ECS::MAX_ENTITIES }, bgm_left{ ECS::MAX_ENTITIES };
 
 		b8 mouseClicked{ false };
-		f32 clickTimer{ 0.0f };
+		f32 clickTimer{ 0.0f }, soundTimer{ 0.0f };
+		f32 constexpr WAIT_FOR = 0.125f;
 
 		u64 constexpr MASTER = static_cast<u64>(Engine::Channel::Master),
 			SFX = static_cast<u64>(Engine::Channel::SFX),
@@ -48,7 +49,7 @@ namespace ALEngine::Script
 			u64 ch = static_cast<u64>(channel);
 			Text& text = Coordinator::Instance()->GetComponent<Text>(textID[ch]);
 			volumes[ch] = Engine::GetChannelVolume(channel);
-			text.textString = std::to_string( static_cast<u64>( volumes[ch] * 100ULL )  );
+			text.textString = std::to_string( static_cast<u64>( volumes[ch] ) * 100ULL );
 		}
 
 		void SetVolume(Engine::Channel channel, f32 flag = 1.0f)
@@ -59,15 +60,18 @@ namespace ALEngine::Script
 			{
 				mouseClicked = true;
 				u64 ch = static_cast<u64>(channel);
-				volumes[ch] += (1.0f * flag) / 100.0f;
+				soundTimer += Time::m_ActualDeltaTime;
+				if (soundTimer >= WAIT_FOR)
+				{
+					volumes[ch] += (1.0f * flag) / 100.0f;
+					soundTimer = 0.0f;
+					if (1.0f > volumes[ch] && 0.0f < volumes[ch])
+						GameAudioManager::Play("VolumeControl");
+				}
 
 				volumes[ch] = std::clamp(volumes[ch], 0.0f, 1.0f);
-
 				Engine::SetChannelVolume(channel, volumes[ch]);
 				SetTextVolume(channel);
-				if (1.0f <= volumes[ch] || 0.0f >= volumes[ch])
-					return;
-				GameAudioManager::Play("VolumeControl");
 			}
 
 			clickTimer += Time::m_ActualDeltaTime;
@@ -262,6 +266,7 @@ namespace ALEngine::Script
 		{
 			mouseClicked = false;
 			clickTimer = 0.0f;
+			soundTimer = WAIT_FOR;
 		}
 	}
 

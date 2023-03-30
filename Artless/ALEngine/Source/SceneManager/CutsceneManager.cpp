@@ -9,6 +9,7 @@ brief:	This contains definitions for the Cutscene Manager class, which is in cha
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <GameplaySystem_Interface_Management_GUI.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Engine::Scene
 {
@@ -29,6 +30,7 @@ namespace ALEngine::Engine::Scene
 		// Check has text
 		if (m_CurrentCutscene->m_HasText)
 		{
+			Script::GameAudioManager::Play("DialogueBoxOpen");
 			if (m_CurrentCutscene->m_TextIsAbove == false)
 			{
 				Text& dialogue = Coordinator::Instance()->GetComponent<Text>(m_DialogueBox);

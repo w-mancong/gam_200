@@ -41,6 +41,7 @@ namespace ALEngine::Script
 			InitAudio("Assets\\Audio\\MenuClose.wav");
 			InitAudio("Assets\\Audio\\MenuButtonPress.wav");
 			InitAudio("Assets\\Audio\\VolumeControl.wav");
+			InitAudio("Assets\\Audio\\DialogueBoxOpen.wav");
 
 			initialized = true;
 		}
@@ -54,8 +55,6 @@ namespace ALEngine::Script
 
 	void GameAudioManager::Play(std::string const& name)
 	{
-		if (sounds[name].IsPlaying())
-			return;
 		sounds[name].Play();
 	}
 }
