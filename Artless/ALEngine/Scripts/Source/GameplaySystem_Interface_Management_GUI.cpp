@@ -100,7 +100,7 @@ namespace ALEngine::Script
 		}
 	}
 
-	void GameplaySystem_Interface_Management_GUI::HideEnemyTooltipHealthText(b8 boolean)
+	void GameplaySystem_Interface_Management_GUI::HideEnemyTooltip(b8 boolean)
 	{
 		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("enemy_tip_health"));
 		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("summoner_tip"));
