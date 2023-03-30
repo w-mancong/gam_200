@@ -27,6 +27,7 @@
 #include <PromptTool.h>
 #include <Utility/AudioNames.h>
 #include <Engine/PathFindingManager.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -116,10 +117,25 @@ namespace ALEngine::Script
 		//AddLogicComponent<Script::PauseLogic>(entity)
 
 		//Camera Logic
-		if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+		{
+			Instantiate("Tutorial Objects");
+
 			ECS::AddLogicComponent<Script::TutorialCamera>(entity);
+		}
 		else
+		{
+			ECS::Entity Tutorial_Objects = Coordinator::Instance()->GetEntityByTag("Tutorial Objects");
+			if (Tutorial_Objects != ECS::MAX_ENTITIES)
+			{
+				ECS::GetSceneGraph().FindChildren(static_cast<s32>(Tutorial_Objects));
+				std::vector<s32> const& children = ECS::GetSceneGraph().GetChildren();
+
+				for (s32 child : children)
+					Coordinator::Instance()->DestroyEntity(static_cast<ECS::Entity>(child));
+			}
 			ECS::AddLogicComponent<Script::GameplayCamera>(entity);
+		}
 			
 		// Water generator
 		ECS::AddLogicComponent<Script::WaterGenerator>(entity);
@@ -129,7 +145,8 @@ namespace ALEngine::Script
 			std::shared_ptr<Script::PromptTool> ptr = ECS::GetLogicComponent<Script::PromptTool>(entity);
 			ptr->InitPatternPlacementStatusVariable(&currentPatternPlacementStatus);
 		}
-		// pause_logic
+		// Game audio manager
+		ECS::AddLogicComponent<Script::GameAudioManager>(entity);
 
 		//Add physics
 		ECS::CreateRigidbody(entity);

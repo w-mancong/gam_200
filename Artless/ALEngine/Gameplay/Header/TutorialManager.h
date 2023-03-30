@@ -45,7 +45,9 @@ namespace Gameplay
 				Returns true if Tutorial is playing, 
 				Else returns false
 		***********************************************************************************/
-		b8 TutorialIsPlaying(void);
+		b8 TutorialIsPlaying(void) const;
+
+		void SetTutorialIsPlaying(b8 playing);
 
 		// Getters and Setters
 	public:

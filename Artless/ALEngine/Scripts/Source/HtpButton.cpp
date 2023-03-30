@@ -9,6 +9,7 @@ brief:	This file contain function definition for a how to play button
 #include <pch.h>
 #include <HtpButton.h>
 #include <PauseButtonFlag.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -46,6 +47,7 @@ namespace ALEngine::Script
 				SetActive(false, parent);
 				Lighten(en);
 				PauseButtonFlag::confirmationBG = true;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -69,6 +71,7 @@ namespace ALEngine::Script
 				Coordinator::Instance()->GetComponent<EntityData>(close).active = false;
 				Lighten(close);
 				PauseButtonFlag::confirmationBG = false;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 

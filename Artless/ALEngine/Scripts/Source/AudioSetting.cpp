@@ -8,6 +8,7 @@ brief:	This file contain function definition for adjusting audio volumes
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <AudioSetting.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -64,6 +65,9 @@ namespace ALEngine::Script
 
 				Engine::SetChannelVolume(channel, volumes[ch]);
 				SetTextVolume(channel);
+				if (1.0f <= volumes[ch] || 0.0f >= volumes[ch])
+					return;
+				GameAudioManager::Play("VolumeControl");
 			}
 
 			clickTimer += Time::m_ActualDeltaTime;

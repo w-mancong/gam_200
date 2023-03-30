@@ -104,9 +104,14 @@ namespace Gameplay
 		}
 	}
 
-	b8 TutorialManager::TutorialIsPlaying(void)
+	b8 TutorialManager::TutorialIsPlaying(void) const
 	{
 		return m_TutorialIsPlaying;
+	}
+
+	void TutorialManager::SetTutorialIsPlaying(b8 playing)
+	{
+		m_TutorialIsPlaying = playing;
 	}
 
 	TutorialState TutorialManager::GetState(void)

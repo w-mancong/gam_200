@@ -36,7 +36,7 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string rooms[] = { "Assets\\Presentation_Level.map", "Assets\\Map\\Tutorial_Final.map" };
+		std::string rooms[] = { "Assets\\Map\\Tutorial_Final.map", "Assets\\Map\\Level_1_Final.map", "Assets\\Map\\Level_2_Final.map" };
 		std::string room_To_Load = rooms[1];
 
 		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
@@ -54,7 +54,7 @@ namespace ALEngine::Script
 		Load Tutorial Level
 	***********************************************************************************/
 	void Event_Button_LoadLevel_Tutorial(ECS::Entity invoker) {
-		room_To_Load = rooms[1];
+		room_To_Load = rooms[0];
 		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
 		ptr->Restart();
 	}
@@ -65,10 +65,9 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_Button_LoadLevel_1(ECS::Entity invoker) {
 		//Restart the gameplay
-		room_To_Load = rooms[0];
+		room_To_Load = rooms[1];
 		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
 		ptr->Restart();
-		//Engine::Scene::Restart();
 	}
 
 	/*!*********************************************************************************
@@ -78,10 +77,9 @@ namespace ALEngine::Script
 	void Event_Button_LoadLevel_2(ECS::Entity invoker) {
 		gameplaySystem->Toggle_Gameplay_State(false);
 		//Restart the gameplay
-		room_To_Load = rooms[1];
+		room_To_Load = rooms[2];
 		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
 		ptr->Restart();
-		//Engine::Scene::Restart();
 	}
 
 	void GameplaySystem::Load(ECS::Entity en)

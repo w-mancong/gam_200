@@ -10,6 +10,7 @@ brief:	This file contain function declaration for a pause button
 #include <PauseButton.h>
 #include <PauseButtonFlag.h>
 #include <Engine/GSM/GameStateManager.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -34,7 +35,7 @@ namespace ALEngine::Script
 
 		void WhenHover(Entity en)
 		{
-			if (PauseButtonFlag::confirmationBG)
+			if (PauseButtonFlag::confirmationBG || Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
 				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
@@ -46,6 +47,11 @@ namespace ALEngine::Script
 				SetActive(!active, bd_pause);
 				Time::m_Scale = static_cast<f32>(active);
 				clicked = true;
+
+				if (!active)
+					GameAudioManager::Play("MenuOpen");
+				else
+					GameAudioManager::Play("MenuClose");
 			}
 			if (Input::KeyReleased(KeyCode::MouseLeftButton))
 				clicked = false;

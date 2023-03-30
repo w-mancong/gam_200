@@ -10,6 +10,8 @@ brief:	This file contain function definition for new game button
 #include <NewGameButton.h>
 #include <SceneChangeHelper.h>
 #include <PauseButtonFlag.h>
+#include <TutorialManager.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -53,6 +55,7 @@ namespace ALEngine::Script
 				SetActive(true, tutorial_prompt);
 				PauseButtonFlag::confirmationBG = true;
 				Lighten(en);
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -70,8 +73,9 @@ namespace ALEngine::Script
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
-				ChangeScene(1);
+				ChangeScene(0);
 				Lighten(en);
+				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(true);
 			}
 		}
 
@@ -87,8 +91,9 @@ namespace ALEngine::Script
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
-				ChangeScene(0);
+				ChangeScene(1);
 				Lighten(en);
+				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(false);
 			}
 		}
 

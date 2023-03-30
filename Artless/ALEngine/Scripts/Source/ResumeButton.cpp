@@ -10,6 +10,7 @@ brief:	This file contain function definition for pause menu's resume button
 #include <ResumeButton.h>
 #include <PauseLogic.h>
 #include <PauseButtonFlag.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -17,7 +18,7 @@ namespace ALEngine::Script
 	{
 		using namespace ECS;
 
-		Entity bd_pause{ ECS::MAX_ENTITIES }, bd_pause_parent{ ECS::MAX_ENTITIES };
+		Entity bd_pause{ ECS::MAX_ENTITIES };
 
 		void Darken(Entity en)
 		{
@@ -38,11 +39,10 @@ namespace ALEngine::Script
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
-				std::shared_ptr<PauseLogic> pl = GetLogicComponent<PauseLogic>(bd_pause_parent);
-				pl->paused = false;
 				SetActive(false, bd_pause);
 				Time::m_Scale = 1.0f;
 				Lighten(en);
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -55,7 +55,6 @@ namespace ALEngine::Script
 	void ResumeButton::Init(ECS::Entity en)
 	{
 		bd_pause = static_cast<Entity>( GetSceneGraph().GetParent(en) );
-		bd_pause_parent = static_cast<Entity>( GetSceneGraph().GetParent(bd_pause) );
 
 		CreateEventTrigger(en, true);
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenHover);
@@ -64,7 +63,7 @@ namespace ALEngine::Script
 
 	void ResumeButton::Free(ECS::Entity en)
 	{
-		bd_pause = bd_pause_parent = MAX_ENTITIES;
+		bd_pause = MAX_ENTITIES;
 		PauseButtonFlag::confirmationBG = false;
 	}
 }

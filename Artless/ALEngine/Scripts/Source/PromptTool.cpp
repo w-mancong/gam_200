@@ -22,6 +22,8 @@ namespace ALEngine::Script
 	void PromptTool::Init([[maybe_unused]] ECS::Entity en)
 	{
 		mouse_sprite = Coordinator::Instance()->CreateEntity();
+		Coordinator::Instance()->GetComponent<EntityData>(mouse_sprite).tag = "prompt_sprites";
+
 		Transform trans_{};
 		trans_.scale = { 125.0f, 125.0f };
 		trans_.position = { 800.0f, 450.0f };

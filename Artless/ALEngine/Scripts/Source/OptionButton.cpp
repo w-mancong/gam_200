@@ -9,6 +9,7 @@ brief:	This file contain function definition for option button
 #include <pch.h>
 #include <OptionButton.h>
 #include <PauseButtonFlag.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -42,6 +43,7 @@ namespace ALEngine::Script
 				SetActive(true, sound_options);
 				Lighten(en);
 				PauseButtonFlag::confirmationBG = true;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -61,6 +63,7 @@ namespace ALEngine::Script
 				SetActive(false, sound_options);
 				Lighten(en);
 				PauseButtonFlag::confirmationBG = false;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 

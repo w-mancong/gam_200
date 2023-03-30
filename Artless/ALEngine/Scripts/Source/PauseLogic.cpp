@@ -9,6 +9,8 @@ brief:	This file contain function declaration for a pause menu
 #include <pch.h>
 #include <PauseLogic.h>
 #include <Engine/GSM/GameStateManager.h>
+#include <SceneManager/CutsceneManager.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -31,19 +33,25 @@ namespace ALEngine::Script
 				bd_pause = static_cast<Entity>(child);
 		}
 
-		paused	 = false;
-		SetActive(paused, bd_pause);	// to make sure that bd_pause is always false when init
+		SetActive(false, bd_pause);	// to make sure that bd_pause is always false when init
 
 		text_bar_hp = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
 	}
 
 	void PauseLogic::Update(ECS::Entity en)
 	{
+		if (Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
+			return;
 		if (Input::KeyTriggered(KeyCode::Escape))
 		{
-			paused = !paused;
-			SetActive(paused, bd_pause);
-			Time::m_Scale = static_cast<f32>(!paused);
+			b8 active = Coordinator::Instance()->GetComponent<EntityData>(bd_pause).active;
+			SetActive(!active, bd_pause);
+			Time::m_Scale = static_cast<f32>(active);
+
+			if (!active)
+				GameAudioManager::Play("MenuOpen");
+			else
+				GameAudioManager::Play("MenuClose");
 		}
 		SetActive(static_cast<b8>(Time::m_Scale), text_bar_hp);
 	}

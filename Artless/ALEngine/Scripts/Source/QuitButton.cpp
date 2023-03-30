@@ -9,6 +9,7 @@ brief:	This file contain function definition for quit game button
 #include <pch.h>
 #include <QuitButton.h>
 #include <PauseButtonFlag.h>
+#include <GameAudioManager.h>
 #if EDITOR
 #include <Engine/GSM/GameStateManager.h>
 #include <GameplaySystem.h>
@@ -45,6 +46,7 @@ namespace ALEngine::Script
 				SetActive(true, quit_confirmation);
 				Lighten(en);
 				PauseButtonFlag::confirmationBG = true;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 			Darken(en);
 		}
@@ -79,6 +81,7 @@ namespace ALEngine::Script
 #else
 				Engine::TerminateEngine();
 #endif
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -95,6 +98,7 @@ namespace ALEngine::Script
 				SetActive(false, quit_confirmation);
 				Lighten(en);
 				PauseButtonFlag::confirmationBG = false;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
