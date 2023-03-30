@@ -1060,10 +1060,10 @@ namespace ALEngine::Script
 				}
 			}
 		}
-
 		//If no health
 		else if (unit.health <= 0) {
 			//Determinte type
+
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				AL_CORE_INFO("Unit Died");
 				ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
@@ -1077,6 +1077,7 @@ namespace ALEngine::Script
 			else {
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
+				gameplaySystem_GUI->HideEnemyTooltip(true);
 				
 				if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 					gameplaySystem->PlayAudio(AUDIO_GUARD_DEATH_1);
