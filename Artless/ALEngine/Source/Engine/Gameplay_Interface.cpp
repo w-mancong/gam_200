@@ -2413,6 +2413,15 @@ namespace ALEngine::Script
 				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i - 1].file_path);
 			}
 
+			for (int i = 0; i < 3; ++i) {
+				std::string tile_icon = "Pattern_Center_" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid(gameplaySystem->pattern_List[i].file_path);
+			}
+
 
 			if (playerUnit.actionPoints < 0) {
 				playerUnit.actionPoints = 0;
