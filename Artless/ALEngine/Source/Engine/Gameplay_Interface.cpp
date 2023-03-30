@@ -1015,8 +1015,19 @@ namespace ALEngine::Script
 		//Get Transform
 		Transform& unitTrans = Coordinator::Instance()->GetComponent<Transform>(unitEntity);
 
-		//Get Particle System
-		ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(unitTrans.position);
+		//Particle System
+		if (damage == 8 && unit.unitType == UNIT_TYPE::ENEMY)
+		{
+			ECS::ParticleSystem::GetParticleSystem().UnitLifeDrainParticles(unitTrans.position + Math::vec3(0, 90, 0));
+		}
+		else if (damage == 5 && unit.unitType == UNIT_TYPE::ENEMY)
+		{
+			ECS::ParticleSystem::GetParticleSystem().MatrixTrapParticles(unitTrans.position);
+		}
+		else
+		{
+			ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(unitTrans.position);
+		}
 
 		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
 

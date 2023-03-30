@@ -323,6 +323,26 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
+	void ParticleSystem::UnitLifeDrainParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("lifedrain_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 1.f;
+		manualParticleContainer.push_back(prop);
+	}
+
+	void ParticleSystem::MatrixTrapParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("spark_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 0.5f;
+		manualParticleContainer.push_back(prop);
+	}
+
 	void ParticleSystem::UnitSpawnParticles(Math::Vector2 position)
 	{
 		position -= Math::Vector2(0, 20.f);
