@@ -70,6 +70,8 @@ namespace ALEngine::Script
 		ECS::Entity m_EndTurn_Arrow{};
 
 		b8 m_EndTurn_ArrowBool{ true };
+		b8 m_EndTurn_EnemyAttacked{ false };
+		f32 m_EndTurn_EnemyAttackedTimer{ 2.f };
 		// ====================
 
 		// ===== Hard Drop =====
