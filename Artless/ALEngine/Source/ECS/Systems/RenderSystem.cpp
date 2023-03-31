@@ -366,9 +366,6 @@ namespace ALEngine::ECS
 			if (!Coordinator::Instance()->HasComponent<Transform>(en))
 				continue;
 
-			if (Coordinator::Instance()->GetComponent<EntityData>(en).tag == "Cutscene Object")
-				AL_CORE_CRITICAL("I AM HERE");
-
 			Transform& trans = Coordinator::Instance()->GetComponent<Transform>(en);
 
 			if (trans.ui)

@@ -36,7 +36,7 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string rooms[] = { "Assets\\Map\\Tutorial_Final.map", "Assets\\Map\\Level_1_Final.map", "Assets\\Map\\Level_2_Final.map" };
+		std::string rooms[GameplaySystem::maxRooms] = { "Assets\\Map\\Tutorial_Final.map", "Assets\\Map\\Level_1_Final.map", "Assets\\Map\\Level_2_Final.map" };
 		std::string room_To_Load = rooms[1];
 
 		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
@@ -46,7 +46,7 @@ namespace ALEngine::Script
 
 	void SetMap(u64 index)
 	{
-		room_To_Load = rooms[index];
+		GameplaySystem::roomIndex = index;
 	}		
 
 	/*!*********************************************************************************
@@ -89,6 +89,8 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Init(ECS::Entity en)
 	{
+		currentGameStatus = GAME_STATUS::NONE;
+		room_To_Load = rooms[roomIndex];
 		//Load all the logic component
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
@@ -299,6 +301,7 @@ namespace ALEngine::Script
 	void GameplaySystem::Free(ECS::Entity en)
 	{
 		ExitGameplaySystem();
+		currentGameStatus = GAME_STATUS::NONE;
 	}
 	
 	void GameplaySystem::Unload(ECS::Entity en)

@@ -571,7 +571,9 @@ namespace ALEngine::Script
 		PHASE_STATUS currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;								//Keep track of phase
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;				//Keep track of status of unit control
 		PATTERN_PLACEMENT_STATUS currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;	//Keep track of what the pattern is being placed for
-		GAME_STATUS	currentGameStatus = GAME_STATUS::NONE;
+		static GAME_STATUS currentGameStatus;
+		static u64 roomIndex;
+		static constexpr const u64 maxRooms{ 3 };
 	
 		//******VARIABLES**********//
 		u32 roomSize[2]{ 10, 10 };		//Size to initialize the room with

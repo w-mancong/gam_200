@@ -127,6 +127,7 @@
     <ClCompile Include="Scripts\Source\PromptTool.cpp" />
     <ClCompile Include="Scripts\Source\GameAudioManager.cpp" />
     <ClCompile Include="Scripts\Source\WinCondition.cpp" />
+    <ClCompile Include="Scripts\rttr_main2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />

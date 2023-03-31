@@ -41,6 +41,9 @@ namespace ALEngine::Script
 		Script::GameplaySystem_Interface_Management_Enemy::EnemyManager enemyNeededData;
 	}
 
+	u64 GameplaySystem::roomIndex{ 0 };
+	GAME_STATUS GameplaySystem::currentGameStatus{ GAME_STATUS::NONE };
+
 	void Set_GameplayInterface_Enemy(ECS::Entity GameplaySystemEntity) {
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(GameplaySystemEntity);
 	}
@@ -1087,12 +1090,10 @@ namespace ALEngine::Script
 
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				currentGameStatus = GAME_STATUS::LOSE;
-				//AL_CORE_INFO("Unit Died");
+				AL_CORE_INFO("Unit Died");
 				//ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
 				//Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
-
 				//ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Lose_Clear);
-
 				//unitData.active = false;
 				//Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			}
@@ -1116,7 +1117,8 @@ namespace ALEngine::Script
 				}
 
 				if (allEnemiesDead) {
-					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
+					//ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
+					currentGameStatus = GAME_STATUS::WIN;
 				}
 
 				if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
