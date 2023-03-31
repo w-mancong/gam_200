@@ -241,6 +241,9 @@ namespace ALEngine::Script
 				playerUnit.actionPoints = playerUnit.maxActionPoints;
 			}
 
+			Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+			ECS::CameraPosition(playerTransform.localPosition.x, playerTransform.localPosition.y);
+
 			gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
 			//Reset enemy move ment points
@@ -1820,13 +1823,17 @@ namespace ALEngine::Script
 		Rigidbody2D& rigidbody = Coordinator::Instance()->GetComponent<Rigidbody2D>(movingUnitEntity);
 		ECS::AddForce(rigidbody, direction * 50.0f);
 
+		Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+
+		if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
+			ECS::CameraPosition(movingTransform.localPosition.x, movingTransform.localPosition.y);
+		}
 
 		//If reached the cell
 		if (Math::Vector3::Distance(movingTransform.localPosition, cellTransform.localPosition) < 10.0f) {
 			rigidbody.velocity = { 0,0 };
 			rigidbody.acceleration = { 0,0 };
 
-			Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(getCurrentEntityCell());
 			Cell& OriginCell = Coordinator::Instance()->GetComponent<Cell>(movinUnit.m_CurrentCell_Entity);
 

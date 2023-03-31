@@ -112,8 +112,8 @@ namespace ALEngine::Script
 
 		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
 
-		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-		//ECS::GetCamera().Position() = playerTransform.localPosition;
+		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(Coordinator::Instance()->GetEntityByTag("Player"));
+		//ECS::CameraPosition(playerTransform.localPosition.x, playerTransform.localPosition.y);
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -401,6 +401,7 @@ namespace ALEngine::Script
 		//Initialize audio
 		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
 		buttonClickAudio->m_Channel = Engine::Channel::SFX;
+
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
