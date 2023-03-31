@@ -126,6 +126,7 @@
     <ClCompile Include="Scripts\Source\PauseButton.cpp" />
     <ClCompile Include="Scripts\Source\PromptTool.cpp" />
     <ClCompile Include="Scripts\Source\GameAudioManager.cpp" />
+    <ClCompile Include="Scripts\Source\WinCondition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -304,6 +305,7 @@
     <ClInclude Include="Scripts\Header\PauseButton.h" />
     <ClInclude Include="Scripts\Header\PromptTool.h" />
     <ClInclude Include="Scripts\Header\GameAudioManager.h" />
+    <ClInclude Include="Scripts\Header\WinCondition.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

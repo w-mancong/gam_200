@@ -186,6 +186,7 @@
     <ClCompile Include="Scripts\Source\TutorialCamera.cpp" />
     <ClCompile Include="Scripts\Source\TutorialObject.cpp" />
     <ClCompile Include="Scripts\Source\WaterGenerator.cpp" />
+    <ClCompile Include="Scripts\Source\WinCondition.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
@@ -497,6 +498,7 @@
     <ClInclude Include="Scripts\Header\TutorialCamera.h" />
     <ClInclude Include="Scripts\Header\TutorialObject.h" />
     <ClInclude Include="Scripts\Header\WaterGenerator.h" />
+    <ClInclude Include="Scripts\Header\WinCondition.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
     <ClInclude Include="Scripts\others\ScriptManager.h" />
     <ClInclude Include="tracy\Tracy.hpp" />

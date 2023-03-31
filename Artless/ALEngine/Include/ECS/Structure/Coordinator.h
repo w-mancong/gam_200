@@ -87,10 +87,10 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void DestroyEntity(Entity entity)
 		{
+			GetSceneGraph().Destruct(static_cast<s32>(entity));
 			m_EntityManager->DestroyEntity(entity);
 			m_ComponentManager->EntityDestroy(entity);
 			m_SystemManager->EntityDestroyed(entity);
-			GetSceneGraph().Destruct(static_cast<s32>(entity));
 		}
 
 		/*!*********************************************************************************
@@ -110,7 +110,7 @@ namespace ALEngine::ECS
 		{
 			if (m_EntityManager->GetActiveEntities().empty())
 				return;
-			GetSceneGraph().Destruct(-1); // destroy scene graph
+			//GetSceneGraph().Destruct(-1); // destroy scene graph
 			EntityList const& entities = m_EntityManager->GetActiveEntities();
 			// Store all active entities into a temporary container
 			std::vector<Entity> temp; temp.reserve(entities.size());

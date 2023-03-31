@@ -25,5 +25,6 @@
 #include <PauseButton.h>
 #include <PromptTool.h>
 #include <GameAudioManager.h>
+#include <WinCondition.h>
 
 #endif

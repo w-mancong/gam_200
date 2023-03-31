@@ -99,4 +99,8 @@ RTTR_REGISTRATION
 	registration::class_<GameAudioManager>("GameAudioManager")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<WinCondition>("WinCondition")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

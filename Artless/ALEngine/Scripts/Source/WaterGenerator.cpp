@@ -90,15 +90,6 @@ namespace ALEngine::Script
 
 	void WaterGenerator::Free(ECS::Entity en)
 	{
-		if (Engine::GameStateManager::next != Engine::GameState::Restart)
-			return;
-		for (Water w : water)
-		{
-			GetSceneGraph().FindChildren(static_cast<s32>(w.parent));
-			std::vector<s32> const& children = GetSceneGraph().GetChildren();
 
-			for (s32 child : children)
-				Coordinator::Instance()->DestroyEntity(static_cast<Entity>(child));
-		}
 	}
 }

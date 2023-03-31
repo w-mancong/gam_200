@@ -856,8 +856,10 @@ namespace ALEngine
 
 	ECS::Entity CreateInstance(std::string const& buffer)
 	{
-		////taco
+		//// hack: create entity
+		//Transform xform = Transform{ Math::Vector2(0.f, 0.f), Math::Vector2(-5000.f, -5000.f) };
 		//ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+		//ECS::CreateSprite(GO, xform);
 		//ECS::GetSceneGraph().Push(-1, GO);
 
 		rjs::Document doc;
@@ -919,18 +921,13 @@ namespace ALEngine
 		ECS::Entity en = entities.begin()->second.en;
 		CalculateLocalPosition(en, -1);
 
+		//Coordinator::Instance()->DestroyEntity(GO);
 		return en;
 	}
 
 	// Create a clone of a saved prefab
 	ECS::Entity Instantiate(std::string const& prefabName)
 	{
-		// hack: create entity
-		Transform xform = Transform{ Math::Vector2(0.f, 0.f), Math::Vector2(-5000.f, -5000.f) };
-		ECS::Entity GO = Coordinator::Instance()->CreateEntity();
-		ECS::CreateSprite(GO, xform);
-		ECS::GetSceneGraph().Push(-1, GO);
-
 		// Check to see if an instance of this object is already made
 		if (instObjects.find(prefabName) == instObjects.end())
 		{	// Making of the prefab and saving it
