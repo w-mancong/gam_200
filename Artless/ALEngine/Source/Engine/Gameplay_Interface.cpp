@@ -242,7 +242,7 @@ namespace ALEngine::Script
 			}
 
 			Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-			ECS::CameraPosition(playerTransform.localPosition.x, playerTransform.localPosition.y);
+			ECS::CameraPosition(playerTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, playerTransform.localPosition.y - ECS::GetCamera().Height() * 0.5f);
 
 			gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
@@ -1611,8 +1611,9 @@ namespace ALEngine::Script
 
 
 			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
-
+			
 			gameplaySystem_GUI->Update_AP_UI_For_Cost(playerunit.actionPoints, ability.cost);
+		
 		}
 	}
 
@@ -1826,7 +1827,7 @@ namespace ALEngine::Script
 		Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
 
 		if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
-			ECS::CameraPosition(movingTransform.localPosition.x, movingTransform.localPosition.y);
+			ECS::CameraPosition(movingTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, movingTransform.localPosition.y - ECS::GetCamera().Height() * 0.5f);
 		}
 
 		//If reached the cell
