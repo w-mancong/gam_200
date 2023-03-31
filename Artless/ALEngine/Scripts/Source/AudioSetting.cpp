@@ -49,7 +49,7 @@ namespace ALEngine::Script
 			u64 ch = static_cast<u64>(channel);
 			Text& text = Coordinator::Instance()->GetComponent<Text>(textID[ch]);
 			volumes[ch] = Engine::GetChannelVolume(channel);
-			text.textString = std::to_string( static_cast<u64>( volumes[ch] ) * 100ULL );
+			text.textString = std::to_string( static_cast<u64>( volumes[ch] * 100.0f ) );
 		}
 
 		void SetVolume(Engine::Channel channel, f32 flag = 1.0f)
@@ -63,7 +63,7 @@ namespace ALEngine::Script
 				soundTimer += Time::m_ActualDeltaTime;
 				if (soundTimer >= WAIT_FOR)
 				{
-					volumes[ch] += (1.0f * flag) / 100.0f;
+					volumes[ch] += 0.01f * flag;
 					soundTimer = 0.0f;
 					if (1.0f > volumes[ch] && 0.0f < volumes[ch])
 						GameAudioManager::Play("VolumeControl");

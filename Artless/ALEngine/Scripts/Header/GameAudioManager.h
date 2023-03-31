@@ -16,11 +16,13 @@ namespace ALEngine::Script
 {
 	class GameAudioManager : public ECS::Component::UniBehaviour
 	{
+	public:
 		/*!*********************************************************************************
 			\brief Used to initialise any values to it's default value
 		***********************************************************************************/
 		void Init(ECS::Entity en);
 
+	private:
 		/*!*********************************************************************************
 			\brief Used to initialise any values to it's default value
 		***********************************************************************************/

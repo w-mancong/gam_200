@@ -239,7 +239,7 @@ namespace ALEngine::Engine::Scene
 
 		std::vector<Cutscene>::iterator m_CurrentCutscene{};
 		std::string m_SelectedSequence{};
-		b8 m_CutsceneIsPlaying{ true };		
+		b8 m_CutsceneIsPlaying{ false };		
 		b8 m_JustTriggered{ false };
 		f32 m_FadeSpeed{};
 		CutscenePhase m_CurrentPhase{ CutscenePhase::FADE_IN };

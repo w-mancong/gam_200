@@ -76,6 +76,7 @@ namespace ALEngine::Script
 				ChangeScene(0);
 				Lighten(en);
 				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(true);
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -94,6 +95,7 @@ namespace ALEngine::Script
 				ChangeScene(1);
 				Lighten(en);
 				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(false);
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -108,6 +110,10 @@ namespace ALEngine::Script
 		CreateEventTrigger(en, true);
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenHover);
 		Subscribe(en, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenExit);
+
+		AddLogicComponent<Script::GameAudioManager>(en);
+		std::shared_ptr<Script::GameAudioManager> ptr = GetLogicComponent<Script::GameAudioManager>(en);
+		ptr->Load(en);
 
 		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
 

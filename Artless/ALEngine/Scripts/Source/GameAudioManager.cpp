@@ -22,7 +22,7 @@ namespace ALEngine::Script
 
 	std::unordered_map<std::string, Engine::Audio> GAM::sounds{};
 
-	void GameAudioManager::Init(ECS::Entity en)
+	void GameAudioManager::Init(ECS::Entity)
 	{
 		auto InitAudio = [](std::string const& audioName, Engine::Channel channel = Engine::Channel::SFX)
 		{
