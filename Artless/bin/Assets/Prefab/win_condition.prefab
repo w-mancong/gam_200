@@ -1,0 +1,260 @@
+[
+    {
+        "id": 0,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "win_condition",
+                "active": true,
+                "localActive": true,
+                "id": 0,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\WinScreen.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3100
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    3150.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "win",
+                "active": false,
+                "localActive": false,
+                "id": 1,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\PauseMenu_Button_MainMenu.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    -357.800048828125,
+                    0.0
+                ],
+                "scale": [
+                    196.5,
+                    201.59999084472656
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "main_meu",
+                "active": false,
+                "localActive": true,
+                "id": 2,
+                "parentID": 1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\LoseScreen.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3100
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "lose",
+                "active": false,
+                "localActive": false,
+                "id": 3,
+                "parentID": 0,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_Yes.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    674.0999755859375,
+                    172.70004272460938,
+                    0.0
+                ],
+                "scale": [
+                    158.3000030517578,
+                    63.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "yes",
+                "active": false,
+                "localActive": true,
+                "id": 4,
+                "parentID": 3,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Btn_No.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    917.7999267578125,
+                    172.70004272460938,
+                    0.0
+                ],
+                "scale": [
+                    158.3000030517578,
+                    63.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "no",
+                "active": false,
+                "localActive": true,
+                "id": 5,
+                "parentID": 3,
+                "treeNodeFlags": 32
+            }
+        ]
+    }
+]

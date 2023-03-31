@@ -8,6 +8,7 @@ brief:	This file contain function declaration for a pause menu
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <PauseLogic.h>
+#include <PauseButtonFlag.h>
 #include <Engine/GSM/GameStateManager.h>
 #include <SceneManager/CutsceneManager.h>
 #include <GameAudioManager.h>
@@ -42,7 +43,7 @@ namespace ALEngine::Script
 	{
 		if (Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
 			return;
-		if (Input::KeyTriggered(KeyCode::Escape))
+		if (Input::KeyTriggered(KeyCode::Escape) && !PauseButtonFlag::confirmationBG)
 		{
 			b8 active = Coordinator::Instance()->GetComponent<EntityData>(bd_pause).active;
 			SetActive(!active, bd_pause);
