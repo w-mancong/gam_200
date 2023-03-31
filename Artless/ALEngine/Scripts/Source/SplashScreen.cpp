@@ -20,7 +20,7 @@ namespace ALEngine::Script
 
 	void SplashScreen::Init(ECS::Entity en)
 	{
-		Engine::Scene::CutsceneManager::Instance()->Init(en, false);
+		Engine::Scene::CutsceneManager::Instance()->Init(en);
 		Engine::Scene::CutsceneManager::Instance()->PlaySequence("Splash Screen");
 
 		ECS::CameraPosition(0.0f, 0.0f);

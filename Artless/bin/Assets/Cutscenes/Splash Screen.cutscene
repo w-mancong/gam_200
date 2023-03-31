@@ -13,8 +13,8 @@
         "OrderIndex": 0,
         "FadeInType": 3,
         "FadeOutType": 0,
-        "FadeInTime": 1.0,
-        "FadeOutTime": 1.0,
+        "FadeInTime": 5.0,
+        "FadeOutTime": 5.0,
         "Image": "Assets\\Images\\Cutscene\\DigipenSplash.png"
     },
     {
@@ -28,8 +28,8 @@
         "OrderIndex": 1,
         "FadeInType": 3,
         "FadeOutType": 0,
-        "FadeInTime": 1.0,
-        "FadeOutTime": 1.0,
+        "FadeInTime": 5.0,
+        "FadeOutTime": 5.0,
         "Image": "Assets\\Images\\Cutscene\\ArtlessSplash.png"
     }
 ]
