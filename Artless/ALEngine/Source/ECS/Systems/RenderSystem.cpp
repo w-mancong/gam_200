@@ -516,7 +516,7 @@ namespace ALEngine::ECS
 
 	void CameraPosition(f32 x, f32 y)
 	{
-		CameraPosition(Vector3(x, y, camera.Position().z));
+		CameraPosition(Vector3(x - camera.Width() * 0.5f, y - camera.Height() * 0.5f, camera.Position().z));
 	}
 
 	void CameraPosition(f32 x, f32 y, f32 z)
