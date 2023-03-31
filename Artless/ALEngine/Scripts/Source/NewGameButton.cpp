@@ -76,7 +76,7 @@ namespace ALEngine::Script
 				ChangeScene(0);
 				Lighten(en);
 				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(true);
-				GameAudioManager::Play("MenuButtonPress");
+				GameAudioManager::Play("NewGameStart_ButtonPress(AfterTutorialPrompt)");
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace ALEngine::Script
 				ChangeScene(1);
 				Lighten(en);
 				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(false);
-				GameAudioManager::Play("MenuButtonPress");
+				GameAudioManager::Play("NewGameStart_ButtonPress(AfterTutorialPrompt)");
 			}
 		}
 
