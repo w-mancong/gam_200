@@ -1,3 +1,13 @@
+/*!
+file:   GameplaySystem_Interface_Management_Enemy.cpp
+author: Chan Jie Ming Stanley (75%)
+co-author:	Tan Zhen Xiong (25%)
+email:  c.jiemingstanley\@digipen.edu
+		t.zhenxiong@digipen.edu
+brief:	This file contains the function definition for GameplaySystem_Interface_Management_Enemy.cpp
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #include <pch.h>
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
@@ -256,9 +266,9 @@ namespace ALEngine::Script
 		}
 	}
 
-	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue)
+	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Set_EnemyTriggerDistance(ECS::Entity& selectUnitEntity, s32 rangeValue)
 	{
-		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(UnitEntity);
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(selectUnitEntity);
 		enemyUnit.distanceToTriggerEnemy = rangeValue;
 	}
 
@@ -892,7 +902,6 @@ namespace ALEngine::Script
 			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
-
 
 		AL_CORE_INFO("CELL DESTROYER Making Decision");
 

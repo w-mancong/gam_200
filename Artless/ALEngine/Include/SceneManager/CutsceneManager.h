@@ -48,6 +48,14 @@ namespace ALEngine::Engine::Scene
 		void Init(ECS::Entity en);
 
 		/*!*********************************************************************************
+			\brief
+				Initialize the Cutscene Manager
+			\param [in] en
+				Entity of Cutscene Object
+		***********************************************************************************/
+		void Init(ECS::Entity en, bool children);
+
+		/*!*********************************************************************************
 			\brief 
 				Plays the selected sequence
 			\param sequence

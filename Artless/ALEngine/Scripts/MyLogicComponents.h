@@ -24,5 +24,6 @@
 #include <WaterGenerator.h>
 #include <PauseButton.h>
 #include <PromptTool.h>
+#include <SplashScreen.h>
 
 #endif

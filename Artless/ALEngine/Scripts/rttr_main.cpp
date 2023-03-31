@@ -95,4 +95,8 @@ RTTR_REGISTRATION
 	registration::class_<PromptTool>("PromptTool")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<SplashScreen>("SplashScreen")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

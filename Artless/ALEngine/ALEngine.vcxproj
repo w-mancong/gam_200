@@ -182,6 +182,7 @@
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
     <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
+    <ClCompile Include="Scripts\Source\SplashScreen.cpp" />
     <ClCompile Include="Scripts\Source\TutorialCamera.cpp" />
     <ClCompile Include="Scripts\Source\TutorialObject.cpp" />
     <ClCompile Include="Scripts\Source\WaterGenerator.cpp" />
@@ -492,6 +493,7 @@
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
+    <ClInclude Include="Scripts\Header\SplashScreen.h" />
     <ClInclude Include="Scripts\Header\TutorialCamera.h" />
     <ClInclude Include="Scripts\Header\TutorialObject.h" />
     <ClInclude Include="Scripts\Header\WaterGenerator.h" />

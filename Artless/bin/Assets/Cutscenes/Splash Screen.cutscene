@@ -1,0 +1,35 @@
+[
+    {
+        "Sequence_Name": "Splash Screen"
+    },
+    {
+        "CutsceneName": "Digipen Splash",
+        "HasImage": true,
+        "HasText": false,
+        "HasTimer": true,
+        "WaitForInput": true,
+        "TextIsAbove": false,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 0,
+        "FadeInType": 3,
+        "FadeOutType": 0,
+        "FadeInTime": 1.0,
+        "FadeOutTime": 1.0,
+        "Image": "Assets\\Images\\Cutscene\\DigipenSplash.png"
+    },
+    {
+        "CutsceneName": "Team Splash",
+        "HasImage": true,
+        "HasText": false,
+        "HasTimer": true,
+        "WaitForInput": true,
+        "TextIsAbove": false,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 1,
+        "FadeInType": 3,
+        "FadeOutType": 0,
+        "FadeInTime": 1.0,
+        "FadeOutTime": 1.0,
+        "Image": "Assets\\Images\\Cutscene\\ArtlessSplash.png"
+    }
+]

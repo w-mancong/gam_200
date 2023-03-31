@@ -112,6 +112,35 @@ namespace ALEngine::Engine::Scene
 		m_CurrentPhase = CutscenePhase::FADE_IN;
 	}
 
+	void CutsceneManager::Init(ECS::Entity en, bool children)
+	{
+		m_CutsceneObject = en;
+		if (children)
+		{
+			ECS::GetSceneGraph().FindImmediateChildren(static_cast<s32>(m_CutsceneObject));
+			std::vector<s32> const& children = ECS::GetSceneGraph().GetChildren();
+
+			// Find all children
+			for (s32 child : children)
+			{
+				EntityData const& data = Coordinator::Instance()->GetComponent<EntityData>(child);
+
+				if (data.tag == "Black Overlay")
+					m_BlackOverlay = child;
+				else if (data.tag == "Dialogue Box")
+					m_DialogueBox = child;
+				else if (data.tag == "Dialogue Box Top")
+					m_DialogueBoxTop = child;
+				else if (data.tag == "Cutscene Top")
+					m_CutsceneTop = child;
+				else if (data.tag == "Cutscene Bottom")
+					m_CutsceneBottom = child;
+			}
+		}
+
+		m_CurrentPhase = CutscenePhase::FADE_IN;
+	}
+
 	void CutsceneManager::PlaySequence(std::string sequence)
 	{
 		// Check if sequence exists
