@@ -337,9 +337,15 @@ namespace ALEngine::ECS
 	{
 		Entity en = Coordinator::Instance()->GetEntityByTag("spark_particles");
 		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
-		prop.position = position;
+		prop.position = position + Math::Vector2(0.f, -25.f);;
 		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		prop.spawnDuration = 0.5f;
+		manualParticleContainer.push_back(prop);
+
+		prop.position = position + Math::Vector2(25.f, 25.f);
+		manualParticleContainer.push_back(prop);
+
+		prop.position = position + Math::Vector2(-25.f, 25.f);
 		manualParticleContainer.push_back(prop);
 	}
 
