@@ -408,8 +408,22 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->Update_Skill_Tip_Position();
 		gameplaySystem_GUI->UpdateYourTurnSign();
 
+		if (Input::KeyDown(KeyCode::MouseRightButton)) {
+			GameAudioManager::Play("MouseClick");
+		}
+
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton) || Time::m_Scale <= 0.0f) {
+			if (Time::m_Scale > 0.0f) {
+				Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+				Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+				ad.m_Channel = Engine::Channel::SFX;
+				ad.m_Loop = false;
+				ad.Stop();
+
+				GameAudioManager::Play("DeselectSkill");
+			}
+
 			//Deselect Pattern
 			if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);

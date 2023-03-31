@@ -245,6 +245,8 @@ namespace ALEngine::Script
 	}
 	
 	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyMove(Unit& enemy) {
+		Audio_PlayEnemyMoving(enemy);
+
 		s32 randomVal = rand() % 100;
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 			if (randomVal < 50) {
@@ -298,6 +300,57 @@ namespace ALEngine::Script
 		}
 	}
 
+	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyMoving(Unit& enemy) {
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+
+		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+			//Play the sound
+			Engine::Audio& ad = as.GetAudio(AUDIO_GUARD_WALK_1);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.m_Loop = TRUE;
+			ad.Play();
+		}
+		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+			//Play the sound
+			Engine::Audio& ad = as.GetAudio(AUDIO_TILEDESTROYER_WALK_1);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.m_Loop = TRUE;
+			ad.Play();
+		}
+		else {
+			//Play the sound
+			Engine::Audio& ad = as.GetAudio(AUDIO_SUMMONER_WALK_1);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.m_Loop = TRUE;
+			ad.Play();
+		}
+	}
+
+	void GameplaySystem_Interface_Management_Enemy::Audio_StopEnemyMoving(Unit& enemy) {					//Get the audiosource
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+
+		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {		
+			//Play the sound
+			Engine::Audio& ad = as.GetAudio(AUDIO_GUARD_WALK_1);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.m_Loop = FALSE;
+			ad.Stop();
+		}
+		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+			//Play the sound
+			Engine::Audio& ad = as.GetAudio(AUDIO_TILEDESTROYER_WALK_1);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.m_Loop = FALSE;
+			ad.Stop();
+		}
+		else {
+			//Play the sound
+			Engine::Audio& ad = as.GetAudio(AUDIO_SUMMONER_WALK_1);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.m_Loop = FALSE;
+			ad.Stop();
+		}
+	}
 
 	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue)
 	{

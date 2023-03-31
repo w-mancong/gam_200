@@ -63,6 +63,34 @@ namespace ALEngine::Script
 		ad.Play();
 	}
 
+	void GameplaySystem::Audio_Play_PlayerAttack() {
+		s32 randomVal = rand() % 100;
+		if (randomVal < 33) {
+			GameAudioManager::Play("DrorAttack1");
+		}
+		else if (randomVal < 66) {
+			GameAudioManager::Play("DrorAttack2");
+		}
+		else {
+			GameAudioManager::Play("DrorAttack3");
+		}
+	}
+
+
+	void GameplaySystem::Audio_Play_PlayerDeath() {
+		s32 randomVal = rand() % 100;
+		if (randomVal < 33) {
+			GameAudioManager::Play("DrorDeath1");
+		}
+		else if (randomVal < 66) {
+			GameAudioManager::Play("DrorDeath2");
+		}
+		else {
+			GameAudioManager::Play("DrorDeath3");
+		}
+	}
+
+
 	void GameplaySystem::CreatePlayerUnit(ECS::Entity entity) {
 		//Create new unit
 		Unit unit{};
@@ -216,6 +244,7 @@ namespace ALEngine::Script
 	void GameplaySystem::EndTurn()
 	{
 		AL_CORE_CRITICAL("ENDING TURN");
+		GameAudioManager::Play("PhaseChange");
 		
 		//Reset the statuses
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
@@ -1092,9 +1121,7 @@ namespace ALEngine::Script
 		if (unit.health > 0) {
 			//Play hit sound accordingly
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
-				Engine::Audio& ad = as.GetAudio(AUDIO_HIT);
-				ad.m_Channel = Engine::Channel::SFX;
-				ad.Play();
+				GameAudioManager::Play("DrorHurt");
 			}
 			else {
 				gameplaySystem_Enemy->Audio_PlayEnemyHurt(unit);
@@ -1113,6 +1140,8 @@ namespace ALEngine::Script
 
 				unitData.active = false;
 				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+
+				Audio_Play_PlayerDeath();
 			}
 			else {
 				//If enemy unit
@@ -1315,7 +1344,7 @@ namespace ALEngine::Script
 				case ABILITY_NAME::HARD_DROP:
 				{
 					//Play the sound
-					GameAudioManager::Play("LifeDrain");
+					Audio_Play_PlayerAttack();
 					break;
 				} //End switch
 				case ABILITY_NAME::OVERHANG:
@@ -1486,7 +1515,7 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
 
 		//Get the audiosource
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
 
 		//Play the sound
 		Engine::Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
@@ -1658,6 +1687,7 @@ namespace ALEngine::Script
 			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
 			selected_Pattern = pattern;
 
+			GameAudioManager::Play("AttackSelectionAppear");
 			gameplaySystem_GUI->TogglePatternGUI(false);
 		}
 		else if (currentPhaseStatus == PHASE_STATUS::PHASE_ENEMY) {
@@ -1691,7 +1721,13 @@ namespace ALEngine::Script
 			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 			
 			gameplaySystem_GUI->Update_AP_UI_For_Cost(playerunit.actionPoints, ability.cost);
-		
+
+			GameAudioManager::Play("SelectSkill");
+
+			Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+			ad.m_Channel = Engine::Channel::SFX;
+			ad.m_Loop = true;
+			ad.Play();
 		}
 	}
 
@@ -1758,14 +1794,6 @@ namespace ALEngine::Script
 		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_1));
 		as.list[as.id++] = ad;
 
-		//Add Guard Move 2
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_2));
-		as.list[as.id++] = ad;
-
-		//Add Guard Move 3
-		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_MOVE_3));
-		as.list[as.id++] = ad;
-		
 		//Add Guard Death 1
 		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_DEATH_1));
 		as.list[as.id++] = ad;
@@ -1784,6 +1812,17 @@ namespace ALEngine::Script
 
 		//Add Guard Attack 2
 		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_ATTACK_2));
+		as.list[as.id++] = ad;
+
+		//Attack Pattern Loop
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_SELECT_SKILL_LOOP));
+		as.list[as.id++] = ad;
+
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_GUARD_WALK_1));
+		as.list[as.id++] = ad;
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_SUMMONER_WALK_1));
+		as.list[as.id++] = ad;
+		ad = Engine::AssetManager::Instance()->GetAudio(Engine::AssetManager::Instance()->GetGuid(AUDIO_TILEDESTROYER_WALK_1));
 		as.list[as.id++] = ad;
 
 		//Add the audiosource component to the entity
@@ -1935,10 +1974,6 @@ namespace ALEngine::Script
 			//minus movement points for enemy
 			--movinUnit.actionPoints;
 
-			if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
-				gameplaySystem_GUI->Update_AP_UI(movinUnit.actionPoints);
-			}
-
 			//Check if enemy stepped on trap
 			if (cell.hasTrap) {
 				if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
@@ -1970,16 +2005,17 @@ namespace ALEngine::Script
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
-					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
-
 					//Get the audiosource
-					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
 
-					//Stop the sound
+					//Play the sound
 					Engine::Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
 					ad.m_Channel = Engine::Channel::SFX;
-					ad.m_Loop = false;
+					ad.m_Loop = FALSE;
 					ad.Stop();
+
+					GameAudioManager::Stop("DrorMove");
+					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 
 					Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 					ECS::ChangeAnimation(an, "PlayerIdle");
@@ -1989,6 +2025,7 @@ namespace ALEngine::Script
 				}
 				//If enemy, move on to next enemy
 				else if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
+					gameplaySystem_Enemy->Audio_StopEnemyMoving(movinUnit);
 					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 						//Stop movement
 						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
@@ -2412,6 +2449,7 @@ namespace ALEngine::Script
 			b8 canPlace = gameplaySystem->CheckIfPatternCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern);
 
 			if (!canPlace && !gameplaySystem->godMode) {
+				GameAudioManager::Play("CannotPlace");
 				return;
 			}
 
@@ -2472,6 +2510,7 @@ namespace ALEngine::Script
 			b8 canPlace = gameplaySystem->CheckIfAbilitiesCanBePlacedForTile(gameplaySystem->m_Room, cell.coordinate, gameplaySystem->selected_Pattern, *gameplaySystem->selected_Abilities);
 
 			if (!canPlace && !gameplaySystem->godMode) {
+				GameAudioManager::Play("CannotPlace");
 				return;
 			}
 

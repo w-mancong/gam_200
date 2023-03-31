@@ -566,6 +566,19 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void PlayAudio(std::string audioName);
 
+		/*!*********************************************************************************
+			\brief
+				Audio play player attack
+		***********************************************************************************/
+		void Audio_Play_PlayerAttack();
+
+		/*!*********************************************************************************
+			\brief
+				Audio play player Death
+		***********************************************************************************/
+		void Audio_Play_PlayerDeath();
+
+
 	public:
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped
 		PHASE_STATUS currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;								//Keep track of phase

@@ -114,4 +114,9 @@ namespace ALEngine::Script
 	{
 		sounds[name].Play();
 	}
+
+	void GameAudioManager::Stop(std::string const& name)
+	{
+		sounds[name].Stop();
+	}
 }

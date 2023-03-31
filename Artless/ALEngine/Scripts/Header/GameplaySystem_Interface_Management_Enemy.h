@@ -211,6 +211,18 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Audio_PlayEnemyHurt(Unit& enemy);
 
+		/*!*********************************************************************************
+		\brief
+			Play Moving/running sound based on enemy
+		***********************************************************************************/
+		void Audio_PlayEnemyMoving(Unit& enemy);
+
+		/*!*********************************************************************************
+		\brief
+			Play Moving/running sound based on enemy
+		***********************************************************************************/
+		void Audio_StopEnemyMoving(Unit& enemy);
+
 		
 		void Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue);
 
