@@ -926,7 +926,7 @@ namespace ALEngine
 	ECS::Entity Instantiate(std::string const& prefabName)
 	{
 		// hack: create entity
-		Transform xform = Transform{ Math::Vector2(0.f, 0.f), Math::Vector2(-5000.f, -5000.f) };
+		Transform xform = Transform{ Math::Vector2(0.f, 0.f), Math::Vector2(0.f, 0.f) };
 		ECS::Entity GO = Coordinator::Instance()->CreateEntity();
 		ECS::CreateSprite(GO, xform);
 		ECS::GetSceneGraph().Push(-1, GO);
