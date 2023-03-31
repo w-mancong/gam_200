@@ -30,7 +30,7 @@ namespace ALEngine::Script
 			Engine::Audio audio = Engine::AssetManager::Instance()->GetAudio(id);
 			audio.m_Channel = channel;
 
-			u64 const start = audioName.find_last_of('_') + 1;
+			u64 const start = audioName.find_first_of('_') + 1;
 			sounds[audioName.substr(start, audioName.find_last_of('.') - start)] = audio;
 		};
 
