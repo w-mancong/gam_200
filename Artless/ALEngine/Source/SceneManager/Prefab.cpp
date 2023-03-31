@@ -919,16 +919,21 @@ namespace ALEngine
 		ECS::Entity en = entities.begin()->second.en;
 		CalculateLocalPosition(en, -1);
 
+		ECS::Entity to_delete = Coordinator::Instance()->GetEntityByTag("xoxoxoxo");
+		ECS::GetSceneGraph().Destruct(to_delete);
+		Coordinator::Instance()->DestroyEntity(to_delete); // delete parent
+
 		return en;
 	}
 
 	// Create a clone of a saved prefab
 	ECS::Entity Instantiate(std::string const& prefabName)
 	{
-		// hack: create entity
-		Transform xform = Transform{ Math::Vector2(-99999.f, 0.f), Math::Vector2(0.f, 0.f) };
+		// hack: create temporary entity (to be deleted at the end of this)
+		Transform xform = Transform{ Math::Vector2(0.f, 0.f), Math::Vector2(0.f, 0.f) };
 		ECS::Entity GO = Coordinator::Instance()->CreateEntity();
 		ECS::CreateSprite(GO, xform);
+		Coordinator::Instance()->GetComponent<EntityData>(GO).tag = "xoxoxoxo";
 		ECS::GetSceneGraph().Push(-1, GO);
 
 		// Check to see if an instance of this object is already made
