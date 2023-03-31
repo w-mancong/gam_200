@@ -179,24 +179,8 @@ namespace ALEngine::Editor
 	void ALEditor::Begin(void)
 	{
 		ZoneScopedN("Editor Update");
-		// Change ImGui Enabled or Disabled
-		
-		//if (Input::KeyDown(KeyCode::Ctrl) && Input::KeyTriggered(KeyCode::Key_9))
-		//{
-		//	m_ImGuiEnabled = !m_ImGuiEnabled;
 
-		//	//ImGuiIO& io = ImGui::GetIO();
-		//	//// If it is iactive, set MultiViewport to disable.
-		//	//	// This is to stop rendering panels outside of main window
-		//	//if (m_ImGuiEnabled)
-		//	//{
-		//	//	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-		//	//}
-		//	//else
-		//	//{
-		//	//	io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;		// Enable Multi-Viewport
-		//	//}
-		//}
+		m_IsReceivingKBInput = ImGui::GetIO().WantTextInput;
 
 		// New ImGui Frame
 		ImGui_ImplOpenGL3_NewFrame();
@@ -219,8 +203,6 @@ namespace ALEngine::Editor
 		ImGuizmo::BeginFrame();
 
 		Update();
-
-		m_IsReceivingKBInput = ImGui::GetIO().WantTextInput;
 	}
 
 	void ALEditor::End(void)
@@ -592,7 +574,7 @@ namespace ALEngine::Editor
 		const std::string PARENT_NAME{ "Map Parent" };
 
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
-
+		MapManager::Instance()->DeserializeMap("Assets\\Map\\Tutorial_Final.map");
 		std::vector<std::vector<std::string>> map = MapManager::Instance()->GetMap();
 
 		// Width and Height of map
@@ -740,7 +722,7 @@ namespace ALEngine::Editor
 	
 	void ALEngine::Editor::ALEditor::CreateScene(void)
 	{
-		m_CurrentSceneName = "";
+		m_CurrentSceneName = "New Scene";
 		Engine::Scene::LoadScene(EMPTY_SCENE_FP);
 	}
 }

@@ -1,0 +1,35 @@
+[
+    {
+        "Sequence_Name": "Summoner Intro"
+    },
+    {
+        "CutsceneName": "Summoner Intro",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 0,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "That's a Summoner!===This one is tricky.. The Summoner will always try to keep its distance from you.===Not only that, it will summon either a Guard or Tile Destroyer every 3 turns!"
+    },
+    {
+        "CutsceneName": "Fight!!",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 1,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "Make sure to plan your attacks and moves wisely, or else you may get swarmed by enemies!===You will now have full access to your abilities, so try and see if any of them will be helpful.===Good luck!"
+    }
+]

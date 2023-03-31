@@ -161,7 +161,7 @@ namespace ALEngine::Tree
             \param [in] node: Node data containing the current entity id and parent's id
             \param [in] activeState Active state to be set
         ***********************************************************************************/
-        void SetParentChildActive(NodeData const& node, b8 activeState) const;
+        void SetParentChildActive(NodeData const& node, b8 activeState, s32 counter = 0) const;
 
         /*!*********************************************************************************
             \brief Move node branch in tree to another node.

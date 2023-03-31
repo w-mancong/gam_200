@@ -9,6 +9,9 @@ brief:	This file contain function definition for main menu button when paused
 #include <pch.h>
 #include <MainMenuButton.h>
 #include <SceneChangeHelper.h>
+#include <GameplaySystem.h>
+#include <PauseButtonFlag.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -18,6 +21,7 @@ namespace ALEngine::Script
 
 		Entity menu_confirmation{ MAX_ENTITIES }, yes{ MAX_ENTITIES }, no{ MAX_ENTITIES }, scene_transition{ MAX_ENTITIES };
 		f32 constexpr ALPHA_VALUE{ 0.925f };
+		b8 clicked{ false };
 
 		void Darken(Entity en)
 		{
@@ -33,11 +37,15 @@ namespace ALEngine::Script
 
 		void WhenMenuHover(Entity en)
 		{
+			if (PauseButtonFlag::confirmationBG)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
 				SetActive(true, menu_confirmation);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = true;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -48,12 +56,19 @@ namespace ALEngine::Script
 
 		void WhenYesHover(Entity en)
 		{
+			if (clicked)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
 				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
 				ptr->NextScene("Assets\\Scene\\main_menu.scene");
+				SetMap(0);
 				Time::m_Scale = 1.0f;
+				Font::EnableTextRendering(false);
+				GameAudioManager::Play("MenuButtonPress");
+				Lighten(en);
+				clicked = true;
 			}
 		}
 
@@ -64,11 +79,15 @@ namespace ALEngine::Script
 
 		void WhenNoHover(Entity en)
 		{
+			if (clicked)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
 				SetActive(false, menu_confirmation);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = false;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -120,10 +139,12 @@ namespace ALEngine::Script
 		Subscribe(no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenNoExit);
 
 		Coordinator::Instance()->GetComponent<EventTrigger>(no).layer = 50;
+		clicked = false;
 	}
 
 	void MainMenuButton::Free(ECS::Entity en)
 	{
 		menu_confirmation = yes = no = scene_transition = MAX_ENTITIES;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }

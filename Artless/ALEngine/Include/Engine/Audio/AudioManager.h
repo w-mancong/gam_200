@@ -21,6 +21,7 @@ namespace ALEngine::Engine
 		Invalid = -1,
 		BGM,
 		SFX,
+		VO,			// Voice overs
 		Master,
 		Total,
 	};

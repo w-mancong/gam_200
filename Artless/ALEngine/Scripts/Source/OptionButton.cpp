@@ -8,13 +8,16 @@ brief:	This file contain function definition for option button
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <OptionButton.h>
+#include <PauseButtonFlag.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
 	namespace
 	{
 		using namespace ECS;
-		 
+
+		f32 constexpr ALPHA_VALUE{ 0.925f };
 		ECS::Entity sound_options{ ECS::MAX_ENTITIES }, close_btn{ ECS::MAX_ENTITIES }, parent{ ECS::MAX_ENTITIES };
 
 		void Darken(Entity en)
@@ -31,17 +34,23 @@ namespace ALEngine::Script
 
 		void WhenOptionHover(Entity en)
 		{
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a || PauseButtonFlag::confirmationBG)
+				return;
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
 				SetActive(false, parent);
 				SetActive(true, sound_options);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = true;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
 		void WhenOptionExit(Entity en)
 		{
+			if (ALPHA_VALUE > Coordinator::Instance()->GetComponent<Sprite>(en).color.a)
+				return;
 			Lighten(en);
 		}
 
@@ -53,6 +62,8 @@ namespace ALEngine::Script
 				SetActive(true, parent);
 				SetActive(false, sound_options);
 				Lighten(en);
+				PauseButtonFlag::confirmationBG = false;
+				GameAudioManager::Play("MenuButtonPress");
 			}
 		}
 
@@ -101,5 +112,6 @@ namespace ALEngine::Script
 	void OptionButton::Free([[maybe_unused]] ECS::Entity en)
 	{
 		sound_options = close_btn = parent = ECS::MAX_ENTITIES;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }

@@ -12,6 +12,8 @@ namespace ALEngine::ECS::Component
 {
 	void SetActive(b8 active, Entity entity)
 	{
+		if (MAX_ENTITIES <= entity)
+			return;
 		EntityData& ed = Coordinator::Instance()->GetComponent<EntityData>(entity);
 		ed.active = active;
 

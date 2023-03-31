@@ -117,6 +117,15 @@
     <ClCompile Include="Scripts\Source\OptionButton.cpp" />
     <ClCompile Include="Scripts\Source\AudioSetting.cpp" />
     <ClCompile Include="Scripts\Source\FPSDisplay.cpp" />
+    <ClCompile Include="Scripts\Source\CutsceneObjectTutorial.cpp" />
+    <ClCompile Include="Gameplay\Source\TutorialManager.cpp" />
+    <ClCompile Include="Scripts\Source\TutorialCamera.cpp" />
+    <ClCompile Include="Scripts\Source\TutorialObject.cpp" />
+    <ClCompile Include="Scripts\Source\WaterGenerator.cpp" />
+    <ClCompile Include="Scripts\Source\PauseButtonFlag.cpp" />
+    <ClCompile Include="Scripts\Source\PauseButton.cpp" />
+    <ClCompile Include="Scripts\Source\PromptTool.cpp" />
+    <ClCompile Include="Scripts\Source\GameAudioManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -286,6 +295,15 @@
     <ClInclude Include="Scripts\Header\OptionButton.h" />
     <ClInclude Include="Scripts\Header\AudioSetting.h" />
     <ClInclude Include="Scripts\Header\FPSDisplay.h" />
+    <ClInclude Include="Gameplay\Header\TutorialManager.h" />
+    <ClInclude Include="Scripts\Header\CutsceneObjectTutorial.h" />
+    <ClInclude Include="Scripts\Header\TutorialCamera.h" />
+    <ClInclude Include="Scripts\Header\TutorialObject.h" />
+    <ClInclude Include="Scripts\Header\WaterGenerator.h" />
+    <ClInclude Include="Scripts\Header\PauseButtonFlag.h" />
+    <ClInclude Include="Scripts\Header\PauseButton.h" />
+    <ClInclude Include="Scripts\Header\PromptTool.h" />
+    <ClInclude Include="Scripts\Header\GameAudioManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

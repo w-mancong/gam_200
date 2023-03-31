@@ -1,0 +1,20 @@
+[
+    {
+        "Sequence_Name": "Cracking Tiles"
+    },
+    {
+        "CutsceneName": "Cracking Tiles: Cutscene #0",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 0,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "It's the Setup Phase again, place a tile for your path!===But be careful, my tiles don't last forever. They will crack after 2 turns and break the next,===so don't stand on top of them when they are cracking!"
+    }
+]

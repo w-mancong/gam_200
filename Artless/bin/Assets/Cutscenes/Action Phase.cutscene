@@ -1,0 +1,35 @@
+[
+    {
+        "Sequence_Name": "Action Phase"
+    },
+    {
+        "CutsceneName": "Action Phase",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 0,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "Now that you have finally finished setting up, it is now the Action Phase.===During the Action Phase, you can choose to move, or use one of your skills, depending on===how many Action Points (AP) you have!"
+    },
+    {
+        "CutsceneName": "Action Points",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 1,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "The Green Spheres are the amount of AP you have. Moving 1 tile will cost you 1 AP, and most===skills will cost 2AP.===Alright, see the Guard in front of you? Let's move a little closer!"
+    }
+]

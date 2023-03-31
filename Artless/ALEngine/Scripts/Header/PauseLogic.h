@@ -37,8 +37,9 @@ namespace ALEngine::Script
 		};
 		RTTR_ENABLE(ECS::Component::UniBehaviour)
 
+		ECS::Entity text_bar_hp{ ECS::MAX_ENTITIES };
 	public:
-		b8 paused{ false };
+		Engine::Audio menuOpen{}, menuClose{};
 	};
 }
 

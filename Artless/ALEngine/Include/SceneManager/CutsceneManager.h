@@ -10,6 +10,11 @@ brief:	This contains declarations for the Cutscene Manager class, which is in ch
 #ifndef CUTSCENE_MANAGER
 #define CUTSCENE_MANAGER
 
+namespace ALEngine::Script
+{
+	class GameplaySystem_Interface_Management_GUI;
+}
+
 namespace ALEngine::Engine::Scene
 {
 	// Forward Declaration
@@ -162,6 +167,57 @@ namespace ALEngine::Engine::Scene
 		***********************************************************************************/
 		b8 CutsceneIsPlaying(void);
 
+		/*!*********************************************************************************
+			\brief
+				Set the text for the dialogue box
+		***********************************************************************************/
+		void SetText(void);
+
+		/*!*********************************************************************************
+			\brief
+				Checks whether it was just triggered by mouse click right before cutscene
+				sequence started.
+				Mainly to handle the cutscene and make sure it doesn't skip the first 
+				cutscene image if a player had to click to begin the cutscene sequence
+			\return
+				Returns if the cutscene was just triggered
+		***********************************************************************************/
+		b8 WasJustTriggered(void);
+		
+		/*!*********************************************************************************
+			\brief
+				Sets whether it was just triggered by mouse click right before cutscene
+				sequence started to true.
+				Mainly to handle the cutscene and make sure it doesn't skip the first
+				cutscene image if a player had to click to begin the cutscene sequence
+		***********************************************************************************/
+		void SetJustTriggered(void);
+
+		/*!*********************************************************************************
+			\brief
+				Gets the name of the current cutscene
+			\return
+				Returns the current name
+				Returns empty if no cutscene
+		***********************************************************************************/
+		std::string GetCurrentCutsceneName(void);
+		
+		/*!*********************************************************************************
+			\brief
+				Gets the GameplaySystem_GUI
+			\return
+				Returns pointer to the GameplaySystem_GUI
+		***********************************************************************************/
+		std::shared_ptr<ALEngine::Script::GameplaySystem_Interface_Management_GUI> GetGameplaySystem_GUI(void);
+
+		/*!*********************************************************************************
+			\brief
+				Sets the GameplaySystem_GUI pointer
+			\param [in] gs
+				Pointer to the GameplaySystem_GUI, to be set to this
+		***********************************************************************************/
+		void SetGameplaySystem_GUI(std::shared_ptr<ALEngine::Script::GameplaySystem_Interface_Management_GUI> gs);
+
 	private:
 		/*!*********************************************************************************
 			\brief 
@@ -183,15 +239,19 @@ namespace ALEngine::Engine::Scene
 
 		std::vector<Cutscene>::iterator m_CurrentCutscene{};
 		std::string m_SelectedSequence{};
-		b8 m_CutsceneIsPlaying{ true };		
+		b8 m_CutsceneIsPlaying{ false };		
+		b8 m_JustTriggered{ false };
 		f32 m_FadeSpeed{};
 		CutscenePhase m_CurrentPhase{ CutscenePhase::FADE_IN };
 
 		// Entities
 		ECS::Entity m_CutsceneObject{};							// The parent object
 		ECS::Entity m_BlackOverlay{};							// Black overlay (for those with no image)
-		ECS::Entity m_DialogueBox{};							// Dialogue Box, also has text component
+		ECS::Entity m_DialogueBox{}, m_DialogueBoxTop{};		// Dialogue Box, also has text component
 		ECS::Entity m_CutsceneTop{}, m_CutsceneBottom{};		// Top will be displayed over Bottom
+
+		// Pointers
+		std::shared_ptr<ALEngine::Script::GameplaySystem_Interface_Management_GUI> m_GameplaySystem_GUI{ nullptr };
 
 		// Required for Singleton to function
 		friend class Templates::Singleton<CutsceneManager>;
@@ -229,6 +289,7 @@ namespace ALEngine::Engine::Scene
 		b8 m_HasText{ true };						// Whether this cutscene has text
 		b8 m_HasTimer{ true };						// Whether this cutscene is timed or based on user click
 		b8 m_WaitForInput{ true };					// Whether this cutscene wait for user input before proceeding to next
+		b8 m_TextIsAbove{ false };					// Whether the dialogue box is on top or below
 
 		// Functions
 		/*!*********************************************************************************

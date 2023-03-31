@@ -1,0 +1,35 @@
+[
+    {
+        "Sequence_Name": "Utility Skills Explanation"
+    },
+    {
+        "CutsceneName": "Utility Skills Explanation",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 0,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "For Utility Skills, they are able to be placed on any existing tiles that you have placed.===However, they cannot be placed on tiles that are occupied by===something - including yourself."
+    },
+    {
+        "CutsceneName": "Place Construct Tile",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 1,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "Lets place the tile in front of you so that it blocks off the Tile Destroyer!"
+    }
+]

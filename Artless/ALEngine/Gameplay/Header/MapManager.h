@@ -71,7 +71,7 @@ namespace Gameplay
 			\return
 			Returns a vector of vector of string that is the Map array
 		***********************************************************************************/
-		std::vector<std::vector<std::string>> GetMap(void);
+		std::vector<std::vector<std::string>> const& GetMap(void) const;
 
 		/*!*********************************************************************************
 			\brief

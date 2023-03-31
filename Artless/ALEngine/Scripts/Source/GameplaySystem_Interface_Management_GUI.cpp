@@ -31,6 +31,8 @@ namespace ALEngine::Script
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		Set_GameplayInterface_GUI(en);
+
+		Engine::Scene::CutsceneManager::Instance()->SetGameplaySystem_GUI(gameplaySystem_GUI);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::Update(ECS::Entity en)
@@ -98,6 +100,14 @@ namespace ALEngine::Script
 		}
 	}
 
+	void GameplaySystem_Interface_Management_GUI::HideEnemyTooltip(b8 boolean)
+	{
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("enemy_tip_health"));
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("summoner_tip"));
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("destoryer_tip"));
+		ECS::SetActive(!boolean, Coordinator::Instance()->GetEntityByTag("guard_tip"));
+	}
+
 	void GameplaySystem_Interface_Management_GUI::UpdateGUI_OnSelectUnit(ECS::Entity unitEntity) {
 		guiManager.Unit_Name = Coordinator::Instance()->GetEntityByTag("text_playername");
 		guiManager.Unit_Health = Coordinator::Instance()->GetEntityByTag("text_bar_hp");
@@ -115,16 +125,18 @@ namespace ALEngine::Script
 		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Movement);
 		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
 
-		health_text.textString = std::to_string(unit.health) + "/" + std::to_string(unit.maxHealth);
-		attack_text.textString = std::to_string(unit.minDamage) + "/" + std::to_string(unit.maxDamage);
-		defense_text.textString = std::to_string(unit.defense);
-		movement_text.textString = std::to_string(unit.actionPoints) + "/" + std::to_string(unit.maxActionPoints);
-		name_text.textString = unit.unit_Name;
+		Unit& PlayerUnit = Coordinator::Instance()->GetComponent<Unit>(Coordinator::Instance()->GetEntityByTag("Player"));
 
-		profile.id = Engine::AssetManager::Instance()->GetGuid(unit.unit_Profile_Sprite_File);
+		health_text.textString = std::to_string(PlayerUnit.health) + "/" + std::to_string(PlayerUnit.maxHealth);
+		attack_text.textString = std::to_string(PlayerUnit.minDamage) + "/" + std::to_string(PlayerUnit.maxDamage);
+		defense_text.textString = std::to_string(PlayerUnit.defense);
+		movement_text.textString = std::to_string(PlayerUnit.actionPoints) + "/" + std::to_string(PlayerUnit.maxActionPoints);
+		name_text.textString = PlayerUnit.unit_Name;
+
+		profile.id = Engine::AssetManager::Instance()->GetGuid(PlayerUnit.unit_Profile_Sprite_File);
 
 		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Unit_Healthbar);
-		healthbar_transform.localScale.x = (unit.health <= 0 ? 0 : ((f32)unit.health / (f32)unit.maxHealth)) * 0.5f;
+		healthbar_transform.localScale.x = (PlayerUnit.health <= 0 ? 0 : ((f32)PlayerUnit.health / (f32)PlayerUnit.maxHealth)) * 0.5f;
 	}
 
 	void GameplaySystem_Interface_Management_GUI::InitializeGUI()
@@ -142,6 +154,7 @@ namespace ALEngine::Script
 		guiManager.Lose_Clear = Coordinator::Instance()->GetEntityByTag("Lose_Clear_Text");
 		guiManager.Lose_Button = Coordinator::Instance()->GetEntityByTag("Lose_Button");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
+		guiManager.Phase_Indicator_Icon = Coordinator::Instance()->GetEntityByTag("Phase_Icon");
 		guiManager.Tooltip_Skills_Card = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
 		guiManager.FPS_Label = Coordinator::Instance()->GetEntityByTag("FPS_label");
 		guiManager.Pause_Button = Coordinator::Instance()->GetEntityByTag("pause_button");
@@ -162,6 +175,9 @@ namespace ALEngine::Script
 		guiManager.Enemy_Tip_Flying = Coordinator::Instance()->GetEntityByTag("destoryer_tip");
 		guiManager.Enemy_Tip_Summoner = Coordinator::Instance()->GetEntityByTag("summoner_tip");
 		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		guiManager.Enemy_Tip_Health = Coordinator::Instance()->GetEntityByTag("enemy_tip_health");
+		guiManager.Enemy_Tip_Healthbar = Coordinator::Instance()->GetEntityByTag("enemy_tip_healthbar");
+		
 
 
 		//void ParticleSystem::DisplayYourTurn()
@@ -204,10 +220,27 @@ namespace ALEngine::Script
 		//Clear GUI
 		GUI_Pattern_Button_Entities.clear();
 
-		//There will be a fix of 4 buttons
+		guiManager.GUI_Center_Pattern_Parent = Coordinator::Instance()->GetEntityByTag("Pattern_Center");
+		guiManager.GUI_Center_Pattern_BG = Coordinator::Instance()->GetEntityByTag("Pattern_Center_BG");
+
+		//There will be a fix of 3 buttons
+		for (int i = 0; i < 3; ++i) {
+			guiManager.GUI_Center_Pattern_Button_List.push_back(Coordinator::Instance()->GetEntityByTag("Pattern_Center_" + std::to_string(i)));
+		}
+
+		//There will be a fix of 3 buttons BG
+		for (int i = 0; i < 3; ++i) {
+			guiManager.GUI_Center_Pattern_Button_List_BG.push_back(Coordinator::Instance()->GetEntityByTag("Pattern_Center_" + std::to_string(i) + "_BG"));
+		}
+		
+		//There will be a fix of 3 buttons
 		for (int i = 1; i <= 3; ++i) {
 			GUI_Pattern_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("next_tile_icon" + std::to_string(i)));
 		}
+
+		guiManager.GUI_Pattern_Button_List_BG.push_back(Coordinator::Instance()->GetEntityByTag("current_tile_holder"));
+		guiManager.GUI_Pattern_Button_List_BG.push_back(Coordinator::Instance()->GetEntityByTag("next_tile_holder1"));
+		guiManager.GUI_Pattern_Button_List_BG.push_back(Coordinator::Instance()->GetEntityByTag("next_tile_holder2"));
 
 		//Set base x
 		//u32 x_offset = 150;
@@ -220,15 +253,24 @@ namespace ALEngine::Script
 		ECS::CreateButton(GUI_Pattern_Button_Entities[0]);
 		ECS::CreateButton(GUI_Pattern_Button_Entities[1]);
 		ECS::CreateButton(GUI_Pattern_Button_Entities[2]);
+
+		ECS::CreateButton(guiManager.GUI_Center_Pattern_Button_List[0]);
+		ECS::CreateButton(guiManager.GUI_Center_Pattern_Button_List[1]);
+		ECS::CreateButton(guiManager.GUI_Center_Pattern_Button_List[2]);
+		
 	}
 
 	void GameplaySystem_Interface_Management_GUI::InitializeAbilitiesGUI(std::vector<ECS::Entity>& GUI_Abilities_Button_Entities) {
 		//Clear GUI
 		GUI_Abilities_Button_Entities.clear();
 
+		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+			Gameplay::TutorialManager::Instance()->m_AbilityList.clear();
+
 		//There will be a fix of 4 buttons
 		for (int i = 1; i <= 6; ++i) {
 			GUI_Abilities_Button_Entities.push_back(Coordinator::Instance()->GetEntityByTag("skill_icon" + std::to_string(i)));
+			Gameplay::TutorialManager::Instance()->m_AbilityList.push_back(Coordinator::Instance()->GetEntityByTag("skill_icon" + std::to_string(i)));
 		}
 
 		//Set base x
@@ -277,6 +319,24 @@ namespace ALEngine::Script
 		}
 	}
 
+	void GameplaySystem_Interface_Management_GUI::ToggleCenterPatternGUI(b8 istrue) {
+		Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Center_Pattern_Parent).active = istrue;
+		Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Center_Pattern_BG).active = istrue;
+
+
+		//Toggle the pattern GUI accordingly
+		for (int i = 0; i < guiManager.GUI_Center_Pattern_Button_List.size(); ++i) {
+			Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Center_Pattern_Button_List_BG[i]).active = istrue;
+			Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Center_Pattern_Button_List[i]).active = istrue;
+		}
+		
+		//Toggle the pattern GUI accordingly
+		for (int i = 0; i < guiManager.GUI_Pattern_Button_List.size(); ++i) {
+			Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Pattern_Button_List_BG[i]).active = !istrue;
+			Coordinator::Instance()->GetComponent<EntityData>(guiManager.GUI_Pattern_Button_List[i]).active = !istrue;
+		}
+	}
+
 	void GameplaySystem_Interface_Management_GUI::TogglePatternFirstOnlyGUI(b8 istrue) {
 		TogglePatternGUI(false);
 
@@ -320,6 +380,8 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::GuiUpdatePhaseIndicator(PHASE_STATUS status)
 	{
+		guiManager.Phase_Indicator_Icon = Coordinator::Instance()->GetEntityByTag("Phase_Icon");
+		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
 		Text& phaseIndicator = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Phase_Indicator);
 		phaseIndicator.colour = Engine::Vector3(1.f, 1.f, 1.f);
 
@@ -327,14 +389,26 @@ namespace ALEngine::Script
 		{
 		case PHASE_STATUS::PHASE_SETUP:
 			phaseIndicator.textString = "Setup Phase";
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Phase_Indicator_Icon);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Phase_SetupIcon.png");
+			}
 			break;
 
 		case PHASE_STATUS::PHASE_ACTION:
 			phaseIndicator.textString = "Action Phase";
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Phase_Indicator_Icon);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Phase_ActionIcon.png");
+			}
 			break;
 
 		case PHASE_STATUS::PHASE_ENEMY:
 			phaseIndicator.textString = "Enemy Phase";
+			{
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Phase_Indicator_Icon);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Phase_EnemyIcon.png");
+			}
 			phaseIndicator.colour = Engine::Vector3(1.f, 0.32f, 0.28f);
 			break;
 		}

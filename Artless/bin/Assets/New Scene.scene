@@ -1,0 +1,140 @@
+[
+    {
+        "map_path": ""
+    },
+    {
+        "id": 0,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\HowToPlay_Phases.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    2.163170099258423,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    32.0,
+                    18.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp_pages",
+                "active": true,
+                "localActive": true,
+                "id": 0,
+                "parentID": 2,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\HowToPlay_NextBtn.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    110.5,
+                    -355.3999938964844,
+                    0.0
+                ],
+                "scale": [
+                    180.0,
+                    65.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "next",
+                "active": true,
+                "localActive": true,
+                "id": 1,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "htp",
+                "active": true,
+                "localActive": true,
+                "id": 2,
+                "parentID": -1,
+                "treeNodeFlags": 32
+            }
+        ]
+    }
+]

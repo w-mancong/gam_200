@@ -1,0 +1,35 @@
+[
+    {
+        "Sequence_Name": "Tile Destroyer"
+    },
+    {
+        "CutsceneName": "Tile Destroyer Intro",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 0,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "Yikes! That is a Tile Destroyer!===It will move towards you and destroy the Tetromino Tiles that are adjacent to it.===Be careful to avoid it, or defeat it before it destroys your tiles!"
+    },
+    {
+        "CutsceneName": "Use Construct Tile",
+        "HasImage": false,
+        "HasText": true,
+        "HasTimer": false,
+        "WaitForInput": true,
+        "TextIsAbove": true,
+        "CutsceneTime": 0.0,
+        "OrderIndex": 1,
+        "FadeInType": 6,
+        "FadeOutType": 6,
+        "FadeInTime": 0.0,
+        "FadeOutTime": 0.0,
+        "Text": "Lets use a Utility Skill to block off the Tile Destroyer.===Select the skill Construct Tile!"
+    }
+]

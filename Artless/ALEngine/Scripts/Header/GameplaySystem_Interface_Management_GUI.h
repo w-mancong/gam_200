@@ -22,7 +22,7 @@ namespace ALEngine::Script
 
 		//Keep track of GUI entities
 		ECS::Entity Unit_Health, Unit_Name, Unit_Attack, Unit_Defense, Unit_Movement, Unit_Rang, Unit_Profile;
-		ECS::Entity Unit_Healthbar, Phase_Indicator, Your_Turn_Sign;
+		ECS::Entity Unit_Healthbar, Phase_Indicator, Phase_Indicator_Icon, Your_Turn_Sign, Enemy_Tip_Health, Enemy_Tip_Healthbar;
 		ECS::Entity Tooltip_Skills_Card, FPS_Label, Pause_Button, Enemy_Tip_Guard, Enemy_Tip_Summoner, Enemy_Tip_Flying;
 		std::array<ECS::Entity, 6> AP_Indicators;
 		std::array<ECS::Entity, 6> Highlight_blocks;
@@ -35,9 +35,15 @@ namespace ALEngine::Script
 		//Lose
 		ECS::Entity Lose_Clear, Lose_Button;
 
+		//Center Pattern Parent
+		ECS::Entity GUI_Center_Pattern_Parent, GUI_Center_Pattern_BG, GUI_Bottom_Pattern_Parent;
+
 		//List for containing entities of GUI
 		std::vector<ECS::Entity> GUI_Abilities_Button_List;
 		std::vector<ECS::Entity> GUI_Pattern_Button_List;
+		std::vector<ECS::Entity> GUI_Pattern_Button_List_BG;
+		std::vector<ECS::Entity> GUI_Center_Pattern_Button_List;
+		std::vector<ECS::Entity> GUI_Center_Pattern_Button_List_BG;
 
 		f32 Your_Turn_timer{};
 	};
@@ -95,6 +101,12 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 			\brief
+				Toggle Center Pattern GUI active
+		***********************************************************************************/
+		void ToggleCenterPatternGUI(b8 istrue);
+
+		/*!*********************************************************************************
+			\brief
 				Toggle first Pattern GUI active
 		***********************************************************************************/
 		void TogglePatternFirstOnlyGUI(b8 istrue);
@@ -147,19 +159,49 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Update_AP_UI_For_Cost(int AP_count, int AP_Cost);
 
+		/*!*********************************************************************************
+		\brief
+			Updates the skill tip position
+		***********************************************************************************/
 		void Update_Skill_Tip_Position();
 
+		/*!*********************************************************************************
+		\brief
+			Displays the "Your turn" sign
+		***********************************************************************************/
 		void DisplayYourTurn();
 
+		/*!*********************************************************************************
+		\brief
+			Updates the "Your turn" sign
+		***********************************************************************************/
 		void UpdateYourTurnSign();
 
+		/*!*********************************************************************************
+		\brief
+			Hides the Enemy Tool Tip
+		***********************************************************************************/
+		void HideEnemyTooltip(b8 boolean);
+
+		/*!*********************************************************************************
+		\brief
+			Helper function to linear interpolate
+		***********************************************************************************/
 		template <typename T>
 		static T Lerp(T a, T b, float t);
 
+		/*!*********************************************************************************
+		\brief
+			Updates the ability cooldown
+		***********************************************************************************/
 		void Update_Ability_Cooldown(std::vector<Abilities> ability_set, bool isAbilityGUIActive);
 
 		GUI guiManager;	
-		
+
+		/*!*********************************************************************************
+		\brief
+			Returns the guiManager
+		***********************************************************************************/
 		GUI& getGuiManager()
 		{
 			return guiManager;

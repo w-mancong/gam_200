@@ -323,6 +323,67 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
+	void ParticleSystem::UnitLifeDrainParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("lifedrain_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 1.f;
+		manualParticleContainer.push_back(prop);
+	}
+
+	void ParticleSystem::MatrixTrapParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("spark_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position + Math::Vector2(0.f, -25.f);;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 0.5f;
+		manualParticleContainer.push_back(prop);
+
+		prop.position = position + Math::Vector2(25.f, 25.f);
+		manualParticleContainer.push_back(prop);
+
+		prop.position = position + Math::Vector2(-25.f, 25.f);
+		manualParticleContainer.push_back(prop);
+	}
+
+	void ParticleSystem::UnitSpawnParticles(Math::Vector2 position)
+	{
+		position -= Math::Vector2(0, 20.f);
+		Entity en = Coordinator::Instance()->GetEntityByTag("spawn_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 1.f;
+		manualParticleContainer.push_back(prop);
+	}
+
+	void ParticleSystem::TileDestoryParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("tile_dest_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 0.5f;
+
+		Math::Vector2 position1 = position + Math::Vector2(15.f, -25.f);
+		prop.position = position1;
+		manualParticleContainer.push_back(prop);
+
+		Math::Vector2 position2 = position + Math::Vector2(-15.f, -25.f);
+		prop.position = position2;
+		manualParticleContainer.push_back(prop);
+
+		Math::Vector2 position3 = position + Math::Vector2(17.f, 25.f);
+		prop.position = position3;
+		manualParticleContainer.push_back(prop);
+
+		Math::Vector2 position4 = position + Math::Vector2(-17.f, 25.f);
+		prop.position = position4;
+		manualParticleContainer.push_back(prop);
+	}
+
 	std::vector<ParticleSystem::Particle> const& ParticleSystem::GetParticleContainer()
 	{
 		return particleContainer;

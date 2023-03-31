@@ -4,8 +4,8 @@
         "Transform": [
             {
                 "position": [
-                    800.0,
-                    450.0000305175781,
+                    0.0,
+                    0.0,
                     0.0
                 ],
                 "scale": [
@@ -15,9 +15,9 @@
                 "rotation": 0.0,
                 "ui": false,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -1600.0,
+                    -900.0,
+                    725.0
                 ]
             }
         ],
@@ -34,7 +34,7 @@
         "LogicComponent": [
             {
                 "components": [
-                    "CutsceneObject"
+                    "CutsceneObjectTutorial"
                 ]
             }
         ]
@@ -50,14 +50,14 @@
                     0.0,
                     0.46268653869628906
                 ],
-                "layer": 255
+                "layer": 3901
             }
         ],
         "Transform": [
             {
                 "position": [
-                    801.0,
-                    451.00006103515625,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -65,11 +65,11 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -450.0,
+                    725.0
                 ]
             }
         ],
@@ -95,14 +95,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256
+                "layer": 3990
             }
         ],
         "Transform": [
             {
                 "position": [
-                    801.0001220703125,
-                    123.00006103515625,
+                    800.0,
+                    123.0,
                     0.0
                 ],
                 "scale": [
@@ -110,11 +110,11 @@
                     210.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -123.0,
+                    725.0
                 ]
             }
         ],
@@ -156,14 +156,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 3988
             }
         ],
         "Transform": [
             {
                 "position": [
-                    801.0,
-                    451.0000305175781,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -171,11 +171,11 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -450.0,
+                    725.0
                 ]
             }
         ],
@@ -201,14 +201,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 1
+                "layer": 3989
             }
         ],
         "Transform": [
             {
                 "position": [
-                    801.0,
-                    451.0000305175781,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -216,11 +216,11 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -450.0,
+                    725.0
                 ]
             }
         ],
@@ -232,6 +232,67 @@
                 "id": 4,
                 "parentID": 0,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\DialogueBox.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3990
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    780.0,
+                    0.0
+                ],
+                "scale": [
+                    1430.0,
+                    210.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -800.0,
+                    -780.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Dialogue Box Top",
+                "active": true,
+                "localActive": true,
+                "id": 5,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Hello There",
+                "currentFont": "SFProverbialGothic",
+                "scale": 0.8999999761581421,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    72.0,
+                    430.0
+                ]
             }
         ]
     }

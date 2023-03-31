@@ -54,6 +54,7 @@ namespace ALEngine::ECS
 		ALEngine::Graphics::Shader fontShader;
 		std::string fontName;
 		static std::vector<Text> textCollection;
+		static b8 enableTextRendering;
 
 		/*!*********************************************************************************
 			\brief
@@ -80,6 +81,14 @@ namespace ALEngine::ECS
 				Camera to render to.
 		***********************************************************************************/
 		static void RenderAllText(Engine::Camera const& camera);
+
+		/*!*********************************************************************************
+			\brief
+				Enable or disable text rendering
+			\param [in] bool:
+				True or false.
+		***********************************************************************************/
+		static void EnableTextRendering(b8);
 	};
 }
 #endif

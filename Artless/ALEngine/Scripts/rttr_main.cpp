@@ -71,4 +71,32 @@ RTTR_REGISTRATION
 	registration::class_<FPSDisplay>("FPSDisplay")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<CutsceneObjectTutorial>("CutsceneObjectTutorial")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<TutorialCamera>("TutorialCamera")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<TutorialObject>("TutorialObject")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<WaterGenerator>("WaterGenerator")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<PauseButton>("PauseButton")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<PromptTool>("PromptTool")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<GameAudioManager>("GameAudioManager")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

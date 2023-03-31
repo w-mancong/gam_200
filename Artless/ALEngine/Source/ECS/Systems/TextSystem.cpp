@@ -49,6 +49,7 @@ namespace ALEngine::ECS
 
 	// declare static class variable
 	std::vector<Text> Font::textCollection;
+	b8 Font::enableTextRendering = true;
 
 	Font Font::FontInit(std::string fontAddress, std::string fontName)
 	{
@@ -147,6 +148,9 @@ namespace ALEngine::ECS
 
 	void Font::RenderAllText(Engine::Camera const& camera)
 	{
+		if (!enableTextRendering)
+			return;
+
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		for (Text& text : textCollection)
@@ -227,5 +231,10 @@ namespace ALEngine::ECS
 		textCollection.clear();
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	void Font::EnableTextRendering(b8 var)
+	{
+		enableTextRendering = var;
 	}
 }

@@ -26,6 +26,7 @@
 #include <Utility/AudioNames.h>
 #include <GameplayCamera.h>
 #include <PauseLogic.h>
+#include <SceneChangeHelper.h>
 #include <ranges>
 
 namespace ALEngine::Script
@@ -35,7 +36,27 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string room_To_Load = "Assets\\Presentation_Level.map";
+		std::string rooms[] = { "Assets\\Map\\Tutorial_Final.map", "Assets\\Map\\Level_1_Final.map", "Assets\\Map\\Level_2_Final.map" };
+		std::string room_To_Load = rooms[1];
+
+		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
+		
+		bool TUTORIAL_ACTIVE{ true };
+	}
+
+	void SetMap(u64 index)
+	{
+		room_To_Load = rooms[index];
+	}		
+
+	/*!*********************************************************************************
+	\brief
+		Load Tutorial Level
+	***********************************************************************************/
+	void Event_Button_LoadLevel_Tutorial(ECS::Entity invoker) {
+		room_To_Load = rooms[0];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
 	}
 
 	/*!*********************************************************************************
@@ -44,8 +65,9 @@ namespace ALEngine::Script
 	***********************************************************************************/
 	void Event_Button_LoadLevel_1(ECS::Entity invoker) {
 		//Restart the gameplay
-		room_To_Load = "Assets\\Presentation_Level.map";
-		Engine::Scene::Restart();
+		room_To_Load = rooms[1];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
 	}
 
 	/*!*********************************************************************************
@@ -55,8 +77,9 @@ namespace ALEngine::Script
 	void Event_Button_LoadLevel_2(ECS::Entity invoker) {
 		gameplaySystem->Toggle_Gameplay_State(false);
 		//Restart the gameplay
-		room_To_Load = "Assets\\Tutorial_Level.map";
-		Engine::Scene::Restart();
+		room_To_Load = rooms[2];
+		auto ptr = ECS::GetLogicComponent<SceneChangeHelper>(scene_transition);
+		ptr->Restart();
 	}
 
 	void GameplaySystem::Load(ECS::Entity en)
@@ -70,6 +93,8 @@ namespace ALEngine::Script
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
 		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
+		Gameplay::TutorialManager::Instance()->SetGameplaySystem(gameplaySystem);
+
 		Set_GameplayInterface_GameplayManager(en);
 
 		//Start the gameplay logic
@@ -83,8 +108,10 @@ namespace ALEngine::Script
 
 		ECS::SetBackgroundColor( { 0.2f, 0.3f, 0.3f, 1.0f } );
 
-		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-		//ECS::GetCamera().Position() = playerTransform.localPosition;
+		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
+
+		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(Coordinator::Instance()->GetEntityByTag("Player"));
+		//ECS::CameraPosition(playerTransform.localPosition.x, playerTransform.localPosition.y);
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -143,25 +170,36 @@ namespace ALEngine::Script
 				Transform transform;
 				transform.scale = { 100, 100 };
 				transform.localScale = { 100, 100 };
-				transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
+				transform.position = { (f32)r * TILE_SIZE, (f32)c * TILE_SIZE };
 				Coordinator::Instance()->AddComponent(m_Room.roomCellsArray[counter], transform);
 
 				// Cell coordinates
 				Cell cell;
 				cell.coordinate = { (s32)r, (s32)c };
 
-				//Create the triggers and subscribe the cell related events
-				ECS::CreateEventTrigger(m_Room.roomCellsArray[counter]);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
-				ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+				// Mainly for tutorial
+				if (row == "Tile")
+				{
+					cell.m_canWalk = true;
+					cell.m_resetCounter = 1000;
+				}
+
+				// Dont subscribe if it is not within 
+				if (row != "Outside_Empty")
+				{
+					//Create the triggers and subscribe the cell related events
+					ECS::CreateEventTrigger(m_Room.roomCellsArray[counter]);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_ClickCell);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterCell);
+					ECS::Subscribe(m_Room.roomCellsArray[counter], EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitCell);
+				}
 
 				// Add the child overlay
 				cell.child_overlay = Coordinator::Instance()->CreateEntity();
 
 				Transform child_overlay_transform;
 				child_overlay_transform.scale = transform.scale;
-				child_overlay_transform.position = { 450 + (f32)r * 100.f, 150 + (f32)c * 100.f };
+				child_overlay_transform.position = { (f32)r * TILE_SIZE, (f32)c * TILE_SIZE };
 				Coordinator::Instance()->AddComponent(cell.child_overlay, child_overlay_transform);
 
 				Coordinator::Instance()->AddComponent(getEntityCell(m_Room, r, c), cell);
@@ -182,6 +220,11 @@ namespace ALEngine::Script
 					ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 				}
 				// Skip "Empty" tiles
+				else if (row == "Outside_Empty")
+				{
+					ECS::CreateSprite(m_Room.roomCellsArray[counter], "");
+					Coordinator::Instance()->GetComponent<Sprite>(m_Room.roomCellsArray[counter]).color.a = 0.f;
+				}
 				else if (row != "Empty")
 				{
 					// Tile image file path
@@ -190,7 +233,7 @@ namespace ALEngine::Script
 					// Check for enemy
 					if (row == "Enemy Melee" || 
 						row == "Enemy Cell Destroyer" ||
-						row == "Enemy Summoner")
+						row == "Summoner")
 					{
 						ENEMY_TYPE enemy_type{};
 
@@ -199,7 +242,7 @@ namespace ALEngine::Script
 							enemy_type = ENEMY_TYPE::ENEMY_MELEE;
 						else if (row == "Enemy Cell Destroyer")
 							enemy_type = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
-						else if (row == "Enemy Summoner")
+						else if (row == "Summoner")
 							enemy_type = ENEMY_TYPE::ENEMY_SUMMONER;
 
 						// Place Enemy
@@ -320,6 +363,11 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
 
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_CurrentPattern);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_1);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Center_Pattern_Button_List[2], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Pattern_2);
+
+
 		//Add events for abilities Button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[0], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_0);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[1], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_1);
@@ -330,12 +378,13 @@ namespace ALEngine::Script
 
 		//Subscribe the restart button
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Lose_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_2);
+		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_Tutorial);
 
 		Toggle_Gameplay_State(true);
 
 		//Toggle the gui 
 		gameplaySystem_GUI->ToggleAbilitiesGUI(false);
+		gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 		gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 		//***** AUDIO Initialization ******//
@@ -350,6 +399,7 @@ namespace ALEngine::Script
 		//Initialize audio
 		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
 		buttonClickAudio->m_Channel = Engine::Channel::SFX;
+
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
@@ -359,7 +409,7 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->UpdateYourTurnSign();
 
 		//If right mouse button
-		if (Input::KeyDown(KeyCode::MouseRightButton)) {
+		if (Input::KeyDown(KeyCode::MouseRightButton) && Time::m_Scale <= 0.0f) {
 			//Deselect Pattern
 			if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
@@ -368,6 +418,8 @@ namespace ALEngine::Script
 				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
 				gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
+
+				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
 			}
 			//Deselect Abilities
 			else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
@@ -376,12 +428,15 @@ namespace ALEngine::Script
 				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
 				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
+				gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 				gameplaySystem_GUI->TogglePatternGUI(false);
 				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 
 				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 				gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
+				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
 			}
 		}
 
@@ -425,6 +480,14 @@ namespace ALEngine::Script
 
 		if (Input::KeyTriggered(KeyCode::F9)) {
 			Cheat_ClearFloorWalkability();
+		}
+
+		if (Input::KeyTriggered(KeyCode::F10)) {
+			Cheat_IncreasePlayerActionPoint(2);
+		}
+
+		if (Input::KeyTriggered(KeyCode::F11)) {
+			Cheat_ResetPlayerActionPoints();
 		}
 
 		if (Input::KeyTriggered(KeyCode::RightShift)) {

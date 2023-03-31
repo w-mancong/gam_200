@@ -121,9 +121,27 @@ namespace ALEngine::ECS
 
 		/*!*********************************************************************************
 		\brief
+			Spawn particles when unit is healed.
+		***********************************************************************************/
+		void UnitLifeDrainParticles(Math::Vector2 position);
+
+		/*!*********************************************************************************
+		\brief
+			Spawn particles when unit is healed.
+		***********************************************************************************/
+		void MatrixTrapParticles(Math::Vector2 position);
+
+
+		/*!*********************************************************************************
+		\brief
 			Update scripted particle system.
 		***********************************************************************************/
 		void ManualParticleUpdate();
+
+		void TileDestoryParticles(Math::Vector2 position);
+
+		void UnitSpawnParticles(Math::Vector2 position);
+		
 
 	private:
 		/*!*********************************************************************************

@@ -64,6 +64,11 @@ namespace ALEngine::ECS::Component
 		//Current cell unit is on
 		ECS::Entity m_CurrentCell_Entity{};
 
+		//trigger bool
+		bool playerTriggeredEnemy{ false };
+
+		s32 distanceToTriggerEnemy{ 0 };
+
 		void(*UpdateEnemyLogic)(struct EnemyManager&, std::vector<Entity>&, struct Room&) {};
 	};
 }

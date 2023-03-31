@@ -158,13 +158,16 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Gameplay\Source\TutorialManager.cpp" />
     <ClCompile Include="Scripts\others\ScriptManager.cpp" />
     <ClCompile Include="Scripts\rttr_main.cpp" />
     <ClCompile Include="Scripts\Source\AlphaFadeIn.cpp" />
     <ClCompile Include="Scripts\Source\AudioSetting.cpp" />
     <ClCompile Include="Scripts\Source\CubeFloat.cpp" />
     <ClCompile Include="Scripts\Source\CutsceneObject.cpp" />
+    <ClCompile Include="Scripts\Source\CutsceneObjectTutorial.cpp" />
     <ClCompile Include="Scripts\Source\FPSDisplay.cpp" />
+    <ClCompile Include="Scripts\Source\GameAudioManager.cpp" />
     <ClCompile Include="Scripts\Source\GameplayCamera.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem.cpp" />
     <ClCompile Include="Scripts\Source\GameplaySystem_Interface_Management_Enemy.cpp" />
@@ -173,10 +176,16 @@
     <ClCompile Include="Scripts\Source\MainMenuButton.cpp" />
     <ClCompile Include="Scripts\Source\NewGameButton.cpp" />
     <ClCompile Include="Scripts\Source\OptionButton.cpp" />
+    <ClCompile Include="Scripts\Source\PauseButton.cpp" />
+    <ClCompile Include="Scripts\Source\PauseButtonFlag.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
+    <ClCompile Include="Scripts\Source\PromptTool.cpp" />
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
     <ClCompile Include="Scripts\Source\SceneChangeHelper.cpp" />
+    <ClCompile Include="Scripts\Source\TutorialCamera.cpp" />
+    <ClCompile Include="Scripts\Source\TutorialObject.cpp" />
+    <ClCompile Include="Scripts\Source\WaterGenerator.cpp" />
     <ClCompile Include="Source\Commands\EntityCommand.cpp" />
     <ClCompile Include="Source\ECS\Component\EntityData.cpp" />
     <ClCompile Include="Source\ECS\Systems\LogicSystem.cpp" />
@@ -312,6 +321,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
+    <ClInclude Include="Gameplay\Header\TutorialManager.h" />
     <ClInclude Include="Include\AI\AiFiniteStateMachine.h" />
     <ClInclude Include="Include\Commands\EntityCommand.h" />
     <ClInclude Include="Include\ECS\Components\LogicComponent.h" />
@@ -466,7 +476,9 @@
     <ClInclude Include="Scripts\Header\AudioSetting.h" />
     <ClInclude Include="Scripts\Header\CubeFloat.h" />
     <ClInclude Include="Scripts\Header\CutsceneObject.h" />
+    <ClInclude Include="Scripts\Header\CutsceneObjectTutorial.h" />
     <ClInclude Include="Scripts\Header\FPSDisplay.h" />
+    <ClInclude Include="Scripts\Header\GameAudioManager.h" />
     <ClInclude Include="Scripts\Header\GameplayCamera.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem_Interface_Management_GUI.h" />
     <ClInclude Include="Scripts\Header\GameplaySystem.h" />
@@ -475,10 +487,16 @@
     <ClInclude Include="Scripts\Header\MainMenuButton.h" />
     <ClInclude Include="Scripts\Header\NewGameButton.h" />
     <ClInclude Include="Scripts\Header\OptionButton.h" />
+    <ClInclude Include="Scripts\Header\PauseButton.h" />
+    <ClInclude Include="Scripts\Header\PauseButtonFlag.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
+    <ClInclude Include="Scripts\Header\PromptTool.h" />
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />
     <ClInclude Include="Scripts\Header\SceneChangeHelper.h" />
+    <ClInclude Include="Scripts\Header\TutorialCamera.h" />
+    <ClInclude Include="Scripts\Header\TutorialObject.h" />
+    <ClInclude Include="Scripts\Header\WaterGenerator.h" />
     <ClInclude Include="Scripts\MyLogicComponents.h" />
     <ClInclude Include="Scripts\others\ScriptManager.h" />
     <ClInclude Include="tracy\Tracy.hpp" />

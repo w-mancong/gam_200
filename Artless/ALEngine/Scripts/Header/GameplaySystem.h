@@ -26,6 +26,12 @@
 namespace ALEngine::Script
 {
 	using GAMEPLAY_SYSTEM_INTERFACE_H::Room;
+	static f32 constexpr const TILE_SIZE = 100.0f;
+	
+	/*!*********************************************************************************
+		\brief Set the room_to_load for MapManager
+	***********************************************************************************/
+	void SetMap(u64 index);
 
 	class GameplaySystem : public ECS::Component::UniBehaviour
 	{
@@ -108,6 +114,13 @@ namespace ALEngine::Script
 			End current turn
 		***********************************************************************************/
 		void EndTurn();
+
+		/*!*********************************************************************************
+		\brief
+			EndTurn_Enemy, to fix the bug where the bug skips the setup phase
+		***********************************************************************************/
+		void EndTurn_Enemy();
+
 
 		/*!*********************************************************************************
 		\brief
@@ -501,6 +514,12 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
+		 Increase Action Points by amount
+		***********************************************************************************/
+		void Cheat_IncreasePlayerActionPoint(s32 amount);
+
+		/*!*********************************************************************************
+		\brief
 		 DOubles ability damage
 		***********************************************************************************/
 		void Cheat_ToggleDoubleAbilitiesDoubleDamage();
@@ -528,6 +547,12 @@ namespace ALEngine::Script
 		 Resets player health to max
 		***********************************************************************************/
 		void Cheat_ResetPlayerHealth();
+
+		/*!*********************************************************************************
+		\brief
+		 Resets player action points to max
+		***********************************************************************************/
+		void Cheat_ResetPlayerActionPoints();
 
 		/*!*********************************************************************************
 		\brief

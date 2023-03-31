@@ -38,16 +38,19 @@ namespace ALEngine::Engine
 	private:
 		void PlaySfx(Audio& audio);
 		void PlayBgm(Audio& audio);
-
-		fmod::System* system{ nullptr };
-		fmod::ChannelGroup* channelGroup[static_cast<s64>(Channel::Total)]{};
-		f32 volumes[static_cast<u64>(Channel::Total)]{ 100.0f, 100.0f, 100.0f };
-
-		c8 const *AUDIO_SETTING_FILE_PATH = "Assets\\Dev\\Objects\\audio_settings.json";
+		void PlayVo(Audio& audio);
 
 		static u64 constexpr MASTER = static_cast<u64>(Engine::Channel::Master),
+							 BGM    = static_cast<u64>(Engine::Channel::BGM),
 							 SFX    = static_cast<u64>(Engine::Channel::SFX),
-							 BGM    = static_cast<u64>(Engine::Channel::BGM);
+							 VO     = static_cast<u64>(Engine::Channel::VO),
+							 TOTAL  = static_cast<u64>(Engine::Channel::Total);
+
+		fmod::System* system{ nullptr };
+		fmod::ChannelGroup* channelGroup[TOTAL]{};
+		f32 volumes[TOTAL]{ 100.0f, 100.0f, 100.0f, 100.0f };
+
+		c8 const *AUDIO_SETTING_FILE_PATH = "Assets\\Dev\\Objects\\audio_settings.json";
 
 		// My own m_Channel info which will be used to check if m_Channel is for bgm/sfx
 		struct ChannelInfo
@@ -60,9 +63,9 @@ namespace ALEngine::Engine
 		using UsedChannels = std::vector<ChannelInfo>;
 		using ChannelIterator = std::vector<std::vector<ChannelInfo>::iterator>;
 
-		ChannelQueue sfxChannels{}, bgmChannels{};	// To store all the avaliable channels for sfx, bgm
-		UsedChannels usedChannels{};				// To store all the channels that are currently in used		
-		ChannelIterator iterators{};				// To store all the iterator of used channels
+		ChannelQueue sfxChannels{}, bgmChannels{}, voChannels{}; // To store all the avaliable channels for sfx, bgm, vo
+		UsedChannels usedChannels{};							 // To store all the channels that are currently in used		
+		ChannelIterator iterators{};							 // To store all the iterator of used channels
 
 		AudioManager(void) = default;
 		~AudioManager(void) = default;
@@ -143,21 +146,24 @@ namespace ALEngine::Engine
 		system->init(MAX_CHANNELS, FMOD_INIT_NORMAL, reinterpret_cast<void*>(FMOD_OUTPUTTYPE::FMOD_OUTPUTTYPE_AUTODETECT));
 
 		// Create m_Channel groups
-		s64 const TOTAL_CHANNELS{ static_cast<s64>(Channel::Total) };
-		c8 const* channelNames[TOTAL_CHANNELS] { "BGM", "SFX", "Master" };
-		for (s64 i{}; i < TOTAL_CHANNELS; ++i)
+		c8 const* channelNames[TOTAL] { "BGM", "SFX", "VO", "Master" };
+		for (u64 i{}; i < TOTAL; ++i)
 		{
 			res = system->createChannelGroup(channelNames[i], &channelGroup[i]);
 			assert(res == FMOD_RESULT::FMOD_OK && "Unable to create channel groups!");
 		}
 
-		fmod::ChannelGroup	*bgm{ channelGroup[static_cast<s64>(Channel::BGM)] },
-							*sfx{ channelGroup[static_cast<s64>(Channel::SFX)] }, 
-							*master{ channelGroup[static_cast<s64>(Channel::Master)] };		
+		fmod::ChannelGroup *bgm{ channelGroup[BGM] },
+						   *sfx{ channelGroup[SFX] }, 
+						   *vo { channelGroup[VO] },
+						   *master{ channelGroup[MASTER] };		
 
 		// adding master m_Channel as an input group to bgm and sfx
 		master->addGroup(bgm);
 		master->addGroup(sfx);
+
+		// adding sfx m_Channel as an input group to vo
+		sfx->addGroup(vo);
 
 		u64 const SFX_CHANNELS = MAX_CHANNELS - BGM_CHANNELS;
 		// filling my channels queue
@@ -167,8 +173,9 @@ namespace ALEngine::Engine
 		*/
 		for (u64 i{}; i < BGM_CHANNELS; ++i)
 			bgmChannels.push({ nullptr, Channel::BGM });
-		for (u64 i{}; i < SFX_CHANNELS; ++i)
+		for (u64 i{}; i < SFX_CHANNELS - 1; ++i)
 			sfxChannels.push({ nullptr, Channel::SFX });
+		voChannels.push({ nullptr, Channel::VO });
 		// Reserving a size of iterators to be max_channels
 		iterators.reserve(MAX_CHANNELS);
 
@@ -190,12 +197,12 @@ namespace ALEngine::Engine
 		}
 
 		rjs::Value::ValueIterator it = doc.Begin();
-		volumes[SFX] = (*it)["sfx"].GetFloat();
 		volumes[BGM] = (*it)["bgm"].GetFloat();
+		volumes[SFX] = (*it)["sfx"].GetFloat();
 		volumes[MASTER] = (*it)["master"].GetFloat();
 
-		SetChannelVolume(Engine::Channel::SFX, volumes[SFX]);
 		SetChannelVolume(Engine::Channel::BGM, volumes[BGM]);
+		SetChannelVolume(Engine::Channel::SFX, volumes[SFX]);
 		SetChannelVolume(Engine::Channel::Master, volumes[MASTER]);
 	}
 
@@ -223,6 +230,11 @@ namespace ALEngine::Engine
 			case Channel::SFX:
 			{
 				sfxChannels.push(*it);
+				break;
+			}
+			case Channel::VO:
+			{
+				voChannels.push(*it);
 				break;
 			}
 			default:
@@ -286,13 +298,13 @@ namespace ALEngine::Engine
 		// Get the first avaliable m_Channel, then remove it from the queue
 		ChannelInfo& channelInfo = sfxChannels.front(); sfxChannels.pop();
 		fmod::Channel*& m_Ch = channelInfo.m_Ch;
-		system->playSound(audio.m_Sound, channelGroup[static_cast<s64>(Channel::SFX)], false, &m_Ch);
+		system->playSound(audio.m_Sound, channelGroup[SFX], false, &m_Ch);
 		// Set audio's m_Channel
 		audio.m_Ch = &m_Ch;
 		m_Ch->setVolume(audio.m_Volume);
 		u32 const LOOP = audio.m_Loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
 		m_Ch->setMode(LOOP);
-		m_Ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::SFX)]);
+		m_Ch->setChannelGroup(channelGroup[SFX]);
 		m_Ch->setMute(audio.m_Mute);
 		usedChannels.push_back(channelInfo);
 	}
@@ -305,13 +317,32 @@ namespace ALEngine::Engine
 		// Get the first avaliable m_Channel, then remove it from the queue
 		ChannelInfo& channelInfo = bgmChannels.front(); bgmChannels.pop();
 		fmod::Channel*& m_Ch = channelInfo.m_Ch;
-		system->playSound(audio.m_Sound, channelGroup[static_cast<s64>(Channel::BGM)], false, &m_Ch);
+		system->playSound(audio.m_Sound, channelGroup[BGM], false, &m_Ch);
 		// Set audio's m_Channel
 		audio.m_Ch = &m_Ch;
 		m_Ch->setVolume(audio.m_Volume);
 		u32 const LOOP = audio.m_Loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
 		m_Ch->setMode(LOOP);
-		m_Ch->setChannelGroup(channelGroup[static_cast<s64>(Channel::BGM)]);
+		m_Ch->setChannelGroup(channelGroup[BGM]);
+		m_Ch->setMute(audio.m_Mute);
+		usedChannels.push_back(channelInfo);
+	}
+
+	void AudioManager::PlayVo(Audio& audio)
+	{
+		// if m_Channel size == 0, means no avaliable m_Channel to play audio
+		if (!voChannels.size())
+			return;
+		// Get the first avaliable m_Channel, then remove it from the queue
+		ChannelInfo& channelInfo = voChannels.front(); voChannels.pop();
+		fmod::Channel*& m_Ch = channelInfo.m_Ch;
+		system->playSound(audio.m_Sound, channelGroup[VO], false, &m_Ch);
+		// Set audio's m_Channel
+		audio.m_Ch = &m_Ch;
+		m_Ch->setVolume(audio.m_Volume);
+		u32 const LOOP = audio.m_Loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		m_Ch->setMode(LOOP);
+		m_Ch->setChannelGroup(channelGroup[VO]);
 		m_Ch->setMute(audio.m_Mute);
 		usedChannels.push_back(channelInfo);
 	}
@@ -328,6 +359,11 @@ namespace ALEngine::Engine
 			case Channel::SFX:
 			{
 				PlaySfx(audio);
+				break;
+			}
+			case Channel::VO:
+			{
+				PlayVo(audio);
 				break;
 			}
 			default:
