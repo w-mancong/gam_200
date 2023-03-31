@@ -125,17 +125,23 @@ namespace ALEngine::Script
 				if (win_sprite->color.a < 1.0f)
 					return;
 				sceneChanging = true;
-				SetActive(true, win);
+				SetActive(true, main_menu);
 			}
 		}
 		else if (GameplaySystem::currentGameStatus == GAME_STATUS::LOSE)
 		{
-
+			lose_sprite->color.a += Time::m_ActualDeltaTime * SPEED;
+			if (lose_sprite->color.a < 1.0f)
+				return;
+			sceneChanging = true;
+			SetActive(true, yes);
+			SetActive(true, no);
 		}
 	}
 
 	void WinCondition::Free(ECS::Entity)
 	{
 		win = main_menu = lose = yes = no = scene_transition = ECS::MAX_ENTITIES;
+		Time::m_Scale = 1.0f;
 	}
 }

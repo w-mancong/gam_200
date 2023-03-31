@@ -40,7 +40,6 @@ namespace ALEngine::Script
 		RTTR_ENABLE(ECS::Component::UniBehaviour)
 
 		b8 sceneChanging{ false };
-		f32 timer{ 0.0f };
 		ECS::Sprite* win_sprite{ nullptr }, *lose_sprite{ nullptr };
 		static f32 constexpr const SPEED{ 0.75f };
 	};
