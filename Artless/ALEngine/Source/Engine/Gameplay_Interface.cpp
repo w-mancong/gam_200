@@ -398,6 +398,9 @@ namespace ALEngine::Script
 	void GameplaySystem::scanRoomCellArray() {
 		//Keep track of reset counter
 		s32 resetCounter;
+
+		bool playAudioCrack = false, playAudioBreak = false, playAudioConstructBreak = false, playAudioVolaTileBreak = false;
+
 		//Scan through each cell in the roomCellArray for the individual cell in the roomArray
 		for (u32 i = 0; i < m_Room.width; ++i) {
 			for (u32 j = 0; j < m_Room.height; ++j) {
@@ -420,9 +423,7 @@ namespace ALEngine::Script
 					Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
 					sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Cracked_Tile.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 
-
-					//Play the sound
-					GameAudioManager::Play("TileCrack");
+					playAudioCrack = true;
 				}
 				if (resetCounter == 0) {
 					//If 0 then reset the cell sprite
@@ -433,22 +434,35 @@ namespace ALEngine::Script
 					if (cell.has_Wall) {
 						destroyWall(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y, false);
 						
-						//Play the sound
-						GameAudioManager::Play("ConstructTileBreak");
+						playAudioConstructBreak = true;
 					}
 					else if (cell.hasBomb) {
 						//explode
 						Bomb_Explode(gameplaySystem->m_Room, cell.coordinate.x, cell.coordinate.y);
-
-						//Play the sound
-						GameAudioManager::Play("VolatTileActivate");
+						
+						playAudioVolaTileBreak = true;
 					}
 					else {
-						//Play the sound
-						GameAudioManager::Play("TileBreak");
+						playAudioBreak = true;
 					}
 				}
 			}
+		}
+
+		if (playAudioVolaTileBreak) {
+			GameAudioManager::Play("VolatTileActivate");
+		}
+		
+		if (playAudioBreak) {
+			GameAudioManager::Play("TileBreak");
+		}
+
+		if (playAudioCrack) {
+			GameAudioManager::Play("TileCrack");
+		}
+
+		if (playAudioConstructBreak) {
+			GameAudioManager::Play("ConstructTileBreak");
 		}
 	}
 
@@ -1083,16 +1097,7 @@ namespace ALEngine::Script
 				ad.Play();
 			}
 			else {
-				if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
-					s32 randomVal = rand() % 100;
-
-					if (randomVal > 50) {
-						gameplaySystem->PlayAudio(AUDIO_GUARD_GET_HIT_1);
-					}
-					else {
-						gameplaySystem->PlayAudio(AUDIO_GUARD_GET_HIT_2);
-					}
-				}
+				gameplaySystem_Enemy->Audio_PlayEnemyHurt(unit);
 			}
 		}
 		//If no health
@@ -1113,10 +1118,8 @@ namespace ALEngine::Script
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
 				gameplaySystem_GUI->HideEnemyTooltip(true);
-				
-				if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
-					gameplaySystem->PlayAudio(AUDIO_GUARD_DEATH_1);
-				}
+
+				gameplaySystem_Enemy->Audio_PlayEnemyDeath(unit);
 
 				b8 allEnemiesDead = true;
 				for (int i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {

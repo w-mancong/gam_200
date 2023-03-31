@@ -28,6 +28,7 @@
 #include <PauseLogic.h>
 #include <SceneChangeHelper.h>
 #include <ranges>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {

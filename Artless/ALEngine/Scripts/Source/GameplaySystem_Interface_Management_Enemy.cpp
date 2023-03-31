@@ -217,45 +217,87 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyAttack(Unit& enemy) {
+		s32 randomVal = rand() % 100;
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
-			s32 randomVal = rand() % 100;
-
-			if (randomVal > 50) {
-				gameplaySystem->PlayAudio(AUDIO_GUARD_ATTACK_1);
+			if (randomVal < 50) {
+				GameAudioManager::Play("GuardAttack1");
 			}
 			else {
-				gameplaySystem->PlayAudio(AUDIO_GUARD_ATTACK_2);
+				GameAudioManager::Play("GuardAttack2");
 			}
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
-
+			if (randomVal < 50) {
+				GameAudioManager::Play("SummonerAttack1");
+			}
+			else {
+				GameAudioManager::Play("SummonerAttack2");
+			}
 		}
 		else {
-
+			if (randomVal < 50) {
+				GameAudioManager::Play("TileDestroyerAttack1");
+			}
+			else {
+				GameAudioManager::Play("TileDestroyerAttack2");
+			}
 		}
 	}
 	
 	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyMove(Unit& enemy) {
+		s32 randomVal = rand() % 100;
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
-			s32 randomVal = rand() % 100;
-
-			if (randomVal < 33) {
-				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_1);
+			if (randomVal < 50) {
+				GameAudioManager::Play("Guardv01");
 			}
-			else if (randomVal >= 33 && randomVal < 67) {
-				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_2);
-			}
-			else {
-				gameplaySystem->PlayAudio(AUDIO_GUARD_MOVE_3);
+			else  {
+				GameAudioManager::Play("Guardv02");
 			}
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+			if (randomVal < 50) {
+				GameAudioManager::Play("TileDestroyerv01");
+			}
+			else {
+				GameAudioManager::Play("TileDestroyerv02");
+			}
+		}
+		else {
+			if (randomVal < 50) {
+				GameAudioManager::Play("Summonerv01");
+			}
+			else {
+				GameAudioManager::Play("Summonerv02");
+			}
+		}
+	}
+
+	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyDeath(Unit& enemy) {
+		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+			GameAudioManager::Play("GuardDeath");
+
+		}
+		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+			GameAudioManager::Play("TileDestroyerDeath");
+		}
+		else {
+			GameAudioManager::Play("SummonerDeath");
+		}
+	}
+
+	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyHurt(Unit& enemy) {
+		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+			GameAudioManager::Play("GuardHurt");
+		}
+		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+			GameAudioManager::Play("SummonerHurt");
 
 		}
 		else {
-
+			GameAudioManager::Play("TileDestroyerHurt");
 		}
 	}
+
 
 	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue)
 	{
@@ -332,6 +374,8 @@ namespace ALEngine::Script
 
 		AL_CORE_INFO("Run destroy block Attack");
 		
+		bool brokeTile = false;
+
 		//destroy the walkable block here important
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
@@ -344,9 +388,7 @@ namespace ALEngine::Script
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
-
-			//Play the sound
-			GameAudioManager::Play("TileBreak");
+			brokeTile = true;
 		}
 
 		//up
@@ -362,8 +404,7 @@ namespace ALEngine::Script
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
 
-			//Play the sound
-			GameAudioManager::Play("TileBreak");
+			brokeTile = true;
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -417,8 +458,7 @@ namespace ALEngine::Script
 			cell.m_canWalk = false;
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
 
-			//Play the sound
-			GameAudioManager::Play("TileBreak");
+			brokeTile = true;
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -443,8 +483,7 @@ namespace ALEngine::Script
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
 
-			//Play the sound
-			GameAudioManager::Play("TileBreak");
+			brokeTile = true;
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -455,6 +494,11 @@ namespace ALEngine::Script
 			}
 
 			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed right block");
+		}
+
+		if (brokeTile) {
+			//Play the sound
+			GameAudioManager::Play("TileBreak");
 		}
 	}
 
