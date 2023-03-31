@@ -1069,7 +1069,7 @@ namespace ALEngine::Script
 			}
 			else {
 				if (unit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
-					s32 randomVal = rand() % 100;
+					s32 randomVal = Random::Range(0, 100);
 
 					if (randomVal > 50) {
 						gameplaySystem->PlayAudio(AUDIO_GUARD_GET_HIT_1);
@@ -1077,6 +1077,7 @@ namespace ALEngine::Script
 					else {
 						gameplaySystem->PlayAudio(AUDIO_GUARD_GET_HIT_2);
 					}
+					
 				}
 			}
 		}
@@ -1085,14 +1086,15 @@ namespace ALEngine::Script
 			//Determinte type
 
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
-				AL_CORE_INFO("Unit Died");
-				ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
-				Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
+				currentGameStatus = GAME_STATUS::LOSE;
+				//AL_CORE_INFO("Unit Died");
+				//ECS::Entity LoseTextEntity = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+				//Coordinator::Instance()->GetComponent<Text>(LoseTextEntity).textString = "Player lost all health, press to try again";
 
-				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Lose_Clear);
+				//ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Lose_Clear);
 
-				unitData.active = false;
-				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+				//unitData.active = false;
+				//Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			}
 			else {
 				//If enemy unit
