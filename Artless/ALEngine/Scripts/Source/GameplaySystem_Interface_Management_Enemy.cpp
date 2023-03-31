@@ -5,6 +5,7 @@
 #include <GameplaySystem_Interface_Management_GUI.h>
 #include <Engine/PathFindingManager.h>
 #include <Utility/AudioNames.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -343,6 +344,9 @@ namespace ALEngine::Script
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
+
+			//Play the sound
+			GameAudioManager::Play("TileBreak");
 		}
 
 		//up
@@ -357,6 +361,9 @@ namespace ALEngine::Script
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
+
+			//Play the sound
+			GameAudioManager::Play("TileBreak");
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -381,6 +388,9 @@ namespace ALEngine::Script
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
+
+			//Play the sound
+			GameAudioManager::Play("TileBreak");
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
@@ -407,6 +417,9 @@ namespace ALEngine::Script
 			cell.m_canWalk = false;
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
 
+			//Play the sound
+			GameAudioManager::Play("TileBreak");
+
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
 
@@ -429,6 +442,9 @@ namespace ALEngine::Script
 			cell.m_canWalk = false;
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
+
+			//Play the sound
+			GameAudioManager::Play("TileBreak");
 
 			if (cell.hasUnit) {
 				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
