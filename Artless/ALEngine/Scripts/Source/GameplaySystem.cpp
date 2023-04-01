@@ -435,7 +435,7 @@ namespace ALEngine::Script
 			//Deselect Pattern
 			if (Coordinator::Instance()->HasComponent<Cell>(current_Moused_Over_Cell))
 			{
-				if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+				if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
 					DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -446,7 +446,7 @@ namespace ALEngine::Script
 					Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
 				}
 				//Deselect Abilities
-				else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+				else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
 					DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
