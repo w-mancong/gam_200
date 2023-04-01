@@ -36,8 +36,8 @@
         "EntityData": [
             {
                 "tag": "sound_options",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 0,
                 "parentID": -1,
                 "treeNodeFlags": 0
@@ -88,7 +88,7 @@
         "EntityData": [
             {
                 "tag": "master_bd",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 1,
                 "parentID": 0,
@@ -133,7 +133,7 @@
         "EntityData": [
             {
                 "tag": "master_right",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 2,
                 "parentID": 1,
@@ -178,7 +178,7 @@
         "EntityData": [
             {
                 "tag": "master_left",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 3,
                 "parentID": 1,
@@ -211,7 +211,7 @@
         "EntityData": [
             {
                 "tag": "master_text",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 4,
                 "parentID": 1,
@@ -253,7 +253,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    493.0022888183594,
+                    493.00244140625,
                     0.0
                 ],
                 "scale": [
@@ -272,7 +272,7 @@
         "EntityData": [
             {
                 "tag": "sfx_bd",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 5,
                 "parentID": 0,
@@ -298,7 +298,7 @@
             {
                 "position": [
                     1075.0,
-                    494.42523193359375,
+                    494.4252014160156,
                     0.0
                 ],
                 "scale": [
@@ -317,7 +317,7 @@
         "EntityData": [
             {
                 "tag": "sfx_right",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 6,
                 "parentID": 5,
@@ -343,7 +343,7 @@
             {
                 "position": [
                     814.9998779296875,
-                    490.22503662109375,
+                    490.2250061035156,
                     0.0
                 ],
                 "scale": [
@@ -362,7 +362,7 @@
         "EntityData": [
             {
                 "tag": "sfx_left",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 7,
                 "parentID": 5,
@@ -376,7 +376,7 @@
             {
                 "position": [
                     1119.999755859375,
-                    567.9993896484375,
+                    567.9993286132813,
                     0.0
                 ],
                 "scale": [
@@ -395,7 +395,7 @@
         "EntityData": [
             {
                 "tag": "sfx_text",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 8,
                 "parentID": 5,
@@ -456,7 +456,7 @@
         "EntityData": [
             {
                 "tag": "bgm_bd",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 9,
                 "parentID": 0,
@@ -501,7 +501,7 @@
         "EntityData": [
             {
                 "tag": "bgm_right",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 10,
                 "parentID": 9,
@@ -546,7 +546,7 @@
         "EntityData": [
             {
                 "tag": "bgm_left",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 11,
                 "parentID": 9,
@@ -579,7 +579,7 @@
         "EntityData": [
             {
                 "tag": "bgm_text",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 12,
                 "parentID": 9,
@@ -620,8 +620,8 @@
         "Transform": [
             {
                 "position": [
-                    -0.0001220703125,
-                    0.0,
+                    1148.0,
+                    674.0,
                     0.0
                 ],
                 "scale": [
@@ -640,7 +640,7 @@
         "EntityData": [
             {
                 "tag": "close_btn",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 13,
                 "parentID": 0,
@@ -666,7 +666,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.0020446777344,
+                    450.00213623046875,
                     0.0
                 ],
                 "scale": [
@@ -685,7 +685,7 @@
         "EntityData": [
             {
                 "tag": "black_overlay",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 14,
                 "parentID": 0,
@@ -711,7 +711,7 @@
             {
                 "position": [
                     943.9998779296875,
-                    286.0000305175781,
+                    286.0001220703125,
                     0.0
                 ],
                 "scale": [
@@ -730,7 +730,7 @@
         "EntityData": [
             {
                 "tag": "tick_box",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 15,
                 "parentID": 0,
@@ -775,7 +775,7 @@
         "EntityData": [
             {
                 "tag": "tick",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 16,
                 "parentID": 15,

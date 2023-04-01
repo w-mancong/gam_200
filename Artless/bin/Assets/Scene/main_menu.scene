@@ -293,8 +293,8 @@
         "LogicComponent": [
             {
                 "components": [
-                    "AlphaFadeIn",
-                    "QuitButton"
+                    "QuitButton",
+                    "AlphaFadeIn"
                 ]
             }
         ]
@@ -1361,7 +1361,7 @@
                 "localActive": false,
                 "id": 28,
                 "parentID": 7,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "LogicComponent": [
@@ -1575,7 +1575,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    493.00238037109375,
+                    493.00244140625,
                     0.0
                 ],
                 "scale": [
@@ -1944,8 +1944,8 @@
         "Transform": [
             {
                 "position": [
-                    1153.999755859375,
-                    686.0009765625,
+                    1148.0,
+                    674.0,
                     0.0
                 ],
                 "scale": [
@@ -1990,7 +1990,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.0021057128906,
+                    450.00213623046875,
                     0.0
                 ],
                 "scale": [
@@ -2035,7 +2035,7 @@
             {
                 "position": [
                     943.9998779296875,
-                    286.0000915527344,
+                    286.0001220703125,
                     0.0
                 ],
                 "scale": [
