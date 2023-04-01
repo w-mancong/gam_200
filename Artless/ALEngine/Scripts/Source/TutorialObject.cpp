@@ -269,7 +269,7 @@ namespace ALEngine::Script
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(true, m_PlaceFirstTile);
 
-			SetAllButOneTileInactive(7, 5);
+			//SetAllButOneTileInactive(7, 5);
 
 			VariableScale(m_PlaceFirstTile_Arrow);
 		}
@@ -280,7 +280,7 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(false, m_PlaceFirstTile);
-			SetAllTilesActive(true);
+			//SetAllTilesActive(true);
 		}
 	}
 
