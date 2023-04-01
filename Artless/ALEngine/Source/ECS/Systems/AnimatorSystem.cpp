@@ -58,7 +58,7 @@ namespace ALEngine::ECS
 				}
 			}
 			else {
-				if (animator.currSprite == 0) {
+				if (sprite.index == 0) {
 					animator.isFirstLoop = false;
 				}
 			}

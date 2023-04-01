@@ -1342,7 +1342,7 @@ namespace ALEngine::Script
 		AL_CORE_CRITICAL("USE ABILITY");
 
 		//Get the audiosource
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
 		Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
 		ad.m_Channel = Engine::Channel::SFX;
 		ad.m_Loop = false;
@@ -1354,11 +1354,6 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
 		gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, true);
 
-		// Set the Hurt animation for player
-		ECS::Entity pl = Coordinator::Instance()->GetEntityByTag("Player");
-		Animator& an = Coordinator::Instance()->GetComponent<Animator>(pl);
-		an.nextClip = "PlayerIdle ";
-		ECS::ChangeAnimation(an, "PlayerAttack");
 
 		//Check for ability name and run ability accordingly
 		switch (abilities->current_Ability_Name)
@@ -1402,6 +1397,7 @@ namespace ALEngine::Script
 		}
 			
 
+		playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
@@ -1424,7 +1420,6 @@ namespace ALEngine::Script
 
 						u32 initialHealth = unit.health;
 
-						playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 						//If unit is enemy
@@ -1503,6 +1498,11 @@ namespace ALEngine::Script
 		}//End loop through pattern body check
 
 		ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+		an.nextClip = "PlayerIdle";
+		ECS::ChangeAnimation(an, "PlayerAttack");
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(ECS::Entity cellEntity) {
@@ -1758,6 +1758,10 @@ namespace ALEngine::Script
 			ad.m_Channel = Engine::Channel::SFX;
 			ad.m_Loop = true;
 			ad.Play();
+
+			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "PlayerChargeLoop");
 		}
 	}
 
@@ -2038,7 +2042,7 @@ namespace ALEngine::Script
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
 					//Get the audiosource
-					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
 
 					//Play the sound
 					Engine::Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
