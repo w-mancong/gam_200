@@ -483,7 +483,7 @@ namespace ALEngine::Script
 
 					gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
-					Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+					Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(false);
 				}
 			}
 		}

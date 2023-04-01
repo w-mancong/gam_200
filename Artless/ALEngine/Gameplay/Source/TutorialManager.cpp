@@ -26,6 +26,8 @@ namespace Gameplay
 		m_PlayerMoveFinished = false;
 		m_EndTurnPressed = false;
 		m_PlayerTurnStart = false;
+		m_AbilityIsSelected = false;
+
 		m_EnemiesKilled = 0;
 	}
 
@@ -190,6 +192,16 @@ namespace Gameplay
 	void TutorialManager::SetPlayerMoveFinished(b8 moveOver)
 	{
 		m_PlayerMoveFinished = moveOver;
+	}
+
+	b8 TutorialManager::GetAbilityIsSelected(void)
+	{
+		return m_AbilityIsSelected;
+	}
+
+	void TutorialManager::SetAbilityIsSelected(b8 isSelected)
+	{
+		m_AbilityIsSelected = isSelected;
 	}
 
 	b8 TutorialManager::GetEndTurnPressed(void)

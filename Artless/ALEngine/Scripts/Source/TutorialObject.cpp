@@ -233,7 +233,6 @@ namespace ALEngine::Script
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		case Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT:
-			Gameplay::TutorialManager::Instance()->SetAllAbilitiesOn();
 			if (gs->enemyEntityList.size() == Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled())
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
@@ -242,7 +241,8 @@ namespace ALEngine::Script
 		}
 
 		if(gs->currentGameStatus == GAME_STATUS::WIN && 
-			Gameplay::TutorialManager::Instance()->GetState() != Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT)
+			(Gameplay::TutorialManager::Instance()->GetState() != Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT
+				&& Gameplay::TutorialManager::Instance()->GetState() != Gameplay::TutorialState::TUTORIAL_FINAL_CS))
 		{
 			Time::m_Scale = 1.f;
 			Gameplay::TutorialManager::Instance()->EndTutorial();
@@ -403,7 +403,8 @@ namespace ALEngine::Script
 		ECS::SetActive(true, m_HardDrop);
 		
 		// If player selected Hard Drop
-		if (gs->selected_Abilities != nullptr && gs->selected_Abilities->current_Ability_Name == ABILITY_NAME::HARD_DROP)
+		if (Gameplay::TutorialManager::Instance()->GetAbilityIsSelected() == true &&
+			gs->selected_Abilities != nullptr && gs->selected_Abilities->current_Ability_Name == ABILITY_NAME::HARD_DROP)
 		{
 			ECS::SetActive(false, m_HardDrop_ClickHere);
 			ECS::SetActive(false, m_HardDrop_Arrow_1);
@@ -416,6 +417,7 @@ namespace ALEngine::Script
 			{
 				Gameplay::TutorialManager::Instance()->NextState();
 				ECS::SetActive(false, m_HardDrop);
+				Gameplay::TutorialManager::Instance()->SetTileIsSelected(true);
 				return;
 			}
 
