@@ -126,15 +126,14 @@ namespace ALEngine::Engine::Scene
 		m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
 
 		if (m_CurrentCutscene->m_HasImage)
-		{
 			ECS::SetActive(false, m_BlackOverlay);
-		}
 		else
-		{
 			ECS::SetActive(true, m_BlackOverlay);
-			ECS::SetActive(false, m_CutsceneTop);
-			ECS::SetActive(false, m_CutsceneBottom);
-		}
+
+		ECS::SetActive(false, m_CutsceneTop);
+		ECS::SetActive(false, m_CutsceneBottom);
+		ECS::SetActive(false, m_DialogueBox);
+		ECS::SetActive(false, m_DialogueBoxTop);
 
 		// Make Obj Appear
 		EntityData& objData = Coordinator::Instance()->GetComponent<EntityData>(m_CutsceneObject);
@@ -312,44 +311,6 @@ namespace ALEngine::Engine::Scene
 					{
 						writer.Key("Image");
 						writer.String(i.m_CutsceneImageFilePath.c_str());
-
-						//writer.Key("Images");
-						//writer.StartArray();
-
-						// For each cutscene image
-						//for (auto j : i.m_Images)
-						//{
-						//	writer.StartObject();
-						//	
-						//	 Image FP
-						//	writer.Key("ImageFP");
-						//	writer.String(j.m_FilePath.c_str());
-						//								
-						//	{	// Start Pos
-						//		writer.Key("StartPos");
-						//		writer.StartArray();
-						//		writer.Double(static_cast<f64>(j.m_StartPos.x));
-						//		writer.Double(static_cast<f64>(j.m_StartPos.y));
-						//		writer.EndArray();
-						//	}
-
-						//	{	// End Pos
-						//		writer.Key("EndPos");
-						//		writer.StartArray();
-						//		writer.Double(static_cast<f64>(j.m_EndPos.x));
-						//		writer.Double(static_cast<f64>(j.m_EndPos.y));
-						//		writer.EndArray();
-						//	}
-
-						//	{	// Speed
-						//		writer.Key("EndPos");
-						//		writer.Double(static_cast<f64>(j.m_Speed));
-						//	}
-
-						//	writer.EndObject();
-						//}
-						//
-						//writer.EndArray();
 					}
 					
 					// Has Text
@@ -357,13 +318,6 @@ namespace ALEngine::Engine::Scene
 					{
 						writer.Key("Text");
 						writer.String(i.m_CutsceneText.c_str());
-						//writer.Key("Texts");
-						//writer.StartArray();
-
-						//for (auto j : i.m_CutsceneTexts)
-						//	writer.String(j.c_str());
-
-						//writer.EndArray();
 					}
 
 					writer.EndObject();
@@ -542,8 +496,6 @@ namespace ALEngine::Engine::Scene
 			// Set to playing cutscene
 			m_CurrentPhase = CutscenePhase::PLAYING_CUTSCENE;
 
-			SetText();
-
 			m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
 		}
 	}
@@ -607,8 +559,6 @@ namespace ALEngine::Engine::Scene
 					m_CurrentCutscene = std::next(m_CurrentCutscene);
 					// Set phase
 					SetFade(m_CurrentCutscene->m_FadeInType);
-					// Text
-					SetText();
 				}
 				else
 					SetFade(m_CurrentCutscene->m_FadeOutType);
@@ -657,6 +607,8 @@ namespace ALEngine::Engine::Scene
 			}
 			else if (m_CurrentPhase == CutscenePhase::FADE_OUT)
 				m_CurrentPhase = CutscenePhase::FADE_IN;
+
+			SetText();
 
 			return;
 		}
