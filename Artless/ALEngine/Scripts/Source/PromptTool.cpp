@@ -45,7 +45,8 @@ namespace ALEngine::Script
 
 		if (!showPrompt)
 		{
-			timer = sprite->color.a = 0.0f;
+			if (sprite)
+				timer = sprite->color.a = 0.0f;
 			return;
 		}
 
@@ -55,13 +56,19 @@ namespace ALEngine::Script
 			if (timer < WAIT_TIME)
 				return;
 
+			if (sprite)
+			{
 				sprite->color.a += Time::m_DeltaTime * SPEED;
 				sprite->color.a = std::clamp(sprite->color.a, 0.0f, 1.0f);
+			}
 
 			trans->position = Input::GetMouseWorldPos();
 		}
 		else
+		{
+			if(sprite)
 				timer = sprite->color.a = 0.0f;
+		}
 	}
 
 	void PromptTool::InitPatternPlacementStatusVariable(PATTERN_PLACEMENT_STATUS* pattern)

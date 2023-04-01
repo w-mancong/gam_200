@@ -33,8 +33,6 @@ namespace ALEngine::ECS
 	{
 		for (Entity en : ls->mEntities)
 		{
-			if (MAX_ENTITIES < en)
-				continue;
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
 			for (auto& it : lc.logics)
@@ -46,8 +44,6 @@ namespace ALEngine::ECS
 	{
 		for (Entity en : ls->mEntities)
 		{
-			if (MAX_ENTITIES < en)
-				continue;
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
 			for (auto& it : lc.logics)
@@ -59,8 +55,6 @@ namespace ALEngine::ECS
 	{
 		for (Entity en : ls->mEntities)
 		{
-			if (MAX_ENTITIES < en)
-				continue;
 			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
 				continue;
 
@@ -75,8 +69,6 @@ namespace ALEngine::ECS
 	{
 		for (Entity en : ls->mEntities)
 		{
-			if (MAX_ENTITIES < en)
-				continue;
 			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
 				continue;
 
@@ -91,8 +83,6 @@ namespace ALEngine::ECS
 	{
 		for (Entity en : ls->mEntities)
 		{
-			if (MAX_ENTITIES < en)
-				continue;
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
 			for (auto& it : lc.logics)
@@ -104,8 +94,6 @@ namespace ALEngine::ECS
 	{
 		for (Entity en : ls->mEntities)
 		{
-			if (MAX_ENTITIES < en)
-				continue;
 			LogicComponent const& lc = Coordinator::Instance()->GetComponent<LogicComponent>(en);
 
 			for (auto& it : lc.logics)
