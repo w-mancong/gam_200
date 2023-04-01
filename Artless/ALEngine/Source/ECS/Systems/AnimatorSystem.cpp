@@ -67,6 +67,9 @@ namespace ALEngine::ECS
 			
 			(++animator.currSprite) %= animation.totalSprites;
 			
+			if (!animator.isLoop && !animator.isFirstLoop && sprite.index == 0) {
+				sprite.index = animation.totalSprites - 1;
+			}
 			
 			animator.time = 0.0f;
 			animator.frames = 0;
