@@ -7,4 +7,8 @@ RTTR_REGISTRATION
 	registration::class_<WinCondition>("WinCondition")
 	.constructor<>()
 	.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<SplashScreen>("SplashScreen")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }

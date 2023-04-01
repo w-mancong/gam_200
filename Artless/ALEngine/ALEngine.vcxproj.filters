@@ -128,6 +128,7 @@
     <ClCompile Include="Scripts\Source\GameAudioManager.cpp" />
     <ClCompile Include="Scripts\Source\WinCondition.cpp" />
     <ClCompile Include="Scripts\rttr_main2.cpp" />
+    <ClCompile Include="Scripts\Source\SplashScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Extern\include\imgui\cpp\imgui_stdlib.h" />
@@ -307,6 +308,7 @@
     <ClInclude Include="Scripts\Header\PromptTool.h" />
     <ClInclude Include="Scripts\Header\GameAudioManager.h" />
     <ClInclude Include="Scripts\Header\WinCondition.h" />
+    <ClInclude Include="Scripts\Header\SplashScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\pch.h">

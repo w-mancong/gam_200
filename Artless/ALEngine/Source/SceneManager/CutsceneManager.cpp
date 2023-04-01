@@ -571,16 +571,16 @@ namespace ALEngine::Engine::Scene
 			m_CurrentPhase = CutscenePhase::FADE_IN;
 			m_CurrentCutscene = std::next(m_CurrentCutscene);
 
-			SetFade(m_CurrentCutscene->m_FadeInType);
-
-			SetText();
-
 			// End of cutscene
 			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
 			{
 				StopSequence();
 				return;
 			}
+
+			SetFade(m_CurrentCutscene->m_FadeInType);
+
+			SetText();
 		}
 	}
 
