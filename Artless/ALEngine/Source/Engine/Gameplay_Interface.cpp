@@ -317,9 +317,6 @@ namespace ALEngine::Script
 			//Check if player cell is destroyed, if yes then eliminate player
 			checkPlayerPlacement();
 
-			//Display the your turn animation 
-			gameplaySystem_GUI->DisplayYourTurn();
-
 			for (int i = 0; i < gameplaySystem->Abilities_List.size(); ++i) {
 				if (gameplaySystem->Abilities_List[i].current_Cooldown > 0) {
 					gameplaySystem->Abilities_List[i].current_Cooldown--;
@@ -332,7 +329,11 @@ namespace ALEngine::Script
 				Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(true);
 			break;
 		}
+
 		gameplaySystem_GUI->GuiUpdatePhaseIndicator(gameplaySystem->currentPhaseStatus);
+
+		//Display the your turn animation 
+		gameplaySystem_GUI->DisplayYourTurn();
 	}
 
 	uint32_t GameplaySystem::getRoomSize() {
