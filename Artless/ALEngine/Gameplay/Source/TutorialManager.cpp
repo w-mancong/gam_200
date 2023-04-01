@@ -242,7 +242,7 @@ namespace Gameplay
 			Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_AbilityList[i]);
 
 			et.isEnabled = true;
-			spr.color = { 0.1f, 0.1f, 1.f, 1.f };
+			spr.color = { 1.f, 1.f, 1.f, 1.f };
 		}
 	}
 
