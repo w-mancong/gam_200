@@ -150,7 +150,7 @@ namespace ALEngine::Script
 		//Camera Logic
 		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
 		{
-			//Instantiate("Tutorial Objects");
+			Instantiate("Tutorial Objects");
 
 			ECS::AddLogicComponent<Script::TutorialCamera>(entity);
 			//ECS::AddLogicComponent<Script::GameplayCamera>(entity);
