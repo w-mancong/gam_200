@@ -36,7 +36,9 @@ namespace ALEngine::Script
 		{
 			ECS::AddLogicComponent<CutsceneObject>(en);
 		};
-		RTTR_ENABLE(ECS::Component::UniBehaviour);
+		RTTR_ENABLE(ECS::Component::UniBehaviour)
+
+		ECS::Entity main_menu{ ECS::MAX_ENTITIES };
 	};
 }
 
