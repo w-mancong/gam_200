@@ -379,11 +379,7 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_3);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[4], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_4);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[5], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_5);
-
-		//Subscribe the restart button
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Lose_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_Tutorial);
-
+		
 		Toggle_Gameplay_State(true);
 
 		//Toggle the gui 

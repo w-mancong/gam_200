@@ -210,9 +210,6 @@ namespace ALEngine::Script
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
 		ECS::SetActive(false, guiManager.Win_Clear);
 		ECS::SetActive(false, guiManager.Lose_Clear);
-
-		ECS::CreateButton(guiManager.Win_Button);
-		ECS::CreateButton(guiManager.Lose_Button);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateFpsLabel()
