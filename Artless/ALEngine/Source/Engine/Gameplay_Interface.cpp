@@ -535,7 +535,7 @@ namespace ALEngine::Script
 
 				//If has unit, do 13 damage
 				if (cell.hasUnit) {
-					DoDamageToUnit(cell.unitEntity, 13);
+					DoDamageToUnit(cell.unitEntity, 11);
 				}
 
 				//Reset the affected cell
@@ -820,16 +820,16 @@ namespace ALEngine::Script
 		//Fixed damage
 		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
-		new_ability.damage = 9;
-		new_ability.max_Cooldown = 1;
+		new_ability.damage = 8;
+		new_ability.max_Cooldown = 3;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
 		//Life steal
 		new_ability.current_Ability_Name = ABILITY_NAME::LIFE_DRAIN;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
-		new_ability.damage = 8;
-		new_ability.max_Cooldown = 2;
+		new_ability.damage = 7;
+		new_ability.max_Cooldown = 3;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
@@ -850,14 +850,14 @@ namespace ALEngine::Script
 		//Matrix Trap
 		new_ability.current_Ability_Name = ABILITY_NAME::MATRIX_TRAP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
-		new_ability.max_Cooldown = 3;
+		new_ability.max_Cooldown = 4;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 	
-		//Matrix Trap
+		//Volatile
 		new_ability.current_Ability_Name = ABILITY_NAME::VOLATILE;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
-		new_ability.max_Cooldown = 5;
+		new_ability.max_Cooldown = 6;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 	}
@@ -902,8 +902,6 @@ namespace ALEngine::Script
 			pattern_List.push_back(tempList[i]);
 		}
 	}
-
-
 
 	void GameplaySystem::Cheat_ToggleGodMode() {
 		//Toggle the boolean
