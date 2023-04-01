@@ -899,7 +899,7 @@ namespace ALEngine::Script
 				bool spawnMelee = (rand() % 100) <= 60;
 
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j));
-				ECS::ParticleSystem::GetParticleSystem().UnitSpawnParticles(trans.position);
+				ECS::ParticleSystem::GetParticleSystem().UnitSpawnParticles(trans.position, false);
 				PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, spawnMelee ? ENEMY_TYPE::ENEMY_MELEE : ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
 				return;
 			} //End j loop

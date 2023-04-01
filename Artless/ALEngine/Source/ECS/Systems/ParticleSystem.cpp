@@ -360,12 +360,18 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
-	void ParticleSystem::UnitSpawnParticles(Math::Vector2 position)
+	void ParticleSystem::UnitSpawnParticles(Math::Vector2 position, b8 tile)
 	{
 		position -= Math::Vector2(0, 20.f);
 		Entity en = Coordinator::Instance()->GetEntityByTag("spawn_particles");
 		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
 		prop.position = position;
+		if (tile)
+		{
+			prop.sizeStart = Math::Vector2(150.f, 150.f);
+			prop.sizeEnd = Math::Vector2(80.f, 80.f);
+			prop.velocity = Math::Vector2(20.f, 50.f);
+		}
 		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		prop.spawnDuration = 1.f;
 		manualParticleContainer.push_back(prop);
@@ -382,10 +388,11 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
-	void ParticleSystem::TileDestoryParticles(Math::Vector2 position)
+	void ParticleSystem::TileDestoryParticles(Math::Vector2 position) // var for cracked tiles
 	{
 		Entity en = Coordinator::Instance()->GetEntityByTag("tile_dest_particles");
-		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		ParticleProperties prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+
 		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		prop.spawnDuration = 0.5f;
 
