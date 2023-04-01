@@ -11,6 +11,8 @@ brief:	This file contain function definition for checking win/lose condition
 #include <Engine/Gameplay_Interface.h>
 #include <GameplaySystem.h>
 #include <SceneChangeHelper.h>
+#include <PauseButtonFlag.h>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -21,6 +23,8 @@ namespace ALEngine::Script
 		Entity win{ ECS::MAX_ENTITIES }, main_menu{ ECS::MAX_ENTITIES },
 			   lose{ ECS::MAX_ENTITIES }, yes{ ECS::MAX_ENTITIES }, no{ ECS::MAX_ENTITIES },
 			scene_transition{ ECS::MAX_ENTITIES };
+
+		b8 clicked{ false };
 
 		void Darken(Entity en)
 		{
@@ -36,7 +40,18 @@ namespace ALEngine::Script
 
 		void WhenMenuHover(Entity en)
 		{
+			if (clicked)
+				return;
 			Darken(en);
+			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			{
+				clicked = true;
+				Lighten(en);
+				SetMap(0);
+				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
+				ptr->NextScene("Assets\\Scene\\main_menu.scene");
+				GameAudioManager::Play("MenuButtonPress");
+			}
 		}
 
 		void WhenMenuExit(Entity en)
@@ -46,7 +61,17 @@ namespace ALEngine::Script
 
 		void WhenYesHover(Entity en)
 		{
+			if (clicked)
+				return;
 			Darken(en);
+			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			{
+				clicked = true;
+				Lighten(en);
+				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
+				ptr->Restart();
+				GameAudioManager::Play("MenuButtonPress");
+			}
 		}
 
 		void WhenYesExit(Entity en)
@@ -56,7 +81,18 @@ namespace ALEngine::Script
 
 		void WhenNoHover(Entity en)
 		{
+			if (clicked)
+				return;
 			Darken(en);
+			if (Input::KeyDown(KeyCode::MouseLeftButton))
+			{
+				clicked = true;
+				Lighten(en);
+				SetMap(0);
+				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
+				ptr->NextScene("Assets\\Scene\\main_menu.scene");
+				GameAudioManager::Play("MenuButtonPress");
+			}
 		}
 
 		void WhenNoExit(Entity en)
@@ -85,7 +121,7 @@ namespace ALEngine::Script
 				no = static_cast<Entity>(child);
 		}
 
-		win_sprite = &Coordinator::Instance()->GetComponent<Sprite>(win);
+		win_sprite  = &Coordinator::Instance()->GetComponent<Sprite>(win);
 		lose_sprite = &Coordinator::Instance()->GetComponent<Sprite>(lose);
 
 		CreateEventTrigger(main_menu, true);
@@ -101,7 +137,8 @@ namespace ALEngine::Script
 		Subscribe(no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenNoExit);
 
 		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
-		sceneChanging = false;
+		sceneChanging	 = false;
+		clicked			 = false;
 		Font::EnableTextRendering(true);
 	}
 
@@ -112,6 +149,7 @@ namespace ALEngine::Script
 		if (GameplaySystem::currentGameStatus == GAME_STATUS::WIN)
 		{
 			Font::EnableTextRendering(false);
+			PauseButtonFlag::confirmationBG = true;
 			if (GameplaySystem::roomIndex + 1 < GameplaySystem::maxRooms)
 			{
 				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
@@ -130,6 +168,8 @@ namespace ALEngine::Script
 		}
 		else if (GameplaySystem::currentGameStatus == GAME_STATUS::LOSE)
 		{
+			Font::EnableTextRendering(false);
+			PauseButtonFlag::confirmationBG = true;
 			lose_sprite->color.a += Time::m_ActualDeltaTime * SPEED;
 			if (lose_sprite->color.a < 1.0f)
 				return;
@@ -142,6 +182,7 @@ namespace ALEngine::Script
 	void WinCondition::Free(ECS::Entity)
 	{
 		win = main_menu = lose = yes = no = scene_transition = ECS::MAX_ENTITIES;
-		Time::m_Scale = 1.0f;
+		clicked = false;
+		PauseButtonFlag::confirmationBG = false;
 	}
 }

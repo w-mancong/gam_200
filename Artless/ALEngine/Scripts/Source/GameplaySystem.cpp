@@ -428,32 +428,35 @@ namespace ALEngine::Script
 			}
 
 			//Deselect Pattern
-			if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
-				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
+			if (Coordinator::Instance()->HasComponent<Cell>(current_Moused_Over_Cell))
+			{
+				if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
-				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
-				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+					DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
+					currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
-				gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
+					gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
-				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
-			}
-			//Deselect Abilities
-			else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
-				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
+					Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+				}
+				//Deselect Abilities
+				else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
-				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
-				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+					DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
+					currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
-				gameplaySystem_GUI->ToggleCenterPatternGUI(false);
-				gameplaySystem_GUI->TogglePatternGUI(false);
-				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+					gameplaySystem_GUI->ToggleCenterPatternGUI(false);
+					gameplaySystem_GUI->TogglePatternGUI(false);
+					gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 
-				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+					Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
-				gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+					gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
-				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+					Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+				}
 			}
 		}
 

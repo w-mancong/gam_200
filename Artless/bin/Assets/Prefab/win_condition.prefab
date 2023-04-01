@@ -1,6 +1,18 @@
 [
     {
         "id": 0,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
         "Transform": [
             {
                 "position": [
@@ -13,11 +25,11 @@
                     50.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
                     0.0,
                     0.0,
-                    0.0
+                    725.0
                 ]
             }
         ],
@@ -30,6 +42,13 @@
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "WinCondition"
+                ]
+            }
         ]
     },
     {
@@ -41,7 +60,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.0
                 ],
                 "layer": 3100
             }
@@ -55,7 +74,7 @@
                 ],
                 "scale": [
                     1600.0,
-                    3150.0
+                    900.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -69,11 +88,11 @@
         "EntityData": [
             {
                 "tag": "win",
-                "active": false,
-                "localActive": false,
+                "active": true,
+                "localActive": true,
                 "id": 1,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -95,12 +114,12 @@
             {
                 "position": [
                     800.0,
-                    -357.800048828125,
+                    219.1999969482422,
                     0.0
                 ],
                 "scale": [
                     196.5,
-                    201.59999084472656
+                    57.59999465942383
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -113,9 +132,9 @@
         ],
         "EntityData": [
             {
-                "tag": "main_meu",
+                "tag": "main_menu",
                 "active": false,
-                "localActive": true,
+                "localActive": false,
                 "id": 2,
                 "parentID": 1,
                 "treeNodeFlags": 32
@@ -131,7 +150,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.0
                 ],
                 "layer": 3100
             }
@@ -159,8 +178,8 @@
         "EntityData": [
             {
                 "tag": "lose",
-                "active": false,
-                "localActive": false,
+                "active": true,
+                "localActive": true,
                 "id": 3,
                 "parentID": 0,
                 "treeNodeFlags": 0
@@ -185,7 +204,7 @@
             {
                 "position": [
                     674.0999755859375,
-                    172.70004272460938,
+                    172.70010375976563,
                     0.0
                 ],
                 "scale": [
@@ -205,7 +224,7 @@
             {
                 "tag": "yes",
                 "active": false,
-                "localActive": true,
+                "localActive": false,
                 "id": 4,
                 "parentID": 3,
                 "treeNodeFlags": 32
@@ -230,7 +249,7 @@
             {
                 "position": [
                     917.7999267578125,
-                    172.70004272460938,
+                    172.70010375976563,
                     0.0
                 ],
                 "scale": [
@@ -250,7 +269,7 @@
             {
                 "tag": "no",
                 "active": false,
-                "localActive": true,
+                "localActive": false,
                 "id": 5,
                 "parentID": 3,
                 "treeNodeFlags": 32

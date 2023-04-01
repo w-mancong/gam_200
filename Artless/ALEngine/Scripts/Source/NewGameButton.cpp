@@ -23,14 +23,14 @@ namespace ALEngine::Script
 		f32 constexpr ALPHA_VALUE{ 0.925f };
 		ECS::Entity scene_transition{ ECS::MAX_ENTITIES }, 
 			tutorial_prompt{ ECS::MAX_ENTITIES }, yes{ ECS::MAX_ENTITIES }, no{ ECS::MAX_ENTITIES };
-		b8 roomSet{ false };
+		b8  roomSet{ false };
+		s64 changeIndex{ -1 };
 
 		void ChangeScene(u64 roomIndex)
 		{
 			std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
 			ptr->NextScene();
 			SetMap(roomIndex);
-			roomSet = true;
 		}
 
 		void Darken(Entity en)
@@ -73,7 +73,8 @@ namespace ALEngine::Script
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
-				ChangeScene(0);
+				changeIndex = 0;
+				roomSet = true;
 				Lighten(en);
 				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(true);
 				GameAudioManager::Play("NewGameStart_ButtonPress(AfterTutorialPrompt)");
@@ -92,7 +93,8 @@ namespace ALEngine::Script
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
-				ChangeScene(1);
+				changeIndex = 1;
+				roomSet = true;
 				Lighten(en);
 				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(false);
 				GameAudioManager::Play("NewGameStart_ButtonPress(AfterTutorialPrompt)");
@@ -121,7 +123,7 @@ namespace ALEngine::Script
 		{
 			Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Audio\\Cutscene_MainMenu_BGM.wav");
 			Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(id);
-			ad.m_Volume = 0.4f;
+			ad.m_Volume = 0.6f;
 			ad.m_Channel = Engine::Channel::BGM;
 			ad.m_Loop = true;
 			ad.Play();
@@ -161,9 +163,10 @@ namespace ALEngine::Script
 			Subscribe(no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenNoExit);
 		}
 
-		Font::EnableTextRendering(true);
-
 		roomSet = false;
+		newGameDrum = &GameAudioManager::Get("NewGameStart_ButtonPress(AfterTutorialPrompt)");
+		sceneChangeHelper = GetLogicComponent<SceneChangeHelper>(scene_transition);
+		Font::EnableTextRendering(true);
 	}
 
 	void NewGameButton::Update(ECS::Entity en)
@@ -177,6 +180,13 @@ namespace ALEngine::Script
 				PauseButtonFlag::confirmationBG = false;
 			}
 		}
+
+		if (changeIndex < 0)
+			return;
+		sceneChangeHelper->UpdateAlpha();
+		if (Engine::IsAudioPlaying(*newGameDrum))
+			return;
+		ChangeScene(static_cast<u64>(changeIndex));
 	}
 
 	void NewGameButton::Free(ECS::Entity en)
