@@ -223,6 +223,12 @@ namespace Gameplay
 
 		/*!*********************************************************************************
 			\brief
+				Sets all the abilities to be on
+		***********************************************************************************/
+		void SetAllAbilitiesOn(void);
+
+		/*!*********************************************************************************
+			\brief
 				Sets all the utilities abilities to be off
 		***********************************************************************************/
 		void SetUtilitiesOff(void);
@@ -238,6 +244,22 @@ namespace Gameplay
 				Sets all the abilities but Construct Tile to be off
 		***********************************************************************************/
 		void SetAllAbilitiesButConstructTileOff(void);
+
+		/*!*********************************************************************************
+			\brief
+				Gets the Camera's Original Position
+			\return
+				Returns the Camera's Original Position
+		***********************************************************************************/
+		ALEngine::Math::Vec2 GetCameraOriginalPos(void);
+
+		/*!*********************************************************************************
+			\brief
+				Sets the Camera's Original Position
+			\param[in] pos
+				Vec2 value to set the Original Camera Pos to
+		***********************************************************************************/
+		void SetCameraOriginalPos(ALEngine::Math::Vec2 pos);
 
 	private:
 
@@ -258,6 +280,7 @@ namespace Gameplay
 
 		// Info
 		u16 m_EnemiesKilled{};								// Number of enemies killed by player
+		ALEngine::Math::Vec2 m_CameraOriginalPos{};			// Original Pos for Tutorial Camera
 
 		// Pointers
 		std::shared_ptr<ALEngine::Script::GameplaySystem> m_GameplaySystem{ nullptr };

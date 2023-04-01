@@ -233,11 +233,19 @@ namespace ALEngine::Script
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		case Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT:
+			Gameplay::TutorialManager::Instance()->SetAllAbilitiesOn();
 			if (gs->enemyEntityList.size() == Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled())
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		default:
 			break;
+		}
+
+		if(gs->currentGameStatus == GAME_STATUS::WIN && 
+			Gameplay::TutorialManager::Instance()->GetState() != Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT)
+		{
+			Time::m_Scale = 1.f;
+			Gameplay::TutorialManager::Instance()->EndTutorial();
 		}
 	}
 
@@ -470,6 +478,7 @@ namespace ALEngine::Script
 		ECS::SetActive(true, m_ConstructTile);
 
 		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButConstructTileOff();
+		SetAllTilesActive(false);
 
 		// Give player enough points for Construct Tile
 		Unit& player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
@@ -499,6 +508,7 @@ namespace ALEngine::Script
 		static b8 hasPlaced{ false };
 
 		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButConstructTileOff();
+		SetAllTilesActive(true);
 
 		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
 			hasPlaced = true;
