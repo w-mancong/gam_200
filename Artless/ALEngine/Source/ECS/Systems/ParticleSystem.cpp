@@ -305,6 +305,7 @@ namespace ALEngine::ECS
 
 	void ParticleSystem::ExplosionParticles(Math::Vector2 position)
 	{
+		position += Math::Vector2(0.f, -30.f);
 		Entity en = Coordinator::Instance()->GetEntityByTag("explosion_particles");
 		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
 		prop.position = position;
