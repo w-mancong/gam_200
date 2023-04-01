@@ -281,6 +281,7 @@ namespace ALEngine::Script
 			AL_CORE_CRITICAL("Loading PHASE ACTION");
 			gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 			gameplaySystem_GUI->TogglePatternGUI(false);
+			ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 			break;
 
 		case PHASE_STATUS::PHASE_ACTION:
@@ -462,7 +463,7 @@ namespace ALEngine::Script
 					continue;
 				}
 
-				resetCounter = checkTileCounters(cell);
+				resetCounter = checkTileCounters(cellEntity);
 
 				//If 1 then set to crack
 				if (resetCounter == 1) {
@@ -566,9 +567,16 @@ namespace ALEngine::Script
 	}
 
 	//Check the selected tile counters and to make amendments to them at the end of the turn
-	s32 GameplaySystem::checkTileCounters(Cell& selectedCell) {
+	s32 GameplaySystem::checkTileCounters(ECS::Entity& cell) {
+		Cell& selectedCell = Coordinator::Instance()->GetComponent<Cell>(cell);
 		//Decrement the rset counter
-		if (selectedCell.m_resetCounter > 0) {
+		if (selectedCell.m_resetCounter > 0) 
+		{
+			if (selectedCell.m_resetCounter == 1) // cracked tile about to break
+			{				
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(cell);
+				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+			}
 			selectedCell.m_resetCounter--;
 		}
 
@@ -1585,6 +1593,8 @@ namespace ALEngine::Script
 
 		//Get Cell Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(cellEntity);
+		ECS::ParticleSystem::GetParticleSystem().UnitSpawnParticles(trans.position, true);
 
 		//IF it already has a wall, don't do anything
 		if (cell.has_Wall || !cell.m_isAccessible) {
@@ -1763,6 +1773,8 @@ namespace ALEngine::Script
 			//Set the gui
 			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
 			gameplaySystem_GUI->ToggleCenterPatternGUI(true);
+
+			ECS::SetActive(false, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 			//gameplaySystem_GUI->TogglePatternGUI(true);
 
 

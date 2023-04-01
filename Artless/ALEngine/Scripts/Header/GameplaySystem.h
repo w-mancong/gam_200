@@ -448,7 +448,7 @@ namespace ALEngine::Script
 			Check the selected tile counters and to make
 			amendments to them at the end of the turn
 		***********************************************************************************/
-		s32 checkTileCounters(Cell& selectedCell);
+		s32 checkTileCounters(ECS::Entity& selectedCell);
 
 		/*!*********************************************************************************
 		\brief

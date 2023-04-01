@@ -146,7 +146,7 @@ namespace ALEngine::ECS
 
 		void TileDestoryParticles(Math::Vector2 position);
 
-		void UnitSpawnParticles(Math::Vector2 position);
+		void UnitSpawnParticles(Math::Vector2 position, b8 tile);
 		
 		void NoApParticle(Math::Vector2 position);
 
