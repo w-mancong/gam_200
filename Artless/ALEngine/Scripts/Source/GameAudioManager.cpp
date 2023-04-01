@@ -30,6 +30,9 @@ namespace ALEngine::Script
 			Engine::Audio audio = Engine::AssetManager::Instance()->GetAudio(id);
 			audio.m_Channel = channel;
 
+			if (channel == Engine::Channel::BGM)
+				audio.m_Loop = true;
+
 			u64 const start = audioName.find_first_of('_') + 1;
 			sounds[audioName.substr(start, audioName.find_last_of('.') - start)] = audio;
 		};
@@ -55,6 +58,7 @@ namespace ALEngine::Script
 			InitAudio("Assets\\Audio\\SFX_PhaseChange.wav");
 			InitAudio("Assets\\Audio\\SFX_SelectSkill.wav");
 			InitAudio("Assets\\Audio\\SFX_VolumeControl.wav");
+			InitAudio("Assets\\Audio\\SFX_Click_1.wav");
 			// Skills SFX
 			InitAudio("Assets\\Audio\\SFX_MatrixTrapPlace.wav");
 			InitAudio("Assets\\Audio\\SFX_Overhang.wav");
@@ -99,6 +103,9 @@ namespace ALEngine::Script
 			InitAudio("Assets\\Audio\\SFX_DrorHurt.wav");
 			InitAudio("Assets\\Audio\\SFX_DrorMove.wav");
 			InitAudio("Assets\\Audio\\SFX_DrorSelectSkillLoop.wav");
+
+			// BGM
+			InitAudio("Assets\\Audio\\BGM_Gameplay_Loop.wav", Engine::Channel::BGM);
 
 			initialized = true;
 		}

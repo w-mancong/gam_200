@@ -61,7 +61,10 @@ namespace ALEngine::Script
 			trans->position = Input::GetMouseWorldPos();
 		}
 		else
-			timer = sprite->color.a = 0.0f;
+		{
+			if(sprite)
+				timer = sprite->color.a = 0.0f;
+		}
 	}
 
 	void PromptTool::InitPatternPlacementStatusVariable(PATTERN_PLACEMENT_STATUS* pattern)
