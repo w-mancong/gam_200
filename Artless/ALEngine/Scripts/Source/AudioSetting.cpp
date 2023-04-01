@@ -162,8 +162,12 @@ namespace ALEngine::Script
 
 		void WhenTickBoxHover(Entity en)
 		{
-			Graphics::OpenGLWindow::ToggleScreen();
-			SetActive(Graphics::OpenGLWindow::fullScreen, tick);
+			if (Input::KeyDown(KeyCode::MouseLeftButton) && !mouseClicked)
+			{
+				Graphics::OpenGLWindow::ToggleScreen();
+				SetActive(Graphics::OpenGLWindow::fullScreen, tick);
+				mouseClicked = true;
+			}
 		}
 
 		// ---------------------------------------------------------------------------------

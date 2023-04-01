@@ -107,7 +107,13 @@ namespace ALEngine::Serializer
 			std::cerr << "DOC IS NOT AN OBJECT!" << std::endl;
 		}
 
-		this->m_Doc.AddMember(rapidjson::StringRef(CONST_PAIRNAME), CONST_VALUE, this->m_Doc.GetAllocator());
+		if (m_Doc.HasMember(CONST_PAIRNAME))
+		{
+			rapidjson::Value::MemberIterator it = m_Doc.FindMember(CONST_PAIRNAME);
+			it->value.SetInt(CONST_VALUE);
+		}
+		else
+			this->m_Doc.AddMember(rapidjson::StringRef(CONST_PAIRNAME), CONST_VALUE, this->m_Doc.GetAllocator());
 
 		rapidjson::StringBuffer buffer;
 		rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
