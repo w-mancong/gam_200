@@ -210,7 +210,7 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 		//Reset player movement points
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		playerUnit.actionPoints += 4;
 		if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
 			playerUnit.actionPoints = playerUnit.maxActionPoints;
@@ -225,7 +225,7 @@ namespace ALEngine::Script
 		}
 
 		//Update the GUI to select player
-		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 
 		//Do an update for all walkable cell on the map
 		scanRoomCellArray();
@@ -337,7 +337,7 @@ namespace ALEngine::Script
 	}
 
 	uint32_t GameplaySystem::getRoomSize() {
-		return gameplaySystem->roomSize[0] * roomSize[1];
+		return roomSize[0] * roomSize[1];
 	}
 
 	u32 GameplaySystem::getEntityCell(Room& currentRoom, u32 x, u32 y)
@@ -350,13 +350,13 @@ namespace ALEngine::Script
 
 	void GameplaySystem::PlaceNewPlayerInRoom(s32 x, s32 y) {
 		//Create a new player entity
-		gameplaySystem->playerEntity = Coordinator::Instance()->CreateEntity();
+		playerEntity = Coordinator::Instance()->CreateEntity();
 
 		//Create the player
-		CreatePlayerUnit(gameplaySystem->playerEntity);
+		CreatePlayerUnit(playerEntity);
 
 		//Assign it's states
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		playerUnit.coordinate[0] = x;
 		playerUnit.coordinate[1] = y;
 
@@ -369,7 +369,7 @@ namespace ALEngine::Script
 
 		gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
-		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = gameplaySystem->playerEntity;
+		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).unitEntity = playerEntity;
 		Coordinator::Instance()->GetComponent<Cell>(playerUnit.m_CurrentCell_Entity).hasUnit = true;
 
 		//Set health
@@ -381,7 +381,7 @@ namespace ALEngine::Script
 
 		//Set the transform
 		Transform& SpawnCellTransform = Coordinator::Instance()->GetComponent<Transform>(getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]));
-		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 		playerTransform.localPosition = SpawnCellTransform.position;
 	}
 
@@ -428,7 +428,7 @@ namespace ALEngine::Script
 	void GameplaySystem::EnemyManager_LoadData()
 	{
 		enemyNeededData.enemyMoved = 0;
-		enemyNeededData.playerEntity = gameplaySystem->playerEntity;
+		enemyNeededData.playerEntity = playerEntity;
 		enemyNeededData.startCellEntity = startCellEntity;
 	}
 
@@ -908,7 +908,7 @@ namespace ALEngine::Script
 		godMode = !godMode;
 
 		//Get the components
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
 
 		//Toggle the color accordingly from the godmode
@@ -934,12 +934,12 @@ namespace ALEngine::Script
 		}
 
 		//Select the player
-		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 	}
 
 	void GameplaySystem::Cheat_IncreasePlayerHealth(s32 amount) {
 		//Get player unit
-		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 		//Add health
 		unit.health += amount;
@@ -950,13 +950,13 @@ namespace ALEngine::Script
 		}
 
 		//Select player
-		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 	}
 
 	void GameplaySystem::Cheat_IncreasePlayerActionPoint(s32 amount)
 	{
 		//Get player unit
-		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 		//Add health
 		unit.actionPoints += amount;
@@ -967,7 +967,7 @@ namespace ALEngine::Script
 		}
 
 		//Select player
-		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 	}
 
 
@@ -1037,24 +1037,24 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::Cheat_ResetPlayerHealth() {
-		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 		//Reset
 		unit.health = unit.maxHealth;
 
 		//Select player
-		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 	}
 
 	void GameplaySystem::Cheat_ResetPlayerActionPoints()
 	{
-		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 		//reset
 		unit.actionPoints = unit.maxActionPoints;
 
 		//Select player
-		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 	}
 
 	void GameplaySystem::Cheat_ClearFloorWalkability() {
@@ -1064,7 +1064,7 @@ namespace ALEngine::Script
 		}
 
 		//Toggle walkability of units
-		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		ToggleCellWalkability(gameplaySystem->m_Room, unit.m_CurrentCell_Entity, true);
 	}
 
@@ -1400,7 +1400,7 @@ namespace ALEngine::Script
 		}
 			
 
-		gameplaySystem->playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
+		playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
@@ -1423,7 +1423,7 @@ namespace ALEngine::Script
 
 						u32 initialHealth = unit.health;
 
-						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 						//If unit is enemy
 						if (unit.unitType == UNIT_TYPE::ENEMY) {
@@ -1436,7 +1436,7 @@ namespace ALEngine::Script
 									break;
 								case ABILITY_NAME::LIFE_DRAIN:
 								{
-									Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+									Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 									u32 healthDrained = unit.health < 0 ? initialHealth : abilities->damage;
 
 									DoDamageToUnit(cell.unitEntity, abilities->damage);
@@ -1451,7 +1451,7 @@ namespace ALEngine::Script
 
 									AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 
-									gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+									gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 									break;
 								}
 							} //End switch
@@ -1460,8 +1460,8 @@ namespace ALEngine::Script
 							//If interacted on player
 							if (abilities->current_Ability_Name == ABILITY_NAME::OVERHANG) {
 								//minus 4 HP
-								DoDamageToUnit(gameplaySystem->playerEntity, 4);
-								Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+								DoDamageToUnit(playerEntity, 4);
+								Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 								ECS::ParticleSystem::GetParticleSystem().BuffParticles(playerTrans.position);
 
 								playerUnit.actionPoints += 1;	//Add 1 AP
@@ -1471,7 +1471,7 @@ namespace ALEngine::Script
 
 								gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
-								gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+								gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 							}
 						}
 					}
@@ -1503,7 +1503,7 @@ namespace ALEngine::Script
 
 		ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 
-		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
 		an.nextClip = "PlayerIdle";
 		ECS::ChangeAnimation(an, "PlayerAttack");
@@ -1525,7 +1525,7 @@ namespace ALEngine::Script
 			return;
 		}
 
-		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		startCellEntity = getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
 
 		//Get path
@@ -1548,7 +1548,7 @@ namespace ALEngine::Script
 		//Set state to moving
 		currentUnitControlStatus = UNITS_CONTROL_STATUS::UNIT_MOVING;
 
-		movingUnitEntity = gameplaySystem->playerEntity;
+		movingUnitEntity = playerEntity;
 		gameplaySystem_GUI->UpdateGUI_OnSelectUnit(movingUnitEntity);
 
 		GameAudioManager::Play("DrorMove");
@@ -1757,7 +1757,7 @@ namespace ALEngine::Script
 			//gameplaySystem_GUI->TogglePatternGUI(true);
 
 
-			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+			Unit& playerunit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 			
 			gameplaySystem_GUI->Update_AP_UI_For_Cost(playerunit.actionPoints, ability.cost);
 
@@ -1770,7 +1770,7 @@ namespace ALEngine::Script
 			//ad.m_Loop = true;
 			//ad.Play();
 
-			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 			Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
 			ECS::ChangeAnimation(an, "PlayerChargeLoop");
 		}
@@ -1919,8 +1919,8 @@ namespace ALEngine::Script
 		}
 
 		//Get the player components
-		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		Sprite& playerSprite = Coordinator::Instance()->GetComponent<Sprite>(playerUnit.unit_Sprite_Entity);
 
 		//If the time is paused, put the player layer to the back
@@ -2060,7 +2060,7 @@ namespace ALEngine::Script
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
 					//Get the audiosource
-					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
+					//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
 
 					////Play the sound
 					//Engine::Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
@@ -2794,7 +2794,7 @@ namespace ALEngine::Script
 		if (cell.hasUnit)
 			return;
 
-		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		startCellEntity = getEntityCell(gameplaySystem->m_Room, playerUnit.coordinate[0], playerUnit.coordinate[1]);
 
 		//Get path
