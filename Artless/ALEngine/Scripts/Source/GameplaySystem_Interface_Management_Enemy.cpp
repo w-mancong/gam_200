@@ -111,10 +111,12 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 10,
-		enemyUnit.maxHealth = 10;
+		enemyUnit.health = 24,
+		enemyUnit.maxHealth = 24;
 		enemyUnit.minDamage = 8,
-		enemyUnit.maxDamage = 13;
+		enemyUnit.maxDamage = 15;
+		enemyUnit.maxActionPoints = 3;
+		enemyUnit.actionPoints = 3;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_MELEE;
 		enemyUnit.playerTriggeredEnemy = false;
 		enemyUnit.distanceToTriggerEnemy = 6;
@@ -122,12 +124,12 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 5,
-		enemyUnit.maxHealth = 5;
+		enemyUnit.health = 12,
+		enemyUnit.maxHealth = 12;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
-		enemyUnit.maxActionPoints = 1;
-		enemyUnit.actionPoints = 1;
+		enemyUnit.maxActionPoints = 2;
+		enemyUnit.actionPoints = 2;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
 		enemyUnit.playerTriggeredEnemy = false;
 		enemyUnit.distanceToTriggerEnemy = 6;
@@ -135,12 +137,12 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy03attributes([[maybe_unused]] Unit& enemyUnit)
 	{
-		enemyUnit.health = 10,
-		enemyUnit.maxHealth = 10;
+		enemyUnit.health = 12,
+		enemyUnit.maxHealth = 12;
 		enemyUnit.minDamage = 0,
 		enemyUnit.maxDamage = 0;
-		enemyUnit.maxActionPoints = 4;
-		enemyUnit.actionPoints = 4; 
+		enemyUnit.maxActionPoints = 2;
+		enemyUnit.actionPoints = 2; 
 		enemyUnit.abilityCooldown_Enemy = 0;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
 		enemyUnit.playerTriggeredEnemy = false;
