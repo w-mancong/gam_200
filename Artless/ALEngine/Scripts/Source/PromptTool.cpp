@@ -21,6 +21,8 @@ namespace ALEngine::Script
 
 	void PromptTool::Init([[maybe_unused]] ECS::Entity en)
 	{
+		if (initialized)
+			return;
 		mouse_sprite = Coordinator::Instance()->CreateEntity();
 		Coordinator::Instance()->GetComponent<EntityData>(mouse_sprite).tag = "prompt_sprites";
 
@@ -36,6 +38,7 @@ namespace ALEngine::Script
 		sprite->color = { 1.0f, 1.0f, 1.0f, 0.0f };
 
 		ECS::GetSceneGraph().Push(-1, mouse_sprite);
+		initialized = true;
 	}
 
 	void PromptTool::Update([[maybe_unused]] ECS::Entity en)
@@ -45,8 +48,7 @@ namespace ALEngine::Script
 
 		if (!showPrompt)
 		{
-			if (sprite)
-				timer = sprite->color.a = 0.0f;
+			timer = sprite->color.a = 0.0f;
 			return;
 		}
 
@@ -56,19 +58,13 @@ namespace ALEngine::Script
 			if (timer < WAIT_TIME)
 				return;
 
-			if (sprite)
-			{
-				sprite->color.a += Time::m_DeltaTime * SPEED;
-				sprite->color.a = std::clamp(sprite->color.a, 0.0f, 1.0f);
-			}
+			sprite->color.a += Time::m_DeltaTime * SPEED;
+			sprite->color.a = std::clamp(sprite->color.a, 0.0f, 1.0f);
 
 			trans->position = Input::GetMouseWorldPos();
 		}
 		else
-		{
-			if(sprite)
-				timer = sprite->color.a = 0.0f;
-		}
+			timer = sprite->color.a = 0.0f;
 	}
 
 	void PromptTool::InitPatternPlacementStatusVariable(PATTERN_PLACEMENT_STATUS* pattern)
