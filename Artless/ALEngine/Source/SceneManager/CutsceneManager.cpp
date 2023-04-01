@@ -654,8 +654,6 @@ namespace ALEngine::Engine::Scene
 
 				// Make bottom disappear
 				ECS::SetActive(false, m_CutsceneBottom);
-
-				SetText();
 			}
 			else if (m_CurrentPhase == CutscenePhase::FADE_OUT)
 				m_CurrentPhase = CutscenePhase::FADE_IN;
