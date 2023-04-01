@@ -9,6 +9,7 @@ brief:	This file contain function definition for adjusting audio volumes
 #include <pch.h>
 #include <AudioSetting.h>
 #include <GameAudioManager.h>
+#include <PauseButtonFlag.h>
 
 namespace ALEngine::Script
 {
@@ -165,7 +166,6 @@ namespace ALEngine::Script
 			if (Input::KeyDown(KeyCode::MouseLeftButton) && !mouseClicked)
 			{
 				Graphics::OpenGLWindow::ToggleScreen();
-				SetActive(Graphics::OpenGLWindow::fullScreen, tick);
 				mouseClicked = true;
 			}
 		}
@@ -277,7 +277,7 @@ namespace ALEngine::Script
 
 		CreateEventTrigger(tick_box, true);
 		Subscribe(tick_box, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenTickBoxHover);
-		SetActive(Graphics::OpenGLWindow::fullScreen, tick);
+		SetActive(false, tick);
 
 		// -------------------------------------------------------------------------------------------------------------
 		mouseClicked = false;
@@ -292,6 +292,8 @@ namespace ALEngine::Script
 			clickTimer = 0.0f;
 			soundTimer = WAIT_FOR;
 		}
+		if(PauseButtonFlag::confirmationBG)
+			SetActive(Graphics::OpenGLWindow::fullScreen, tick);
 	}
 
 	void AudioSetting::Free([[maybe_unused]] ECS::Entity en)
