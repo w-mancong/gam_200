@@ -91,7 +91,7 @@ namespace ALEngine::Script
 	void GameplaySystem::Init(ECS::Entity en)
 	{
 		currentGameStatus = GAME_STATUS::NONE;
-		room_To_Load = rooms[roomIndex];
+		room_To_Load = rooms[0];
 		//Load all the logic component
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
@@ -416,7 +416,8 @@ namespace ALEngine::Script
 		}
 
 		//If right mouse button
-		if (Input::KeyDown(KeyCode::MouseRightButton) || Time::m_Scale <= 0.0f) {
+		if (Input::KeyDown(KeyCode::MouseRightButton) || 
+			((Time::m_Scale <= 0.0f && (Gameplay::TutorialManager::Instance()->TutorialIsPlaying() == false)))) {
 			if (Time::m_Scale > 0.0f) {
 				Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 				Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);

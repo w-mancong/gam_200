@@ -150,7 +150,7 @@ namespace ALEngine::Script
 		//Camera Logic
 		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
 		{
-			Instantiate("Tutorial Objects");
+			//Instantiate("Tutorial Objects");
 
 			ECS::AddLogicComponent<Script::TutorialCamera>(entity);
 			//ECS::AddLogicComponent<Script::GameplayCamera>(entity);
@@ -290,11 +290,13 @@ namespace ALEngine::Script
 			if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
 				playerUnit.actionPoints = playerUnit.maxActionPoints;
 			}
-
-			Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
-			float newX = std::lerp(ECS::GetCamera().Position().x, playerTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, Time::m_DeltaTime * 3);
-			float newY = std::lerp(ECS::GetCamera().Position().y, playerTransform.localPosition.y - ECS::GetCamera().Height() * 0.5f, Time::m_DeltaTime * 3);
-			ECS::CameraPosition(newX, newY);
+			if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying() == false)
+			{
+				Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+				float newX = std::lerp(ECS::GetCamera().Position().x, playerTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, Time::m_DeltaTime * 3);
+				float newY = std::lerp(ECS::GetCamera().Position().y, playerTransform.localPosition.y - ECS::GetCamera().Height() * 0.5f, Time::m_DeltaTime * 3);
+				ECS::CameraPosition(newX, newY);
+			}
 
 			gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
@@ -1949,9 +1951,12 @@ namespace ALEngine::Script
 		Unit& movinUnit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
 
 		if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
-			float newX = std::lerp(ECS::GetCamera().Position().x, movingTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, Time::m_DeltaTime * 3);
-			float newY = std::lerp(ECS::GetCamera().Position().y, movingTransform.localPosition.y - ECS::GetCamera().Height() * 0.5f, Time::m_DeltaTime * 3);
-			ECS::CameraPosition(newX, newY);
+			if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying() == false)
+			{
+				float newX = std::lerp(ECS::GetCamera().Position().x, movingTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, Time::m_DeltaTime * 3);
+				float newY = std::lerp(ECS::GetCamera().Position().y, movingTransform.localPosition.y - ECS::GetCamera().Height() * 0.5f, Time::m_DeltaTime * 3);
+				ECS::CameraPosition(newX, newY);
+			}
 		}
 
 		//If reached the cell

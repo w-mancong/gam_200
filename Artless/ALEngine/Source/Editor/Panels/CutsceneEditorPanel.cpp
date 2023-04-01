@@ -281,7 +281,7 @@ namespace ALEngine::Editor
 								}
 								else if (i == (u32)FadeType::FADE_TO_NEXT)
 								{
-									if (ImGui::Selectable("Fade To Previous", (u32)selected.m_FadeOutType == i))
+									if (ImGui::Selectable("Fade To Next", (u32)selected.m_FadeOutType == i))
 										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_NEXT);
 								}
 								else if (i == (u32)FadeType::FADE_NONE)
