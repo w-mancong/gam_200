@@ -293,8 +293,8 @@
         "LogicComponent": [
             {
                 "components": [
-                    "AlphaFadeIn",
-                    "QuitButton"
+                    "QuitButton",
+                    "AlphaFadeIn"
                 ]
             }
         ]
@@ -380,7 +380,7 @@
                 "localActive": false,
                 "id": 7,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -573,703 +573,6 @@
     },
     {
         "id": 12,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\SoundOptions.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 256
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    450.0,
-                    0.0
-                ],
-                "scale": [
-                    750.0,
-                    500.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "sound_options",
-                "active": false,
-                "localActive": false,
-                "id": 12,
-                "parentID": 7,
-                "treeNodeFlags": 0
-            }
-        ],
-        "LogicComponent": [
-            {
-                "components": [
-                    "AudioSetting"
-                ]
-            }
-        ]
-    },
-    {
-        "id": 13,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    944.9998779296875,
-                    570.0013427734375,
-                    0.0
-                ],
-                "scale": [
-                    175.0,
-                    75.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "master_bd",
-                "active": false,
-                "localActive": true,
-                "id": 13,
-                "parentID": 12,
-                "treeNodeFlags": 0
-            }
-        ]
-    },
-    {
-        "id": 14,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_Button_Right.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    1075.0,
-                    571.4263305664063,
-                    0.0
-                ],
-                "scale": [
-                    50.000003814697266,
-                    45.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "master_right",
-                "active": false,
-                "localActive": true,
-                "id": 14,
-                "parentID": 13,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 15,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_Button_Left.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    814.9998779296875,
-                    571.4263305664063,
-                    0.0
-                ],
-                "scale": [
-                    50.000003814697266,
-                    45.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "master_left",
-                "active": false,
-                "localActive": true,
-                "id": 15,
-                "parentID": 13,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 16,
-        "Transform": [
-            {
-                "position": [
-                    1120.00048828125,
-                    645.0009765625,
-                    0.0
-                ],
-                "scale": [
-                    175.0,
-                    75.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "master_text",
-                "active": false,
-                "localActive": true,
-                "id": 16,
-                "parentID": 13,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "100",
-                "currentFont": "Almendra-Regular",
-                "scale": 0.8500000238418579,
-                "color": [
-                    0.9176470637321472,
-                    0.9019607901573181,
-                    0.8980392217636108
-                ],
-                "position": [
-                    498.0,
-                    305.0
-                ],
-                "layer": 0
-            }
-        ]
-    },
-    {
-        "id": 17,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    944.9998779296875,
-                    445.0063781738281,
-                    0.0
-                ],
-                "scale": [
-                    175.0,
-                    75.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "sfx_bd",
-                "active": false,
-                "localActive": true,
-                "id": 17,
-                "parentID": 12,
-                "treeNodeFlags": 0
-            }
-        ]
-    },
-    {
-        "id": 18,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_Button_Right.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    1075.0,
-                    446.4306640625,
-                    0.0
-                ],
-                "scale": [
-                    50.000003814697266,
-                    45.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "sfx_right",
-                "active": false,
-                "localActive": true,
-                "id": 18,
-                "parentID": 17,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 19,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_Button_Left.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    814.9998779296875,
-                    442.23046875,
-                    0.0
-                ],
-                "scale": [
-                    50.000003814697266,
-                    50.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "sfx_left",
-                "active": false,
-                "localActive": true,
-                "id": 19,
-                "parentID": 17,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 20,
-        "Transform": [
-            {
-                "position": [
-                    1119.999755859375,
-                    520.0048828125,
-                    0.0
-                ],
-                "scale": [
-                    175.0,
-                    75.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "sfx_text",
-                "active": false,
-                "localActive": true,
-                "id": 20,
-                "parentID": 17,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "100",
-                "currentFont": "Almendra-Regular",
-                "scale": 0.8500000238418579,
-                "color": [
-                    0.9176470637321472,
-                    0.9019607901573181,
-                    0.8980392217636108
-                ],
-                "position": [
-                    498.0,
-                    237.5
-                ],
-                "layer": 0
-            }
-        ]
-    },
-    {
-        "id": 21,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    944.9998779296875,
-                    319.7882080078125,
-                    0.0
-                ],
-                "scale": [
-                    175.0,
-                    75.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "bgm_bd",
-                "active": false,
-                "localActive": true,
-                "id": 21,
-                "parentID": 12,
-                "treeNodeFlags": 0
-            }
-        ]
-    },
-    {
-        "id": 22,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_Button_Right.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    1075.0,
-                    318.58819580078125,
-                    0.0
-                ],
-                "scale": [
-                    50.000003814697266,
-                    45.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "bgm_right",
-                "active": false,
-                "localActive": true,
-                "id": 22,
-                "parentID": 21,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 23,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Sound_Button_Left.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    814.9998779296875,
-                    318.813232421875,
-                    0.0
-                ],
-                "scale": [
-                    50.000003814697266,
-                    45.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "bgm_left",
-                "active": false,
-                "localActive": true,
-                "id": 23,
-                "parentID": 21,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 24,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    275.7882080078125,
-                    0.0
-                ],
-                "scale": [
-                    50.000003814697266,
-                    50.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "bgm_text",
-                "active": false,
-                "localActive": true,
-                "id": 24,
-                "parentID": 21,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "100",
-                "currentFont": "Almendra-Regular",
-                "scale": 0.8500000238418579,
-                "color": [
-                    0.9176470637321472,
-                    0.9019607901573181,
-                    0.8980392217636108
-                ],
-                "position": [
-                    498.0,
-                    169.5
-                ],
-                "layer": 0
-            }
-        ]
-    },
-    {
-        "id": 25,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\CloseButton.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    1169.999755859375,
-                    680.7879638671875,
-                    0.0
-                ],
-                "scale": [
-                    75.0,
-                    75.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "close_btn",
-                "active": false,
-                "localActive": true,
-                "id": 25,
-                "parentID": 12,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 26,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.4305555820465088
-                ],
-                "layer": 0
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    799.999755859375,
-                    450.0007629394531,
-                    0.0
-                ],
-                "scale": [
-                    1600.0001220703125,
-                    900.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "black_overlay",
-                "active": false,
-                "localActive": true,
-                "id": 26,
-                "parentID": 12,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 27,
         "Transform": [
             {
                 "position": [
@@ -1295,7 +598,7 @@
                 "tag": "fps_display",
                 "active": false,
                 "localActive": false,
-                "id": 27,
+                "id": 12,
                 "parentID": -1,
                 "treeNodeFlags": 32
             }
@@ -1326,7 +629,7 @@
         ]
     },
     {
-        "id": 28,
+        "id": 13,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\TutorialConfirmation.png",
@@ -1364,14 +667,14 @@
                 "tag": "tutorial_prompt",
                 "active": false,
                 "localActive": false,
-                "id": 28,
+                "id": 13,
                 "parentID": 2,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 29,
+        "id": 14,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Btn_Yes.png",
@@ -1409,14 +712,14 @@
                 "tag": "yes",
                 "active": false,
                 "localActive": true,
-                "id": 29,
-                "parentID": 28,
+                "id": 14,
+                "parentID": 13,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 30,
+        "id": 15,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\Btn_No.png",
@@ -1454,14 +757,14 @@
                 "tag": "no",
                 "active": false,
                 "localActive": true,
-                "id": 30,
-                "parentID": 28,
+                "id": 15,
+                "parentID": 13,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 31,
+        "id": 16,
         "Transform": [
             {
                 "position": [
@@ -1487,14 +790,14 @@
                 "tag": "htp",
                 "active": false,
                 "localActive": false,
-                "id": 31,
+                "id": 16,
                 "parentID": 7,
                 "treeNodeFlags": 0
             }
         ]
     },
     {
-        "id": 32,
+        "id": 17,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\HowToPlay_Objective&Controls.png",
@@ -1532,14 +835,14 @@
                 "tag": "htp_pages",
                 "active": false,
                 "localActive": true,
-                "id": 32,
-                "parentID": 31,
+                "id": 17,
+                "parentID": 16,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 33,
+        "id": 18,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\HowToPlay_NextBtn.png",
@@ -1577,14 +880,14 @@
                 "tag": "next",
                 "active": false,
                 "localActive": true,
-                "id": 33,
-                "parentID": 31,
+                "id": 18,
+                "parentID": 16,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 34,
+        "id": 19,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\HowToPlay_PrevBtn.png",
@@ -1622,14 +925,14 @@
                 "tag": "prev",
                 "active": false,
                 "localActive": true,
-                "id": 34,
-                "parentID": 31,
+                "id": 19,
+                "parentID": 16,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 35,
+        "id": 20,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\CloseButton.png",
@@ -1667,14 +970,14 @@
                 "tag": "close",
                 "active": false,
                 "localActive": true,
-                "id": 35,
-                "parentID": 31,
+                "id": 20,
+                "parentID": 16,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 36,
+        "id": 21,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\MainMenu_BG.png",
@@ -1712,14 +1015,14 @@
                 "tag": "bg_image",
                 "active": false,
                 "localActive": true,
-                "id": 36,
+                "id": 21,
                 "parentID": 7,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 37,
+        "id": 22,
         "Transform": [
             {
                 "position": [
@@ -1745,7 +1048,7 @@
                 "tag": "Cutscene Object",
                 "active": true,
                 "localActive": true,
-                "id": 37,
+                "id": 22,
                 "parentID": -1,
                 "treeNodeFlags": 0
             }
@@ -1759,7 +1062,7 @@
         ]
     },
     {
-        "id": 38,
+        "id": 23,
         "Sprite": [
             {
                 "filePath": "",
@@ -1797,14 +1100,14 @@
                 "tag": "Black Overlay",
                 "active": true,
                 "localActive": true,
-                "id": 38,
-                "parentID": 37,
+                "id": 23,
+                "parentID": 22,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 39,
+        "id": 24,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\DialogueBox.png",
@@ -1842,8 +1145,8 @@
                 "tag": "Dialogue Box",
                 "active": true,
                 "localActive": true,
-                "id": 39,
-                "parentID": 37,
+                "id": 24,
+                "parentID": 22,
                 "treeNodeFlags": 32
             }
         ],
@@ -1866,7 +1169,7 @@
         ]
     },
     {
-        "id": 40,
+        "id": 25,
         "Sprite": [
             {
                 "filePath": "",
@@ -1904,14 +1207,14 @@
                 "tag": "Cutscene Bottom",
                 "active": true,
                 "localActive": true,
-                "id": 40,
-                "parentID": 37,
+                "id": 25,
+                "parentID": 22,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 41,
+        "id": 26,
         "Sprite": [
             {
                 "filePath": "",
@@ -1949,14 +1252,14 @@
                 "tag": "Cutscene Top",
                 "active": true,
                 "localActive": true,
-                "id": 41,
-                "parentID": 37,
+                "id": 26,
+                "parentID": 22,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 42,
+        "id": 27,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\DialogueBox.png",
@@ -1994,8 +1297,8 @@
                 "tag": "Dialogue Box Top",
                 "active": true,
                 "localActive": true,
-                "id": 42,
-                "parentID": 37,
+                "id": 27,
+                "parentID": 22,
                 "treeNodeFlags": 32
             }
         ],
@@ -2014,6 +1317,793 @@
                     430.0
                 ],
                 "layer": 0
+            }
+        ]
+    },
+    {
+        "id": 28,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\OptionsMenu.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3100
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    750.0,
+                    500.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sound_options",
+                "active": false,
+                "localActive": false,
+                "id": 28,
+                "parentID": 7,
+                "treeNodeFlags": 0
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "AudioSetting"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    944.9998779296875,
+                    597.5,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "master_bd",
+                "active": false,
+                "localActive": true,
+                "id": 29,
+                "parentID": 28,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Right.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1075.0,
+                    598.9249877929688,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "master_right",
+                "active": false,
+                "localActive": true,
+                "id": 30,
+                "parentID": 29,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Left.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    814.9998779296875,
+                    598.9249877929688,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "master_left",
+                "active": false,
+                "localActive": true,
+                "id": 31,
+                "parentID": 29,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "Transform": [
+            {
+                "position": [
+                    1120.00048828125,
+                    672.4996337890625,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "master_text",
+                "active": false,
+                "localActive": true,
+                "id": 32,
+                "parentID": 29,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "100",
+                "currentFont": "Almendra-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    0.9176470637321472,
+                    0.9019607901573181,
+                    0.8980392217636108
+                ],
+                "position": [
+                    498.0,
+                    319.5
+                ],
+                "layer": 0
+            }
+        ]
+    },
+    {
+        "id": 33,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    944.9998779296875,
+                    493.0023498535156,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sfx_bd",
+                "active": false,
+                "localActive": true,
+                "id": 33,
+                "parentID": 28,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 34,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Right.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1075.0,
+                    494.4252014160156,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sfx_right",
+                "active": false,
+                "localActive": true,
+                "id": 34,
+                "parentID": 33,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Left.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    814.9998779296875,
+                    490.2250061035156,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sfx_left",
+                "active": false,
+                "localActive": true,
+                "id": 35,
+                "parentID": 33,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "Transform": [
+            {
+                "position": [
+                    1119.999755859375,
+                    567.9993286132813,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "sfx_text",
+                "active": false,
+                "localActive": true,
+                "id": 36,
+                "parentID": 33,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "100",
+                "currentFont": "Almendra-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    0.9176470637321472,
+                    0.9019607901573181,
+                    0.8980392217636108
+                ],
+                "position": [
+                    498.0,
+                    263.0
+                ],
+                "layer": 0
+            }
+        ]
+    },
+    {
+        "id": 37,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_ControlBackdrop.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    944.9998779296875,
+                    384.0,
+                    0.0
+                ],
+                "scale": [
+                    175.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bgm_bd",
+                "active": false,
+                "localActive": true,
+                "id": 37,
+                "parentID": 28,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 38,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Right.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1075.0,
+                    382.79998779296875,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bgm_right",
+                "active": false,
+                "localActive": true,
+                "id": 38,
+                "parentID": 37,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 39,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Sound_Button_Left.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    814.9998779296875,
+                    383.0249938964844,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    45.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bgm_left",
+                "active": false,
+                "localActive": true,
+                "id": 39,
+                "parentID": 37,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 40,
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    373.57501220703125,
+                    0.0
+                ],
+                "scale": [
+                    50.000003814697266,
+                    50.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "bgm_text",
+                "active": false,
+                "localActive": true,
+                "id": 40,
+                "parentID": 37,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "100",
+                "currentFont": "Almendra-Regular",
+                "scale": 0.8500000238418579,
+                "color": [
+                    0.9176470637321472,
+                    0.9019607901573181,
+                    0.8980392217636108
+                ],
+                "position": [
+                    498.0,
+                    204.0
+                ],
+                "layer": 0
+            }
+        ]
+    },
+    {
+        "id": 41,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\CloseButton.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    -0.0001220703125,
+                    -0.000030517578125,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    75.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "close_btn",
+                "active": false,
+                "localActive": true,
+                "id": 41,
+                "parentID": 28,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 42,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.4305555820465088
+                ],
+                "layer": 3009
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    799.999755859375,
+                    450.0020751953125,
+                    0.0
+                ],
+                "scale": [
+                    1600.0001220703125,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "black_overlay",
+                "active": false,
+                "localActive": true,
+                "id": 42,
+                "parentID": 28,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 43,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\FullscreenOption.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3101
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    943.9998779296875,
+                    286.00006103515625,
+                    0.0
+                ],
+                "scale": [
+                    75.0,
+                    50.0
+                ],
+                "rotation": -0.00010427367669763044,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "tick_box",
+                "active": false,
+                "localActive": true,
+                "id": 43,
+                "parentID": 28,
+                "treeNodeFlags": 0
+            }
+        ]
+    },
+    {
+        "id": 44,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\FullscreenOption_Tick.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3102
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    943.9998779296875,
+                    285.99993896484375,
+                    0.0
+                ],
+                "scale": [
+                    45.0,
+                    30.000001907348633
+                ],
+                "rotation": -0.00010427367669763044,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "tick",
+                "active": false,
+                "localActive": true,
+                "id": 44,
+                "parentID": 43,
+                "treeNodeFlags": 32
             }
         ]
     }

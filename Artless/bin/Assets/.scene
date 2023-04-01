@@ -12,72 +12,15 @@
                     0.0
                 ],
                 "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "fps_display",
-                "active": true,
-                "localActive": true,
-                "id": 0,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ],
-        "TextProperty": [
-            {
-                "textString": "fps: 60",
-                "currentFont": "Almendra-Regular",
-                "scale": 1.350000023841858,
-                "color": [
-                    0.8580800890922546,
-                    0.8662790656089783,
-                    0.16116821765899658
-                ],
-                "position": [
-                    569.5,
-                    339.5
-                ],
-                "layer": 0
-            }
-        ],
-        "LogicComponent": [
-            {
-                "components": [
-                    "FPSDisplay"
-                ]
-            }
-        ]
-    },
-    {
-        "id": 1,
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    450.0,
-                    0.0
-                ],
-                "scale": [
                     1.0,
                     1.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -1600.0,
+                    -900.0,
+                    725.0
                 ]
             }
         ],
@@ -86,21 +29,21 @@
                 "tag": "Cutscene Object",
                 "active": true,
                 "localActive": true,
-                "id": 1,
+                "id": 0,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ],
         "LogicComponent": [
             {
                 "components": [
-                    "CutsceneObject"
+                    "SplashScreen"
                 ]
             }
         ]
     },
     {
-        "id": 2,
+        "id": 1,
         "Sprite": [
             {
                 "filePath": "",
@@ -110,14 +53,14 @@
                     0.0,
                     0.46268653869628906
                 ],
-                "layer": 255
+                "layer": 3901
             }
         ],
         "Transform": [
             {
                 "position": [
-                    801.0,
-                    451.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -125,11 +68,11 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -450.0,
+                    725.0
                 ]
             }
         ],
@@ -138,14 +81,14 @@
                 "tag": "Black Overlay",
                 "active": true,
                 "localActive": true,
-                "id": 2,
-                "parentID": 1,
+                "id": 1,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\DialogueBox.png",
@@ -155,7 +98,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256
+                "layer": 3990
             }
         ],
         "Transform": [
@@ -170,11 +113,11 @@
                     210.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -123.0,
+                    725.0
                 ]
             }
         ],
@@ -183,8 +126,8 @@
                 "tag": "Dialogue Box",
                 "active": true,
                 "localActive": true,
-                "id": 3,
-                "parentID": 1,
+                "id": 2,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ],
@@ -207,6 +150,51 @@
         ]
     },
     {
+        "id": 3,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3988
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -800.0,
+                    -450.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Cutscene Bottom",
+                "active": true,
+                "localActive": true,
+                "id": 3,
+                "parentID": 0,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
         "id": 4,
         "Sprite": [
             {
@@ -217,14 +205,14 @@
                     1.0,
                     1.0
                 ],
-                "layer": 0
+                "layer": 3989
             }
         ],
         "Transform": [
             {
                 "position": [
-                    801.0,
-                    451.0,
+                    800.0,
+                    450.0,
                     0.0
                 ],
                 "scale": [
@@ -232,56 +220,11 @@
                     900.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "Cutscene Bottom",
-                "active": true,
-                "localActive": true,
-                "id": 4,
-                "parentID": 1,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 5,
-        "Sprite": [
-            {
-                "filePath": "",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 1
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    801.0,
-                    451.0,
-                    0.0
-                ],
-                "scale": [
-                    1600.0,
-                    900.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -450.0,
+                    725.0
                 ]
             }
         ],
@@ -290,14 +233,14 @@
                 "tag": "Cutscene Top",
                 "active": true,
                 "localActive": true,
-                "id": 5,
-                "parentID": 1,
+                "id": 4,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ]
     },
     {
-        "id": 6,
+        "id": 5,
         "Sprite": [
             {
                 "filePath": "Assets\\Images\\DialogueBox.png",
@@ -307,13 +250,13 @@
                     1.0,
                     1.0
                 ],
-                "layer": 256
+                "layer": 3990
             }
         ],
         "Transform": [
             {
                 "position": [
-                    799.9998779296875,
+                    800.0,
                     780.0,
                     0.0
                 ],
@@ -322,11 +265,11 @@
                     210.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -780.0,
+                    725.0
                 ]
             }
         ],
@@ -335,8 +278,8 @@
                 "tag": "Dialogue Box Top",
                 "active": true,
                 "localActive": true,
-                "id": 6,
-                "parentID": 1,
+                "id": 5,
+                "parentID": 0,
                 "treeNodeFlags": 32
             }
         ],

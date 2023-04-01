@@ -167,10 +167,10 @@ namespace ALEngine::Script
 		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
 		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
 		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red_health_bar");
-		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
-		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
-		guiManager.Lose_Clear = Coordinator::Instance()->GetEntityByTag("Lose_Clear_Text");
-		guiManager.Lose_Button = Coordinator::Instance()->GetEntityByTag("Lose_Button");
+		//guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+		//guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+		//guiManager.Lose_Clear = Coordinator::Instance()->GetEntityByTag("Lose_Clear_Text");
+		//guiManager.Lose_Button = Coordinator::Instance()->GetEntityByTag("Lose_Button");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
 		guiManager.Phase_Indicator_Icon = Coordinator::Instance()->GetEntityByTag("Phase_Icon");
 		guiManager.Tooltip_Skills_Card = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
@@ -208,11 +208,11 @@ namespace ALEngine::Script
 		//}
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
-		ECS::SetActive(false, guiManager.Win_Clear);
-		ECS::SetActive(false, guiManager.Lose_Clear);
+		//ECS::SetActive(false, guiManager.Win_Clear);
+		//ECS::SetActive(false, guiManager.Lose_Clear);
 
-		ECS::CreateButton(guiManager.Win_Button);
-		ECS::CreateButton(guiManager.Lose_Button);
+		//ECS::CreateButton(guiManager.Win_Button);
+		//ECS::CreateButton(guiManager.Lose_Button);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateFpsLabel()

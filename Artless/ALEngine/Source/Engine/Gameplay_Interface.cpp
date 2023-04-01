@@ -2602,9 +2602,9 @@ namespace ALEngine::Script
 			}
 
 			//If all enemy is cleared, set the win to true
-			if (eliminatedEnemyCount >= gameplaySystem->enemyEntityList.size()) {
-				ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
-			}
+			//if (eliminatedEnemyCount >= gameplaySystem->enemyEntityList.size()) {
+			//	ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Win_Clear);
+			//}
 		}
 	}
 

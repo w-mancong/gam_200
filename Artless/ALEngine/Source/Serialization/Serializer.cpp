@@ -19,6 +19,7 @@ namespace ALEngine::Serializer
 		else {
 			ReadFile(CONST_FILENAME);
 		}
+		fileName = CONST_FILENAME;
 	}
 
 	b8 Serializer::WriteFile(const c8* CONST_FILENAME) {
@@ -111,6 +112,13 @@ namespace ALEngine::Serializer
 		rapidjson::StringBuffer buffer;
 		rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 		this->m_Doc.Accept(writer);
+		std::ofstream ofs{ fileName };
+		if (!ofs)
+		{
+			AL_CORE_WARN("Unable to save into file!");
+			return;
+		}
+		ofs.write(buffer.GetString(), buffer.GetLength());
 	}
 
 	s32 Serializer::GetInt(const c8* CONST_PAIRNAME, const s32 CONST_DEFAULT_INT) {
