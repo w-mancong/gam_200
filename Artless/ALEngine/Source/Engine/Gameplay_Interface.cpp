@@ -289,13 +289,13 @@ namespace ALEngine::Script
 			gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 			//Reset player movement points
-			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 			playerUnit.actionPoints += 4;
 			if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
 				playerUnit.actionPoints = playerUnit.maxActionPoints;
 			}
 
-			Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+			Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 			float newX = std::lerp(ECS::GetCamera().Position().x, playerTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, Time::m_DeltaTime * 3);
 			float newY = std::lerp(ECS::GetCamera().Position().y, playerTransform.localPosition.y - ECS::GetCamera().Height() * 0.5f, Time::m_DeltaTime * 3);
 			ECS::CameraPosition(newX, newY);
@@ -309,7 +309,7 @@ namespace ALEngine::Script
 			}
 
 			//Update the GUI to select player
-			gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+			gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 
 			//Do an update for all walkable cell on the map
 			scanRoomCellArray();
@@ -574,13 +574,13 @@ namespace ALEngine::Script
 	//Check the tile the player is currently on to check if the tile is supposed to be destroyed
 	void GameplaySystem::checkPlayerPlacement() {
 		//Get the components
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		ECS::Entity cellEntity = playerUnit.m_CurrentCell_Entity;
 		Cell& playerUnitCell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		//If the cell is not walkable, do damage tot he player
 		if (playerUnitCell.m_canWalk == false) {
-			DoDamageToUnit(gameplaySystem->playerEntity, playerUnit.maxHealth + 1);
+			DoDamageToUnit(playerEntity, playerUnit.maxHealth + 1);
 		}
 	}
 
