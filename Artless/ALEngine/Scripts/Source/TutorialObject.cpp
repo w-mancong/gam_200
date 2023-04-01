@@ -36,7 +36,10 @@ namespace ALEngine::Script
 
 		// Set gameplay system
 		gs = Gameplay::TutorialManager::Instance()->GetGameplaySystem();
-		// Make the first one an |
+
+		// Make the first one an | and second one a Z
+		gs->pattern_List.insert(gs->pattern_List.begin(), gs->pattern_Default[5]);
+		gs->pattern_List.insert(gs->pattern_List.begin(), gs->pattern_Default[2]);
 		gs->pattern_List.insert(gs->pattern_List.begin(), gs->pattern_Default[1]);
 		
 		// Set sprites for the Patterns
@@ -216,7 +219,7 @@ namespace ALEngine::Script
 
 
 		case Gameplay::TutorialState::TUTORIAL_WAIT_GUARD_DEFEAT:
-			Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
+			Gameplay::TutorialManager::Instance()->SetUtilitiesOff();
 			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 1
 				&& player.coordinate[0] >= 11)
 			{
@@ -224,7 +227,7 @@ namespace ALEngine::Script
 			}
 			break;
 		case Gameplay::TutorialState::TUTORIAL_WAIT_TILE_DESTROYER_DEFEAT:
-			Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
+			Gameplay::TutorialManager::Instance()->SetUtilitiesOff();
 			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 2
 				&& player.coordinate[0] >= 18)
 				Gameplay::TutorialManager::Instance()->NextState();
@@ -269,7 +272,7 @@ namespace ALEngine::Script
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(true, m_PlaceFirstTile);
 
-			//SetAllButOneTileInactive(7, 5);
+			SetAllButOneTileInactive(3, 5);
 
 			VariableScale(m_PlaceFirstTile_Arrow);
 		}
@@ -280,7 +283,7 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(false, m_PlaceFirstTile);
-			//SetAllTilesActive(true);
+			SetAllTilesActive(true);
 		}
 	}
 
@@ -335,11 +338,11 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->NextState();
 			ECS::SetActive(false, m_WalkToEnemy);
 			Gameplay::TutorialManager::Instance()->SetPlayerMoveFinished(false);
-			//SetAllTilesActive(true);
+			SetAllTilesActive(true);
 			return;
 		}
 
-		//SetAllButOneTileInactive(9, 5);
+		SetAllButOneTileInactive(5, 5);
 
 		VariableScale(m_WalkToEnemy_Arrow);
 	}

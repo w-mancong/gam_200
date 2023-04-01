@@ -44,11 +44,13 @@ namespace Gameplay
 		***********************************************************************************/
 		void NextState(void);
 
+		// Getters and Setters
+	public:
 		/*!*********************************************************************************
 			\brief
 				Gets whether the Tutorial is being played
 			\return
-				Returns true if Tutorial is playing, 
+				Returns true if Tutorial is playing,
 				Else returns false
 		***********************************************************************************/
 		b8 TutorialIsPlaying(void) const;
@@ -61,8 +63,6 @@ namespace Gameplay
 		***********************************************************************************/
 		void SetTutorialIsPlaying(b8 playing);
 
-		// Getters and Setters
-	public:
 		/*!*********************************************************************************
 			\brief
 				Gets the current state of the tutorial as an enum value
@@ -220,6 +220,12 @@ namespace Gameplay
 				Sets all the abilities to be off
 		***********************************************************************************/
 		void SetAllAbilitiesOff(void);
+
+		/*!*********************************************************************************
+			\brief
+				Sets all the utilities abilities to be off
+		***********************************************************************************/
+		void SetUtilitiesOff(void);
 		
 		/*!*********************************************************************************
 			\brief

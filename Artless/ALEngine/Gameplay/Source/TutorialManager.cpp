@@ -232,6 +232,18 @@ namespace Gameplay
 			spr.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
 	}
+
+	void TutorialManager::SetUtilitiesOff(void)
+	{
+		for (u16 i{ 3 }; i < 6; ++i)
+		{
+			EventTrigger& et = Coordinator::Instance()->GetComponent<EventTrigger>(m_AbilityList[i]);
+			Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_AbilityList[i]);
+
+			et.isEnabled = false;
+			spr.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+	}
 	
 	void TutorialManager::SetAllAbilitiesButHardDropOff(void)
 	{
