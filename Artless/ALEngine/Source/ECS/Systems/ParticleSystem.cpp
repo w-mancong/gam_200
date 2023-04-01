@@ -349,6 +349,16 @@ namespace ALEngine::ECS
 		manualParticleContainer.push_back(prop);
 	}
 
+	void ParticleSystem::BuffParticles(Math::Vector2 position)
+	{
+		Entity en = Coordinator::Instance()->GetEntityByTag("buff_particles");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 1.5f;
+		manualParticleContainer.push_back(prop);
+	}
+
 	void ParticleSystem::UnitSpawnParticles(Math::Vector2 position)
 	{
 		position -= Math::Vector2(0, 20.f);
@@ -357,6 +367,17 @@ namespace ALEngine::ECS
 		prop.position = position;
 		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
 		prop.spawnDuration = 1.f;
+		manualParticleContainer.push_back(prop);
+	}
+
+	void ParticleSystem::NoApParticle(Math::Vector2 position)
+	{
+		position += Math::Vector2(0.f, 90.f);
+		Entity en = Coordinator::Instance()->GetEntityByTag("no_AP_sign");
+		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
+		prop.position = position;
+		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
+		prop.spawnDuration = 0.15;
 		manualParticleContainer.push_back(prop);
 	}
 

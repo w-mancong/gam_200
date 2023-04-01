@@ -1100,7 +1100,7 @@ namespace ALEngine::Script
 		//Particle System
 		if (damage == 8 && unit.unitType == UNIT_TYPE::ENEMY)
 		{
-			ECS::ParticleSystem::GetParticleSystem().UnitLifeDrainParticles(unitTrans.position + Math::vec3(0, 90, 0));
+			ECS::ParticleSystem::GetParticleSystem().UnitLifeDrainParticles(unitTrans.position + Math::vec3(0, 40, 0));
 		}
 		else if (damage == 5 && unit.unitType == UNIT_TYPE::ENEMY)
 		{
@@ -1108,7 +1108,8 @@ namespace ALEngine::Script
 		}
 		else
 		{
-			ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(unitTrans.position);
+			if(damage != 4) // exclude for overhang skill
+				ECS::ParticleSystem::GetParticleSystem().UnitDmgParticles(unitTrans.position);
 		}
 
 		AL_CORE_CRITICAL("Damage " + std::to_string(damage) + " to " + unitData.tag + " which has " + std::to_string(unit.health) + " health");
@@ -1437,8 +1438,10 @@ namespace ALEngine::Script
 						else {
 							//If interacted on player
 							if (abilities->current_Ability_Name == ABILITY_NAME::OVERHANG) {
-								//minus 8 HP
-								DoDamageToUnit(playerEntity, 8);
+								//minus 4 HP
+								DoDamageToUnit(playerEntity, 4);
+								Transform playerTrans = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
+								ECS::ParticleSystem::GetParticleSystem().BuffParticles(playerTrans.position);
 
 								playerUnit.actionPoints += 1;	//Add 1 AP
 								if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
@@ -2510,6 +2513,8 @@ namespace ALEngine::Script
 			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
 			
 			if (playerUnit.actionPoints < gameplaySystem->selected_Abilities->cost ) {
+				AL_CORE_WARN("Not enough AP");
+				ECS::ParticleSystem::GetParticleSystem().NoApParticle(Input::GetMouseWorldPos());
 				return;
 			}
 			
