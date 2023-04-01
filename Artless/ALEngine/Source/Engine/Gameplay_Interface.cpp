@@ -153,6 +153,10 @@ namespace ALEngine::Script
 			Instantiate("Tutorial Objects");
 
 			ECS::AddLogicComponent<Script::TutorialCamera>(entity);
+			{
+				std::shared_ptr<Script::TutorialCamera> ptr = ECS::GetLogicComponent<Script::TutorialCamera>(entity);
+				ptr->Init(entity);
+			}
 			//ECS::AddLogicComponent<Script::GameplayCamera>(entity);
 		}
 		else
@@ -167,15 +171,24 @@ namespace ALEngine::Script
 					Coordinator::Instance()->DestroyEntity(static_cast<ECS::Entity>(child));
 			}
 			ECS::AddLogicComponent<Script::GameplayCamera>(entity);
+			{
+				std::shared_ptr<Script::GameplayCamera> ptr = ECS::GetLogicComponent<Script::GameplayCamera>(entity);
+				ptr->Init(entity);
+			}
 		}
 			
 		// Water generator
 		ECS::AddLogicComponent<Script::WaterGenerator>(entity);
+		{
+			std::shared_ptr<Script::WaterGenerator> ptr = ECS::GetLogicComponent<Script::WaterGenerator>(entity);
+			ptr->Init(entity);
+		}
 		// Tooltip prompt
 		ECS::AddLogicComponent<Script::PromptTool>(entity);
 		{
 			std::shared_ptr<Script::PromptTool> ptr = ECS::GetLogicComponent<Script::PromptTool>(entity);
-			ptr->InitPatternPlacementStatusVariable(&currentPatternPlacementStatus);
+			ptr->InitPatternPlacementStatusVariable(&gameplaySystem->currentPatternPlacementStatus);
+			ptr->Init(entity);
 		}
 		// Game audio manager
 		ECS::AddLogicComponent<Script::GameAudioManager>(entity);
@@ -219,8 +232,8 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
 		//Reset enemy move ment points
-		for (int i = 0; i < enemyEntityList.size(); ++i) {
-			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+		for (int i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
 			enemyUnit.actionPoints = enemyUnit.maxActionPoints;
 		}
 
@@ -268,6 +281,7 @@ namespace ALEngine::Script
 			AL_CORE_CRITICAL("Loading PHASE ACTION");
 			gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 			gameplaySystem_GUI->TogglePatternGUI(false);
+			ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 			break;
 
 		case PHASE_STATUS::PHASE_ACTION:
@@ -289,13 +303,13 @@ namespace ALEngine::Script
 			gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 			//Reset player movement points
-			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+			Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 			playerUnit.actionPoints += 4;
 			if (playerUnit.actionPoints > playerUnit.maxActionPoints) {
 				playerUnit.actionPoints = playerUnit.maxActionPoints;
 			}
 
-			Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->playerEntity);
+			Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(playerEntity);
 			float newX = std::lerp(ECS::GetCamera().Position().x, playerTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, Time::m_DeltaTime * 3);
 			float newY = std::lerp(ECS::GetCamera().Position().y, playerTransform.localPosition.y - ECS::GetCamera().Height() * 0.5f, Time::m_DeltaTime * 3);
 			ECS::CameraPosition(newX, newY);
@@ -309,16 +323,13 @@ namespace ALEngine::Script
 			}
 
 			//Update the GUI to select player
-			gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->playerEntity);
+			gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 
 			//Do an update for all walkable cell on the map
 			scanRoomCellArray();
 
 			//Check if player cell is destroyed, if yes then eliminate player
 			checkPlayerPlacement();
-
-			//Display the your turn animation 
-			gameplaySystem_GUI->DisplayYourTurn();
 
 			for (int i = 0; i < gameplaySystem->Abilities_List.size(); ++i) {
 				if (gameplaySystem->Abilities_List[i].current_Cooldown > 0) {
@@ -332,7 +343,11 @@ namespace ALEngine::Script
 				Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(true);
 			break;
 		}
+
 		gameplaySystem_GUI->GuiUpdatePhaseIndicator(gameplaySystem->currentPhaseStatus);
+
+		//Display the your turn animation 
+		gameplaySystem_GUI->DisplayYourTurn();
 	}
 
 	uint32_t GameplaySystem::getRoomSize() {
@@ -398,11 +413,7 @@ namespace ALEngine::Script
 
 		//Set to canwalk
 		cell.m_canWalk = true;
-
-		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
-			cell.m_resetCounter = 1000;
-		else
-			cell.m_resetCounter = 2;
+		cell.m_resetCounter = 1000;
 
 		//Change the cell sprite to filename sprite
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
@@ -452,7 +463,7 @@ namespace ALEngine::Script
 					continue;
 				}
 
-				resetCounter = checkTileCounters(cell);
+				resetCounter = checkTileCounters(cellEntity);
 
 				//If 1 then set to crack
 				if (resetCounter == 1) {
@@ -534,7 +545,7 @@ namespace ALEngine::Script
 
 				//If has unit, do 13 damage
 				if (cell.hasUnit) {
-					DoDamageToUnit(cell.unitEntity, 13);
+					DoDamageToUnit(cell.unitEntity, 11);
 				}
 
 				//Reset the affected cell
@@ -556,9 +567,16 @@ namespace ALEngine::Script
 	}
 
 	//Check the selected tile counters and to make amendments to them at the end of the turn
-	s32 GameplaySystem::checkTileCounters(Cell& selectedCell) {
+	s32 GameplaySystem::checkTileCounters(ECS::Entity& cell) {
+		Cell& selectedCell = Coordinator::Instance()->GetComponent<Cell>(cell);
 		//Decrement the rset counter
-		if (selectedCell.m_resetCounter > 0) {
+		if (selectedCell.m_resetCounter > 0) 
+		{
+			if (selectedCell.m_resetCounter == 1) // cracked tile about to break
+			{				
+				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(cell);
+				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+			}
 			selectedCell.m_resetCounter--;
 		}
 
@@ -573,13 +591,13 @@ namespace ALEngine::Script
 	//Check the tile the player is currently on to check if the tile is supposed to be destroyed
 	void GameplaySystem::checkPlayerPlacement() {
 		//Get the components
-		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+		Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 		ECS::Entity cellEntity = playerUnit.m_CurrentCell_Entity;
 		Cell& playerUnitCell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 
 		//If the cell is not walkable, do damage tot he player
 		if (playerUnitCell.m_canWalk == false) {
-			DoDamageToUnit(gameplaySystem->playerEntity, playerUnit.maxHealth + 1);
+			DoDamageToUnit(playerEntity, playerUnit.maxHealth + 1);
 		}
 	}
 
@@ -819,16 +837,16 @@ namespace ALEngine::Script
 		//Fixed damage
 		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
-		new_ability.damage = 9;
-		new_ability.max_Cooldown = 1;
+		new_ability.damage = 8;
+		new_ability.max_Cooldown = 3;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
 		//Life steal
 		new_ability.current_Ability_Name = ABILITY_NAME::LIFE_DRAIN;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
-		new_ability.damage = 8;
-		new_ability.max_Cooldown = 2;
+		new_ability.damage = 7;
+		new_ability.max_Cooldown = 3;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
@@ -849,14 +867,14 @@ namespace ALEngine::Script
 		//Matrix Trap
 		new_ability.current_Ability_Name = ABILITY_NAME::MATRIX_TRAP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
-		new_ability.max_Cooldown = 3;
+		new_ability.max_Cooldown = 4;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 	
-		//Matrix Trap
+		//Volatile
 		new_ability.current_Ability_Name = ABILITY_NAME::VOLATILE;
 		new_ability.current_Ability_Type = ABILITY_TYPE::EFFECT;
-		new_ability.max_Cooldown = 5;
+		new_ability.max_Cooldown = 6;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 	}
@@ -902,8 +920,6 @@ namespace ALEngine::Script
 		}
 	}
 
-
-
 	void GameplaySystem::Cheat_ToggleGodMode() {
 		//Toggle the boolean
 		godMode = !godMode;
@@ -921,8 +937,8 @@ namespace ALEngine::Script
 		}
 
 		//Reduce al enemy damage to 0 if godmode
-		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
-			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+		for (s8 i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
 
 			if (godMode) {
 				unit.minDamage = 0;
@@ -1005,34 +1021,34 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Cheat_DecreaseEnemyHealthToOne() {
 		//Reduce all enemy health to 1
-		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
-			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+		for (s8 i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
 
 			if (unit.health > 0) {
 				unit.health = 1;
-				gameplaySystem_GUI->UpdateGUI_OnSelectUnit(enemyEntityList[i]);
+				gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->enemyEntityList[i]);
 			}
 		}
 	}
 
 	void GameplaySystem::Cheat_EliminateAllEnemy() {
 		//Do damage to all enemy
-		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
-			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+		for (s8 i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
 
-			DoDamageToUnit(enemyEntityList[i], unit.maxHealth);
+			DoDamageToUnit(gameplaySystem->enemyEntityList[i], unit.maxHealth);
 		}
 	}
 
 	void GameplaySystem::Cheat_ResetAllEnemiesHealth() {
 		//Reset all
-		for (s8 i = 0; i < enemyEntityList.size(); ++i) {
-			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+		for (s8 i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
 
 			//Limit enemy health
 			if (unit.health > 0) {
 				unit.health = unit.maxHealth;
-				gameplaySystem_GUI->UpdateGUI_OnSelectUnit(enemyEntityList[i]);
+				gameplaySystem_GUI->UpdateGUI_OnSelectUnit(gameplaySystem->enemyEntityList[i]);
 			}
 		}
 	}
@@ -1102,7 +1118,7 @@ namespace ALEngine::Script
 		Transform& unitTrans = Coordinator::Instance()->GetComponent<Transform>(unitEntity);
 
 		//Particle System
-		if (damage == 8 && unit.unitType == UNIT_TYPE::ENEMY)
+		if (damage == 7 && unit.unitType == UNIT_TYPE::ENEMY)
 		{
 			ECS::ParticleSystem::GetParticleSystem().UnitLifeDrainParticles(unitTrans.position + Math::vec3(0, 40, 0));
 		}
@@ -1131,6 +1147,11 @@ namespace ALEngine::Script
 			//Play hit sound accordingly
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				GameAudioManager::Play("DrorHurt");
+
+				// Set the Hurt animation for player
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(unit.unit_Sprite_Entity);
+				an.nextClip = "PlayerIdle";
+				ECS::ChangeAnimation(an, "PlayerHurt");
 			}
 			else {
 				gameplaySystem_Enemy->Audio_PlayEnemyHurt(unit);
@@ -1148,9 +1169,13 @@ namespace ALEngine::Script
 				//ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Lose_Clear);
 
 				unitData.active = false;
-				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 
 				Audio_Play_PlayerDeath();
+
+				// Set the Hurt animation for player
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(unit.unit_Sprite_Entity);
+				an.isLoop = false;
+				ECS::ChangeAnimation(an, "PlayerDeath");
 			}
 			else {
 				//If enemy unit
@@ -1178,9 +1203,9 @@ namespace ALEngine::Script
 					Gameplay::TutorialManager::Instance()->IncrementNumberOfEnemiesKilled();
 			}
 
-			//Disable the unit
+			////Disable the unit
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
-			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+			//Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			unit.health = 0;	//Limit to 0
 
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
@@ -1336,54 +1361,63 @@ namespace ALEngine::Script
 	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities) {
 		AL_CORE_CRITICAL("USE ABILITY");
 
+		////Get the audiosource
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
+		//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+		//ad.m_Channel = Engine::Channel::SFX;
+		//ad.m_Loop = false;
+		//ad.Stop();
+
 		abilities->current_Cooldown = abilities->max_Cooldown;
 
 		//Initialize abilities GUI
 		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
 		gameplaySystem_GUI->Update_Ability_Cooldown(gameplaySystem->Abilities_List, true);
 
-			//Check for ability name and run ability accordingly
-			switch (abilities->current_Ability_Name)
+
+		//Check for ability name and run ability accordingly
+		switch (abilities->current_Ability_Name)
+		{
+			case ABILITY_NAME::LIFE_DRAIN:
 			{
-				case ABILITY_NAME::LIFE_DRAIN:
-				{
-					//Play the sound
-					GameAudioManager::Play("LifeDrain");
-					break;
-				} //End switch
-				case ABILITY_NAME::HARD_DROP:
-				{
-					//Play the sound
-					Audio_Play_PlayerAttack();
-					break;
-				} //End switch
-				case ABILITY_NAME::OVERHANG:
-				{
-					//Play the sound
-					GameAudioManager::Play("Overhang");
-					break;
-				} //End switch
-				case ABILITY_NAME::MATRIX_TRAP:
-				{
-					//Play the sound
-					GameAudioManager::Play("MatrixTrapPlace");
-					break;
-				} //End switch
-				case ABILITY_NAME::CONSTRUCT_WALL:
-				{
-					//Play the sound
-					GameAudioManager::Play("ConstructTilePlace");
-					break;
-				} //End switch
-				case ABILITY_NAME::VOLATILE:
-				{
-					//Play the sound
-					GameAudioManager::Play("VolaTilePlace");
-					break;
-				} //End switch
-			}
+				//Play the sound
+				GameAudioManager::Play("LifeDrain");
+				break;
+			} //End switch
+			case ABILITY_NAME::HARD_DROP:
+			{
+				//Play the sound
+				Audio_Play_PlayerAttack();
+				break;
+			} //End switch
+			case ABILITY_NAME::OVERHANG:
+			{
+				//Play the sound
+				GameAudioManager::Play("Overhang");
+				break;
+			} //End switch
+			case ABILITY_NAME::MATRIX_TRAP:
+			{
+				//Play the sound
+				GameAudioManager::Play("MatrixTrapPlace");
+				break;
+			} //End switch
+			case ABILITY_NAME::CONSTRUCT_WALL:
+			{
+				//Play the sound
+				GameAudioManager::Play("ConstructTilePlace");
+				break;
+			} //End switch
+			case ABILITY_NAME::VOLATILE:
+			{
+				//Play the sound
+				GameAudioManager::Play("VolaTilePlace");
+				break;
+			} //End switch
+		}
 			
 
+		playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
@@ -1406,7 +1440,6 @@ namespace ALEngine::Script
 
 						u32 initialHealth = unit.health;
 
-						playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 						//If unit is enemy
@@ -1435,6 +1468,7 @@ namespace ALEngine::Script
 
 									AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 
+									gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 									break;
 								}
 							} //End switch
@@ -1485,6 +1519,14 @@ namespace ALEngine::Script
 		}//End loop through pattern body check
 
 		ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+		an.nextClip = "PlayerIdle";
+		ECS::ChangeAnimation(an, "PlayerAttack");
+
+		gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(ECS::Entity cellEntity) {
@@ -1513,7 +1555,7 @@ namespace ALEngine::Script
 			return;
 		}
 
-		//// Set the move animation for player
+		// Set the move animation for player
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
 		ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
@@ -1551,6 +1593,8 @@ namespace ALEngine::Script
 
 		//Get Cell Component
 		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
+		Transform& trans = Coordinator::Instance()->GetComponent<Transform>(cellEntity);
+		ECS::ParticleSystem::GetParticleSystem().UnitSpawnParticles(trans.position, true);
 
 		//IF it already has a wall, don't do anything
 		if (cell.has_Wall || !cell.m_isAccessible) {
@@ -1635,7 +1679,7 @@ namespace ALEngine::Script
 
 		//Set the overlay sprite to false
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
-	
+		
 		ToggleCellWalkability(currentRoom, getEntityCell(currentRoom, x, y), false);
 	}
 
@@ -1690,7 +1734,7 @@ namespace ALEngine::Script
 			AL_CORE_CRITICAL("SELECTING PATTERN IN SETUP");
 
 			//Set the placement status to be for tile
-			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+			gameplaySystem->currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
 			selected_Pattern = pattern;
 
 			gameplaySystem_GUI->TogglePatternGUI(false);
@@ -1698,7 +1742,7 @@ namespace ALEngine::Script
 		else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 			AL_CORE_CRITICAL("SELECTING PATTERN IN ACTION");
 			//Set the placement status to be for abilities
-			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
+			gameplaySystem->currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES;
 			selected_Pattern = pattern;
 
 			GameAudioManager::Play("AttackSelectionAppear");
@@ -1708,7 +1752,7 @@ namespace ALEngine::Script
 			AL_CORE_CRITICAL("SELECTING PATTERN IN SETUP");
 			gameplaySystem->currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
 			//Set the placement status to be for tile
-			currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
+			gameplaySystem->currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::PLACING_FOR_TILE;
 			selected_Pattern = pattern;
 
 			gameplaySystem_GUI->TogglePatternGUI(false);
@@ -1729,6 +1773,8 @@ namespace ALEngine::Script
 			//Set the gui
 			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
 			gameplaySystem_GUI->ToggleCenterPatternGUI(true);
+
+			ECS::SetActive(false, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 			//gameplaySystem_GUI->TogglePatternGUI(true);
 
 
@@ -1738,10 +1784,16 @@ namespace ALEngine::Script
 
 			GameAudioManager::Play("SelectSkill");
 
+			////Get the audiosource
+			//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
 			//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
 			//ad.m_Channel = Engine::Channel::SFX;
 			//ad.m_Loop = true;
 			//ad.Play();
+
+			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "PlayerChargeLoop");
 		}
 	}
 
@@ -1872,10 +1924,10 @@ namespace ALEngine::Script
 
 	void GameplaySystem::UpdateUnitSpriteLayer() {
 		//Update unit sprite layer accordingly from their y position
-		for (s32 i = 0; i < static_cast<s32>(enemyEntityList.size()); ++i) {
+		for (s32 i = 0; i < static_cast<s32>(gameplaySystem->enemyEntityList.size()); ++i) {
 			//Get the enemy component
-			Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(enemyEntityList[i]);
-			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(enemyEntityList[i]);
+			Transform& enemyTransform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->enemyEntityList[i]);
+			Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[i]);
 			Sprite& enemySprite = Coordinator::Instance()->GetComponent<Sprite>(enemyUnit.unit_Sprite_Entity);
 
 			//If the time is paused, put the enemy layer to the back
@@ -2019,13 +2071,17 @@ namespace ALEngine::Script
 
 			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.actionPoints));
 
+			if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+				gameplaySystem_GUI->Update_AP_UI(movinUnit.actionPoints);
+			}
+
 			//If reached the end of path
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
 					//Get the audiosource
-					//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+					//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
 
 					////Play the sound
 					//Engine::Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
@@ -2128,7 +2184,7 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::RotatePattern(s32 patternRotationAmount) {
-		if (currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING) {
+		if (gameplaySystem->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::NOTHING) {
 			return;
 		}
 
@@ -2161,7 +2217,6 @@ namespace ALEngine::Script
 		//gameplaySystem->Toggle_Gameplay_State(false);
 		Engine::Scene::Restart();
 	}
-
 
 	/*!*********************************************************************************
 	\brief

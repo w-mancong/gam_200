@@ -28,13 +28,13 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::Load(ECS::Entity en)
 	{
-		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);	
-		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
-		Set_GameplayInterface_Enemy(en);
+
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Init(ECS::Entity en) {
-
+		gameplaySystem = ECS::GetLogicComponent<GameplaySystem>(en);
+		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
+		Set_GameplayInterface_Enemy(en);
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Update(ECS::Entity en)
@@ -49,7 +49,8 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::Free(ECS::Entity en)
 	{
-
+		gameplaySystem.reset();
+		gameplaySystem_GUI.reset();
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Unload(ECS::Entity en)
@@ -111,10 +112,12 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 10,
-		enemyUnit.maxHealth = 10;
+		enemyUnit.health = 24,
+		enemyUnit.maxHealth = 24;
 		enemyUnit.minDamage = 8,
-		enemyUnit.maxDamage = 13;
+		enemyUnit.maxDamage = 15;
+		enemyUnit.maxActionPoints = 3;
+		enemyUnit.actionPoints = 3;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_MELEE;
 		enemyUnit.playerTriggeredEnemy = false;
 		enemyUnit.distanceToTriggerEnemy = 6;
@@ -122,12 +125,12 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy02attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 5,
-		enemyUnit.maxHealth = 5;
+		enemyUnit.health = 12,
+		enemyUnit.maxHealth = 12;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 13;
-		enemyUnit.maxActionPoints = 1;
-		enemyUnit.actionPoints = 1;
+		enemyUnit.maxActionPoints = 2;
+		enemyUnit.actionPoints = 2;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_CELL_DESTROYER;
 		enemyUnit.playerTriggeredEnemy = false;
 		enemyUnit.distanceToTriggerEnemy = 6;
@@ -135,12 +138,12 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy03attributes([[maybe_unused]] Unit& enemyUnit)
 	{
-		enemyUnit.health = 10,
-		enemyUnit.maxHealth = 10;
+		enemyUnit.health = 12,
+		enemyUnit.maxHealth = 12;
 		enemyUnit.minDamage = 0,
 		enemyUnit.maxDamage = 0;
-		enemyUnit.maxActionPoints = 4;
-		enemyUnit.actionPoints = 4; 
+		enemyUnit.maxActionPoints = 2;
+		enemyUnit.actionPoints = 2; 
 		enemyUnit.abilityCooldown_Enemy = 0;
 		enemyUnit.enemyUnitType = ENEMY_TYPE::ENEMY_SUMMONER;
 		enemyUnit.playerTriggeredEnemy = false;
@@ -235,6 +238,10 @@ namespace ALEngine::Script
 			else {
 				GameAudioManager::Play("GuardAttack2");
 			}
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "GuardAttack");
+			an.nextClip = "GuardIdle";
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
 			if (randomVal < 50) {
@@ -243,6 +250,10 @@ namespace ALEngine::Script
 			else {
 				GameAudioManager::Play("SummonerAttack2");
 			}
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "TileDestroyerAttack");
+			an.nextClip = "TileDestroyerIdle ";
 		}
 		else {
 			if (randomVal < 50) {
@@ -251,6 +262,10 @@ namespace ALEngine::Script
 			else {
 				GameAudioManager::Play("TileDestroyerAttack2");
 			}
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "SummonerAttack");
+			an.nextClip = "SummonerIdle ";
 		}
 	}
 	
@@ -288,25 +303,47 @@ namespace ALEngine::Script
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 			GameAudioManager::Play("GuardDeath");
 
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			an.nextClip = "NULL";
+			ECS::ChangeAnimation(an, "GuardDeath");
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
 			GameAudioManager::Play("TileDestroyerDeath");
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			an.nextClip = "NULL";
+			ECS::ChangeAnimation(an, "TileDestroyerDeath");
 		}
 		else {
 			GameAudioManager::Play("SummonerDeath");
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			an.nextClip = "NULL";
+			ECS::ChangeAnimation(an, "SummonerDeath");
 		}
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyHurt(Unit& enemy) {
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 			GameAudioManager::Play("GuardHurt");
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "GuardHurt");
+			an.nextClip = "GuardIdle";
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
-			GameAudioManager::Play("SummonerHurt");
+			GameAudioManager::Play("TileDestroyerHurt");
 
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "TileDestroyerHurt");
+			an.nextClip = "TileDestroyerIdle";
 		}
 		else {
 			GameAudioManager::Play("TileDestroyerHurt");
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "SummonerHurt");
+			an.nextClip = "SummonerIdle";
 		}
 	}
 
@@ -387,7 +424,7 @@ namespace ALEngine::Script
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
 
-					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
+					Audio_PlayEnemyAttack(enemy);
 					return true;
 				}
 			}
@@ -401,7 +438,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
+					Audio_PlayEnemyAttack(enemy);
 					return true;
 				}
 			}
@@ -415,7 +452,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
+					Audio_PlayEnemyAttack(enemy);
 					return true;
 				}
 			}
@@ -429,7 +466,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
+					Audio_PlayEnemyAttack(enemy);
 					return true;
 				}
 			}
@@ -862,8 +899,26 @@ namespace ALEngine::Script
 				bool spawnMelee = (rand() % 100) <= 60;
 
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j));
-				ECS::ParticleSystem::GetParticleSystem().UnitSpawnParticles(trans.position);
-				PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, spawnMelee ? ENEMY_TYPE::ENEMY_MELEE : ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+				ECS::ParticleSystem::GetParticleSystem().UnitSpawnParticles(trans.position, false);
+				ECS::Entity enemy = PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, spawnMelee ? ENEMY_TYPE::ENEMY_MELEE : ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+
+				if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+				{	// Reduce enemy health for tutorial
+					Unit& enemy_tut = Coordinator::Instance()->GetComponent<Unit>(enemy);
+
+					switch (enemy_tut.enemyUnitType)
+					{
+					case ENEMY_TYPE::ENEMY_MELEE:
+						enemy_tut.maxHealth = 12;
+						enemy_tut.health = 12;
+						break;
+					case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+						enemy_tut.maxHealth = 7;
+						enemy_tut.health = 7;
+						break;
+					}
+				}
+
 				return;
 			} //End j loop
 		} //End i loop

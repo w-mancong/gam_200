@@ -15,11 +15,12 @@ namespace ALEngine::Script
 {
 	class WaterGenerator : public ECS::Component::UniBehaviour
 	{
+	public:
 		/*!*********************************************************************************
 			\brief Used to initialise any values to it's default value
 		***********************************************************************************/
 		void Init(ECS::Entity en);
-
+	private:
 		/*!*********************************************************************************
 			\brief Updates every frame
 		***********************************************************************************/
@@ -46,6 +47,7 @@ namespace ALEngine::Script
 		};
 		std::vector<Water> water{};
 		f32 L_Bound{}, R_Bound{}, B_Bound{}, T_Bound{};
+		b8 initialized{ false };
 		static f32 constexpr const WATER_SPEED[]{ 5.0f, 17.5f }, SCALE_SPEED{ 30.0f };
 	};
 }

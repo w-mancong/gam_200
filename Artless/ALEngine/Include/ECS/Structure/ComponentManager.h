@@ -146,6 +146,7 @@ namespace ALEngine::ECS
 				auto const& component = pair.second;
 				component->EntityDestroyed(entity);
 			}
+			m_Components[entity].reset();
 		}
 
 	private:

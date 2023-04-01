@@ -17,11 +17,12 @@ namespace ALEngine::Script
 {
 	class PromptTool : public ECS::Component::UniBehaviour
 	{
+	public:
 		/*!*********************************************************************************
 			\brief Used to initialise any values to it's default value
 		***********************************************************************************/
 		void Init(ECS::Entity en);
-
+	private:
 		/*!*********************************************************************************
 			\brief Updates every frame
 		***********************************************************************************/
@@ -44,6 +45,7 @@ namespace ALEngine::Script
 		ECS::Transform* trans{ nullptr };
 
 		f32 timer{};
+		b8 initialized{ false };
 
 		static f32 constexpr const SPEED{ 0.75f }, WAIT_TIME{ 2.5f };
 		static b8 showPrompt;

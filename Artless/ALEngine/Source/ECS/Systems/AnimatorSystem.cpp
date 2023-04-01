@@ -51,9 +51,26 @@ namespace ALEngine::ECS
 				animator.time = 0.0f;
 			}
 
-			(++sprite.index) %= animation.totalSprites; // need to check if sprite.index is zero. (division by zero)
+			if (!animator.isFirstLoop) {
+				if (animator.nextClip != "") {
+					ChangeAnimation(animator, animator.nextClip.c_str());
+					animator.nextClip = "";
+				}
+			}
+			else {
+				if (sprite.index == 0) {
+					animator.isFirstLoop = false;
+				}
+			}
 
+			(++sprite.index) %= animation.totalSprites; // need to check if sprite.index is zero. (division by zero)
+			
 			(++animator.currSprite) %= animation.totalSprites;
+			
+			if (!animator.isLoop && !animator.isFirstLoop && sprite.index == 0) {
+				sprite.index = animation.totalSprites - 1;
+			}
+			
 			animator.time = 0.0f;
 			animator.frames = 0;
 		}
@@ -133,8 +150,9 @@ namespace ALEngine::ECS
 		animator.time = 0.0f;
 		animator.frames = 0;
 		animator.currSprite = 0;
-	}
-
+		animator.isFirstLoop = true;
+	}	
+	
 	Animator CreateAnimator(c8 const* animatorName)
 	{
 		std::ifstream ifs{ "Assets\\Dev\\Animator\\" + std::string(animatorName), std::ios::binary };

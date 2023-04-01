@@ -41,6 +41,7 @@ namespace ALEngine::Script
 		else if (camera.Position().y > m_TBound - m_Height)
 			camera.Position().y = m_TBound - m_Height;
 
+		Gameplay::TutorialManager::Instance()->SetCameraOriginalPos(camera.Position());
 		ECS::UpdateUIpositions();
 	}
 

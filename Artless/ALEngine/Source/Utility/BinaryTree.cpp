@@ -429,7 +429,7 @@ namespace ALEngine::Tree
     {
         if (node == nullptr)
         {
-            std::cerr << "ERORR: node " << id << " is NULL";
+            //std::cerr << "ERORR: node " << id << " is NULL";
             return;
         }
         while (node != nullptr && node->right != nullptr)

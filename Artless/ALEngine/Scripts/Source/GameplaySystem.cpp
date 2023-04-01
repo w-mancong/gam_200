@@ -255,6 +255,28 @@ namespace ALEngine::Script
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
+						// Set Lower Health for Enemies in Tutorial
+						if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+						{
+							Unit& enemy_tut = Coordinator::Instance()->GetComponent<Unit>(enemyEntt);
+
+							switch(enemy_tut.enemyUnitType)
+							{
+							case ENEMY_TYPE::ENEMY_MELEE:
+								enemy_tut.maxHealth = 12;
+								enemy_tut.health = 12;
+								break;
+							case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+								enemy_tut.maxHealth = 7;
+								enemy_tut.health = 7;
+								break;
+							case ENEMY_TYPE::ENEMY_SUMMONER:
+								enemy_tut.maxHealth = 7;
+								enemy_tut.health = 7;
+								break;
+							}
+						}
+
 						// Empty Tile under enemy
 						ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 					}
@@ -426,12 +448,16 @@ namespace ALEngine::Script
 
 				GameAudioManager::Stop("DrorSelectSkillLoop");
 				GameAudioManager::Play("DeselectSkill");
+
+				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+				ECS::ChangeAnimation(an, "PlayerIdle");
 			}
 
 			//Deselect Pattern
 			if (Coordinator::Instance()->HasComponent<Cell>(current_Moused_Over_Cell))
 			{
-				if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+				if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
 					DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -442,7 +468,7 @@ namespace ALEngine::Script
 					Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
 				}
 				//Deselect Abilities
-				else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+				else if (gameplaySystem->currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
 					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
 					DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
@@ -451,6 +477,7 @@ namespace ALEngine::Script
 					gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 					gameplaySystem_GUI->TogglePatternGUI(false);
 					gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 
 					Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
