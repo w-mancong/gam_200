@@ -1127,6 +1127,11 @@ namespace ALEngine::Script
 			//Play hit sound accordingly
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				GameAudioManager::Play("DrorHurt");
+
+				// Set the Hurt animation for player
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(unit.unit_Sprite_Entity);
+				an.nextClip = "PlayerIdle";
+				ECS::ChangeAnimation(an, "PlayerHurt");
 			}
 			else {
 				gameplaySystem_Enemy->Audio_PlayEnemyHurt(unit);
@@ -1147,6 +1152,10 @@ namespace ALEngine::Script
 				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 
 				Audio_Play_PlayerDeath();
+
+				// Set the Hurt animation for player
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(unit.unit_Sprite_Entity);
+				ECS::ChangeAnimation(an, "PlayerDeath");
 			}
 			else {
 				//If enemy unit
@@ -1332,52 +1341,65 @@ namespace ALEngine::Script
 	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities) {
 		AL_CORE_CRITICAL("USE ABILITY");
 
+		//Get the audiosource
+		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+		Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+		ad.m_Channel = Engine::Channel::SFX;
+		ad.m_Loop = false;
+		ad.Stop();
+
 		abilities->current_Cooldown = abilities->max_Cooldown;
 
 		//Initialize abilities GUI
 		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
 		gameplaySystem_GUI->Update_Ability_Cooldown(Abilities_List, true);
 
-			//Check for ability name and run ability accordingly
-			switch (abilities->current_Ability_Name)
+		// Set the Hurt animation for player
+		ECS::Entity pl = Coordinator::Instance()->GetEntityByTag("Player");
+		Animator& an = Coordinator::Instance()->GetComponent<Animator>(pl);
+		an.nextClip = "PlayerIdle ";
+		ECS::ChangeAnimation(an, "PlayerAttack");
+
+		//Check for ability name and run ability accordingly
+		switch (abilities->current_Ability_Name)
+		{
+			case ABILITY_NAME::LIFE_DRAIN:
 			{
-				case ABILITY_NAME::LIFE_DRAIN:
-				{
-					//Play the sound
-					GameAudioManager::Play("LifeDrain");
-					break;
-				} //End switch
-				case ABILITY_NAME::HARD_DROP:
-				{
-					//Play the sound
-					Audio_Play_PlayerAttack();
-					break;
-				} //End switch
-				case ABILITY_NAME::OVERHANG:
-				{
-					//Play the sound
-					GameAudioManager::Play("Overhang");
-					break;
-				} //End switch
-				case ABILITY_NAME::MATRIX_TRAP:
-				{
-					//Play the sound
-					GameAudioManager::Play("MatrixTrapPlace");
-					break;
-				} //End switch
-				case ABILITY_NAME::CONSTRUCT_WALL:
-				{
-					//Play the sound
-					GameAudioManager::Play("ConstructTilePlace");
-					break;
-				} //End switch
-				case ABILITY_NAME::VOLATILE:
-				{
-					//Play the sound
-					GameAudioManager::Play("VolaTilePlace");
-					break;
-				} //End switch
-			}
+				//Play the sound
+				GameAudioManager::Play("LifeDrain");
+				break;
+			} //End switch
+			case ABILITY_NAME::HARD_DROP:
+			{
+				//Play the sound
+				Audio_Play_PlayerAttack();
+				break;
+			} //End switch
+			case ABILITY_NAME::OVERHANG:
+			{
+				//Play the sound
+				GameAudioManager::Play("Overhang");
+				break;
+			} //End switch
+			case ABILITY_NAME::MATRIX_TRAP:
+			{
+				//Play the sound
+				GameAudioManager::Play("MatrixTrapPlace");
+				break;
+			} //End switch
+			case ABILITY_NAME::CONSTRUCT_WALL:
+			{
+				//Play the sound
+				GameAudioManager::Play("ConstructTilePlace");
+				break;
+			} //End switch
+			case ABILITY_NAME::VOLATILE:
+			{
+				//Play the sound
+				GameAudioManager::Play("VolaTilePlace");
+				break;
+			} //End switch
+		}
 			
 
 		//Shift through each grid that the pattern would be in relative to given coordinate
@@ -1509,7 +1531,7 @@ namespace ALEngine::Script
 			return;
 		}
 
-		//// Set the move animation for player
+		// Set the move animation for player
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
 		ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
@@ -1629,7 +1651,7 @@ namespace ALEngine::Script
 
 		//Set the overlay sprite to false
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
-	
+		
 		ToggleCellWalkability(currentRoom, getEntityCell(currentRoom, x, y), false);
 	}
 
@@ -2152,7 +2174,6 @@ namespace ALEngine::Script
 		//gameplaySystem->Toggle_Gameplay_State(false);
 		Engine::Scene::Restart();
 	}
-
 
 	/*!*********************************************************************************
 	\brief
