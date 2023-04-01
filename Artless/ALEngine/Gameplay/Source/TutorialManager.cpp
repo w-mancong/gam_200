@@ -49,6 +49,7 @@ namespace Gameplay
 		// End of tutorial, start level 1
 		if (m_CurrentState >= TutorialState::TUTORIAL_END)
 		{
+			Time::m_Scale = 1.f;
 			EndTutorial();
 			return;
 		}

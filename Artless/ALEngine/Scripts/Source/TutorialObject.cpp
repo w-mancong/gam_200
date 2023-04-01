@@ -351,6 +351,8 @@ namespace ALEngine::Script
 	{
 		ECS::SetActive(m_EndTurn_ArrowBool, m_EndTurn_Arrow);
 
+		Gameplay::TutorialManager::Instance()->SetAllAbilitiesOff();
+
 		VariableScale(m_EndTurn_Arrow);
 
 		if (Gameplay::TutorialManager::Instance()->GetEndTurnPressed())
@@ -450,15 +452,20 @@ namespace ALEngine::Script
 
 	void TutorialObject::UpdateConstructTile(void)
 	{
-		if (gs->currentPhaseStatus != PHASE_STATUS::PHASE_ACTION)
+		static b8 resetted{ false };
+		if (resetted == false)
 		{
 			Unit player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
-			if (player.actionPoints <= 2 && player.actionPoints > 0)
+			if (player.actionPoints <= 4 && player.actionPoints > 0)
 				Gameplay::TutorialManager::Instance()->GetGameplaySystem()->EndTurn();
 
 			ECS::SetActive(false, m_ConstructTile);
+			resetted = true;
 			return;
 		}
+
+		if (gs->currentPhaseStatus != PHASE_STATUS::PHASE_ACTION)
+			return;
 
 		ECS::SetActive(true, m_ConstructTile);
 
@@ -478,6 +485,7 @@ namespace ALEngine::Script
 			{
 				Gameplay::TutorialManager::Instance()->NextState();
 				ECS::SetActive(false, m_ConstructTile);
+				resetted = false;
 				return;
 			}
 			else
