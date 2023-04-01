@@ -269,6 +269,8 @@ namespace ALEngine::Script
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(true, m_PlaceFirstTile);
 
+			//SetAllButOneTileInactive(7, 5);
+
 			VariableScale(m_PlaceFirstTile_Arrow);
 		}
 
@@ -278,6 +280,7 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(false, m_PlaceFirstTile);
+			//SetAllTilesActive(true);
 		}
 	}
 
@@ -332,8 +335,11 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->NextState();
 			ECS::SetActive(false, m_WalkToEnemy);
 			Gameplay::TutorialManager::Instance()->SetPlayerMoveFinished(false);
+			//SetAllTilesActive(true);
 			return;
 		}
+
+		//SetAllButOneTileInactive(9, 5);
 
 		VariableScale(m_WalkToEnemy_Arrow);
 	}
@@ -462,13 +468,17 @@ namespace ALEngine::Script
 
 		VariableScale(m_ConstructTile_Arrow);
 
-		if(gs->selected_Abilities != nullptr && 
-			gs->selected_Abilities->current_Ability_Name == ABILITY_NAME::CONSTRUCT_WALL &&
-			gs->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES)
+		if (gs->selected_Abilities != nullptr &&
+			gs->selected_Abilities->current_Ability_Name == ABILITY_NAME::CONSTRUCT_WALL)
 		{
-			Gameplay::TutorialManager::Instance()->NextState();
-			ECS::SetActive(false, m_ConstructTile);
-			return;
+			if (gs->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES)
+			{
+				Gameplay::TutorialManager::Instance()->NextState();
+				ECS::SetActive(false, m_ConstructTile);
+				return;
+			}
+			else
+				ECS::SetActive(false, m_ConstructTile);
 		}
 	}
 
@@ -493,6 +503,31 @@ namespace ALEngine::Script
 				countdown = 1.f;
 			}
 		}
+	}
+
+	void TutorialObject::SetAllTilesActive(b8 value)
+	{
+		for(auto i : gs->m_Room.roomCellsArray)
+		{
+			if (Coordinator::Instance()->HasComponent<Cell>(i) == true)
+			{
+				if (Coordinator::Instance()->GetComponent<Cell>(i).m_isAccessible)
+				{
+					if (Coordinator::Instance()->HasComponent<EventTrigger>(i) == true)
+					{
+						EventTrigger& to_inactive = Coordinator::Instance()->GetComponent<EventTrigger>(i);
+						to_inactive.isEnabled = value;
+					}
+				}
+			}
+		}
+	}
+
+	void TutorialObject::SetAllButOneTileInactive(u32 x, u32 y)
+	{
+		SetAllTilesActive(false);
+		EventTrigger& to_inactive = Coordinator::Instance()->GetComponent<EventTrigger>(gs->getEntityCell(gs->m_Room, x, y));
+		to_inactive.isEnabled = true;
 	}
 
 	

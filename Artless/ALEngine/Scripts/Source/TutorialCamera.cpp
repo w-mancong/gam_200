@@ -29,6 +29,7 @@ namespace ALEngine::Script
 		m_Width = ECS::GetCamera().Width(), m_Height = ECS::GetCamera().Height();
 
 		Engine::Camera& camera = ECS::GetCamera();
+		camera.Position().y = 0;
 
 		if (camera.Position().x < m_LBound)
 			camera.Position().x = m_LBound;

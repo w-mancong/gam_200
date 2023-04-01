@@ -484,8 +484,8 @@
         "EntityData": [
             {
                 "tag": "Place First Tile",
-                "active": false,
-                "localActive": false,
+                "active": true,
+                "localActive": true,
                 "id": 10,
                 "parentID": 0,
                 "treeNodeFlags": 0
@@ -529,7 +529,7 @@
         "EntityData": [
             {
                 "tag": "Click Here",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 11,
                 "parentID": 10,
@@ -574,7 +574,7 @@
         "EntityData": [
             {
                 "tag": "Arrow",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 12,
                 "parentID": 10,
@@ -1079,11 +1079,11 @@
                     221.85447692871094
                 ],
                 "rotation": 169.99990844726563,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -900.0,
+                    -320.0,
+                    725.0
                 ]
             }
         ],
@@ -1124,10 +1124,10 @@
             {
                 "tag": "Hard Drop",
                 "active": false,
-                "localActive": true,
+                "localActive": false,
                 "id": 25,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -1148,13 +1148,13 @@
         "Transform": [
             {
                 "position": [
-                    511.0000305175781,
-                    41.0,
+                    508.864013671875,
+                    43.007999420166016,
                     0.0
                 ],
                 "scale": [
-                    75.0,
-                    75.0
+                    70.0,
+                    65.0
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -1194,7 +1194,7 @@
             {
                 "position": [
                     551.0,
-                    451.0000305175781,
+                    451.0,
                     0.0
                 ],
                 "scale": [
@@ -1202,11 +1202,11 @@
                     250.00045776367188
                 ],
                 "rotation": -109.99996185302734,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -550.0,
+                    -450.0,
+                    725.0
                 ]
             }
         ],
@@ -1238,8 +1238,8 @@
         "Transform": [
             {
                 "position": [
-                    431.0000305175781,
-                    181.00003051757813,
+                    431.0,
+                    181.0,
                     0.0
                 ],
                 "scale": [
@@ -1247,11 +1247,11 @@
                     250.00010681152344
                 ],
                 "rotation": -119.99998474121094,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -430.0,
+                    -180.0,
+                    725.0
                 ]
             }
         ],
@@ -1316,19 +1316,19 @@
         "Transform": [
             {
                 "position": [
-                    672.0,
-                    322.5000305175781,
+                    700.9520263671875,
+                    241.03599548339844,
                     0.0
                 ],
                 "scale": [
-                    75.0,
-                    75.0
+                    55.0,
+                    55.0
                 ],
                 "rotation": 0.0,
                 "ui": true,
                 "uiOffset": [
-                    -672.0,
-                    -322.5000305175781,
+                    -670.0,
+                    -320.5,
                     725.0
                 ]
             }
@@ -1362,18 +1362,18 @@
             {
                 "position": [
                     800.0,
-                    322.5000305175781,
+                    241.0,
                     0.0
                 ],
                 "scale": [
-                    75.0,
-                    75.0
+                    55.0,
+                    55.0
                 ],
                 "rotation": 0.0,
                 "ui": true,
                 "uiOffset": [
-                    -800.0,
-                    -322.5000305175781,
+                    -798.0,
+                    -320.5,
                     725.0
                 ]
             }
@@ -1406,19 +1406,19 @@
         "Transform": [
             {
                 "position": [
-                    925.0,
-                    322.5000305175781,
+                    900.3920288085938,
+                    241.0,
                     0.0
                 ],
                 "scale": [
-                    75.0,
-                    75.0
+                    55.0,
+                    55.0
                 ],
                 "rotation": 0.0,
                 "ui": true,
                 "uiOffset": [
-                    -925.0,
-                    -322.5000305175781,
+                    -923.0,
+                    -320.5,
                     725.0
                 ]
             }
@@ -1463,7 +1463,7 @@
                 "localActive": false,
                 "id": 33,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },

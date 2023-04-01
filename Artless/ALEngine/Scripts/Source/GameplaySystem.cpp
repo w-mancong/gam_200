@@ -419,7 +419,8 @@ namespace ALEngine::Script
 		}
 
 		//If right mouse button
-		if (Input::KeyDown(KeyCode::MouseRightButton) || Time::m_Scale <= 0.0f) {
+		if (Input::KeyDown(KeyCode::MouseRightButton) || 
+			((Time::m_Scale <= 0.0f && (Gameplay::TutorialManager::Instance()->TutorialIsPlaying() == false)))) {
 			if (Time::m_Scale > 0.0f) {
 				//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
 				//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);

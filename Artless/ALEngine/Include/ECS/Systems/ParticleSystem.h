@@ -131,6 +131,12 @@ namespace ALEngine::ECS
 		***********************************************************************************/
 		void MatrixTrapParticles(Math::Vector2 position);
 
+		/*!*********************************************************************************
+		\brief
+			Spawn buff particles
+		***********************************************************************************/
+		void BuffParticles(Math::Vector2 position);
+
 
 		/*!*********************************************************************************
 		\brief
@@ -142,6 +148,7 @@ namespace ALEngine::ECS
 
 		void UnitSpawnParticles(Math::Vector2 position);
 		
+		void NoApParticle(Math::Vector2 position);
 
 	private:
 		/*!*********************************************************************************

@@ -149,8 +149,12 @@ namespace ALEngine::Script
 	{
 		if (sceneChanging)
 			return;
+
 		if (GameplaySystem::currentGameStatus == GAME_STATUS::WIN)
 		{
+			if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying() == true)
+				return;
+
 			Font::EnableTextRendering(false);
 			PauseButtonFlag::confirmationBG = true;
 			if (GameplaySystem::roomIndex + 1 < GameplaySystem::maxRooms)
