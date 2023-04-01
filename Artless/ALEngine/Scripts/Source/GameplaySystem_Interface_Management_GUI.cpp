@@ -58,7 +58,25 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::DisplayYourTurn()
 	{
-		guiManager.Your_Turn_timer = 5.6f;
+		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Your_Turn_Sign);
+
+		switch (gameplaySystem->currentPhaseStatus) {
+			case PHASE_STATUS::PHASE_SETUP:
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_SetupPhase.png");
+			break;
+
+			case PHASE_STATUS::PHASE_ACTION:
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_ActionPhase.png");
+			break;
+
+			case PHASE_STATUS::PHASE_ENEMY:
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_EnemyPhase.png");
+			break;
+
+		}
+
+		guiManager.Your_Turn_timer = 2.6f;
 	}
 
 	template<typename T>
@@ -78,11 +96,11 @@ namespace ALEngine::Script
 			const f32 biggest(1.f);
 			const f32 smallest(0.f);
 
-			if (timer > 2.5f)
+			if (timer > 0.5f)
 			{
-				f32 t1 = timer - 2.5f;
+				f32 t1 = timer - 0.5f;
 				f32 lifePercentage = (2.f - t1) / 2.f; // particle.lifeRemaining / particle.lifeTime;
-				trans.color.a = Lerp(smallest, biggest, lifePercentage);
+				trans.color.a = Lerp(smallest, biggest, lifePercentage * 2);
 			}
 			else if(timer <= 1.2f)
 			{
