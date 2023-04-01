@@ -303,18 +303,21 @@ namespace ALEngine::Script
 			GameAudioManager::Play("GuardDeath");
 
 			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			an.nextClip = "NULL";
 			ECS::ChangeAnimation(an, "GuardDeath");
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
 			GameAudioManager::Play("TileDestroyerDeath");
 
 			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			an.nextClip = "NULL";
 			ECS::ChangeAnimation(an, "TileDestroyerDeath");
 		}
 		else {
 			GameAudioManager::Play("SummonerDeath");
 
 			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			an.nextClip = "NULL";
 			ECS::ChangeAnimation(an, "SummonerDeath");
 		}
 	}

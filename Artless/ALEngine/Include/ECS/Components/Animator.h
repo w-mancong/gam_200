@@ -22,7 +22,7 @@ namespace ALEngine::ECS::Component
 		u32 frames{ 0 };				// Used to keep track of the current frames before changing animation
 		u32 currSprite{ 0 };			// Used to keep track of the current sprite to display
 		std::map<std::string, Animation> animations{}; // Key: clipName of animation
-		b8 isFirstLoop{ true };
+		b8 isFirstLoop{ true }, isLoop = { true };
 	};
 }
 

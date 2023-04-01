@@ -1152,12 +1152,12 @@ namespace ALEngine::Script
 				//ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().Lose_Clear);
 
 				unitData.active = false;
-				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 
 				Audio_Play_PlayerDeath();
 
 				// Set the Hurt animation for player
 				Animator& an = Coordinator::Instance()->GetComponent<Animator>(unit.unit_Sprite_Entity);
+				an.isLoop = false;
 				ECS::ChangeAnimation(an, "PlayerDeath");
 			}
 			else {
@@ -1186,9 +1186,9 @@ namespace ALEngine::Script
 					Gameplay::TutorialManager::Instance()->IncrementNumberOfEnemiesKilled();
 			}
 
-			//Disable the unit
+			////Disable the unit
 			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
-			Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
+			//Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			unit.health = 0;	//Limit to 0
 
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(unit.m_CurrentCell_Entity);
