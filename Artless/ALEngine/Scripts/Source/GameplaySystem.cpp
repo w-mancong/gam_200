@@ -455,6 +455,7 @@ namespace ALEngine::Script
 					gameplaySystem_GUI->ToggleCenterPatternGUI(false);
 					gameplaySystem_GUI->TogglePatternGUI(false);
 					gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+					ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 
 					Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
