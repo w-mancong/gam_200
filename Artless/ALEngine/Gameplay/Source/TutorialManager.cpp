@@ -35,7 +35,7 @@ namespace Gameplay
 		std::shared_ptr<ALEngine::Script::SceneChangeHelper> ptr = ALEngine::ECS::GetLogicComponent<ALEngine::Script::SceneChangeHelper>(scene_transition);
 		ptr->Restart();
 		m_TutorialIsPlaying = false;
-		++m_GameplaySystem->roomIndex;
+		m_GameplaySystem->roomIndex = 1;
 	}
 
 
@@ -234,6 +234,18 @@ namespace Gameplay
 		}
 	}
 
+	void TutorialManager::SetAllAbilitiesOn(void)
+	{
+		for (u16 i{ 0 }; i < 6; ++i)
+		{
+			EventTrigger& et = Coordinator::Instance()->GetComponent<EventTrigger>(m_AbilityList[i]);
+			Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_AbilityList[i]);
+
+			et.isEnabled = true;
+			spr.color = { 0.1f, 0.1f, 1.f, 1.f };
+		}
+	}
+
 	void TutorialManager::SetUtilitiesOff(void)
 	{
 		for (u16 i{ 3 }; i < 6; ++i)
@@ -279,5 +291,15 @@ namespace Gameplay
 			spr.color = { 0.1f, 0.1f, 0.1f, 1.f };
 		}
 
+	}
+
+	ALEngine::Math::Vec2 TutorialManager::GetCameraOriginalPos(void)
+	{
+		return m_CameraOriginalPos;
+	}
+
+	void TutorialManager::SetCameraOriginalPos(ALEngine::Math::Vec2 pos)
+	{
+		m_CameraOriginalPos = pos;
 	}
 }

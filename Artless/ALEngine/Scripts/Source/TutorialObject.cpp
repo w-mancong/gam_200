@@ -233,11 +233,19 @@ namespace ALEngine::Script
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		case Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT:
+			Gameplay::TutorialManager::Instance()->SetAllAbilitiesOn();
 			if (gs->enemyEntityList.size() == Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled())
 				Gameplay::TutorialManager::Instance()->NextState();
 			break;
 		default:
 			break;
+		}
+
+		if(gs->currentGameStatus == GAME_STATUS::WIN && 
+			Gameplay::TutorialManager::Instance()->GetState() != Gameplay::TutorialState::TUTORIAL_FINAL_FIGHT)
+		{
+			Time::m_Scale = 1.f;
+			Gameplay::TutorialManager::Instance()->EndTutorial();
 		}
 	}
 

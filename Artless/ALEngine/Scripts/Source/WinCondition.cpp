@@ -62,7 +62,11 @@ namespace ALEngine::Script
 		void WhenYesHover(Entity en)
 		{
 			if (clicked)
+			{
+				if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+					ECS::GetCamera().Position() = Gameplay::TutorialManager::Instance()->GetCameraOriginalPos();
 				return;
+			}
 			Darken(en);
 			if (Input::KeyDown(KeyCode::MouseLeftButton))
 			{
