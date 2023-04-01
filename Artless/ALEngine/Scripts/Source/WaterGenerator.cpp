@@ -20,6 +20,8 @@ namespace ALEngine::Script
 
 	void WaterGenerator::Init(ECS::Entity en)
 	{
+		if (initialized)
+			return;
 		// Retrieve the size of the map and the water entity
 		auto const& map = Gameplay::MapManager::Instance()->GetMap();
 		f32 const MAP_WIDTH = static_cast<f32>(map[0].size()) * TILE_SIZE, MAP_HEIGHT = static_cast<f32>(map.size()) * TILE_SIZE;
@@ -58,6 +60,7 @@ namespace ALEngine::Script
 
 		L_Bound = -waterScale.x, R_Bound = waterScale.x * static_cast<f32>(COL - 1);
 		B_Bound = -waterScale.y, T_Bound = waterScale.y * static_cast<f32>(ROW - 1);
+		initialized = true;
 	}
 
 	void WaterGenerator::Update(ECS::Entity en)

@@ -153,6 +153,10 @@ namespace ALEngine::Script
 			Instantiate("Tutorial Objects");
 
 			ECS::AddLogicComponent<Script::TutorialCamera>(entity);
+			{
+				std::shared_ptr<Script::TutorialCamera> ptr = ECS::GetLogicComponent<Script::TutorialCamera>(entity);
+				ptr->Init(entity);
+			}
 			//ECS::AddLogicComponent<Script::GameplayCamera>(entity);
 		}
 		else
@@ -167,15 +171,24 @@ namespace ALEngine::Script
 					Coordinator::Instance()->DestroyEntity(static_cast<ECS::Entity>(child));
 			}
 			ECS::AddLogicComponent<Script::GameplayCamera>(entity);
+			{
+				std::shared_ptr<Script::GameplayCamera> ptr = ECS::GetLogicComponent<Script::GameplayCamera>(entity);
+				ptr->Init(entity);
+			}
 		}
 			
 		// Water generator
 		ECS::AddLogicComponent<Script::WaterGenerator>(entity);
+		{
+			std::shared_ptr<Script::WaterGenerator> ptr = ECS::GetLogicComponent<Script::WaterGenerator>(entity);
+			ptr->Init(entity);
+		}
 		// Tooltip prompt
 		ECS::AddLogicComponent<Script::PromptTool>(entity);
 		{
 			std::shared_ptr<Script::PromptTool> ptr = ECS::GetLogicComponent<Script::PromptTool>(entity);
 			ptr->InitPatternPlacementStatusVariable(&gameplaySystem->currentPatternPlacementStatus);
+			ptr->Init(entity);
 		}
 		// Game audio manager
 		ECS::AddLogicComponent<Script::GameAudioManager>(entity);
@@ -268,6 +281,7 @@ namespace ALEngine::Script
 			AL_CORE_CRITICAL("Loading PHASE ACTION");
 			gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 			gameplaySystem_GUI->TogglePatternGUI(false);
+			ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 			break;
 
 		case PHASE_STATUS::PHASE_ACTION:

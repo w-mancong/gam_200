@@ -1123,8 +1123,8 @@
         "EntityData": [
             {
                 "tag": "Hard Drop",
-                "active": false,
-                "localActive": false,
+                "active": true,
+                "localActive": true,
                 "id": 25,
                 "parentID": 0,
                 "treeNodeFlags": 32
@@ -1168,7 +1168,7 @@
         "EntityData": [
             {
                 "tag": "Click Here",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 26,
                 "parentID": 25,
@@ -1204,8 +1204,8 @@
                 "rotation": -109.99996185302734,
                 "ui": true,
                 "uiOffset": [
-                    -550.0,
-                    -450.0,
+                    -600.0,
+                    -350.0,
                     725.0
                 ]
             }
@@ -1213,7 +1213,7 @@
         "EntityData": [
             {
                 "tag": "Arrow Blocks",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 27,
                 "parentID": 25,
@@ -1258,7 +1258,7 @@
         "EntityData": [
             {
                 "tag": "Arrow",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 28,
                 "parentID": 25,
@@ -1291,7 +1291,7 @@
         "EntityData": [
             {
                 "tag": "Blocks",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 29,
                 "parentID": 25,
@@ -1336,7 +1336,7 @@
         "EntityData": [
             {
                 "tag": "First",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 30,
                 "parentID": 29,
@@ -1381,7 +1381,7 @@
         "EntityData": [
             {
                 "tag": "Second",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 31,
                 "parentID": 29,
@@ -1426,7 +1426,7 @@
         "EntityData": [
             {
                 "tag": "Third",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 32,
                 "parentID": 29,
