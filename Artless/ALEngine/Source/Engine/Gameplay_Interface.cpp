@@ -1104,7 +1104,7 @@ namespace ALEngine::Script
 		Transform& unitTrans = Coordinator::Instance()->GetComponent<Transform>(unitEntity);
 
 		//Particle System
-		if (damage == 8 && unit.unitType == UNIT_TYPE::ENEMY)
+		if (damage == 7 && unit.unitType == UNIT_TYPE::ENEMY)
 		{
 			ECS::ParticleSystem::GetParticleSystem().UnitLifeDrainParticles(unitTrans.position + Math::vec3(0, 40, 0));
 		}
