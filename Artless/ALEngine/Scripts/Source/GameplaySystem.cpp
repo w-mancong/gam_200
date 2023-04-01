@@ -91,7 +91,7 @@ namespace ALEngine::Script
 	void GameplaySystem::Init(ECS::Entity en)
 	{
 		currentGameStatus = GAME_STATUS::NONE;
-		room_To_Load = rooms[0];
+		room_To_Load = rooms[roomIndex];
 		//Load all the logic component
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
