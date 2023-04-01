@@ -268,6 +268,7 @@ namespace ALEngine::Script
 			AL_CORE_CRITICAL("Loading PHASE ACTION");
 			gameplaySystem_GUI->ToggleAbilitiesGUI(true);
 			gameplaySystem_GUI->TogglePatternGUI(false);
+			ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 			break;
 
 		case PHASE_STATUS::PHASE_ACTION:

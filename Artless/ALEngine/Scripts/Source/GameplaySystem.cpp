@@ -255,6 +255,28 @@ namespace ALEngine::Script
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_ENTER, Event_MouseEnterUnit);
 						ECS::Subscribe(enemyEntt, EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, Event_MouseExitUnit);
 
+						// Set Lower Health for Enemies in Tutorial
+						if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+						{
+							Unit& enemy_tut = Coordinator::Instance()->GetComponent<Unit>(enemyEntt);
+
+							switch(enemy_tut.enemyUnitType)
+							{
+							case ENEMY_TYPE::ENEMY_MELEE:
+								enemy_tut.maxHealth = 12;
+								enemy_tut.health = 12;
+								break;
+							case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+								enemy_tut.maxHealth = 7;
+								enemy_tut.health = 7;
+								break;
+							case ENEMY_TYPE::ENEMY_SUMMONER:
+								enemy_tut.maxHealth = 7;
+								enemy_tut.health = 7;
+								break;
+							}
+						}
+
 						// Empty Tile under enemy
 						ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
 					}

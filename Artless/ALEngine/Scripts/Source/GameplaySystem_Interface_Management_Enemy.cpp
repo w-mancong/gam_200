@@ -900,7 +900,25 @@ namespace ALEngine::Script
 
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j));
 				ECS::ParticleSystem::GetParticleSystem().UnitSpawnParticles(trans.position, false);
-				PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, spawnMelee ? ENEMY_TYPE::ENEMY_MELEE : ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+				ECS::Entity enemy = PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, spawnMelee ? ENEMY_TYPE::ENEMY_MELEE : ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+
+				if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
+				{	// Reduce enemy health for tutorial
+					Unit& enemy_tut = Coordinator::Instance()->GetComponent<Unit>(enemy);
+
+					switch (enemy_tut.enemyUnitType)
+					{
+					case ENEMY_TYPE::ENEMY_MELEE:
+						enemy_tut.maxHealth = 12;
+						enemy_tut.health = 12;
+						break;
+					case ENEMY_TYPE::ENEMY_CELL_DESTROYER:
+						enemy_tut.maxHealth = 7;
+						enemy_tut.health = 7;
+						break;
+					}
+				}
+
 				return;
 			} //End j loop
 		} //End i loop
