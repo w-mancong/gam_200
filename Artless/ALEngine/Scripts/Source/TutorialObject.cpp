@@ -36,7 +36,10 @@ namespace ALEngine::Script
 
 		// Set gameplay system
 		gs = Gameplay::TutorialManager::Instance()->GetGameplaySystem();
-		// Make the first one an |
+
+		// Make the first one an | and second one a Z
+		gs->pattern_List.insert(gs->pattern_List.begin(), gs->pattern_Default[5]);
+		gs->pattern_List.insert(gs->pattern_List.begin(), gs->pattern_Default[2]);
 		gs->pattern_List.insert(gs->pattern_List.begin(), gs->pattern_Default[1]);
 		
 		// Set sprites for the Patterns
@@ -216,7 +219,7 @@ namespace ALEngine::Script
 
 
 		case Gameplay::TutorialState::TUTORIAL_WAIT_GUARD_DEFEAT:
-			Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
+			Gameplay::TutorialManager::Instance()->SetUtilitiesOff();
 			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 1
 				&& player.coordinate[0] >= 11)
 			{
@@ -224,7 +227,7 @@ namespace ALEngine::Script
 			}
 			break;
 		case Gameplay::TutorialState::TUTORIAL_WAIT_TILE_DESTROYER_DEFEAT:
-			Gameplay::TutorialManager::Instance()->SetAllAbilitiesButHardDropOff();
+			Gameplay::TutorialManager::Instance()->SetUtilitiesOff();
 			if (Gameplay::TutorialManager::Instance()->GetNumEnemiesKilled() == 2
 				&& player.coordinate[0] >= 18)
 				Gameplay::TutorialManager::Instance()->NextState();
@@ -269,6 +272,8 @@ namespace ALEngine::Script
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(true, m_PlaceFirstTile);
 
+			SetAllButOneTileInactive(3, 5);
+
 			VariableScale(m_PlaceFirstTile_Arrow);
 		}
 
@@ -278,6 +283,7 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->SetTileIsPlaced(false);
 			ECS::SetActive(false, m_SelectTile);
 			ECS::SetActive(false, m_PlaceFirstTile);
+			SetAllTilesActive(true);
 		}
 	}
 
@@ -332,8 +338,11 @@ namespace ALEngine::Script
 			Gameplay::TutorialManager::Instance()->NextState();
 			ECS::SetActive(false, m_WalkToEnemy);
 			Gameplay::TutorialManager::Instance()->SetPlayerMoveFinished(false);
+			SetAllTilesActive(true);
 			return;
 		}
+
+		SetAllButOneTileInactive(5, 5);
 
 		VariableScale(m_WalkToEnemy_Arrow);
 	}
@@ -341,6 +350,8 @@ namespace ALEngine::Script
 	void TutorialObject::UpdateEndTurn(void)
 	{
 		ECS::SetActive(m_EndTurn_ArrowBool, m_EndTurn_Arrow);
+
+		Gameplay::TutorialManager::Instance()->SetAllAbilitiesOff();
 
 		VariableScale(m_EndTurn_Arrow);
 
@@ -441,15 +452,20 @@ namespace ALEngine::Script
 
 	void TutorialObject::UpdateConstructTile(void)
 	{
-		if (gs->currentPhaseStatus != PHASE_STATUS::PHASE_ACTION)
+		static b8 resetted{ false };
+		if (resetted == false)
 		{
 			Unit player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
-			if (player.actionPoints <= 2 && player.actionPoints > 0)
+			if (player.actionPoints <= 4 && player.actionPoints > 0)
 				Gameplay::TutorialManager::Instance()->GetGameplaySystem()->EndTurn();
 
 			ECS::SetActive(false, m_ConstructTile);
+			resetted = true;
 			return;
 		}
+
+		if (gs->currentPhaseStatus != PHASE_STATUS::PHASE_ACTION)
+			return;
 
 		ECS::SetActive(true, m_ConstructTile);
 
@@ -462,13 +478,18 @@ namespace ALEngine::Script
 
 		VariableScale(m_ConstructTile_Arrow);
 
-		if(gs->selected_Abilities != nullptr && 
-			gs->selected_Abilities->current_Ability_Name == ABILITY_NAME::CONSTRUCT_WALL &&
-			gs->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES)
+		if (gs->selected_Abilities != nullptr &&
+			gs->selected_Abilities->current_Ability_Name == ABILITY_NAME::CONSTRUCT_WALL)
 		{
-			Gameplay::TutorialManager::Instance()->NextState();
-			ECS::SetActive(false, m_ConstructTile);
-			return;
+			if (gs->currentPatternPlacementStatus == PATTERN_PLACEMENT_STATUS::PLACING_FOR_ABILITIES)
+			{
+				Gameplay::TutorialManager::Instance()->NextState();
+				ECS::SetActive(false, m_ConstructTile);
+				resetted = false;
+				return;
+			}
+			else
+				ECS::SetActive(false, m_ConstructTile);
 		}
 	}
 
@@ -493,6 +514,31 @@ namespace ALEngine::Script
 				countdown = 1.f;
 			}
 		}
+	}
+
+	void TutorialObject::SetAllTilesActive(b8 value)
+	{
+		for(auto i : gs->m_Room.roomCellsArray)
+		{
+			if (Coordinator::Instance()->HasComponent<Cell>(i) == true)
+			{
+				if (Coordinator::Instance()->GetComponent<Cell>(i).m_isAccessible)
+				{
+					if (Coordinator::Instance()->HasComponent<EventTrigger>(i) == true)
+					{
+						EventTrigger& to_inactive = Coordinator::Instance()->GetComponent<EventTrigger>(i);
+						to_inactive.isEnabled = value;
+					}
+				}
+			}
+		}
+	}
+
+	void TutorialObject::SetAllButOneTileInactive(u32 x, u32 y)
+	{
+		SetAllTilesActive(false);
+		EventTrigger& to_inactive = Coordinator::Instance()->GetComponent<EventTrigger>(gs->getEntityCell(gs->m_Room, x, y));
+		to_inactive.isEnabled = true;
 	}
 
 	

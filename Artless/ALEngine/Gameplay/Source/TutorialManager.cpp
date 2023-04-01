@@ -8,6 +8,7 @@ brief:	File that contains definitions for functions needed for the Tutorial
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <GameplaySystem.h>
+#include <SceneChangeHelper.h>
 
 namespace Gameplay
 {
@@ -28,6 +29,16 @@ namespace Gameplay
 		m_EnemiesKilled = 0;
 	}
 
+	void TutorialManager::EndTutorial()
+	{
+		ALEngine::ECS::Entity scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
+		std::shared_ptr<ALEngine::Script::SceneChangeHelper> ptr = ALEngine::ECS::GetLogicComponent<ALEngine::Script::SceneChangeHelper>(scene_transition);
+		ptr->Restart();
+		m_TutorialIsPlaying = false;
+		++m_GameplaySystem->roomIndex;
+	}
+
+
 	void TutorialManager::NextState(void)
 	{
 		m_CurrentState = static_cast<TutorialState>(static_cast<u32>(m_CurrentState) + 1);
@@ -38,6 +49,8 @@ namespace Gameplay
 		// End of tutorial, start level 1
 		if (m_CurrentState >= TutorialState::TUTORIAL_END)
 		{
+			Time::m_Scale = 1.f;
+			EndTutorial();
 			return;
 		}
 
@@ -100,9 +113,6 @@ namespace Gameplay
 			ALEngine::Engine::Scene::CutsceneManager::Instance()->SetJustTriggered();
 			Time::m_Scale = 0.f;
 			break;
-
-
-			// ===== Scripted Gameplay =====
 		default:
 			Time::m_Scale = 1.f;
 		}
@@ -215,6 +225,18 @@ namespace Gameplay
 	void TutorialManager::SetAllAbilitiesOff(void)
 	{
 		for (u16 i{ 0 }; i < 6; ++i)
+		{
+			EventTrigger& et = Coordinator::Instance()->GetComponent<EventTrigger>(m_AbilityList[i]);
+			Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_AbilityList[i]);
+
+			et.isEnabled = false;
+			spr.color = { 0.1f, 0.1f, 0.1f, 1.f };
+		}
+	}
+
+	void TutorialManager::SetUtilitiesOff(void)
+	{
+		for (u16 i{ 3 }; i < 6; ++i)
 		{
 			EventTrigger& et = Coordinator::Instance()->GetComponent<EventTrigger>(m_AbilityList[i]);
 			Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_AbilityList[i]);

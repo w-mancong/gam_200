@@ -1,3 +1,13 @@
+/*!
+file:   GameplaySystem_Interface_Management_Enemy.h
+author: Chan Jie Ming Stanley (75%)
+co-author:	Tan Zhen Xiong (25%)
+email:  c.jiemingstanley\@digipen.edu
+		t.zhenxiong@digipen.edu
+brief:	This file contains the function definition for GameplaySystem_Interface_Management_Enemy.h
+		All content � 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #ifndef	GAMEPLAY_SYSTEM_INTERFACE_ENEMY_H
 #define GAMEPLAY_SYSTEM_INTERFACE_ENEMY_H
 
@@ -177,13 +187,13 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 		\brief
-			Runs process to check adjacent for player and attack if they are adjacent.
-		\param [in]
-			room: room of gameplay
-		\param [in]
-			room: enemy entity
+		Runs process to check adjacent for player and attack if they are adjacent.
+		\param [in] room 
+		room of gameplay
+		\param [in] enemy
+		reference to enemy entity
 		\return
-			if enemy attacked player and player is adjacent
+		if enemy attacked player and player is adjacent
 		***********************************************************************************/
 		bool RunEnemyAdjacentAttack(GAMEPLAY_SYSTEM_INTERFACE_H::Room& room, Unit& enemy);
 
@@ -223,7 +233,14 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Audio_StopEnemyMoving(Unit& enemy);
 
-		
+		/*!*********************************************************************************
+		\brief
+		Function to change or set Enemy Trigger Distance to move
+		\param [in] selectUnitEntity
+		Reference to specificed enemyunit to change the trigger distance
+		\param [in] rangeValue
+		Specificed new range value
+		***********************************************************************************/
 		void Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue);
 
 		// For RTTR

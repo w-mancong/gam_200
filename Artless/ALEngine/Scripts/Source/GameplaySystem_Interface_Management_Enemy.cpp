@@ -1,3 +1,13 @@
+/*!
+file:   GameplaySystem_Interface_Management_Enemy.cpp
+author: Chan Jie Ming Stanley (75%)
+co-author:	Tan Zhen Xiong (25%)
+email:  c.jiemingstanley\@digipen.edu
+		t.zhenxiong@digipen.edu
+brief:	This file contains the function definition for GameplaySystem_Interface_Management_Enemy.cpp
+		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+*//*__________________________________________________________________________________*/
+
 #include <pch.h>
 #include <GameplaySystem.h>
 #include <Engine/Gameplay_Interface.h>
@@ -75,8 +85,8 @@ namespace ALEngine::Script
 		ALEngine::ECS::CreateSprite(enemyUnit.unit_Sprite_Entity, enemySpriteTransform, "Assets/Images/Bishop v.02.png");
 
 
-		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Enemy_" + std::to_string(gameplaySystem->enemyEntityList.size() - 1);
-		Coordinator::Instance()->GetComponent<EntityData>(enemyUnit.unit_Sprite_Entity).tag = "Enemy_Sprite_" + std::to_string(gameplaySystem->enemyEntityList.size() - 1);
+		Coordinator::Instance()->GetComponent<EntityData>(entity).tag = "Enemy_" + std::to_string(enemyEntityList.size() - 1);
+		Coordinator::Instance()->GetComponent<EntityData>(enemyUnit.unit_Sprite_Entity).tag = "Enemy_Sprite_" + std::to_string(enemyEntityList.size() - 1);
 
 		Tree::BinaryTree& sceneGraph = ECS::GetSceneGraph();
 		sceneGraph.Push(-1, entity); // first cell is parent
@@ -152,7 +162,7 @@ namespace ALEngine::Script
 		enemyEntityList.push_back(newEnemy);
 
 		//Create Enemy
-		CreateEnemyUnit(newEnemy, gameplaySystem->enemyEntityList);
+		CreateEnemyUnit(newEnemy, enemyEntityList);
 		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(newEnemy);
 		enemyUnit.coordinate[0] = x;
 		enemyUnit.coordinate[1] = y;
@@ -332,60 +342,66 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyMoving(Unit& enemy) {
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
 
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 			//Play the sound
-			Engine::Audio& ad = as.GetAudio(AUDIO_GUARD_WALK_1);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.m_Loop = TRUE;
-			ad.Play();
+			//Engine::Audio& ad = as.GetAudio(AUDIO_GUARD_WALK_1);
+			//ad.m_Channel = Engine::Channel::SFX;
+			//ad.m_Loop = TRUE;
+			//ad.Play();
+			GameAudioManager::Play("GuardMove");
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
 			//Play the sound
-			Engine::Audio& ad = as.GetAudio(AUDIO_TILEDESTROYER_WALK_1);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.m_Loop = TRUE;
-			ad.Play();
+			//Engine::Audio& ad = as.GetAudio(AUDIO_TILEDESTROYER_WALK_1);
+			//ad.m_Channel = Engine::Channel::SFX;
+			//ad.m_Loop = TRUE;
+			//ad.Play();
+			GameAudioManager::Play("TileDestroyerMove");
 		}
 		else {
 			//Play the sound
-			Engine::Audio& ad = as.GetAudio(AUDIO_SUMMONER_WALK_1);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.m_Loop = TRUE;
-			ad.Play();
+			//Engine::Audio& ad = as.GetAudio(AUDIO_SUMMONER_WALK_1);
+			//ad.m_Channel = Engine::Channel::SFX;
+			//ad.m_Loop = TRUE;
+			//ad.Play();
+			GameAudioManager::Play("SummonerMove");
 		}
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Audio_StopEnemyMoving(Unit& enemy) {					//Get the audiosource
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
 
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {		
 			//Play the sound
-			Engine::Audio& ad = as.GetAudio(AUDIO_GUARD_WALK_1);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.m_Loop = FALSE;
-			ad.Stop();
+			//Engine::Audio& ad = as.GetAudio(AUDIO_GUARD_WALK_1);
+			//ad.m_Channel = Engine::Channel::SFX;
+			//ad.m_Loop = FALSE;
+			//ad.Stop();
+			GameAudioManager::Stop("GuardMove");
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
 			//Play the sound
-			Engine::Audio& ad = as.GetAudio(AUDIO_TILEDESTROYER_WALK_1);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.m_Loop = FALSE;
-			ad.Stop();
+			//Engine::Audio& ad = as.GetAudio(AUDIO_TILEDESTROYER_WALK_1);
+			//ad.m_Channel = Engine::Channel::SFX;
+			//ad.m_Loop = FALSE;
+			//ad.Stop();
+			GameAudioManager::Stop("TileDestroyerMove");
 		}
 		else {
-			//Play the sound
-			Engine::Audio& ad = as.GetAudio(AUDIO_SUMMONER_WALK_1);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.m_Loop = FALSE;
-			ad.Stop();
+			////Play the sound
+			//Engine::Audio& ad = as.GetAudio(AUDIO_SUMMONER_WALK_1);
+			//ad.m_Channel = Engine::Channel::SFX;
+			//ad.m_Loop = FALSE;
+			//ad.Stop();
+			GameAudioManager::Stop("SummonerMove");
 		}
 	}
 
-	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue)
+	void ALEngine::Script::GameplaySystem_Interface_Management_Enemy::Set_EnemyTriggerDistance(ECS::Entity& selectUnitEntity, s32 rangeValue)
 	{
-		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(UnitEntity);
+		Unit& enemyUnit = Coordinator::Instance()->GetComponent<Unit>(selectUnitEntity);
 		enemyUnit.distanceToTriggerEnemy = rangeValue;
 	}
 
@@ -1036,7 +1052,6 @@ namespace ALEngine::Script
 			gameplaySystem->EndTurn_Enemy();
 			return;
 		}
-
 
 		AL_CORE_INFO("CELL DESTROYER Making Decision");
 

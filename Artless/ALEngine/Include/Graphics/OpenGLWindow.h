@@ -25,6 +25,11 @@ namespace ALEngine::Graphics
 		***********************************************************************************/
 		static void FullScreen(bool fullScreen);
 
+		/*!*********************************************************************************
+			\brief Helper function to toggle between fullscreen/windowed
+		***********************************************************************************/
+		static void ToggleScreen(void);
+
 		///*!*********************************************************************************
 		//	\brief Set GLFW window to be fullScreen in window mode
 		//***********************************************************************************/
@@ -39,6 +44,7 @@ namespace ALEngine::Graphics
 		static f32 ar;
 		static u32 width, height;
 		static std::string title;
+		static b8 fullScreen;
 
 	private:
 		static GLFWwindow* window; 

@@ -115,6 +115,8 @@ namespace ALEngine::Script
 
 		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(Coordinator::Instance()->GetEntityByTag("Player"));
 		ECS::CameraPosition(playerTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, playerTransform.localPosition.y - -ECS::GetCamera().Width() * 0.5f);
+
+		GameAudioManager::Play("Gameplay_Loop");
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -289,14 +291,14 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Update(ECS::Entity en)
 	{
-
+		//Update system and draw
+		UpdateGameplaySystem();
+		DrawGameplaySystem();
 	}
 
 	void GameplaySystem::LateUpdate(ECS::Entity en)
 	{
-		//Update system and draw
-		UpdateGameplaySystem();
-		DrawGameplaySystem();	
+
 	}
 
 	void GameplaySystem::Free(ECS::Entity en)
@@ -348,7 +350,7 @@ namespace ALEngine::Script
 		}
 
 		//Initialize Abilities
-		InitializeAbilities(Abilities_List);
+		InitializeAbilities(gameplaySystem->Abilities_List);
 
 		//Initialize Pattern GUI
 		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
@@ -379,11 +381,7 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_3);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[4], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_4);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[5], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_5);
-
-		//Subscribe the restart button
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Lose_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_Tutorial);
-
+		
 		Toggle_Gameplay_State(true);
 
 		//Toggle the gui 
@@ -392,17 +390,18 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 		//***** AUDIO Initialization ******//
-		CreateAudioEntityMasterSource();
-		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
-		Engine::Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
-		ad.m_Channel = Engine::Channel::BGM;
-		ad.m_Loop = true;
-		ad.Play();
+		//CreateAudioEntityMasterSource();
+		//masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		//Engine::Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
+		//ad.m_Channel = Engine::Channel::BGM;
+		//ad.m_Loop = true;
+		//ad.Play();
 
 		//Initialize audio
-		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
-		buttonClickAudio->m_Channel = Engine::Channel::SFX;
+		//buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
+		//buttonClickAudio->m_Channel = Engine::Channel::SFX;
+		//buttonClickAudio = &GameAudioManager::Get("Click_1");
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
@@ -416,14 +415,16 @@ namespace ALEngine::Script
 		}
 
 		//If right mouse button
-		if (Input::KeyDown(KeyCode::MouseRightButton) || Time::m_Scale <= 0.0f) {
+		if (Input::KeyDown(KeyCode::MouseRightButton) || 
+			((Time::m_Scale <= 0.0f && (Gameplay::TutorialManager::Instance()->TutorialIsPlaying() == false)))) {
 			if (Time::m_Scale > 0.0f) {
-				Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
-				Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
-				ad.m_Channel = Engine::Channel::SFX;
-				ad.m_Loop = false;
-				ad.Stop();
+				//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+				//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+				//ad.m_Channel = Engine::Channel::SFX;
+				//ad.m_Loop = false;
+				//ad.Stop();
 
+				GameAudioManager::Stop("DrorSelectSkillLoop");
 				GameAudioManager::Play("DeselectSkill");
 
 				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
@@ -539,13 +540,13 @@ namespace ALEngine::Script
 		gameplaySystem_Enemy.reset();
 		gameplaySystem_GUI.reset();
 		
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
-		
-		for (auto& it : as.list)
-		{
-			Engine::Audio& ad = it.second;
-			ad.Stop();
-		}
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		//
+		//for (auto& it : as.list)
+		//{
+		//	Engine::Audio& ad = it.second;
+		//	ad.Stop();
+		//}
 	}
 
 

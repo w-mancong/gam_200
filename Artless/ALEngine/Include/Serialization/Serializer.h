@@ -108,7 +108,7 @@ namespace ALEngine::Serializer
 
 	private:
 		rapidjson::Document m_Doc;
-
+		std::string fileName;
 	};
 }
 

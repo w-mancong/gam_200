@@ -29,6 +29,7 @@ namespace ALEngine::Script
 		m_Width = ECS::GetCamera().Width(), m_Height = ECS::GetCamera().Height();
 
 		Engine::Camera& camera = ECS::GetCamera();
+		camera.Position().y = 0;
 
 		if (camera.Position().x < m_LBound)
 			camera.Position().x = m_LBound;
@@ -83,6 +84,23 @@ namespace ALEngine::Script
 		{
 			camera.Position().x = targetX;
 			Gameplay::TutorialManager::Instance()->NextState();
+
+			// Make the first one an | and second one a Z
+			Gameplay::TutorialManager::Instance()->GetGameplaySystem()->pattern_List.insert(Gameplay::TutorialManager::Instance()->GetGameplaySystem()->pattern_List.begin(),
+				Gameplay::TutorialManager::Instance()->GetGameplaySystem()->pattern_Default[5]);
+			Gameplay::TutorialManager::Instance()->GetGameplaySystem()->pattern_List.insert(Gameplay::TutorialManager::Instance()->GetGameplaySystem()->pattern_List.begin(),
+				Gameplay::TutorialManager::Instance()->GetGameplaySystem()->pattern_Default[2]);
+
+			// Set sprites for the Patterns
+			for (u32 i{ 1 }; i <= 4; ++i)
+			{
+				std::string tile_icon = "next_tile_icon" + std::to_string(i);
+
+				ECS::Entity tileEtt = Coordinator::Instance()->GetEntityByTag(tile_icon);
+
+				Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(tileEtt);
+				sprite.id = Engine::AssetManager::Instance()->GetGuid(Gameplay::TutorialManager::Instance()->GetGameplaySystem()->pattern_List[i - 1].file_path);
+			}
 		}
 
 		ECS::UpdateUIpositions();
