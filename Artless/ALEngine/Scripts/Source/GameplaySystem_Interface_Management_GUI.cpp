@@ -434,6 +434,13 @@ namespace ALEngine::Script
 
 
 	void GameplaySystem_Interface_Management_GUI::Update_AP_UI(int AP_count) {
+		guiManager.AP_Indicators[0] = Coordinator::Instance()->GetEntityByTag("AP1");
+		guiManager.AP_Indicators[1] = Coordinator::Instance()->GetEntityByTag("AP2");
+		guiManager.AP_Indicators[2] = Coordinator::Instance()->GetEntityByTag("AP3");
+		guiManager.AP_Indicators[3] = Coordinator::Instance()->GetEntityByTag("AP4");
+		guiManager.AP_Indicators[4] = Coordinator::Instance()->GetEntityByTag("AP5");
+		guiManager.AP_Indicators[5] = Coordinator::Instance()->GetEntityByTag("AP6");
+
 		//Disable all
 		for (int i = 0; i < guiManager.AP_Indicators.size(); ++i) {
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);
@@ -448,6 +455,13 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem_Interface_Management_GUI::Update_AP_UI_For_Cost(int AP_count, int AP_Cost) {
+		guiManager.AP_Indicators[0] = Coordinator::Instance()->GetEntityByTag("AP1");
+		guiManager.AP_Indicators[1] = Coordinator::Instance()->GetEntityByTag("AP2");
+		guiManager.AP_Indicators[2] = Coordinator::Instance()->GetEntityByTag("AP3");
+		guiManager.AP_Indicators[3] = Coordinator::Instance()->GetEntityByTag("AP4");
+		guiManager.AP_Indicators[4] = Coordinator::Instance()->GetEntityByTag("AP5");
+		guiManager.AP_Indicators[5] = Coordinator::Instance()->GetEntityByTag("AP6");
+
 		//Disable all
 		for (int i = 0; i < guiManager.AP_Indicators.size(); ++i) {
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.AP_Indicators[i]);

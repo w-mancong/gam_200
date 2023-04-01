@@ -235,6 +235,10 @@ namespace ALEngine::Script
 			else {
 				GameAudioManager::Play("GuardAttack2");
 			}
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "GuardAttack");
+			an.nextClip = "GuardIdle";
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
 			if (randomVal < 50) {
@@ -243,6 +247,10 @@ namespace ALEngine::Script
 			else {
 				GameAudioManager::Play("SummonerAttack2");
 			}
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "TileDestroyerAttack");
+			an.nextClip = "TileDestroyerIdle ";
 		}
 		else {
 			if (randomVal < 50) {
@@ -251,6 +259,10 @@ namespace ALEngine::Script
 			else {
 				GameAudioManager::Play("TileDestroyerAttack2");
 			}
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "SummonerAttack");
+			an.nextClip = "SummonerIdle ";
 		}
 	}
 	
@@ -288,25 +300,44 @@ namespace ALEngine::Script
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 			GameAudioManager::Play("GuardDeath");
 
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "GuardDeath");
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
 			GameAudioManager::Play("TileDestroyerDeath");
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "TileDestroyerDeath");
 		}
 		else {
 			GameAudioManager::Play("SummonerDeath");
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "SummonerDeath");
 		}
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyHurt(Unit& enemy) {
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 			GameAudioManager::Play("GuardHurt");
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "GuardHurt");
+			an.nextClip = "GuardIdle";
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
-			GameAudioManager::Play("SummonerHurt");
+			GameAudioManager::Play("TileDestroyerHurt");
 
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "TileDestroyerHurt");
+			an.nextClip = "TileDestroyerIdle";
 		}
 		else {
 			GameAudioManager::Play("TileDestroyerHurt");
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "SummonerHurt");
+			an.nextClip = "SummonerIdle";
 		}
 	}
 
@@ -387,7 +418,7 @@ namespace ALEngine::Script
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
 
-					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
+					Audio_PlayEnemyAttack(enemy);
 					return true;
 				}
 			}
@@ -401,7 +432,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
+					Audio_PlayEnemyAttack(enemy);
 					return true;
 				}
 			}
@@ -415,7 +446,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
+					Audio_PlayEnemyAttack(enemy);
 					return true;
 				}
 			}
@@ -429,7 +460,7 @@ namespace ALEngine::Script
 			if (cell.hasUnit) {
 				if (Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity).unitType == UNIT_TYPE::PLAYER) {
 					gameplaySystem->DoDamageToUnit(cell.unitEntity, enemy.minDamage);
-					Audio_PlayEnemyAttack(Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity));
+					Audio_PlayEnemyAttack(enemy);
 					return true;
 				}
 			}

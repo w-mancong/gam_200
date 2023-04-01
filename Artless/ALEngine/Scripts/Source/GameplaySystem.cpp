@@ -426,6 +426,10 @@ namespace ALEngine::Script
 
 				GameAudioManager::Stop("DrorSelectSkillLoop");
 				GameAudioManager::Play("DeselectSkill");
+
+				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+				ECS::ChangeAnimation(an, "PlayerIdle");
 			}
 
 			//Deselect Pattern

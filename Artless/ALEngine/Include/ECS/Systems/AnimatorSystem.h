@@ -60,6 +60,7 @@ namespace ALEngine::ECS
 	***********************************************************************************/
 	void ChangeAnimation(Animator& animator, c8 const* clipName);
 
+
 	/*!*********************************************************************************
 		\brief Create an animator based on animatorName
 

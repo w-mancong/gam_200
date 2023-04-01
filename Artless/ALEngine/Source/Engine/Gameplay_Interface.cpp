@@ -317,9 +317,6 @@ namespace ALEngine::Script
 			//Check if player cell is destroyed, if yes then eliminate player
 			checkPlayerPlacement();
 
-			//Display the your turn animation 
-			gameplaySystem_GUI->DisplayYourTurn();
-
 			for (int i = 0; i < gameplaySystem->Abilities_List.size(); ++i) {
 				if (gameplaySystem->Abilities_List[i].current_Cooldown > 0) {
 					gameplaySystem->Abilities_List[i].current_Cooldown--;
@@ -332,7 +329,11 @@ namespace ALEngine::Script
 				Gameplay::TutorialManager::Instance()->SetPlayerTurnStart(true);
 			break;
 		}
+
 		gameplaySystem_GUI->GuiUpdatePhaseIndicator(gameplaySystem->currentPhaseStatus);
+
+		//Display the your turn animation 
+		gameplaySystem_GUI->DisplayYourTurn();
 	}
 
 	uint32_t GameplaySystem::getRoomSize() {
@@ -1131,6 +1132,11 @@ namespace ALEngine::Script
 			//Play hit sound accordingly
 			if (unit.unitType == UNIT_TYPE::PLAYER) {
 				GameAudioManager::Play("DrorHurt");
+
+				// Set the Hurt animation for player
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(unit.unit_Sprite_Entity);
+				an.nextClip = "PlayerIdle";
+				ECS::ChangeAnimation(an, "PlayerHurt");
 			}
 			else {
 				gameplaySystem_Enemy->Audio_PlayEnemyHurt(unit);
@@ -1151,6 +1157,10 @@ namespace ALEngine::Script
 				Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 
 				Audio_Play_PlayerDeath();
+
+				// Set the Hurt animation for player
+				Animator& an = Coordinator::Instance()->GetComponent<Animator>(unit.unit_Sprite_Entity);
+				ECS::ChangeAnimation(an, "PlayerDeath");
 			}
 			else {
 				//If enemy unit
@@ -1336,54 +1346,63 @@ namespace ALEngine::Script
 	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities) {
 		AL_CORE_CRITICAL("USE ABILITY");
 
+		////Get the audiosource
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
+		//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+		//ad.m_Channel = Engine::Channel::SFX;
+		//ad.m_Loop = false;
+		//ad.Stop();
+
 		abilities->current_Cooldown = abilities->max_Cooldown;
 
 		//Initialize abilities GUI
 		gameplaySystem_GUI->InitializeAbilitiesGUI(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List);
 		gameplaySystem_GUI->Update_Ability_Cooldown(gameplaySystem->Abilities_List, true);
 
-			//Check for ability name and run ability accordingly
-			switch (abilities->current_Ability_Name)
+
+		//Check for ability name and run ability accordingly
+		switch (abilities->current_Ability_Name)
+		{
+			case ABILITY_NAME::LIFE_DRAIN:
 			{
-				case ABILITY_NAME::LIFE_DRAIN:
-				{
-					//Play the sound
-					GameAudioManager::Play("LifeDrain");
-					break;
-				} //End switch
-				case ABILITY_NAME::HARD_DROP:
-				{
-					//Play the sound
-					Audio_Play_PlayerAttack();
-					break;
-				} //End switch
-				case ABILITY_NAME::OVERHANG:
-				{
-					//Play the sound
-					GameAudioManager::Play("Overhang");
-					break;
-				} //End switch
-				case ABILITY_NAME::MATRIX_TRAP:
-				{
-					//Play the sound
-					GameAudioManager::Play("MatrixTrapPlace");
-					break;
-				} //End switch
-				case ABILITY_NAME::CONSTRUCT_WALL:
-				{
-					//Play the sound
-					GameAudioManager::Play("ConstructTilePlace");
-					break;
-				} //End switch
-				case ABILITY_NAME::VOLATILE:
-				{
-					//Play the sound
-					GameAudioManager::Play("VolaTilePlace");
-					break;
-				} //End switch
-			}
+				//Play the sound
+				GameAudioManager::Play("LifeDrain");
+				break;
+			} //End switch
+			case ABILITY_NAME::HARD_DROP:
+			{
+				//Play the sound
+				Audio_Play_PlayerAttack();
+				break;
+			} //End switch
+			case ABILITY_NAME::OVERHANG:
+			{
+				//Play the sound
+				GameAudioManager::Play("Overhang");
+				break;
+			} //End switch
+			case ABILITY_NAME::MATRIX_TRAP:
+			{
+				//Play the sound
+				GameAudioManager::Play("MatrixTrapPlace");
+				break;
+			} //End switch
+			case ABILITY_NAME::CONSTRUCT_WALL:
+			{
+				//Play the sound
+				GameAudioManager::Play("ConstructTilePlace");
+				break;
+			} //End switch
+			case ABILITY_NAME::VOLATILE:
+			{
+				//Play the sound
+				GameAudioManager::Play("VolaTilePlace");
+				break;
+			} //End switch
+		}
 			
 
+		playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 		//Shift through each grid that the pattern would be in relative to given coordinate
 		for (int i = 0; i < pattern.offsetGroup[selected_Pattern_Rotation].size(); ++i) {
 			//If the coordinate is within the boundaries of the room
@@ -1406,7 +1425,6 @@ namespace ALEngine::Script
 
 						u32 initialHealth = unit.health;
 
-						playerEntity = Coordinator::Instance()->GetEntityByTag("Player");
 						Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
 						//If unit is enemy
@@ -1435,6 +1453,7 @@ namespace ALEngine::Script
 
 									AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 
+									gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 									break;
 								}
 							} //End switch
@@ -1485,6 +1504,14 @@ namespace ALEngine::Script
 		}//End loop through pattern body check
 
 		ECS::SetActive(true, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
+
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+		an.nextClip = "PlayerIdle";
+		ECS::ChangeAnimation(an, "PlayerAttack");
+
+		gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(ECS::Entity cellEntity) {
@@ -1513,7 +1540,7 @@ namespace ALEngine::Script
 			return;
 		}
 
-		//// Set the move animation for player
+		// Set the move animation for player
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
 		ECS::ChangeAnimation(an, "PlayerRun");
 		SetMoveOrder(pathList);
@@ -1635,7 +1662,7 @@ namespace ALEngine::Script
 
 		//Set the overlay sprite to false
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = false; //TOGGLING FOR OVERLAY VISIBILITY
-	
+		
 		ToggleCellWalkability(currentRoom, getEntityCell(currentRoom, x, y), false);
 	}
 
@@ -1738,10 +1765,16 @@ namespace ALEngine::Script
 
 			GameAudioManager::Play("SelectSkill");
 
+			////Get the audiosource
+			//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
 			//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
 			//ad.m_Channel = Engine::Channel::SFX;
 			//ad.m_Loop = true;
 			//ad.Play();
+
+			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "PlayerChargeLoop");
 		}
 	}
 
@@ -2019,13 +2052,17 @@ namespace ALEngine::Script
 
 			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.actionPoints));
 
+			if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+				gameplaySystem_GUI->Update_AP_UI(movinUnit.actionPoints);
+			}
+
 			//If reached the end of path
 			if (isEndOfPath) {
 				currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;
 				//If player, end turn
 				if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
 					//Get the audiosource
-					//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(gameplaySystem->masterAudioSource);
+					Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
 
 					////Play the sound
 					//Engine::Audio& ad = as.GetAudio(AUDIO_PLAYER_WALK_1);
@@ -2161,7 +2198,6 @@ namespace ALEngine::Script
 		//gameplaySystem->Toggle_Gameplay_State(false);
 		Engine::Scene::Restart();
 	}
-
 
 	/*!*********************************************************************************
 	\brief
