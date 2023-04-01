@@ -27,7 +27,7 @@
         "EntityData": [
             {
                 "tag": "back_ground",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 0,
                 "parentID": 7,
@@ -72,7 +72,7 @@
         "EntityData": [
             {
                 "tag": "game_icon",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 1,
                 "parentID": 0,
@@ -124,11 +124,11 @@
         "EntityData": [
             {
                 "tag": "btn_newgame",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 2,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ],
         "LogicComponent": [
@@ -177,7 +177,7 @@
         "EntityData": [
             {
                 "tag": "btn_options",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 3,
                 "parentID": 0,
@@ -230,7 +230,7 @@
         "EntityData": [
             {
                 "tag": "btn_htp",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 4,
                 "parentID": 0,
@@ -283,7 +283,7 @@
         "EntityData": [
             {
                 "tag": "btn_quit",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 5,
                 "parentID": 0,
@@ -293,8 +293,8 @@
         "LogicComponent": [
             {
                 "components": [
-                    "AlphaFadeIn",
-                    "QuitButton"
+                    "QuitButton",
+                    "AlphaFadeIn"
                 ]
             }
         ]
@@ -376,8 +376,8 @@
         "EntityData": [
             {
                 "tag": "main_menu",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 7,
                 "parentID": -1,
                 "treeNodeFlags": 32
@@ -556,7 +556,7 @@
         "EntityData": [
             {
                 "tag": "floating_cube",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 11,
                 "parentID": 0,
@@ -826,7 +826,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    445.0062255859375,
+                    445.0063171386719,
                     0.0
                 ],
                 "scale": [
@@ -871,7 +871,7 @@
             {
                 "position": [
                     1075.0,
-                    446.4306640625,
+                    446.43060302734375,
                     0.0
                 ],
                 "scale": [
@@ -916,7 +916,7 @@
             {
                 "position": [
                     814.9998779296875,
-                    442.2304992675781,
+                    442.23040771484375,
                     0.0
                 ],
                 "scale": [
@@ -1241,7 +1241,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.00048828125,
+                    450.0006408691406,
                     0.0
                 ],
                 "scale": [
@@ -1293,8 +1293,8 @@
         "EntityData": [
             {
                 "tag": "fps_display",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 27,
                 "parentID": -1,
                 "treeNodeFlags": 32
@@ -1381,7 +1381,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 3100
+                "layer": 3101
             }
         ],
         "Transform": [
@@ -1426,7 +1426,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 3100
+                "layer": 3101
             }
         ],
         "Transform": [
@@ -1710,11 +1710,310 @@
         "EntityData": [
             {
                 "tag": "bg_image",
-                "active": true,
+                "active": false,
                 "localActive": true,
                 "id": 36,
                 "parentID": 7,
                 "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 37,
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    450.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Cutscene Object",
+                "active": true,
+                "localActive": true,
+                "id": 37,
+                "parentID": -1,
+                "treeNodeFlags": 0
+            }
+        ],
+        "LogicComponent": [
+            {
+                "components": [
+                    "CutsceneObject"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 38,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.46268653869628906
+                ],
+                "layer": 255
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    801.0,
+                    451.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Black Overlay",
+                "active": true,
+                "localActive": true,
+                "id": 38,
+                "parentID": 37,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 39,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\DialogueBox.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    800.0,
+                    123.0,
+                    0.0
+                ],
+                "scale": [
+                    1430.0,
+                    210.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Dialogue Box",
+                "active": true,
+                "localActive": true,
+                "id": 39,
+                "parentID": 37,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Hello There",
+                "currentFont": "SFProverbialGothic",
+                "scale": 0.8999999761581421,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    72.0,
+                    83.0
+                ],
+                "layer": 0
+            }
+        ]
+    },
+    {
+        "id": 40,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    801.0,
+                    451.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Cutscene Bottom",
+                "active": true,
+                "localActive": true,
+                "id": 40,
+                "parentID": 37,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 41,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 1
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    801.0,
+                    451.0,
+                    0.0
+                ],
+                "scale": [
+                    1600.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Cutscene Top",
+                "active": true,
+                "localActive": true,
+                "id": 41,
+                "parentID": 37,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 42,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\DialogueBox.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 256
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    799.9998779296875,
+                    780.0,
+                    0.0
+                ],
+                "scale": [
+                    1430.0,
+                    210.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Dialogue Box Top",
+                "active": true,
+                "localActive": true,
+                "id": 42,
+                "parentID": 37,
+                "treeNodeFlags": 32
+            }
+        ],
+        "TextProperty": [
+            {
+                "textString": "Hello There",
+                "currentFont": "SFProverbialGothic",
+                "scale": 0.8999999761581421,
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "position": [
+                    72.0,
+                    430.0
+                ],
+                "layer": 0
             }
         ]
     }

@@ -152,9 +152,8 @@ namespace ALEngine::Script
 		{
 			Instantiate("Tutorial Objects");
 
-			//ECS::AddLogicComponent<Script::TutorialCamera>(entity);
-
-			ECS::AddLogicComponent<Script::GameplayCamera>(entity);
+			ECS::AddLogicComponent<Script::TutorialCamera>(entity);
+			//ECS::AddLogicComponent<Script::GameplayCamera>(entity);
 		}
 		else
 		{

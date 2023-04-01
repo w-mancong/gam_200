@@ -119,15 +119,12 @@ namespace ALEngine::Script
 
 		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
 
-		if (!Engine::IsChannelPlaying(Engine::Channel::Master))
-		{
-			Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Audio\\Cutscene_MainMenu_BGM.wav");
-			Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(id);
-			ad.m_Volume = 0.6f;
-			ad.m_Channel = Engine::Channel::BGM;
-			ad.m_Loop = true;
-			ad.Play();
-		}
+		Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Audio\\Cutscene_MainMenu_BGM.wav");
+		Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(id);
+		ad.m_Volume = 0.6f;
+		ad.m_Channel = Engine::Channel::BGM;
+		ad.m_Loop = true;
+		ad.Play();
 
 		{
 			GetSceneGraph().FindImmediateChildren(en);
