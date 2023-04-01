@@ -62,7 +62,7 @@ namespace ALEngine::Script
 			pos.y += CAMERA_SPEED * Time::m_DeltaTime;
 
 		ConfinePosition(pos);
-		ECS::UpdateUIpositions();
+		//ECS::UpdateUIpositions();
 	}
 
 	void GameplayCamera::Free(ECS::Entity en)

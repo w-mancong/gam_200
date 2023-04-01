@@ -127,14 +127,17 @@ namespace ALEngine::Script
 		CreateEventTrigger(main_menu, true);
 		Subscribe(main_menu, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenMenuHover);
 		Subscribe(main_menu, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenMenuExit);
+		Coordinator::Instance()->GetComponent<EventTrigger>(main_menu).layer = 100;
 
 		CreateEventTrigger(yes, true);
 		Subscribe(yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenYesHover);
 		Subscribe(yes, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenYesExit);
+		Coordinator::Instance()->GetComponent<EventTrigger>(yes).layer = 100;
 
 		CreateEventTrigger(no, true);
 		Subscribe(no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenNoHover);
 		Subscribe(no, Component::EVENT_TRIGGER_TYPE::ON_POINTER_EXIT, WhenNoExit);
+		Coordinator::Instance()->GetComponent<EventTrigger>(no).layer = 100;
 
 		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
 		sceneChanging	 = false;

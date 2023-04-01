@@ -193,5 +193,6 @@ namespace ALEngine::Script
 	{
 		tutorial_prompt = yes = no = scene_transition = ECS::MAX_ENTITIES;
 		PauseButtonFlag::confirmationBG = false;
+		changeIndex = -1;
 	}
 }

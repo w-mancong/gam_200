@@ -150,6 +150,7 @@ namespace ALEngine::Engine
 						accumulator -= Time::m_FixedDeltaTime;
 					}
 
+					ECS::UpdateUIpositions();
 					// Update Scene graph
 					ECS::GetSceneGraph().Update();
 
