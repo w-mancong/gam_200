@@ -1345,12 +1345,12 @@ namespace ALEngine::Script
 	void GameplaySystem::RunAbilities_OnCells(Room& room, Math::Vector2Int coordinate, Pattern pattern, Abilities* abilities) {
 		AL_CORE_CRITICAL("USE ABILITY");
 
-		//Get the audiosource
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
-		Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
-		ad.m_Channel = Engine::Channel::SFX;
-		ad.m_Loop = false;
-		ad.Stop();
+		////Get the audiosource
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
+		//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+		//ad.m_Channel = Engine::Channel::SFX;
+		//ad.m_Loop = false;
+		//ad.Stop();
 
 		abilities->current_Cooldown = abilities->max_Cooldown;
 
@@ -1760,10 +1760,12 @@ namespace ALEngine::Script
 
 			GameAudioManager::Play("SelectSkill");
 
-			Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
-			ad.m_Channel = Engine::Channel::SFX;
-			ad.m_Loop = true;
-			ad.Play();
+			////Get the audiosource
+			//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
+			//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+			//ad.m_Channel = Engine::Channel::SFX;
+			//ad.m_Loop = true;
+			//ad.Play();
 
 			Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 			Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
