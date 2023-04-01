@@ -1452,6 +1452,7 @@ namespace ALEngine::Script
 
 									AL_CORE_CRITICAL("Heal : " + std::to_string(healthDrained) + " to player, health before " + std::to_string(playerUnit.health - healthDrained) + ", health now " + std::to_string(playerUnit.health));
 
+									gameplaySystem_GUI->UpdateGUI_OnSelectUnit(playerEntity);
 									break;
 								}
 							} //End switch
