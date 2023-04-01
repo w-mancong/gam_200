@@ -399,11 +399,7 @@ namespace ALEngine::Script
 
 		//Set to canwalk
 		cell.m_canWalk = true;
-
-		if (Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
-			cell.m_resetCounter = 1000;
-		else
-			cell.m_resetCounter = 2;
+		cell.m_resetCounter = 1000;
 
 		//Change the cell sprite to filename sprite
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cellEntity);
