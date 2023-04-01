@@ -199,6 +199,31 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Audio_PlayEnemyMove(Unit& enemy);
 
+		/*!*********************************************************************************
+		\brief
+			Play Death sound based on enemy
+		***********************************************************************************/
+		void Audio_PlayEnemyDeath(Unit& enemy);
+
+		/*!*********************************************************************************
+		\brief
+			Play Hurt sound based on enemy
+		***********************************************************************************/
+		void Audio_PlayEnemyHurt(Unit& enemy);
+
+		/*!*********************************************************************************
+		\brief
+			Play Moving/running sound based on enemy
+		***********************************************************************************/
+		void Audio_PlayEnemyMoving(Unit& enemy);
+
+		/*!*********************************************************************************
+		\brief
+			Play Moving/running sound based on enemy
+		***********************************************************************************/
+		void Audio_StopEnemyMoving(Unit& enemy);
+
+		
 		void Set_EnemyTriggerDistance(ECS::Entity& UnitEntity, s32 rangeValue);
 
 		// For RTTR

@@ -8,12 +8,13 @@
 #define AUDIO_HIT			"Assets\\Audio\\Hit.wav"
 #define AUDIO_ENEMY_HURT_1	"Assets\\Audio\\EnemyHurt-1.wav"
 #define AUDIO_CLICK_1		"Assets\\Audio\\Click_1.wav"
-#define AUDIO_PLAYER_WALK_1	"Assets\\Audio\\DrorWalking_1.wav"
+#define AUDIO_PLAYER_WALK_1	"Assets\\Audio\\SFX_DrorMove.wav"
+#define AUDIO_GUARD_WALK_1	"Assets\\Audio\\SFX_GuardMove.wav"
+#define AUDIO_SUMMONER_WALK_1	"Assets\\Audio\\SFX_SummonerMove.wav"
+#define AUDIO_TILEDESTROYER_WALK_1	"Assets\\Audio\\SFX_TileDestroyerMove.wav"
 #define AUDIO_TEST_ENEMY_DEATH "Assets\\Audio\\testenemydeathsound.wav"
 
 #define AUDIO_GUARD_MOVE_1 "Assets\\Audio\\GuardMove_v01.wav"
-#define AUDIO_GUARD_MOVE_2 "Assets\\Audio\\GuardMove_v02.wav"
-#define AUDIO_GUARD_MOVE_3 "Assets\\Audio\\GuardMove_v03.wav"
 
 #define AUDIO_GUARD_DEATH_1 "Assets\\Audio\\GuardDeath_v01.wav"
 
@@ -22,4 +23,6 @@
 
 #define AUDIO_GUARD_ATTACK_1 "Assets\\Audio\\GuardAttack_v01.wav"
 #define AUDIO_GUARD_ATTACK_2 "Assets\\Audio\\GuardAttack_v02.wav"
+
+#define AUDIO_SELECT_SKILL_LOOP "Assets\\Audio\\SFX_DrorSelectSkillLoop.wav"
 #endif

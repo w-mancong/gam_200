@@ -20,7 +20,7 @@
             {
                 "position": [
                     796.94775390625,
-                    122.84164428710938,
+                    122.84158325195313,
                     0.0
                 ],
                 "scale": [
@@ -154,7 +154,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.147216796875,
+                    1868.14794921875,
                     499.1375732421875,
                     0.0
                 ],
@@ -305,11 +305,11 @@
                     37.0
                 ],
                 "rotation": 0.0,
-                "ui": false,
+                "ui": true,
                 "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -800.0,
+                    -197.9000244140625,
+                    725.0
                 ]
             }
         ],
@@ -566,8 +566,8 @@
         "Transform": [
             {
                 "position": [
-                    508.5919494628906,
-                    43.2255744934082,
+                    508.59124755859375,
+                    43.22486877441406,
                     0.0
                 ],
                 "scale": [
@@ -690,7 +690,7 @@
         "Transform": [
             {
                 "position": [
-                    676.0134887695313,
+                    676.0132446289063,
                     43.229576110839844,
                     0.0
                 ],
@@ -752,7 +752,7 @@
         "Transform": [
             {
                 "position": [
-                    918.7748413085938,
+                    918.7745361328125,
                     43.22444152832031,
                     0.0
                 ],
@@ -814,8 +814,8 @@
         "Transform": [
             {
                 "position": [
-                    1002.518798828125,
-                    43.22495651245117,
+                    1002.5169677734375,
+                    43.22492980957031,
                     0.0
                 ],
                 "scale": [
@@ -877,7 +877,7 @@
             {
                 "position": [
                     1086.168701171875,
-                    43.224021911621094,
+                    43.22395324707031,
                     0.0
                 ],
                 "scale": [
@@ -1029,7 +1029,7 @@
             {
                 "position": [
                     1532.071533203125,
-                    33.4504508972168,
+                    33.4504280090332,
                     0.0
                 ],
                 "scale": [
@@ -2038,7 +2038,7 @@
         "Transform": [
             {
                 "position": [
-                    896.7427368164063,
+                    896.7429809570313,
                     354.8003234863281,
                     0.0
                 ],
@@ -2698,7 +2698,7 @@
                 "localActive": true,
                 "id": 51,
                 "parentID": -1,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ]
     },
@@ -3164,7 +3164,7 @@
                     1.0,
                     1.0,
                     1.0,
-                    1.0
+                    0.0
                 ],
                 "layer": 0
             }
@@ -3177,8 +3177,8 @@
                     0.0
                 ],
                 "scale": [
-                    50.0,
-                    50.0
+                    0.0010000000474974513,
+                    0.0010000000474974513
                 ],
                 "rotation": 0.0,
                 "ui": false,
@@ -3227,7 +3227,7 @@
             {
                 "position": [
                     796.94775390625,
-                    149.3627166748047,
+                    149.36264038085938,
                     0.0
                 ],
                 "scale": [
@@ -3586,8 +3586,8 @@
         "Transform": [
             {
                 "position": [
-                    1450.293212890625,
-                    33.45058059692383,
+                    1450.292724609375,
+                    33.450592041015625,
                     0.0
                 ],
                 "scale": [
@@ -3676,7 +3676,7 @@
         "Transform": [
             {
                 "position": [
-                    83.822021484375,
+                    83.82205200195313,
                     51.45721435546875,
                     0.0
                 ],
@@ -3696,8 +3696,8 @@
         "EntityData": [
             {
                 "tag": "Lose_Clear_Text",
-                "active": false,
-                "localActive": false,
+                "active": true,
+                "localActive": true,
                 "id": 71,
                 "parentID": -1,
                 "treeNodeFlags": 0
@@ -3738,7 +3738,7 @@
         "Transform": [
             {
                 "position": [
-                    234.9999237060547,
+                    234.9999542236328,
                     627.7998046875,
                     0.0
                 ],
@@ -3758,7 +3758,7 @@
         "EntityData": [
             {
                 "tag": "Lose_Button",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 72,
                 "parentID": 71,
@@ -3783,7 +3783,7 @@
         "Transform": [
             {
                 "position": [
-                    234.9999237060547,
+                    234.9999542236328,
                     627.799072265625,
                     0.0
                 ],
@@ -3803,7 +3803,7 @@
         "EntityData": [
             {
                 "tag": "Lose_Button_Text",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 73,
                 "parentID": 72,
@@ -4199,7 +4199,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.8655090332031,
+                    469.8653259277344,
                     0.0
                 ],
                 "scale": [
@@ -4244,7 +4244,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.84124755859375,
+                    469.84100341796875,
                     0.0
                 ],
                 "scale": [
@@ -4289,7 +4289,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.8225402832031,
+                    469.8222961425781,
                     0.0
                 ],
                 "scale": [
@@ -5848,7 +5848,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 3102
+                "layer": 3101
             }
         ],
         "Transform": [
@@ -5893,7 +5893,7 @@
                     1.0,
                     1.0
                 ],
-                "layer": 3102
+                "layer": 3101
             }
         ],
         "Transform": [
@@ -6369,7 +6369,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    445.00628662109375,
+                    445.00616455078125,
                     0.0
                 ],
                 "scale": [
@@ -6414,7 +6414,7 @@
             {
                 "position": [
                     1075.0,
-                    446.4306335449219,
+                    446.4306640625,
                     0.0
                 ],
                 "scale": [
@@ -6459,7 +6459,7 @@
             {
                 "position": [
                     814.9998779296875,
-                    442.23052978515625,
+                    442.2305908203125,
                     0.0
                 ],
                 "scale": [
@@ -6784,7 +6784,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.0006103515625,
+                    450.00042724609375,
                     0.0
                 ],
                 "scale": [
@@ -6807,271 +6807,6 @@
                 "localActive": true,
                 "id": 133,
                 "parentID": 119,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 134,
-        "Transform": [
-            {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    50.0,
-                    50.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "win_condition",
-                "active": true,
-                "localActive": true,
-                "id": 134,
-                "parentID": -1,
-                "treeNodeFlags": 32
-            }
-        ],
-        "LogicComponent": [
-            {
-                "components": [
-                    "WinCondition"
-                ]
-            }
-        ]
-    },
-    {
-        "id": 135,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\WinScreen.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    0.0
-                ],
-                "layer": 3100
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    449.99993896484375,
-                    0.0
-                ],
-                "scale": [
-                    1600.0,
-                    900.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    -16.0,
-                    -8.999999046325684,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "win",
-                "active": true,
-                "localActive": true,
-                "id": 135,
-                "parentID": 134,
-                "treeNodeFlags": 0
-            }
-        ]
-    },
-    {
-        "id": 136,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\PauseMenu_Button_MainMenu.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0003662109375,
-                    219.2007293701172,
-                    0.0
-                ],
-                "scale": [
-                    196.5,
-                    57.59999465942383
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "main_menu",
-                "active": false,
-                "localActive": false,
-                "id": 136,
-                "parentID": 135,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 137,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\LoseScreen.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    0.0
-                ],
-                "layer": 3100
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    800.0,
-                    449.99993896484375,
-                    0.0
-                ],
-                "scale": [
-                    1600.0,
-                    900.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    -16.0,
-                    -8.999999046325684,
-                    725.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "lose",
-                "active": true,
-                "localActive": true,
-                "id": 137,
-                "parentID": 134,
-                "treeNodeFlags": 0
-            }
-        ]
-    },
-    {
-        "id": 138,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Btn_Yes.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    674.0999755859375,
-                    172.70004272460938,
-                    0.0
-                ],
-                "scale": [
-                    158.3000030517578,
-                    63.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "yes",
-                "active": false,
-                "localActive": false,
-                "id": 138,
-                "parentID": 137,
-                "treeNodeFlags": 32
-            }
-        ]
-    },
-    {
-        "id": 139,
-        "Sprite": [
-            {
-                "filePath": "Assets\\Images\\Btn_No.png",
-                "color": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "layer": 3101
-            }
-        ],
-        "Transform": [
-            {
-                "position": [
-                    917.7999267578125,
-                    172.70004272460938,
-                    0.0
-                ],
-                "scale": [
-                    158.3000030517578,
-                    63.0
-                ],
-                "rotation": 0.0,
-                "ui": false,
-                "uiOffset": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            }
-        ],
-        "EntityData": [
-            {
-                "tag": "no",
-                "active": false,
-                "localActive": false,
-                "id": 139,
-                "parentID": 137,
                 "treeNodeFlags": 32
             }
         ]

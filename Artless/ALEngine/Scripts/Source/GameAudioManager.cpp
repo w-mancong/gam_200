@@ -65,37 +65,37 @@ namespace ALEngine::Script
 			InitAudio("Assets\\Audio\\SFX_LifeDrain.wav");
 			InitAudio("Assets\\Audio\\SFX_MatrixTrapActivate.wav");
 			// VO
-			InitAudio("Assets\\Audio\\VO_Guard_v01.wav", Engine::Channel::VO);
-			InitAudio("Assets\\Audio\\VO_Guard_v02.wav", Engine::Channel::VO);
-			InitAudio("Assets\\Audio\\VO_Summoner_v01.wav", Engine::Channel::VO);
-			InitAudio("Assets\\Audio\\VO_Summoner_v02.wav", Engine::Channel::VO);
-			InitAudio("Assets\\Audio\\VO_TileDestroyer_v01.wav", Engine::Channel::VO);
-			InitAudio("Assets\\Audio\\VO_TileDestroyer_v02.wav", Engine::Channel::VO);
+			InitAudio("Assets\\Audio\\VO_Guardv01.wav");
+			InitAudio("Assets\\Audio\\VO_Guardv02.wav");
+			InitAudio("Assets\\Audio\\VO_Summonerv01.wav");
+			InitAudio("Assets\\Audio\\VO_Summonerv02.wav");
+			InitAudio("Assets\\Audio\\VO_TileDestroyerv01.wav");
+			InitAudio("Assets\\Audio\\VO_TileDestroyerv02.wav");
 			// Guard SFX
-			InitAudio("Assets\\Audio\\SFX_GuardAttack_1.wav");
-			InitAudio("Assets\\Audio\\SFX_GuardAttack_2.wav");
+			InitAudio("Assets\\Audio\\SFX_GuardAttack1.wav");
+			InitAudio("Assets\\Audio\\SFX_GuardAttack2.wav");
 			InitAudio("Assets\\Audio\\SFX_GuardDeath.wav");
 			InitAudio("Assets\\Audio\\SFX_GuardHurt.wav");
 			InitAudio("Assets\\Audio\\SFX_GuardMove.wav");
 			// Summoner
-			InitAudio("Assets\\Audio\\SFX_SummonerAttack_1.wav");
-			InitAudio("Assets\\Audio\\SFX_SummonerAttack_2.wav");
+			InitAudio("Assets\\Audio\\SFX_SummonerAttack1.wav");
+			InitAudio("Assets\\Audio\\SFX_SummonerAttack2.wav");
 			InitAudio("Assets\\Audio\\SFX_SummonerDeath.wav");
 			InitAudio("Assets\\Audio\\SFX_SummonerHurt.wav");
 			InitAudio("Assets\\Audio\\SFX_SummonerMove.wav");
 			// Tile Destroyer
-			InitAudio("Assets\\Audio\\SFX_TileDestroyerAttack_1.wav");
-			InitAudio("Assets\\Audio\\SFX_TileDestroyerAttack_2.wav");
+			InitAudio("Assets\\Audio\\SFX_TileDestroyerAttack1.wav");
+			InitAudio("Assets\\Audio\\SFX_TileDestroyerAttack2.wav");
 			InitAudio("Assets\\Audio\\SFX_TileDestroyerDeath.wav");
 			InitAudio("Assets\\Audio\\SFX_TileDestroyerHurt.wav");
 			InitAudio("Assets\\Audio\\SFX_TileDestroyerMove.wav");
 			// Dror
-			InitAudio("Assets\\Audio\\SFX_DrorAttack_1.wav");
-			InitAudio("Assets\\Audio\\SFX_DrorAttack_2.wav");
-			InitAudio("Assets\\Audio\\SFX_DrorAttack_3.wav");
-			InitAudio("Assets\\Audio\\SFX_DrorDeath_1.wav");
-			InitAudio("Assets\\Audio\\SFX_DrorDeath_2.wav");
-			InitAudio("Assets\\Audio\\SFX_DrorDeath_3.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorAttack1.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorAttack2.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorAttack3.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorDeath1.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorDeath2.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorDeath3.wav");
 			InitAudio("Assets\\Audio\\SFX_DrorHurt.wav");
 			InitAudio("Assets\\Audio\\SFX_DrorMove.wav");
 			InitAudio("Assets\\Audio\\SFX_DrorSelectSkillLoop.wav");
@@ -113,5 +113,10 @@ namespace ALEngine::Script
 	void GameAudioManager::Play(std::string const& name)
 	{
 		sounds[name].Play();
+	}
+
+	void GameAudioManager::Stop(std::string const& name)
+	{
+		sounds[name].Stop();
 	}
 }
