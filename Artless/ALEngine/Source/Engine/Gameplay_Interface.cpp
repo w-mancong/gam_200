@@ -1507,6 +1507,9 @@ namespace ALEngine::Script
 		Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
 		an.nextClip = "PlayerIdle";
 		ECS::ChangeAnimation(an, "PlayerAttack");
+
+		gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
 	}
 
 	void GameplaySystem::MovePlayerEntityToCell(ECS::Entity cellEntity) {
@@ -2046,6 +2049,10 @@ namespace ALEngine::Script
 			}
 
 			AL_CORE_INFO("Movement Points " + std::to_string(movinUnit.actionPoints));
+
+			if (movinUnit.unitType == UNIT_TYPE::PLAYER) {
+				gameplaySystem_GUI->Update_AP_UI(movinUnit.actionPoints);
+			}
 
 			//If reached the end of path
 			if (isEndOfPath) {
