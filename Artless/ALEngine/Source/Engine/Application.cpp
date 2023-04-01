@@ -268,6 +268,8 @@ namespace ALEngine::Engine
 		AssetManager::Instance()->Exit();	// Clean up all Assets
 		AudioManagerExit();
 		glfwTerminate();					// clean/delete all GLFW resources
+		Serializer::Serializer config{ "Assets\\Dev\\Objects\\Config.json" };
+		config.SetInt("FullScreen", OpenGLWindow::fullScreen);
 	}
 
 	void Run(void)

@@ -71,6 +71,7 @@ namespace ALEngine::Graphics
 	GLFWwindow* OpenGLWindow::window = nullptr;
 	u32 OpenGLWindow::width{ DEFAULT_WIDTH }, OpenGLWindow::height{ DEFAULT_HEIGHT };
 	f32 OpenGLWindow::ar{};
+	b8 OpenGLWindow::fullScreen{ true };
 	std::string OpenGLWindow::title{ "ALEngine" };
 	void OpenGLWindow::InitGLFWWindow(void)
 	{
@@ -98,6 +99,7 @@ namespace ALEngine::Graphics
 		Math::vec2 dimension = config.GetVec2("dimensions", { DEFAULT_WIDTH, DEFAULT_HEIGHT });
 		width = static_cast<u32>(dimension.x);
 		height = static_cast<u32>(dimension.y);
+		fullScreen = config.GetInt("FullScreen", 1);
 
 		ar = dimension.x / dimension.y;
 
@@ -179,36 +181,33 @@ namespace ALEngine::Graphics
 		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+#if !EDITOR
+		FullScreen(fullScreen);
+#endif
 	}
 
 	void OpenGLWindow::FullScreen(bool fullScreen)
 	{
 		s32 w{ 0 }, h{ 0 }, x{ 0 }, y{ 0 };
 		math::Vec2Int desktop = GetMonitorSize();
-		//if (fullScreen)
-		//{
-		//	w = desktop.x;
-		//	h = desktop.y;
-		//}
-		//else
-		//{
-		//	w = width;
-		//	h = height;
-		//	x = (desktop.x >> 1) - (width  >> 1);
-		//	y = (desktop.y >> 1) - (height >> 1);
-		//}
-		
-		////////////// temp fix////////////////
+
+		//////////////// temp fix////////////////
 		w = width;
 		h = height;
-		x = (desktop.x >> 1) - (width >> 1);
-		y = (desktop.y >> 1) - (height >> 1);
-		////////////// temp fix////////////////
-
+		x = (desktop.x >> 4);
+		y = (desktop.y >> 4);
+		//////////////// temp fix////////////////
 
 		glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : nullptr, x, y, w, h, GLFW_DONT_CARE);
 		glfwGetWindowSize(window, &w, &h);
 		width = static_cast<u32>(w), height = static_cast<u32>(h);
+	}
+
+	void OpenGLWindow::ToggleScreen(void)
+	{
+		OpenGLWindow::fullScreen = !OpenGLWindow::fullScreen;
+		FullScreen(OpenGLWindow::fullScreen);
 	}
 
 	GLFWwindow* OpenGLWindow::Window(void)
