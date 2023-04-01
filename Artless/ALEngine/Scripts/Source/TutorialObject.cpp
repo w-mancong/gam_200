@@ -478,6 +478,7 @@ namespace ALEngine::Script
 		ECS::SetActive(true, m_ConstructTile);
 
 		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButConstructTileOff();
+		SetAllTilesActive(false);
 
 		// Give player enough points for Construct Tile
 		Unit& player = Coordinator::Instance()->GetComponent<Unit>(Gameplay::TutorialManager::Instance()->GetPlayerEntity());
@@ -507,6 +508,7 @@ namespace ALEngine::Script
 		static b8 hasPlaced{ false };
 
 		Gameplay::TutorialManager::Instance()->SetAllAbilitiesButConstructTileOff();
+		SetAllTilesActive(true);
 
 		if (Gameplay::TutorialManager::Instance()->GetTileIsPlaced())
 			hasPlaced = true;
