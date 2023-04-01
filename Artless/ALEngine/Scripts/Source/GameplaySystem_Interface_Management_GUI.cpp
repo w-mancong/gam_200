@@ -58,7 +58,25 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_GUI::DisplayYourTurn()
 	{
-		guiManager.Your_Turn_timer = 5.6f;
+		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
+		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Your_Turn_Sign);
+
+		switch (gameplaySystem->currentPhaseStatus) {
+			case PHASE_STATUS::PHASE_SETUP:
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_SetupPhase.png");
+			break;
+
+			case PHASE_STATUS::PHASE_ACTION:
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_ActionPhase.png");
+			break;
+
+			case PHASE_STATUS::PHASE_ENEMY:
+				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_EnemyPhase.png");
+			break;
+
+		}
+
+		guiManager.Your_Turn_timer = 2.6f;
 	}
 
 	template<typename T>
@@ -78,11 +96,11 @@ namespace ALEngine::Script
 			const f32 biggest(1.f);
 			const f32 smallest(0.f);
 
-			if (timer > 2.5f)
+			if (timer > 0.5f)
 			{
-				f32 t1 = timer - 2.5f;
+				f32 t1 = timer - 0.5f;
 				f32 lifePercentage = (2.f - t1) / 2.f; // particle.lifeRemaining / particle.lifeTime;
-				trans.color.a = Lerp(smallest, biggest, lifePercentage);
+				trans.color.a = Lerp(smallest, biggest, lifePercentage * 2);
 			}
 			else if(timer <= 1.2f)
 			{
@@ -118,12 +136,12 @@ namespace ALEngine::Script
 
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
-		Text& health_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Health);
-		Text& name_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Name);
-		Text& attack_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Attack);
-		Text& defense_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Defense);
-		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Unit_Movement);
-		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(getGuiManager().Unit_Profile);
+		Text& health_text = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Unit_Health);
+		Text& name_text = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Unit_Name);
+		Text& attack_text = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Unit_Attack);
+		Text& defense_text = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Unit_Defense);
+		Text& movement_text = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Unit_Movement);
+		Sprite& profile = Coordinator::Instance()->GetComponent<Sprite>(gameplaySystem_GUI->getGuiManager().Unit_Profile);
 
 		Unit& PlayerUnit = Coordinator::Instance()->GetComponent<Unit>(Coordinator::Instance()->GetEntityByTag("Player"));
 
@@ -135,7 +153,7 @@ namespace ALEngine::Script
 
 		profile.id = Engine::AssetManager::Instance()->GetGuid(PlayerUnit.unit_Profile_Sprite_File);
 
-		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(getGuiManager().Unit_Healthbar);
+		Transform& healthbar_transform = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem_GUI->getGuiManager().Unit_Healthbar);
 		healthbar_transform.localScale.x = (PlayerUnit.health <= 0 ? 0 : ((f32)PlayerUnit.health / (f32)PlayerUnit.maxHealth)) * 0.5f;
 	}
 
@@ -149,10 +167,10 @@ namespace ALEngine::Script
 		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
 		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
 		guiManager.Unit_Healthbar = Coordinator::Instance()->GetEntityByTag("red_health_bar");
-		guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
-		guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
-		guiManager.Lose_Clear = Coordinator::Instance()->GetEntityByTag("Lose_Clear_Text");
-		guiManager.Lose_Button = Coordinator::Instance()->GetEntityByTag("Lose_Button");
+		//guiManager.Win_Clear = Coordinator::Instance()->GetEntityByTag("Win_Clear_Text");
+		//guiManager.Win_Button = Coordinator::Instance()->GetEntityByTag("Win_Button");
+		//guiManager.Lose_Clear = Coordinator::Instance()->GetEntityByTag("Lose_Clear_Text");
+		//guiManager.Lose_Button = Coordinator::Instance()->GetEntityByTag("Lose_Button");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
 		guiManager.Phase_Indicator_Icon = Coordinator::Instance()->GetEntityByTag("Phase_Icon");
 		guiManager.Tooltip_Skills_Card = Coordinator::Instance()->GetEntityByTag("tooltip_skills");
@@ -190,16 +208,16 @@ namespace ALEngine::Script
 		//}
 
 		ECS::SetActive(false, guiManager.endTurnBtnEntity);
-		ECS::SetActive(false, guiManager.Win_Clear);
-		ECS::SetActive(false, guiManager.Lose_Clear);
+		//ECS::SetActive(false, guiManager.Win_Clear);
+		//ECS::SetActive(false, guiManager.Lose_Clear);
 
-		ECS::CreateButton(guiManager.Win_Button);
-		ECS::CreateButton(guiManager.Lose_Button);
+		//ECS::CreateButton(guiManager.Win_Button);
+		//ECS::CreateButton(guiManager.Lose_Button);
 	}
 
 	void GameplaySystem_Interface_Management_GUI::UpdateFpsLabel()
 	{
-		Text& fps = Coordinator::Instance()->GetComponent<Text>(getGuiManager().FPS_Label);
+		Text& fps = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().FPS_Label);
 		if (guiManager.fpsActive)
 		{
 			std::ostringstream oss{};
@@ -382,7 +400,7 @@ namespace ALEngine::Script
 	{
 		guiManager.Phase_Indicator_Icon = Coordinator::Instance()->GetEntityByTag("Phase_Icon");
 		guiManager.Phase_Indicator = Coordinator::Instance()->GetEntityByTag("text_phaseindicator");
-		Text& phaseIndicator = Coordinator::Instance()->GetComponent<Text>(getGuiManager().Phase_Indicator);
+		Text& phaseIndicator = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Phase_Indicator);
 		phaseIndicator.colour = Engine::Vector3(1.f, 1.f, 1.f);
 
 		switch (status)

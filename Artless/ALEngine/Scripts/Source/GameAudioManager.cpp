@@ -30,7 +30,10 @@ namespace ALEngine::Script
 			Engine::Audio audio = Engine::AssetManager::Instance()->GetAudio(id);
 			audio.m_Channel = channel;
 
-			u64 const start = audioName.find_last_of('\\') + 1;
+			if (channel == Engine::Channel::BGM)
+				audio.m_Loop = true;
+
+			u64 const start = audioName.find_first_of('_') + 1;
 			sounds[audioName.substr(start, audioName.find_last_of('.') - start)] = audio;
 		};
 
@@ -38,22 +41,71 @@ namespace ALEngine::Script
 		if (!initialized)
 		{
 			// SFX
-			InitAudio("Assets\\Audio\\MenuOpen.wav");
-			InitAudio("Assets\\Audio\\MenuClose.wav");
-			InitAudio("Assets\\Audio\\MenuButtonPress.wav");
-			InitAudio("Assets\\Audio\\VolumeControl.wav");
-			InitAudio("Assets\\Audio\\DialogueBoxOpen.wav");
-			InitAudio("Assets\\Audio\\AttackSelectionAppear.wav");
-			InitAudio("Assets\\Audio\\CannotPlace.wav");
-			InitAudio("Assets\\Audio\\MouseClick.wav");
-			InitAudio("Assets\\Audio\\PhaseChange.wav");
-			InitAudio("Assets\\Audio\\TileBreak.wav");
-			InitAudio("Assets\\Audio\\TileCrack.wav");
-			InitAudio("Assets\\Audio\\TilePlace.wav");
-			InitAudio("Assets\\Audio\\TileRotation.wav");
-
+			InitAudio("Assets\\Audio\\SFX_TileBreak.wav");
+			InitAudio("Assets\\Audio\\SFX_TileCrack.wav");
+			InitAudio("Assets\\Audio\\SFX_TilePlace.wav");
+			InitAudio("Assets\\Audio\\SFX_TileRotation.wav");
+			// UI SFX
+			InitAudio("Assets\\Audio\\SFX_AttackSelectionAppear.wav");
+			InitAudio("Assets\\Audio\\SFX_CannotPlace.wav");
+			InitAudio("Assets\\Audio\\SFX_DeselectSkill.wav");
+			InitAudio("Assets\\Audio\\SFX_DialogueBoxOpen.wav");
+			InitAudio("Assets\\Audio\\SFX_MenuButtonPress.wav");
+			InitAudio("Assets\\Audio\\SFX_MenuClose.wav");
+			InitAudio("Assets\\Audio\\SFX_MenuOpen.wav");
+			InitAudio("Assets\\Audio\\SFX_MouseClick.wav");
+			InitAudio("Assets\\Audio\\SFX_NewGameStart_ButtonPress(AfterTutorialPrompt).wav");
+			InitAudio("Assets\\Audio\\SFX_PhaseChange.wav");
+			InitAudio("Assets\\Audio\\SFX_SelectSkill.wav");
+			InitAudio("Assets\\Audio\\SFX_VolumeControl.wav");
+			InitAudio("Assets\\Audio\\SFX_Click_1.wav");
+			// Skills SFX
+			InitAudio("Assets\\Audio\\SFX_MatrixTrapPlace.wav");
+			InitAudio("Assets\\Audio\\SFX_Overhang.wav");
+			InitAudio("Assets\\Audio\\SFX_VolaTilePlace.wav");
+			InitAudio("Assets\\Audio\\SFX_VolatTileActivate.wav");
+			InitAudio("Assets\\Audio\\SFX_ConstructTileBreak.wav");
+			InitAudio("Assets\\Audio\\SFX_ConstructTilePlace.wav");
+			InitAudio("Assets\\Audio\\SFX_LifeDrain.wav");
+			InitAudio("Assets\\Audio\\SFX_MatrixTrapActivate.wav");
 			// VO
+			InitAudio("Assets\\Audio\\VO_Guardv01.wav");
+			InitAudio("Assets\\Audio\\VO_Guardv02.wav");
+			InitAudio("Assets\\Audio\\VO_Summonerv01.wav");
+			InitAudio("Assets\\Audio\\VO_Summonerv02.wav");
+			InitAudio("Assets\\Audio\\VO_TileDestroyerv01.wav");
+			InitAudio("Assets\\Audio\\VO_TileDestroyerv02.wav");
+			// Guard SFX
+			InitAudio("Assets\\Audio\\SFX_GuardAttack1.wav");
+			InitAudio("Assets\\Audio\\SFX_GuardAttack2.wav");
+			InitAudio("Assets\\Audio\\SFX_GuardDeath.wav");
+			InitAudio("Assets\\Audio\\SFX_GuardHurt.wav");
+			InitAudio("Assets\\Audio\\SFX_GuardMove.wav");
+			// Summoner
+			InitAudio("Assets\\Audio\\SFX_SummonerAttack1.wav");
+			InitAudio("Assets\\Audio\\SFX_SummonerAttack2.wav");
+			InitAudio("Assets\\Audio\\SFX_SummonerDeath.wav");
+			InitAudio("Assets\\Audio\\SFX_SummonerHurt.wav");
+			InitAudio("Assets\\Audio\\SFX_SummonerMove.wav");
+			// Tile Destroyer
+			InitAudio("Assets\\Audio\\SFX_TileDestroyerAttack1.wav");
+			InitAudio("Assets\\Audio\\SFX_TileDestroyerAttack2.wav");
+			InitAudio("Assets\\Audio\\SFX_TileDestroyerDeath.wav");
+			InitAudio("Assets\\Audio\\SFX_TileDestroyerHurt.wav");
+			InitAudio("Assets\\Audio\\SFX_TileDestroyerMove.wav");
+			// Dror
+			InitAudio("Assets\\Audio\\SFX_DrorAttack1.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorAttack2.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorAttack3.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorDeath1.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorDeath2.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorDeath3.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorHurt.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorMove.wav");
+			InitAudio("Assets\\Audio\\SFX_DrorSelectSkillLoop.wav");
 
+			// BGM
+			InitAudio("Assets\\Audio\\BGM_Gameplay_Loop.wav", Engine::Channel::BGM);
 
 			initialized = true;
 		}
@@ -68,5 +120,15 @@ namespace ALEngine::Script
 	void GameAudioManager::Play(std::string const& name)
 	{
 		sounds[name].Play();
+	}
+
+	void GameAudioManager::Stop(std::string const& name)
+	{
+		sounds[name].Stop();
+	}
+
+	Engine::Audio const& GameAudioManager::Get(std::string const& name)
+	{
+		return sounds[name];
 	}
 }

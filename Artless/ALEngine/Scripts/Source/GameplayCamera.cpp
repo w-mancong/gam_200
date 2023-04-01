@@ -15,8 +15,12 @@ namespace ALEngine::Script
 	namespace
 	{
 		using namespace ECS;
-		//using namespace utils;
 	}
+
+	f32 GameplayCamera::L_Boundary{ std::numeric_limits<f32>::min() },
+		GameplayCamera::R_Boundary{ std::numeric_limits<f32>::max() },
+		GameplayCamera::B_Boundary{ std::numeric_limits<f32>::min() },
+		GameplayCamera::T_Boundary{ std::numeric_limits<f32>::max() };
 
 	void GameplayCamera::Init([[maybe_unused]] ECS::Entity en)
 	{
@@ -58,7 +62,13 @@ namespace ALEngine::Script
 			pos.y += CAMERA_SPEED * Time::m_DeltaTime;
 
 		ConfinePosition(pos);
-		ECS::UpdateUIpositions();
+		//ECS::UpdateUIpositions();
+	}
+
+	void GameplayCamera::Free(ECS::Entity en)
+	{
+		L_Boundary = B_Boundary = std::numeric_limits<f32>::min();
+		R_Boundary = T_Boundary = std::numeric_limits<f32>::max();
 	}
 
 	void GameplayCamera::SetBoundary(f32 L, f32 R, f32 T, f32 B)

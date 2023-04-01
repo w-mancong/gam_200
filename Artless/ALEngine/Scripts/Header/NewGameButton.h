@@ -13,6 +13,7 @@ brief:	This file contain function declaration for a new game button
 
 namespace ALEngine::Script
 {
+	class SceneChangeHelper;
 	class NewGameButton : public ECS::Component::UniBehaviour
 	{
 		/*!*********************************************************************************
@@ -35,7 +36,10 @@ namespace ALEngine::Script
 		{
 			ECS::AddLogicComponent<NewGameButton>(en);
 		};
-		RTTR_ENABLE(ECS::Component::UniBehaviour)	
+		RTTR_ENABLE(ECS::Component::UniBehaviour)
+
+		Engine::Audio const* newGameDrum{ nullptr };
+		std::shared_ptr<SceneChangeHelper> sceneChangeHelper{ nullptr };
 	};
 }
 

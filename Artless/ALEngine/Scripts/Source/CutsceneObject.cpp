@@ -14,33 +14,42 @@ namespace ALEngine::Script
 	namespace
 	{
 		using namespace ECS;
+		static b8 cutScenePlayedOnce{ false };
 	}
 
 	void CutsceneObject::Init(ECS::Entity en)
 	{
+		main_menu = Coordinator::Instance()->GetEntityByTag("main_menu");
+
+		if (cutScenePlayedOnce)
+		{
+			SetActive(false, en);
+			SetActive(true, main_menu);
+			return;
+		}
 		Engine::Scene::CutsceneManager::Instance()->Init(en);
 		Engine::Scene::CutsceneManager::Instance()->PlaySequence("Opening Sequence");
-		
-		Guid id = Engine::AssetManager::Instance()->GetGuid("Assets\\Audio\\Cutscene_MainMenu_BGM.wav");
-		Engine::Audio ad = Engine::AssetManager::Instance()->GetAudio(id);
-		ad.m_Channel = Engine::Channel::BGM;
-		ad.m_Loop = true;
-		ad.Play();
 
 		ECS::CameraPosition(0.0f, 0.0f);
 	}
 
 	void CutsceneObject::Update(ECS::Entity en)
 	{
+		if (cutScenePlayedOnce)
+			return;
 		Engine::Scene::CutsceneManager::Instance()->Update();
 
 		if (!Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
-			Engine::Scene::NextScene();
+		{
+			SetActive(true, main_menu);
+			cutScenePlayedOnce = true;
+		}
 
 		if (Input::KeyTriggered(KeyCode::Escape))
 		{
 			Engine::Scene::CutsceneManager::Instance()->StopSequence();
-			Engine::Scene::NextScene();
+			cutScenePlayedOnce = true;
+			SetActive(true, main_menu);
 		}
 	}
 }

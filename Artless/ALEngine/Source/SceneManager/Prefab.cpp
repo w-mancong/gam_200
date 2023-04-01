@@ -5,7 +5,7 @@ email:	w.mancong\@digipen.edu
 brief:	This file contain function declarations for saving, instantiating and clearing
 		the memory of all prefrabs instantiated previously
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <SceneManager/Prefabs.h>
@@ -856,6 +856,12 @@ namespace ALEngine
 
 	ECS::Entity CreateInstance(std::string const& buffer)
 	{
+		//// hack: create entity
+		//Transform xform = Transform{ Math::Vector2(0.f, 0.f), Math::Vector2(-5000.f, -5000.f) };
+		//ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+		//ECS::CreateSprite(GO, xform);
+		//ECS::GetSceneGraph().Push(-1, GO);
+
 		rjs::Document doc;
 		doc.Parse(buffer.c_str());
 
@@ -915,12 +921,23 @@ namespace ALEngine
 		ECS::Entity en = entities.begin()->second.en;
 		CalculateLocalPosition(en, -1);
 
+		// ECS::Entity to_delete = Coordinator::Instance()->GetEntityByTag("xoxoxoxo");
+		// ECS::GetSceneGraph().Destruct(to_delete);
+		// Coordinator::Instance()->DestroyEntity(to_delete); // delete parent
+
 		return en;
 	}
 
 	// Create a clone of a saved prefab
 	ECS::Entity Instantiate(std::string const& prefabName)
 	{
+		// // hack: create temporary entity (to be deleted at the end of this)
+		// Transform xform = Transform{ Math::Vector2(0.f, 0.f), Math::Vector2(0.f, 0.f) };
+		// ECS::Entity GO = Coordinator::Instance()->CreateEntity();
+		// ECS::CreateSprite(GO, xform);
+		// Coordinator::Instance()->GetComponent<EntityData>(GO).tag = "xoxoxoxo";
+		// ECS::GetSceneGraph().Push(-1, GO);
+
 		// Check to see if an instance of this object is already made
 		if (instObjects.find(prefabName) == instObjects.end())
 		{	// Making of the prefab and saving it

@@ -144,6 +144,25 @@ namespace ALEngine::Script
 
 		/*!*********************************************************************************
 			\brief
+				Sets all Tiles active status
+			\param [in] value
+				Value to set to.
+				True means it will be active, else will not be active
+		***********************************************************************************/
+		void SetAllTilesActive(b8 value);
+
+		/*!*********************************************************************************
+			\brief
+				Sets all Tiles but one to be inactive
+			\param [in] x
+				Index X of the tile to be set inactive
+			\param [in] y
+				Index Y of the tile to be set inactive
+		***********************************************************************************/
+		void SetAllButOneTileInactive(u32 x, u32 y);
+
+		/*!*********************************************************************************
+			\brief
 				Scales the entity big/small
 			\param [in] en
 				Entity to be scaled

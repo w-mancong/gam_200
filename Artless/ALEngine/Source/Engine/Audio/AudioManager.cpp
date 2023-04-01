@@ -48,7 +48,7 @@ namespace ALEngine::Engine
 
 		fmod::System* system{ nullptr };
 		fmod::ChannelGroup* channelGroup[TOTAL]{};
-		f32 volumes[TOTAL]{ 100.0f, 100.0f, 100.0f, 100.0f };
+		f32 volumes[TOTAL]{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 		c8 const *AUDIO_SETTING_FILE_PATH = "Assets\\Dev\\Objects\\audio_settings.json";
 

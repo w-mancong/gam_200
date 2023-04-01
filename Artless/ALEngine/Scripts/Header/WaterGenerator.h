@@ -25,6 +25,11 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void Update(ECS::Entity en);
 
+		/*!*********************************************************************************
+			\brief Whenever a scene ends, use this function to free any resources
+		***********************************************************************************/
+		void Free(ECS::Entity en);
+
 		// For RTTR
 		void DeserializeComponent(ECS::Entity en)
 		{
@@ -35,9 +40,9 @@ namespace ALEngine::Script
 	private:
 		struct Water
 		{
-			ECS::Entity /*shadow{ ECS::MAX_ENTITIES },*/
-						second_layer{ ECS::MAX_ENTITIES },
-						first_layer{ ECS::MAX_ENTITIES };
+			ECS::Entity second_layer{ ECS::MAX_ENTITIES }, 
+						first_layer{ ECS::MAX_ENTITIES },
+						parent{ ECS::MAX_ENTITIES };
 		};
 		std::vector<Water> water{};
 		f32 L_Bound{}, R_Bound{}, B_Bound{}, T_Bound{};

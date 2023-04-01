@@ -74,6 +74,12 @@ enum class ABILITY_NAME { HARD_DROP, LIFE_DRAIN, CONSTRUCT_WALL, OVERHANG, MATRI
 	Distiguish ability by type for who they can affect and how they check for usability
 ***********************************************************************************/
 enum class ABILITY_TYPE { DIRECT, EFFECT };
+
+/*!*********************************************************************************
+\brief
+	State of the game, whether it's win/lose
+***********************************************************************************/
+enum class GAME_STATUS { NONE, WIN, LOSE };
 //***************** Enums End ************************//
 
 

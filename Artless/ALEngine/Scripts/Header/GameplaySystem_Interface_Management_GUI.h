@@ -30,10 +30,10 @@ namespace ALEngine::Script
 		b8 fpsActive{ true };
 
 		//Win
-		ECS::Entity Win_Clear, Win_Button;
+		//ECS::Entity Win_Clear, Win_Button;
 
 		//Lose
-		ECS::Entity Lose_Clear, Lose_Button;
+		//ECS::Entity Lose_Clear, Lose_Button;
 
 		//Center Pattern Parent
 		ECS::Entity GUI_Center_Pattern_Parent, GUI_Center_Pattern_BG, GUI_Bottom_Pattern_Parent;

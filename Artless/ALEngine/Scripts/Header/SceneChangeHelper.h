@@ -54,6 +54,11 @@ namespace ALEngine::Script
 		*******************************************************************************/
 		void Restart(void);
 
+		/*!*****************************************************************************
+			\brief Update alpha value of sprite
+		*******************************************************************************/
+		void UpdateAlpha(void);
+
 	private:
 		b8 changeScene{ false }, restart{ false };
 		std::string sceneName{ "" };

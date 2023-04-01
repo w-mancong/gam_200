@@ -18,7 +18,8 @@ namespace ALEngine::Script
 
 		ECS::Entity	master_right{ ECS::MAX_ENTITIES }, master_left{ ECS::MAX_ENTITIES },
 					sfx_right{ ECS::MAX_ENTITIES }, sfx_left{ ECS::MAX_ENTITIES },
-					bgm_right{ ECS::MAX_ENTITIES }, bgm_left{ ECS::MAX_ENTITIES };
+					bgm_right{ ECS::MAX_ENTITIES }, bgm_left{ ECS::MAX_ENTITIES },
+					tick_box{ ECS::MAX_ENTITIES }, tick{ ECS::MAX_ENTITIES };
 
 		b8 mouseClicked{ false };
 		f32 clickTimer{ 0.0f }, soundTimer{ 0.0f };
@@ -158,6 +159,18 @@ namespace ALEngine::Script
 		}
 
 		// ---------------------------------------------------------------------------------
+
+		void WhenTickBoxHover(Entity en)
+		{
+			if (Input::KeyDown(KeyCode::MouseLeftButton) && !mouseClicked)
+			{
+				Graphics::OpenGLWindow::ToggleScreen();
+				SetActive(Graphics::OpenGLWindow::fullScreen, tick);
+				mouseClicked = true;
+			}
+		}
+
+		// ---------------------------------------------------------------------------------
 	}
 
 	void AudioSetting::Init(ECS::Entity en)
@@ -175,6 +188,8 @@ namespace ALEngine::Script
 				sfx_bd = static_cast<Entity>(child);
 			else if (ed.tag == "bgm_bd")
 				bgm_bd = static_cast<Entity>(child);
+			else if (ed.tag == "tick_box")
+				tick_box = static_cast<Entity>(child);
 		}
 
 		// -------------------------------------------------------------------------------------------------------------
@@ -256,6 +271,15 @@ namespace ALEngine::Script
 		SetTextVolume(Engine::Channel::BGM);
 
 		// -------------------------------------------------------------------------------------------------------------
+
+		GetSceneGraph().FindImmediateChildren(static_cast<s32>(tick_box));
+		tick = GetSceneGraph().GetChildren()[0];
+
+		CreateEventTrigger(tick_box, true);
+		Subscribe(tick_box, Component::EVENT_TRIGGER_TYPE::ON_POINTER_STAY, WhenTickBoxHover);
+		SetActive(Graphics::OpenGLWindow::fullScreen, tick);
+
+		// -------------------------------------------------------------------------------------------------------------
 		mouseClicked = false;
 		clickTimer = 0.0f;
 	}
@@ -274,6 +298,7 @@ namespace ALEngine::Script
 	{
 		master_right  = master_left = textID[MASTER] =
 		sfx_right     = sfx_left = textID[SFX] =
-		bgm_right     = bgm_left = textID[BGM] = ECS::MAX_ENTITIES;
+		bgm_right     = bgm_left = textID[BGM] = 
+		tick_box	  = tick     = ECS::MAX_ENTITIES;
 	}
 }

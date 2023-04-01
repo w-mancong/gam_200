@@ -22,5 +22,6 @@ using ALEngine::Utility::Time;
 using ALEngine::Utility::Timer;
 
 namespace utils = ALEngine::Utility;
+using namespace utils;
 
 #endif

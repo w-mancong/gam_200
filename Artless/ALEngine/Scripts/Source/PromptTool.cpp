@@ -4,7 +4,7 @@ author:	Wong Man Cong
 email:	w.mancong\@digipen.edu
 brief:	This file contain function definition for generating and moving water background
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 #include <PromptTool.h>
@@ -61,7 +61,10 @@ namespace ALEngine::Script
 			trans->position = Input::GetMouseWorldPos();
 		}
 		else
-			timer = sprite->color.a = 0.0f;
+		{
+			if(sprite != nullptr)
+				timer = sprite->color.a = 0.0f;
+		}
 	}
 
 	void PromptTool::InitPatternPlacementStatusVariable(PATTERN_PLACEMENT_STATUS* pattern)

@@ -9,6 +9,7 @@ brief:	This file contain function definition for generating and moving water bac
 #include <pch.h>
 #include <WaterGenerator.h>
 #include <GameplaySystem.h>
+#include <Engine/GSM/GameStateManager.h>
 
 namespace ALEngine::Script
 {
@@ -45,13 +46,12 @@ namespace ALEngine::Script
 				{
 					EntityData const& ed = Coordinator::Instance()->GetComponent<EntityData>( static_cast<Entity>(child) );
 					Coordinator::Instance()->GetComponent<Transform>(static_cast<Entity>(child)).position = pos;
-/*					if (ed.tag == "shadow")
-						w.shadow = static_cast<Entity>(child);
-					else */if (ed.tag == "second_layer")
+					if (ed.tag == "second_layer")
 						w.second_layer = static_cast<Entity>(child);
 					else if (ed.tag == "first_layer")
 						w.first_layer = static_cast<Entity>(child);
 				}
+				w.parent = water_en;
 				water.emplace_back(w);
 			}
 		}
@@ -86,5 +86,10 @@ namespace ALEngine::Script
 					trans.position.y = B_Bound;
 			}
 		}
+	}
+
+	void WaterGenerator::Free(ECS::Entity en)
+	{
+
 	}
 }

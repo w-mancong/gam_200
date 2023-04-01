@@ -28,6 +28,7 @@
 #include <PauseLogic.h>
 #include <SceneChangeHelper.h>
 #include <ranges>
+#include <GameAudioManager.h>
 
 namespace ALEngine::Script
 {
@@ -36,7 +37,7 @@ namespace ALEngine::Script
 		std::shared_ptr<GameplaySystem_Interface_Management_GUI> gameplaySystem_GUI;
 		std::shared_ptr<GameplaySystem> gameplaySystem;
 
-		std::string rooms[] = { "Assets\\Map\\Tutorial_Final.map", "Assets\\Map\\Level_1_Final.map", "Assets\\Map\\Level_2_Final.map" };
+		std::string rooms[GameplaySystem::maxRooms] = { "Assets\\Map\\Tutorial_Final.map", "Assets\\Map\\Level_1_Final.map", "Assets\\Map\\Level_2_Final.map" };
 		std::string room_To_Load = rooms[1];
 
 		ECS::Entity scene_transition{ ECS::MAX_ENTITIES };
@@ -46,7 +47,7 @@ namespace ALEngine::Script
 
 	void SetMap(u64 index)
 	{
-		room_To_Load = rooms[index];
+		GameplaySystem::roomIndex = index;
 	}		
 
 	/*!*********************************************************************************
@@ -89,6 +90,8 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Init(ECS::Entity en)
 	{
+		currentGameStatus = GAME_STATUS::NONE;
+		room_To_Load = rooms[roomIndex];
 		//Load all the logic component
 		gameplaySystem_GUI = ECS::GetLogicComponent<GameplaySystem_Interface_Management_GUI>(en);
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(en);
@@ -110,8 +113,10 @@ namespace ALEngine::Script
 
 		scene_transition = Coordinator::Instance()->GetEntityByTag("scene_transition");
 
-		//Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(Coordinator::Instance()->GetEntityByTag("Player"));
-		//ECS::CameraPosition(playerTransform.localPosition.x, playerTransform.localPosition.y);
+		Transform& playerTransform = Coordinator::Instance()->GetComponent<Transform>(Coordinator::Instance()->GetEntityByTag("Player"));
+		ECS::CameraPosition(playerTransform.localPosition.x - ECS::GetCamera().Width() * 0.5f, playerTransform.localPosition.y - -ECS::GetCamera().Width() * 0.5f);
+
+		GameAudioManager::Play("Gameplay_Loop");
 	}
 
 	bool ALEngine::Script::GameplaySystem::InitializeRoom(std::string map_fp)
@@ -286,19 +291,20 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Update(ECS::Entity en)
 	{
-
+		//Update system and draw
+		UpdateGameplaySystem();
+		DrawGameplaySystem();
 	}
 
 	void GameplaySystem::LateUpdate(ECS::Entity en)
 	{
-		//Update system and draw
-		UpdateGameplaySystem();
-		DrawGameplaySystem();	
+
 	}
 
 	void GameplaySystem::Free(ECS::Entity en)
 	{
 		ExitGameplaySystem();
+		currentGameStatus = GAME_STATUS::NONE;
 	}
 	
 	void GameplaySystem::Unload(ECS::Entity en)
@@ -344,7 +350,7 @@ namespace ALEngine::Script
 		}
 
 		//Initialize Abilities
-		InitializeAbilities(Abilities_List);
+		InitializeAbilities(gameplaySystem->Abilities_List);
 
 		//Initialize Pattern GUI
 		gameplaySystem_GUI->InitializePatternGUI(gameplaySystem_GUI->getGuiManager().GUI_Pattern_Button_List);
@@ -375,11 +381,7 @@ namespace ALEngine::Script
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[3], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_3);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[4], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_4);
 		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().GUI_Abilities_Button_List[5], EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Select_Abilities_5);
-
-		//Subscribe the restart button
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Lose_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_Restart);
-		ECS::Subscribe(gameplaySystem_GUI->getGuiManager().Win_Button, EVENT_TRIGGER_TYPE::ON_POINTER_CLICK, Event_Button_LoadLevel_Tutorial);
-
+		
 		Toggle_Gameplay_State(true);
 
 		//Toggle the gui 
@@ -388,18 +390,18 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
 		//***** AUDIO Initialization ******//
-		CreateAudioEntityMasterSource();
-		masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
-		Engine::Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
-		ad.m_Channel = Engine::Channel::BGM;
-		ad.m_Loop = true;
-		ad.Play();
+		//CreateAudioEntityMasterSource();
+		//masterAudioSource = Coordinator::Instance()->GetEntityByTag("Master Audio Source");
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		//Engine::Audio& ad = as.GetAudio(AUDIO_GAMEPLAY_LOOP);
+		//ad.m_Channel = Engine::Channel::BGM;
+		//ad.m_Loop = true;
+		//ad.Play();
 
 		//Initialize audio
-		buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
-		buttonClickAudio->m_Channel = Engine::Channel::SFX;
-
+		//buttonClickAudio = &as.GetAudio(AUDIO_CLICK_1);
+		//buttonClickAudio->m_Channel = Engine::Channel::SFX;
+		//buttonClickAudio = &GameAudioManager::Get("Click_1");
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
@@ -408,35 +410,54 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->Update_Skill_Tip_Position();
 		gameplaySystem_GUI->UpdateYourTurnSign();
 
+		if (Input::KeyDown(KeyCode::MouseRightButton)) {
+			GameAudioManager::Play("MouseClick");
+		}
+
 		//If right mouse button
-		if (Input::KeyDown(KeyCode::MouseRightButton) && Time::m_Scale <= 0.0f) {
-			//Deselect Pattern
-			if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
-				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
+		if (Input::KeyDown(KeyCode::MouseRightButton) || 
+			((Time::m_Scale <= 0.0f && (Gameplay::TutorialManager::Instance()->TutorialIsPlaying() == false)))) {
+			if (Time::m_Scale > 0.0f) {
+				//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+				//Engine::Audio& ad = as.GetAudio(AUDIO_SELECT_SKILL_LOOP);
+				//ad.m_Channel = Engine::Channel::SFX;
+				//ad.m_Loop = false;
+				//ad.Stop();
 
-				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
-				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
-
-				gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
-
-				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+				GameAudioManager::Stop("DrorSelectSkillLoop");
+				GameAudioManager::Play("DeselectSkill");
 			}
-			//Deselect Abilities
-			else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
-				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
-				DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
-				currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+			//Deselect Pattern
+			if (Coordinator::Instance()->HasComponent<Cell>(current_Moused_Over_Cell))
+			{
+				if (currentPhaseStatus == PHASE_STATUS::PHASE_SETUP) {
+					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
-				gameplaySystem_GUI->ToggleCenterPatternGUI(false);
-				gameplaySystem_GUI->TogglePatternGUI(false);
-				gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+					DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
+					currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
 
-				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+					gameplaySystem_GUI->TogglePatternFirstOnlyGUI(true);
 
-				gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+					Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+				}
+				//Deselect Abilities
+				else if (currentPhaseStatus == PHASE_STATUS::PHASE_ACTION) {
+					Cell& cell = Coordinator::Instance()->GetComponent<Cell>(current_Moused_Over_Cell);
 
-				Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+					DisplayFilterPlacementGrid(m_Room, cell.coordinate, selected_Pattern, { 1.f,1.f,1.f,1.f });
+					currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;
+
+					gameplaySystem_GUI->ToggleCenterPatternGUI(false);
+					gameplaySystem_GUI->TogglePatternGUI(false);
+					gameplaySystem_GUI->ToggleAbilitiesGUI(true);
+
+					Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
+
+					gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
+
+					Gameplay::TutorialManager::Instance()->SetTileIsSelected(false);
+				}
 			}
 		}
 
@@ -515,13 +536,13 @@ namespace ALEngine::Script
 		gameplaySystem_Enemy.reset();
 		gameplaySystem_GUI.reset();
 		
-		Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
-		
-		for (auto& it : as.list)
-		{
-			Engine::Audio& ad = it.second;
-			ad.Stop();
-		}
+		//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(masterAudioSource);
+		//
+		//for (auto& it : as.list)
+		//{
+		//	Engine::Audio& ad = it.second;
+		//	ad.Stop();
+		//}
 	}
 
 

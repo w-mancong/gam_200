@@ -1,0 +1,50 @@
+[
+    {
+        "Sequence_Name": "Splash Screen"
+    },
+    {
+        "CutsceneName": "Digipen Splash",
+        "HasImage": true,
+        "HasText": false,
+        "HasTimer": true,
+        "WaitForInput": true,
+        "TextIsAbove": false,
+        "CutsceneTime": 3.0,
+        "OrderIndex": 0,
+        "FadeInType": 3,
+        "FadeOutType": 0,
+        "FadeInTime": 1.0,
+        "FadeOutTime": 0.5,
+        "Image": "Assets\\Images\\Cutscene\\DigipenSplash.png"
+    },
+    {
+        "CutsceneName": "Team Splash",
+        "HasImage": true,
+        "HasText": false,
+        "HasTimer": true,
+        "WaitForInput": true,
+        "TextIsAbove": false,
+        "CutsceneTime": 3.0,
+        "OrderIndex": 1,
+        "FadeInType": 5,
+        "FadeOutType": 0,
+        "FadeInTime": 0.5,
+        "FadeOutTime": 1.0,
+        "Image": "Assets\\Images\\Cutscene\\SplashScreen_ArtlessLogo.png"
+    },
+    {
+        "CutsceneName": "Game Logo",
+        "HasImage": true,
+        "HasText": false,
+        "HasTimer": true,
+        "WaitForInput": true,
+        "TextIsAbove": false,
+        "CutsceneTime": 3.0,
+        "OrderIndex": 2,
+        "FadeInType": 5,
+        "FadeOutType": 0,
+        "FadeInTime": 1.0,
+        "FadeOutTime": 0.5,
+        "Image": "Assets\\Images\\Cutscene\\SplashScreen_Pave.png"
+    }
+]

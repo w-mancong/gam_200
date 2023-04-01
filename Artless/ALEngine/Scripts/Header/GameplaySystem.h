@@ -566,11 +566,27 @@ namespace ALEngine::Script
 		***********************************************************************************/
 		void PlayAudio(std::string audioName);
 
+		/*!*********************************************************************************
+			\brief
+				Audio play player attack
+		***********************************************************************************/
+		void Audio_Play_PlayerAttack();
+
+		/*!*********************************************************************************
+			\brief
+				Audio play player Death
+		***********************************************************************************/
+		void Audio_Play_PlayerDeath();
+
+
 	public:
 		GAMEPLAY_STATUS currentGameplayStatus = GAMEPLAY_STATUS::RUNNING;							//Keep track of gameplay status, running or stopped
 		PHASE_STATUS currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;								//Keep track of phase
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;				//Keep track of status of unit control
 		PATTERN_PLACEMENT_STATUS currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;	//Keep track of what the pattern is being placed for
+		static GAME_STATUS currentGameStatus;
+		static u64 roomIndex;
+		static constexpr const u64 maxRooms{ 3 };
 	
 		//******VARIABLES**********//
 		u32 roomSize[2]{ 10, 10 };		//Size to initialize the room with
@@ -602,12 +618,12 @@ namespace ALEngine::Script
 		//Enemy
 		std::vector<ECS::Entity> enemyEntityList;
 
-		ECS::Entity masterAudioSource{ ECS::MAX_ENTITIES };
+		//ECS::Entity masterAudioSource{ ECS::MAX_ENTITIES };
 
 		//Tracks debug drawing for room
 		b8 is_DebugDraw = false;
 
-		Engine::Audio* buttonClickAudio{ nullptr };
+		//Engine::Audio const* buttonClickAudio{ nullptr };
 
 		//Cheats
 		b8 godMode = false, cheat_abilitiesDoubleDamage = false;

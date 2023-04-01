@@ -38,6 +38,8 @@ namespace ALEngine::Script
 		static std::unordered_map<std::string, Engine::Audio> sounds;
 	public:
 		static void Play(std::string const& name);
+		static void Stop(std::string const& name);
+		static Engine::Audio const& Get(std::string const& name);
 	};
 }
 
