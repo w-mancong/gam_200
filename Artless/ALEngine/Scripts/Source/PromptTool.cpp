@@ -45,6 +45,7 @@ namespace ALEngine::Script
 
 		if (!showPrompt)
 		{
+			if(sprite)
 			timer = sprite->color.a = 0.0f;
 			return;
 		}
@@ -55,14 +56,17 @@ namespace ALEngine::Script
 			if (timer < WAIT_TIME)
 				return;
 
-			sprite->color.a += Time::m_DeltaTime * SPEED;
-			sprite->color.a = std::clamp(sprite->color.a, 0.0f, 1.0f);
+			if (sprite)
+			{
+				sprite->color.a += Time::m_DeltaTime * SPEED;
+				sprite->color.a = std::clamp(sprite->color.a, 0.0f, 1.0f);
+			}
 
 			trans->position = Input::GetMouseWorldPos();
 		}
 		else
 		{
-			if(sprite != nullptr)
+			if(sprite)
 				timer = sprite->color.a = 0.0f;
 		}
 	}
