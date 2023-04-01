@@ -1750,6 +1750,8 @@ namespace ALEngine::Script
 			//Set the gui
 			gameplaySystem_GUI->ToggleAbilitiesGUI(false);
 			gameplaySystem_GUI->ToggleCenterPatternGUI(true);
+
+			ECS::SetActive(false, gameplaySystem_GUI->getGuiManager().endTurnBtnEntity);
 			//gameplaySystem_GUI->TogglePatternGUI(true);
 
 
