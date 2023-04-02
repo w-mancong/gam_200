@@ -8,6 +8,7 @@ brief:	This file contain function definition that controls the rendering for the
 		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include "pch.h"
+#include <SceneChangeHelper.h>
 
 namespace ALEngine::ECS
 {
@@ -143,6 +144,10 @@ namespace ALEngine::ECS
 			f32 lifePercentage = particle.lifeRemaining / particle.lifeTime;
 			Vector4 color = ParticleSystem::Lerp(particle.colorEnd, particle.colorStart, lifePercentage);
 			Vector2 size = ParticleSystem::Lerp(particle.sizeEnd, particle.sizeBegin, lifePercentage);
+			if (Script::SceneChangeHelper::changingScene)
+			{
+				color.w = 1.f - Script::SceneChangeHelper::alphaValue;
+			}
 
 			Transform trans;
 			trans.localPosition = trans.position = Math::Vector3(particle.position.x, particle.position.y, 0.0f);
