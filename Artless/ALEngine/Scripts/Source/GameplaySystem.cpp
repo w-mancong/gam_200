@@ -427,7 +427,7 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem::UpdateGameplaySystem() {
-		//gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
+		gameplaySystem_GUI->UpdateFpsLabel(); // update fps top right corner of screen
 
 		gameplaySystem_GUI->Update_Skill_Tip_Position();
 		gameplaySystem_GUI->UpdateYourTurnSign();
