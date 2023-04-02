@@ -157,8 +157,9 @@ namespace ALEngine::Engine
 
 #if EDITOR
 				}
-#endif
+#else
 				Input::m_MouseWheelEvent = MouseWheelEvent::MouseWheelIdle;
+#endif
 				// Render
 				Render();
 
@@ -292,8 +293,8 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Normal Delta Time Update");
 		AssetManager::Instance()->Update();
-#endif
 		Input::Update();
+#endif
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
 	}
