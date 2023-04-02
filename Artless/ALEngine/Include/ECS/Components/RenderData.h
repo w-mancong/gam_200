@@ -22,6 +22,7 @@ namespace ALEngine::ECS::Component
 		Background = 0,
 		Player,
 		UI,
+		Tile = 601,
 	};
 
 	/*!*********************************************************************************
