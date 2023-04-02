@@ -447,9 +447,12 @@ namespace ALEngine::Script
 				//ad.m_Loop = false;
 				//ad.Stop();
 
-				GameAudioManager::Stop("DrorSelectSkillLoop");
-				if (!rightClicked)
-					GameAudioManager::Play("DeselectSkill");
+				if (currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING || GameplaySystem::selectedAbilities)
+				{
+					GameAudioManager::Stop("DrorSelectSkillLoop");
+					if (!rightClicked)
+						 GameAudioManager::Play("DeselectSkill");
+				}
 
 				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 				Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
@@ -492,7 +495,10 @@ namespace ALEngine::Script
 		}
 
 		if (Input::KeyReleased(KeyCode::MouseRightButton))
+		{
 			rightClicked = false;
+			GameplaySystem::selectedAbilities = false;
+		}
 
 		//Toggle debug draw
 		if (Input::KeyTriggered(KeyCode::Key_3)) {

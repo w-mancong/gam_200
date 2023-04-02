@@ -584,6 +584,7 @@ namespace ALEngine::Script
 		PHASE_STATUS currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;								//Keep track of phase
 		UNITS_CONTROL_STATUS currentUnitControlStatus = UNITS_CONTROL_STATUS::NOTHING;				//Keep track of status of unit control
 		PATTERN_PLACEMENT_STATUS currentPatternPlacementStatus = PATTERN_PLACEMENT_STATUS::NOTHING;	//Keep track of what the pattern is being placed for
+		static b8 selectedAbilities;
 		static GAME_STATUS currentGameStatus;
 		static u64 roomIndex;
 		static constexpr const u64 maxRooms{ 3 };

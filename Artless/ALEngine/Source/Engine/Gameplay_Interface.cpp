@@ -43,6 +43,7 @@ namespace ALEngine::Script
 
 	u64 GameplaySystem::roomIndex{ 0 };
 	GAME_STATUS GameplaySystem::currentGameStatus{ GAME_STATUS::NONE };
+	b8 GameplaySystem::selectedAbilities{ false };
 
 	void Set_GameplayInterface_Enemy(ECS::Entity GameplaySystemEntity) {
 		gameplaySystem_Enemy = ECS::GetLogicComponent<GameplaySystem_Interface_Management_Enemy>(GameplaySystemEntity);
@@ -1783,6 +1784,7 @@ namespace ALEngine::Script
 			gameplaySystem_GUI->Update_AP_UI_For_Cost(playerunit.actionPoints, ability.cost);
 
 			GameAudioManager::Play("SelectSkill");
+			GameplaySystem::selectedAbilities = true;
 
 			////Get the audiosource
 			//Engine::AudioSource& as = Coordinator::Instance()->GetComponent<Engine::AudioSource>(Coordinator::Instance()->GetEntityByTag("Master Audio Source"));
