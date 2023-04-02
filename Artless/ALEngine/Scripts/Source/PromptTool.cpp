@@ -27,7 +27,7 @@ namespace ALEngine::Script
 		Coordinator::Instance()->GetComponent<EntityData>(mouse_sprite).tag = "prompt_sprites";
 
 		Transform trans_{};
-		trans_.scale = { 125.0f, 125.0f };
+		trans_.scale = { 130.0f, 200.0f };
 		trans_.position = { 800.0f, 450.0f };
 		Coordinator::Instance()->AddComponent(mouse_sprite, trans_);
 		trans = &Coordinator::Instance()->GetComponent<Transform>(mouse_sprite);
