@@ -194,109 +194,108 @@ namespace ALEngine::Editor
 						s32 index{ static_cast<s32>(selected.m_OrderIndex) };
 						ImGui::InputInt("Index##CutsceneEditor", &index, 1, 1, ImGuiInputTextFlags_ReadOnly);
 
+						ImGui::Checkbox("Has Timer", &selected.m_HasTimer);
+						ImGui::SameLine();	 ImGui::Checkbox("Wait For Input", &selected.m_WaitForInput);
 						if (selected.m_HasTimer == true)
 							ImGui::InputFloat("Time##CutsceneEditor", &selected.m_CutsceneTime);
 
 						ImGui::Checkbox("Has Image", &selected.m_HasImage);
-						ImGui::SameLine();	 ImGui::Checkbox("Wait For Input", &selected.m_WaitForInput);
-						ImGui::SameLine();	 ImGui::Checkbox("Has Timer", &selected.m_HasTimer);
 
-						ImGui::Checkbox("Has Text", &selected.m_HasText);
-						if (selected.m_HasText) { ImGui::SameLine();	ImGui::Checkbox("Text Is Above", &selected.m_TextIsAbove); }
-
-						std::string fadeSelected{};
-						switch (selected.m_FadeInType)
+						if (selected.m_HasImage)
 						{
-						case FadeType::FADE_NONE:
-							fadeSelected = "No Fade";
-							break;
-						case FadeType::FADE_FROM_BLACK:
-							fadeSelected = "Fade From Black";
-							break;
-						case FadeType::FADE_FROM_WHITE:
-							fadeSelected = "Fade From White";
-							break;
-						case FadeType::FADE_FROM_PREV:
-							fadeSelected = "Fade From Previous";
-							break;							
-						}
-						// Fade In Stuff
-						if (ImGui::BeginCombo("Fade In Type##CutsceneEditor", fadeSelected.c_str()))
-						{
-							for (u32 i{ 0 }; i < (u32)FadeType::FADE_TOTAL; ++i)
+							std::string fadeSelected{};
+							switch (selected.m_FadeInType)
 							{
-								if(i == (u32)FadeType::FADE_FROM_BLACK)
-								{
-									if (ImGui::Selectable("Fade From Black", (u32)selected.m_FadeInType == i))
-										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_FROM_BLACK);
-								}
-								else if (i == (u32)FadeType::FADE_FROM_WHITE)
-								{
-									if (ImGui::Selectable("Fade From White", (u32)selected.m_FadeInType == i))
-										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_FROM_WHITE);
-								}
-								else if (i == (u32)FadeType::FADE_FROM_PREV)
-								{
-									if (ImGui::Selectable("Fade From Previous", (u32)selected.m_FadeInType == i))
-										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_FROM_PREV);
-								}
-								else if (i == (u32)FadeType::FADE_NONE)
-								{
-									if (ImGui::Selectable("No Fade", (u32)selected.m_FadeInType == i))
-										selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_NONE);
-								}
+							case FadeType::FADE_NONE:
+								fadeSelected = "No Fade";
+								break;
+							case FadeType::FADE_FROM_BLACK:
+								fadeSelected = "Fade From Black";
+								break;
+							case FadeType::FADE_FROM_WHITE:
+								fadeSelected = "Fade From White";
+								break;
+							case FadeType::FADE_FROM_PREV:
+								fadeSelected = "Fade From Previous";
+								break;
 							}
-							ImGui::EndCombo();
-						}
-						if (selected.m_FadeInType != FadeType::FADE_NONE)
-							ImGui::InputFloat("Fade In Time##CutsceneEditor", &selected.m_FadeInTime, 0.f, 0.f, "%.3f", selected.m_FadeInType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
-
-						switch (selected.m_FadeOutType)
-						{
-						case FadeType::FADE_NONE:
-							fadeSelected = "No Fade";
-							break;
-						case FadeType::FADE_TO_BLACK:
-							fadeSelected = "Fade To Black";
-							break;
-						case FadeType::FADE_TO_WHITE:
-							fadeSelected = "Fade To White";
-							break;
-						case FadeType::FADE_TO_NEXT:
-							fadeSelected = "Fade To Next";
-							break;
-						}
-						// Fade Out Stuff
-						if (ImGui::BeginCombo("Fade Out Type##CutsceneEditor", fadeSelected.c_str()))
-						{
-							for (u32 i{ 0 }; i < (u32)FadeType::FADE_TOTAL; ++i)
+							// Fade In Stuff
+							if (ImGui::BeginCombo("Fade In Type##CutsceneEditor", fadeSelected.c_str()))
 							{
-								if (i == (u32)FadeType::FADE_TO_BLACK)
+								for (u32 i{ 0 }; i < (u32)FadeType::FADE_TOTAL; ++i)
 								{
-									if (ImGui::Selectable("Fade To Black", (u32)selected.m_FadeOutType == i))
-										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_BLACK);
+									if (i == (u32)FadeType::FADE_FROM_BLACK)
+									{
+										if (ImGui::Selectable("Fade From Black", (u32)selected.m_FadeInType == i))
+											selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_FROM_BLACK);
+									}
+									else if (i == (u32)FadeType::FADE_FROM_WHITE)
+									{
+										if (ImGui::Selectable("Fade From White", (u32)selected.m_FadeInType == i))
+											selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_FROM_WHITE);
+									}
+									else if (i == (u32)FadeType::FADE_FROM_PREV)
+									{
+										if (ImGui::Selectable("Fade From Previous", (u32)selected.m_FadeInType == i))
+											selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_FROM_PREV);
+									}
+									else if (i == (u32)FadeType::FADE_NONE)
+									{
+										if (ImGui::Selectable("No Fade", (u32)selected.m_FadeInType == i))
+											selected.m_FadeInType = static_cast<FadeType>(FadeType::FADE_NONE);
+									}
 								}
-								else if (i == (u32)FadeType::FADE_TO_WHITE)
-								{
-									if (ImGui::Selectable("Fade To White", (u32)selected.m_FadeOutType == i))
-										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_WHITE);
-								}
-								else if (i == (u32)FadeType::FADE_TO_NEXT)
-								{
-									if (ImGui::Selectable("Fade To Next", (u32)selected.m_FadeOutType == i))
-										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_NEXT);
-								}
-								else if (i == (u32)FadeType::FADE_NONE)
-								{
-									if (ImGui::Selectable("No Fade", (u32)selected.m_FadeOutType == i))
-										selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_NONE);
-								}
+								ImGui::EndCombo();
 							}
-							ImGui::EndCombo();
-						}
-						if(selected.m_FadeOutType != FadeType::FADE_NONE)
-							ImGui::InputFloat("Fade Out Time##CutsceneEditor", &selected.m_FadeOutTime, 0.f, 0.f, "%.3f", selected.m_FadeOutType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
+							if (selected.m_FadeInType != FadeType::FADE_NONE)
+								ImGui::InputFloat("Fade In Time##CutsceneEditor", &selected.m_FadeInTime, 0.f, 0.f, "%.3f", selected.m_FadeInType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
 
+							switch (selected.m_FadeOutType)
+							{
+							case FadeType::FADE_NONE:
+								fadeSelected = "No Fade";
+								break;
+							case FadeType::FADE_TO_BLACK:
+								fadeSelected = "Fade To Black";
+								break;
+							case FadeType::FADE_TO_WHITE:
+								fadeSelected = "Fade To White";
+								break;
+							case FadeType::FADE_TO_NEXT:
+								fadeSelected = "Fade To Next";
+								break;
+							}
+							// Fade Out Stuff
+							if (ImGui::BeginCombo("Fade Out Type##CutsceneEditor", fadeSelected.c_str()))
+							{
+								for (u32 i{ 0 }; i < (u32)FadeType::FADE_TOTAL; ++i)
+								{
+									if (i == (u32)FadeType::FADE_TO_BLACK)
+									{
+										if (ImGui::Selectable("Fade To Black", (u32)selected.m_FadeOutType == i))
+											selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_BLACK);
+									}
+									else if (i == (u32)FadeType::FADE_TO_WHITE)
+									{
+										if (ImGui::Selectable("Fade To White", (u32)selected.m_FadeOutType == i))
+											selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_WHITE);
+									}
+									else if (i == (u32)FadeType::FADE_TO_NEXT)
+									{
+										if (ImGui::Selectable("Fade To Next", (u32)selected.m_FadeOutType == i))
+											selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_TO_NEXT);
+									}
+									else if (i == (u32)FadeType::FADE_NONE)
+									{
+										if (ImGui::Selectable("No Fade", (u32)selected.m_FadeOutType == i))
+											selected.m_FadeOutType = static_cast<FadeType>(FadeType::FADE_NONE);
+									}
+								}
+								ImGui::EndCombo();
+							}
+							if (selected.m_FadeOutType != FadeType::FADE_NONE)
+								ImGui::InputFloat("Fade Out Time##CutsceneEditor", &selected.m_FadeOutTime, 0.f, 0.f, "%.3f", selected.m_FadeOutType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
+						}
 						// Image
 						if(selected.m_HasImage)
 						{
@@ -337,6 +336,9 @@ namespace ALEngine::Editor
 								ImGui::EndDragDropTarget();
 							}
 						}
+
+						ImGui::Checkbox("Has Text", &selected.m_HasText);
+						if (selected.m_HasText) { ImGui::SameLine();	ImGui::Checkbox("Text Is Above", &selected.m_TextIsAbove); }
 
 						// Text
 						if (selected.m_HasText)

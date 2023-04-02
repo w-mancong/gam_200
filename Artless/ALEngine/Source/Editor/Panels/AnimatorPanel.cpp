@@ -85,7 +85,7 @@ namespace ALEngine::Editor
 		// Check if no animations or animation has no filepath
 		if (strcmp(m_SelectedAnimation.filePath, "") && !m_SelectedAnimator.animations.empty()) 
 		{
-			ImVec2 animationsArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.6f, ImGui::GetContentRegionAvail().x * 0.6f);
+			ImVec2 animationsArea = ImVec2(ImGui::GetContentRegionAvail().x * 0.6f, ImGui::GetContentRegionAvail().y);
 
 			// Up
 			if (Input::KeyTriggered(KeyCode::Up))
@@ -109,7 +109,7 @@ namespace ALEngine::Editor
 			if (Input::KeyTriggered(KeyCode::Left))
 				m_SelectedFrame.x = m_SelectedFrame.x <= 0 ? 0 : m_SelectedFrame.x - 1;
 
-			if (ImGui::BeginChild("##AnimatorPanel_AnimationsArea", animationsArea, true))
+			if (ImGui::BeginChild("##AnimatorPanel_AnimationsArea", animationsArea, true, ImGuiWindowFlags_NoScrollbar))
 			{
 				// Render the Spritesheet
 				std::string fp = m_SelectedAnimation.filePath;

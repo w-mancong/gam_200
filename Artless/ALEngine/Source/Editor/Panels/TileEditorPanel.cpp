@@ -14,8 +14,8 @@ brief:	This file contains the function definitions for the TileEditorPanel class
 #if EDITOR
 #include "imgui_internal.h"
 #include <imgui/cpp/imgui_stdlib.h>
-#define MIN_TILES_SHOWN 3
-#define MAX_TILES_SHOWN 10
+#define MIN_TILES_SHOWN 5
+#define MAX_TILES_SHOWN 15
 #define FILE_BUFFER_SIZE 100
 #define TILE_EDITOR_DATA_PATH "Assets/Dev/Objects/TileEditorData.json"
 #define PLUS_ICON "Assets/Dev/Images/plus.png"
@@ -44,7 +44,7 @@ namespace ALEngine::Editor
 
 		m_HasMapLoaded = false;
 		m_CurrentLoadStage = LoadStage::CreateOrLoadSelection;
-		m_NumTilesSeen = MIN_TILES_SHOWN;
+		m_NumTilesSeen = MAX_TILES_SHOWN;
 
 		m_SelectedTile = m_ImageMap.begin()->first;
 
@@ -149,7 +149,7 @@ namespace ALEngine::Editor
 			if (ImGui::BeginChild("##TileEditor_Settings", ImVec2(0.f, ImGui::GetContentRegionAvail().y * 0.4f), true))
 			{
 				ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.6f);
-				ImGui::SliderInt("Tiles Shown##TileEditor", &m_NumTilesSeen, 3, 10);
+				ImGui::SliderInt("Tiles Shown##TileEditor", &m_NumTilesSeen, MIN_TILES_SHOWN, MAX_TILES_SHOWN);
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 			}
