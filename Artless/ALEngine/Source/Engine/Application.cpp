@@ -112,11 +112,15 @@ namespace ALEngine::Engine
 
 			while (GameStateManager::current == GameStateManager::next)
 			{
+//#if EDITOR
 				if (!focus)
 				{
 					glfwPollEvents();
 					continue;
 				}
+//#else
+//				Time::m_Scale = static_cast<f32>(focus);
+//#endif
 
 				// Get Current Time
 				Time::ClockTimeNow();

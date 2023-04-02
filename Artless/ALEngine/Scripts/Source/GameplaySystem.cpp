@@ -313,14 +313,14 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Update(ECS::Entity en)
 	{
-		//Update system and draw
-		UpdateGameplaySystem();
-		DrawGameplaySystem();
+
 	}
 
 	void GameplaySystem::LateUpdate(ECS::Entity en)
 	{
-
+		//Update system and draw
+		UpdateGameplaySystem();
+		DrawGameplaySystem();
 	}
 
 	void GameplaySystem::Free(ECS::Entity en)

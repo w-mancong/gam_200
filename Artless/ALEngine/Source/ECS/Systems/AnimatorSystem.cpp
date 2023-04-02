@@ -33,6 +33,8 @@ namespace ALEngine::ECS
 
 	void AnimatorSystem::Update(void)
 	{
+		if (Time::m_Scale <= 0.0f)
+			return;
 		for (auto it{ mEntities.begin() }; it != mEntities.end(); ++it)
 		{
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(*it);

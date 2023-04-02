@@ -61,7 +61,7 @@ namespace ALEngine::ECS
 		const Vector2 worldXAxis{ 1.f, 0.f }, worldYAxis{ 0.f, 1.f };
 
 		//Input Settings
-		u64 debugDrawKey = (u64)KeyCode::Key_1, debugStepKeyToggle = (u64)KeyCode::Tab, debugStepKey = (u64)KeyCode::Key_0;
+		//u64 debugDrawKey = (u64)KeyCode::Key_1, debugStepKeyToggle = (u64)KeyCode::Tab, debugStepKey = (u64)KeyCode::Key_0;
 	}
 
 	void RegisterRigidbodySystem(void)
@@ -83,44 +83,47 @@ namespace ALEngine::ECS
 	void UpdateRigidbodySystem() {
 		//*******Debugging*******//
 		//Toggle debug step on input
-		if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKeyToggle)))
-		{
-			rigidS->isDebugStep = !rigidS->isDebugStep;
-		}
+		//if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKeyToggle)))
+		//{
+		//	rigidS->isDebugStep = !rigidS->isDebugStep;
+		//}
 
-		//Toggle debug draw on input
-		if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugDrawKey)))
-		{
-			rigidS->isDebugDraw = !rigidS->isDebugDraw;
-		}
+		////Toggle debug draw on input
+		//if (Input::Input::KeyTriggered(static_cast<KeyCode>(debugDrawKey)))
+		//{
+		//	rigidS->isDebugDraw = !rigidS->isDebugDraw;
+		//}
 
-		//If debug step is on
-		if (rigidS->isDebugStep) {
-			//And the step key insn't return
-			//Return the function (Skip the rigidbody system update)
-			if (!Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKey)))
-			{		
-				//Shift through each component
-				for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
-					if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
-						continue;
-					}
+		////If debug step is on
+		//if (rigidS->isDebugStep) {
+		//	//And the step key insn't return
+		//	//Return the function (Skip the rigidbody system update)
+		//	if (!Input::Input::KeyTriggered(static_cast<KeyCode>(debugStepKey)))
+		//	{		
+		//		//Shift through each component
+		//		for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
+		//			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
+		//				continue;
+		//			}
 
-					Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
-					Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
-					rigid.nextPosition = transform.position;
-				}
-				return;
-			}
-			//Otherwise if input is read, continue the simulation
-		}
-		//*******End Debugging*******//
+		//			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
+		//			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
+		//			rigid.nextPosition = transform.position;
+		//		}
+		//		return;
+		//	}
+		//	//Otherwise if input is read, continue the simulation
+		//}
+		////*******End Debugging*******//
 
 		//Shift through each component
 		for (auto it = rigidS->mEntities.begin(); it != rigidS->mEntities.end(); ++it) {
 			if (!Coordinator::Instance()->GetComponent<EntityData>(*it).active) {
 				continue;
 			}
+
+			if (Coordinator::Instance()->GetComponent<EntityData>(*it).tag == "Player")
+				std::cout << std::endl;
 
 			Transform& transform = Coordinator::Instance()->GetComponent<Transform>(*it);
 			Rigidbody2D& rigid = Coordinator::Instance()->GetComponent<Rigidbody2D>(*it);
