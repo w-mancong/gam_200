@@ -433,44 +433,47 @@ namespace ALEngine::Engine::Scene
 
 		// Check if next cutsene, either based on timer or if player pressed key
 		// Skips directly, no fading
-		if ((Input::KeyTriggered(KeyCode::MouseLeftButton)
-			|| Input::KeyTriggered(KeyCode::Enter)) && m_JustTriggered == false)
+		if (m_CutsceneIsPlaying && m_CurrentCutscene->m_WaitForInput == true)
 		{
-			m_CurrentCutscene = std::next(m_CurrentCutscene);
-
-			if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
-				StopSequence();
-			else
+			if ((Input::KeyTriggered(KeyCode::MouseLeftButton)
+				|| Input::KeyTriggered(KeyCode::Enter)) && m_JustTriggered == false)
 			{
-				// Check has image
-				if (m_CurrentCutscene->m_HasImage)
-				{
-					// Swap bottom to top
-					Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
-					Sprite& bot_spr{ Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom) };
-					spr.filePath = bot_spr.filePath;
-					spr.id = bot_spr.id;
+				m_CurrentCutscene = std::next(m_CurrentCutscene);
 
-					// Below set inactive
-					ECS::SetActive(false, m_CutsceneBottom);
-				}
+				if (m_CurrentCutscene == m_Sequences[m_SelectedSequence].end())
+					StopSequence();
 				else
 				{
-					// Set inactive
-					ECS::SetActive(false, m_CutsceneTop);
-					ECS::SetActive(false, m_CutsceneBottom);
+					// Check has image
+					if (m_CurrentCutscene->m_HasImage)
+					{
+						// Swap bottom to top
+						Sprite& spr = Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneTop);
+						Sprite& bot_spr{ Coordinator::Instance()->GetComponent<Sprite>(m_CutsceneBottom) };
+						spr.filePath = bot_spr.filePath;
+						spr.id = bot_spr.id;
+
+						// Below set inactive
+						ECS::SetActive(false, m_CutsceneBottom);
+					}
+					else
+					{
+						// Set inactive
+						ECS::SetActive(false, m_CutsceneTop);
+						ECS::SetActive(false, m_CutsceneBottom);
+					}
+
+					m_CurrentPhase = CutscenePhase::FADE_IN;
+					m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
+
+					SetFade(m_CurrentCutscene->m_FadeInType);
+
+					SetText();
 				}
-
-				m_CurrentPhase = CutscenePhase::FADE_IN;
-				m_CurrentCutscene->m_CutsceneTimeCountdown = m_CurrentCutscene->m_CutsceneTime;
-
-				SetFade(m_CurrentCutscene->m_FadeInType);
-
-				SetText();
 			}
+			else
+				m_JustTriggered = false;
 		}
-		else
-			m_JustTriggered = false;
 	}
 
 	b8 CutsceneManager::HasCutscene(void)

@@ -37,6 +37,9 @@ namespace ALEngine::Script
 			ECS::AddLogicComponent<CutsceneObjectTutorial>(en);
 		};
 		RTTR_ENABLE(ECS::Component::UniBehaviour);
+
+		ECS::Entity m_EntityBoxy{};
+		Transform* m_BoxyXform{ nullptr };
 	};
 }
 

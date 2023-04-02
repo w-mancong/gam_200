@@ -55,8 +55,8 @@
                 "rotation": 0.0,
                 "ui": false,
                 "uiOffset": [
-                    -1600.0,
-                    -900.0,
+                    0.0,
+                    0.0,
                     725.0
                 ]
             }
@@ -64,11 +64,11 @@
         "EntityData": [
             {
                 "tag": "Cutscene Object",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 1,
                 "parentID": 0,
-                "treeNodeFlags": 0
+                "treeNodeFlags": 32
             }
         ],
         "LogicComponent": [
@@ -116,7 +116,7 @@
         "EntityData": [
             {
                 "tag": "Black Overlay",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 2,
                 "parentID": 1,
@@ -161,7 +161,7 @@
         "EntityData": [
             {
                 "tag": "Dialogue Box",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 3,
                 "parentID": 1,
@@ -222,7 +222,7 @@
         "EntityData": [
             {
                 "tag": "Cutscene Bottom",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 4,
                 "parentID": 1,
@@ -267,7 +267,7 @@
         "EntityData": [
             {
                 "tag": "Cutscene Top",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 5,
                 "parentID": 1,
@@ -312,7 +312,7 @@
         "EntityData": [
             {
                 "tag": "Dialogue Box Top",
-                "active": false,
+                "active": true,
                 "localActive": true,
                 "id": 6,
                 "parentID": 1,
@@ -363,7 +363,7 @@
                 "tag": "Select Tile Arrow",
                 "active": false,
                 "localActive": true,
-                "id": 7,
+                "id": 9,
                 "parentID": 0,
                 "treeNodeFlags": 0
             }
@@ -408,8 +408,8 @@
                 "tag": "Arrow",
                 "active": false,
                 "localActive": true,
-                "id": 8,
-                "parentID": 7,
+                "id": 10,
+                "parentID": 9,
                 "treeNodeFlags": 32
             }
         ]
@@ -453,8 +453,8 @@
                 "tag": "Bloom",
                 "active": false,
                 "localActive": true,
-                "id": 9,
-                "parentID": 7,
+                "id": 11,
+                "parentID": 9,
                 "treeNodeFlags": 32
             }
         ]
@@ -486,7 +486,7 @@
                 "tag": "Place First Tile",
                 "active": false,
                 "localActive": false,
-                "id": 10,
+                "id": 12,
                 "parentID": 0,
                 "treeNodeFlags": 0
             }
@@ -531,8 +531,8 @@
                 "tag": "Click Here",
                 "active": false,
                 "localActive": true,
-                "id": 11,
-                "parentID": 10,
+                "id": 13,
+                "parentID": 12,
                 "treeNodeFlags": 32
             }
         ]
@@ -576,8 +576,8 @@
                 "tag": "Arrow",
                 "active": false,
                 "localActive": true,
-                "id": 12,
-                "parentID": 10,
+                "id": 14,
+                "parentID": 12,
                 "treeNodeFlags": 32
             }
         ]
@@ -609,7 +609,7 @@
                 "tag": "Show AP",
                 "active": false,
                 "localActive": false,
-                "id": 13,
+                "id": 15,
                 "parentID": 0,
                 "treeNodeFlags": 0
             }
@@ -654,8 +654,8 @@
                 "tag": "AP1",
                 "active": false,
                 "localActive": true,
-                "id": 14,
-                "parentID": 13,
+                "id": 16,
+                "parentID": 15,
                 "treeNodeFlags": 32
             }
         ]
@@ -699,8 +699,8 @@
                 "tag": "AP2",
                 "active": false,
                 "localActive": true,
-                "id": 15,
-                "parentID": 13,
+                "id": 17,
+                "parentID": 15,
                 "treeNodeFlags": 32
             }
         ]
@@ -744,8 +744,8 @@
                 "tag": "AP3",
                 "active": false,
                 "localActive": true,
-                "id": 16,
-                "parentID": 13,
+                "id": 18,
+                "parentID": 15,
                 "treeNodeFlags": 32
             }
         ]
@@ -789,8 +789,8 @@
                 "tag": "AP4",
                 "active": false,
                 "localActive": true,
-                "id": 17,
-                "parentID": 13,
+                "id": 19,
+                "parentID": 15,
                 "treeNodeFlags": 32
             }
         ]
@@ -834,8 +834,8 @@
                 "tag": "AP5",
                 "active": false,
                 "localActive": true,
-                "id": 18,
-                "parentID": 13,
+                "id": 20,
+                "parentID": 15,
                 "treeNodeFlags": 32
             }
         ]
@@ -879,8 +879,8 @@
                 "tag": "AP6",
                 "active": false,
                 "localActive": true,
-                "id": 19,
-                "parentID": 13,
+                "id": 21,
+                "parentID": 15,
                 "treeNodeFlags": 32
             }
         ]
@@ -924,8 +924,8 @@
                 "tag": "Arrow",
                 "active": false,
                 "localActive": true,
-                "id": 20,
-                "parentID": 13,
+                "id": 22,
+                "parentID": 15,
                 "treeNodeFlags": 32
             }
         ]
@@ -957,7 +957,7 @@
                 "tag": "Walk To Enemy",
                 "active": false,
                 "localActive": false,
-                "id": 21,
+                "id": 23,
                 "parentID": 0,
                 "treeNodeFlags": 0
             }
@@ -1002,8 +1002,8 @@
                 "tag": "Arrow",
                 "active": false,
                 "localActive": true,
-                "id": 22,
-                "parentID": 21,
+                "id": 24,
+                "parentID": 23,
                 "treeNodeFlags": 32
             }
         ]
@@ -1047,8 +1047,8 @@
                 "tag": "Click Here",
                 "active": false,
                 "localActive": true,
-                "id": 23,
-                "parentID": 21,
+                "id": 25,
+                "parentID": 23,
                 "treeNodeFlags": 32
             }
         ]
@@ -1092,7 +1092,7 @@
                 "tag": "End Turn Arrow",
                 "active": false,
                 "localActive": false,
-                "id": 24,
+                "id": 26,
                 "parentID": 0,
                 "treeNodeFlags": 32
             }
@@ -1123,11 +1123,11 @@
         "EntityData": [
             {
                 "tag": "Hard Drop",
-                "active": true,
-                "localActive": true,
-                "id": 25,
+                "active": false,
+                "localActive": false,
+                "id": 27,
                 "parentID": 0,
-                "treeNodeFlags": 32
+                "treeNodeFlags": 0
             }
         ]
     },
@@ -1168,10 +1168,10 @@
         "EntityData": [
             {
                 "tag": "Click Here",
-                "active": true,
+                "active": false,
                 "localActive": true,
-                "id": 26,
-                "parentID": 25,
+                "id": 28,
+                "parentID": 27,
                 "treeNodeFlags": 32
             }
         ]
@@ -1213,10 +1213,10 @@
         "EntityData": [
             {
                 "tag": "Arrow Blocks",
-                "active": true,
+                "active": false,
                 "localActive": true,
-                "id": 27,
-                "parentID": 25,
+                "id": 29,
+                "parentID": 27,
                 "treeNodeFlags": 32
             }
         ]
@@ -1258,10 +1258,10 @@
         "EntityData": [
             {
                 "tag": "Arrow",
-                "active": true,
+                "active": false,
                 "localActive": true,
-                "id": 28,
-                "parentID": 25,
+                "id": 30,
+                "parentID": 27,
                 "treeNodeFlags": 32
             }
         ]
@@ -1291,10 +1291,10 @@
         "EntityData": [
             {
                 "tag": "Blocks",
-                "active": true,
+                "active": false,
                 "localActive": true,
-                "id": 29,
-                "parentID": 25,
+                "id": 31,
+                "parentID": 27,
                 "treeNodeFlags": 32
             }
         ]
@@ -1336,10 +1336,10 @@
         "EntityData": [
             {
                 "tag": "First",
-                "active": true,
+                "active": false,
                 "localActive": true,
-                "id": 30,
-                "parentID": 29,
+                "id": 32,
+                "parentID": 31,
                 "treeNodeFlags": 32
             }
         ]
@@ -1381,10 +1381,10 @@
         "EntityData": [
             {
                 "tag": "Second",
-                "active": true,
+                "active": false,
                 "localActive": true,
-                "id": 31,
-                "parentID": 29,
+                "id": 33,
+                "parentID": 31,
                 "treeNodeFlags": 32
             }
         ]
@@ -1426,10 +1426,10 @@
         "EntityData": [
             {
                 "tag": "Third",
-                "active": true,
+                "active": false,
                 "localActive": true,
-                "id": 32,
-                "parentID": 29,
+                "id": 34,
+                "parentID": 31,
                 "treeNodeFlags": 32
             }
         ]
@@ -1461,7 +1461,7 @@
                 "tag": "Construct Tile",
                 "active": false,
                 "localActive": false,
-                "id": 33,
+                "id": 35,
                 "parentID": 0,
                 "treeNodeFlags": 0
             }
@@ -1506,8 +1506,8 @@
                 "tag": "Arrow",
                 "active": false,
                 "localActive": true,
-                "id": 34,
-                "parentID": 33,
+                "id": 36,
+                "parentID": 35,
                 "treeNodeFlags": 32
             }
         ]
@@ -1551,8 +1551,98 @@
                 "tag": "Click Here",
                 "active": false,
                 "localActive": true,
-                "id": 35,
-                "parentID": 33,
+                "id": 37,
+                "parentID": 35,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "Sprite": [
+            {
+                "filePath": "Assets\\Images\\Cutscene\\Boxy.png",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "layer": 3991
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    1349.0,
+                    660.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0
+                ],
+                "rotation": 0.0,
+                "ui": false,
+                "uiOffset": [
+                    -1400.0,
+                    -650.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Boxy",
+                "active": true,
+                "localActive": true,
+                "id": 8,
+                "parentID": 7,
+                "treeNodeFlags": 32
+            }
+        ]
+    },
+    {
+        "id": 37,
+        "Sprite": [
+            {
+                "filePath": "",
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                "layer": 0
+            }
+        ],
+        "Transform": [
+            {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "rotation": 0.0,
+                "ui": true,
+                "uiOffset": [
+                    -1.0,
+                    -1.0,
+                    725.0
+                ]
+            }
+        ],
+        "EntityData": [
+            {
+                "tag": "Boxy Parent",
+                "active": true,
+                "localActive": true,
+                "id": 7,
+                "parentID": 1,
                 "treeNodeFlags": 32
             }
         ]
