@@ -187,7 +187,7 @@ namespace ALEngine::Graphics
 #endif
 	}
 
-	void OpenGLWindow::FullScreen(bool fullScreen)
+	void OpenGLWindow::FullScreen(bool fullScreen_)
 	{
 		s32 w{ 0 }, h{ 0 }, x{ 0 }, y{ 0 };
 		math::Vec2Int desktop = GetMonitorSize();
@@ -199,7 +199,7 @@ namespace ALEngine::Graphics
 		y = (desktop.y >> 4);
 		//////////////// temp fix////////////////
 
-		glfwSetWindowMonitor(window, fullScreen ? glfwGetPrimaryMonitor() : nullptr, x, y, w, h, GLFW_DONT_CARE);
+		glfwSetWindowMonitor(window, fullScreen_ ? glfwGetPrimaryMonitor() : nullptr, x, y, w, h, GLFW_DONT_CARE);
 		glfwGetWindowSize(window, &w, &h);
 		width = static_cast<u32>(w), height = static_cast<u32>(h);
 	}

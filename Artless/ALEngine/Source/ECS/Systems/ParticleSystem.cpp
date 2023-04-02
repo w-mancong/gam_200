@@ -384,7 +384,7 @@ namespace ALEngine::ECS
 		ParticleProperties& prop = Coordinator::Instance()->GetComponent<ParticleProperties>(en);
 		prop.position = position;
 		prop.sprite = Coordinator::Instance()->GetComponent<Sprite>(en);
-		prop.spawnDuration = 0.15;
+		prop.spawnDuration = 0.15f;
 		manualParticleContainer.push_back(prop);
 	}
 
