@@ -145,7 +145,13 @@ namespace ALEngine::UserInput
 		***********************************************************************************/
 		static s32 GetScreenResY();
 
+		/*!*********************************************************************************
+			\brief Reset mouse input
+		***********************************************************************************/
+		static void Reset(void);
+
 		static MouseWheelEvent m_MouseWheelEvent;
+		static b8 m_EnableInput;
 
 	private:
 		Input(void)  = default;

@@ -230,7 +230,7 @@ namespace ALEngine::Script
 	}
 
 	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyAttack(Unit& enemy) {
-		s32 randomVal = rand() % 100;
+		s32 randomVal = Random::Range(0, 100);
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 			if (randomVal < 50) {
 				GameAudioManager::Play("GuardAttack1");
@@ -244,35 +244,38 @@ namespace ALEngine::Script
 			an.nextClip = "GuardIdle";
 		}
 		else if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+			if (!GameAudioManager::IsPlaying("TileDestroyerAttack1") && !GameAudioManager::IsPlaying("TileDestroyerAttack2"))
+			{
+				if (randomVal < 50) {
+					GameAudioManager::Play("TileDestroyerAttack1");
+				}
+				else {
+					GameAudioManager::Play("TileDestroyerAttack2");
+				}
+			}
+
+			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
+			ECS::ChangeAnimation(an, "TileDestroyerAttack");
+			an.nextClip = "TileDestroyerIdle";
+		}
+		else {
 			if (randomVal < 50) {
-				GameAudioManager::Play("SummonerAttack1");
+				GameAudioManager::Play("SummonerAttack1"); 
 			}
 			else {
 				GameAudioManager::Play("SummonerAttack2");
 			}
 
 			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
-			ECS::ChangeAnimation(an, "TileDestroyerAttack");
-			an.nextClip = "TileDestroyerIdle ";
-		}
-		else {
-			if (randomVal < 50) {
-				GameAudioManager::Play("TileDestroyerAttack1");
-			}
-			else {
-				GameAudioManager::Play("TileDestroyerAttack2");
-			}
-
-			Animator& an = Coordinator::Instance()->GetComponent<Animator>(enemy.unit_Sprite_Entity);
 			ECS::ChangeAnimation(an, "SummonerAttack");
-			an.nextClip = "SummonerIdle ";
+			an.nextClip = "SummonerIdle";
 		}
 	}
 	
 	void GameplaySystem_Interface_Management_Enemy::Audio_PlayEnemyMove(Unit& enemy) {
 		Audio_PlayEnemyMoving(enemy);
 
-		s32 randomVal = rand() % 100;
+		s32 randomVal = Random::Range(0, 100);
 		if (enemy.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
 			if (randomVal < 50) {
 				GameAudioManager::Play("Guardv01");
@@ -505,6 +508,10 @@ namespace ALEngine::Script
 			{
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
 				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+
+				// Play audio and animation for attack
+				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+				Audio_PlayEnemyAttack(unit);
 			}
 			cell.m_canWalk = false;
 
@@ -531,6 +538,10 @@ namespace ALEngine::Script
 			{
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
 				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+
+				// Play audio and animation for attack
+				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+				Audio_PlayEnemyAttack(unit);
 			}
 			cell.m_canWalk = false;
 
@@ -559,6 +570,10 @@ namespace ALEngine::Script
 			{
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
 				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+
+				// Play audio and animation for attack
+				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+				Audio_PlayEnemyAttack(unit);
 			}
 			
 			cell.m_canWalk = false;
@@ -584,6 +599,10 @@ namespace ALEngine::Script
 			{
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
 				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+
+				// Play audio and animation for attack
+				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+				Audio_PlayEnemyAttack(unit);
 			}
 			cell.m_canWalk = false;
 
@@ -901,6 +920,9 @@ namespace ALEngine::Script
 				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(gameplaySystem->m_Room, enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j));
 				ECS::ParticleSystem::GetParticleSystem().UnitSpawnParticles(trans.position, false);
 				ECS::Entity enemy = PlaceNewEnemyInRoom(enemyUnit.coordinate[0] + i, enemyUnit.coordinate[1] + j, spawnMelee ? ENEMY_TYPE::ENEMY_MELEE : ENEMY_TYPE::ENEMY_CELL_DESTROYER, gameplaySystem->enemyEntityList, gameplaySystem->m_Room);
+
+				// Play audio and animation for attack
+				Audio_PlayEnemyAttack(enemyUnit);
 
 				if(Gameplay::TutorialManager::Instance()->TutorialIsPlaying())
 				{	// Reduce enemy health for tutorial

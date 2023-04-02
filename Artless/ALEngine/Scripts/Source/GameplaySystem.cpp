@@ -437,6 +437,7 @@ namespace ALEngine::Script
 		//}
 
 		//If right mouse button
+		static b8 rightClicked = false;
 		if (Input::KeyDown(KeyCode::MouseRightButton) || 
 			((Time::m_Scale <= 0.0f && (Gameplay::TutorialManager::Instance()->TutorialIsPlaying() == false)))) {
 			if (Time::m_Scale > 0.0f) {
@@ -449,7 +450,7 @@ namespace ALEngine::Script
 				if (currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING)
 				{
 					GameAudioManager::Stop("DrorSelectSkillLoop");
-					if (!GameAudioManager::IsPlaying("DeselectSkill"))
+					if (!rightClicked)
 						 GameAudioManager::Play("DeselectSkill");
 				}
 
@@ -490,7 +491,11 @@ namespace ALEngine::Script
 					Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(false);
 				}
 			}
+			rightClicked = true;
 		}
+
+		if (Input::KeyReleased(KeyCode::MouseRightButton))
+			rightClicked = false;
 
 		//Toggle debug draw
 		if (Input::KeyTriggered(KeyCode::Key_3)) {

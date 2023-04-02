@@ -21,7 +21,7 @@ namespace
 
 	bool CheckInput(u64 key)
 	{
-		return GetAsyncKeyState(static_cast<u32>(key));
+		return GetAsyncKeyState(static_cast<u32>(key)) & 0x8000;
 	}
 }
 
@@ -36,8 +36,6 @@ namespace ALEngine::UserInput
 		std::copy(keyDownState[nextKeyIndex], keyDownState[nextKeyIndex] + TOTAL_KEYS, keyDownState[currentKeyIndex]);
 		std::copy(keyReleasedState[nextKeyIndex], keyReleasedState[nextKeyIndex] + TOTAL_KEYS, keyReleasedState[currentKeyIndex]);
 		std::copy(keyTriggeredState[nextKeyIndex], keyTriggeredState[nextKeyIndex] + TOTAL_KEYS, keyTriggeredState[currentKeyIndex]);
-
-		m_MouseWheelEvent = MouseWheelEvent::MouseWheelIdle;
 	}
 
 	Math::Vec2 Input::WorldToScreenPosVec([[maybe_unused]] Math::Vec2 pos)
@@ -74,6 +72,14 @@ namespace ALEngine::UserInput
 		glfwGetWindowSize(Graphics::OpenGLWindow::Window(), &screenResX, &screenResY);
 		return screenResY;
 #endif
+	}
+
+	void Input::Reset(void)
+	{
+		memset(keyState, 0, sizeof(keyState));
+		memset(keyDownState, 0, sizeof(keyDownState));
+		memset(keyReleasedState, 0, sizeof(keyReleasedState));
+		memset(keyTriggeredState, 0, sizeof(keyTriggeredState));		
 	}
 
 	f64 Input::GetMousePosX()

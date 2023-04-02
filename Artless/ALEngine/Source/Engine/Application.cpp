@@ -109,18 +109,15 @@ namespace ALEngine::Engine
 			}
 
 			ECS::Init();
+			Input::Reset();
 
 			while (GameStateManager::current == GameStateManager::next)
 			{
-//#if EDITOR
 				if (!focus)
 				{
 					glfwPollEvents();
 					continue;
 				}
-//#else
-//				Time::m_Scale = static_cast<f32>(focus);
-//#endif
 
 				// Get Current Time
 				Time::ClockTimeNow();
@@ -161,7 +158,7 @@ namespace ALEngine::Engine
 #if EDITOR
 				}
 #endif
-				Input::Update();
+				Input::m_MouseWheelEvent = MouseWheelEvent::MouseWheelIdle;
 				// Render
 				Render();
 
@@ -260,7 +257,7 @@ namespace ALEngine::Engine
 			GameUpdate();
 #endif
 			std::ostringstream oss{};
-			oss << OpenGLWindow::title + " | FPS: " << Time::m_FPS;
+			oss << OpenGLWindow::title;
 			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
 		}
 	}
@@ -295,8 +292,8 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Normal Delta Time Update");
 		AssetManager::Instance()->Update();
-		Input::Update();
 #endif
+		Input::Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
 	}
