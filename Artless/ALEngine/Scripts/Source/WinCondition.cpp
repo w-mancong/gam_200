@@ -51,6 +51,10 @@ namespace ALEngine::Script
 				std::shared_ptr<SceneChangeHelper> ptr = GetLogicComponent<SceneChangeHelper>(scene_transition);
 				ptr->NextScene("Assets\\Scene\\main_menu.scene");
 				GameAudioManager::Play("MenuButtonPress");
+				SetActive(false, Coordinator::Instance()->GetEntityByTag("particle_left_1"));
+				SetActive(false, Coordinator::Instance()->GetEntityByTag("particle_left_2"));
+				SetActive(false, Coordinator::Instance()->GetEntityByTag("particle_right_1"));
+				SetActive(false, Coordinator::Instance()->GetEntityByTag("particle_right_2"));
 			}
 		}
 
@@ -171,6 +175,10 @@ namespace ALEngine::Script
 					return;
 				sceneChanging = true;
 				SetActive(true, main_menu);
+				SetActive(true, Coordinator::Instance()->GetEntityByTag("particle_left_1"));
+				SetActive(true, Coordinator::Instance()->GetEntityByTag("particle_left_2"));
+				SetActive(true, Coordinator::Instance()->GetEntityByTag("particle_right_1"));
+				SetActive(true, Coordinator::Instance()->GetEntityByTag("particle_right_2"));
 			}
 		}
 		else if (GameplaySystem::currentGameStatus == GAME_STATUS::LOSE)

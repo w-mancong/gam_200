@@ -49,9 +49,15 @@ namespace ALEngine::Script
 				clicked = true;
 
 				if (!active)
+				{
+					ParticleSystem::GetParticleSystem().pauseRender = true;
 					GameAudioManager::Play("MenuOpen");
+				}
 				else
+				{
+					ParticleSystem::GetParticleSystem().pauseRender = false;
 					GameAudioManager::Play("MenuClose");
+				}
 			}
 			if (Input::KeyReleased(KeyCode::MouseLeftButton))
 				clicked = false;
