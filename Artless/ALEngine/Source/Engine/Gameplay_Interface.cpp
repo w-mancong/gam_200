@@ -499,19 +499,23 @@ namespace ALEngine::Script
 		}
 
 		if (playAudioVolaTileBreak) {
-			GameAudioManager::Play("VolatTileActivate");
+			if (!GameAudioManager::IsPlaying("VolatTileActivate"))
+				GameAudioManager::Play("VolatTileActivate");
 		}
-		
+
 		if (playAudioBreak) {
-			GameAudioManager::Play("TileBreak");
+			if (!GameAudioManager::IsPlaying("TileBreak"))
+				GameAudioManager::Play("TileBreak");
 		}
 
 		if (playAudioCrack) {
-			GameAudioManager::Play("TileCrack");
+			if (!GameAudioManager::IsPlaying("TileCrack"))
+				GameAudioManager::Play("TileCrack");
 		}
 
 		if (playAudioConstructBreak) {
-			GameAudioManager::Play("ConstructTileBreak");
+			if (!GameAudioManager::IsPlaying("ConstructTileBreak"))
+				GameAudioManager::Play("ConstructTileBreak");
 		}
 	}
 

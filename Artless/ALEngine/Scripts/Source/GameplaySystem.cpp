@@ -326,7 +326,11 @@ namespace ALEngine::Script
 				continue;
 
 			gameplaySystem_GUI->HideEnemyTooltip(true);
-			gameplaySystem_Enemy->Audio_PlayEnemyDeath(unit);
+			if (!unit.audioPlayed)
+			{
+				gameplaySystem_Enemy->Audio_PlayEnemyDeath(unit);
+				unit.audioPlayed = true;
+			}
 			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(unit.unit_Sprite_Entity);
 			sprite.color.a -= 0.75f * Time::m_DeltaTime;
 			if (sprite.color.a <= 0.0f)

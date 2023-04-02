@@ -70,6 +70,8 @@ namespace ALEngine::ECS::Component
 		s32 distanceToTriggerEnemy{ 0 };
 
 		void(*UpdateEnemyLogic)(struct EnemyManager&, std::vector<Entity>&, struct Room&) {};
+
+		b8 audioPlayed{ false };
 	};
 }
 #endif
