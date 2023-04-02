@@ -134,7 +134,7 @@ namespace ALEngine::Script
 		guiManager.Unit_Defense = Coordinator::Instance()->GetEntityByTag("text_defense_output");
 		guiManager.Unit_Movement = Coordinator::Instance()->GetEntityByTag("text_move_output");
 
-		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
+		//Unit& unit = Coordinator::Instance()->GetComponent<Unit>(unitEntity);
 
 		Text& health_text = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Unit_Health);
 		Text& name_text = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().Unit_Name);

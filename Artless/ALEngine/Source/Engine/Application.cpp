@@ -157,8 +157,9 @@ namespace ALEngine::Engine
 
 #if EDITOR
 				}
-#endif
+#else
 				Input::m_MouseWheelEvent = MouseWheelEvent::MouseWheelIdle;
+#endif
 				// Render
 				Render();
 
@@ -251,13 +252,14 @@ namespace ALEngine::Engine
 		// should do the game m_Loop here
 		while (GameStateManager::current != GameState::Quit && appStatus)
 		{
+			std::ostringstream oss{};
 #if EDITOR
+			oss << "ALEngine | FPS: " << Time::m_FPS;
 			UpdateLoop[funcIndex]();
 #else
+			oss << OpenGLWindow::title;
 			GameUpdate();
 #endif
-			std::ostringstream oss{};
-			oss << OpenGLWindow::title;
 			glfwSetWindowTitle(OpenGLWindow::Window(), oss.str().c_str());
 		}
 	}
@@ -292,8 +294,8 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Normal Delta Time Update");
 		AssetManager::Instance()->Update();
-#endif
 		Input::Update();
+#endif
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
 	}

@@ -36,6 +36,8 @@ namespace ALEngine::UserInput
 		std::copy(keyDownState[nextKeyIndex], keyDownState[nextKeyIndex] + TOTAL_KEYS, keyDownState[currentKeyIndex]);
 		std::copy(keyReleasedState[nextKeyIndex], keyReleasedState[nextKeyIndex] + TOTAL_KEYS, keyReleasedState[currentKeyIndex]);
 		std::copy(keyTriggeredState[nextKeyIndex], keyTriggeredState[nextKeyIndex] + TOTAL_KEYS, keyTriggeredState[currentKeyIndex]);
+
+		Input::m_MouseWheelEvent = MouseWheelEvent::MouseWheelIdle;
 	}
 
 	Math::Vec2 Input::WorldToScreenPosVec([[maybe_unused]] Math::Vec2 pos)
