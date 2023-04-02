@@ -447,12 +447,9 @@ namespace ALEngine::Script
 				//ad.m_Loop = false;
 				//ad.Stop();
 
-				if (currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING)
-				{
-					GameAudioManager::Stop("DrorSelectSkillLoop");
-					if (!rightClicked)
-						 GameAudioManager::Play("DeselectSkill");
-				}
+				GameAudioManager::Stop("DrorSelectSkillLoop");
+				if (!rightClicked)
+					GameAudioManager::Play("DeselectSkill");
 
 				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 				Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);

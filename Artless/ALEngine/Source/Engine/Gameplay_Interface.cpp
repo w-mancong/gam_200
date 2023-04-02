@@ -2316,6 +2316,7 @@ namespace ALEngine::Script
 		}
 
 		AL_CORE_INFO("Select Current Pattern");
+		GameAudioManager::Play("MouseClick");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[0]);
 		gameplaySystem->selected_Pattern_Index = 0;
 		Gameplay::TutorialManager::Instance()->SetTileIsSelected(true);
