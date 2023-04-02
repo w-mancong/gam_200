@@ -47,7 +47,7 @@ namespace ALEngine::Script
 		f32 timer{};
 		b8 initialized{ false };
 
-		static f32 constexpr const SPEED{ 0.75f }, WAIT_TIME{ 2.5f };
+		static f32 constexpr const SPEED{ 0.75f }, WAIT_TIME{ 1.5f };
 		static b8 showPrompt;
 	};
 }

@@ -39,6 +39,7 @@ namespace ALEngine::Script
 	public:
 		static void Play(std::string const& name);
 		static void Stop(std::string const& name);
+		static b8 IsPlaying(std::string const& name);
 		static Engine::Audio const& Get(std::string const& name);
 	};
 }
