@@ -20,7 +20,7 @@
             {
                 "position": [
                     796.94775390625,
-                    122.84249877929688,
+                    122.84254455566406,
                     0.0
                 ],
                 "scale": [
@@ -154,7 +154,7 @@
         "Transform": [
             {
                 "position": [
-                    1868.1357421875,
+                    1868.135009765625,
                     499.1375732421875,
                     0.0
                 ],
@@ -690,7 +690,7 @@
         "Transform": [
             {
                 "position": [
-                    676.0172729492188,
+                    676.0175170898438,
                     43.229576110839844,
                     0.0
                 ],
@@ -752,7 +752,7 @@
         "Transform": [
             {
                 "position": [
-                    918.780029296875,
+                    918.7803955078125,
                     43.22444152832031,
                     0.0
                 ],
@@ -814,7 +814,7 @@
         "Transform": [
             {
                 "position": [
-                    1002.5235595703125,
+                    1002.5238647460938,
                     43.22492980957031,
                     0.0
                 ],
@@ -2038,7 +2038,7 @@
         "Transform": [
             {
                 "position": [
-                    896.7384643554688,
+                    896.7382202148438,
                     354.8003234863281,
                     0.0
                 ],
@@ -2193,8 +2193,8 @@
         "EntityData": [
             {
                 "tag": "particle_left_1",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 44,
                 "parentID": 48,
                 "treeNodeFlags": 32
@@ -2203,12 +2203,12 @@
         "ParticleProperty": [
             {
                 "velocity": [
-                    15.0,
+                    60.0,
                     0.0
                 ],
                 "velocityVariation": [
-                    10.0,
-                    22.100000381469727
+                    30.0,
+                    50.0
                 ],
                 "colorStart": [
                     1.0,
@@ -2223,19 +2223,19 @@
                     1.0
                 ],
                 "sizeStart": [
-                    70.0,
-                    70.0
+                    80.0,
+                    80.0
                 ],
                 "sizeEnd": [
                     0.0,
                     0.0
                 ],
-                "sizeVariation": 20.0,
+                "sizeVariation": 0.0,
                 "lifeTime": 15.0,
-                "spawnRate": 2.0,
+                "spawnRate": 1.0,
                 "rotation": 42.0,
                 "gravityEnabled": false,
-                "active": false
+                "active": true
             }
         ]
     },
@@ -2257,7 +2257,7 @@
             {
                 "position": [
                     -47.28656005859375,
-                    430.4394226074219,
+                    316.45001220703125,
                     0.0
                 ],
                 "scale": [
@@ -2267,8 +2267,8 @@
                 "rotation": 0.0,
                 "ui": true,
                 "uiOffset": [
-                    47.28656005859375,
-                    -430.4394226074219,
+                    0.9457311630249023,
+                    -6.328999996185303,
                     725.0
                 ]
             }
@@ -2276,8 +2276,8 @@
         "EntityData": [
             {
                 "tag": "particle_left_2",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 45,
                 "parentID": 48,
                 "treeNodeFlags": 32
@@ -2286,12 +2286,12 @@
         "ParticleProperty": [
             {
                 "velocity": [
-                    15.0,
+                    60.0,
                     0.0
                 ],
                 "velocityVariation": [
-                    10.0,
-                    18.200000762939453
+                    30.0,
+                    50.0
                 ],
                 "colorStart": [
                     1.0,
@@ -2306,19 +2306,19 @@
                     1.0
                 ],
                 "sizeStart": [
-                    70.0,
-                    70.0
+                    80.0,
+                    80.0
                 ],
                 "sizeEnd": [
                     0.0,
                     0.0
                 ],
-                "sizeVariation": 30.0,
+                "sizeVariation": 0.0,
                 "lifeTime": 15.0,
-                "spawnRate": 2.0,
+                "spawnRate": 1.0,
                 "rotation": 18.5,
                 "gravityEnabled": false,
-                "active": false
+                "active": true
             }
         ]
     },
@@ -2359,8 +2359,8 @@
         "EntityData": [
             {
                 "tag": "particle_right_1",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 46,
                 "parentID": 48,
                 "treeNodeFlags": 32
@@ -2369,12 +2369,12 @@
         "ParticleProperty": [
             {
                 "velocity": [
-                    -15.9399995803833,
+                    -60.0,
                     0.0
                 ],
                 "velocityVariation": [
-                    10.0,
-                    21.1200008392334
+                    30.0,
+                    50.0
                 ],
                 "colorStart": [
                     1.0,
@@ -2389,19 +2389,19 @@
                     1.0
                 ],
                 "sizeStart": [
-                    70.0,
-                    70.0
+                    80.0,
+                    80.0
                 ],
                 "sizeEnd": [
                     0.0,
                     0.0
                 ],
-                "sizeVariation": 20.0,
+                "sizeVariation": 0.0,
                 "lifeTime": 15.0,
-                "spawnRate": 2.0,
+                "spawnRate": 1.0,
                 "rotation": 10.899999618530273,
                 "gravityEnabled": false,
-                "active": false
+                "active": true
             }
         ]
     },
@@ -2431,19 +2431,19 @@
                     93.23942565917969
                 ],
                 "rotation": 0.0,
-                "ui": true,
+                "ui": false,
                 "uiOffset": [
-                    -1655.6302490234375,
-                    -275.3709411621094,
-                    725.0
+                    0.0,
+                    0.0,
+                    0.0
                 ]
             }
         ],
         "EntityData": [
             {
                 "tag": "particle_right_2",
-                "active": true,
-                "localActive": true,
+                "active": false,
+                "localActive": false,
                 "id": 47,
                 "parentID": 48,
                 "treeNodeFlags": 32
@@ -2452,12 +2452,12 @@
         "ParticleProperty": [
             {
                 "velocity": [
-                    -15.0,
+                    -60.0,
                     0.0
                 ],
                 "velocityVariation": [
-                    10.0,
-                    15.539999961853027
+                    30.0,
+                    50.0
                 ],
                 "colorStart": [
                     1.0,
@@ -2472,19 +2472,19 @@
                     1.0
                 ],
                 "sizeStart": [
-                    70.0,
-                    70.0
+                    80.0,
+                    80.0
                 ],
                 "sizeEnd": [
                     0.0,
                     0.0
                 ],
-                "sizeVariation": 20.0,
+                "sizeVariation": 0.0,
                 "lifeTime": 15.0,
-                "spawnRate": 2.0,
+                "spawnRate": 1.0,
                 "rotation": 18.799999237060547,
                 "gravityEnabled": false,
-                "active": false
+                "active": true
             }
         ]
     },
@@ -3373,7 +3373,7 @@
             {
                 "position": [
                     1402.292724609375,
-                    114.70091247558594,
+                    114.70096588134766,
                     0.0
                 ],
                 "scale": [
@@ -3861,7 +3861,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.8692321777344,
+                    469.8694152832031,
                     0.0
                 ],
                 "scale": [
@@ -3906,7 +3906,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.84490966796875,
+                    469.84515380859375,
                     0.0
                 ],
                 "scale": [
@@ -3951,7 +3951,7 @@
             {
                 "position": [
                     1474.60986328125,
-                    469.8262023925781,
+                    469.8264465332031,
                     0.0
                 ],
                 "scale": [
@@ -6457,7 +6457,7 @@
             {
                 "position": [
                     944.9998779296875,
-                    493.0029296875,
+                    493.0030517578125,
                     0.0
                 ],
                 "scale": [
@@ -6580,7 +6580,7 @@
             {
                 "position": [
                     1119.999755859375,
-                    567.999267578125,
+                    567.9992065429688,
                     0.0
                 ],
                 "scale": [
@@ -6872,7 +6872,7 @@
             {
                 "position": [
                     799.999755859375,
-                    450.0025939941406,
+                    450.0027160644531,
                     0.0
                 ],
                 "scale": [

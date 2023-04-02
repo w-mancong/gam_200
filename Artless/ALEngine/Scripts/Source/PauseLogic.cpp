@@ -50,9 +50,15 @@ namespace ALEngine::Script
 			Time::m_Scale = static_cast<f32>(active);
 
 			if (!active)
+			{
+				ParticleSystem::GetParticleSystem().pauseRender = true;
 				GameAudioManager::Play("MenuOpen");
+			}
 			else
+			{
+				ParticleSystem::GetParticleSystem().pauseRender = false;
 				GameAudioManager::Play("MenuClose");
+			}
 		}
 		SetActive(static_cast<b8>(Time::m_Scale), text_bar_hp);
 	}

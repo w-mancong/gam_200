@@ -187,6 +187,7 @@ namespace ALEngine::ECS
 		Graphics::Shader particleShader;
 
 	public:
+		b8 pauseRender{false};
 		std::vector<Particle> const& GetParticleContainer();
 	};
 }
