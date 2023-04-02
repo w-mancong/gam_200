@@ -194,7 +194,8 @@ namespace ALEngine::Editor
 						s32 index{ static_cast<s32>(selected.m_OrderIndex) };
 						ImGui::InputInt("Index##CutsceneEditor", &index, 1, 1, ImGuiInputTextFlags_ReadOnly);
 
-						ImGui::InputFloat("Time##CutsceneEditor", &selected.m_CutsceneTime);
+						if (selected.m_HasTimer == true)
+							ImGui::InputFloat("Time##CutsceneEditor", &selected.m_CutsceneTime);
 
 						ImGui::Checkbox("Has Image", &selected.m_HasImage);
 						ImGui::SameLine();	 ImGui::Checkbox("Wait For Input", &selected.m_WaitForInput);
@@ -246,8 +247,9 @@ namespace ALEngine::Editor
 								}
 							}
 							ImGui::EndCombo();
-						}						
-						ImGui::InputFloat("Fade In Time##CutsceneEditor", &selected.m_FadeInTime, 0.f, 0.f, "%.3f", selected.m_FadeInType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
+						}
+						if (selected.m_FadeInType != FadeType::FADE_NONE)
+							ImGui::InputFloat("Fade In Time##CutsceneEditor", &selected.m_FadeInTime, 0.f, 0.f, "%.3f", selected.m_FadeInType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
 
 						switch (selected.m_FadeOutType)
 						{
@@ -292,7 +294,8 @@ namespace ALEngine::Editor
 							}
 							ImGui::EndCombo();
 						}
-						ImGui::InputFloat("Fade Out Time##CutsceneEditor", &selected.m_FadeOutTime, 0.f, 0.f, "%.3f", selected.m_FadeOutType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
+						if(selected.m_FadeOutType != FadeType::FADE_NONE)
+							ImGui::InputFloat("Fade Out Time##CutsceneEditor", &selected.m_FadeOutTime, 0.f, 0.f, "%.3f", selected.m_FadeOutType == FadeType::FADE_NONE ? ImGuiInputTextFlags_ReadOnly : 0);
 
 						// Image
 						if(selected.m_HasImage)
@@ -302,7 +305,7 @@ namespace ALEngine::Editor
 								Guid id = Engine::AssetManager::Instance()->GetGuid(selected.m_CutsceneImageFilePath.c_str());
 								u64 texture = (u64)Engine::AssetManager::Instance()->GetButtonImage(id);
 								ImVec2 winSize = ImGui::GetContentRegionAvail();
-								ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x, winSize.x * ASPECT_RATIO }, { 0, 1 }, { 1, 0 });
+								ImGui::Image(reinterpret_cast<ImTextureID>(texture), { winSize.x * 0.5f, winSize.x * 0.5f * ASPECT_RATIO }, { 0, 1 }, { 1, 0 });
 							}
 							ImGui::InputTextWithHint("Image File Path##CutsceneEditorImage", "File Path", &selected.m_CutsceneImageFilePath, ImGuiInputTextFlags_ReadOnly);
 
