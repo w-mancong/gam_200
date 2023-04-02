@@ -838,7 +838,7 @@ namespace ALEngine::Script
 		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 8;
-		new_ability.max_Cooldown = 3;
+		new_ability.max_Cooldown = 2;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
