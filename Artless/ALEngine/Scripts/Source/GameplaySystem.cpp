@@ -279,10 +279,14 @@ namespace ALEngine::Script
 
 						// Empty Tile under enemy
 						ECS::CreateSprite(m_Room.roomCellsArray[counter], "Assets/Images/InitialTile_v04.png");
+
+						Coordinator::Instance()->GetComponent<EventTrigger>(enemyEntt).layer = 50;
 					}
 					else if (row == "Vertical_Wall" || row == "Top_Wall" || row == "Horizontal_Wall" || row == "Bottom_Wall") {
 						Coordinator::Instance()->GetComponent<Cell>(getEntityCell(m_Room, r, c)).m_isAccessible = false;
 						Coordinator::Instance()->GetComponent<EventTrigger>(getEntityCell(m_Room, r, c)).isEnabled = false;
+
+						Coordinator::Instance()->GetComponent<EventTrigger>(getEntityCell(m_Room, r, c)).layer = 100;
 
 						ECS::CreateSprite(m_Room.roomCellsArray[counter], tile_image.c_str());
 					}
