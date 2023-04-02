@@ -2107,13 +2107,13 @@ namespace ALEngine::Script
 				//If enemy, move on to next enemy
 				else if (movinUnit.unitType == UNIT_TYPE::ENEMY) {
 					gameplaySystem_Enemy->Audio_StopEnemyMoving(movinUnit);
-					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE) {
+					if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_MELEE && movinUnit.health > 0) {
 						//Stop movement
 						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 						ECS::ChangeAnimation(an, "GuardIdle");
 						gameplaySystem_Enemy->RunEnemyAdjacentAttack(gameplaySystem->m_Room, Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->enemyEntityList[enemyNeededData.enemyMoved - 1]));
 					}
-					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER) {
+					else if (movinUnit.enemyUnitType == ENEMY_TYPE::ENEMY_CELL_DESTROYER && movinUnit.health > 0) {
 						Animator& an = Coordinator::Instance()->GetComponent<Animator>(movinUnit.unit_Sprite_Entity);
 						ECS::ChangeAnimation(an, "TileDestroyerIdle");
 
