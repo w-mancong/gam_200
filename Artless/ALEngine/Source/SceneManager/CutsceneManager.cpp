@@ -638,7 +638,7 @@ namespace ALEngine::Engine::Scene
 
 			// Bottom alpha = 1
 			bot_spr.filePath = "";
-			bot_spr.id = 0;
+			bot_spr.id = Engine::AssetManager::Instance()->GetGuid("");
 			bot_spr.color = { 0.f, 0.f, 0.f, 1.f };
 
 			// Set fade speed
@@ -656,7 +656,7 @@ namespace ALEngine::Engine::Scene
 
 			// Bottom alpha = 1
 			bot_spr.filePath = "";
-			bot_spr.id = 0;
+			bot_spr.id = Engine::AssetManager::Instance()->GetGuid("");
 			bot_spr.color = { 1.f, 1.f, 1.f, 1.f };
 
 			// Set fade speed
@@ -689,7 +689,7 @@ namespace ALEngine::Engine::Scene
 
 			// Top apha = 0
 			top_spr.filePath = "";
-			top_spr.id = 0;
+			top_spr.id = Engine::AssetManager::Instance()->GetGuid("");
 			top_spr.color = { 0.f, 0.f, 0.f, 0.f };
 
 			// Bottom alpha = 1
@@ -706,7 +706,7 @@ namespace ALEngine::Engine::Scene
 			
 			// Top apha = 0
 			top_spr.filePath = "";
-			top_spr.id = 0;
+			top_spr.id = Engine::AssetManager::Instance()->GetGuid("");
 			top_spr.color = { 1.f, 1.f, 1.f, 0.f };
 
 			// Bottom alpha = 1
