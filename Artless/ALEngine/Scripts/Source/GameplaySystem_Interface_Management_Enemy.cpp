@@ -112,8 +112,8 @@ namespace ALEngine::Script
 
 	void GameplaySystem_Interface_Management_Enemy::SetEnemy01attributes(Unit& enemyUnit)
 	{
-		enemyUnit.health = 24,
-		enemyUnit.maxHealth = 24;
+		enemyUnit.health = 20,
+		enemyUnit.maxHealth = 20;
 		enemyUnit.minDamage = 8,
 		enemyUnit.maxDamage = 15;
 		enemyUnit.maxActionPoints = 3;
