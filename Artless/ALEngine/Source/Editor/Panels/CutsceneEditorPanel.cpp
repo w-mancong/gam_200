@@ -113,6 +113,9 @@ namespace ALEngine::Editor
 			ImGui::NewLine(); ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (borderSize.x * 0.5f));
 			if (ImGui::Button("Add Sequence##CutsceneEditor"))
 				ImGui::OpenPopup("Add Sequence##CutsceneEditorPopup");
+			ImGui::SameLine();
+			if (ImGui::Button("Delete Sequence##CutsceneEditor"))
+				ImGui::OpenPopup("Delete Sequence##CutsceneEditorPopup");
 
 			f32 popup_len{ ALEditor::Instance()->m_MenuSize.x };
 			ImGui::SetNextWindowSize({ popup_len, 0.f });
@@ -125,9 +128,27 @@ namespace ALEngine::Editor
 				if (ImGui::Button("Add##Sequence To Be Added", { popup_len * 0.2f, 0.f }))
 				{
 					CutsceneManager::Instance()->AddSequence(newName);
+					m_SelectedSequence = newName;
 					newName = "";
 					ImGui::CloseCurrentPopup();
 				}
+
+				ImGui::EndPopup();
+			}
+
+			ImGui::SetNextWindowSize({ popup_len, 0.f });
+			if (ImGui::BeginPopup("Delete Sequence##CutsceneEditorPopup"))
+			{
+				ImGui::Text("Confirm Delete?");
+				if (ImGui::Button("Yes##DeleteSequence"))
+				{
+					CutsceneManager::Instance()->m_Sequences.erase(m_SelectedSequence);
+					m_SelectedSequence = "";
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::SameLine(); 
+				if(ImGui::Button("No##DeleteSequence"))
+					ImGui::CloseCurrentPopup();
 
 				ImGui::EndPopup();
 			}

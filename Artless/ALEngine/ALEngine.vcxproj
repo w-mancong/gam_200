@@ -180,6 +180,7 @@
     <ClCompile Include="Scripts\Source\PauseButton.cpp" />
     <ClCompile Include="Scripts\Source\PauseButtonFlag.cpp" />
     <ClCompile Include="Scripts\Source\PauseLogic.cpp" />
+    <ClCompile Include="Scripts\Source\PresentationCutsceneObjectSource.cpp" />
     <ClCompile Include="Scripts\Source\PromptTool.cpp" />
     <ClCompile Include="Scripts\Source\QuitButton.cpp" />
     <ClCompile Include="Scripts\Source\ResumeButton.cpp" />
@@ -493,6 +494,7 @@
     <ClInclude Include="Scripts\Header\PauseButton.h" />
     <ClInclude Include="Scripts\Header\PauseButtonFlag.h" />
     <ClInclude Include="Scripts\Header\PauseLogic.h" />
+    <ClInclude Include="Scripts\Header\PresentationCutsceneObject.h" />
     <ClInclude Include="Scripts\Header\PromptTool.h" />
     <ClInclude Include="Scripts\Header\QuitButton.h" />
     <ClInclude Include="Scripts\Header\ResumeButton.h" />

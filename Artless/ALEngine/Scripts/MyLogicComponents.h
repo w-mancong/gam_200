@@ -27,5 +27,6 @@
 #include <GameAudioManager.h>
 #include <WinCondition.h>
 #include <SplashScreen.h>
+#include <PresentationCutsceneObject.h>
 
 #endif

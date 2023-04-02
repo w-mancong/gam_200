@@ -11,4 +11,8 @@ RTTR_REGISTRATION
 	registration::class_<SplashScreen>("SplashScreen")
 		.constructor<>()
 		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
+
+	registration::class_<PresentationCutsceneObject>("PresentationCutsceneObject")
+		.constructor<>()
+		.method("DeserializeComponent", &UniBehaviour::DeserializeComponent);
 }
