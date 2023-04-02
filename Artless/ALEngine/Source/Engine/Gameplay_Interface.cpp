@@ -838,7 +838,7 @@ namespace ALEngine::Script
 		new_ability.current_Ability_Name = ABILITY_NAME::HARD_DROP;
 		new_ability.current_Ability_Type = ABILITY_TYPE::DIRECT;
 		new_ability.damage = 8;
-		new_ability.max_Cooldown = 3;
+		new_ability.max_Cooldown = 2;
 		new_ability.cost = 2;
 		abilitiesList.push_back(new_ability);
 
@@ -2230,6 +2230,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Select Abilities 0");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2244,6 +2245,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Select Abilities 1");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2258,6 +2260,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Construct Wall");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[2]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2272,6 +2275,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Construct Wall");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[3]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2286,6 +2290,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Construct Wall");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[4]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2327,6 +2332,7 @@ namespace ALEngine::Script
 		}
 
 		AL_CORE_INFO("Select Pattern 1");
+		GameAudioManager::Play("MouseClick");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[1]);
 		gameplaySystem->selected_Pattern_Index = 1;
 	}
@@ -2341,6 +2347,7 @@ namespace ALEngine::Script
 		}
 
 		AL_CORE_INFO("Select Pattern 2");
+		GameAudioManager::Play("MouseClick");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[2]);
 		gameplaySystem->selected_Pattern_Index = 2;
 	}
@@ -2355,6 +2362,7 @@ namespace ALEngine::Script
 		}
 
 		AL_CORE_INFO("Select Pattern 3");
+		GameAudioManager::Play("MouseClick");
 		gameplaySystem->SelectPattern(gameplaySystem->pattern_List[3]);
 		gameplaySystem->selected_Pattern_Index = 3;
 	}

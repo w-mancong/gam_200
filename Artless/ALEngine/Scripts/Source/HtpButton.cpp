@@ -48,6 +48,7 @@ namespace ALEngine::Script
 				SetActive(true, htp);
 
 				Lighten(en);
+				Font::EnableTextRendering(false);
 				PauseButtonFlag::confirmationBG = true;
 				GameAudioManager::Play("MenuButtonPress");
 			}
@@ -69,6 +70,7 @@ namespace ALEngine::Script
 				SetActive(false, htp);
 
 				Lighten(en);
+				Font::EnableTextRendering(true);
 				PauseButtonFlag::confirmationBG = false;
 				GameAudioManager::Play("MenuButtonPress");
 				index = MIN_INDEX;

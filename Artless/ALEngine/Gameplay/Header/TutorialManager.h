@@ -171,6 +171,22 @@ namespace Gameplay
 
 		/*!*********************************************************************************
 			\brief
+				Gets whether the player has selected an ability
+			\return
+				Returns whether an ability is selected
+		***********************************************************************************/
+		b8 GetAbilityIsSelected(void);
+
+		/*!*********************************************************************************
+			\brief
+				Gets whether the player has selected an ability
+			\param [in] isSelected
+				Value to set whether an ability is selected
+		***********************************************************************************/
+		void SetAbilityIsSelected(b8 isSelected);
+
+		/*!*********************************************************************************
+			\brief
 				Gets whether the player has clicked End Turn
 			\return
 				Returns whether player has clicked End Turn
@@ -277,6 +293,7 @@ namespace Gameplay
 		b8 m_PlayerMoveFinished{ false };					// Whether player has finished moving
 		b8 m_EndTurnPressed{ false };						// Whether player pressed End Turn
 		b8 m_PlayerTurnStart{ false };						// Whether player's turn has started
+		b8 m_AbilityIsSelected{ false };					// Whether ability is selected
 
 		// Info
 		u16 m_EnemiesKilled{};								// Number of enemies killed by player

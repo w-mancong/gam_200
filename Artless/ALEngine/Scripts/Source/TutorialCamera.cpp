@@ -117,6 +117,7 @@ namespace ALEngine::Script
 		if (camera.Position().x >= targetX)
 		{
 			camera.Position().x = targetX;
+			Gameplay::TutorialManager::Instance()->SetAllAbilitiesOn();
 			Gameplay::TutorialManager::Instance()->NextState();
 		}
 

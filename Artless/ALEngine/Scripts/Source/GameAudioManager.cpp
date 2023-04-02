@@ -127,6 +127,11 @@ namespace ALEngine::Script
 		sounds[name].Stop();
 	}
 
+	b8 GameAudioManager::IsPlaying(std::string const& name)
+	{
+		return sounds[name].IsPlaying();
+	}
+
 	Engine::Audio const& GameAudioManager::Get(std::string const& name)
 	{
 		return sounds[name];

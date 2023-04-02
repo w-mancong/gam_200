@@ -155,7 +155,7 @@ namespace ALEngine::ECS
 
 		for (Text& text : textCollection)
 		{
-			if (text.textString.empty() || text.currentFont.empty())
+			if (text.textString.empty() || text.currentFont.empty() || !text.active)
 				continue;
 			
 			Font font{};
