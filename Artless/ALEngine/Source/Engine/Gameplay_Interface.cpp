@@ -2230,6 +2230,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Select Abilities 0");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[0]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2244,6 +2245,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Select Abilities 1");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[1]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2258,6 +2260,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Construct Wall");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[2]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2272,6 +2275,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Construct Wall");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[3]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
@@ -2286,6 +2290,7 @@ namespace ALEngine::Script
 		AL_CORE_INFO("Construct Wall");
 		gameplaySystem->SelectAbility(gameplaySystem->Abilities_List[4]);
 		gameplaySystem_GUI->DisableToolTipGUI();
+		Gameplay::TutorialManager::Instance()->SetAbilityIsSelected(true);
 	}
 
 	/*!*********************************************************************************
