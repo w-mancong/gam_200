@@ -1181,9 +1181,9 @@ namespace ALEngine::Script
 			else {
 				//If enemy unit
 				AL_CORE_INFO("Enemy Died");
-				gameplaySystem_GUI->HideEnemyTooltip(true);
+				//gameplaySystem_GUI->HideEnemyTooltip(true);
 
-				gameplaySystem_Enemy->Audio_PlayEnemyDeath(unit);
+				//gameplaySystem_Enemy->Audio_PlayEnemyDeath(unit);
 
 				b8 allEnemiesDead = true;
 				for (int i = 0; i < gameplaySystem->enemyEntityList.size(); ++i) {
@@ -1205,7 +1205,7 @@ namespace ALEngine::Script
 			}
 
 			////Disable the unit
-			Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
+			//Coordinator::Instance()->GetComponent<EntityData>(unitEntity).active = false;
 			//Coordinator::Instance()->GetComponent<EntityData>(unit.unit_Sprite_Entity).active = false;
 			unit.health = 0;	//Limit to 0
 

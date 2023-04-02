@@ -313,7 +313,21 @@ namespace ALEngine::Script
 
 	void GameplaySystem::Update(ECS::Entity en)
 	{
+		for (ECS::Entity en : gameplaySystem->enemyEntityList)
+		{
+			if (!Coordinator::Instance()->GetComponent<EntityData>(en).active)
+				continue;
+			Unit& unit = Coordinator::Instance()->GetComponent<Unit>(en);
+			if (unit.health > 0.0f)
+				continue;
 
+			gameplaySystem_GUI->HideEnemyTooltip(true);
+			gameplaySystem_Enemy->Audio_PlayEnemyDeath(unit);
+			Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(unit.unit_Sprite_Entity);
+			sprite.color.a -= 0.75f * Time::m_DeltaTime;
+			if (sprite.color.a <= 0.0f)
+				SetActive(false, en);
+		}
 	}
 
 	void GameplaySystem::LateUpdate(ECS::Entity en)
