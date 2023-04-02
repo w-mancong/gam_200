@@ -17,6 +17,8 @@ namespace ALEngine::Script
 		using namespace ECS;
 		f32 constexpr ALPHA_SPEED{ 0.75f };
 	}
+	b8 SceneChangeHelper::changingScene{false};
+	f32 SceneChangeHelper::alphaValue{};
 
 	void SceneChangeHelper::Init(ECS::Entity en)
 	{
@@ -25,6 +27,7 @@ namespace ALEngine::Script
 		sceneIndex = -1;
 		sprite = &Coordinator::Instance()->GetComponent<Sprite>(en);
 		sprite->color.a = 0.0f;
+		changingScene = false;
 	}
 
 	void SceneChangeHelper::Update([[maybe_unused]] ECS::Entity en)
@@ -48,28 +51,33 @@ namespace ALEngine::Script
 	void SceneChangeHelper::NextScene(std::string const& _sceneName)
 	{
 		changeScene = true;
+		changingScene = true;
 		sceneName = _sceneName;
 	}
 
 	void SceneChangeHelper::NextScene(u64 _sceneIndex)
 	{
 		changeScene = true;
+		changingScene = true;
 		sceneIndex = static_cast<s64>(_sceneIndex);
 	}
 
 	void SceneChangeHelper::NextScene(void)
 	{
 		changeScene = true;
+		changingScene = true;
 	}
 
 	void SceneChangeHelper::Restart(void)
 	{
 		changeScene = true;
 		restart = true;
+		changingScene = true;
 	}
 
 	void SceneChangeHelper::UpdateAlpha(void)
 	{
 		sprite->color.a += Time::m_ActualDeltaTime * ALPHA_SPEED;
+		alphaValue = sprite->color.a;
 	}
 }

@@ -432,9 +432,9 @@ namespace ALEngine::Script
 		gameplaySystem_GUI->Update_Skill_Tip_Position();
 		gameplaySystem_GUI->UpdateYourTurnSign();
 
-		if (Input::KeyDown(KeyCode::MouseRightButton)) {
-			GameAudioManager::Play("MouseClick");
-		}
+		//if (Input::KeyDown(KeyCode::MouseLeftButton)) {
+		//	GameAudioManager::Play("MouseClick");
+		//}
 
 		//If right mouse button
 		if (Input::KeyDown(KeyCode::MouseRightButton) || 
@@ -446,8 +446,12 @@ namespace ALEngine::Script
 				//ad.m_Loop = false;
 				//ad.Stop();
 
-				GameAudioManager::Stop("DrorSelectSkillLoop");
-				GameAudioManager::Play("DeselectSkill");
+				if (currentPatternPlacementStatus != PATTERN_PLACEMENT_STATUS::NOTHING)
+				{
+					GameAudioManager::Stop("DrorSelectSkillLoop");
+					if (!GameAudioManager::IsPlaying("DeselectSkill"))
+						 GameAudioManager::Play("DeselectSkill");
+				}
 
 				Unit& playerUnit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 				Animator& an = Coordinator::Instance()->GetComponent<Animator>(playerUnit.unit_Sprite_Entity);
@@ -543,10 +547,10 @@ namespace ALEngine::Script
 			Engine::Scene::LoadScene("Assets\\Level_1.scene");
 		}
 
-		if (Input::KeyTriggered(KeyCode::E)) {
+		if (Input::KeyTriggered(KeyCode::E) || Input::m_MouseWheelEvent == MouseWheelEvent::MouseWheelDown) {
 			RotatePattern(1);
 		}
-		else if (Input::KeyTriggered(KeyCode::Q)) {
+		else if (Input::KeyTriggered(KeyCode::Q) || Input::m_MouseWheelEvent == MouseWheelEvent::MouseWheelUp) {
 			RotatePattern(-1);
 		}
 		//******END CHEAT KEYS******//

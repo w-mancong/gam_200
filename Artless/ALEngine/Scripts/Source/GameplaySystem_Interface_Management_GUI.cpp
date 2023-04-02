@@ -218,17 +218,17 @@ namespace ALEngine::Script
 	void GameplaySystem_Interface_Management_GUI::UpdateFpsLabel()
 	{
 		Text& fps = Coordinator::Instance()->GetComponent<Text>(gameplaySystem_GUI->getGuiManager().FPS_Label);
-		if (guiManager.fpsActive)
-		{
-			std::ostringstream oss{};
-			oss << "FPS: " << (int)Time::m_FPS;
-			fps.textString = oss.str();
-			
-		}
-		else
-		{
+		//if (guiManager.fpsActive)
+		//{
+		//	std::ostringstream oss{};
+		//	oss << "FPS: " << (int)Time::m_FPS;
+		//	fps.textString = oss.str();
+		//	
+		//}
+		//else
+		//{
 			fps.textString = "";
-		}
+		//}
 
 		if (Input::KeyTriggered(KeyCode::Ctrl))
 			guiManager.fpsActive = !guiManager.fpsActive;

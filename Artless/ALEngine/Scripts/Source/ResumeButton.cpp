@@ -43,6 +43,7 @@ namespace ALEngine::Script
 				Time::m_Scale = 1.0f;
 				Lighten(en);
 				GameAudioManager::Play("MenuButtonPress");
+				ParticleSystem::GetParticleSystem().pauseRender = false;
 			}
 		}
 

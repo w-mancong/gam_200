@@ -19,6 +19,7 @@ namespace ALEngine::ECS::Component
 		f32 scale{ 1.f }; // scale of text
 		std::string textString{"[new text]"}; // text string
 		u32 layer{};
+		b8 active{ true };
 	};
 }
 

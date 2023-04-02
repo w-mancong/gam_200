@@ -59,6 +59,9 @@ namespace ALEngine::Script
 		*******************************************************************************/
 		void UpdateAlpha(void);
 
+		static b8 changingScene;
+		static f32 alphaValue;
+
 	private:
 		b8 changeScene{ false }, restart{ false };
 		std::string sceneName{ "" };
