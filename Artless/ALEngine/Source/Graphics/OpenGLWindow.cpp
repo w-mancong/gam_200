@@ -19,8 +19,8 @@ namespace ALEngine::Graphics
 		void ResizeWindow([[maybe_unused]] GLFWwindow* _window, s32 width, s32 height)
 		{
 			glViewport(0, 0, width, height);
-			OpenGLWindow::width = width, OpenGLWindow::height = height;
-			OpenGLWindow::ar = static_cast<f32>(width) / static_cast<f32>(height);
+			OpenGLWindow::screenWidth = width, OpenGLWindow::screenHeight = height;
+			//OpenGLWindow::ar = static_cast<f32>(width) / static_cast<f32>(height);
 
 #if EDITOR
 			//f32& cameraWidth  = Editor::ALEditor::Instance()->GetSceneCameraWidth();
@@ -69,7 +69,7 @@ namespace ALEngine::Graphics
 	}
 
 	GLFWwindow* OpenGLWindow::window = nullptr;
-	u32 OpenGLWindow::width{ DEFAULT_WIDTH }, OpenGLWindow::height{ DEFAULT_HEIGHT };
+	u32 OpenGLWindow::width{ DEFAULT_WIDTH }, OpenGLWindow::height{ DEFAULT_HEIGHT }, OpenGLWindow::screenWidth{}, OpenGLWindow::screenHeight{};
 	f32 OpenGLWindow::ar{};
 	b8 OpenGLWindow::fullScreen{ true };
 	std::string OpenGLWindow::title{ "ALEngine" };
@@ -196,16 +196,22 @@ namespace ALEngine::Graphics
 		s32 w{ 0 }, h{ 0 }, x{ 0 }, y{ 0 };
 		math::Vec2Int desktop = GetMonitorSize();
 
-		//////////////// temp fix////////////////
-		w = width;
-		h = height;
-		x = (desktop.x >> 4);
-		y = (desktop.y >> 4);
-		//////////////// temp fix////////////////
+		if (fullScreen)
+		{
+			w = desktop.x;
+			h = desktop.y;
+		}
+		else
+		{
+			w = width;
+			h = height;
+			x = (desktop.x >> 1) - (width >> 1);
+			y = (desktop.y >> 1) - (height >> 1);
+		}
 
 		glfwSetWindowMonitor(window, fullScreen_ ? glfwGetPrimaryMonitor() : nullptr, x, y, w, h, GLFW_DONT_CARE);
 		glfwGetWindowSize(window, &w, &h);
-		width = static_cast<u32>(w), height = static_cast<u32>(h);
+		//width = static_cast<u32>(w), height = static_cast<u32>(h);
 	}
 
 	void OpenGLWindow::ToggleScreen(void)

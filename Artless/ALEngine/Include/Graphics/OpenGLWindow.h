@@ -42,7 +42,7 @@ namespace ALEngine::Graphics
 		static GLFWwindow* Window(void);
 
 		static f32 ar;
-		static u32 width, height;
+		static u32 width, height, screenWidth, screenHeight;
 		static std::string title;
 		static b8 fullScreen;
 
