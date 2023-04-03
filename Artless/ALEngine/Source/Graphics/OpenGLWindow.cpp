@@ -101,6 +101,10 @@ namespace ALEngine::Graphics
 		height = static_cast<u32>(dimension.y);
 		fullScreen = config.GetInt("FullScreen", 1);
 
+#if EDITOR
+		fullScreen = false;
+#endif
+
 		ar = dimension.x / dimension.y;
 
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
