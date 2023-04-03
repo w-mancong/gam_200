@@ -980,7 +980,7 @@ namespace ALEngine::Script
 		//Get player unit
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
-		//Add health
+		//Add action point
 		unit.actionPoints += amount;
 
 		//Limit to max
