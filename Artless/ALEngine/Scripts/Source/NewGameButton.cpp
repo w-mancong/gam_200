@@ -56,6 +56,7 @@ namespace ALEngine::Script
 				PauseButtonFlag::confirmationBG = true;
 				Lighten(en);
 				GameAudioManager::Play("MenuButtonPress");
+				ParticleSystem::GetParticleSystem().pauseRender = false;
 			}
 		}
 
@@ -77,6 +78,7 @@ namespace ALEngine::Script
 				roomSet = true;
 				Lighten(en);
 				Gameplay::TutorialManager::Instance()->SetTutorialIsPlaying(true);
+				ParticleSystem::GetParticleSystem().pauseRender = false;
 				GameAudioManager::Play("NewGameStart_ButtonPress(AfterTutorialPrompt)");
 			}
 		}
