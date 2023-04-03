@@ -19,7 +19,7 @@ namespace ALEngine::Script
 	void PresentationCutsceneObject::Init(ECS::Entity en)
 	{
 		Engine::Scene::CutsceneManager::Instance()->Init(en);
-		Engine::Scene::CutsceneManager::Instance()->PlaySequence("01_Presentation");
+		Engine::Scene::CutsceneManager::Instance()->PlaySequence("New");
 
 		ECS::CameraPosition(0.0f, 0.0f);
 	}
