@@ -980,7 +980,7 @@ namespace ALEngine::Script
 		//Get player unit
 		Unit& unit = Coordinator::Instance()->GetComponent<Unit>(playerEntity);
 
-		//Add health
+		//Add action point
 		unit.actionPoints += amount;
 
 		//Limit to max
@@ -1667,7 +1667,7 @@ namespace ALEngine::Script
 
 		//Change it's sprite overlay
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(cell.child_overlay);
-		sprite.layer = 1000 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
+		sprite.layer = 1500 - static_cast<u32>(Coordinator::Instance()->GetComponent<Transform>(cellEntity).position.y);
 		sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/Tile_Overlay_Bomb.png"); // TO REPLACE WHEN A NEW SPRITE IS ADDED. CURRENTLY ITS TEMPORARY SPRITE CHANGE
 		Coordinator::Instance()->GetComponent<EntityData>(cell.child_overlay).active = true; //TOGGLING FOR OVERLAY VISIBILITY
 	}
