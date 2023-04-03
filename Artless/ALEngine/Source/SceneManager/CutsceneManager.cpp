@@ -570,6 +570,8 @@ namespace ALEngine::Engine::Scene
 					m_CurrentCutscene = std::next(m_CurrentCutscene);
 					// Set phase
 					SetFade(m_CurrentCutscene->m_FadeInType);
+					// Set Text
+					SetText();
 				}
 				else
 					SetFade(m_CurrentCutscene->m_FadeOutType);
