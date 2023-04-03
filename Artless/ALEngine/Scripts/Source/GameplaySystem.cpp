@@ -315,7 +315,7 @@ namespace ALEngine::Script
 		return true;
 	}
 
-	void GameplaySystem::Update(ECS::Entity)
+	void GameplaySystem::Update(ECS::Entity en)
 	{
 		for (ECS::Entity en : gameplaySystem->enemyEntityList)
 		{

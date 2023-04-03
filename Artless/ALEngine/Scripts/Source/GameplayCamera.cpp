@@ -36,6 +36,8 @@ namespace ALEngine::Script
 
 	void GameplayCamera::Update([[maybe_unused]] ECS::Entity en)
 	{
+		if (GameplaySystem::currentGameStatus == GAME_STATUS::WIN)
+			return;
 		Math::vec3& pos = GetCamera().Position();
 
 		f32 const xScreen = static_cast<f32>( Input::GetScreenResX() ),
