@@ -6,7 +6,7 @@ brief:	This file contains function definitions for the CutsceneEditorPanel class
 		The CutsceneEditorPanel class contains a Cutscene Editor that edits cutscenes
 		and cutscene sequences.
 
-		All content © 2022 DigiPen Institute of Technology Singapore. All rights reserved.
+		All content ï¿½ 2022 DigiPen Institute of Technology Singapore. All rights reserved.
 *//*__________________________________________________________________________________*/
 #include <pch.h>
 
@@ -117,6 +117,10 @@ namespace ALEngine::Editor
 			if (ImGui::Button("Delete Sequence##CutsceneEditor"))
 				ImGui::OpenPopup("Delete Sequence##CutsceneEditorPopup");
 
+			ImGui::SameLine();
+			if (ImGui::Button("Remove Sequence##CutsceneEditor"))
+				ImGui::OpenPopup("Remove Sequence##CutsceneEditorPopup");
+
 			f32 popup_len{ ALEditor::Instance()->m_MenuSize.x };
 			ImGui::SetNextWindowSize({ popup_len, 0.f });
 			if (ImGui::BeginPopup("Add Sequence##CutsceneEditorPopup"))
@@ -137,19 +141,20 @@ namespace ALEngine::Editor
 			}
 
 			ImGui::SetNextWindowSize({ popup_len, 0.f });
-			if (ImGui::BeginPopup("Delete Sequence##CutsceneEditorPopup"))
+			if (ImGui::BeginPopup("Remove Sequence##CutsceneEditorPopup"))
 			{
 				ImGui::Text("Confirm Delete?");
-				if (ImGui::Button("Yes##DeleteSequence"))
-				{
-					CutsceneManager::Instance()->m_Sequences.erase(m_SelectedSequence);
+				if (ImGui::Button("Yes##CutsceneSequenceDelete", { popup_len * 0.2f, 0.f }))
+				{					
+					CutsceneManager::Instance()->RemoveSequence(m_SelectedSequence);
 					m_SelectedSequence = "";
 					ImGui::CloseCurrentPopup();
 				}
-				ImGui::SameLine(); 
-				if(ImGui::Button("No##DeleteSequence"))
+				ImGui::SameLine();
+				if (ImGui::Button("No##CutsceneSequenceDelete", { popup_len * 0.2f, 0.f }))
+				{
 					ImGui::CloseCurrentPopup();
-
+				}
 				ImGui::EndPopup();
 			}
 		}

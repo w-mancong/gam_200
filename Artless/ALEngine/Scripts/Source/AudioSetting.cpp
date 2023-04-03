@@ -24,7 +24,7 @@ namespace ALEngine::Script
 
 		b8 mouseClicked{ false };
 		f32 clickTimer{ 0.0f }, soundTimer{ 0.0f };
-		f32 constexpr WAIT_FOR = 0.125f;
+		f32 constexpr WAIT_FOR = 0.1f;
 
 		u64 constexpr MASTER = static_cast<u64>(Engine::Channel::Master),
 			SFX = static_cast<u64>(Engine::Channel::SFX),

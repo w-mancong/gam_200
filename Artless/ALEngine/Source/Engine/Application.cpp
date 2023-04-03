@@ -294,8 +294,8 @@ namespace ALEngine::Engine
 #if EDITOR
 		ZoneScopedN("Normal Delta Time Update");
 		AssetManager::Instance()->Update();
-		Input::Update();
 #endif
+		Input::Update();
 		AudioManagerUpdate(); 
 		UpdateEventTriggerSystem();
 	}
