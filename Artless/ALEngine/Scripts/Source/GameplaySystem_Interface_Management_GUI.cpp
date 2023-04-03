@@ -60,22 +60,7 @@ namespace ALEngine::Script
 	{
 		guiManager.Your_Turn_Sign = Coordinator::Instance()->GetEntityByTag("your_turn_VFX");
 		Sprite& sprite = Coordinator::Instance()->GetComponent<Sprite>(guiManager.Your_Turn_Sign);
-
-		switch (gameplaySystem->currentPhaseStatus) {
-			case PHASE_STATUS::PHASE_SETUP:
-				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_SetupPhase.png");
-			break;
-
-			case PHASE_STATUS::PHASE_ACTION:
-				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_ActionPhase.png");
-			break;
-
-			case PHASE_STATUS::PHASE_ENEMY:
-				sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_EnemyPhase.png");
-			break;
-
-		}
-
+		sprite.id = Engine::AssetManager::Instance()->GetGuid("Assets/Images/PhaseChange_SetupPhase.png");
 		guiManager.Your_Turn_timer = 2.6f;
 	}
 
@@ -88,6 +73,11 @@ namespace ALEngine::Script
 	void GameplaySystem_Interface_Management_GUI::UpdateYourTurnSign()
 	{
 		f32& timer = guiManager.Your_Turn_timer;
+		for (auto x : ECS::ParticleSystem::GetParticleSystem().GetParticleContainer())
+		{
+			if (x.active)
+				return;
+		}
 
 		if (timer > 0.f && timer <= 4.5f)
 		{

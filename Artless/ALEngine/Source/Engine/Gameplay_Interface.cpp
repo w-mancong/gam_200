@@ -297,6 +297,8 @@ namespace ALEngine::Script
 			break;
 
 		case PHASE_STATUS::PHASE_ENEMY:
+			//Display the your turn animation 
+			gameplaySystem_GUI->DisplayYourTurn();
 			//Load setup phase
 			AL_CORE_CRITICAL("Loading PHASE SETUP");
 			gameplaySystem->currentPhaseStatus = PHASE_STATUS::PHASE_SETUP;
@@ -346,9 +348,6 @@ namespace ALEngine::Script
 		}
 
 		gameplaySystem_GUI->GuiUpdatePhaseIndicator(gameplaySystem->currentPhaseStatus);
-
-		//Display the your turn animation 
-		gameplaySystem_GUI->DisplayYourTurn();
 	}
 
 	uint32_t GameplaySystem::getRoomSize() {
