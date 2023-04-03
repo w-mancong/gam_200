@@ -15,7 +15,11 @@ namespace ALEngine::Engine::Scene
 {
 	namespace
 	{
-		const f32 WAIT_TIME{ 1.f };													// Time to wait after player clicks to skip current cutscene/cutscene text
+		const f32 WAIT_TIME{ 1.f };
+		// Directory
+		const std::string file_path{ "Assets\\Cutscenes\\" };
+
+		// Time to wait after player clicks to skip current cutscene/cutscene text
 		const c8* TEXTBOX_PATH{ "Assets/Images/DialogueBox.png" };					// Path for the Dialogue Box images
 		const std::string SEQUENCES_FILEPATH{ "Assets/Cutscenes/Sequences.json" };	// List of Sequences FilePath
 	}
@@ -163,6 +167,10 @@ namespace ALEngine::Engine::Scene
 	void CutsceneManager::RemoveSequence(std::string sequenceName)
 	{
 		m_Sequences.erase(sequenceName);
+		std::string to_delete = file_path + m_SelectedSequence + ".cutscene";
+		std::remove(to_delete.c_str());
+		to_delete += ".meta";
+		std::remove(to_delete.c_str());
 		SaveSequences();
 	}
 
