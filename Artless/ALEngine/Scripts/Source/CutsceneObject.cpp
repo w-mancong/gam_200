@@ -35,10 +35,13 @@ namespace ALEngine::Script
 
 	void CutsceneObject::Update(ECS::Entity en)
 	{
+#if !EDITOR
 		if (cutScenePlayedOnce)
 			return;
+#endif
 		Engine::Scene::CutsceneManager::Instance()->Update();
 
+#if !EDITOR
 		if (!Engine::Scene::CutsceneManager::Instance()->CutsceneIsPlaying())
 		{
 			SetActive(true, main_menu);
@@ -51,5 +54,6 @@ namespace ALEngine::Script
 			cutScenePlayedOnce = true;
 			SetActive(true, main_menu);
 		}
+#endif
 	}
 }
