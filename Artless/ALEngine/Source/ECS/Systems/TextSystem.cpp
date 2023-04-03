@@ -57,7 +57,7 @@ namespace ALEngine::ECS
 		newFont.fontName = fontName;
 		// compile and setup the shader
 		newFont.fontShader = ALEngine::Graphics::Shader{ "Assets/Dev/Shaders/font.vert", "Assets/Dev/Shaders/font.frag" };
-		Math::Matrix4x4 projection = Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::width), 0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::height));
+		Math::Matrix4x4 projection = Math::Matrix4x4::Ortho(0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::screenWidth), 0.0f, static_cast<f32>(ALEngine::Graphics::OpenGLWindow::screenHeight));
 		newFont.fontShader.use();
 		newFont.fontShader.Set("projection", projection);
 

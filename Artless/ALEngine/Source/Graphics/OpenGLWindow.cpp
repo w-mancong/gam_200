@@ -97,8 +97,8 @@ namespace ALEngine::Graphics
 		Serializer::Serializer config{ "Assets\\Dev\\Objects\\Config.json" };
 		title = config.GetString("window title", "ALEngine");
 		Math::vec2 dimension = config.GetVec2("dimensions", { DEFAULT_WIDTH, DEFAULT_HEIGHT });
-		width = static_cast<u32>(dimension.x);
-		height = static_cast<u32>(dimension.y);
+		screenWidth = width = static_cast<u32>(dimension.x);
+		screenHeight = height = static_cast<u32>(dimension.y);
 		fullScreen = config.GetInt("FullScreen", 1);
 
 #if EDITOR
