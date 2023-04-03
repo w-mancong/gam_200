@@ -118,8 +118,8 @@ namespace ALEngine::UserInput
 
 		Vec4 mousePos{ 0.f, 0.f, 0.f, 1.f };
 
-		mousePos.x = 2.f * (static_cast<f32>(mousePosX) / static_cast<f32>(Graphics::OpenGLWindow::width)) - 1.f;
-		mousePos.y = -2.f * (static_cast<f32>(mousePosY) / static_cast<f32>(Graphics::OpenGLWindow::height)) + 1.f;
+		mousePos.x = 2.f * (static_cast<f32>(mousePosX) / static_cast<f32>(Graphics::OpenGLWindow::screenWidth)) - 1.f;
+		mousePos.y = -2.f * (static_cast<f32>(mousePosY) / static_cast<f32>(Graphics::OpenGLWindow::screenHeight)) + 1.f;
 
 		// Check if within range of scene
 		if (mousePos.x >= -1.f && mousePos.x <= 1.f &&
