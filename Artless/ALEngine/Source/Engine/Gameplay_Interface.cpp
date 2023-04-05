@@ -2650,7 +2650,7 @@ namespace ALEngine::Script
 			gameplaySystem_GUI->Update_AP_UI(playerUnit.actionPoints);
 
 			if (playerUnit.actionPoints <= 0) {
-				gameplaySystem->EndTurn();
+				//gameplaySystem->EndTurn();
 			}
 			else {
 				//Reset the statuses
