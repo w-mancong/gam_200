@@ -615,7 +615,7 @@ namespace ALEngine::Script
 
 		//Toggle color accordingly
 		if (!cell.m_isAccessible)
-			Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 0.f,0.f,0.f,0.f };
+			Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 1.f,0.f,0.f,1.f };
 		else
 			Coordinator::Instance()->GetComponent<Sprite>(getEntityCell(currentRoom, x, y)).color = { 1.f,1.f,1.f,1.f };
 	}
@@ -1320,7 +1320,7 @@ namespace ALEngine::Script
 				ECS::Entity cellEntity = getEntityCell(room, coordinate.x + pattern.offsetGroup[selected_Pattern_Rotation][i].x, coordinate.y + pattern.offsetGroup[selected_Pattern_Rotation][i].y);
 				Cell& cell = Coordinator::Instance()->GetComponent<Cell>(cellEntity);
 				
-				if (!cell.m_isAccessible || cell.hasBomb || cell.hasTrap || cell.has_Wall) {
+				if (!cell.m_isAccessible || cell.hasBomb || cell.has_Wall) {
 					//return false;
 					canPlace = false;
 					touchedEmpty = true;
@@ -2716,12 +2716,14 @@ namespace ALEngine::Script
 			trans.position = Math::vec3(-1000, -1000, trans.position.z);
 		}
 
+		Unit playerUnit = Coordinator::Instance()->GetComponent<Unit>(gameplaySystem->playerEntity);
+
 		PATHSTATUS path{ PATHSTATUS::END };
 		int u {};
 		for (int i{ (int)pathlist.size() - 1 }; i >= 0; --i, ++u)
 		{
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i]);
-			if (i - 1 >= 0 && i + 1 < pathlist.size()) // corner block
+			if (i - 1 >= 0 && i + 1 < pathlist.size() && u < playerUnit.actionPoints) // corner block
 			{
 				Cell& next_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i - 1]);
 				Cell& prev_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i + 1]);
@@ -2750,7 +2752,7 @@ namespace ALEngine::Script
 				else if (cell.coordinate.y - 1 == next_cell.coordinate.y)
 					path = PATHSTATUS::VERTICAL;
 			}
-			else if (i - 1 >= 0)
+			else if (i - 1 >= 0 && u < playerUnit.actionPoints)
 			{
 				Cell& next_cell = Coordinator::Instance()->GetComponent<Cell>(pathlist[i - 1]);
 				if (cell.coordinate.y + 1 == next_cell.coordinate.y)
