@@ -487,7 +487,7 @@ namespace ALEngine::Script
 
 		//destroy the walkable block here important
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1])) {
-			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
+		Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]));
 			cell.m_resetCounter = 0;
 			if (cell.m_canWalk)
 			{
@@ -498,127 +498,140 @@ namespace ALEngine::Script
 
 			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1]);
 			brokeTile = true;
+
 		}
 
 		//up
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1)) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
-			cell.m_resetCounter = 0;
-			if (cell.m_canWalk)
+			if (!cell.has_Wall)
 			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
-				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+				cell.m_resetCounter = 0;
+				if (cell.m_canWalk)
+				{
+					Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1));
+					ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
 
-				// Play audio and animation for attack
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
-				Audio_PlayEnemyAttack(unit);
-			}
-			cell.m_canWalk = false;
-
-			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
-
-			brokeTile = true;
-
-			if (cell.hasUnit) {
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
-
-				if (unit.unitType == UNIT_TYPE::PLAYER) {
-					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					// Play audio and animation for attack
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+					Audio_PlayEnemyAttack(unit);
 				}
-			}
+				cell.m_canWalk = false;
 
-			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  up block");
+				gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] + 1);
+
+				brokeTile = true;
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					}
+				}
+
+				AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  up block");
+			}
 		}
 
 		//down
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1)) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
-			cell.m_resetCounter = 0;
-			if (cell.m_canWalk)
+			if (!cell.has_Wall)
 			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
-				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+				cell.m_resetCounter = 0;
+				if (cell.m_canWalk)
+				{
+					Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1));
+					ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
 
-				// Play audio and animation for attack
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
-				Audio_PlayEnemyAttack(unit);
-			}
-			cell.m_canWalk = false;
-
-			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
-
-			//Play the sound
-			GameAudioManager::Play("TileBreak");
-
-			if (cell.hasUnit) {
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
-
-				if (unit.unitType == UNIT_TYPE::PLAYER) {
-					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					// Play audio and animation for attack
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+					Audio_PlayEnemyAttack(unit);
 				}
-			}
+				cell.m_canWalk = false;
 
-			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  down block");
+				gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0], enemyUnit.coordinate[1] - 1);
+
+				//Play the sound
+				GameAudioManager::Play("TileBreak");
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					}
+				}
+
+				AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  down block");
+			}
 		}
 
 		//left
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
-			cell.m_resetCounter = 0;
-
-			if (cell.m_canWalk) // particles
+			if (!cell.has_Wall)
 			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
-				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+				cell.m_resetCounter = 0;
 
-				// Play audio and animation for attack
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
-				Audio_PlayEnemyAttack(unit);
-			}
-			
-			cell.m_canWalk = false;
-			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
+				if (cell.m_canWalk) // particles
+				{
+					Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]));
+					ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
 
-			brokeTile = true;
-
-			if (cell.hasUnit) {
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
-
-				if (unit.unitType == UNIT_TYPE::PLAYER) {
-					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					// Play audio and animation for attack
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+					Audio_PlayEnemyAttack(unit);
 				}
+
+				cell.m_canWalk = false;
+				gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] - 1, enemyUnit.coordinate[1]);
+
+				brokeTile = true;
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					}
+				}
+				AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  left block");
 			}
-			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed  left block");
 		}
 
 		//right
 		if (gameplaySystem->IsCoordinateInsideRoom(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1])) {
 			Cell& cell = Coordinator::Instance()->GetComponent<Cell>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
-			cell.m_resetCounter = 0;
-			if (cell.m_canWalk)
+			if (!cell.has_Wall)
 			{
-				Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
-				ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
+				cell.m_resetCounter = 0;
+				if (cell.m_canWalk)
+				{
+					Transform& trans = Coordinator::Instance()->GetComponent<Transform>(gameplaySystem->getEntityCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]));
+					ECS::ParticleSystem::GetParticleSystem().TileDestoryParticles(trans.position);
 
-				// Play audio and animation for attack
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
-				Audio_PlayEnemyAttack(unit);
-			}
-			cell.m_canWalk = false;
-
-			gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
-
-			brokeTile = true;
-
-			if (cell.hasUnit) {
-				Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
-
-				if (unit.unitType == UNIT_TYPE::PLAYER) {
-					gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					// Play audio and animation for attack
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(movingUnitEntity);
+					Audio_PlayEnemyAttack(unit);
 				}
-			}
+				cell.m_canWalk = false;
 
-			AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed right block");
+				gameplaySystem->ResetCell(m_Room, enemyUnit.coordinate[0] + 1, enemyUnit.coordinate[1]);
+
+				brokeTile = true;
+
+				if (cell.hasUnit) {
+					Unit& unit = Coordinator::Instance()->GetComponent<Unit>(cell.unitEntity);
+
+					if (unit.unitType == UNIT_TYPE::PLAYER) {
+						gameplaySystem->DoDamageToUnit(cell.unitEntity, unit.maxHealth);
+					}
+				}
+
+				AL_CORE_INFO("Enemy " + std::to_string(enemyNeededData.enemyMoved) + " destroyed right block");
+			}
 		}
 
 		if (brokeTile) {
